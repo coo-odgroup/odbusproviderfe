@@ -1,0 +1,106 @@
+::ng-deep table.dataTable td.dataTables_empty {
+    display: none;
+}
+::ng-deep .ng-select {
+    border: 1px solid #d9d9d9;
+    padding:0px;
+    font-weight: normal;
+}
+
+::ng-deep .ng-select>div
+{
+	border:none !important;
+}
+::ng-deep tr.odd
+{
+    display: none;
+}
+::ng-deep tr.even
+{
+    display: none;
+}
+
+::ng-deep span.text-danger.ng-star-inserted {
+    display: block;
+    font-size: 11px;
+}
+::ng-deep .editForm .form-control {
+    line-height: 1;
+    border: 1px solid #cabdbd;
+    padding: 8px;
+    height: auto;
+    font-weight: normal;
+    font-size: 13px;
+    color: #000;
+}
+::ng-deep .seaterImage
+{
+    width: 35px;
+    height: 27px;
+    background: url('../../../assets/images/seater.png') no-repeat;
+    display:flex;
+    
+}
+::ng-deep .seatHolder
+{
+    cursor: pointer;
+}
+::ng-deep .seatHolder input
+{
+    display: none;
+}
+::ng-deep .seatHolder input[type="checkbox"]:checked + .seaterImage {
+    background: url('../../../assets/images/seater-available.png') no-repeat center center;
+    cursor:pointer;
+}
+
+
+::ng-deep .seatHolder input[type="checkbox"]:disabled + .seaterImage {
+    background: url('../../../assets/images/seater_none.png') no-repeat center center;
+    cursor:not-allowed;
+}
+
+::ng-deep .sleeperImage
+{
+    width: 45px;
+    height: 27px;
+    background: url('../../../assets/images/sleeper.png') no-repeat center center;
+    display:flex;
+}
+::ng-deep .seatHolder input[type="checkbox"]:checked + .sleeperImage {
+    background: url('../../../assets/images/sleeper-available.png') no-repeat center center;
+    cursor:pointer;
+}
+
+::ng-deep .seatHolder input[type="checkbox"]:disabled + .sleeperImage {
+    background: url('../../../assets/images/sleeper_none.png') no-repeat center center;
+    cursor:not-allowed;
+}
+
+::ng-deep .verticalImage
+{
+    width: 35px;
+    height: 45px;
+    background: url('../../../assets/images/vertical.png') no-repeat center center;
+    display:flex;
+}
+::ng-deep .seatHolder input[type="checkbox"]:checked + .verticalImage {
+    background: url('../../../assets/images/vertical-available.png') no-repeat center center;
+    cursor:pointer;
+}
+::ng-deep .seatHolder input[type="checkbox"]:disabled + .verticalImage {
+    background: url('../../../assets/images/vertical.png') no-repeat center center;
+    cursor: not-allowed;
+}
+
+::ng-deep .blankImage
+{
+    width: 35px;
+    height: 27px;
+    background: url('../../../assets/images/noborderblank.png') no-repeat center center;
+    display:flex;
+    cursor:none;
+}
+::ng-deep select:disabled {
+    cursor: not-allowed;
+}

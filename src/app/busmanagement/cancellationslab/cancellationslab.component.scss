@@ -1,0 +1,16 @@
+::ng-deep table.dataTable td.dataTables_empty {
+    display: none;
+}
+
+::ng-deep .nopad
+{
+    padding: 0px;
+}
+::ng-deep tr.odd
+{
+    display: none;
+}
+::ng-deep tr.even
+{
+    display: none;
+}

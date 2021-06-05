@@ -1,0 +1,289 @@
+import { Component, OnInit,ViewChild } from '@angular/core';
+
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Location, LocationCode } from '../../model/location';
+import { DataTablesResponse} from '../../model/datatable';
+import { NotificationService } from '../../services/notification.service';
+import {LocationService} from '../../services/location.service';
+import { DataTableDirective } from 'angular-datatables';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import {Constants} from '../../constant/constant';
+import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
+
+@Component({
+  selector: 'app-location',
+  templateUrl: './location.component.html',
+  styleUrls: ['./location.component.scss'],
+  providers: [NgbModalConfig, NgbModal]
+})
+export class LocationComponent implements OnInit {  
+
+  public form: FormGroup;
+  public formConfirm: FormGroup;
+  //@ViewChild('closebutton') closebutton;
+  @ViewChild("addnew") addnew;
+  modalReference: NgbModalRef;
+  confirmDialogReference: NgbModalRef;
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement: DataTableDirective;
+ 
+  
+  position = 'bottom-right'; 
+  dtTrigger: Subject<any> = new Subject();
+  dtOptions: DataTables.Settings = {};
+  dtOptionsLocation: any = {};
+  dtSeatTypesOptions: any = {};
+  dtSeatTypesOptionsData: any = {};
+  locations: Location[];
+  locationRecord: Location;
+  locationCodes: LocationCode[];
+  locationcodeRecord: LocationCode;
+ 
+  public isSubmit: boolean;
+  public ModalHeading:any;
+  public ModalBtn:any;
+ 
+  constructor(private http: HttpClient, private notificationService: NotificationService, private LocationService: LocationService,  private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+    this.isSubmit = false;
+    this.locationRecord= {} as Location;
+    this.locationcodeRecord= {} as LocationCode;
+    config.backdrop = 'static';
+    config.keyboard = false;
+    this.ModalHeading = "Add New Location";
+    this.ModalBtn = "Save"; 
+  }
+  OpenModal(content) {
+    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
+  }
+  loadLocationData(){
+    this.dtOptionsLocation = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      deferRender: true,
+      dom: 'lBfrtip', 
+      order:["0","desc"],  
+      aLengthMenu:[10, 25, 50, 100, "All"], 
+      
+      buttons: [
+        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+            $(node).removeClass('dt-button')
+          },
+          exportOptions: {
+            columns: "thead th:not(.noExport)"
+           } 
+        },
+        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+       },
+       exportOptions: {
+         columns: "thead th:not(.noExport)"
+        } 
+      },
+        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+       },
+       exportOptions: {
+         columns: "thead th:not(.noExport)"
+        }
+       },
+        { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+       },
+       exportOptions: {
+         columns: "thead th:not(.noExport)"
+        } 
+      },
+        {
+          text:"Add",
+          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+            $(node).removeClass('dt-button')
+          },
+          action:() => {
+           this.addnew.nativeElement.click();
+          }
+        }
+      ],
+      language: {
+        searchPlaceholder: "Find Location",
+        processing: "<img src='assets/images/loading.gif' width='30'>"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        this.http
+          .post<DataTablesResponse>(
+            Constants.BASE_URL+'/locationsDT',
+            dataTablesParameters, {}
+          ).subscribe(resp => {
+            this.locations = resp.data.aaData;
+            
+            callback({
+              recordsTotal: resp.data.iTotalRecords,
+              recordsFiltered: resp.data.iTotalDisplayRecords,
+              //data: resp.data.aaData
+              data: resp.data.aaData
+            });
+          });
+          
+      },
+      columns: [ {data: 'id'},{ data: 'name'}, { data: 'synonym' },{ data: 'created_at' },{ data: 'updated_at' }, { 
+        data: 'status',
+        render:function(data)
+        {
+          return (data=="1")?"Active":"Pending"
+        }
+       }, 
+      {
+        title:'Action',data:null, orderable:false, className: "noExport" 
+      }]      
+      
+    };
+  }
+  ngOnInit() {
+    this.form = this.fb.group({
+      id:[null],
+      name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      synonym: [null, Validators.compose([Validators.maxLength(15)])]
+    });
+    this.formConfirm=this.fb.group({
+      id:[null]
+    });
+    this.loadLocationData();
+  }
+  ResetAttributes()
+  {
+    this.locationRecord = {} as Location;
+    this.form = this.fb.group({
+      id:[null],
+      name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
+      synonym: [null, Validators.compose([Validators.maxLength(50)])]
+    });
+    this.ModalHeading = "Add Location";
+    this.ModalBtn = "Save";
+  }
+  addLocation()
+  {
+    let id:any=this.form.value.id; 
+    const data ={
+      id:this.form.value.id,
+      name:this.form.value.name,
+      synonym:this.form.value.synonym,
+      status:'1',
+      created_by:'Admin',
+    };
+    if(id==null)
+    {
+      this.LocationService.create(data).subscribe(
+        resp => {
+          if(resp.status==1)
+          {
+              //this.closebutton.nativeElement.click();
+              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:'success'});
+              this.modalReference.close();
+              this.ResetAttributes();
+              this.rerender();
+          }
+          else{
+              this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+          }
+        }
+      );
+    }
+    else{     
+      this.LocationService.update(id,data).subscribe(
+        resp => {
+          if(resp.status==1)
+          {
+              //this.closebutton.nativeElement.click();
+              this.modalReference.close();
+              this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+              this.ResetAttributes();
+              this.rerender();
+          }
+          else{
+              this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+          }
+        }
+      );
+    }    
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+  editLocation(event : Event, id : any)
+  {
+    this.locationRecord=this.locations[id] ;
+    this.form = this.fb.group({
+      id:[this.locationRecord.id],
+      name: [this.locationRecord.name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
+      synonym: [this.locationRecord.synonym, Validators.compose([Validators.maxLength(50)])]
+    });
+    this.ModalHeading = "Edit Location";
+    this.ModalBtn = "Update";
+  }
+  openConfirmDialog(content)
+  {
+    this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
+  }
+
+  deleteRecord()
+  {
+    let delitem=this.formConfirm.value.id;
+     this.LocationService.delete(delitem).subscribe(
+      resp => {
+        if(resp.status==1)
+            {
+                this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+                this.confirmDialogReference.close();
+
+                this.rerender();
+            }
+            else{
+               
+              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+            }
+      }); 
+  }
+  deleteLocation(content, delitem:any)
+  {
+    this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
+    this.formConfirm=this.fb.group({
+      id:[delitem]
+    });
+  }
+
+  changeStatus(event : Event, stsitem:any)
+  {
+    this.LocationService.chngsts(stsitem).subscribe(
+      resp => {
+        if(resp.status==1)
+        {
+            //this.closebutton.nativeElement.click();
+            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+            this.rerender();
+        }
+        else{
+            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+      }
+    );
+  }
+  
+}

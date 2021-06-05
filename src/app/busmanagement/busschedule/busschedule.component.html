@@ -1,0 +1,171 @@
+<div class="row">  
+    <div class="col-sm-12">
+      <app-card cardTitle="BUS SCHEDULE" cardClass="card-datatable" [options]="true"  [isCardFooter]="true">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptionsBusSchedule"  [dtTrigger]="dtTrigger" class="table table-striped table-bordered table-hover  mb-0">
+            <thead>
+              <tr>
+                <th>ID</th><th>Operator</th><th>Routes</th><th>BusName/Number</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="busSchedules?.length != 0">
+                <tr *ngFor="let busSchedule of busSchedules; let i=index; ">
+                    <td>{{ busSchedule.id }}</td><td (click)="showEntryDates($event,i)">{{ busSchedule.operatorName }}</td><td (click)="showEntryDates($event,i)">{{ busSchedule.routes }}</td><td (click)="showEntryDates($event,i)">{{ busSchedule.name }}</td>
+                    <td>
+                     <label *ngIf="busSchedule.status==1" class="badge badge-light-success pointer" (click)="changeStatus($event, busSchedule.id);" >Active</label>
+                      <label *ngIf="busSchedule.status==0" class="badge badge-light-warning pointer" (click)="changeStatus($event, busSchedule.id);">Pending</label>
+                    </td>
+                    <td>
+                      <!-- <a (click)="EntryDates($event,i); openModalViewDates(viewEntryDates);" class="pointer"><i class="icon feather icon-eye f-w-600 f-16 m-r-15 text-c-green" ></i></a> -->
+                      <a (click)="editBusSchedule($event, i); OpenModal(content);" class="pointer"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i></a>
+                      <a (click)="deleteBusSchdule(confirmDialog,busSchedule.id)" class="pointer"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="busSchedules?.length == 0">
+              <tr>
+                <td colspan="6" class="no-data-available">No data!</td>
+              </tr>
+            <tbody>
+          </table>  
+        </div>
+        <div class="app-card-footer">
+          <div class="row">
+            <div class="col-sm-12" *ngIf = "showdates==1">
+              <label  *ngFor="let entryDate of busScheduleRecord.entryDates; " class = "col-2">{{entryDate.entryDates}}</label>
+            </div>
+          </div>         
+        </div>  
+          </app-card>  
+          <!-- <ng-template #viewEntryDates let-modal>
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5"> Entry Dates</h5>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label  *ngFor="let entryDate of busScheduleRecord.entryDates; " class = "col-3">{{entryDate.entryDates}}</label>
+                </div>
+              </div>
+            </div>
+          </ng-template> -->
+          <ng-template #confirmDialog let-modal>
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-material">
+                    <div class="right-icon-control">
+                      Would you Like to Delete the Record
+                      <form [formGroup]="formConfirm" class="editForm" novalidate>              
+                        <input type="hidden" formControlName="id">
+                      </form>  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </ng-template>
+          <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal" (click)="ResetAttributes();loadServices();OpenModal(content);">Add</button>    
+          <ng-template #content let-modal>
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-material">
+                    <div class="right-icon-control">
+
+
+
+
+
+                      <form [formGroup]="busScheduleForm" class="editForm" novalidate>   
+                       
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label for="busSchedule" class="col-sm-4 col-form-label">Operator<span class="text-danger">*</span></label>
+                              <div class="col-sm-8"> 
+
+                                <ng-select [items]="operators"  bindLabel="operator_name"  bindValue="id" placeholder="Select Operator" [clearable]="false" required formControlName="bus_operator_id" #operator (change)="getBusbyOperator($event)" >
+                                </ng-select>  
+                                <span class="text-danger" *ngIf="busScheduleForm.controls['bus_operator_id'].touched && busScheduleForm.controls['bus_operator_id'].hasError('required')">
+                                  Operator is required! </span>
+                              </div>                      
+                            </div> 
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label for="busname" class="col-sm-3 col-form-label">Bus Name<span class="text-danger">*</span></label>
+                                  <div class="col-sm-9"> 
+                                    <ng-select [items]="buses"  bindLabel="name"  bindValue="id"  placeholder="Select Bus" [clearable]="false"  required formControlName="bus_id" #bus (change)="getBusScheduleEntryDatesByBusId($event)">
+                                    </ng-select>
+                                  <span class="text-danger" *ngIf="busScheduleForm.controls['bus_id'].touched && busScheduleForm.controls['bus_id'].hasError('required')">
+                                    Bus Name is required! 
+                                  </span>                                                               
+                              </div>
+                            </div>
+                          </div>
+                        </div>   
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label for="busSchedule" class="col-sm-4 col-form-label">Entry Date<span class="text-danger">*</span></label>
+                              <div class="col-sm-8">    
+                                <input type="date" data-date="" data-date-format="DD MM YYYY" class="form-control" placeholder="Enter Entry Date" required formControlName="entry_date" [value]="busScheduleRecord.entry_date"/>
+                                <span class="text-danger" *ngIf="busScheduleForm.controls['entry_date'].touched && busScheduleForm.controls['entry_date'].hasError('required')">
+                                  Entry Date is required! 
+                                </span>
+                              </div>
+                            </div> 
+                          </div> 
+                          <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="busSchedule" class="col-sm-3 col-form-label">Running Cycle<span class="text-danger">*</span></label>
+                          <div class="col-sm-9">   
+                            <ng-select [items]="runningCycles" bindLabel="running_cycle" placeholder="Select runningCycle" [clearable]="false" required formControlName="running_cycle" >     
+                            </ng-select>  
+                            <span class="text-danger" *ngIf="busScheduleForm.controls['running_cycle'].touched && busScheduleForm.controls['running_cycle'].hasError('required')">
+                              Running Cycle is required! 
+                            </span>
+                            
+                          </div>
+                        </div> 
+                      </div> 
+                      </div>                       
+                        
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <label  *ngFor="let eDate of eDates; " class = "col-2">{{eDate.entry_date}}</label>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" [disabled]="!busScheduleForm.valid" (click)="addBusSchedule()" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
+              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
+            </div>
+        </ng-template>
+    </div>  
+    </div>
+    <ng2-toasty [position]="position"></ng2-toasty>
+    
+    
+     
+     

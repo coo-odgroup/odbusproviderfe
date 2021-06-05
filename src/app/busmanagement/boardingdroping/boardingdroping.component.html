@@ -1,0 +1,150 @@
+<div class="row">  
+    <div class="col-sm-12">
+      <app-card cardTitle="Bus Stoppages" cardClass="card-datatable" [options]="true"  [isCardFooter]="true">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptionBoardingDropping" [dtTrigger]="dtTrigger" class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Location</th>
+                <th>boarding_point</th>
+                <th>Created At</th>
+                <th>Created By</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="BoardingDroppings?.length != 0">
+                <tr *ngFor="let BoardDrop of BoardingDroppings; let i=index; ">
+                    <td>{{ BoardDrop.id }}</td>
+                    <td>{{ BoardDrop.location_name }}</td>
+                    <!-- <td>{{ BoardDrop.boarding_point }}</td> -->
+                    <td>
+                      <div  *ngFor="let bp of BoardDrop.boarding_dropping; let dura=index;"><strong>{{dura+1}}</strong>. {{ bp.boarding_point }}</div>
+                    </td>
+                    <!-- <td>{{ BoardDrop.dropping_point }}</td> -->
+                    
+                    <td>{{ BoardDrop.created_at }}</td>
+                    <td>{{ BoardDrop.created_by }}</td>
+                    <td>
+                      <!-- {{ BoardDrop.status }} -->
+                      <label *ngIf="BoardDrop.boarding_dropping.status==1" class="badge badge-light-success pointer" (click)="changeStatus($event, BoardDrop.id);" >Active</label>
+                      <label *ngIf="BoardDrop.status==0" class="badge badge-light-warning pointer" (click)="changeStatus($event, BoardDrop.id);">Pending</label>
+                    </td>
+                    
+                    <td><a  (click)="editBoardingDropping($event, i);OpenModal(content);" class="pointer" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i></a><a   (click)="deleteBoardingDropping(confirmDialog, i)" class="pointer"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="BoardingDroppings?.length == 0">
+              <tr>
+                <td colspan="8" class="no-data-available">No data!</td>
+              </tr>
+            <tbody>
+          </table>  
+        </div>
+        <div class="app-card-footer">
+          <ng-template #confirmDialog let-modal>
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-material">
+                    <div class="right-icon-control">
+                      Would you Like to Delete the Record
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </ng-template>
+          <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"  (click)="ResetAttributes();OpenModal(content);">Add </button>  
+          <ng-template #content let-modal>
+          <!-- <app-ui-modal #modalDefault> -->
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+              <button type="button" class="close" aria-label="Close"   (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-material">
+                    <div class="right-icon-control">
+                      <form [formGroup]="form" class="editForm" novalidate>
+                        <div class="form-group row">
+                          <label for="boardingdroppingname" class="col-sm-4 col-form-label">Location Name<span class="text-danger">*</span></label>
+                          <div class="col-sm-6">   
+
+                            <ng-select 
+                                [items]="locations"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Select Location"                                       
+                                formControlName="location_id"
+                                [clearable]="false"
+                                >
+                          </ng-select> 
+
+                          
+                            
+                            <span class="text-danger" *ngIf="form.controls['location_id'].touched && form.controls['location_id'].hasError('required')">
+                              Location Name is required! </span>
+                          </div>
+                        </div>
+                        <div class="form-group row col-md-6">
+                          <div class="col-md-12" formArrayName="boards">
+                            <div class="form-group row">
+                              <label for="boardingname" class="col-sm-10 nopad">Stoppage Name<span class="text-danger">*</span></label>
+                              <div class="form-group col-2 text-right">
+                                <button (click)="addBoard()" class = "btn btn-info btn-sm addbtn">+</button>
+                              </div>
+                            </div>
+                            <div class="form-group row" *ngFor="let boarding of boardingFormGroup.controls; let j = index" [formGroupName]="j">
+                              <input type="text" class="form-control col-10" placeholder="Boarding Point"  formControlName="boarding_point"/>
+                              <div class="form-group col-2 text-right">
+                                <button class="btn btn-danger btn-sm removebtn" type="button" (click)="removeBoard(j)">X</button>
+                              </div>
+                              <span class="text-danger" *ngIf="boarding.controls.boarding_point.touched && boarding.controls['boarding_point'].hasError('required')">
+                                Boarding Point is Required 
+                              </span>
+                              <span class="text-danger" *ngIf="boarding.controls.boarding_point.touched && boarding.controls['boarding_point'].hasError('minlength')">
+                                Minimum 2 Characters Required 
+                              </span>
+                              <span class="text-danger" *ngIf="boarding.controls['boarding_point'].touched && boarding.controls['boarding_point'].hasError('maxlength')">
+                                Maximum 15 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+
+                        </div>                      
+                           
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" [disabled]="!form.valid" (click)="addBoardingDropping()" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
+              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
+            </div>
+          </ng-template>
+          <!-- </app-ui-modal>   -->
+        </div>  
+          </app-card>  
+    </div>  
+    </div>
+    <ng2-toasty [position]="position"></ng2-toasty>
+    
+    
+    
+     
+     

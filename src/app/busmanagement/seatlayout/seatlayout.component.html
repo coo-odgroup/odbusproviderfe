@@ -1,0 +1,240 @@
+<div class="row">  
+  <div class="col-sm-12">
+    <app-card cardTitle="SEAT Layout" cardClass="card-datatable" [options]="true"  [isCardFooter]="true">
+      <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptionsSeatingType"  [dtTrigger]="dtTrigger" class="table table-striped table-bordered table-hover  mb-0">
+          <thead>
+            <tr>
+              <th>ID</th><th>Name</th><th>Created By</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="SeatLayouts?.length != 0">
+              <tr *ngFor="let sLayout of SeatLayouts; let i=index; ">
+                  <td>{{ sLayout.id }}</td><td>{{ sLayout.name }}</td><td>{{ sLayout.created_by }}</td>
+                  <td>
+                    <label *ngIf="sLayout.status==1" class="badge badge-light-success pointer" (click)="changeStatus($event, sLayout.id);" >Active</label>
+                    <label *ngIf="sLayout.status==0" class="badge badge-light-warning pointer" (click)="changeStatus($event, sLayout.id);">Pending</label>
+                  </td>
+                  <td>
+                    <a   (click)="ResetAttributes();viewSeatLayout($event, i); OpenModal(viewPanel);" class="pointer"><i class="icon feather icon-eye f-w-600 f-16 m-r-15 text-c-green" ></i></a>
+                    <a   (click)="deleteSeatLayout(confirmDialog,sLayout.id)" class="pointer"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a>
+                  </td>
+              </tr>
+          </tbody>
+          <tbody *ngIf="SeatLayouts?.length == 0">
+            <tr>
+              <td colspan="7" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>  
+      </div>
+      <div class="app-card-footer">
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                      <input type="hidden" formControlName="id">
+                    </form>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal" (click)="ResetAttributes();OpenModal(content);">Add </button>    
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close"   (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form [formGroup]="SeatLayoutForm" class="editForm" novalidate>                        
+                      <div class="form-group row">
+                        
+                          <label for="seatLayout" class="col-sm-2 col-form-label">Berth Type<span class="text-danger">*</span></label>
+                          <div class="col-sm-3 dataTables_filter">                        
+                            <input type="hidden" formControlName="id" [value]="SeatLayoutRecord.id">
+                            <select class="form-control" formControlName="seatType">
+                              <option value="Seater">Lower Berth</option>
+                              <option value="Sleeper">Upper Berth</option>
+                            </select>
+                            <span class="text-danger" *ngIf="SeatLayoutForm.controls['seatType'].touched && SeatLayoutForm.controls['seatType'].hasError('required')">
+                              Please Choose Berth Type </span>
+                          </div>
+                       
+                          <label for="rowNumber" class="col-sm-2 col-form-label">No of Rows<span class="text-danger">*</span></label>
+                          <div class="col-sm-3 dataTables_filter">   
+                            <input type="number" min="1" max="5" class="form-control" formControlName="rowNumber">
+                            <span class="text-danger" *ngIf="SeatLayoutForm.controls['rowNumber'].touched && SeatLayoutForm.controls['rowNumber'].hasError('required')">
+                              Choose Number of Rows </span>
+                          </div>
+                          <div class="col-sm-2"> 
+                            <button type="button" class="btn btn-success form-control" [disabled]="!SeatLayoutForm.valid" (click)="generateRow()">Generate</button>
+                          </div>
+                        
+                      </div>  
+                    </form>
+                    <form class="editForm" #myform="ngForm">  
+                      <div class="form-group row" *ngIf="seatLayoutrows?.length != 0">
+                        <div class="col-1" >
+                          <div class='container' dragula="COPYABLE" id="left" [(dragulaModel)]="left">
+                            <div *ngFor="let dragElement of left" id="{{dragElement}}" style="margin-top: 10px;"><img src="assets/images/{{dragElement}}.png" style="cursor: pointer; width: 100%;"></div>
+                          </div>
+                        </div>
+                        <div class="col-11 droparea"  ngModelGroup="lowerBerthArray">
+                              <div class="col-12 layoutBundle  Row_{{j}}" id="Row_{{j}}" *ngFor="let singleRow of seatLayoutrows;let j=index" dragula="COPYABLE" ngModelGroup="lower_{{j}}" [(dragulaModel)]="lowerBerthArray[j]">
+                                <div *ngFor='let dropElement of lowerBerthArray[j]; let k=index;' class="selectSeater"   ngModelGroup="{{k}}">
+                                  <div *ngIf="dropElement === 'seater'">
+                                    <img src="assets/images/seater.png" style="width: 45px;">
+                                    <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
+                                    <span class="closebtn remove" (click)="removeItem($event)">X</span>
+                                  </div>
+                                  <div *ngIf="dropElement === 'sleeper'">
+                                    <img src="assets/images/sleeper.png" style="width: 45px;">
+                                    <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
+                                    <span class="closebtn remove" (click)="removeItem($event)">X</span>
+                                  </div>
+                                  <div *ngIf="dropElement === 'blank'">
+                                    <img src="assets/images/blank.png" style="width: 45px;">
+                                    <input type="hidden"  name="seatText" ngModel="NULL"  class="sml_textbox" width="40">
+                                    <span class="closebtn remove" (click)="removeItem($event)">X</span>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+                    
+                      <div class="form-group row" *ngIf="sleeperLayoutrows?.length != 0">
+                        <div class="col-12">
+                          <hr>
+                        </div>
+                        
+                        <div class="col-1" >
+                          <div class='container' dragula="SLEEPERCOPYABLE" id="left_1" [(dragulaModel)]="left_1">
+                            <div *ngFor="let dragElement of left_1" style="margin-top: 10px;"><img src="assets/images/{{dragElement}}.png" style="cursor: pointer; width: 100%;" ></div>
+                          </div>
+                        </div>
+                        <div class="col-11 droparea" ngModelGroup="upperBerthArray">
+
+                          <div class="col-12 layoutBundle  Row_{{j}}" id="sRow_{{j}}" *ngFor="let singleRow of sleeperLayoutrows;let j=index" dragula="SLEEPERCOPYABLE" ngModelGroup="upper_{{j}}" [(dragulaModel)]="upperBerthArray[j]">
+                            <div *ngFor='let slDropElement of upperBerthArray[j]; let k=index;' class="selectSeater" ngModelGroup="{{k}}">
+                              <div *ngIf="slDropElement === 'sleeper'">
+                                <img src="assets/images/sleeper.png" style="width: 45px;">
+                                <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
+                                <span class="closebtn remove" (click)="removeItem($event)">X</span>
+                              </div>
+                              <div *ngIf="slDropElement === 'vertical'">
+                                <img src="assets/images/vertical.png" style="width: 25px;">
+                                <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
+                                <span class="closebtn remove" (click)="removeItem($event)">X</span>
+                              </div>
+                              <div *ngIf="slDropElement === 'blank'">
+                                <img src="assets/images/blank.png" style="width: 45px;">
+                                <input type="hidden" name="seatText" ngModel="NULL" class="sml_textbox" width="40">
+                                <span class="closebtn remove" (click)="removeItem($event)">X</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-8 row form-group dataTables_filter">
+                        <label for="bus" class="col-sm-3 col-form-label">Seat Layout Name <span class="text-danger">*</span> </label> 
+                        <div class="col-sm-9"> 
+                          <!-- [value]="busRecord.bus_number1" alt+z-->
+                          <input type="text" name="SeatLayoutName" class="form-control" ngModel value="this.SeatLayoutRecord.name" required placeholder="Enter Seat Layout Name">
+                          
+                        </div>
+                      </div>
+                    </form>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <!-- [disabled]="!seatLayoutPanel.valid" -->
+            <button type="button"  (click)="saveLayout(myform)" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+        <ng-template #viewPanel let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close"   (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <form class="editForm" #editForm="ngForm">  
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <div class="col-4">
+                     
+                    <input type="text" name="SeatLayoutName" class="form-control" required placeholder="Enter Seat Layout Name" ngModel="{{sLayoutData.name}}">
+                    </div>
+                    <br />  
+                    <div class="col-12" ngModelGroup="lowerBerth">
+                      <div class="col-12 row form-group   layoutBundlesml" *ngFor="let lbData of lowerBerthSeats; let rowCount=index" ngModelGroup="lower_{{rowCount}}">
+                          <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of lbData; let colCount=index" ngModelGroup="{{colCount}}">
+                            <img src="assets/images/seater.png" *ngIf="colData.seatType==1">
+                            <img src="assets/images/sleeper.png" *ngIf="colData.seatType==2">
+                            <img src="assets/images/vertical.png" *ngIf="colData.seatType==3">
+                            <img src="assets/images/blank.png" *ngIf="colData.seatType==4">
+                            <br />
+                            <input type="text" name="seatText" *ngIf="colData.seatType!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  />
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-12" ngModelGroup="upperBerth">
+                      <div class="col-12 row form-group   layoutBundlesml" *ngFor="let ubData of upperBerthSeats; let rowCount=index" ngModelGroup="upper_{{rowCount}}">
+                        <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of ubData; let colCount=index" ngModelGroup="{{colCount}}">
+                          <img src="assets/images/seater.png" *ngIf="colData.seatType==1">
+                          <img src="assets/images/sleeper.png" *ngIf="colData.seatType==2">
+                          <img src="assets/images/vertical.png" *ngIf="colData.seatType==3">
+                          <img src="assets/images/blank.png" *ngIf="colData.seatType==4">
+                          <br />
+                          <input type="text" name="seatText" *ngIf="colData.seatType!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  />
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  (click)="updateLayout(editForm)" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" ngbAutofocus data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+
+      </div>  
+        </app-card>  
+  </div>  
+  </div>
+  <ng2-toasty [position]="position"></ng2-toasty>
+  
+  
+   
+   
