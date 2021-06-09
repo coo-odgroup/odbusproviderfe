@@ -40,6 +40,7 @@ interface SeatBlock{
   seatType?:any;
   berthType?:any;
   seatText?:any;
+  seatId?:any;
 }
 interface SelectedLocation{
   [index: number]: { id: any; location_name: any};
@@ -107,7 +108,8 @@ export class BusComponent implements OnInit {
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatId:[seatData.id],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[null]
               });
@@ -136,7 +138,8 @@ export class BusComponent implements OnInit {
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatId:[seatData.id],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[null]
               });
@@ -798,8 +801,8 @@ export class BusComponent implements OnInit {
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
-    console.log(data);
-    return false;
+    // console.log(data);
+    // return false;
     if(data.id==null)
     {
       this.busService.create(data).subscribe(
