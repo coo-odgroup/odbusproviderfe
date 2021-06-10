@@ -1107,11 +1107,12 @@ export class BusComponent implements OnInit {
       resp=>{
         let counter=0;
         this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
-        
+        //console.log(resp.data);
         if(resp.data.lowerBerth!=undefined)
         {
           for(let lowerData of resp.data.lowerBerth)
           {
+            
             let arraylen=this.seatLayoutData.length;
             let berthData: FormGroup = this.fb.group({ 
               lowerBerth: this.fb.array([
@@ -1127,16 +1128,17 @@ export class BusComponent implements OnInit {
               let seatId="";
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="true";
                   seatId=selectedSeat.id;
                 }
               }
+
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
@@ -1169,7 +1171,7 @@ export class BusComponent implements OnInit {
               let seatId="";
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="true";
                   seatId=selectedSeat.id;
@@ -1178,7 +1180,7 @@ export class BusComponent implements OnInit {
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
@@ -1373,6 +1375,7 @@ export class BusComponent implements OnInit {
         {
           for(let lowerData of resp.data.lowerBerth)
           {
+            
             let arraylen=this.seatLayoutData.length;
             let berthData: FormGroup = this.fb.group({ 
               lowerBerth: this.fb.array([
@@ -1388,16 +1391,17 @@ export class BusComponent implements OnInit {
               let seatId="";
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="true";
                   seatId=selectedSeat.id;
                 }
               }
+
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
@@ -1430,7 +1434,7 @@ export class BusComponent implements OnInit {
               let seatId="";
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="true";
                   seatId=selectedSeat.id;
@@ -1439,7 +1443,7 @@ export class BusComponent implements OnInit {
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
@@ -1669,6 +1673,7 @@ export class BusComponent implements OnInit {
         {
           for(let lowerData of resp.data.lowerBerth)
           {
+            
             let arraylen=this.seatLayoutData.length;
             let berthData: FormGroup = this.fb.group({ 
               lowerBerth: this.fb.array([
@@ -1684,16 +1689,17 @@ export class BusComponent implements OnInit {
               let seatId="";
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="true";
                   seatId=selectedSeat.id;
                 }
               }
+
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
@@ -1726,7 +1732,7 @@ export class BusComponent implements OnInit {
               let seatId="";
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="true";
                   seatId=selectedSeat.id;
@@ -1735,7 +1741,7 @@ export class BusComponent implements OnInit {
               let collen=this.seatLayoutCol.length;
               let columnData: FormGroup = this.fb.group({ 
                 seatText:[seatData.seatText],
-                seatType:[seatData.seatType],
+                seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
@@ -1831,7 +1837,7 @@ export class BusComponent implements OnInit {
                 {
                   let columnData: FormGroup = this.fb.group({ 
                     seatText:[seatData.seatText],
-                    seatType:[seatData.seatType],
+                    seatType:[seatData.seat_class_id],
                     berthType:[seatData.berthType],
                     seatChecked:[{value:true,disabled:true}],
                     category:['0'],
@@ -1845,7 +1851,7 @@ export class BusComponent implements OnInit {
                 {
                   let columnData: FormGroup = this.fb.group({ 
                     seatText:[seatData.seatText],
-                    seatType:[seatData.seatType],
+                    seatType:[seatData.seat_class_id],
                     berthType:[seatData.berthType],
                     seatChecked:["true"],
                     category:['0'],
@@ -1861,7 +1867,7 @@ export class BusComponent implements OnInit {
               {
                 let columnData: FormGroup = this.fb.group({ 
                   seatText:[seatData.seatText],
-                  seatType:[seatData.seatType],
+                  seatType:[seatData.seat_class_id],
                   berthType:[seatData.berthType],
                   seatChecked:[checkedval],
                   category:['0'],
@@ -1914,7 +1920,7 @@ export class BusComponent implements OnInit {
                 {
                   let columnData: FormGroup = this.fb.group({ 
                     seatText:[seatData.seatText],
-                    seatType:[seatData.seatType],
+                    seatType:[seatData.seat_class_id],
                     berthType:[seatData.berthType],
                     seatChecked:[{value:true,disabled:true}],
                     category:['0'],
@@ -1928,7 +1934,7 @@ export class BusComponent implements OnInit {
                 {
                   let columnData: FormGroup = this.fb.group({ 
                     seatText:[seatData.seatText],
-                    seatType:[seatData.seatType],
+                    seatType:[seatData.seat_class_id],
                     berthType:[seatData.berthType],
                     seatChecked:["true"],
                     category:['0'],
@@ -1944,7 +1950,7 @@ export class BusComponent implements OnInit {
               {
                 let columnData: FormGroup = this.fb.group({ 
                   seatText:[seatData.seatText],
-                  seatType:[seatData.seatType],
+                  seatType:[seatData.seat_class_id],
                   berthType:[seatData.berthType],
                   seatChecked:[checkedval],
                   category:['0'],
@@ -2003,12 +2009,12 @@ export class BusComponent implements OnInit {
       {id:"428",name:"Charging Point"},
       {id:"434",name:"Music System"}
     ];
-    // this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
-    //   response=>{
-    //     console.log(response);
-    //     this.selectedAmenities=response.data;
-    //   }
-    // );
+    this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
+      response=>{
+        console.log(response);
+        this.selectedAmenities=response.data;
+      }
+    );
     this.cancellationslabService.getByID(this.busRecord.cancellationslabs_id).subscribe(
       resp=>{
         this.selectedcSlabRecord=resp.data;
