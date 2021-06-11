@@ -649,7 +649,7 @@ export class BusComponent implements OnInit {
           let arraylen = this.sourceLocationRecord.length;
           let newSourcegroup: FormGroup = this.fb.group({
             sourceLocation: [stoppage.boarding_point],
-            boarding_dropping_id: [stoppage.id],
+            boarding_droping_id: [stoppage.id],
             sourcechecked:[null],
             sourceTime:[null]
           })
