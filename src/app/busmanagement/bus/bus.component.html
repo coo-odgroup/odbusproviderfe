@@ -50,7 +50,7 @@
                         <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit Seat Fare</button>
                         <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();editExtraSeat(i); OpenModal(editExtraSeatLayout);"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit More Seats</button>
 
-                        <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();busImageGallery(i); OpenModal(busGallery)"><i class="icon feather icon-aperture f-w-600 f-16 m-r-15 text-c-green" ></i> Image Gallery</button>
+                        <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();busImageGallery(i); OpenModal(busGalleryContainer)"><i class="icon feather icon-aperture f-w-600 f-16 m-r-15 text-c-green" ></i> Image Gallery</button>
 
                        
                       </div> &nbsp; &nbsp;
@@ -672,33 +672,7 @@
             <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
           </div>
         </ng-template>
-        <ng-template #busGallery let-modal>
-          <div class="modal-header">
-            <h5 class="ng-tns-c116-5"> Bus Gallery - {{busRecord.name}} [ {{busRecord.bus_number}} ]</h5>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <form [formGroup]="busGallery" class="editForm" novalidate>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material row form-group">
-                    <div class="col-6">
-                      <input type="file" formControlName="image_file" class="form-control">
-                    </div>
-                    <div class="col-6">
-                      <input type="text" formControlName="alt_tag"  class="form-control" placeholder="Alt Tag">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-
-          <div class="modal-footer">
-            <button type="button"   class="btn btn-primary" ngbAutofocus>Add Banner</button>
-            <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
-          </div>
-        </ng-template>
+        
         <ng-template #editSeat let-modal>
           <div class="modal-header">
             <h5 class="ng-tns-c116-5"> {{busRecord.name}} [{{busRecord.bus_number}}]</h5>
@@ -1919,7 +1893,37 @@
               <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
           </div>
         </ng-template>
+
+        <ng-template #busGalleryContainer let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Bus Gallery - {{busRecord.name}} [ {{busRecord.bus_number}} ]</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <form [formGroup]="busGallery" class="editForm" novalidate>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-material row form-group">
+                    <div class="col-6">
+                      <input type="file" formControlName="image_file" class="form-control">
+                    </div>
+                    <div class="col-6">
+                      <input type="text" formControlName="alt_tag"  class="form-control" placeholder="Alt Tag">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="modal-footer">
+            <button type="button"   class="btn btn-primary" ngbAutofocus>Add Banner</button>
+            <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
       </div>  
+
+      
 
     </app-card>  
   </div>  

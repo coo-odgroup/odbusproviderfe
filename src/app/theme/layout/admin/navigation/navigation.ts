@@ -66,6 +66,12 @@ const NavigationItems = [
                       url  : 'busmanagement/managebus'
                   },
                   {
+                    id   : 'gallery',
+                    title: 'Gallery',
+                    type : 'item',
+                    url  : 'busmanagement/busgallery'
+                  },
+                  {
                     id   : 'seatfare',
                     title: 'Seat Fare',
                     type : 'item',

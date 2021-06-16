@@ -27,7 +27,7 @@
                     <td>{{ amenity.created_by }}</td>
                     <td > 
                       <label *ngIf="amenity.status==1" class="badge badge-light-success pointer" (click)="cs($event, amenity.id);statusDialog(Reason);" >Active</label>
-                  <label *ngIf="amenity.status==0" class="badge badge-light-warning pointer" (click)="cs($event, amenity.id);statusDialog(Reason);">Pending</label>
+                      <label *ngIf="amenity.status==0" class="badge badge-light-warning pointer" (click)="cs($event, amenity.id);statusDialog(Reason);">Pending</label>
                     </td>
                     
                     <td><a (click)="editAmenities($event, i); OpenModal(content);" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i></a><a (click)="deleteAmenities(confirmDialog, amenity.id);"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>

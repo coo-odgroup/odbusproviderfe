@@ -18,6 +18,10 @@ const routes: Routes = [
         loadChildren: () => import('./bus/bus.module').then(module => module.BusModule)
       },
       {
+        path: 'busgallery',
+        loadChildren: () => import('./busgallery/busgallery.module').then(module => module.BusGalleryModule)
+      },
+      {
         path: 'BoardingDropping',
         loadChildren: () => import('./boardingdroping/boardingdropping.module').then(module => module.BoardingDroppingModule)
       },
