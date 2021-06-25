@@ -20,11 +20,11 @@
                 <tr *ngFor="let cSlab of cancellationSlabs; let i=index; ">
                     <td>{{ cSlab.id }}</td><td>{{ cSlab.api_id }}</td><td>{{ cSlab.rule_name }}</td>
                     <td>
-                      <div  *ngFor="let cSlabduration of cSlab.duration; let durationIndex=index;">
-                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration}}</div>
+                      <div  *ngFor="let cSlabduration of cSlab.slab_info; let durationIndex=index;">
+                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
                     </td>
                     <td>
-                      <div  *ngFor="let cSlabdeduction of cSlab.deduction; let deductionIndex=index;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction}}</div>
+                      <div  *ngFor="let cSlabdeduction of cSlab.slab_info; let deductionIndex=index;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}}</div>
                     </td>
                    
                     <td>
@@ -81,7 +81,6 @@
                   <div class="form-material">
                     <div class="right-icon-control">
                       <form [formGroup]="form" class="editForm" novalidate> 
-                        <input type="hidden" formControlName="id" [value]="cancellationSlabRecord.id">
                         <div class="row">
                           <div class="col-md-5">
                             <div class="form-group row">

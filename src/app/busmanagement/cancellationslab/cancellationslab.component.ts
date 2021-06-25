@@ -127,12 +127,12 @@ export class CancellationslabComponent implements OnInit {
             dataTablesParameters, {}
           ).subscribe(resp => {
             this.cancellationSlabs = resp.data.aaData;
-            
+            console.log(this.cancellationSlabs);
             for(let items of this.cancellationSlabs)
             {
               this.cancellationSlabRecord=items;
-              this.cancellationSlabRecord.duration=this.cancellationSlabRecord.duration.split("#$");
-              this.cancellationSlabRecord.deduction=this.cancellationSlabRecord.deduction.split("#$");
+              this.cancellationSlabRecord.duration="";
+              this.cancellationSlabRecord.deduction="";
             }
             
             //this.cancellationSlabs.duration;
@@ -248,21 +248,13 @@ export class CancellationslabComponent implements OnInit {
   {
     this.allDurations="";
     this.allDeductions="";
-    for(var dura of this.form.value.slabs)
-    {
-      this.allDurations+=(this.allDurations!="")?"#$"+dura.duration:dura.duration;
-      this.allDeductions+=(this.allDeductions!="")?"#$"+dura.deduction:dura.deduction;
-    }
-    let id:any=this.form.value.id; 
-
+    let id:any=this.cancellationSlabRecord.id; 
     const data ={
       api_id:this.form.value.api_id,
       rule_name:this.form.value.rule_name,
-      duration:this.allDurations,
-      deduction:this.allDeductions,
-      //id:this.cancellationSlabRecord.id,
+      slabs:this.form.value.slabs
     };
-   
+
     if(id==null)
     {
       this.cSlabService.create(data).subscribe(
@@ -305,7 +297,7 @@ export class CancellationslabComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.cancellationSlabRecord.id],
       api_id: [this.cancellationSlabRecord.api_id, Validators.compose([Validators.required,Validators.minLength(2)])],
-      rule_name: [this.cancellationSlabRecord.api_id, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      rule_name: [this.cancellationSlabRecord.rule_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       slabs: this.fb.array([this.createSlab()]),
     });
     this.CancelationSlabList = this.form.get('slabs') as FormArray;
@@ -314,11 +306,11 @@ export class CancellationslabComponent implements OnInit {
     //let editDeduction=[];
     this.CancelationSlabList.removeAt(0);
     let cCount=0;
-    for(let items of this.cancellationSlabRecord.duration)
+    for(let items of this.cancellationSlabRecord.slab_info)
     {
       this.CancelationSlabList.push(this.fb.group({ 
-        duration: [items, Validators.compose([Validators.required,Validators.minLength(2)])],
-        deduction: [this.cancellationSlabRecord.deduction[cCount], Validators.compose([Validators.required,Validators.minLength(2)])]
+        duration: [items.duration, Validators.compose([Validators.required,Validators.minLength(2)])],
+        deduction: [items.deduction, Validators.compose([Validators.required,Validators.minLength(2)])]
       }));
       cCount++;
     }

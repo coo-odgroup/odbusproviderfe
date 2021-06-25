@@ -6,5 +6,6 @@ export interface Cancellationslab {
     deduction:any;
     status:1;
     api_name:any;
+    slab_info:any;
     
 }
