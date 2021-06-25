@@ -50,7 +50,7 @@
                         <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit Seat Fare</button>
                         <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();editExtraSeat(i); OpenModal(editExtraSeatLayout);"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit More Seats</button>
 
-                        <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();busImageGallery(i); OpenModal(busGalleryContainer)"><i class="icon feather icon-aperture f-w-600 f-16 m-r-15 text-c-green" ></i> Image Gallery</button>
+                        <!-- <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();BusReview(i); OpenModal(busReviewModal)"><i class="icon feather icon-thumbs-up f-w-600 f-16 m-r-15 text-c-green" ></i> Review</button> -->
 
                        
                       </div> &nbsp; &nbsp;
@@ -256,11 +256,11 @@
                                     <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
                                       <strong>Hours before Dep:</strong>
                                       <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
-                                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration}}</div>
+                                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
                                     </div>
-                                    <div class="col-6" *ngIf="allDeductions?.length > 0" style="margin-top: 20px; font-size: 12px;">
+                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
                                       <strong>Cancellation Charges:</strong>
-                                      <div  *ngFor="let cSlabdeduction of allDeductions; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction}} %</div>
+                                      <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
                                     </div>
           
                                   </div>
@@ -1016,11 +1016,11 @@
                                     <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
                                       <strong>Hours before Dep:</strong>
                                       <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
-                                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration}}</div>
+                                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
                                     </div>
-                                    <div class="col-6" *ngIf="allDeductions?.length > 0" style="margin-top: 20px; font-size: 12px;">
+                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
                                       <strong>Cancellation Charges:</strong>
-                                      <div  *ngFor="let cSlabdeduction of allDeductions; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction}} %</div>
+                                      <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
                                     </div>
           
                                   </div>
@@ -1572,16 +1572,16 @@
                             Cancellation Slab is required! </span>
 
                             <div class="row form-group">
-                              <div class="col-6" *ngIf="allDurations?.length > 0" style="border:1px solid #000;margin-top: 20px; font-size: 12px;">
+                              <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
                                 <strong>Hours before Dep:</strong>
                                 <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
-                                  <strong>{{durationIndex+1}}</strong>. {{ cSlabduration}}</div>
+                                  <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
                               </div>
-                              <div class="col-6" *ngIf="allDeductions?.length > 0" style="border:1px solid #000; margin-top: 20px; font-size: 12px;">
+                              <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
                                 <strong>Cancellation Charges:</strong>
-                                <div  *ngFor="let cSlabdeduction of allDeductions; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction}} %</div>
+                                <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
                               </div>
-      
+    
                             </div>
                           </div>  
                                               
@@ -1894,33 +1894,7 @@
           </div>
         </ng-template>
 
-        <ng-template #busGalleryContainer let-modal>
-          <div class="modal-header">
-            <h5 class="ng-tns-c116-5"> Bus Gallery - {{busRecord.name}} [ {{busRecord.bus_number}} ]</h5>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <form [formGroup]="busGallery" class="editForm" novalidate>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material row form-group">
-                    <div class="col-6">
-                      <input type="file" formControlName="image_file" class="form-control">
-                    </div>
-                    <div class="col-6">
-                      <input type="text" formControlName="alt_tag"  class="form-control" placeholder="Alt Tag">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-
-          <div class="modal-footer">
-            <button type="button"   class="btn btn-primary" ngbAutofocus>Add Banner</button>
-            <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
-          </div>
-        </ng-template>
+        
       </div>  
 
       

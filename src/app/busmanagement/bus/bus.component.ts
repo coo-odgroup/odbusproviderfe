@@ -68,7 +68,7 @@ export class BusComponent implements OnInit {
 
   public selectedAmenities:SelectedAmenities[];
   public formConfirm: FormGroup;
-  public busGallery: FormGroup;
+  
   public busForm: FormGroup;
   public routeList: FormArray;
   public seatlayoutList:FormArray;
@@ -269,15 +269,7 @@ export class BusComponent implements OnInit {
    
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
-  busImageGallery(index:any)
-  {
-    this.busRecord=this.buses[index];
-   // console.log(this.busRecord);
-    this.busGallery = this.fb.group({
-      image_file:[null],
-      alt_tag:[null, Validators.compose([Validators.required])]
-    });
-  }
+  
   loadBus(){
     
     this.dtOptionsBus = {
@@ -351,10 +343,7 @@ export class BusComponent implements OnInit {
   dropfg:any;
   allDestinationDroppings:FormArray;
   ngOnInit() {
-    this.busGallery = this.fb.group({
-      image_file:[null],
-      alt_tag:[null, Validators.compose([Validators.required])]
-    });
+    
     this.busForm = this.fb.group({
       id:[null],
       bus_operator_id: [null, Validators.compose([Validators.required])],
@@ -746,22 +735,7 @@ export class BusComponent implements OnInit {
         
         this.selectedcSlabRecord=resp.data;
         this.selectSlab = resp.data;
-            
-        for(let items of this.selectSlab)
-        {
-          this.selectedcSlabRecord=items;
-          let durationData=this.selectedcSlabRecord.duration;
-          durationData=durationData.replace("#$0-","#$Below ");
-          durationData=durationData.replace(/-/g," to ");
-          durationData=durationData.replace(/#/g," Hrs #");
-          durationData=durationData.replace("Hrs #"," Hrs and Above #");
-          durationData=durationData.concat(" Hrs");
-         
-          this.allDurations=durationData.split("#$");
-          this.allDeductions=this.selectedcSlabRecord.deduction.split("#$");
-
-        }
-
+        this.allDurations=this.selectSlab[0].slab_info;
       }
     );
   }

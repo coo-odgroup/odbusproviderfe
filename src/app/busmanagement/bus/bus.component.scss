@@ -104,3 +104,7 @@
 ::ng-deep select:disabled {
     cursor: not-allowed;
 }
+::ng-deep .dropdown-item:hover > .text-c-green
+{
+    color: #FFF;
+}
