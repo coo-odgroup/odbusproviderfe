@@ -10,7 +10,6 @@ import {Constants} from '../constant/constant';
   providedIn: 'root'
 })
 export class AmenitiesService {
-  // private apiURL = "http://localhost:8000/api";
   private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({

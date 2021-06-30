@@ -565,8 +565,8 @@ export class SeatlayoutComponent implements OnInit {
       layout_data:JSON.stringify(this.seatBlocks)
       //layout_data:this.seatBlocks
     }
-   //console.log(data);
-   //return false;
+  //  console.log(data);
+  //  return false;
     this.sLayout.create(data).subscribe(
       resp => {
         if(resp.status==1)

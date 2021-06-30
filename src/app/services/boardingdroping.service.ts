@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
    
 import {  Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import {Constants} from '../constant/constant';
 @Injectable({
   providedIn: 'root'
 })
 export class BoardingdropingService {
 
-  private apiURL = "http://localhost:8000/api";
+  private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
