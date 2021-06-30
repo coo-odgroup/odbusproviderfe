@@ -76,8 +76,8 @@
                             <!-- <input type="hidden" class="form-control"  formControlName="id" [value]="busTypeRecord.id"  />  -->
 
                           <select class="form-control"  formControlName="type"  type="text" >
-                            <option  [value]="0" [selected] ="true" selected>AC</option>
-                            <option  [value]="1">NON AC</option>
+                            <option  [value]="1" [selected] ="true" selected>AC</option>
+                            <option  [value]="2">NON AC</option>
                           </select>
                           <span class="text-danger" *ngIf="form.controls['type'].touched && form.controls['type'].hasError('required')">
                             Bus Type is required! </span>

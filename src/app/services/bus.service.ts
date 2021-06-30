@@ -19,7 +19,7 @@ export class BusService {
   constructor(private httpClient: HttpClient) { }
 
   getBusScheduleEntryDatesFilter(post):Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/getBusScheduleEntryDatesFilter/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/getBusScheduleEntryDatesFilter', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -52,20 +52,20 @@ export class BusService {
   }
 
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/bus/').pipe(
+    return this.httpClient.get(this.apiURL + '/bus').pipe(
       catchError(this.errorHandler)
     )
   }
 
   all(): Observable<any> {
-    return this.httpClient.get<any>(this.apiURL + '/bus/',  this.httpOptions)
+    return this.httpClient.get<any>(this.apiURL + '/bus',  this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
   
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/bus/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/bus', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -92,7 +92,7 @@ export class BusService {
     );
   }
   updateNewFare(post:any):Observable<any>{
-    return this.httpClient.put<any>(this.apiURL+ '/updateNewFare/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL+ '/updateNewFare', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

@@ -24,7 +24,7 @@ export class BoardingdropingService {
   }
   
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/boarding/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/boarding', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

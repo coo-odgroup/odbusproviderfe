@@ -191,6 +191,7 @@ export class BustypeComponent implements OnInit {
       type:this.form.value.type,
       name:this.form.value.name  
     };
+
     if(id==null)
     {
       this.busTypeService.create(data).subscribe(

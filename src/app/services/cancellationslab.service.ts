@@ -17,7 +17,7 @@ export class CancellationslabService {
 
   constructor(private httpClient: HttpClient) { }
   readAll(): Observable<any> {
-    return this.httpClient.get<any>(this.endPoint + '/cancellationslabs/',  this.httpOptions)
+    return this.httpClient.get<any>(this.endPoint + '/cancellationslabs',  this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -29,7 +29,7 @@ export class CancellationslabService {
     )
   }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.endPoint + '/cancellationslab/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.endPoint + '/cancellationslab', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

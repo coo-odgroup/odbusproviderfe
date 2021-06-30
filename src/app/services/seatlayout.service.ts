@@ -18,12 +18,12 @@ export class SeatlayoutService {
 
   constructor(private httpClient: HttpClient) { }
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/BusSeatLayout/').pipe(
+    return this.httpClient.get(this.apiURL + '/BusSeatLayout').pipe(
       catchError(this.errorHandler)
     )
   }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/BusSeatLayout/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/BusSeatLayout', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

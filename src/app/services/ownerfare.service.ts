@@ -17,12 +17,12 @@ export class OwnerfareService {
   constructor(private httpClient: HttpClient) { }
   
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/busOwnerFare/').pipe(
+    return this.httpClient.get(this.apiURL + '/busOwnerFare').pipe(
       catchError(this.errorHandler)
     )
   }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/busOwnerFare/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/busOwnerFare', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

@@ -267,7 +267,7 @@ export class AmenitiesComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.AmenitiesRecord.id],
       name: [this.AmenitiesRecord.name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
-      icon: [this.AmenitiesRecord.icon],
+      icon: [],
       iconSrc:[this.AmenitiesRecord.icon]
     });
     

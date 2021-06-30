@@ -17,7 +17,7 @@ export class BusContactService {
 
   constructor(private httpClient: HttpClient) { }
   readAll(): Observable<any> {
-    return this.httpClient.get<any>(this.endPoint + '/busContacts/',  this.httpOptions)
+    return this.httpClient.get<any>(this.endPoint + '/busContacts',  this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

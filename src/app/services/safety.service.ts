@@ -19,12 +19,12 @@ export class SafetyService {
   constructor(private httpClient: HttpClient) { }
 
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/Safety/' ).pipe(
+    return this.httpClient.get(this.apiURL + '/Safety' ).pipe(
       catchError(this.errorHandler)
     )
   }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/Safety/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/Safety', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

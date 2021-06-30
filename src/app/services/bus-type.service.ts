@@ -17,13 +17,13 @@ export class BusTypeService {
 
   constructor(private httpClient: HttpClient) { }
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/BusType/' ).pipe(
+    return this.httpClient.get(this.apiURL + '/BusType' ).pipe(
       catchError(this.errorHandler)
     )
   }
 
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/BusType/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/BusType', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

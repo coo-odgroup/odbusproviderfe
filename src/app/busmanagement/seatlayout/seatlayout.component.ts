@@ -119,6 +119,10 @@ export class SeatlayoutComponent implements OnInit {
   viewSeatLayout(event : Event, id : any)
   {
 
+    // SeatLayouts: SeatLayout[];
+    // SeatLayoutRecord: SeatLayout;
+    this.SeatLayoutRecord=this.SeatLayouts[id] ;
+
     this.row_arr=[];
     this.sleeper_row_arr=[];
     this.editLayout = this.fb.group({
@@ -135,8 +139,6 @@ export class SeatlayoutComponent implements OnInit {
         this.seatBlocks=[];
         this.lowerBerthBasketText=[];
         this.upperBerthBasketText=[];
-       
-        this.sLayoutData = resp.data.layoutData[0];
         let rowArray=new Array();
         this.lowerBerthSeats=[];
         this.upperBerthSeats=[];
@@ -258,7 +260,8 @@ export class SeatlayoutComponent implements OnInit {
       name:layoutName,
       layout_data:JSON.stringify(this.seatBlocks)
     }
-
+    console.log(data);
+    return false;
     this.sLayout.update(this.SeatLayoutRecord.id, data).subscribe(
       resp => {
         if(resp.status==1)

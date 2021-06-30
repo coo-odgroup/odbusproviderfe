@@ -77,12 +77,7 @@ const NavigationItems = [
                     type : 'item',
                     url  : 'busmanagement/seatfare'
                   },
-                  {
-                    id   : 'busWizard',
-                    title: 'Buswizard',
-                    type : 'item',
-                    url  : 'busmanagement/busWizard'
-                 },
+                 
                  
                   {
                       id   : 'bustype',

@@ -20,14 +20,14 @@ export class AmenitiesService {
   constructor(private httpClient: HttpClient) { }
 
   all(): Observable<any> {
-    return this.httpClient.get<any>(this.apiURL + '/Amenities/',  this.httpOptions)
+    return this.httpClient.get<any>(this.apiURL + '/Amenities',  this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/Amenities/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/Amenities', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

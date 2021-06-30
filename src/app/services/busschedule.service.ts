@@ -17,13 +17,13 @@ export class BusscheduleService {
 
   constructor(private httpClient: HttpClient) { }
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/busSchedule/' ).pipe(
+    return this.httpClient.get(this.apiURL + '/busSchedule' ).pipe(
       catchError(this.errorHandler)
     )
   }
 
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/busSchedule/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/busSchedule', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
