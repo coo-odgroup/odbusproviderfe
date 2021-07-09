@@ -110,7 +110,8 @@ export class BustypeComponent implements OnInit {
           .post<DataTablesResponse>(
             Constants.BASE_URL+'/BusTypeDT',
             dataTablesParameters, {}
-          ).subscribe(resp => {           
+          ).subscribe(resp => {   
+            console.log(resp);        
             this.busTypes = resp.data.aaData;
             callback({
               recordsTotal: resp.data.iTotalRecords,
@@ -191,7 +192,7 @@ export class BustypeComponent implements OnInit {
       type:this.form.value.type,
       name:this.form.value.name  
     };
-
+    console.log(data);
     if(id==null)
     {
       this.busTypeService.create(data).subscribe(
@@ -236,7 +237,7 @@ export class BustypeComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.busTypeRecord.id],
       name: [this.busTypeRecord.name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
-      type: [this.busTypeRecord.type,Validators.compose([Validators.required])]
+      type: [this.busTypeRecord.bus_class_id,Validators.compose([Validators.required])]
     });
     this.ModalHeading = "Edit Bus Type";
     this.ModalBtn = "Update";
