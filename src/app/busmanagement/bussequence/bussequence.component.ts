@@ -25,7 +25,7 @@ export class BussequenceComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   dtOptions: DataTables.Settings = {};
 
-  dtOptionbSeqence: DataTables.Settings = {};
+  dtOptionbSeqence: any = {};
   dtSeatTypesOptions: any = {};
   dtSeatTypesOptionsData: any = {};
   busSequences: BusSquence[];
@@ -85,9 +85,32 @@ export class BussequenceComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
-      dom: 'lBfrtip',   
-      
-      //buttons: ['copy','print','excel','csv'],
+      dom: 'lBfrtip',  
+      order:["0","desc"], 
+      aLengthMenu:[10, 25, 50, 100, "All"],
+      language: {
+        searchPlaceholder: "Find Bus",
+        processing: "<img src='assets/images/loading.gif' width='30'>"
+      },
+        
+      buttons: [
+        { 
+          extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+            $(node).removeClass('dt-button')
+          } 
+        },
+        { 
+            extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) 
+            {
+              $(node).removeClass('dt-button')
+            } 
+        },
+        { 
+            extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+              $(node).removeClass('dt-button')
+            } 
+          }
+    ],
       ajax: (dataTablesParameters: any, callback) => {
         this.http
           .post<DataTablesResponse>(
@@ -99,7 +122,7 @@ export class BussequenceComponent implements OnInit {
             callback({
               recordsTotal: resp.data.iTotalRecords,
               recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: []
+              data: resp.data.aaData
             });
           });
       },

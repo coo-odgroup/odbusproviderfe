@@ -9,6 +9,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant';
+import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-amenities',
@@ -61,7 +62,7 @@ export class AmenitiesComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
 
-  constructor(private http: HttpClient,private AmenitiesService:AmenitiesService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) { 
+  constructor(private http: HttpClient,private AmenitiesService:AmenitiesService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) { 
     this.isSubmit = false;
     this.AmenitiesRecord= {} as Amenities;
     config.backdrop = 'static';
@@ -130,12 +131,16 @@ export class AmenitiesComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         this.http
           .post<DataTablesResponse>(
-            // 'http://127.0.0.1:8000/api/AmenitiesDT',
             Constants.BASE_URL+'/AmenitiesDT',
             dataTablesParameters, {}
           ).subscribe(resp => {
-           // console.log(resp.data.aaData);
             this.Amenities = resp.data.aaData;
+            for(let items of this.Amenities)
+            {
+              this.AmenitiesRecord=items;
+              let icon='data:image/svg+xml;charset=utf-8;base64,'+this.AmenitiesRecord.icon;
+              this.AmenitiesRecord.icon=icon;
+            }
             callback({
               recordsTotal: resp.data.iTotalRecords,
               recordsFiltered: resp.data.iTotalDisplayRecords,
@@ -143,7 +148,7 @@ export class AmenitiesComponent implements OnInit {
             });
           });
       },
-      columns: [{ data: 'id' }, { data: 'name' }, { data: 'name' },{ data: 'created_at' },{ data: 'created_by' }, { 
+      columns: [{ data: 'id' }, { data: 'name' }, { data: 'created_at' },{ data: 'created_by' }, { 
         data: 'status',
         render:function(data)
         {
@@ -153,6 +158,7 @@ export class AmenitiesComponent implements OnInit {
       
     };
   }
+  
   
   ngOnInit(): void {
     this.form1=this.fb.group({
@@ -220,7 +226,6 @@ export class AmenitiesComponent implements OnInit {
       icon:this.form.value.iconSrc,
       created_by:'Admin',
     };
-
     if(id==null)
     {
       this.AmenitiesService.create(data).subscribe(
@@ -263,7 +268,10 @@ export class AmenitiesComponent implements OnInit {
     this.ModalHeading = "Edit Amenities";
     this.ModalBtn = "Update";
     this.AmenitiesRecord=this.Amenities[id];
-    this.imgURL ="data:image/png;base64,"+this.AmenitiesRecord.icon;
+
+    
+
+    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.AmenitiesRecord.icon);
     this.form = this.fb.group({
       id:[this.AmenitiesRecord.id],
       name: [this.AmenitiesRecord.name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -332,10 +340,11 @@ export class AmenitiesComponent implements OnInit {
   }
 
   public picked(event:any, fileSrc:any) {
+
     //////image validation////////
     this.imageError = null;
             const max_size = 102400;
-            const allowed_types = ['image/png', 'image/jpeg' ,'image/jpg'];
+            const allowed_types = ['image/png', 'image/jpeg' ,'image/jpg', 'image/svg+xml'];
             const max_height = 100;
             const max_width = 200;
     let fileList: FileList = event.target.files;
@@ -349,7 +358,7 @@ export class AmenitiesComponent implements OnInit {
   }
 
   if (!_.includes(allowed_types, event.target.files[0].type)) {
-      this.imageError = 'Only Images are allowed ( JPG | PNG |JPEG)';
+      this.imageError = 'Only Images are allowed ( JPG | PNG | JPEG | SVG)';
       this.form.value.imagePath = '';
       this.imgURL='';
       return false;
@@ -408,11 +417,12 @@ export class AmenitiesComponent implements OnInit {
     let reader = e.target;
     this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
     //this.imageSrc = base64result;
-  
+    
     this.imageSrc = this.base64result;
     this.form.value.icon=this.base64result;
     this.form.value.iconSrc=this.base64result;
-    
+
+    this.form.controls.iconSrc.setValue(this.base64result);
   }
   public imagePath;
   public message: string;
@@ -432,6 +442,7 @@ export class AmenitiesComponent implements OnInit {
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
       this.imgURL = reader.result; 
+      this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
     }
   }
 }

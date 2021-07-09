@@ -7,7 +7,6 @@
               <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>ICON</th>
                 <th>Created At</th>
                 <th>Created By</th>
                 <th>Status</th>
@@ -18,11 +17,7 @@
                 <tr *ngFor="let amenity of Amenities; let i=index; ">
                     <td>{{ amenity.id }}</td>
                     <td>{{ amenity.name }}</td>
-                    <td>
-                      <!-- {{ amenity.icon }} -->
-                      <img src="data:image/png;base64,{{ amenity.icon }}">
-
-                    </td>
+                    
                     <td>{{ amenity.created_at }}</td>
                     <td>{{ amenity.created_by }}</td>
                     <td > 
@@ -35,7 +30,7 @@
             </tbody>
             <tbody *ngIf="Amenities?.length == 0">
               <tr>
-                <td colspan="8" class="no-data-available">No data!</td>
+                <td colspan="6" class="no-data-available">No data!</td>
               </tr>
             <tbody>
           </table>  
@@ -101,13 +96,13 @@
                             <div class="form-group row">
                               <label for="icon" class="col-sm-3 col-form-label">Icon<span class="text-danger">*</span></label>
                               <div class="col-sm-9">  
-                                  <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept=".png, .jpg, .jpeg" class="form-control" id="icon" placeholder="Amenities Icon" formControlName="icon" />
+                                  <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept=".png, .jpg, .jpeg, .svg" class="form-control" id="icon" placeholder="Amenities Icon" formControlName="icon" />
                                   <span class="text-danger">Max file size 100Kb and supports jpg/jpeg/png</span>
                                   <span class="text-danger" >{{imageError}}</span>
                                   <span class="text-danger" *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
                                     Icon file is required! </span>
-                                    <div *ngIf="imgURL">
-                                      <img [src]="imgURL" height="50">
+                                    <div *ngIf="imgURL" style="background-color:rgb(97, 238, 248)">
+                                      <img [src]="imgURL" height="50" style="color:#000">
                                     </div>
                                   
                               </div>
