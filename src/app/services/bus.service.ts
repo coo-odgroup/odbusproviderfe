@@ -129,7 +129,17 @@ export class BusService {
       catchError(this.errorHandler)
     )
   }
-  
+  findSource(source_id:any,destination_id:any): Observable<any>
+  {
+    return this.httpClient.get(this.apiURL + '/locationBus/'+source_id+"/"+destination_id).pipe(
+      catchError(this.errorHandler)
+    );
+  }
+  getByOperaor(id):Observable<any>{
+    return this.httpClient.get<any>(this.apiURL+'/operatorBus/'+id,this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    );
+  }
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

@@ -21,6 +21,7 @@ export class LocationService {
       catchError(this.errorHandler)
     )
   }
+  
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/addlocation', JSON.stringify(post), this.httpOptions)
     .pipe(

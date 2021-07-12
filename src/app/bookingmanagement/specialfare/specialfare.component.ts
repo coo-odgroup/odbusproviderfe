@@ -47,7 +47,7 @@ export class SpecialfareComponent implements OnInit {
   specialFareRecord: Specialfare;
   busstoppageRecord: Busstoppage;
   busoperators: any;
-  buses:any;
+  buses:Bus[];
   locations: any;
   public isSubmit: boolean;
   public mesgdata:any;
@@ -154,9 +154,11 @@ export class SpecialfareComponent implements OnInit {
             for(let items of this.specialFares)
             {
               this.specialFareRecord=items;
-              console.log(this.specialFareRecord);
+              
               this.specialFareRecord.name=this.specialFareRecord.name.split(",");
             }
+            var currentTimeInSeconds=Math.floor(Date.now()/1000);
+            console.log("End Time loadSpecialFareData: "+currentTimeInSeconds);
             callback({
               recordsTotal: resp.data.iTotalRecords,
               recordsFiltered: resp.data.iTotalDisplayRecords,
@@ -173,8 +175,7 @@ export class SpecialfareComponent implements OnInit {
 
       },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
     };
-     var currentTimeInSeconds=Math.floor(Date.now()/1000);
-     console.log("End Time loadSpecialFareData: "+currentTimeInSeconds);
+     
   }
 
   ResetAttributes()
@@ -197,7 +198,28 @@ export class SpecialfareComponent implements OnInit {
     this.ModalHeading = "Add Special Fare";
     this.ModalBtn = "Save";
   }
-  
+  findSource(event:Event)
+  {
+    let source_id=this.specialFareForm.controls.source_id.value;
+    let destination_id=this.specialFareForm.controls.destination_id.value;
+
+    if(source_id!="" && destination_id!="")
+    {
+      this.busService.findSource(source_id,destination_id).subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+    else
+    {
+      this.busService.all().subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+  }
 loadServices(){
   this.busService.all().subscribe(
     res=>{
@@ -214,6 +236,19 @@ loadServices(){
       this.locations=records.data;
     }
   );
+  
+}
+findOperator(event:any)
+{
+  let operatorId=event.id;
+  if(operatorId)
+  {
+    this.busService.getByOperaor(operatorId).subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
   
 }
   addSpecialFare()
@@ -292,10 +327,12 @@ loadServices(){
     this.specialfareService.getById(id).subscribe(
       records=>{
         this.specialfareWithBus=records.data;
+       
       }
     );
     //this.selectedOperator=["1"];
     this.specialFareRecord=this.specialFares[id] ;
+   // console.log(this.specialFareRecord);
     this.specialFareForm = this.fb.group({
     
       id:[this.specialFareRecord.id],
@@ -310,6 +347,16 @@ loadServices(){
       searchBy: [this.specialFareRecord.searchBy],
 
     });
+    if(this.specialFareRecord.bus_operator_id != null)
+    {
+      $("#operator").prop("checked","true");
+      $("#routes").prop("checked","false");
+    }
+    else
+    {
+      $("#operator").prop("checked","false");
+      $("#routes").prop("checked","true");
+    }
     //console.log(this.specialFareForm);
     this.ModalHeading = "Edit Special Fare";
     this.ModalBtn = "Update";

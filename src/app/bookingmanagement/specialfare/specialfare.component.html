@@ -103,6 +103,7 @@
                                   placeholder="Select Operator"                                       
                                   formControlName="bus_operator_id"
                                   [clearable]="false"
+                                  (change)="findOperator($event)"
                                   >
                                   </ng-select> 
                                  
@@ -117,12 +118,14 @@
                                 <label for="routes" class="col-sm-4 col-form-label">Routes<span class="text-danger">*</span></label>
                                 <div class="col-sm-8"> 
                                   <ng-select 
+                                  id="source_id"
                                   [items]="locations"
                                   bindLabel="name"
                                   bindValue="id"
                                   placeholder="Select Source"                                       
                                   formControlName="source_id"
                                   [clearable]="false"
+                                  (change)="findSource($event)"
                                   >
                                   </ng-select> 
                                 
@@ -134,12 +137,14 @@
                                 <div class="col-sm-8"> 
 
                                   <ng-select 
+                                  id="destination_id"
                                   [items]="locations"
                                   bindLabel="name"
                                   bindValue="id"
                                   placeholder="Select Destination"                                       
                                   formControlName="destination_id"
                                   [clearable]="false"
+                                  (change)="findSource($event)"
                                   >
                                   </ng-select> 
 
@@ -152,6 +157,7 @@
                             <div class="col-md-8">
                               <div class="form-group row">
                                 <label for="busname" class="col-sm-3 col-form-label">Bus Name/Number<span class="text-danger">*</span></label>
+                                {{buses|json}}
                                 <div class="col-sm-9"> 
                                   <ng-select 
                                   [items]="buses"
