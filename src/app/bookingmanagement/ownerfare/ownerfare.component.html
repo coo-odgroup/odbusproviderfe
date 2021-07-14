@@ -101,6 +101,7 @@
                                   placeholder="Select Operator"                                       
                                   formControlName="bus_operator_id"
                                   [clearable]="false"
+                                  (change)="findOperator($event)"
                                   >
                                   </ng-select> 
                                   
@@ -122,6 +123,7 @@
                                   placeholder="Select Source"                                       
                                   formControlName="source_id"
                                   [clearable]="false"
+                                  (change)="findSource()"
                                   >
                                   </ng-select> 
                                
@@ -138,6 +140,7 @@
                                   placeholder="Select Destination"                                       
                                   formControlName="destination_id"
                                   [clearable]="false"
+                                  (change)="findSource($event)"
                                   >
                                   </ng-select> 
                                

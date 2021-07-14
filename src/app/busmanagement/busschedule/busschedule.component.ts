@@ -246,7 +246,7 @@ FormOne: FormGroup;
   }
   addBusSchedule()
   {
-    let id:any=this.busScheduleForm.value.id;
+    let id:any=this.busScheduleRecord.id
   
     const data ={
       bus_id:this.busScheduleForm.value.bus_id,

@@ -74,13 +74,14 @@ export class BuscancellationComponent implements OnInit{
     this.reasons= [{id:'01',reason:'request from Owner'},{id:'02',reason:'request from Manager'},{id:'03',reason:'request from Conductor'}, {id:'04',reason:'request from Association'},{id:'05',reason:'bus breakdown'},{id:'06',reason:'others'}]; 
      }
    OpenModal(content) {
-    this.loadServices();
+    
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
 
   ngOnInit(): void {    
     this.loadBusCancellationData();
     this.createBusCancellationForm();
+    this.loadServices();
   }
   createBusCancellationForm()
   {
@@ -330,7 +331,7 @@ export class BuscancellationComponent implements OnInit{
   }
   addBusCancellation()
   {
-    let id:any=this.busCancellationForm.value.id;
+    let id:any=this.busCancellationRecord.id;
     const data ={
       //busOperatorname:this.busCancellationForm.value.busOperatorname,
       bus_operator_id:this.busCancellationForm.value.bus_operator_id,
@@ -384,35 +385,35 @@ export class BuscancellationComponent implements OnInit{
     this.showdates='0';
     this.busCancellationRecord=this.busCancellations[id] ;
      console.log(this.busCancellationRecord);  
-    //  this.busCancellationForm.get('bus_operator_id').setValue(this.busCancellationRecord.operatorId);
+   
     this.busCancellationForm.patchValue({
-    bus_operator_id:this.busCancellationRecord.operatorId,
+    bus_operator_id:this.busCancellationRecord.bus_operator_id,
     month:this.busCancellationRecord.month,
     year:this.busCancellationRecord.year,
     reason:this.busCancellationRecord.reason,
-    //buses:this.fb.array([])
+  
     busLists : this.busCancellationRecord.name
   });
 
-  setTimeout(() => { 
-    this.busCancellationForm.get('bus_operator_id').patchValue(this.busCancellationRecord.operatorId); 
-    console.log("formControl value updated"); 
-  }, 3000); 
+  // setTimeout(() => { 
+  //   this.busCancellationForm.get('bus_operator_id').patchValue(this.busCancellationRecord.operatorId); 
+  //   console.log("formControl value updated"); 
+  // }, 3000); 
  
   // call the change event's function after initialized the component. 
-  setTimeout(() => { 
-    this.onChange(); 
-  }, 3500); 
+  // setTimeout(() => { 
+  //   this.onChange(); 
+  // }, 3500); 
     this.ModalHeading = "Edit Bus Cancellation";
     this.ModalBtn = "Update";  
     //reset the selected values
     const arr = <FormArray>this.busCancellationForm.controls.buses;
     arr.controls = [];
   }
-  onChange()
-  {
-    //alert('Hello'+this.busCancellationForm.get('bus_operator_id').value);
-  }
+  // onChange()
+  // {
+  //   //alert('Hello'+this.busCancellationForm.get('bus_operator_id').value);
+  // }
   openConfirmDialog(content)
   {
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });

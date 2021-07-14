@@ -79,7 +79,7 @@
                           </div>
                           <div class="col-md-2">
                             <div class="form-group">
-                              <label for="operator"><input id="operator" type="radio" [checked]="true" value="operator"  formControlName="searchBy">
+                              <label for="operator"><input id="operator" type="radio" value="operator"  formControlName="searchBy">
                             Operator</label>
                           </div>
                          </div>
@@ -144,7 +144,7 @@
                                   placeholder="Select Destination"                                       
                                   formControlName="destination_id"
                                   [clearable]="false"
-                                  (change)="findSource($event)"
+                                  (change)="findSource()"
                                   >
                                   </ng-select> 
 

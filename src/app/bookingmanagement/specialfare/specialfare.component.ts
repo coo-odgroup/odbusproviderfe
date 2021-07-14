@@ -53,6 +53,9 @@ export class SpecialfareComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
+  public searchBy:any;
+
+
   //simpleOption: Array<IOption>;
   selectedOperator: Array<string>;
   pricePattern = "^-?[0-9]*$";
@@ -183,7 +186,7 @@ export class SpecialfareComponent implements OnInit {
     this.specialFareRecord = {} as Specialfare;
     this.busstoppageRecord= {} as Busstoppage;
     this.specialFareForm = this.fb.group({
-      searchBy: ["operaror"],
+      searchBy: ["operator"],
       id:[null],
       bus_id:[null],
       bus_operator_id: [null],
@@ -198,7 +201,7 @@ export class SpecialfareComponent implements OnInit {
     this.ModalHeading = "Add Special Fare";
     this.ModalBtn = "Save";
   }
-  findSource(event:Event)
+  findSource()
   {
     let source_id=this.specialFareForm.controls.source_id.value;
     let destination_id=this.specialFareForm.controls.destination_id.value;
@@ -266,6 +269,7 @@ findOperator(event:any)
       bus_operator_id:this.specialFareForm.value.bus_operator_id,
       source_id:this.specialFareForm.value.source_id,
       destination_id:this.specialFareForm.value.destination_id,
+      searchBy: [this.searchBy],
     };
     //console.log(data);
     if(id==null)
@@ -323,28 +327,67 @@ findOperator(event:any)
   }
   editSpecialFare(event : Event, id : any)
   {
-    this.loadServices();
-    this.specialfareService.getById(id).subscribe(
+   
+    this.specialFareRecord=this.specialFares[id] ;
+    this.busOperatorService.readAll().subscribe(
+      res=>{
+        this.busoperators=res.data;
+      }
+      );
+    this.locationService.readAll().subscribe(
       records=>{
-        this.specialfareWithBus=records.data;
-       
+        this.locations=records.data;
       }
     );
-    //this.selectedOperator=["1"];
-    this.specialFareRecord=this.specialFares[id] ;
-   // console.log(this.specialFareRecord);
+    // return false;
+    if(this.specialFareRecord.bus_operator_id!=null)
+    {
+      this.searchBy="operator";
+      this.busService.getByOperaor(this.specialFareRecord.bus_operator_id).subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+    else if(this.specialFareRecord.source_id!=null && this.specialFareRecord.destination_id!=null)
+    {
+      
+      this.searchBy="routes";
+      this.busService.findSource(this.specialFareRecord.source_id,this.specialFareRecord.destination_id).subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+    else
+    {
+      this.busService.all().subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+    
+    
+    var d = new Date(this.specialFareRecord.date);
+    let date = [d.getFullYear(),('0' + (d.getMonth() + 1)).slice(-2),('0' + d.getDate()).slice(-2)].join('-');
+
+
+   
+
+   
     this.specialFareForm = this.fb.group({
     
       id:[this.specialFareRecord.id],
       bus_id: [this.specialFareRecord.bus_id],
-      date: [this.specialFareRecord.date],
+      date: [date],
       seater_price: [this.specialFareRecord.seater_price],
       sleeper_price: [this.specialFareRecord.sleeper_price],
       reason: [this.specialFareRecord.reason],
       source_id: [this.specialFareRecord.source_id],
       destination_id: [this.specialFareRecord.destination_id],
       bus_operator_id: [this.specialFareRecord.bus_operator_id],
-      searchBy: [this.specialFareRecord.searchBy],
+      searchBy: [this.searchBy],
 
     });
     if(this.specialFareRecord.bus_operator_id != null)
@@ -358,6 +401,8 @@ findOperator(event:any)
       $("#routes").prop("checked","true");
     }
     //console.log(this.specialFareForm);
+    console.log(this.specialFareForm.value);
+
     this.ModalHeading = "Edit Special Fare";
     this.ModalBtn = "Update";
     

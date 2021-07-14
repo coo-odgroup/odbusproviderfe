@@ -17,7 +17,10 @@ const routes: Routes = [
         path: 'ownerfare',
         loadChildren: () => import('./ownerfare/ownerfare.module').then(module => module.OwnerFareModule)
       },
-      
+      {
+        path: 'festivalfare',
+        loadChildren: () => import('./festivalfare/festivalfare.module').then(module => module.FestivalFareModule)
+      },      
     ]
   }
 ];

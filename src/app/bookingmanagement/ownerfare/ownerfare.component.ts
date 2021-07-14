@@ -55,6 +55,7 @@ export class OwnerfareComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
+  public searchBy:any;
 
   constructor(private ownerfareService: OwnerfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService) { 
     this.isSubmit = false;
@@ -215,6 +216,68 @@ export class OwnerfareComponent implements OnInit {
     }
   );
   }
+
+  findOperator(event:any)
+{
+  let operatorId=event.id;
+  if(operatorId)
+  {
+    this.busService.getByOperaor(operatorId).subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
+  
+}
+
+// findSource(event:Event)
+// {
+//   let source_id=this.ownerFareForm.controls.source_id.value;
+//   let destination_id=this.ownerFareForm.controls.destination_id.value;
+
+//   if(source_id!="" && destination_id!="")
+//   {
+//     this.busService.findSource(source_id,destination_id).subscribe(
+//       res=>{
+//         this.buses=res.data;
+//       }
+//     );
+//   }
+//   else
+//   {
+//     this.busService.all().subscribe(
+//       res=>{
+//         this.buses=res.data;
+//       }
+//     );
+//   }
+// }
+
+findSource()
+{
+  let source_id=this.ownerFareForm.controls.source_id.value;
+  let destination_id=this.ownerFareForm.controls.destination_id.value;
+
+
+  if(source_id!="" && destination_id!="")
+  {
+    this.busService.findSource(source_id,destination_id).subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
+  else
+  {
+    this.busService.all().subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
+}
+
   addOwnerFare()
   {
     let id:any=this.ownerFareForm.value.id;
@@ -230,7 +293,8 @@ export class OwnerfareComponent implements OnInit {
       created_by:'Admin',
       bus_id:this.ownerFareForm.value.bus_id,
     };
-   // console.log(data);
+  //  console.log(data);
+  //  return false;
 
     if(id==null)
     {
@@ -292,20 +356,69 @@ export class OwnerfareComponent implements OnInit {
   }
   editOwnerFare(event : Event, id : any)
   {
-    this.loadServices();
+    //this.loadServices();
     this.ownerFareRecord=this.ownerFares[id] ;
+
+    // console.log(this.ownerFareRecord);
+
+    this.busOperatorService.readAll().subscribe(
+      res=>{
+        this.busoperators=res.data;
+      }
+      );
+    this.locationService.readAll().subscribe(
+      records=>{
+        this.locations=records.data;
+      }
+    );
+
+    if(this.ownerFareRecord.bus_operator_id!=null)
+    {
+      this.searchBy="operator";
+      this.busService.getByOperaor(this.ownerFareRecord.bus_operator_id).subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+    else if(this.ownerFareRecord.source_id!=null && this.ownerFareRecord.destination_id!=null)
+    {
+      
+      this.searchBy="routes";
+      // console.log(this.ownerFareRecord.source_id);
+      // console.log(this.ownerFareRecord.destination_id);
+
+      this.busService.findSource(this.ownerFareRecord.source_id,this.ownerFareRecord.destination_id).subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+      // console.log(this.buses);
+    }
+    else
+    {
+      this.busService.all().subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+
+    var d = new Date(this.ownerFareRecord.date);
+    let date = [d.getFullYear(),('0' + (d.getMonth() + 1)).slice(-2),('0' + d.getDate()).slice(-2)].join('-');
+
     this.ownerFareForm = this.fb.group({
 
       id:[this.ownerFareRecord.id],
       bus_id: [this.ownerFareRecord.bus_id],
-      date: [this.ownerFareRecord.date],
+      date: [date],
       seater_price: [this.ownerFareRecord.seater_price],
       sleeper_price: [this.ownerFareRecord.sleeper_price],
       reason: [this.ownerFareRecord.reason],
       source_id: [this.ownerFareRecord.source_id],
       destination_id: [this.ownerFareRecord.destination_id],
       bus_operator_id: [this.ownerFareRecord.bus_operator_id],
-      searchBy: [this.ownerFareRecord.searchBy],
+      searchBy: [this.searchBy],
     });
     this.ModalHeading = "Edit Owner Fare";
     this.ModalBtn = "Update";
