@@ -394,7 +394,7 @@ export class BuscancellationComponent implements OnInit{
   
     busLists : this.busCancellationRecord.name
   });
-
+  this.getBusbyOperator();
   // setTimeout(() => { 
   //   this.busCancellationForm.get('bus_operator_id').patchValue(this.busCancellationRecord.operatorId); 
   //   console.log("formControl value updated"); 
