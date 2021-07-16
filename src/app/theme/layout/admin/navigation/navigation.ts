@@ -199,12 +199,12 @@ const NavigationItems = [
                       type : 'item',
                       url  : 'busmanagement/BusSequence'
                   },
-                  {
-                      id   : 'CancellationSlab',
-                      title: 'Cancellation Slab',
-                      type : 'item',
-                      url  : 'busmanagement/CancellationSlab'
-                  }
+                //   {
+                //       id   : 'CancellationSlab',
+                //       title: 'Cancellation Slab',
+                //       type : 'item',
+                //       url  : 'busmanagement/CancellationSlab'
+                //   }
               ]
           },
 

@@ -98,7 +98,9 @@ export class SeatfareComponent implements OnInit {
     );    
     this.fareRecord= (<FormArray>this.fareGroup.controls['fareArray']) as FormArray;
     this.fareRecord.clear();
-    this.busSeatsService.readAll(this.busRecord.id).subscribe(records=>{      
+    this.busSeatsService.readAll(this.busRecord.id).subscribe(records=>{     
+      
+      console.log(records);
       this.ticketPrice=records.result;
       let baseSeaterFare="";
       let baseSleeperFare="";
@@ -112,24 +114,24 @@ export class SeatfareComponent implements OnInit {
         sourceId=journey.source_id;
         destinationId=journey.destination_id;
         let seatFare="";
-        for(let seats of journey.get_bus_seats)
+        for(let singleSeats of journey.get_bus_seats)
         {
-          seatFare=(seats.seat_type=="1")?baseSeaterFare:baseSleeperFare;
+          seatFare=(singleSeats.seat_type=="1")?baseSeaterFare:baseSleeperFare;
           let totalLength = this.fareRecord.length;
           let seatRow: FormGroup = this.fb.group({
-            id: [seats.id],
-            seat_number:[seats.seat_number],
+            id: [singleSeats.id],
+            seat_number:[singleSeats.seats.seatText],
             source_id:[sourceId],
             destination_id:[destinationId],
             baseFare:[seatFare],
-            new_fare:[seats.new_fare]
+            new_fare:[singleSeats.new_fare]
           })
           this.fareRecord.insert(totalLength, seatRow);
         }
         
       }
 
-      console.log(this.fareRecord);
+      //console.log(this.fareRecord);
     });
   }
   updatePrice()
