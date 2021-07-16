@@ -27,6 +27,8 @@ import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule,
 import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule} from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 
@@ -60,9 +62,10 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     NgbModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [NavigationItem],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},NavigationItem],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

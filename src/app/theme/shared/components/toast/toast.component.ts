@@ -20,9 +20,9 @@ export class ToastComponent implements OnInit {
 
   ngOnInit() {
     this.toastEvent.toggleToast.subscribe((toast) => {
-      document.querySelector('#' + toast.uid).classList.add('show');
+      document.querySelector('#' + toast.id).classList.add('show');
       setTimeout(() => {
-        document.querySelector('#' + toast.uid).classList.remove('show');
+        document.querySelector('#' + toast.id).classList.remove('show');
       }, toast.delay ? toast.delay : 500);
     });
   }

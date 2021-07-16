@@ -1,53 +1,62 @@
 import { Injectable } from '@angular/core';
-import {ToastData, ToastOptions, ToastyService} from 'ng2-toasty';
-
+//import {ToastData, ToastOptions, ToastyService} from 'ng2-toasty';
+import { ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  position = 'bottom-right';
+  position = 'toast-bottom-right';
   title: string;
   msg: string;
   showCloseOption = true;
-  themeOptions = 'bootstrap'; 
-  timeoutOption= 5000;
+  themeOptions = 'bootstrap';
+  timeoutOption = 5000;
   closeOther = true;
-   
 
-  constructor(private toastyService: ToastyService) { }
-  
+
+  //constructor(private toastyService: ToastyService) { }
+  constructor(private toastr: ToastrService) { }
+
 
   addToast(options) {
+
+    let config = {
+      positionClass: this.position,
+      closeButton: this.showCloseOption,
+      timeOut: this.timeoutOption
+    }
     
-    if (this.closeOther) {
-      this.toastyService.clearAll();
-    }    
-    this.position = options.position ? options.position : this.position;
-    const toastOptions: ToastOptions = {
-      title: options.title,
-      msg: options.msg,
-      showClose: this.showCloseOption,
-      timeout: this.timeoutOption,
-      theme: this.themeOptions,
-      onAdd: (toast: ToastData) => {
-        /* added */
-      },
-      onRemove: (toast: ToastData) => {
-        /* removed */
-      }
-    };
+    // console.log(options);
+    // if (this.closeOther) {
+    // //  this.toastyService.clearAll();
+    // }    
+    // this.position = options.position ? options.position : this.position;
+    // const toastOptions: ToastOptions = {
+    //   title: options.title,
+    //   msg: options.msg,
+    //   showClose: this.showCloseOption,
+    //   timeout: this.timeoutOption,
+    //   theme: this.themeOptions,
+    //   onAdd: (toast: ToastData) => {
+    //     /* added */
+    //   },
+    //   onRemove: (toast: ToastData) => {
+    //     /* removed */
+    //   }
+    // };
 
     switch (options.type) {
-      case 'default': this.toastyService.default(toastOptions); break;
-      case 'info': this.toastyService.info(toastOptions); break;
-      case 'success': this.toastyService.success(toastOptions); break;
-      case 'wait': this.toastyService.wait(toastOptions); break;
-      case 'error': this.toastyService.error(toastOptions); break;
-      case 'warning': this.toastyService.warning(toastOptions); break;
+      case 'default': this.toastr.info(options.msg, options.title, config); break;
+      case 'info': this.toastr.info(options.msg, options.title, config); break;
+      case 'success': this.toastr.success(options.msg, options.title, config); break;
+      case 'wait': this.toastr.warning(options.msg, options.title, config); break;
+      case 'error':  this.toastr.error(options.msg, options.title, config); break;
+      case 'warning':  this.toastr.warning(options.msg, options.title, config); break;
       case 'default':
-      this.toastyService.error(toastOptions); break;
+        this.toastr.error(options.msg, options.title, config); break;
     }
+   
   }
 }
 
