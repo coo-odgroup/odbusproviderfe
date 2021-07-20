@@ -18,6 +18,12 @@ export class BusOperatorService {
   }
 
   constructor(private httpClient: HttpClient) { }
+
+  getIFSC(code):Observable<any>{
+    return this.httpClient.get('https://ifsc.razorpay.com/' +code).pipe(
+      catchError(this.errorHandler)
+    )
+  }
  
   getBusbyOperator(operatorId):Observable<any> {
     return this.httpClient.get(Constants.BASE_URL+'/getBusbyOperator/' +operatorId,this.httpOptions).pipe(
@@ -55,13 +61,15 @@ export class BusOperatorService {
       catchError(this.errorHandler)
     )
   }
-  errorHandler(error) {
+  errorHandler(error:any) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
       errorMessage = error.error.message;
     } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = error;
+     // `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(errorMessage);
  }
+
 }

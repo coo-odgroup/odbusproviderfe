@@ -19,6 +19,7 @@ export class BusoperatorComponent implements OnInit {
  
   public form: FormGroup;
   public formConfirm: FormGroup;
+  public bankNames:any;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   @ViewChild("addnew") addnew;
@@ -42,7 +43,7 @@ export class BusoperatorComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
- 
+ public validIFSC:any;
   constructor(private http: HttpClient, private busOperatorService:BusOperatorService, private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
     this.isSubmit = false;
     this.BusOperatorRecord= {} as Busoperator;
@@ -159,6 +160,43 @@ export class BusoperatorComponent implements OnInit {
       id:[null]
     });
     this.loadOperators();
+
+    this.bankNames=[
+      "Axis Bank",
+      "Bandhan Bank",
+      "Bank of Baroda",
+      "Bank of India",
+      "Bank of Maharashtra",
+      "Canara Bank",
+      "Catholic Syrian Bank",
+      "Central Bank of India",
+      "City Union Bank",
+      "DCB Bank",
+      "Dhanlaxmi Bank",
+      "Federal Bank",
+      "HDFC Bank",
+      "ICICI Bank",
+      "IDBI Bank",
+      "IDFC First Bank",
+      "Indian Bank",
+      "Indian Overseas Bank",
+      "IndusInd Bank",
+      "Jammu & Kashmir Bank",
+      "Karnataka Bank",
+      "Karur Vysya Bank",
+      "Kotak Mahindra Bank",
+      "Lakshmi Vilas Bank",
+      "Nainital Bank",
+      "Punjab & Sindh Bank",
+      "Punjab National Bank",
+      "RBL Bank",
+      "South Indian Bank",
+      "State Bank of India (SBI)",
+      "Tamilnad Mercantile Bank Limited",
+      "UCO Bank",
+      "Union Bank of India",
+      "Yes Bank"
+    ];
     
     
   }
@@ -175,7 +213,7 @@ export class BusoperatorComponent implements OnInit {
       address: ['', Validators.compose([Validators.required,Validators.minLength(3),Validators.maxLength(200)])],
       additional_email: ['', Validators.compose([ Validators.pattern(this.emailPattern), Validators.minLength(5),Validators.maxLength(50)])],
       additional_contact: ['', Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
-      location_name:['', Validators.compose([Validators.maxLength(200)])],
+      location_name:['', Validators.compose([Validators.required,Validators.maxLength(200)])],
       bank_account_name: ['', Validators.compose([Validators.maxLength(100)])],
       bank_name: ['', Validators.compose([Validators.maxLength(100)])],
       bank_ifsc: ['', Validators.compose([Validators.pattern("^[a-zA-Z0-9]*$"),Validators.maxLength(20)])],
@@ -206,11 +244,36 @@ export class BusoperatorComponent implements OnInit {
 
 
   
-fieldTextType: boolean;
+  fieldTextType: boolean;
 
-toggleFieldTextType() {
-  this.fieldTextType = !this.fieldTextType;
-}
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+  checkIfsc()
+  {
+    let ifsc=this.form.value.bank_ifsc;
+    if(ifsc!="")
+    {
+      this.busOperatorService.getIFSC(ifsc).subscribe(
+
+        resp => {
+          this.validIFSC="VALID IFSC CODE";
+          console.log(resp);
+        }
+        ,
+        error => {
+          this.validIFSC="INVALID VALID IFSC CODE";
+          console.log(error.error.message);
+          
+        }
+      );
+    }
+    else
+    {
+      this.validIFSC="";
+    }
+    
+  }
   
   addBusOperator()
   {
@@ -282,7 +345,7 @@ toggleFieldTextType() {
       address: [this.BusOperatorRecord.address, Validators.compose([Validators.required,Validators.minLength(3),Validators.maxLength(200)])],
       additional_email: [this.BusOperatorRecord.additional_email,Validators.compose([Validators.minLength(10),Validators.maxLength(50)])],
       additional_contact: [this.BusOperatorRecord.additional_contact,Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
-      location_name: [this.BusOperatorRecord.location_name, Validators.compose([Validators.maxLength(200)])],
+      location_name: [this.BusOperatorRecord.location_name, Validators.compose([Validators.required,Validators.maxLength(200)])],
       bank_account_name: [this.BusOperatorRecord.bank_account_name,Validators.compose([Validators.maxLength(100)])],
       bank_name: [this.BusOperatorRecord.bank_name,Validators.compose([Validators.maxLength(100)])],
       bank_ifsc: [this.BusOperatorRecord.bank_ifsc,Validators.compose([Validators.pattern("^[a-zA-Z0-9]*$"),Validators.maxLength(20)])],

@@ -7,7 +7,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BusoperatorComponent } from './busoperator.component';
 import {NotificationService} from '../../services/notification.service';
 import {ToastyModule} from 'ng2-toasty';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -16,6 +16,7 @@ import {ToastyModule} from 'ng2-toasty';
     BusOperaorRoutingModule,
     SharedModule,
     FormsModule,
+    NgSelectModule,
     ReactiveFormsModule,
     DataTablesModule,
     ToastyModule.forRoot()

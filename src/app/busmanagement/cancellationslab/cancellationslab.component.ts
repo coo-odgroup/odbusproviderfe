@@ -144,7 +144,7 @@ export class CancellationslabComponent implements OnInit {
           });
       },
       columns: [{ data: 'id' }, { data: 'api_id' }, { data: 'rule_name' },{ 
-        title:'Duration',
+        title:'Duration (Hour)',
         data: 'duration',
         render:function(data){
           let bdata="";
@@ -156,7 +156,7 @@ export class CancellationslabComponent implements OnInit {
         }
       },
         { 
-          title:"Deduction",data: 'deduction',
+          title:"Deduction (%)",data: 'deduction',
         render:function(data){
         let bdata="";
         for(let ditems of data)
