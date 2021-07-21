@@ -43,7 +43,9 @@ export class BusoperatorComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
- public validIFSC:any;
+  public validIFSC:any;
+  public validEmail:any;
+  public validPhone:any;
   constructor(private http: HttpClient, private busOperatorService:BusOperatorService, private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
     this.isSubmit = false;
     this.BusOperatorRecord= {} as Busoperator;
@@ -206,7 +208,7 @@ export class BusoperatorComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       email_id: ['', Validators.compose([Validators.required, Validators.pattern(this.emailPattern), Validators.minLength(5),Validators.maxLength(50)])],
-      password: ['', Validators.compose([Validators.required,Validators.pattern(this.passwordPattern),Validators.minLength(8),Validators.maxLength(15)])],
+      password: ['', Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(15)])],
       operator_name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
       contact_number: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
       organisation_name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
@@ -227,7 +229,49 @@ export class BusoperatorComponent implements OnInit {
   ngAfterViewInit(): void {
     this.dtTrigger.next();
   }
+  checkEmail()
+  {
+    const data={
+      emailid:this.form.value.email_id,
+      operator_id:this.BusOperatorRecord.id
+    };
+    this.busOperatorService.checkOperatorEmail(data).subscribe(
 
+      resp => {
+        if(resp.data==1)
+        {
+          this.validEmail=this.form.value.email_id + " Already Exists";
+          this.form.controls.email_id.setValue('');
+          
+        }
+        else
+        {
+          this.validEmail="";
+        }
+    });
+  }
+
+  checkPhone()
+  {
+    const data={
+      contact_number:this.form.value.contact_number,
+      operator_id:this.BusOperatorRecord.id
+    };
+    this.busOperatorService.checkOperatorPhone(data).subscribe(
+
+      resp => {
+        if(resp.data==1)
+        {
+          this.validPhone=this.form.value.contact_number + " Already Exists";
+          this.form.controls.contact_number.setValue('');
+          
+        }
+        else
+        {
+          this.validPhone="";
+        }
+    });
+  }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
@@ -338,7 +382,7 @@ export class BusoperatorComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.BusOperatorRecord.id],
       email_id: [this.BusOperatorRecord.email_id, Validators.compose([Validators.required,Validators.pattern(this.emailPattern), Validators.minLength(5),Validators.maxLength(50)])],
-      password: [this.BusOperatorRecord.password, Validators.compose([Validators.required,Validators.pattern(this.passwordPattern),Validators.minLength(8),Validators.maxLength(15)])],
+      password: [this.BusOperatorRecord.password, Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(15)])],
       operator_name: [this.BusOperatorRecord.operator_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
       contact_number: [this.BusOperatorRecord.contact_number, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
       organisation_name: [this.BusOperatorRecord.organisation_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],

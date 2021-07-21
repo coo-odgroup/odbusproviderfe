@@ -78,17 +78,19 @@
                             <div class="form-group row">
                               <label for="busoperator" class="col-sm-4 col-form-label">Email ID<span class="text-danger">*</span></label>
                               <div class="col-sm-8">  
-                                <input type="text" class="form-control" placeholder="Enter Email Id" required formControlName="email_id" [pattern]="emailPattern" [value]="BusOperatorRecord.email_id" />
-                                <span class="text-danger" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('required')">
+                                <input type="text" class="form-control" placeholder="Enter Email Id" required formControlName="email_id" (change)="checkEmail()" [pattern]="emailPattern" [value]="BusOperatorRecord.email_id" />
+                                <span class="text-danger">{{validEmail}}</span>
+                                
+                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('required')">
                                   Valid Email id is Required 
                                 </span>
-                                <span class="text-danger" *ngIf="form.controls['email_id'].errors?.pattern">
+                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].errors?.pattern">
                                   Email input type not valid.
                                 </span>
-                                <span class="text-danger" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('minlength')">
+                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('minlength')">
                                   Minimum 5 Characters Required 
                                 </span>
-                                <span class="text-danger" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('maxlength')">
+                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('maxlength')">
                                   Maximum 50 Characters Allowed
                                 </span>
                               </div>
@@ -97,27 +99,28 @@
                           <div class="col-md-6">
                             <div class="form-group row">
                               <label for="busoperator" class="col-sm-4 col-form-label">Password<span class="text-danger">*</span></label>
-                              <div class="input-group col-sm-8"> 
-                                <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" placeholder="Enter Password" required formControlName="password" [pattern]="passwordPattern" [value]="BusOperatorRecord.Password"/>
-                                <div class="input-group-append">
-                                  <span class="input-group-text">
-                                  <i
-                                  class="fa"
-                                  [ngClass]="{
-                                    'fa-eye-slash': !fieldTextType,
-                                    'fa-eye': fieldTextType
-                                  }"
-                                  (click)="toggleFieldTextType()"
-                                ></i>
-                                </span>
-                                  </div>
-                                <span class="text-danger">Format min 1 Capital,1 small, 1 special(@$#!%^&*),1 Number</span>
+                              <div class="col-sm-8"> 
+                                <div class="input-group ">
+                                  <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" placeholder="Enter Password" required formControlName="password" [pattern]="passwordPattern" [value]="BusOperatorRecord.Password"/>
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">
+                                    <i
+                                    class="fa"
+                                    [ngClass]="{
+                                      'fa-eye-slash': !fieldTextType,
+                                      'fa-eye': fieldTextType
+                                    }"
+                                    (click)="toggleFieldTextType()"
+                                  ></i>
+                                  </span>
+                                    </div>
+                                  
+                                  
+                                </div>
                                 <span class="text-danger" *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
                                   Password is Required 
                                 </span>
-                                <span class="text-danger" *ngIf="form.controls['password'].errors?.pattern">
-                                  Password input type not valid.
-                                </span>
+                              
                                 <span class="text-danger" *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
                                   Minimum 8 Characters Required 
                                 </span>
@@ -125,6 +128,7 @@
                                   Maximum 15 Characters Allowed
                                 </span>
                               </div>
+                              
                           </div> 
                           </div>                   
                         </div>
@@ -152,14 +156,15 @@
                             <div class="form-group row">
                               <label for="busoperator" class="col-sm-4 col-form-label">Contact Number<span class="text-danger">*</span></label>
                               <div class="col-sm-8">  
-                                <input type="text" class="form-control" placeholder="Enter Contact Number" required formControlName="contact_number" [value]="BusOperatorRecord.contact_number"/>
-                                <span class="text-danger" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('required')">
+                                <input type="text" class="form-control" (change)="checkPhone()" placeholder="Enter Contact Number" required formControlName="contact_number" [value]="BusOperatorRecord.contact_number"/>
+                                <span class="text-danger row col-12">{{validPhone}}</span>
+                                <span class="text-danger row col-12" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('required')">
                                   Contact Number is Required 
                                 </span>
-                                <span class="text-danger" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('minlength')">
+                                <span class="text-danger row col-12" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('minlength')">
                                   10 Digit Number is Required 
                                 </span>
-                                <span class="text-danger" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('maxlength')">
+                                <span class="text-danger row col-12" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('maxlength')">
                                   10 Digit Number is Required 
                                 </span>
                               </div>

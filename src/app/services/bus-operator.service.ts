@@ -24,7 +24,16 @@ export class BusOperatorService {
       catchError(this.errorHandler)
     )
   }
- 
+  checkOperatorEmail(data):Observable<any> {
+    return this.httpClient.post(Constants.BASE_URL+'/getOperatorEmail' ,JSON.stringify(data),this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  checkOperatorPhone(data):Observable<any> {
+    return this.httpClient.post(Constants.BASE_URL+'/getOperatorPhone' ,JSON.stringify(data),this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
   getBusbyOperator(operatorId):Observable<any> {
     return this.httpClient.get(Constants.BASE_URL+'/getBusbyOperator/' +operatorId,this.httpOptions).pipe(
       catchError(this.errorHandler)
