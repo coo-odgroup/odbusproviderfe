@@ -95,25 +95,25 @@
                       <div class="form-group row" *ngIf="seatLayoutrows?.length != 0">
                         <div class="col-1" >
                           <div class='container' dragula="COPYABLE" id="left" [(dragulaModel)]="left">
-                            <div *ngFor="let dragElement of left" id="{{dragElement}}" style="margin-top: 10px;"><img src="assets/images/{{dragElement}}.png" style="cursor: pointer; width: 100%;"></div>
+                            <div *ngFor="let dragElement of left" id="{{dragElement}}" style="margin-top: 10px;"><img src="assets/images/{{dragElement}}.svg" style="cursor: pointer;"></div>
                           </div>
                         </div>
                         <div class="col-11 droparea"  ngModelGroup="lowerBerthArray">
                               <div class="col-12 layoutBundle  Row_{{j}}" id="Row_{{j}}" *ngFor="let singleRow of seatLayoutrows;let j=index" dragula="COPYABLE" ngModelGroup="lower_{{j}}" [(dragulaModel)]="lowerBerthArray[j]">
                                 <div *ngFor='let dropElement of lowerBerthArray[j]; let k=index;' class="selectSeater"   ngModelGroup="{{k}}">
                                   <div *ngIf="dropElement === 'seater'">
-                                    <img src="assets/images/seater.png" style="width: 45px;">
+                                    <img src="assets/images/seat-blue.svg" style="width: 30px;">
                                     <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
                                     <span class="closebtn remove" (click)="removeItem($event)">X</span>
                                   </div>
                                   <div *ngIf="dropElement === 'sleeper'">
-                                    <img src="assets/images/sleeper.png" style="width: 45px;">
+                                    <img src="assets/images/sleeper.svg" style="width: 30px;">
                                     <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
                                     <span class="closebtn remove" (click)="removeItem($event)">X</span>
                                   </div>
                                   <div *ngIf="dropElement === 'blank'">
-                                    <img src="assets/images/blank.png" style="width: 45px;">
-                                    <input type="hidden"  name="seatText" ngModel="NULL"  class="sml_textbox" width="40">
+                                    <img src="assets/images/blank.svg" style="width: 30px;">
+                                    <input type="hidden"  name="seatText" ngModel=""  class="sml_textbox" width="40">
                                     <span class="closebtn remove" (click)="removeItem($event)">X</span>
                                   </div>
                                 </div>
@@ -128,7 +128,7 @@
                         
                         <div class="col-1" >
                           <div class='container' dragula="SLEEPERCOPYABLE" id="left_1" [(dragulaModel)]="left_1">
-                            <div *ngFor="let dragElement of left_1" style="margin-top: 10px;"><img src="assets/images/{{dragElement}}.png" style="cursor: pointer; width: 100%;" ></div>
+                            <div *ngFor="let dragElement of left_1" style="margin-top: 10px;"><img src="assets/images/{{dragElement}}.svg" style="cursor: pointer; width: auto;" ></div>
                           </div>
                         </div>
                         <div class="col-11 droparea" ngModelGroup="upperBerthArray">
@@ -136,18 +136,18 @@
                           <div class="col-12 layoutBundle  Row_{{j}}" id="sRow_{{j}}" *ngFor="let singleRow of sleeperLayoutrows;let j=index" dragula="SLEEPERCOPYABLE" ngModelGroup="upper_{{j}}" [(dragulaModel)]="upperBerthArray[j]">
                             <div *ngFor='let slDropElement of upperBerthArray[j]; let k=index;' class="selectSeater" ngModelGroup="{{k}}">
                               <div *ngIf="slDropElement === 'sleeper'">
-                                <img src="assets/images/sleeper.png" style="width: 45px;">
+                                <img src="assets/images/sleeper.svg" style="width: 30px;">
                                 <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
                                 <span class="closebtn remove" (click)="removeItem($event)">X</span>
                               </div>
                               <div *ngIf="slDropElement === 'vertical'">
-                                <img src="assets/images/vertical.png" style="width: 25px;">
+                                <img src="assets/images/vertical.svg" style="width: 25px;">
                                 <input type="text" name="seatText" ngModel class="sml_textbox" width="40">
                                 <span class="closebtn remove" (click)="removeItem($event)">X</span>
                               </div>
                               <div *ngIf="slDropElement === 'blank'">
-                                <img src="assets/images/blank.png" style="width: 45px;">
-                                <input type="hidden" name="seatText" ngModel="NULL" class="sml_textbox" width="40">
+                                <img src="assets/images/blank.svg" style="width: 30px;">
+                                <input type="hidden" name="seatText" ngModel="" class="sml_textbox" width="40">
                                 <span class="closebtn remove" (click)="removeItem($event)">X</span>
                               </div>
                             </div>
@@ -195,10 +195,10 @@
                     <div class="col-12" ngModelGroup="lowerBerth">
                       <div class="col-12 row form-group   layoutBundlesml" *ngFor="let lbData of lowerBerthSeats; let rowCount=index" ngModelGroup="lower_{{rowCount}}">
                           <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of lbData; let colCount=index" ngModelGroup="{{colCount}}">
-                            <img src="assets/images/seater.png" *ngIf="colData.seatType==1">
-                            <img src="assets/images/sleeper.png" *ngIf="colData.seatType==2">
+                            <img src="assets/images/seat-blue.svg" *ngIf="colData.seatType==1">
+                            <img src="assets/images/sleeper.svg" *ngIf="colData.seatType==2">
                             <img src="assets/images/vertical.png" *ngIf="colData.seatType==3">
-                            <img src="assets/images/blank.png" *ngIf="colData.seatType==4">
+                            <img src="assets/images/blank.svg" *ngIf="colData.seatType==4">
                             <br />
                             <input type="text" name="seatText" *ngIf="colData.seatType!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  />
                           </div>
@@ -207,7 +207,7 @@
                     <div class="col-12" ngModelGroup="upperBerth">
                       <div class="col-12 row form-group   layoutBundlesml" *ngFor="let ubData of upperBerthSeats; let rowCount=index" ngModelGroup="upper_{{rowCount}}">
                         <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of ubData; let colCount=index" ngModelGroup="{{colCount}}">
-                          <img src="assets/images/seater.png" *ngIf="colData.seatType==1">
+                          <img src="assets/images/seat-blue.svg" *ngIf="colData.seatType==1">
                           <img src="assets/images/sleeper.png" *ngIf="colData.seatType==2">
                           <img src="assets/images/vertical.png" *ngIf="colData.seatType==3">
                           <img src="assets/images/blank.png" *ngIf="colData.seatType==4">

@@ -323,12 +323,25 @@ export class AmenitiesComponent implements OnInit {
       }
     );
   }
-  cs(event : Event, id : any){
+  cs(id : any){
     //this.AmenitiesRecord=this.Amenities[id] ;
-    this.form1=this.fb.group({
-      id:[id],
-      reason: [null,Validators.compose([Validators.required])]
-    });
+    
+    const data ={
+      reason:this.form1.value.reason,
+      id:this.form1.value.id
+    };
+    this.AmenitiesService.chngsts(id, data).subscribe(
+      resp => {
+        if(resp.status==1)
+        {
+            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+            this.rerender();
+        }
+        else{
+            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+      }
+    );
   }
 
   deleteAmenities(content, delitem:any)

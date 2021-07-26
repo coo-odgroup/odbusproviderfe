@@ -43,13 +43,13 @@
     width: 45px;
     text-align: center;
 }
-::ng-deep .layoutBundle
-{
+::ng-deep .layoutBundle {
     margin-bottom: 10px;
-    background-color: #e1e9ff;
+    background-color: #ffffff;
     min-height: 95px;
+    padding: 13px 10px;
     border-bottom: 1px solid #d8d4d4;
-    box-shadow: 0px 1px 4px 2px #efefef;
+    box-shadow: 0 1px 4px 2px #efefef;
 }
 ::ng-deep .layoutBundle div
 {
@@ -57,12 +57,19 @@
     float: left;
     margin-right: 5px;
     text-align: center;
+    position: relative;
 }
 ::ng-deep .layoutBundle div > .sml_textbox
 {
     display: block;
     width: 45px;
     text-align: center;
+    background-color: #f0f4ff;
+    border: none;
+    margin-top: 6px;
+    color: #000;
+    border-bottom: 1px solid #20456c;
+    border-top: 1px solid #20456c;
 }
 ::ng-deep .layoutBundle tr > td > span > .sml_textbox
 {
@@ -73,20 +80,19 @@
 
 ::ng-deep .closebtn
 {
-    display: none;
+    background-color: #fd0534;
+    padding: 2px 6px;
+    border-radius: 50%;
+    height: 18px;
+    width: 18px;
+    font-size: 10px;
+    text-decoration: none;
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    color: #fff;
 }
-::ng-deep .layoutBundle > .selectSeater:hover .closebtn
-{
-    position: relative;
-    bottom: 0px;
-    color: #ffffff;
-    display: block;
-    background: red;
-    padding: 0px 4px;
-    font-size: 12px;
-    text-align: center;
 
-}
 ::ng-deep .closebtn:hover
 {
     cursor: pointer;

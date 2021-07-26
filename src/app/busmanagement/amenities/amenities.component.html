@@ -21,8 +21,8 @@
                     <td>{{ amenity.created_at }}</td>
                     <td>{{ amenity.created_by }}</td>
                     <td > 
-                      <label *ngIf="amenity.status==1" class="badge badge-light-success pointer" (click)="cs($event, amenity.id);statusDialog(Reason);" >Active</label>
-                      <label *ngIf="amenity.status==0" class="badge badge-light-warning pointer" (click)="cs($event, amenity.id);statusDialog(Reason);">Pending</label>
+                      <label *ngIf="amenity.status==1" class="badge badge-light-success pointer" (click)="cs(amenity.id);" >Active</label>
+                      <label *ngIf="amenity.status==0" class="badge badge-light-warning pointer" (click)="cs(amenity.id);">Pending</label>
                     </td>
                     
                     <td><a (click)="editAmenities($event, i); OpenModal(content);" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i></a><a (click)="deleteAmenities(confirmDialog, amenity.id);"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>
@@ -128,38 +128,7 @@
 
         </ng-template>
           <!-- <app-ui-modal #modalReason> -->
-            <ng-template #Reason let-modal>
-            <div class="modal-header">
-              <h4 class="modal-title">Add Your Reason</h4>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      <form [formGroup]="form1" class="editForm" novalidate>                        
-                        <div class="form-group row">
-                          <label for="reason" class="col-sm-3 col-form-label">reason</label>
-                          <div class="col-sm-9">                        
-                            <input type="hidden" class="form-control" formControlName="id" [value]="AmenitiesRecord.id">
-                            <input type="text" class="form-control" formControlName="reason" placeholder="reason" [value]="AmenitiesRecord.reason"/>
-                            <span class="text-danger" *ngIf="form1.controls['reason'].touched && form1.controls['reason'].hasError('required')">
-                              Reason is required! </span>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" [disabled]="!form1.valid" (click)="changeStatus();" class="btn btn-primary" ngbAutofocus>Save</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
-            </div>
-          <!-- </app-ui-modal>   -->
-        </ng-template>
+           
 
         </div>  
           </app-card>  

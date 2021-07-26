@@ -768,15 +768,12 @@ export class BusComponent implements OnInit {
       owner_no:this.busForm.value.owner_no,
       o_sms_ticket:this.busForm.value.o_sms_ticket,
       o_sms_cancel:this.busForm.value.o_sms_cancel,
-      //BELOW ELEMENTS ARE ARRAY
       bus_description:this.busForm.value.bus_description,
       businfo:this.busForm.value.businfo,
       busRoutes:this.busForm.value.busRoutes,
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
-    // console.log(data);
-    // return false;
     if(data.id==null)
     {
       this.busService.create(data).subscribe(
@@ -1081,7 +1078,6 @@ export class BusComponent implements OnInit {
       resp=>{
         let counter=0;
         this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
-        //console.log(resp.data);
         if(resp.data.lowerBerth!=undefined)
         {
           for(let lowerData of resp.data.lowerBerth)
@@ -1985,7 +1981,6 @@ export class BusComponent implements OnInit {
     ];
     this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
       response=>{
-        console.log(response);
         this.selectedAmenities=response.data;
       }
     );

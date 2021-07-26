@@ -260,8 +260,7 @@ export class SeatlayoutComponent implements OnInit {
       name:layoutName,
       layout_data:JSON.stringify(this.seatBlocks)
     }
-    console.log(data);
-    return false;
+   
     this.sLayout.update(this.SeatLayoutRecord.id, data).subscribe(
       resp => {
         if(resp.status==1)
