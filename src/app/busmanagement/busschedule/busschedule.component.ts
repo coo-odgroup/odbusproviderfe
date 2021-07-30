@@ -51,16 +51,6 @@ export class BusscheduleComponent implements OnInit {
 public showdates:any;
 public selectedCar: number;
 
-// cars = [
-//     { id: 1, name: 'Volvo' },
-//     { id: 2, name: 'Saab' },
-//     { id: 3, name: 'Opel' },
-//     { id: 4, name: 'Audi' },
-// ];
-// options: any[] = [{_id: '1', status: 'waiting'},
-// {_id: '2', status: 'open'},
-// {_id: '3', status: 'in_progress'},
-// {_id: '4', status: 'close'}];
 FormOne: FormGroup;
   constructor(private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
@@ -79,17 +69,6 @@ FormOne: FormGroup;
   ngOnInit() {
 
 
-    /*this.FormOne = new FormGroup({
-      status: new FormControl(null, Validators.required),
-  });*/
-
-  // let set_status = {_id: '2', status: 'open'};
-
-  // setTimeout(() => {
-  //   this.busScheduleForm.controls['status']
-  //     this.busScheduleForm.controls['status'].setValue(set_status);
-  //     console.log(this.busScheduleForm.controls['status'].value)
-  // }, 1000);
 
     this.busScheduleForm = this.fb.group({
       bus_id: '',
@@ -102,11 +81,6 @@ FormOne: FormGroup;
     });
     this.loadBusScheduleData();
 
-    //console.log("***************"+ this.busScheduleForm.controls['carChoices']);
-    /*setTimeout(() => {
-      let selectedCar = {id: '2', name: 'Volvo'};
-     this.busScheduleForm.controls['carChoices'].setValue(selectedCar);
-  }, 1000);*/
 
 
   }
@@ -316,22 +290,22 @@ FormOne: FormGroup;
     this.showdates='0';
     this.loadServices();
     this.busScheduleRecord=this.busSchedules[id];
-
-    this.busScheduleForm.patchValue({
-      //bus_id:this.busScheduleRecord.bus_id,
-      bus_operator_id:this.busScheduleRecord.bus_operator_id,
-      entry_date:this.busScheduleRecord.entry_date,
-      running_cycle:this.busScheduleRecord.running_cycle,
-    });
-
-    // this.busScheduleForm = this.fb.group({
-    //   id:this.busScheduleRecord.id,
-    //   bus_id: [this.busScheduleRecord.bus_id, Validators.compose([Validators.required])],
+    console.log(this.busScheduleRecord);
+    // this.busScheduleForm.patchValue({
+    //   //bus_id:this.busScheduleRecord.bus_id,
     //   bus_operator_id:this.busScheduleRecord.bus_operator_id,
     //   entry_date:this.busScheduleRecord.entry_date,
-    //   cancelled_by:'Admin', 
-    //   running_cycle:this.busScheduleForm.value.running_cycle,
+    //   running_cycle:this.busScheduleRecord.running_cycle,
     // });
+
+    this.busScheduleForm = this.fb.group({
+      id:this.busScheduleRecord.id,
+      bus_id: [this.busScheduleRecord.id, Validators.compose([Validators.required])],
+      bus_operator_id:this.busScheduleRecord.bus_operator_id,
+      entry_date:this.busScheduleRecord.entry_date,
+      cancelled_by:'Admin', 
+      running_cycle:this.busScheduleForm.value.running_cycle,
+    });
     this.ModalHeading = "Edit Bus Schedule";
     this.ModalBtn = "Update";
   }

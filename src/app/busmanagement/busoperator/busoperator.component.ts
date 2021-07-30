@@ -163,42 +163,42 @@ export class BusoperatorComponent implements OnInit {
     });
     this.loadOperators();
 
-    this.bankNames=[
-      "Axis Bank",
-      "Bandhan Bank",
-      "Bank of Baroda",
-      "Bank of India",
-      "Bank of Maharashtra",
-      "Canara Bank",
-      "Catholic Syrian Bank",
-      "Central Bank of India",
-      "City Union Bank",
-      "DCB Bank",
-      "Dhanlaxmi Bank",
-      "Federal Bank",
-      "HDFC Bank",
-      "ICICI Bank",
-      "IDBI Bank",
-      "IDFC First Bank",
-      "Indian Bank",
-      "Indian Overseas Bank",
-      "IndusInd Bank",
-      "Jammu & Kashmir Bank",
-      "Karnataka Bank",
-      "Karur Vysya Bank",
-      "Kotak Mahindra Bank",
-      "Lakshmi Vilas Bank",
-      "Nainital Bank",
-      "Punjab & Sindh Bank",
-      "Punjab National Bank",
-      "RBL Bank",
-      "South Indian Bank",
-      "State Bank of India (SBI)",
-      "Tamilnad Mercantile Bank Limited",
-      "UCO Bank",
-      "Union Bank of India",
-      "Yes Bank"
-    ];
+    // this.bankNames=[
+    //   "Axis Bank",
+    //   "Bandhan Bank",
+    //   "Bank of Baroda",
+    //   "Bank of India",
+    //   "Bank of Maharashtra",
+    //   "Canara Bank",
+    //   "Catholic Syrian Bank",
+    //   "Central Bank of India",
+    //   "City Union Bank",
+    //   "DCB Bank",
+    //   "Dhanlaxmi Bank",
+    //   "Federal Bank",
+    //   "HDFC Bank",
+    //   "ICICI Bank",
+    //   "IDBI Bank",
+    //   "IDFC First Bank",
+    //   "Indian Bank",
+    //   "Indian Overseas Bank",
+    //   "IndusInd Bank",
+    //   "Jammu & Kashmir Bank",
+    //   "Karnataka Bank",
+    //   "Karur Vysya Bank",
+    //   "Kotak Mahindra Bank",
+    //   "Lakshmi Vilas Bank",
+    //   "Nainital Bank",
+    //   "Punjab & Sindh Bank",
+    //   "Punjab National Bank",
+    //   "RBL Bank",
+    //   "South Indian Bank",
+    //   "State Bank of India (SBI)",
+    //   "Tamilnad Mercantile Bank Limited",
+    //   "UCO Bank",
+    //   "Union Bank of India",
+    //   "Yes Bank"
+    // ];
     
     
   }
@@ -265,6 +265,7 @@ export class BusoperatorComponent implements OnInit {
           this.validPhone=this.form.value.contact_number + " Already Exists";
           this.form.controls.contact_number.setValue('');
           
+         
         }
         else
         {
@@ -301,8 +302,9 @@ export class BusoperatorComponent implements OnInit {
       this.busOperatorService.getIFSC(ifsc).subscribe(
 
         resp => {
-          this.validIFSC="VALID IFSC CODE";
-          console.log(resp);
+          this.validIFSC=resp.ADDRESS + ',' +resp.STATE;
+          this.form.controls.bank_name.setValue(resp.BANK);
+          //console.log(resp);
         }
         ,
         error => {

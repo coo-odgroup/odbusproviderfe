@@ -24,4 +24,5 @@ export interface Bus {
     created_by: any;
     status:'1';
     busnamenumber:any;
+    bus_amenities:any;
 }

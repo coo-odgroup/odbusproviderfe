@@ -1,1 +1,556 @@
-<p>seatopen works!</p>
+<div class="row">
+  <div class="col-sm-12">
+    <app-card
+      cardTitle="SEAT OPEN"
+      cardClass="card-datatable"
+      [options]="true"
+      [isCardFooter]="true"
+    >
+      <div class="table-responsive">
+        <table
+          datatable
+          [dtOptions]="dtOptionsSeatopen"
+          [dtTrigger]="dtTrigger"
+          class="table table-striped table-bordered table-hover mb-0"
+        >
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Bus Name</th>
+              <th>Date</th>
+              <th>operator</th>
+              <th>Open Seats</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="seatOpen?.length != 0">
+            <tr *ngFor="let sopen of seatOpen; let i = index">
+              <td>{{ sopen.id }}</td>
+              <td>
+                {{ sopen.bus.name }}
+              </td>
+              <td>{{ sopen.date_applied }}</td>
+              <td>{{ sopen.bus.bus_operator.operator_name }}</td>
+              <td>
+                <div
+                  *ngFor="
+                    let seat of sopen.seat_open_seats;
+                    let seatIndex = index
+                  "
+                >
+                  <strong>{{ seatIndex + 1 }}</strong
+                  >.{{ seat.seat_id }}
+                </div>
+              </td>
+              <td>{{ sopen.reason }}</td>
+              <td>
+                <label
+                  *ngIf="sopen.status == 1"
+                  class="badge badge-light-success pointer"
+                  (click)="changeStatus($event, sopen.id)"
+                  >Active</label
+                >
+                <label
+                  *ngIf="sopen.status == 0"
+                  class="badge badge-light-warning pointer"
+                  (click)="changeStatus($event, sopen.id)"
+                  >Pending</label
+                >
+              </td>
+              <td style="text-align: center">
+                <a (click)="editsopen(i); OpenModal(content)" class="pointer"
+                  ><i
+                    class="icon feather icon-edit f-w-600 f-16  m-r-15 text-c-green "></i
+                ></a>
+                <a (click)="openConfirmDialog(confirmDialog, i)" class="pointer"
+                  ><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i
+                ></a>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="seatOpen?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
+
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="app-card-footer">
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">Would you Like to Delete the Record??</h5>
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              (click)="deleteRecord()"
+              class="btn btn-primary"
+              ngbAutofocus
+            >
+              Confirm Delete
+            </button>
+            <button
+              type="button"
+              class="btn btn-default"
+              data-dismiss="modal"
+              #defaultClick
+              (click)="modal.dismiss('Cross click')"
+            >
+              Cancel
+            </button>
+          </div>
+        </ng-template>
+        <button
+          type="button"
+          #addnew
+          class="btn btn-primary btn-add-task m-t-10 invisible"
+          id="modal"
+          (click)="ResetAttributes(); loadServices(); OpenModal(content)"
+        >
+          Add
+        </button>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">{{ ModalHeading }}</h5>
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form
+                      [formGroup]="seatOpenForm"
+                      class="editForm"
+                      novalidate
+                    >
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="bus" class="col-sm-4 col-form-label"
+                              >Operator<span class="text-danger">*</span></label
+                            >
+                            <div class="col-sm-8">
+                              <ng-select
+                                [items]="busoperators"
+                                bindLabel="operator_name"
+                                bindValue="id"
+                                placeholder="Select Operator"
+                                formControlName="bus_operator_id"
+                                [clearable]="false"
+                                (change)="findOperator($event)"
+                              >
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- <div class="row" *ngIf="seatOpenForm.controls.searchBy.value=='routes'">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label for="routes" class="col-sm-4 col-form-label">Routes<span
+                                                                class="text-danger">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <ng-select [items]="locations" bindLabel="name"
+                                                                bindValue="id" placeholder="Select Source"
+                                                                formControlName="source_id" [clearable]="false"
+                                                                (change)="findSource()">
+                                                            </ng-select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-8">
+                                                            <ng-select [items]="locations" bindLabel="name"
+                                                                bindValue="id" placeholder="Select Destination"
+                                                                formControlName="destination_id" [clearable]="false"
+                                                                (change)="findSource($event)">
+                                                            </ng-select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="form-group row">
+                            <label for="busname" class="col-sm-3 col-form-label"
+                              >Bus Name/Number<span class="text-danger"
+                                >*</span
+                              ></label
+                            >
+                            <div class="col-sm-9">
+                              <ng-select
+                                [items]="buses"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Select Bus"
+                                formControlName="bus_id"
+                                [clearable]="false"
+                                (change)="checkEvent($event)"
+                              >
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="date" class="col-sm-4 col-form-label"
+                              >Date<span class="text-danger">*</span></label
+                            >
+                            <div class="col-sm-8">
+                              <input
+                                type="date"
+                                class="form-control"
+                                placeholder="Enter Date"
+                                required
+                                formControlName="date"
+                              />
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                                  seatOpenForm.controls['date'].touched &&
+                                  seatOpenForm.controls['date'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                                Date required!
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="reason" class="col-sm-2 col-form-label"
+                              >Reason<span class="text-danger">*</span></label
+                            >
+                            <div class="col-sm-10">
+                              <!-- <input type="text" class="form-control"
+                                                                placeholder="Enter Reason" required
+                                                                formControlName="reason"
+                                                                [value]="sopenRecord.reason" /> -->
+                              <select
+                                class="form-control"
+                                formControlName="reason"
+                              >
+                                <option>Select</option>
+                                <option>Request From Owner</option>
+                                <option>Request From Manager</option>
+                                <option>Request From Conductor</option>
+                                <option>Bus Breakdown</option>
+                                <option>Request From Association</option>
+                                <option>Others</option>
+                              </select>
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                                  seatOpenForm.controls['reason'].touched &&
+                                  seatOpenForm.controls['reason'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                                Reason is required!
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="row form-group col-sm-12">
+                          <!-- <div class="col-md-3">
+                              
+                              <ng-select 
+                                                  
+                              [items]="seatLayouts"
+                              bindLabel="name"
+                              bindValue="id"
+                              placeholder="Choose Seat Layout"                                       
+                              formControlName="bus_seat_layout_id"
+                              [clearable]="false"
+                              (change)="getSeatLayout($event)"
+                              >
+                              </ng-select>
+                              <span class="text-danger" *ngIf="seatOpenForm.controls['bus_seat_layout_id'].touched && seatOpenForm.controls['bus_seat_layout_id'].hasError('required')">
+                                Seat Layout is required! </span>
+                              
+                            </div> -->
+                          <div class="col-md-12">
+                            <div
+                              formArrayName="bus_seat_layout_data"
+                              class="col-12"
+                            >
+                              <div
+                                class="row"
+                                *ngFor="
+                                  let layoutRow of seatOpenForm.controls
+                                    .bus_seat_layout_data.controls;
+                                  let layout_row = index
+                                "
+                                [formGroupName]="layout_row"
+                              >
+                                <div
+                                  formArrayName="lowerBerth"
+                                  class="col-12"
+                                  style="display: flex; justify-content: center"
+                                >
+                                  <div
+                                    *ngFor="
+                                      let layoutCol of layoutRow['controls']
+                                        .lowerBerth['controls'];
+                                      let layout_row = index
+                                    "
+                                    [formGroupName]="layout_row"
+                                    style="
+                                      width: 50px;
+                                      float: left;
+                                      text-align: center;
+                                    "
+                                  >
+                                    <!-- (change)="chooseSeat($event.target.checked,layoutCol.controls.seatType.value,layoutCol.controls.seatText.value,1)" -->
+                                    <label class="seatHolder">
+                                      <input
+                                        type="checkbox"
+                                        formControlName="seatChecked"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value != 4
+                                        "
+                                      />
+                                      <span
+                                        class="seaterImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 1
+                                        "
+                                      ></span>
+                                      <span
+                                        class="sleeperImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 2
+                                        "
+                                      ></span>
+                                      <span
+                                        class="verticalImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 3
+                                        "
+                                      ></span>
+                                      <span
+                                        class="blankImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 4
+                                        "
+                                      ></span>
+                                      <span
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value != 4
+                                        "
+                                        >{{
+                                          layoutCol.controls.seatText.value
+                                        }}</span
+                                      >
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div
+                                  formArrayName="upperBerth"
+                                  class="col-12"
+                                  style="display: flex; justify-content: center"
+                                >
+                                  <div
+                                    *ngFor="
+                                      let layoutCol of layoutRow['controls']
+                                        .upperBerth['controls'];
+                                      let layout_row = index
+                                    "
+                                    [formGroupName]="layout_row"
+                                    style="
+                                      width: 50px;
+                                      float: left;
+                                      text-align: center;
+                                    "
+                                  >
+                                    <label class="seatHolder">
+                                      <input
+                                        type="checkbox"
+                                        formControlName="seatChecked"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value != 4
+                                        "
+                                      />
+                                      <span
+                                        class="seaterImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 1
+                                        "
+                                      ></span>
+                                      <span
+                                        class="sleeperImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 2
+                                        "
+                                      ></span>
+                                      <span
+                                        class="verticalImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 3
+                                        "
+                                      ></span>
+                                      <span
+                                        class="blankImage"
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value == 4
+                                        "
+                                      ></span>
+                                      <span
+                                        *ngIf="
+                                          layoutCol.controls.seatType.value != 4
+                                        "
+                                        >{{
+                                          layoutCol.controls.seatText.value
+                                        }}</span
+                                      >
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              [disabled]="!seatOpenForm.valid"
+              (click)="addOpenseat()"
+              class="btn btn-primary"
+              ngbAutofocus
+            >
+              {{ ModalBtn }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-default"
+              data-dismiss="modal"
+              #defaultClick
+              (click)="modal.dismiss('Cross click')"
+            >
+              Close
+            </button>
+          </div>
+        </ng-template>
+
+        <!-- <ng-template #editSeat let-modal>
+                    <div class="modal-header">
+                      <h5 class="ng-tns-c116-5"> {{busRecord.name}} [{{busRecord.bus_number}}]</h5>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <form [formGroup]="seatOpenForm" class="editForm" novalidate>
+                    <div class="modal-body">
+                      <div class="row">
+                        
+                          <div class="row form-group col-sm-12">
+                            <div class="col-md-9">
+                              <div formArrayName="bus_seat_layout_data" class="col-12">
+                                      
+                                <div class="row" *ngFor="let layoutRow of busForm.controls.bus_seat_layout_data.controls; let layout_row=index;" 
+                                [formGroupName]="layout_row">
+          
+                                  <div formArrayName="lowerBerth" class="col-12" style="display: flex;justify-content: center;">
+          
+                                    <div *ngFor="let layoutCol of layoutRow['controls'].lowerBerth['controls']; let layout_row=index;" 
+                                    [formGroupName]="layout_row" 
+                                    style="width: 50px; float: left;  text-align: center;">
+                                    
+                                        <label class="seatHolder">
+                                        <input  type="checkbox"  formControlName="seatChecked" *ngIf="layoutCol.controls.seatType.value!=4">
+                                        <span class="seaterImage" *ngIf="layoutCol.controls.seatType.value==1"></span>
+                                        <span class="sleeperImage" *ngIf="layoutCol.controls.seatType.value==2"></span>
+                                        <span class="verticalImage" *ngIf="layoutCol.controls.seatType.value==3"></span>
+                                        <span class="blankImage" *ngIf="layoutCol.controls.seatType.value==4"></span>
+                                        <span *ngIf="layoutCol.controls.seatType.value!=4">{{layoutCol.controls.seatText.value}}</span>
+                                        
+                                      </label>
+                                    </div>
+                                  </div>
+          
+                                  <div formArrayName="upperBerth"  class="col-12" style="display: flex;justify-content: center;">
+                                    <div *ngFor="let layoutCol of layoutRow['controls'].upperBerth['controls']; let layout_row=index;" [formGroupName]="layout_row" style="width: 50px; float: left;  text-align: center;">
+                                      
+                                      <label class="seatHolder">
+                                        <input  type="checkbox"  formControlName="seatChecked" *ngIf="layoutCol.controls.seatType.value!=4">
+                                        <span class="seaterImage" *ngIf="layoutCol.controls.seatType.value==1"></span>
+                                        <span class="sleeperImage" *ngIf="layoutCol.controls.seatType.value==2"></span>
+                                        <span class="verticalImage" *ngIf="layoutCol.controls.seatType.value==3"></span>
+                                        <span class="blankImage" *ngIf="layoutCol.controls.seatType.value==4"></span>
+                                        <span *ngIf="layoutCol.controls.seatType.value!=4">{{layoutCol.controls.seatText.value}}</span>
+                                        
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>    
+          
+                              </div>
+                              
+                            </div>
+                            
+                          </div>
+                        
+                      </div>
+                    </div>
+                    </form>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" (click)="updateSeatLayout()" ngbAutofocus>Update Seat Layout</button>
+                      <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
+                    </div>
+                  </ng-template> -->
+      </div>
+    </app-card>
+  </div>
+</div>
+<ng2-toasty [position]="position"></ng2-toasty>

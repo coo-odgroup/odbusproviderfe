@@ -91,6 +91,12 @@ export class BusService {
       catchError(this.errorHandler)
     );
   }
+  fetchBusSafety(id):Observable<any>{
+    return this.httpClient.get<any>(this.apiURL+'/BusSafety/'+id,this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
   updateNewFare(post:any):Observable<any>{
     return this.httpClient.put<any>(this.apiURL+ '/updateNewFare', JSON.stringify(post), this.httpOptions)
     .pipe(

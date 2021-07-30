@@ -277,31 +277,6 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Bank Name</label>
-                              <div class="col-sm-8"> 
-                                
-                                <ng-select 
-                                      [items]="bankNames"
-                                      bindLabel="items"
-                                      bindValue="items"
-                                      placeholder="SELECT BANK"                                       
-                                      formControlName="bank_name"
-                                      [clearable]="true"
-                                      >
-                                </ng-select> 
-                                
-                               
-                                <span class="text-danger" *ngIf="form.controls['bank_name'].touched && form.controls['bank_name'].hasError('maxlength')">
-                                  Maximum 100 Characters Allowed
-                                </span>                              
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
                               <label for="busoperator" class="col-sm-4 col-form-label">IFSC CODE</label>
                               <div class="col-sm-8">  
                                 <input type="text" class="form-control uppercase"  placeholder="Enter Bank Ifsc Code" formControlName="bank_ifsc" [value]="BusOperatorRecord.bank_ifsc" (change)="checkIfsc()" /> 
@@ -314,6 +289,34 @@
                                 </span>                       
                               </div>
                             </div>
+                          </div>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col-md-6">
+
+                            <div class="form-group row">
+                              <label for="busoperator" class="col-sm-4 col-form-label">Bank Name</label>
+                              <div class="col-sm-8"> 
+                                
+                                <!-- <ng-select 
+                                      [items]="bankNames"
+                                      bindLabel="items"
+                                      bindValue="items"
+                                      placeholder="SELECT BANK"                                       
+                                      formControlName="bank_name"
+                                      [clearable]="true"
+                                      >
+                                </ng-select>  -->
+                                <input type="text" formControlName="bank_name" class="form-control" placeholder="Bank Name">
+                                
+                               
+                                <span class="text-danger" *ngIf="form.controls['bank_name'].touched && form.controls['bank_name'].hasError('maxlength')">
+                                  Maximum 100 Characters Allowed
+                                </span>                              
+                              </div>
+                            </div>
+                            
                           </div>
                           <div class="col-md-6">
                             <div class="form-group row">

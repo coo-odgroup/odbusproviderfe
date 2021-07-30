@@ -164,6 +164,12 @@ const NavigationItems = [
                       url  : 'bookingmanagement/seatBlock'
                   },
                   {
+                      id   : 'seatBlock',
+                      title: 'seat  Block',
+                      type : 'item',
+                      url  : 'bookingmanagement/seatblock'
+                  },
+                  {
                       id   : 'seatopen',
                       title: 'Seat Open',
                       type : 'item',

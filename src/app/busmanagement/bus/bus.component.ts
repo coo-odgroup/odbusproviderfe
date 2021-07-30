@@ -49,6 +49,10 @@ interface SelectedAmenities{
   id?:any;
   name?:any;
 }
+interface SelectedSafety{
+  id?:any;
+  name?:any;
+}
 @Component({
   selector: 'app-bus',
   templateUrl: './bus.component.html',
@@ -67,8 +71,10 @@ export class BusComponent implements OnInit {
 
 
   public selectedAmenities:SelectedAmenities[];
+  public selectedSafety:SelectedSafety[];
   public formConfirm: FormGroup;
-  
+  public selAmenities:Array<any> = [];
+  public selSafety:Array<any> = [];
   public busForm: FormGroup;
   public routeList: FormArray;
   public seatlayoutList:FormArray;
@@ -898,12 +904,12 @@ export class BusComponent implements OnInit {
           
           this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
           let stoppages=timing.data.stoppage_timing;
-          //this.sourceLocationRecord.length=0;
+          //this.busRoutesRecords.clear();
           for(let items of timing.data.routes)
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
-              source_id: [items['location_id'], Validators.compose([Validators.required])], 
+              source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
             this.busRoutesRecords.insert(arraylen, new_BusRoute_group);
@@ -915,24 +921,17 @@ export class BusComponent implements OnInit {
               records=>{
                 this.sourceLocationRecord = (<FormArray>this.busForm.controls['busRoutes']).at(arraylen).get('sourceBoarding') as FormArray;     
                 let spoints="";
-                this.boardings=records.data;      
-                for(let items of this.boardings)
-                {
-                  this.boardingRecord=items;
-                  spoints=this.boardingRecord.boarding_point.split("#$");
-                }
-                let sourceLocations= spoints;
-                
-                
-                for(let SourceLoop of sourceLocations)
+                this.boardings=records.data;     
+
+                for(let SourceLoop of this.boardings)
                 {
                   let arraylen_child = this.sourceLocationRecord.length;
                   foundValue=Array()
-                  if(stoppages.find(obj=>obj.stoppage_name===SourceLoop))
+                  if(stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point))
                   {
-                    var foundValue = stoppages.find(obj=>obj.stoppage_name===SourceLoop).stoppage_time;
+                    var foundValue = stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point).stoppage_time;
                     let newSourcegroup: FormGroup = this.fb.group({
-                      sourceLocation: [SourceLoop],
+                      sourceLocation: [SourceLoop.boarding_point],
                       sourcechecked:["true"],
                       sourceTime:[foundValue]
                     });
@@ -941,7 +940,7 @@ export class BusComponent implements OnInit {
                   else
                   {
                     let newSourcegroup: FormGroup = this.fb.group({
-                      sourceLocation: [SourceLoop],
+                      sourceLocation: [SourceLoop.boarding_point],
                       sourcechecked:[null],
                       sourceTime:[null]
                     });
@@ -972,10 +971,10 @@ export class BusComponent implements OnInit {
             let arrayroutelen = this.busRoutesInfoRecords.length;
 
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
-              from_location:[singleRoute.source_id],
-              to_location:[singleRoute.destination_id],
-              arr_days:[singleRoute.start_j_days],
-              dep_days:[singleRoute.j_day],
+              from_location:[JSON.parse(singleRoute.source_id)],
+              to_location:[JSON.parse(singleRoute.destination_id)],
+              arr_days:[JSON.parse(singleRoute.start_j_days)],
+              dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare]
             });
@@ -1031,21 +1030,23 @@ export class BusComponent implements OnInit {
     this.ModalHeading = "Bus Copied";
     this.ModalBtn = "Add New";
     this.busRecord=this.buses[id] ;
+    ///this.selAmenities="";
     
-    
+   
+    //console.log(this.busRecord);
     this.busForm = this.fb.group({
       id:[null],
-      bus_operator_id: [this.busRecord.bus_operator_id, Validators.compose([Validators.required])],
+      bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
       bus_description:[this.busRecord.bus_description],
-      bus_type_id: [this.busRecord.bus_type_id, Validators.compose([Validators.required])],
-      bus_sitting_id: [this.busRecord.bus_sitting_id, Validators.compose([Validators.required])],
-      cancellationslabs_id: [this.busRecord.cancellationslabs_id, Validators.compose([Validators.required])],
+      bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
+      bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
       amenities:[null],
       safety:[null],
-      bus_seat_layout_id: [this.busRecord.bus_seat_layout_id, Validators.compose([Validators.required])],
+      bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
         this.fb.group({
           upperBerth:this.fb.array([]),//Upper Berth Items Will be Added Here
@@ -1065,7 +1066,6 @@ export class BusComponent implements OnInit {
       o_sms_ticket: [null], 
       o_sms_cancel: [null]
     });
-
     this.getCancellationRule(this.busRecord.cancellationslabs_id);
 
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
@@ -1207,7 +1207,7 @@ export class BusComponent implements OnInit {
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
-              source_id: [items['location_id'], Validators.compose([Validators.required])], 
+              source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
             this.busRoutesRecords.insert(arraylen, new_BusRoute_group);
@@ -1265,10 +1265,10 @@ export class BusComponent implements OnInit {
             let arrayroutelen = this.busRoutesInfoRecords.length;
 
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
-              from_location:[singleRoute.source_id],
-              to_location:[singleRoute.destination_id],
-              arr_days:[singleRoute.start_j_days],
-              dep_days:[singleRoute.j_day],
+              from_location:[JSON.parse(singleRoute.source_id)],
+              to_location:[JSON.parse(singleRoute.destination_id)],
+              arr_days:[JSON.parse(singleRoute.start_j_days)],
+              dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare]
             });
@@ -1285,6 +1285,31 @@ export class BusComponent implements OnInit {
         }
       }
     );
+
+    this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
+      response=>{
+        this.selectedAmenities=response.data;
+        for(let Amentiesrec of response.data)
+        {
+          this.selAmenities.push(JSON.parse(Amentiesrec.amenities_id));
+        }
+        
+        this.busForm.controls.amenities.setValue(this.selAmenities);
+      }
+    );
+    this.busService.fetchBusSafety(this.busRecord.id).subscribe(
+      response=>{
+        this.selectedSafety=response.data;
+        for(let safetyRec of response.data)
+        {
+          this.selSafety.push(JSON.parse(safetyRec.safety_id));
+        }
+        
+        this.busForm.controls.safety.setValue(this.selSafety);
+      }
+    );
+
+
     
 
 
@@ -1297,17 +1322,17 @@ export class BusComponent implements OnInit {
     
     this.busForm = this.fb.group({
       id:[null],
-      bus_operator_id: [this.busRecord.bus_operator_id, Validators.compose([Validators.required])],
+      bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
       bus_description:[this.busRecord.bus_description],
-      bus_type_id: [this.busRecord.bus_type_id, Validators.compose([Validators.required])],
-      bus_sitting_id: [this.busRecord.bus_sitting_id, Validators.compose([Validators.required])],
-      cancellationslabs_id: [this.busRecord.cancellationslabs_id, Validators.compose([Validators.required])],
+      bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
+      bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
       amenities:[null],
       safety:[null],
-      bus_seat_layout_id: [this.busRecord.bus_seat_layout_id, Validators.compose([Validators.required])],
+      bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
         this.fb.group({
           upperBerth:this.fb.array([]),//Upper Berth Items Will be Added Here
@@ -1470,7 +1495,7 @@ export class BusComponent implements OnInit {
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
-              source_id: [items['location_id'], Validators.compose([Validators.required])], 
+              source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
             this.busRoutesRecords.insert(arraylen, new_BusRoute_group);
@@ -1518,10 +1543,10 @@ export class BusComponent implements OnInit {
             let arrayroutelen = this.busRoutesInfoRecords.length;
 
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
-              from_location:[singleRoute.destination_id],
-              to_location:[singleRoute.source_id],
-              arr_days:[singleRoute.j_day],
-              dep_days:[singleRoute.start_j_days],
+              from_location:[JSON.parse(singleRoute.destination_id)],
+              to_location:[JSON.parse(singleRoute.source_id)],
+              arr_days:[JSON.parse(singleRoute.j_day)],
+              dep_days:[JSON.parse(singleRoute.start_j_days)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare]
             });
@@ -1536,6 +1561,28 @@ export class BusComponent implements OnInit {
           }
           
         }
+      }
+    );
+    this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
+      response=>{
+        this.selectedAmenities=response.data;
+        for(let Amentiesrec of response.data)
+        {
+          this.selAmenities.push(JSON.parse(Amentiesrec.amenities_id));
+        }
+        
+        this.busForm.controls.amenities.setValue(this.selAmenities);
+      }
+    );
+    this.busService.fetchBusSafety(this.busRecord.id).subscribe(
+      response=>{
+        this.selectedSafety=response.data;
+        for(let safetyRec of response.data)
+        {
+          this.selSafety.push(JSON.parse(safetyRec.safety_id));
+        }
+        
+        this.busForm.controls.safety.setValue(this.selSafety);
       }
     );
   }
@@ -1570,15 +1617,16 @@ export class BusComponent implements OnInit {
   updateSeatLayout()
   {
     const data ={
-      id:this.busRecord.id,
       user_id :'1',
       bus_id:this.busRecord.id,
+      id:this.busForm.value.bus_seat_layout_id,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
       created_by:'Admin',
     };
+    console.log(data);
     if(data.id!=null)
     {
-      this.busService.updateSelectedData(data.id,data).subscribe(
+      this.busService.updateSelectedData(data.bus_id,data).subscribe(
         resp => {
           if(resp.status==1)
           {   
@@ -1601,14 +1649,14 @@ export class BusComponent implements OnInit {
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
       bus_description:[this.busRecord.bus_description],
-      bus_operator_id: [this.busRecord.bus_operator_id, Validators.compose([Validators.required])],
+      bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
-      bus_type_id: [this.busRecord.bus_type_id, Validators.compose([Validators.required])],
-      bus_sitting_id: [this.busRecord.bus_sitting_id, Validators.compose([Validators.required])],
-      cancellationslabs_id: [this.busRecord.cancellationslabs_id, Validators.compose([Validators.required])],
+      bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
+      bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
-      bus_seat_layout_id: [this.busRecord.bus_seat_layout_id, Validators.compose([Validators.required])],
+      bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
         this.fb.group({
           upperBerth:this.fb.array([
@@ -1974,11 +2022,7 @@ export class BusComponent implements OnInit {
     this.ModalHeading = "Update Bus";
     this.ModalBtn = "Update";
     this.busRecord=this.buses[id] ;
-    this.selectedAmenities=[
-      {id:"426",name:"Water Bottle"},
-      {id:"428",name:"Charging Point"},
-      {id:"434",name:"Music System"}
-    ];
+
     this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
       response=>{
         this.selectedAmenities=response.data;
@@ -1988,38 +2032,46 @@ export class BusComponent implements OnInit {
       resp=>{
         this.selectedcSlabRecord=resp.data;
         this.selectSlab = resp.data;
-            
-        for(let items of this.selectSlab)
-        {
-          this.selectedcSlabRecord=items;
-          let durationData=this.selectedcSlabRecord.duration;
-          durationData=durationData.replace("#$0-","#$Below ");
-          durationData=durationData.replace(/-/g," to ");
-          durationData=durationData.replace(/#/g," Hrs #");
-          durationData=durationData.replace("Hrs #"," Hrs and Above #");
-          durationData=durationData.concat(" Hrs");
-         
-          this.allDurations=durationData.split("#$");
-          this.allDeductions=this.selectedcSlabRecord.deduction.split("#$");
-
-        }
+        this.allDurations=this.selectSlab[0].slab_info;
 
       }
     );
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
       bus_description:[this.busRecord.bus_description],
-      bus_operator_id: [this.busRecord.bus_operator_id, Validators.compose([Validators.required])],
+      bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
-      bus_type_id: [this.busRecord.bus_type_id, Validators.compose([Validators.required])],
-      bus_sitting_id: [this.busRecord.bus_sitting_id, Validators.compose([Validators.required])],
-      cancellationslabs_id: [this.busRecord.cancellationslabs_id, Validators.compose([Validators.required])],
+      bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
+      bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
-      amenities:[this.amenities],
-      safety:[this.busRecord.safety]
+      amenities:[],
+      safety:[]
       // destinationDroppings: this.fb.array([]) 
     });
+    this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
+      response=>{
+        this.selectedAmenities=response.data;
+        for(let Amentiesrec of response.data)
+        {
+          this.selAmenities.push(JSON.parse(Amentiesrec.amenities_id));
+        }
+        
+        this.busForm.controls.amenities.setValue(this.selAmenities);
+      }
+    );
+    this.busService.fetchBusSafety(this.busRecord.id).subscribe(
+      response=>{
+        this.selectedSafety=response.data;
+        for(let safetyRec of response.data)
+        {
+          this.selSafety.push(JSON.parse(safetyRec.safety_id));
+        }
+        
+        this.busForm.controls.safety.setValue(this.selSafety);
+      }
+    );
   }
   deleteBoardingDropping(event : Event, delitem:any)
   {

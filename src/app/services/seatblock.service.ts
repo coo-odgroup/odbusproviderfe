@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-   
-import {  Observable, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import {Constants} from '../constant/constant';
+import { Constants} from '../constant/constant';
+
 @Injectable({
   providedIn: 'root'
 })
-export class SeatlayoutService {
-
+export class SeatblockService {
   private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({
@@ -17,50 +16,45 @@ export class SeatlayoutService {
   }
 
   constructor(private httpClient: HttpClient) { }
+
+  getById(id): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/relations/' + id).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/BusSeatLayout').pipe(
+    return this.httpClient.get(this.apiURL + '/seatblock/').pipe(
       catchError(this.errorHandler)
     )
   }
-  seatsBus(post){
-    return this.httpClient.post<any>(this.apiURL + '/seatsBus',JSON.stringify(post), this.httpOptions)
+
+  create(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/seatblock', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
- 
-  create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/BusSeatLayout', JSON.stringify(post), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
+
   update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/BusSeatLayout/' + id, JSON.stringify(post), this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/seatblock/' + id, JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  getByID(id){
-    return this.httpClient.get<any>(this.apiURL + '/BusSeatLayoutRecord/' + id, this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
- 
-  
   delete(id){
-    return this.httpClient.delete<any>(this.apiURL + '/BusSeatLayout/' + id, this.httpOptions)
+    return this.httpClient.delete<any>(this.apiURL + '/seatblock/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
   chngsts(id){
-    return this.httpClient.put<any>(this.apiURL + '/changeStatusBusSeatLayout/' + id, this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/changeseatblockStatus/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+  
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

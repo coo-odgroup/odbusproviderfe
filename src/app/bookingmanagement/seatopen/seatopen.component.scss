@@ -1,0 +1,88 @@
+::ng-deep table.dataTable td.dataTables_empty {
+    display: none;
+}
+::ng-deep tr.odd
+{
+    display: none;
+}
+::ng-deep tr.even
+{
+    display: none;
+}
+
+
+::ng-deep .seaterImage
+{
+    width: 35px;
+    height: 27px;
+    background: url('../../../assets/images/seater.png') no-repeat;
+    display:flex;
+    
+}
+::ng-deep .seatHolder
+{
+    cursor: pointer;
+}
+::ng-deep .seatHolder input
+{
+    display: none;
+}
+::ng-deep .seatHolder input[type="checkbox"]:checked + .seaterImage {
+    background: url('../../../assets/images/seater-available.png') no-repeat center center;
+    cursor:pointer;
+}
+
+
+::ng-deep .seatHolder input[type="checkbox"]:disabled + .seaterImage {
+    background: url('../../../assets/images/seater_none.png') no-repeat center center;
+    cursor:not-allowed;
+}
+
+::ng-deep .sleeperImage
+{
+    width: 45px;
+    height: 27px;
+    background: url('../../../assets/images/sleeper.png') no-repeat center center;
+    display:flex;
+}
+::ng-deep .seatHolder input[type="checkbox"]:checked + .sleeperImage {
+    background: url('../../../assets/images/sleeper-available.png') no-repeat center center;
+    cursor:pointer;
+}
+
+::ng-deep .seatHolder input[type="checkbox"]:disabled + .sleeperImage {
+    background: url('../../../assets/images/sleeper_none.png') no-repeat center center;
+    cursor:not-allowed;
+}
+
+::ng-deep .verticalImage
+{
+    width: 35px;
+    height: 45px;
+    background: url('../../../assets/images/vertical.png') no-repeat center center;
+    display:flex;
+}
+::ng-deep .seatHolder input[type="checkbox"]:checked + .verticalImage {
+    background: url('../../../assets/images/vertical-available.png') no-repeat center center;
+    cursor:pointer;
+}
+::ng-deep .seatHolder input[type="checkbox"]:disabled + .verticalImage {
+    background: url('../../../assets/images/vertical.png') no-repeat center center;
+    cursor: not-allowed;
+}
+
+::ng-deep .blankImage
+{
+    width: 35px;
+    height: 27px;
+    background: url('../../../assets/images/noborderblank.png') no-repeat center center;
+    display:flex;
+    cursor:none;
+}
+::ng-deep select:disabled {
+    cursor: not-allowed;
+}
+::ng-deep .dropdown-item:hover > .text-c-green
+{
+    color: #FFF;
+}

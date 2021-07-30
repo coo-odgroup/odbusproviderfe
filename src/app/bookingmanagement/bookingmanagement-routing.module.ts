@@ -21,6 +21,14 @@ const routes: Routes = [
         path: 'festivalfare',
         loadChildren: () => import('./festivalfare/festivalfare.module').then(module => module.FestivalFareModule)
       },      
+	  {
+        path: 'seatopen',
+        loadChildren: () => import('./seatopen/seatopen.module').then(module => module.SeatOpenModule)
+      }, 
+      {
+        path: 'seatblock',
+        loadChildren: () => import('./seatblock/seatblock.module').then(module => module.SeatBlockModule)
+      },      
     ]
   }
 ];
