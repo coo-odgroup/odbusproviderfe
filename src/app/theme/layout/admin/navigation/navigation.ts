@@ -157,12 +157,7 @@ const NavigationItems = [
                       type : 'item',
                       url  : 'bookingmanagement/buscancellation'
                   },
-                  {
-                      id   : 'seatBlock',
-                      title: 'seat  Block',
-                      type : 'item',
-                      url  : 'bookingmanagement/seatBlock'
-                  },
+                 
                   {
                       id   : 'seatBlock',
                       title: 'seat  Block',

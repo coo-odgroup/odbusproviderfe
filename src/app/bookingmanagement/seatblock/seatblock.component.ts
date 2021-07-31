@@ -215,11 +215,8 @@ export class SeatblockComponent implements OnInit {
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
         this.selectedSeats = seatData.data;
-        // console.log(seatData);
-      }
-    );
-
-    this.seatlayoutService.seatsBus(data).subscribe(
+        //console.log(this.selectedSeats);
+        this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
         // console.log(resp);
         let counter = 0;
@@ -251,6 +248,7 @@ export class SeatblockComponent implements OnInit {
               let collen = this.seatLayoutCol.length;
 
               if (checkedval == "true") {
+                //console.log(this.seatBlockRecord.seat_block_seats);
                 if (!this.seatBlockRecord.seat_block_seats) {
                   let columnData: FormGroup = this.fb.group({
                     seatText: [seatData.seatText],
@@ -264,7 +262,10 @@ export class SeatblockComponent implements OnInit {
                   this.seatLayoutCol.insert(collen, columnData);
                 }
                 else {
-                  var isPresent = this.seatBlockRecord.seat_block_seats.some(function (el) { return el.seat_id === seatData.id });
+                  var isPresent = this.seatBlockRecord.seat_block_seats.some(function (el) { 
+                    
+                    return JSON.parse(el.seat_id) === JSON.parse(seatData.id); 
+                  });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
                       seatText: [seatData.seatText],
@@ -347,7 +348,10 @@ export class SeatblockComponent implements OnInit {
                   this.seatLayoutCol.insert(collen, columnData);
                 }
                 else {
-                  var isPresent = this.seatBlockRecord.seat_block_seats.some(function (el) { return el.seat_id === seatData.id });
+                  
+                  var isPresent = this.seatBlockRecord.seat_block_seats.some(function (el) { 
+                    return JSON.parse(el.seat_id) === JSON.parse(seatData.id); 
+                  });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
                       seatText: [seatData.seatText],
@@ -397,6 +401,10 @@ export class SeatblockComponent implements OnInit {
 
       }
     );
+      }
+    );
+
+    
   }
 
   ResetAttributes() {
@@ -583,9 +591,9 @@ export class SeatblockComponent implements OnInit {
     let date = [d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2)].join('-');
 
     this.seatBlockForm = this.fb.group({
-      bus_operator_id: [this.seatBlockRecord.bus.bus_operator_id],
-      id: [this.seatBlockRecord.id],
-      bus_id: [this.seatBlockRecord.bus_id],
+      bus_operator_id: [JSON.parse(this.seatBlockRecord.bus.bus_operator_id)],
+      id: [JSON.parse(this.seatBlockRecord.id)],
+      bus_id: [JSON.parse(this.seatBlockRecord.bus_id)],
       date: date,
       reason: [this.seatBlockRecord.reason],
 

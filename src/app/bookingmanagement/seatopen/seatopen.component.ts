@@ -275,7 +275,9 @@ export class SeatopenComponent implements OnInit {
                   this.seatLayoutCol.insert(collen, columnData);
                 }
                 else {
-                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) { return el.seat_id === seatData.id });
+                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) { 
+                    return JSON.parse(el.seat_id) === JSON.parse(seatData.id); 
+                  });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
                       seatText: [seatData.seatText],
@@ -358,7 +360,9 @@ export class SeatopenComponent implements OnInit {
                   this.seatLayoutCol.insert(collen, columnData);
                 }
                 else {
-                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) { return el.seat_id === seatData.id });
+                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) {
+                     return JSON.parse(el.seat_id) === JSON.parse(seatData.id);
+                     });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
                       seatText: [seatData.seatText],
@@ -579,9 +583,9 @@ export class SeatopenComponent implements OnInit {
     let date = [d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2)].join('-');
 
     this.seatOpenForm = this.fb.group({
-      bus_operator_id: [this.seatOpenRecord.bus.bus_operator_id],
+      bus_operator_id: [JSON.parse(this.seatOpenRecord.bus.bus_operator_id)],
       id: [this.seatOpenRecord.id],
-      bus_id: [this.seatOpenRecord.bus_id],
+      bus_id: [JSON.parse(this.seatOpenRecord.bus_id)],
       date: date,
       reason: [this.seatOpenRecord.reason],
 
