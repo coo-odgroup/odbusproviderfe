@@ -5,7 +5,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import {SeatopenComponent} from './seatopen.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import {SeatOpenRoutingModule} from './seatopen-routing.module';
@@ -17,8 +16,7 @@ import {SeatOpenRoutingModule} from './seatopen-routing.module';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    DataTablesModule,
-    ToastyModule.forRoot()
+    DataTablesModule
   ],
   declarations: [ SeatopenComponent],
   providers: [NotificationService]

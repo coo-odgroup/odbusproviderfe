@@ -4,7 +4,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Seatblock } from '../../model/seatblock';
 import { DataTablesResponse } from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
-// import { SeatblockService } from '../../services/seatopen.service';
 import { SeatblockService } from '../../services/seatblock.service';
 import { BusService } from '../../services/bus.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';

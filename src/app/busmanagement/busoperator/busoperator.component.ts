@@ -241,7 +241,7 @@ export class BusoperatorComponent implements OnInit {
         if(resp.data==1)
         {
           this.validEmail=this.form.value.email_id + " Already Exists";
-          this.form.controls.email_id.setValue('');
+          //this.form.controls.email_id.setValue('');
           
         }
         else
@@ -263,7 +263,7 @@ export class BusoperatorComponent implements OnInit {
         if(resp.data==1)
         {
           this.validPhone=this.form.value.contact_number + " Already Exists";
-          this.form.controls.contact_number.setValue('');
+          //this.form.controls.contact_number.setValue('');
           
          
         }

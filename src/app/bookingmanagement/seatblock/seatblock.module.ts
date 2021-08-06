@@ -5,7 +5,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import {SeatblockComponent} from './seatblock.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {SeatBlockRoutingModule} from './seatblock-routing.module';
 
@@ -16,8 +15,7 @@ import {SeatBlockRoutingModule} from './seatblock-routing.module';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    DataTablesModule,
-    ToastyModule.forRoot()
+    DataTablesModule
   ],
   declarations: [ SeatblockComponent],
   providers: [NotificationService]
