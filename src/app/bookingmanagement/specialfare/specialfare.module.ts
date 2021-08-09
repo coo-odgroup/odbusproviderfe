@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import {SpecialfareComponent} from './specialfare.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgSelectModule } from '@ng-select/ng-select';
 //import {SelectModule} from 'ng-select';
 
@@ -18,8 +17,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     DataTablesModule,
     //SelectModule,
-    NgSelectModule,
-    ToastyModule.forRoot()
+    NgSelectModule
   ],
   declarations: [ SpecialfareComponent],
   providers: [NotificationService]

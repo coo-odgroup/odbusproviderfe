@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BusscheduleComponent } from './busschedule.component';
 import {NotificationService} from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 
@@ -19,9 +18,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
-    NgSelectModule,
-    ToastyModule.forRoot()
-  ],
+    NgSelectModule  ],
   declarations: [ BusscheduleComponent],
   providers:[NotificationService]
 })

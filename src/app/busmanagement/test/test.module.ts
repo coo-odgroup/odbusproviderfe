@@ -6,8 +6,7 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TestComponent } from './test.component';
 import {NotificationService} from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
-import {SelectModule} from 'ng-select';
+
 import { DragulaModule } from 'ng2-dragula';
 @NgModule({
   imports: [
@@ -16,9 +15,7 @@ import { DragulaModule } from 'ng2-dragula';
     SharedModule,
     FormsModule,
     DataTablesModule,
-    SelectModule,
     ReactiveFormsModule,
-    ToastyModule.forRoot(),
     DragulaModule.forRoot()
   ],
   declarations: [ TestComponent],

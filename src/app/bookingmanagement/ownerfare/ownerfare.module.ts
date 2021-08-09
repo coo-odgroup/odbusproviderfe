@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import {OwnerfareComponent} from './ownerfare.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
@@ -16,8 +15,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    DataTablesModule,
-    ToastyModule.forRoot()
+    DataTablesModule
   ],
   declarations: [ OwnerfareComponent],
   providers: [NotificationService]

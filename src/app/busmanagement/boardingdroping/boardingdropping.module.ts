@@ -7,7 +7,6 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BoardingdropingComponent } from './boardingdroping.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
-import {ToastyModule} from 'ng2-toasty';
 
 @NgModule({
   imports: [
@@ -17,8 +16,7 @@ import {ToastyModule} from 'ng2-toasty';
     FormsModule,
     DataTablesModule,
     NgSelectModule,
-    ReactiveFormsModule,
-    ToastyModule.forRoot()
+    ReactiveFormsModule
   ],
   declarations: [ BoardingdropingComponent],
   providers: [NotificationService]

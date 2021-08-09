@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-//import {ToastData, ToastOptions, ToastyService} from 'ng2-toasty';
 import { ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root'

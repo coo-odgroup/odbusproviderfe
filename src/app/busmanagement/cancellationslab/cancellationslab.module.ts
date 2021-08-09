@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { CancellationslabComponent } from './cancellationslab.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   imports: [
@@ -16,7 +15,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     DataTablesModule,
     NgbModule,
-    ToastyModule.forRoot()
   ],
   declarations: [ CancellationslabComponent],
   providers: [NotificationService]

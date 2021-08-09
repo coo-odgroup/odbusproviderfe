@@ -6,8 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import {FestivalfareComponent} from './festivalfare.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -15,9 +13,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FestivalFareRoutingModule,
     SharedModule,
     FormsModule,
-    NgSelectModule,
     DataTablesModule,
-    ToastyModule.forRoot()
   ],
   declarations: [ FestivalfareComponent],
   providers: [NotificationService]

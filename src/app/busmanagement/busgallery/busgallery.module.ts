@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BusgalleryComponent } from './busgallery.component';
 import {NotificationService} from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 
 
 
@@ -17,9 +16,7 @@ import {ToastyModule} from 'ng2-toasty';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule,
-    ToastyModule.forRoot()
-  ],
+    DataTablesModule  ],
   declarations: [ BusgalleryComponent],
   providers:[NotificationService]
 })

@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { BussequenceComponent } from './bussequence.component';
 import {NotificationService} from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 
 @NgModule({
   imports: [
@@ -14,8 +13,7 @@ import {ToastyModule} from 'ng2-toasty';
     BusSequenceRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule,
-    ToastyModule.forRoot()
+    DataTablesModule
   ],
   declarations: [ BussequenceComponent],
   providers:[NotificationService]

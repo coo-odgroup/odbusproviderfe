@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LocationComponent } from './location.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 
 @NgModule({
   imports: [
@@ -15,8 +14,7 @@ import {ToastyModule} from 'ng2-toasty';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    DataTablesModule,
-    ToastyModule.forRoot()
+    DataTablesModule
   ],
   declarations: [ LocationComponent],
   providers: [NotificationService]

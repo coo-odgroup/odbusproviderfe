@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 //import {FormsModule} from '@angular/forms';
 import { BuscancellationComponent } from './buscancellation.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 //import {SelectModule} from 'ng-select';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
@@ -21,8 +20,7 @@ import { FormsModule } from '@angular/forms';
     DataTablesModule,
    // SelectModule,
    NgSelectModule,
-    FormsModule,
-    ToastyModule.forRoot()
+    FormsModule
   ],
   declarations: [ BuscancellationComponent],
   providers: [NotificationService]

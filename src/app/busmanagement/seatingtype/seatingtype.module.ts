@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { SeatingtypeComponent } from './seatingtype.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -17,8 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule, NgbModule,
-    ToastyModule.forRoot()
+    DataTablesModule, NgbModule
   ],
   declarations: [ SeatingtypeComponent],
   providers: [NotificationService]

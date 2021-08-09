@@ -6,8 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SafetyComponent } from './safety.component';
 import {NotificationService} from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
-import {SelectModule} from 'ng-select';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,9 +13,7 @@ import {SelectModule} from 'ng-select';
     SharedModule,
     FormsModule,
     DataTablesModule,
-    SelectModule,
-    ReactiveFormsModule,
-    ToastyModule.forRoot()
+    ReactiveFormsModule
   ],
   declarations: [ SafetyComponent],
   providers:[NotificationService]

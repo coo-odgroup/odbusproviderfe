@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BuswizardComponent } from './buswizard.component';
 import {NotificationService} from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import {SelectModule} from 'ng-select';
 import { ArchwizardModule } from 'angular-archwizard';
 @NgModule({
@@ -18,8 +17,7 @@ import { ArchwizardModule } from 'angular-archwizard';
     DataTablesModule,
     SelectModule,
     ReactiveFormsModule,
-    ArchwizardModule,
-    ToastyModule.forRoot(),
+    ArchwizardModule
   ],
   declarations: [ BuswizardComponent],
   providers:[NotificationService]

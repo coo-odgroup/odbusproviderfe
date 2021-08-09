@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SeatfareComponent } from './seatfare.component';
 import {NotificationService} from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ArchwizardModule } from 'angular-archwizard';
@@ -20,9 +19,7 @@ import { ArchwizardModule } from 'angular-archwizard';
     DataTablesModule,
     NgSelectModule,
     ReactiveFormsModule,
-    ArchwizardModule,
-    ToastyModule.forRoot()
-  ],
+    ArchwizardModule  ],
   declarations: [ SeatfareComponent],
   providers:[NotificationService]
 })

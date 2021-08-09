@@ -7,7 +7,6 @@ import { DataFilterPipe } from './components/data-table/data-filter.pipe';
 import { TodoListRemoveDirective } from './components/todo/todo-list-remove.directive';
 import { TodoCardCompleteDirective } from './components/todo/todo-card-complete.directive';
 import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { ClickOutsideModule } from 'ng-click-outside';
 
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { ApexChartComponent } from './components/chart/apex-chart/apex-chart.component';
@@ -35,7 +34,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardModule,
     BreadcrumbModule,
     ModalModule,
-    ClickOutsideModule,
     LightboxModule
   ],
   exports: [
@@ -50,7 +48,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DataFilterPipe,
     TodoListRemoveDirective,
     TodoCardCompleteDirective,
-    ClickOutsideModule,
     SpinnerComponent,
     ApexChartComponent,
     GalleryComponent,

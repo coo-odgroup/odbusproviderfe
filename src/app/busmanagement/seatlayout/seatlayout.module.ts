@@ -6,7 +6,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { SeatlayoutComponent } from './seatlayout.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import { DragulaModule } from 'ng2-dragula';
 
 @NgModule({
@@ -16,7 +15,6 @@ import { DragulaModule } from 'ng2-dragula';
     SharedModule,
     FormsModule,
     DataTablesModule,
-    ToastyModule.forRoot(),
     DragulaModule.forRoot()
   ],
   declarations: [ SeatlayoutComponent],

@@ -6,9 +6,7 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { FormValidationComponent } from './formValidation.component';
 import { NotificationService } from '../../services/notification.service';
-import {ToastyModule} from 'ng2-toasty';
 import {SelectModule} from 'ng-select';
-import {AngularDualListBoxModule} from 'angular-dual-listbox';
 
 
 @NgModule({
@@ -19,8 +17,6 @@ import {AngularDualListBoxModule} from 'angular-dual-listbox';
     FormsModule,
     DataTablesModule,
     SelectModule,
-    AngularDualListBoxModule,
-    ToastyModule.forRoot()
   ],
   declarations: [ FormValidationComponent],
   providers: [NotificationService]
