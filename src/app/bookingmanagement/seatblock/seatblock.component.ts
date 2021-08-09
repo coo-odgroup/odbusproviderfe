@@ -263,7 +263,7 @@ export class SeatblockComponent implements OnInit {
                 else {
                   var isPresent = this.seatBlockRecord.seat_block_seats.some(function (el) { 
                     
-                    return JSON.parse(el.seat_id) === JSON.parse(seatData.id); 
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
                   });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
@@ -349,7 +349,7 @@ export class SeatblockComponent implements OnInit {
                 else {
                   
                   var isPresent = this.seatBlockRecord.seat_block_seats.some(function (el) { 
-                    return JSON.parse(el.seat_id) === JSON.parse(seatData.id); 
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
                   });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({

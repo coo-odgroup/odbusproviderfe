@@ -172,7 +172,7 @@ export class SeatopenComponent implements OnInit {
             Constants.BASE_URL + '/getseatopenDT',
             dataTablesParameters, {}
           ).subscribe(resp => {
-
+            console.log(resp);
             this.seatOpen = resp.data.aaData;
 
             // console.log(this.seatOpen);
@@ -185,7 +185,9 @@ export class SeatopenComponent implements OnInit {
               recordsFiltered: resp.data.iTotalDisplayRecords,
               data: resp.data.aaData
             });
+            
           });
+          
       },
       columns: [{ data: 'id' }, { data: 'bus.name' }, { data: 'date_applied' }, { data: 'bus.bus_operator.operator_name' }, { data: 'seatOpen[0].seat_open_seats' }, { data: 'reason' }, {
         data: 'status',
@@ -276,7 +278,7 @@ export class SeatopenComponent implements OnInit {
                 }
                 else {
                   var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) { 
-                    return JSON.parse(el.seat_id) === JSON.parse(seatData.id); 
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
                   });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
@@ -361,7 +363,7 @@ export class SeatopenComponent implements OnInit {
                 }
                 else {
                   var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) {
-                     return JSON.parse(el.seat_id) === JSON.parse(seatData.id);
+                     return JSON.parse(el.seats_id) === JSON.parse(seatData.id);
                      });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
