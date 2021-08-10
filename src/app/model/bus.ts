@@ -25,4 +25,5 @@ export interface Bus {
     status:'1';
     busnamenumber:any;
     bus_amenities:any;
+    max_seat_book:any;
 }

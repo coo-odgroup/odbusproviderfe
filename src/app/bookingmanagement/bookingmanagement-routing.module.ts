@@ -28,6 +28,10 @@ const routes: Routes = [
       {
         path: 'seatblock',
         loadChildren: () => import('./seatblock/seatblock.module').then(module => module.SeatBlockModule)
+      },  
+      {
+        path: 'bookingseized',
+        loadChildren: () => import('./bookingseized/bookingseized.module').then(module => module.BookingseizedModule)
       },      
     ]
   }

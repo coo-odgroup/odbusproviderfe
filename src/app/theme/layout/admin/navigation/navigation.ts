@@ -171,6 +171,12 @@ const NavigationItems = [
                       url  : 'bookingmanagement/seatopen'
                   },
                   {
+                    id   : 'bookingseized',
+                    title: 'Booking Seized',
+                    type : 'item',
+                    url  : 'bookingmanagement/bookingseized'
+                  },
+                  {
                       id   : 'specialfare',
                       title: 'SpecialFare',
                       type : 'item',

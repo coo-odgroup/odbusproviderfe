@@ -359,6 +359,7 @@ export class BusComponent implements OnInit {
       bus_sitting_id: [null, Validators.compose([Validators.required])],
       amenities:[null, Validators.compose([Validators.required])],
       safety:[null],
+      max_seat_book:[6],
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
       selectedSeat:this.fb.array([
@@ -587,6 +588,7 @@ export class BusComponent implements OnInit {
       bus_description:[null],
       bus_type_id: [null, Validators.compose([Validators.required])],
       bus_sitting_id: [null, Validators.compose([Validators.required])],
+      max_seat_book: [null, Validators.compose([Validators.required])],
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
       amenities:[null, Validators.compose([Validators.required])],
