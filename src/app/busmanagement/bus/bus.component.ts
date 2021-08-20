@@ -393,7 +393,8 @@ export class BusComponent implements OnInit {
           arr_days:[null],
           dep_days:[null],
           seater_fare:[null],
-          sleeper_fare:[null]
+          sleeper_fare:[null],
+          booking_seized:[null]
         })
       ]),
       bus_number: [null, Validators.compose([Validators.required])], 
@@ -427,7 +428,8 @@ export class BusComponent implements OnInit {
       arr_days:[null, Validators.compose([Validators.required])],
       dep_days:[null, Validators.compose([Validators.required])],
       seater_fare:[null, Validators.compose([Validators.required])],
-      sleeper_fare:[null, Validators.compose([Validators.required])]
+      sleeper_fare:[null, Validators.compose([Validators.required])],
+      booking_seized:[null, Validators.compose([Validators.required])],
     });
 
 }
@@ -588,7 +590,7 @@ export class BusComponent implements OnInit {
       bus_description:[null],
       bus_type_id: [null, Validators.compose([Validators.required])],
       bus_sitting_id: [null, Validators.compose([Validators.required])],
-      max_seat_book: [null, Validators.compose([Validators.required])],
+      max_seat_book: ['6', Validators.compose([Validators.required])],
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
       amenities:[null, Validators.compose([Validators.required])],
@@ -610,7 +612,8 @@ export class BusComponent implements OnInit {
           arr_days:[null],
           dep_days:[null],
           seater_fare:[null],
-          sleeper_fare:[null]
+          sleeper_fare:[null],
+          booking_seized:[null]
         })
       ]),
       bus_number: [null,Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(15)])], 
@@ -667,6 +670,7 @@ export class BusComponent implements OnInit {
       bus_sitting_id:this.busForm.value.bus_sitting_id,
       bus_type_id:this.busForm.value.bus_type_id,
       cancelation_points:this.busForm.value.cancelation_points,
+      max_seat_book:this.busForm.value.max_seat_book,
       cancellationslabs_id:this.busForm.value.cancellationslabs_id,
       name:this.busForm.value.name,
       bus_number:this.busRecord.bus_number,
@@ -678,6 +682,7 @@ export class BusComponent implements OnInit {
     };
     if(data.id!=null)
     {
+      console.log(data);
       this.busService.update(data.id,data).subscribe(
         resp => {
           if(resp.status==1)
@@ -761,6 +766,7 @@ export class BusComponent implements OnInit {
       bus_type_id:this.busForm.value.bus_type_id,
       cancelation_points:this.busForm.value.cancelation_points,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
+      max_seat_book:this.busForm.value.max_seat_book,
       cancellationslabs_id:this.busForm.value.cancellationslabs_id,
       name:this.busForm.value.name,
       via:this.busForm.value.via,
@@ -782,6 +788,8 @@ export class BusComponent implements OnInit {
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
+    console.log(JSON.stringify(data));
+    return false;
     if(data.id==null)
     {
       this.busService.create(data).subscribe(
@@ -895,7 +903,8 @@ export class BusComponent implements OnInit {
           arr_days:[null],
           dep_days:[null],
           seater_fare:[null],
-          sleeper_fare:[null]
+          sleeper_fare:[null],
+          booking_seized:[null]
         })
       ])
     });
@@ -979,6 +988,7 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare]
+              
             });
             this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
@@ -1044,6 +1054,7 @@ export class BusComponent implements OnInit {
       bus_description:[this.busRecord.bus_description],
       bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
       bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      max_seat_book:[this.busRecord.max_seat_book],
       cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
       amenities:[null],
@@ -1330,6 +1341,7 @@ export class BusComponent implements OnInit {
       bus_description:[this.busRecord.bus_description],
       bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
       bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      max_seat_book:[this.busRecord.max_seat_book],
       cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
       amenities:[null],
@@ -1656,6 +1668,7 @@ export class BusComponent implements OnInit {
       via: [this.busRecord.via, Validators.compose([Validators.required])],
       bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
       bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      max_seat_book:[this.busRecord.max_seat_book],
       cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
       bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
@@ -1788,6 +1801,7 @@ export class BusComponent implements OnInit {
       via: [this.busRecord.via, Validators.compose([Validators.required])],
       bus_type_id: [this.busRecord.bus_type_id, Validators.compose([Validators.required])],
       bus_sitting_id: [this.busRecord.bus_sitting_id, Validators.compose([Validators.required])],
+      max_seat_book:[this.busRecord.max_seat_book],
       cancellationslabs_id: [this.busRecord.cancellationslabs_id, Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
       bus_seat_layout_id: [{value:this.busRecord.bus_seat_layout_id,disabled:true}, Validators.compose([Validators.required])],
@@ -1842,7 +1856,7 @@ export class BusComponent implements OnInit {
               let durationCheck=0;
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="1";
                   seatId=selectedSeat.id;
@@ -1925,7 +1939,7 @@ export class BusComponent implements OnInit {
               let durationCheck=0;
               for(let selectedSeat of this.selectedSeats)
               {
-                if(selectedSeat.berth_type==seatData.berthType && selectedSeat.seat_type==seatData.seatType && selectedSeat.seat_number==seatData.seatText)
+                if(selectedSeat.seats_id==seatData.id)
                 {
                   checkedval="1";
                   seatId=selectedSeat.id;
@@ -2046,6 +2060,7 @@ export class BusComponent implements OnInit {
       via: [this.busRecord.via, Validators.compose([Validators.required])],
       bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
       bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
+      max_seat_book:[this.busRecord.max_seat_book],
       cancellationslabs_id: [JSON.parse(this.busRecord.cancellationslabs_id), Validators.compose([Validators.required])],
       cancelation_points: [this.busRecord.cancelation_points],
       amenities:[],

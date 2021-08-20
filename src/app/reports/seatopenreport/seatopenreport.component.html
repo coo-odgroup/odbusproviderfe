@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Seat Open Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Bus Name</th>
+                            <th scope="col">Operator Name</th>
+                            <th scope="col">Open Seats</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="seatopen?.length != 0">
+                        <tr *ngFor="let sopen of seatopen; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ sopen.date_applied}}</td>
+                            <td>
+                                {{ sopen.bus.name }}
+                            </td>
+
+                            <td>{{ sopen.bus.bus_operator.operator_name }}</td>
+                            <td>
+                                <div *ngFor="
+                              let seat of sopen.seat_open_seats;
+                              let seatIndex = index
+                            ">
+                                    <strong>{{ seatIndex + 1 }}</strong>.{{ seat.seats.seatText }}
+                                </div>
+                            </td>
+                            <td>{{ sopen.reason }}</td>
+                            <td>
+                                <label *ngIf="sopen.status == 1" class="badge badge-light-success ">Active</label>
+                                <label *ngIf="sopen.status == 0" class="badge badge-light-danger ">Pending</label>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </app-card>
+    </div>
+</div>

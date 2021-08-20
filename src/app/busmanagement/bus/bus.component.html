@@ -44,7 +44,7 @@
                         <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();editBus($event, i); OpenModal(editcontent);"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit Basic Info</button>
                         <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();editContact($event, i); OpenModal(contactinfo)"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit Contact</button>
                         <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit Seat Fare</button>
-                        <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();editExtraSeat(i); OpenModal(editExtraSeatLayout);"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit More Seats</button>
+                        <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();editExtraSeat($event, i); OpenModal(editExtraSeatLayout);"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i> Edit More Seats</button>
 
                         <!-- <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;" (click)="ResetAttributes();BusReview(i); OpenModal(busReviewModal)"><i class="icon feather icon-thumbs-up f-w-600 f-16 m-r-15 text-c-green" ></i> Review</button> -->
 
@@ -202,6 +202,7 @@
                                 </div>                      
                               </div>
                           </div>
+                          
                           <div class="col-md-6">
                             <div class="form-group row">
                               <label for="bus" class="col-sm-4 col-form-label">Display Info</label>
@@ -225,49 +226,62 @@
                             </div>
                             <div class="col-md-6">
                               <div class="form-group row">
-                                <label for="bus" class="col-sm-4 col-form-label">Cancellation Slab <span class="text-danger">*</span></label>
+                                <label for="bus" class="col-sm-4 col-form-label">Max Seat Book<span class="text-danger">*</span></label>
                                 <div class="col-sm-8"> 
-
-                                  
-                                    
-                                  <ng-select 
-                                        [items]="cancellationslabs"
-                                        bindLabel="rule_name"
-                                        bindValue="id"
-                                        placeholder="Select Cancellation Slab"                                       
-                                        formControlName="cancellationslabs_id"
-                                        (ngModelChange)="getCancellationRule($event)"
-                                        (change)="getCancellationRule($event)"
-                                        [clearable]="false"
-                                        >
-                                  </ng-select>
-
-                                <!-- <select class="form-control" required formControlName="cancellationslabs_id" [value]="busRecord.cancellationslabs_id" >
-                                  <option *ngFor="let cslab of cancellationslabs" [value]="cslab.id">{{cslab.rule_name}}</option> 
-                                </select>-->
-                                <span class="text-danger" *ngIf="busForm.controls['cancellationslabs_id'].touched && busForm.controls['cancellationslabs_id'].hasError('required')">
-                                  Cancellation Slab is required! </span>
-      
-                                  <div class="row form-group">
-                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
-                                      <strong>Hours before Dep:</strong>
-                                      <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
-                                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
-                                    </div>
-                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
-                                      <strong>Cancellation Charges:</strong>
-                                      <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
-                                    </div>
-          
-                                  </div>
+                                  <input type="text" class="form-control" formControlName="max_seat_book">
                                 </div>                      
                               </div>
-                              <!--
-                                SHOW CANCELLATION RULE TABLE HERE
-                              -->
-                              
-                              
+                             
                             </div>
+                          </div>  
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label for="bus" class="col-sm-4 col-form-label">Cancellation Slab <span class="text-danger">*</span></label>
+                                  <div class="col-sm-8"> 
+                                    <ng-select 
+                                          [items]="cancellationslabs"
+                                          bindLabel="rule_name"
+                                          bindValue="id"
+                                          placeholder="Select Cancellation Slab"                                       
+                                          formControlName="cancellationslabs_id"
+                                          (ngModelChange)="getCancellationRule($event)"
+                                          (change)="getCancellationRule($event)"
+                                          [clearable]="false"
+                                          >
+                                    </ng-select>
+                                    <span class="text-danger" *ngIf="busForm.controls['cancellationslabs_id'].touched && busForm.controls['cancellationslabs_id'].hasError('required')">
+                                    Cancellation Slab is required! </span>
+        
+                                    
+                                  </div>                      
+                                </div>
+                                <!--
+                                  SHOW CANCELLATION RULE TABLE HERE
+                                -->
+                                
+                                
+                              </div>
+                              <div class="col-md-6">
+                                <div class="row form-group">
+                                  <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
+                                    <strong>Hours before Dep:</strong>
+                                    <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
+                                      <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
+                                  </div>
+                                  <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
+                                    <strong>Cancellation Charges:</strong>
+                                    <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
+                                  </div>
+        
+                                </div>
+                              </div>
+    
+                            </div>
+                            <div class="row">
+                           
+                            
+
                             <div class="col-sm-12 centered-content">
                               <div class="btn-group mt-10">
                                 <button type="button" class="btn btn-primary btn-sm" awNextStep>Continue</button>
@@ -991,49 +1005,65 @@
                             </div>
                             <div class="col-md-6">
                               <div class="form-group row">
-                                <label for="bus" class="col-sm-4 col-form-label">Cancellation Slab <span class="text-danger">*</span></label>
-                                <div class="col-sm-8">  
-                                  <ng-select 
-                                        
-                                    [items]="cancellationslabs"
-                                    bindLabel="rule_name"
-                                    bindValue="id"
-                                    placeholder="Choose Cancellation Slab"                                       
-                                    formControlName="cancellationslabs_id"
-                                    [clearable]="false"
-                                    (change)="getCancellationRule($event)"
-                                    >
-                                    </ng-select> 
-                                
-                                <span class="text-danger" *ngIf="busForm.controls['cancellationslabs_id'].touched && busForm.controls['cancellationslabs_id'].hasError('required')">
-                                  Cancellation Slab is required! </span>
-      
-                                  <div class="row form-group">
-                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
-                                      <strong>Hours before Dep:</strong>
-                                      <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
-                                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
-                                    </div>
-                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
-                                      <strong>Cancellation Charges:</strong>
-                                      <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
-                                    </div>
-          
-                                  </div>
+                                <label for="bus" class="col-sm-4 col-form-label">Max Seat Book<span class="text-danger">*</span></label>
+                                <div class="col-sm-8"> 
+                                  <input type="text" class="form-control" formControlName="max_seat_book">
                                 </div>                      
                               </div>
-                              <!--
-                                SHOW CANCELLATION RULE TABLE HERE
-                              -->
-                              
-                              
+                             
                             </div>
+                          </div>
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label for="bus" class="col-sm-4 col-form-label">Cancellation Slab <span class="text-danger">*</span></label>
+                              <div class="col-sm-8">  
+                                <ng-select 
+                                      
+                                  [items]="cancellationslabs"
+                                  bindLabel="rule_name"
+                                  bindValue="id"
+                                  placeholder="Choose Cancellation Slab"                                       
+                                  formControlName="cancellationslabs_id"
+                                  [clearable]="false"
+                                  (change)="getCancellationRule($event)"
+                                  >
+                                  </ng-select> 
+                              
+                              <span class="text-danger" *ngIf="busForm.controls['cancellationslabs_id'].touched && busForm.controls['cancellationslabs_id'].hasError('required')">
+                                Cancellation Slab is required! </span>
+    
+                                
+                              </div>                      
+                            </div>
+                            
+                            
+                          </div>
+                          <div class="col-md-6">
+                            <div class="row form-group">
+                              <div class="col-6" *ngIf="allDurations?.length > 0" style="font-size: 12px;">
+                                <strong>Hours before Dep:</strong>
+                                <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
+                                  <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
+                              </div>
+                              <div class="col-6" *ngIf="allDurations?.length > 0" style="font-size: 12px;">
+                                <strong>Cancellation Charges:</strong>
+                                <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
+                              </div>
+    
+                            </div>
+                          </div>
+                        </div>  
+                        <div class="row">
+
                             <div class="col-sm-12 centered-content">
                               <div class="btn-group mt-10">
                                 <button type="button" class="btn btn-primary btn-sm" awNextStep>Continue</button>
                               </div>
                             </div>
                           </div>
+                          
                           </aw-wizard-step>
                           <aw-wizard-step stepTitle="Layout" [navigationSymbol]="{ symbol: '&#xe88c;', fontFamily: 'feather' }" [style.font-weight]="900">
                             <div class="row">
@@ -1347,8 +1377,14 @@
                                         <span class="text-danger" *ngIf="singleRoute.controls.sleeper_fare.touched && singleRoute.controls.sleeper_fare.hasError('required')">
                                           Sleeper Fare is required! </span>
                                       </div>
+                                      <div class="form-group col-md-1" style="padding:0px 5px;">
+                                        <label for="bus">Seize Time</label>
+                                        <input type="text"  class="form-control" required formControlName="booking_seized" [value]="busRecord.booking_seized" placeholder="Booking Seized" placement="top" ngbTooltip="Booking Seized" />
+                                        <span class="text-danger" *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
+                                          Sleeper Fare is required! </span>
+                                      </div>
                                       <!-- (click)="removeRoute(i)"  -->
-                                      <div class="form-group col-md-2 text-right" style="padding:0px 5px;">
+                                      <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
                                         <label>&nbsp;</label>
                                         <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)" style="margin-top: 32px;"> X </button>
                                       </div>
@@ -1548,6 +1584,23 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
+                          <label for="bus" class="col-sm-4 col-form-label">Max Seat Book<span class="text-danger">*</span></label>
+                          <div class="col-sm-8"> 
+                            <input type="text" class="form-control" formControlName="max_seat_book">
+                          </div>                      
+                        </div>
+                       
+                      </div>
+
+                      
+                      
+
+
+                    </div>
+                    <div class="row">
+                      
+                      <div class="col-md-6">
+                        <div class="form-group row">
                           <label for="bus" class="col-sm-4 col-form-label">Cancellation Rules <span class="text-danger">*</span></label>
                           <div class="col-sm-8">
                             <ng-select 
@@ -1566,26 +1619,26 @@
                           <span class="text-danger" *ngIf="busForm.controls['cancellationslabs_id'].touched && busForm.controls['cancellationslabs_id'].hasError('required')">
                             Cancellation Slab is required! </span>
 
-                            <div class="row form-group">
-                              <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
-                                <strong>Hours before Dep:</strong>
-                                <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
-                                  <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
-                              </div>
-                              <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
-                                <strong>Cancellation Charges:</strong>
-                                <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
-                              </div>
-    
-                            </div>
+                            
                           </div>  
                                               
                         </div>
                         
                       </div>
-                      
+                      <div class="col-md-6">
+                        <div class="row form-group">
+                          <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
+                            <strong>Hours before Dep:</strong>
+                            <div  *ngFor="let cSlabduration of allDurations; let durationIndex=index;" style="border-bottom: 1px solid #000;">
+                              <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}</div>
+                          </div>
+                          <div class="col-6" *ngIf="allDurations?.length > 0" style="margin-top: 20px; font-size: 12px;">
+                            <strong>Cancellation Charges:</strong>
+                            <div  *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;" style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}} %</div>
+                          </div>
 
-
+                        </div>
+                      </div>
                     </div>
                     </form>
                   </div>

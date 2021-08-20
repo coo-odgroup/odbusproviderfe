@@ -215,55 +215,70 @@ const NavigationItems = [
               ]
           },
 
-      {
-          id       : 'reports',
-          title    : 'Reports',
-         // translate: 'NAV.REPORTS',
-          type     : 'collapse',
-          icon     : 'add_shopping_cart',
-          children : [
-              {
-                  id   : 'routes',
-                  title: 'Routes Routes Report',
-                  type : 'item',
-                  url  : 'reports/routes'
-              },
-              {
-                  id   : 'ticket',
-                  title: 'Ticket',
-                  type : 'item',
-                  url  : 'reports/ticket'
-              },
-              {
-                  id   : 'seat',
-                  title: 'Seat',
-                  type : 'item',
-                  url  : 'reports/seat'
-              },
-              {
-                  id   : 'specialfare',
-                  title: 'SpecialFare',
-                  type : 'item',
-                  url  : 'reports/specialfare'
-              },
-              {
-                  id   : 'Bus',
-                  title: 'Bus',
-                  type : 'item',
-                  url  : 'reports/bus'
-              },
-              {
-                  id   : 'trasaction',
-                  title: 'Trasaction',
-                  type : 'item',
-                  url  : 'reports/trasaction'
-              },
-              {
-                  id   : 'owener ',
-                  title: 'Owner',
-                  type : 'item',
-                  url  : 'reports/Owner'
-              }
+        {
+            id       : 'reports',
+            title    : 'Reports',
+            // translate: 'NAV.REPORTS',
+            type     : 'collapse',
+            icon     : 'add_shopping_cart',
+            children : [
+                
+                {
+                    id   : 'routes',
+                    title: 'Routes Routes Report',
+                    type : 'item',
+                    url  : 'reports/routes'
+                },
+                {
+                    id   : 'ticket',
+                    title: 'Ticket',
+                    type : 'item',
+                    url  : 'reports/ticket'
+                },
+                {
+                id   : 'seatopenreport',
+                title: 'Seat Open Report',
+                type : 'item',
+                url  : 'reports/seatopenReport'
+                },
+
+                {
+                id   : 'seatblockreport',
+                title: 'Seat Block Report',
+                type : 'item',
+                url  : 'reports/seatblockReport'
+                },
+
+                {
+                    id   : 'seat',
+                    title: 'Seat',
+                    type : 'item',
+                    url  : 'reports/seat'
+                },
+                {
+                    id   : 'specialfare',
+                    title: 'SpecialFare',
+                    type : 'item',
+                    url  : 'reports/specialfare'
+                },
+                {
+                    id   : 'Bus',
+                    title: 'Bus',
+                    type : 'item',
+                    url  : 'reports/bus'
+                },
+                {
+                    id   : 'trasaction',
+                    title: 'Trasaction',
+                    type : 'item',
+                    url  : 'reports/trasaction'
+                },
+                {
+                    id   : 'owener ',
+                    title: 'Owner',
+                    type : 'item',
+                    url  : 'reports/Owner'
+                }
           
           ]
       },  

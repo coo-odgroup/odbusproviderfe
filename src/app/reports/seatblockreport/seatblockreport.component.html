@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Seat Block Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Bus Name</th>
+                            <th scope="col">Operator Name</th>
+                            <th scope="col">Block Seats</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="seatblock?.length != 0">
+                        <tr *ngFor="let sblock of seatblock; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ sblock.date_applied}}</td>
+                            <td>
+                                {{ sblock.bus.name }}
+                            </td>
+
+                            <td>{{ sblock.bus.bus_operator.operator_name }}</td>
+                            <td>
+                                <div *ngFor="
+                              let seat of sblock.seat_block_seats;
+                              let seatIndex = index
+                            ">
+                                    <strong>{{ seatIndex + 1 }}</strong>.{{ seat.seats.seatText }}
+                                </div>
+                            </td>
+                            <td>{{ sblock.reason }}</td>
+                            <td>
+                                <label *ngIf="sblock.status == 1" class="badge badge-light-success ">Active</label>
+                                <label *ngIf="sblock.status == 0" class="badge badge-light-danger ">Pending</label>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </app-card>
+    </div>
+</div>
