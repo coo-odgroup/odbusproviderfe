@@ -19,14 +19,14 @@ export class ReportsService {
   constructor(private httpClient: HttpClient) { }
 
   seatopenReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/seatopenreport/').pipe(
+    return this.httpClient.get(this.apiURL + '/seatopenreport').pipe(
       catchError(this.errorHandler)
     )
   }
 
 
   seatblockReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/seatblockreport/').pipe(
+    return this.httpClient.get(this.apiURL + '/seatblockreport').pipe(
       catchError(this.errorHandler)
     )
   }

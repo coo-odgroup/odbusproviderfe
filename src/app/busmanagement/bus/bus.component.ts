@@ -682,7 +682,7 @@ export class BusComponent implements OnInit {
     };
     if(data.id!=null)
     {
-      console.log(data);
+      //console.log(data);
       this.busService.update(data.id,data).subscribe(
         resp => {
           if(resp.status==1)
@@ -788,8 +788,6 @@ export class BusComponent implements OnInit {
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
-    console.log(JSON.stringify(data));
-    return false;
     if(data.id==null)
     {
       this.busService.create(data).subscribe(
@@ -1637,7 +1635,7 @@ export class BusComponent implements OnInit {
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
       created_by:'Admin',
     };
-    console.log(data);
+    //console.log(data);
     if(data.id!=null)
     {
       this.busService.updateSelectedData(data.bus_id,data).subscribe(
