@@ -31,7 +31,11 @@ export class ReportsService {
     )
   }
 
-
+  extraseatopenReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/extraseatopenreport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
 
 

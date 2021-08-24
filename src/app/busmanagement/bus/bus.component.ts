@@ -383,6 +383,7 @@ export class BusComponent implements OnInit {
       busRoutes: this.fb.array([
         this.fb.group({
           source_id: [null, Validators.compose([Validators.required])], 
+          sequence: [null, Validators.compose([Validators.required])], 
           sourceBoarding: this.fb.array([])
         })
       ]),
@@ -417,6 +418,7 @@ export class BusComponent implements OnInit {
   // route formgroup
   createRoute(): FormGroup {
       return this.fb.group({
+        sequence: [null, Validators.compose([Validators.required])], 
         source_id: [null, Validators.compose([Validators.required])], 
         sourceBoarding: this.fb.array([])
       });
@@ -602,6 +604,7 @@ export class BusComponent implements OnInit {
       busRoutes: this.fb.array([
         this.fb.group({
           source_id: [null, Validators.compose([Validators.required])], 
+          sequence:[null, Validators.compose([Validators.required])],
           sourceBoarding: this.fb.array([])
         })
       ]),
@@ -918,6 +921,7 @@ export class BusComponent implements OnInit {
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
+              sequence:[null,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -1218,6 +1222,7 @@ export class BusComponent implements OnInit {
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
+              sequence:[null,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -1507,6 +1512,7 @@ export class BusComponent implements OnInit {
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
+              sequence:[null,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });

@@ -225,7 +225,7 @@ const NavigationItems = [
                 
                 {
                     id   : 'routes',
-                    title: 'Routes Routes Report',
+                    title: 'Routes Report',
                     type : 'item',
                     url  : 'reports/routes'
                 },
@@ -248,7 +248,12 @@ const NavigationItems = [
                 type : 'item',
                 url  : 'reports/seatblockReport'
                 },
-
+                {
+                    id   : 'extraseatopenreport',
+                    title: 'Extra Seat Open Report',
+                    type : 'item',
+                    url  : 'reports/extraseatopenReport'
+                  },
                 {
                     id   : 'seat',
                     title: 'Seat',

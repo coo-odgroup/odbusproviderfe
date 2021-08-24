@@ -12,7 +12,11 @@ const routes: Routes = [
       {
         path: 'seatblockReport',
         loadChildren: () => import('./seatblockreport/seatblockreport.module').then(module => module.SeatBlockReportModule)
-      }        
+      },
+      {
+        path: 'extraseatopenReport',
+        loadChildren: () => import('./extraseatopenreport/extraseatopenreport.module').then(module => module.ExtraSeatOpenReportModule)
+      }         
     ]
   }
 ];

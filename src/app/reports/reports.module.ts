@@ -12,9 +12,7 @@ import { ExtraseatopenreportComponent } from './extraseatopenreport/extraseatope
 
 
 @NgModule({
-  declarations: [
-    ExtraseatopenreportComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     ReportRoutingModule

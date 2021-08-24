@@ -16,5 +16,5 @@ export class Constants {
     //FOR LOCAL
     //public static BASE_URL:any ='http://127.0.0.1:8000/api';
     public static BASE_URL:any ='https://provider.neoflix.in/api';
-
+    //public static BASE_URL:any ='https://provider.odbus.co.in/api';
 }

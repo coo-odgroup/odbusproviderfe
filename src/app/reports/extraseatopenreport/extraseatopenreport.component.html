@@ -1,1 +1,47 @@
-<p>extraseatopenreport works!</p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Extra Seat Open Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Bus Name</th>
+                            <th scope="col">Operator Name</th>
+                            <th scope="col">Extra Seat Open Seats</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="extraseatopen?.length != 0">
+                        <tr *ngFor="let exseatopen of extraseatopen; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ exseatopen.date_applied}}</td>
+                            <td>
+                                {{ exseatopen.bus.name }}
+                            </td>
+
+                            <td>{{ exseatopen.bus.bus_operator.operator_name }}</td>
+                            <td>
+                                <div *ngFor="
+                              let seat of exseatopen.seat_block_seats;
+                              let seatIndex = index
+                            ">
+                                    <strong>{{ seatIndex + 1 }}</strong>.{{ seat.seats.seatText }}
+                                </div>
+                            </td>
+                            <td>{{ exseatopen.reason }}</td>
+                            <td>
+                                <label *ngIf="exseatopen.status == 1" class="badge badge-light-success ">Active</label>
+                                <label *ngIf="exseatopen.status == 0" class="badge badge-light-danger ">Pending</label>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>

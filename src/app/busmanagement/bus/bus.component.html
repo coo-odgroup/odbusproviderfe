@@ -494,7 +494,7 @@
                               <div class="row">
                                 <div class="col-6" *ngFor="let singleRoute of routeFormGroup.controls; let i = index;">
                                   <div [formGroupName]="i" class="row">
-                                    <div class="form-group col-10">
+                                    <div class="form-group col-8">
                                       <label>Location and Time <span class="text-danger">*</span></label>
                                       
                                       
@@ -535,9 +535,14 @@
                                         </ng-container> 
                                         
                                     </div>
-                                    <div class="form-group col-md-2 text-right">
-                                      <label>&nbsp;</label>
-                                      <button class="btn btn-danger" type="button" (click)="removeRoute(i)" style="margin-top: 26px;"> X </button>
+                                    <div class="form-group col-md-3">
+                                      <label>Seq <span class="text-danger">*</span></label>
+                                      <input type="text" formControlName="sequence" class="form-control">
+                                      <span class="text-danger" *ngIf="singleRoute.controls.sequence.touched && singleRoute.controls.sequence.hasError('required')">
+                                        Sequence is required! </span>
+                                    </div>
+                                    <div class="form-group col-md-1 text-right">
+                                      <button class="btn btn-danger b" type="button" (click)="removeRoute(i)" style="margin-top: 26px;"> X </button>
                                     </div>
 
 
@@ -1267,7 +1272,7 @@
                               <div class="row">
                                 <div class="col-6" *ngFor="let singleRoute of routeFormGroup.controls; let i = index;">
                                   <div [formGroupName]="i" class="row">
-                                    <div class="form-group col-10">
+                                    <div class="form-group col-8">
                                       <label>Location and Time <span class="text-danger">*</span></label>
                                       <ng-select 
                                         
@@ -1283,34 +1288,43 @@
                                       
                                       <span class="text-danger" *ngIf="singleRoute.controls.source_id.touched && singleRoute.controls.source_id.hasError('required')">
                                         Source is required! </span>
-                                        <ng-container formArrayName="sourceBoarding">
-                                          <ng-container *ngFor="let sourceBoardingFormGroup of singleRoute['controls'].sourceBoarding['controls']; let sourceCounts = index">
-                                            <div formGroupName="{{sourceCounts}}">
-                                              
-                                              <div  class="formgroup row" style="margin-top:10px">
-                                                <div class="col-md-1 form-check" >
-                                                
-                                                    <input type="checkbox" id="source-{{i}}{{sourceCounts}}" [checked]="false" formControlName="sourcechecked">
-                                                  
-                                                </div>
-                                                <div class="col-md-6">
-                                                  <label for="source-{{i}}{{sourceCounts}}">{{sourceBoardingFormGroup.controls.sourceLocation.value}}</label>
-                                                  
-                                                </div>
-                                                <div class="col-md-5">
-                                                  <input type="time" formControlName="sourceTime" class="form-control required" placeholder="Date" atp-time-picker value="20:55" onlyHour="true" onlyAM='true' >
-                                                </div>           
-                                              </div>
-                                            </div>
-                                            
-                                          </ng-container>
-                                        </ng-container> 
+                                        
                                         
                                     </div>
-                                    <div class="form-group col-md-2 text-right">
-                                      <label>&nbsp;</label>
-                                      <button class="btn btn-danger" type="button" (click)="removeRoute(i)" style="margin-top: 26px;"> X </button>
+                                    <div class="form-group col-md-3">
+                                      <label>Seq <span class="text-danger">*</span></label>
+                                      <input type="text" formControlName="sequence" class="form-control">
+                                      <span class="text-danger" *ngIf="singleRoute.controls.sequence.touched && singleRoute.controls.sequence.hasError('required')">
+                                        Sequence is required! </span>
                                     </div>
+                                    <div class="col-md-1 text-right">
+                                      <button class="btn btn-danger btn-sm" type="button" (click)="removeRoute(i)" style="margin-top: 26px;"> X </button>
+                                    </div>
+                                    <div class="form-group col-12">
+                                      <ng-container formArrayName="sourceBoarding">
+                                        <ng-container *ngFor="let sourceBoardingFormGroup of singleRoute['controls'].sourceBoarding['controls']; let sourceCounts = index">
+                                          <div formGroupName="{{sourceCounts}}">
+                                            
+                                            <div  class="formgroup row" style="margin-top:10px">
+                                              <div class="col-md-1 form-check" >
+                                              
+                                                  <input type="checkbox" id="source-{{i}}{{sourceCounts}}" [checked]="false" formControlName="sourcechecked">
+                                                
+                                              </div>
+                                              <div class="col-md-6">
+                                                <label for="source-{{i}}{{sourceCounts}}">{{sourceBoardingFormGroup.controls.sourceLocation.value}}</label>
+                                                
+                                              </div>
+                                              <div class="col-md-5">
+                                                <input type="time" formControlName="sourceTime" class="form-control required" placeholder="Date" atp-time-picker value="20:55" onlyHour="true" onlyAM='true' >
+                                              </div>           
+                                            </div>
+                                          </div>
+                                          
+                                        </ng-container>
+                                      </ng-container> 
+                                    </div>
+                                    
 
 
                                     
@@ -1776,7 +1790,7 @@
                             <div class="row">
                             <div class="col-6" *ngFor="let singleRoute of routeFormGroup.controls; let i = index;">
                                 <div [formGroupName]="i" class="row">
-                                <div class="form-group col-10">
+                                <div class="form-group col-8">
                                     <label>Location and Time <span class="text-danger">*</span></label>
                                     
                                     <ng-select 
@@ -1792,35 +1806,42 @@
                                     </ng-select>
                                     <span class="text-danger" *ngIf="singleRoute.controls.source_id.touched && singleRoute.controls.source_id.hasError('required')">
                                     Source is required! </span>
-                                    <ng-container formArrayName="sourceBoarding">
-                                        <ng-container *ngFor="let sourceBoardingFormGroup of singleRoute['controls'].sourceBoarding['controls']; let sourceCounts = index">
-                                        <div formGroupName="{{sourceCounts}}">
-                                            
-                                            <div  class="formgroup row" style="margin-top:10px">
-                                            <div class="col-md-1 form-check" >
-                                            
-                                                <input type="checkbox" id="source-{{i}}{{sourceCounts}}" [checked]="false" formControlName="sourcechecked">
-                                                
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="source-{{i}}{{sourceCounts}}">{{sourceBoardingFormGroup.controls.sourceLocation.value}}</label>
-                                                
-                                            </div>
-                                            <div class="col-md-5">
-                                                <input type="time" formControlName="sourceTime" class="form-control required" placeholder="Date" atp-time-picker value="20:55" onlyHour="true" onlyAM='true' >
-                                            </div>           
-                                            </div>
-                                        </div>
-                                        
-                                        </ng-container>
-                                    </ng-container> 
+                                   
                                     
                                 </div>
-                                <div class="form-group col-md-2 text-right">
-                                    <label>&nbsp;</label>
-                                    <button class="btn btn-danger" type="button" (click)="removeRoute(i)" style="margin-top: 26px;"> X </button>
+                                <div class="form-group col-md-3">
+                                  <label>Seq <span class="text-danger">*</span></label>
+                                  <input type="text" formControlName="sequence" class="form-control">
+                                  <span class="text-danger" *ngIf="singleRoute.controls.sequence.touched && singleRoute.controls.sequence.hasError('required')">
+                                    Sequence is required! </span>
                                 </div>
-                    
+                                <div class="form-group col-md-1 text-right">
+                                    <button class="btn btn-danger btn-sm" type="button" (click)="removeRoute(i)" style="margin-top: 26px;"> X </button>
+                                </div>
+                                <div class="form-group col-md-12">
+                                  <ng-container formArrayName="sourceBoarding">
+                                    <ng-container *ngFor="let sourceBoardingFormGroup of singleRoute['controls'].sourceBoarding['controls']; let sourceCounts = index">
+                                    <div formGroupName="{{sourceCounts}}">
+                                        
+                                        <div  class="formgroup row" style="margin-top:10px">
+                                        <div class="col-md-1 form-check" >
+                                        
+                                            <input type="checkbox" id="source-{{i}}{{sourceCounts}}" [checked]="false" formControlName="sourcechecked">
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="source-{{i}}{{sourceCounts}}">{{sourceBoardingFormGroup.controls.sourceLocation.value}}</label>
+                                            
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input type="time" formControlName="sourceTime" class="form-control required" placeholder="Date" atp-time-picker value="20:55" onlyHour="true" onlyAM='true' >
+                                        </div>           
+                                        </div>
+                                    </div>
+                                    
+                                    </ng-container>
+                                </ng-container> 
+                                </div>
                     
                                 
                                 </div>

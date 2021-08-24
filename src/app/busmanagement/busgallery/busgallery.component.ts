@@ -10,7 +10,7 @@ import { Bus } from '../../model/bus';
 import {Busgallery} from '../../model/busgallery';
 import {BusgalleryService} from '../../services/busgallery.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbModalConfig, NgbModal, NgbModalRef, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { count } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -18,7 +18,7 @@ import * as _ from 'lodash';
   selector: 'app-busgallery',
   templateUrl: './busgallery.component.html',
   styleUrls: ['./busgallery.component.scss'],
-  providers: [NgbModalConfig, NgbModal, NgbDropdownConfig]
+  providers: [NgbModalConfig, NgbModal]
 })
 export class BusgalleryComponent implements OnInit {
   public ModalHeading:any;
@@ -39,14 +39,13 @@ export class BusgalleryComponent implements OnInit {
   @ViewChild("addnew") addnew;
 
   counter=0;
-  constructor(private http: HttpClient, private busgalleryService:BusgalleryService, private busService:BusService, private notificationService: NotificationService,  private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal,dpconfig: NgbDropdownConfig) {
+  constructor(private http: HttpClient, private busgalleryService:BusgalleryService, private busService:BusService, private notificationService: NotificationService,  private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal) {
     this.busRecord={} as Bus; 
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add New Bus";
     this.ModalBtn = "Save";
-    dpconfig.placement = 'top-left';
-    dpconfig.autoClose = false;
+   
   }
   @ViewChild("closebutton") closebutton;
   @ViewChild(DataTableDirective, {static: false})
