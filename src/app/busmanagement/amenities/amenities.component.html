@@ -96,8 +96,8 @@
                             <div class="form-group row">
                               <label for="icon" class="col-sm-3 col-form-label">Icon<span class="text-danger">*</span></label>
                               <div class="col-sm-9">  
-                                  <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept=".png, .jpg, .jpeg, .svg" class="form-control" id="icon" placeholder="Amenities Icon" formControlName="icon" />
-                                  <span class="text-danger">Max file size 100Kb and supports jpg/jpeg/png</span>
+                                  <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept=".svg" class="form-control" id="icon" placeholder="Amenities Icon" formControlName="icon" />
+                                  <span class="text-danger">Max file size 100Kb and supports svg</span>
                                   <span class="text-danger" >{{imageError}}</span>
                                   <span class="text-danger" *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
                                     Icon file is required! </span>

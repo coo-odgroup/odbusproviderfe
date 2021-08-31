@@ -10,6 +10,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-safety',
@@ -41,7 +42,9 @@ export class SafetyComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
-  constructor(private safetyService: SafetyService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal)
+
+
+  constructor(private safetyService: SafetyService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer)
    {
     this.isSubmit = false;
     this.SafetyRecord= {} as Safety;
@@ -69,7 +72,7 @@ export class SafetyComponent implements OnInit {
     //////image validation////////
     this.imageError = null;
             const max_size = 102400;
-            const allowed_types = ['image/png', 'image/jpeg' ,'image/jpg'];
+            const allowed_types = ['image/svg+xml'];
             const max_height = 100;
             const max_width = 200;
     let fileList: FileList = event.target.files;
@@ -83,8 +86,9 @@ export class SafetyComponent implements OnInit {
   }
 
   if (!_.includes(allowed_types, event.target.files[0].type)) {
-      this.imageError = 'Only Images are allowed ( JPG | PNG |JPEG)';
+      this.imageError = 'Only Images are allowed ( SVG)';
       this.form.value.imagePath = '';
+      this.form.controls.icon.setValue('');
       this.imgURL='';
       return false;
   }
@@ -146,6 +150,7 @@ export class SafetyComponent implements OnInit {
     this.imageSrc = this.base64result;
     this.form.value.icon=this.base64result;
     this.form.value.iconSrc=this.base64result;
+    this.form.controls.iconSrc.setValue(this.base64result);
     
   }
   public imagePath;
@@ -169,6 +174,7 @@ export class SafetyComponent implements OnInit {
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
       this.imgURL = reader.result; 
+      this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
     }
   }
   loadSeatData()
@@ -258,7 +264,7 @@ export class SafetyComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       name: ['',Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
-      icon: [null,Validators.compose([Validators.required])],
+      icon: ['',Validators.compose([Validators.required])],
       iconSrc:[null]
     });
     this.ModalHeading = "Add Safety Line";
@@ -272,22 +278,27 @@ export class SafetyComponent implements OnInit {
   addsafety()
   {
     let id=this.SafetyRecord.id;
-    let data;
-    if(this.form.value.icon==null)
-    {
-      data ={
-        name:this.form.value.name,
-        icon:this.SafetyRecord.icon,
-        created_by:"Admin"
-      };
-    }
-    else{
-      data ={
-        name:this.form.value.name,
-        icon:this.form.value.icon,
-        created_by:"Admin"
-      };
-    }
+    //let data;
+    // if(this.form.value.icon==null)
+    // {
+    //   data ={
+    //     name:this.form.value.name,
+    //     icon:this.SafetyRecord.icon,
+    //     created_by:"Admin"
+    //   };
+    // }
+    // else{
+    //   data ={
+    //     name:this.form.value.name,
+    //     icon:this.form.value.icon,
+    //     created_by:"Admin"
+    //   };
+    // }
+    const data ={
+      name:this.form.value.name,
+      icon:this.form.value.iconSrc,
+      created_by:'Admin',
+    };
 
     if(id==null)
     {
@@ -346,13 +357,18 @@ export class SafetyComponent implements OnInit {
   editsafety(event : Event, id : any)
   {
     this.SafetyRecord=this.Safetys[id] ;
-    console.log(this.SafetyRecord);
+    // console.log(this.SafetyRecord);
+    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl("data:image/svg+xml;charset=utf-8;base64,"+this.SafetyRecord.icon);
+    
+    //console.log(this.imgURL);
     this.form = this.fb.group({
       name: [this.SafetyRecord.name, Validators.compose([Validators.required,Validators.minLength(2)])],
-      icon: [null],
+      icon: [],
       iconSrc:[this.SafetyRecord.icon]
     });
-    this.imgURL ="data:image/png;base64,"+this.SafetyRecord.icon;
+    // this.imgURL ="data:image/png;base64,"+this.SafetyRecord.icon;
+    
+
     this.ModalHeading = "Edit Safety Line";
     this.ModalBtn = "Update";
     

@@ -357,7 +357,7 @@ export class AmenitiesComponent implements OnInit {
     //////image validation////////
     this.imageError = null;
             const max_size = 102400;
-            const allowed_types = ['image/png', 'image/jpeg' ,'image/jpg', 'image/svg+xml'];
+            const allowed_types = ['image/svg+xml'];
             const max_height = 100;
             const max_width = 200;
     let fileList: FileList = event.target.files;
@@ -371,8 +371,9 @@ export class AmenitiesComponent implements OnInit {
   }
 
   if (!_.includes(allowed_types, event.target.files[0].type)) {
-      this.imageError = 'Only Images are allowed ( JPG | PNG | JPEG | SVG)';
+      this.imageError = '\r\nOnly Images are allowed (SVG)';
       this.form.value.imagePath = '';
+      this.form.controls.icon.setValue('');
       this.imgURL='';
       return false;
   }
@@ -446,6 +447,7 @@ export class AmenitiesComponent implements OnInit {
  
     let mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
+      
       this.message = "Only images are supported.";
       return;
     }
