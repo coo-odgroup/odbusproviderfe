@@ -8,6 +8,7 @@ import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import {SeatOpenReportRoutingModule} from './seatopenreport-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {SeatOpenReportRoutingModule} from './seatopenreport-routing.module';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    DataTablesModule
+    DataTablesModule,
+    NgbModule
   ],
   declarations: [ SeatopenreportComponent],
   providers: [NotificationService]

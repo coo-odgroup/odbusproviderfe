@@ -16,7 +16,19 @@ const routes: Routes = [
       {
         path: 'extraseatopenReport',
         loadChildren: () => import('./extraseatopenreport/extraseatopenreport.module').then(module => module.ExtraSeatOpenReportModule)
-      }         
+      },
+      {
+        path: 'completeReport',
+        loadChildren: () => import('./completereport/completereport.module').then(module => module.CompleteReportModule)
+      },
+      {
+        path: 'cancleticketsReport',
+        loadChildren: () => import('./cancelticketsreport/cancelticketsreport.module').then(module => module.CancleTicketsReportModule)
+      },
+      {
+        path: 'failedtransactionreport',
+        loadChildren: () => import('./failedtransactionreport/failedtransactionreport.module').then(module => module.FailedTransactionReportModule)
+      }           
     ]
   }
 ];

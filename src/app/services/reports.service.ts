@@ -37,8 +37,16 @@ export class ReportsService {
     )
   }
 
+  completeReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/completereport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
 
+
+
+  
 
 
 

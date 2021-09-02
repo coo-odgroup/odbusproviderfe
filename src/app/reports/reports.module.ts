@@ -7,12 +7,17 @@ import {ReportRoutingModule} from './report-routing.module';
 import { SeatopenreportComponent } from './seatopenreport/seatopenreport.component';
 import { SeatblockreportComponent } from './seatblockreport/seatblockreport.component';
 import { ExtraseatopenreportComponent } from './extraseatopenreport/extraseatopenreport.component';
+import { CompletereportComponent } from './completereport/completereport.component';
+import { CancelticketsreportComponent } from './cancelticketsreport/cancelticketsreport.component';
+
 
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ 
+    
+  ],
   imports: [
     CommonModule,
     ReportRoutingModule

@@ -7,7 +7,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Bus Name</th>
+                            <th scope="col">Bus Name & Number</th>
+                            <th scope="col">Source & Destination</th>
                             <th scope="col">Operator Name</th>
                             <th scope="col">Open Seats</th>
                             <th scope="col">Reason</th>
@@ -19,7 +20,35 @@
                             <td>{{ i+1 }}</td>
                             <td>{{ sopen.date_applied}}</td>
                             <td>
-                                {{ sopen.bus.name }}
+                                {{ sopen.bus.name }} <br> {{ sopen.bus.bus_number }}
+                            </td>
+
+                            <td>
+                                <ng-template #tipContent1>
+                                    <table style="width: 350px;">
+                                        <tr>
+                                            <td style="text-align: left;">
+                                                <span  *ngFor="let frlocation of sopen.from_location" >
+                                                    {{frlocation[0].name}}<br />
+                                                </span>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <span  *ngFor="let tolocation of sopen.to_location" > 
+                                                    {{tolocation[0].name}}<br />    
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </ng-template>
+                                <span [ngbTooltip]="tipContent1" >
+                                    <span *ngFor="let locationfr of sopen.base_from_location"  >
+                                        <b>{{ locationfr.name }}</b>
+                                    </span>
+                                    -
+                                    <span *ngFor="let locationot of sopen.base_to_location">
+                                        <strong >{{ locationot.name }}</strong>  
+                                    </span>
+                                </span>
                             </td>
 
                             <td>{{ sopen.bus.bus_operator.operator_name }}</td>

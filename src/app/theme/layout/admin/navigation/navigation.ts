@@ -215,14 +215,13 @@ const NavigationItems = [
               ]
           },
 
-        {
+          {
             id       : 'reports',
             title    : 'Reports',
-            // translate: 'NAV.REPORTS',
+           // translate: 'NAV.REPORTS',
             type     : 'collapse',
             icon     : 'add_shopping_cart',
             children : [
-                
                 {
                     id   : 'routes',
                     title: 'Routes Report',
@@ -236,24 +235,41 @@ const NavigationItems = [
                     url  : 'reports/ticket'
                 },
                 {
-                id   : 'seatopenreport',
-                title: 'Seat Open Report',
-                type : 'item',
-                url  : 'reports/seatopenReport'
-                },
-
-                {
-                id   : 'seatblockreport',
-                title: 'Seat Block Report',
-                type : 'item',
-                url  : 'reports/seatblockReport'
+                  id   : 'seatopenreport',
+                  title: 'Seat Open Report',
+                  type : 'item',
+                  url  : 'reports/seatopenReport'
                 },
                 {
-                    id   : 'extraseatopenreport',
-                    title: 'Extra Seat Open Report',
-                    type : 'item',
-                    url  : 'reports/extraseatopenReport'
-                  },
+                  id   : 'extraseatopenreport',
+                  title: 'Extra Seat Open Report',
+                  type : 'item',
+                  url  : 'reports/extraseatopenReport'
+                },
+                {
+                  id   : 'completereport',
+                  title: 'Complete Report',
+                  type : 'item',
+                  url  : 'reports/completeReport'
+                },
+                {
+                  id   : 'seatblockreport',
+                  title: 'Seat Block Report',
+                  type : 'item',
+                  url  : 'reports/seatblockReport'
+                },
+                {
+                  id   : 'cancleticketsReport',
+                  title: 'Cancel Tickets Report',
+                  type : 'item',
+                  url  : 'reports/cancleticketsReport'
+                },
+                {
+                  id   : 'failedtransactionreport',
+                  title: 'Failed Transaction Tickets Report',
+                  type : 'item',
+                  url  : 'reports/failedtransactionreport'
+                },
                 {
                     id   : 'seat',
                     title: 'Seat',
@@ -284,9 +300,9 @@ const NavigationItems = [
                     type : 'item',
                     url  : 'reports/Owner'
                 }
-          
-          ]
-      },  
+            
+            ]
+        },  
       ]
   }
 ];

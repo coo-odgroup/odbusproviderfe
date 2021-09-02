@@ -3,24 +3,26 @@ import { CommonModule } from '@angular/common';
 import {SharedModule} from '../../theme/shared/shared.module';
 import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
-import {SeatblockreportComponent} from './seatblockreport.component';
+import {FailedtransactionreportComponent} from './failedtransactionreport.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
-import {SeatBlockReportRoutingModule} from './seatblockreport-routing.module';
+import {FailedTransactionReportRoutingModule} from './failedtransactionreport-route.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    SeatBlockReportRoutingModule,
+    FailedTransactionReportRoutingModule,
     SharedModule,
     FormsModule,
     NgSelectModule,
-    DataTablesModule,NgbModule
+    DataTablesModule,
+    NgbModule
   ],
-  declarations: [ SeatblockreportComponent],
+  declarations: [ FailedtransactionreportComponent],
   providers: [NotificationService]
 })
 
-export class SeatBlockReportModule { }
+export class FailedTransactionReportModule { }
