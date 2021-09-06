@@ -9,11 +9,12 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 })
 export class CompletereportComponent implements OnInit {
   completedata: any;
-  totalfare: any;
+  totalfare = 0  ;
 
   constructor(private http: HttpClient , private rs:ReportsService) { }
 
   ngOnInit(): void {
+  
     this.getall();
   }
 
@@ -22,7 +23,6 @@ export class CompletereportComponent implements OnInit {
     this.rs.completeReport().subscribe(
       res => {
         this.completedata= res.data;
-        // console.log(this.completedata.booking_detail.owner_fare);
       }
     );
   }

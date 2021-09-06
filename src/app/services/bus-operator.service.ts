@@ -35,6 +35,7 @@ export class BusOperatorService {
     )
   }
   getBusbyOperator(operatorId):Observable<any> {
+    
     return this.httpClient.get(Constants.BASE_URL+'/getBusbyOperator/' +operatorId,this.httpOptions).pipe(
       catchError(this.errorHandler)
     )

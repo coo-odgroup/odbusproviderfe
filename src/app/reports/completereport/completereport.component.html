@@ -29,12 +29,17 @@
                             <td>
                                 <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )
                                 <br>
-                                {{complete.transaction_id}}<br>
-                                <span  *ngFor="let frlocation of complete.source" >
-                                    {{frlocation[0].name}}
+                                <span  *ngFor="let frlocation of complete.from_location" >
+                                    {{frlocation.name}}
                                 </span> - 
                                 ( <b>{{complete.boarding_point}} </b> )<br>
                                 Boarding Time : <b>{{complete.boarding_time}}</b>
+                                <br>
+                                {{complete.customer_payment.order_id}}
+                                <br>
+                                {{complete.customer_payment.razorpay_id}}
+
+
 
                             </td>
                             
@@ -60,7 +65,7 @@
                                             </td>
                                             <td style="text-align: left;">
                                                 <span  *ngFor="let tolocation of complete.destination" > 
-                                                    {{tolocation[0].name}}<br />    
+                                                    {{tolocation[0].name}}   <br /> 
                                                 </span>
                                             </td>
                                         </tr>
@@ -80,11 +85,25 @@
 
                             <td>
                                 <p *ngFor="let seat of complete.booking_detail;">
-                                     {{seat.seat_no}}
+                                   
+                                     {{seat.bus_seats.seats.seatText}}
                                 </p>                                    
                             </td>
                             <td class="text-capitalize">
-                                <ng-template #tipContent>Phone- <b>{{complete.users.phone}}</b><br>Email-{{complete.users.email}}</ng-template>
+                                <ng-template #tipContent>
+                                    <!-- Phone- <b>{{complete.users.phone}}</b>
+                                    <br>Email-{{complete.users.email}} -->
+                                    <table>
+                                        <tr>
+                                            <td>Phone-</td>
+                                            <td><b>{{complete.users.phone}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email-</td>
+                                            <td>{{complete.users.email}}</td>
+                                        </tr>
+                                    </table>
+                                </ng-template>
 
                                 <strong [ngbTooltip]="tipContent">
                                     {{complete.users.name}} 
@@ -102,39 +121,46 @@
                             <td>                               
                                 <p *ngFor="let passanger of complete.booking_detail;" >
                                     <ng-template #tipContent1>
-                                        Gender- <b>{{passanger.passenger_gender}}</b><br> 
-                                        Age- <b>{{passanger.passenger_age}}</b><br>
-                                        Seat No-<b>{{passanger.seat_no}}</b>
+                                        <table>
+                                            <tr>
+                                                <td>Gender-</td>
+                                                <td><b>{{passanger.passenger_gender}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Age-</td>
+                                                <td><b>{{passanger.passenger_age}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Seat No-</td>
+                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
+                                            </tr>
+                                        </table>
                                     </ng-template>
                                    <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}}</strong>
                                </p>                                
                              </td>
 
                             <td>
-                                <p *ngFor="let price of complete.bus.ticket_price;">
-                                     <strong placement="top" ngbTooltip="Seat Fare">{{price.base_seat_fare}}</strong> / 
-                                     <strong placement="top" ngbTooltip="Sleeper Fare">{{price.base_sleeper_fare}}</strong>
-                                </p>                                    
+                                
+                                <strong placement="top" ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong> / 
+                                     <strong placement="top" ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong> 
+
                             </td>
                             <td>
                                 <p *ngFor="let fare of complete.booking_detail;" >
                                     {{fare.owner_fare}}
                                </p>  
                             </td>
-                            <td>                                
-                                <p *ngFor="let fare of complete.booking_detail;" >
-                                    {{fare.total_fare}}
+                            <td>      
+                                                          
+                                <p >
+                                    <i class="fas fa-rupee-sign"></i> - <b>{{complete.customer_payment.amount}}</b>
                                </p>  
+                               
                             </td>
                             <td>
                                 -----
-                            </td>                           
-
-                            <!-- <td>
-                                <label *ngIf="complete.status == 1" class="badge badge-light-success ">Active</label>
-                                <label *ngIf="complete.status == 0" class="badge badge-light-danger ">Pending</label>
-                            </td> -->
-
+                            </td>                          
                         </tr>
                     </tbody>  
                 </table>

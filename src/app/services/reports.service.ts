@@ -19,7 +19,7 @@ export class ReportsService {
   constructor(private httpClient: HttpClient) { }
 
   seatopenReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/seatopenreport').pipe(
+    return this.httpClient.get(this.apiURL + '/seatopenreport/').pipe(
       catchError(this.errorHandler)
     )
   }
@@ -42,8 +42,12 @@ export class ReportsService {
       catchError(this.errorHandler)
     )
   }
-
-
+ 
+  failledtransactionReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/failledtransactionreport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
 
   
