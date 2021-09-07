@@ -78,8 +78,11 @@ const routes: Routes = [
       {
         path:'busWizard',
         loadChildren: () => import('./buswizard/buswizard.module').then(module => module.BuswizardModule)
-      }
-
+      },
+      {
+        path:'settings',
+        loadChildren: () => import('./settings/settings.module').then(module => module.SettingsModule)
+      },
     ]
   }
 ];

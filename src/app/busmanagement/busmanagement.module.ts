@@ -18,12 +18,15 @@ import { BusscheduleComponent } from './busschedule/busschedule.component';
 import { SeatfareComponent } from './seatfare/seatfare.component';
 import { SafetyComponent } from './safety/safety.component';
 import { BusgalleryComponent } from './busgallery/busgallery.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    
+  ],
   imports: [
     CommonModule,
     SharedModule,

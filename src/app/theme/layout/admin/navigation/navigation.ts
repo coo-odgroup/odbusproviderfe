@@ -133,7 +133,13 @@ const NavigationItems = [
                     title: 'Bus Schedule',
                     type : 'item',
                     url  : 'busmanagement/busschedule'
-                }
+                  },
+                  {
+                    id   : 'Settings',
+                    title: 'Fare Setting',
+                    type : 'item',
+                    url  : 'busmanagement/settings'
+                  }
                 //   ,
                 //   {
                 //     id   : 'formValidation',
