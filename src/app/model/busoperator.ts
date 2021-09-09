@@ -13,4 +13,7 @@ export interface Busoperator {
     bank_name:string;
     bank_ifsc:string;
     bank_account_number:string;
+    need_gst_bill:any;
+    gst_number:string;
+    gst_amount:any;
 }

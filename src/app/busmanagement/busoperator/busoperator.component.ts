@@ -156,7 +156,10 @@ export class BusoperatorComponent implements OnInit {
       bank_account_name: [null],
       bank_name: [null],
       bank_ifsc: [null],
-      bank_account_number: [null]
+      bank_account_number: [null],
+      need_gst_bill: ['0'],
+      gst_number: [null],
+      gst_amount: [null]
     });
     this.formConfirm=this.fb.group({
       id:[null]
@@ -220,6 +223,9 @@ export class BusoperatorComponent implements OnInit {
       bank_name: ['', Validators.compose([Validators.maxLength(100)])],
       bank_ifsc: ['', Validators.compose([Validators.pattern("^[a-zA-Z0-9]*$"),Validators.maxLength(20)])],
       bank_account_number: ['', Validators.compose([Validators.pattern("^[0-9]*$"),Validators.maxLength(20)])],
+      need_gst_bill: ['0'],
+      gst_number: [''],
+      gst_amount: ['']
     });
     this.BusOperatorRecord= {} as Busoperator;
     this.ModalHeading = "Add New Operator";
@@ -338,6 +344,9 @@ export class BusoperatorComponent implements OnInit {
       bank_name:this.form.value.bank_name,
       bank_ifsc:this.form.value.bank_ifsc,
       bank_account_number:this.form.value.bank_account_number,
+      need_gst_bill: this.form.value.need_gst_bill,
+      gst_number: this.form.value.gst_number,
+      gst_amount: this.form.value.gst_amount,
       created_by:"Admin",
       status:'0',
       id:this.BusOperatorRecord.id,
@@ -395,7 +404,10 @@ export class BusoperatorComponent implements OnInit {
       bank_account_name: [this.BusOperatorRecord.bank_account_name,Validators.compose([Validators.maxLength(100)])],
       bank_name: [this.BusOperatorRecord.bank_name,Validators.compose([Validators.maxLength(100)])],
       bank_ifsc: [this.BusOperatorRecord.bank_ifsc,Validators.compose([Validators.pattern("^[a-zA-Z0-9]*$"),Validators.maxLength(20)])],
-      bank_account_number: [this.BusOperatorRecord.bank_account_number, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.maxLength(20)])]
+      bank_account_number: [this.BusOperatorRecord.bank_account_number, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.maxLength(20)])],
+      need_gst_bill: [this.BusOperatorRecord.need_gst_bill],
+      gst_number: [this.BusOperatorRecord.gst_number],
+      gst_amount: [this.BusOperatorRecord.gst_amount]
     });
   }
 
