@@ -37,8 +37,9 @@
 {
     width: 35px;
     height: 27px;
-    background: url('../../../assets/images/seater.png') no-repeat;
+    background: url('../../../assets/images/seat-gray.svg') no-repeat;
     display:flex;
+    background-position: center;
     
 }
 ::ng-deep .seatHolder
@@ -50,7 +51,7 @@
     display: none;
 }
 ::ng-deep .seatHolder input[type="checkbox"]:checked + .seaterImage {
-    background: url('../../../assets/images/seater-available.png') no-repeat center center;
+    background: url('../../../assets/images/seater-available.svg') no-repeat center center;
     cursor:pointer;
 }
 
@@ -64,11 +65,11 @@
 {
     width: 45px;
     height: 27px;
-    background: url('../../../assets/images/sleeper.png') no-repeat center center;
+    background: url('../../../assets/images/sleeper-gray.svg') no-repeat center center;
     display:flex;
 }
 ::ng-deep .seatHolder input[type="checkbox"]:checked + .sleeperImage {
-    background: url('../../../assets/images/sleeper-available.png') no-repeat center center;
+    background: url('../../../assets/images/sleeper-available.svg') no-repeat center center;
     cursor:pointer;
 }
 
