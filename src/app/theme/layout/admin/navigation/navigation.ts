@@ -139,6 +139,12 @@ const NavigationItems = [
                     title: 'Fare Setting',
                     type : 'item',
                     url  : 'busmanagement/settings'
+                  },
+                  {
+                    id   : 'Offers',
+                    title: 'Offers',
+                    type : 'item',
+                    url  : 'busmanagement/offers'
                   }
                 //   ,
                 //   {

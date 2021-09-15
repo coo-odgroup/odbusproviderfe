@@ -38,7 +38,6 @@ export class AmenitiesComponent implements OnInit {
   dtOptionAmenities: any = {};
   dtSeatTypesOptions: any = {};
   dtSeatTypesOptionsData: any = {};
-  endpoint = 'http://127.0.0.1:8000/api';
   Amenities: Amenities[];
   AmenitiesRecord: Amenities;
   imgURL: any;

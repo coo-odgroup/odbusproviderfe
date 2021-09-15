@@ -27,7 +27,7 @@ export class BusamenitiesComponent implements OnInit {
   dtOptionBusAmenities: DataTables.Settings = {};
   dtSeatTypesOptions: any = {};
   dtSeatTypesOptionsData: any = {};
-  endpoint = 'http://127.0.0.1:8000/api';
+  
   BusAmenities: Busamenities[];
   BusAmenitiesRecord: Busamenities;
 

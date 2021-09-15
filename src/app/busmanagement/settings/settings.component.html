@@ -14,7 +14,7 @@
                             <div class="input-group ">
                                 <input type="text" class="form-control" formControlName="payment_gateway_charges"  placeholder="Payment Gateway Charges" aria-label="Payment Gateway Charges" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                  <span class="input-group-text" id="basic-addon2">%</span>
+                                  <span class="input-group-text" id="basic-addon1">%</span>
                                 </div>
                             </div>
                             <span class="text-danger" *ngIf="settingForm.controls['payment_gateway_charges'].touched && settingForm.controls['payment_gateway_charges'].hasError('required')">
@@ -26,7 +26,11 @@
                         <th>Email and SMS Charges (INR)</th>
                         <td>
                             <div class="input-group ">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon5"><i class="fas fa-rupee-sign"></i></span>
+                                </div>
                                 <input type="text" class="form-control" formControlName="email_sms_charges"  placeholder="Email and SMS Charges" aria-label="Email and SMS Charges" aria-describedby="basic-addon2">
+                                
                                 <div class="input-group-append">
                                   <span class="input-group-text" id="basic-addon2">INR</span>
                                 </div>
@@ -42,7 +46,7 @@
                             <div class="input-group ">
                                 <input type="text" class="form-control" formControlName="odbus_gst_charges"  placeholder="ODBUS GST Charges" aria-label="ODBUS GST Charges" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                  <span class="input-group-text" id="basic-addon2">%</span>
+                                  <span class="input-group-text" id="basic-addon6">%</span>
                                 </div>
                             </div>
                             <span class="text-danger" *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">

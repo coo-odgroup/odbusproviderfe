@@ -47,7 +47,7 @@ export class BusgalleryComponent implements OnInit {
     this.ModalBtn = "Save";
    
   }
-  @ViewChild("closebutton") closebutton;
+  //@ViewChild("closebutton") closebutton;
   @ViewChild(DataTableDirective, {static: false})
   dtElement: DataTableDirective;
   position = 'bottom-right';
@@ -123,7 +123,7 @@ export class BusgalleryComponent implements OnInit {
   }
   OpenModal(content) {
    
-    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
+    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
   }
   saveGallery()
   {
