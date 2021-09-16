@@ -49,6 +49,17 @@ export class ReportsService {
     )
   }
 
+  buscancellationReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/buscancellationreport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  ownerpaymentReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/ownerpaymentreport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   
 

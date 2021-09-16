@@ -32,7 +32,11 @@ const routes: Routes = [
       {
         path: 'bookingseized',
         loadChildren: () => import('./bookingseized/bookingseized.module').then(module => module.BookingseizedModule)
-      },      
+      },
+      {
+        path: 'ownerpayment',
+        loadChildren: () => import('./ownerpayment/ownerpayment.module').then(module => module.OwnerPaymentModule)
+      }      
     ]
   }
 ];

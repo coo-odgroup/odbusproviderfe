@@ -1,0 +1,75 @@
+
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Bus Cancellation Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+            <div class="container">
+                <form>
+                    
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Operator</th>
+                            <th scope="col">Bus Name/No </th>
+                            <th scope="col">Route</th>
+                            <th scope="col">Cancelled Date</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Cancelled By</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="buscancellationdata?.length != 0">
+                        <tr *ngFor="let cancel of buscancellationdata; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>
+                                <ng-template #tipContent1>
+                                    <h5 class="text-white">Operator Details</h5>
+                                    <hr>
+                                    {{cancel.bus.bus_operator.email_id}}<br>
+                                    {{cancel.bus.bus_operator.contact_number}}                                    
+                                </ng-template>
+                                <span [ngbTooltip]="tipContent1" >
+                                    {{cancel.bus.bus_operator.operator_name}}
+                                </span>
+                                
+                            </td>
+
+                            <td>
+                                <ng-template #tipContent>
+                                    <h5 class="text-white">Bus Details</h5>
+                                    <hr>
+                                    {{cancel.bus.bus_type.name}} ,
+                                    {{cancel.bus.bus_sitting.name}} 
+                                                                       
+                                </ng-template>
+                                <span [ngbTooltip]="tipContent" >
+                                    {{cancel.bus.name}}<br>
+                                    {{cancel.bus.bus_number}}
+                                </span>                               
+                            </td>
+
+                            <td>
+                                {{cancel.from_location[0].name}} >> 
+                                {{cancel.to_location[0].name}}
+                            </td>
+                            <td>
+                                <span *ngFor="let date of cancel.bus_cancelled_date;">
+                                    <strong>{{date.cancelled_date}}</strong><br>
+                                </span>
+                            </td>
+                            <td>
+                                {{cancel.reason}}
+                            </td>
+                            <td>
+                                {{cancel.cancelled_by}}
+                            </td>
+                        </tr>
+                    </tbody>  
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>

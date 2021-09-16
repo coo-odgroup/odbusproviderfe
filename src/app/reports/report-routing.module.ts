@@ -28,6 +28,18 @@ const routes: Routes = [
       {
         path: 'failedtransactionreport',
         loadChildren: () => import('./failedtransactionreport/failedtransactionreport.module').then(module => module.FailedTransactionReportModule)
+      },
+      {
+        path: 'buscancellationreport',
+        loadChildren: () => import('./buscancellationreport/buscancellationreport.module').then(module => module.BusCancellationReportModule)
+      },
+      {
+        path: 'ownerpaymentreport',
+        loadChildren: () => import('./ownerpaymentreport/ownerpaymentreport.module').then(module => module.OwnerPaymentReportModule)
+      },
+      {
+        path: 'cleartransactionreport',
+        loadChildren: () => import('./cleartransactionreport/cleartransactionreport.module').then(module => module.ClearTransactionReportModule)
       }           
     ]
   }

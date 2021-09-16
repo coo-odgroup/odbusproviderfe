@@ -8,7 +8,14 @@ import { SeatopenreportComponent } from './seatopenreport/seatopenreport.compone
 import { SeatblockreportComponent } from './seatblockreport/seatblockreport.component';
 import { ExtraseatopenreportComponent } from './extraseatopenreport/extraseatopenreport.component';
 import { CompletereportComponent } from './completereport/completereport.component';
+
 import { CancelticketsreportComponent } from './cancelticketsreport/cancelticketsreport.component';
+import { BuscancellationreportComponent } from './buscancellationreport/buscancellationreport.component';
+import { OwnerpaymentreportComponent } from './ownerpaymentreport/ownerpaymentreport.component';
+import { CleartransactionreportComponent } from './cleartransactionreport/cleartransactionreport.component';
+
+
+
 
 
 
@@ -16,11 +23,14 @@ import { CancelticketsreportComponent } from './cancelticketsreport/cancelticket
 
 @NgModule({
   declarations: [ 
-    
+  
+
+  
+   
   ],
   imports: [
     CommonModule,
-    ReportRoutingModule
+    ReportRoutingModule 
   ]
 })
 export class ReportsModule { }

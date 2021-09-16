@@ -145,6 +145,12 @@ const NavigationItems = [
                     title: 'Offers',
                     type : 'item',
                     url  : 'busmanagement/offers'
+                  },
+                  {
+                    id   : 'BusSequence',
+                    title: 'Bus Sequence',
+                    type : 'item',
+                    url  : 'busmanagement/BusSequence'
                   }
                 //   ,
                 //   {
@@ -207,16 +213,10 @@ const NavigationItems = [
                       url  : 'bookingmanagement/festivalfare'
                   },
                   {
-                      id   : 'SeatLayout ',
-                      title: 'Seat Layout',
-                      type : 'item',
-                      url  : 'busmanagement/SeatLayout'
-                  },
-                  {
-                      id   : 'BusSequence',
-                      title: 'Bus Sequence',
-                      type : 'item',
-                      url  : 'busmanagement/BusSequence'
+                    id   : 'ownerpayment',
+                    title: 'Owner Payment',
+                    type : 'item',
+                    url  : 'bookingmanagement/ownerpayment'
                   },
                 //   {
                 //       id   : 'CancellationSlab',
@@ -234,84 +234,102 @@ const NavigationItems = [
             type     : 'collapse',
             icon     : 'add_shopping_cart',
             children : [
-                {
-                    id   : 'routes',
-                    title: 'Routes Report',
-                    type : 'item',
-                    url  : 'reports/routes'
-                },
-                {
-                    id   : 'ticket',
-                    title: 'Ticket',
-                    type : 'item',
-                    url  : 'reports/ticket'
-                },
-                {
-                  id   : 'seatopenreport',
-                  title: 'Seat Open Report',
-                  type : 'item',
-                  url  : 'reports/seatopenReport'
-                },
-                {
-                  id   : 'extraseatopenreport',
-                  title: 'Extra Seat Open Report',
-                  type : 'item',
-                  url  : 'reports/extraseatopenReport'
-                },
-                {
-                  id   : 'completereport',
-                  title: 'Complete Report',
-                  type : 'item',
-                  url  : 'reports/completeReport'
-                },
-                {
-                  id   : 'seatblockreport',
-                  title: 'Seat Block Report',
-                  type : 'item',
-                  url  : 'reports/seatblockReport'
-                },
-                {
-                  id   : 'cancleticketsReport',
-                  title: 'Cancel Tickets Report',
-                  type : 'item',
-                  url  : 'reports/cancleticketsReport'
-                },
-                {
-                  id   : 'failedtransactionreport',
-                  title: 'Failed Transaction Tickets Report',
-                  type : 'item',
-                  url  : 'reports/failedtransactionreport'
-                },
-                {
-                    id   : 'seat',
-                    title: 'Seat',
-                    type : 'item',
-                    url  : 'reports/seat'
-                },
-                {
-                    id   : 'specialfare',
-                    title: 'SpecialFare',
-                    type : 'item',
-                    url  : 'reports/specialfare'
-                },
-                {
-                    id   : 'Bus',
-                    title: 'Bus',
-                    type : 'item',
-                    url  : 'reports/bus'
-                },
-                {
-                    id   : 'trasaction',
-                    title: 'Trasaction',
-                    type : 'item',
-                    url  : 'reports/trasaction'
-                },
-                {
-                    id   : 'owener ',
-                    title: 'Owner',
-                    type : 'item',
-                    url  : 'reports/Owner'
-                }
+              {
+                id   : 'routes',
+                title: 'Routes Report',
+                type : 'item',
+                url  : 'reports/routes'
+            },
+            {
+                id   : 'ticket',
+                title: 'Ticket',
+                type : 'item',
+                url  : 'reports/ticket'
+            },
+            {
+              id   : 'seatopenreport',
+              title: 'Seat Open Report',
+              type : 'item',
+              url  : 'reports/seatopenReport'
+            },
+            {
+              id   : 'extraseatopenreport',
+              title: 'Extra Seat Open Report',
+              type : 'item',
+              url  : 'reports/extraseatopenReport'
+            },
+            {
+              id   : 'completereport',
+              title: 'Complete Report',
+              type : 'item',
+              url  : 'reports/completeReport'
+            },
+            {
+              id   : 'seatblockreport',
+              title: 'Seat Block Report',
+              type : 'item',
+              url  : 'reports/seatblockReport'
+            },
+            {
+              id   : 'cancleticketsReport',
+              title: 'Cancel Tickets Report',
+              type : 'item',
+              url  : 'reports/cancleticketsReport'
+            },
+            {
+              id   : 'failedtransactionreport',
+              title: 'Failed Transaction Tickets Report',
+              type : 'item',
+              url  : 'reports/failedtransactionreport'
+            },
+            {
+              id   : 'buscancellationreport',
+              title: 'Bus Cancellation Report',
+              type : 'item',
+              url  : 'reports/buscancellationreport'
+            },
+            {
+              id   : 'ownerpaymentreport',
+              title: 'Owner Payment Report',
+              type : 'item',
+              url  : 'reports/ownerpaymentreport'
+            },
+            {
+              id   : 'cleartransactionreport',
+              title: 'Clear Transaction Tickets Report',
+              type : 'item',
+              url  : 'reports/cleartransactionreport'
+            },
+            {
+                id   : 'seat',
+                title: 'Seat',
+                type : 'item',
+                url  : 'reports/seat'
+            },
+            {
+                id   : 'specialfare',
+                title: 'SpecialFare',
+                type : 'item',
+                url  : 'reports/specialfare'
+            },
+            {
+                id   : 'Bus',
+                title: 'Bus',
+                type : 'item',
+                url  : 'reports/bus'
+            },
+            {
+                id   : 'trasaction',
+                title: 'Trasaction',
+                type : 'item',
+                url  : 'reports/trasaction'
+            },
+            {
+                id   : 'owener ',
+                title: 'Owner',
+                type : 'item',
+                url  : 'reports/Owner'
+            }
             
             ]
         },  

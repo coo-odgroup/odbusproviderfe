@@ -7,7 +7,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Bus Name & Number</th>
+                            <th scope="col">Bus Name</th>
+                            <th scope="col">Bus Number</th>
                             <th scope="col">Source & Destination</th>
                             <th scope="col">Operator Name</th>
                             <th scope="col">Open Seats</th>
@@ -20,8 +21,9 @@
                             <td>{{ i+1 }}</td>
                             <td>{{ sopen.date_applied}}</td>
                             <td>
-                                {{ sopen.bus.name }} <br> {{ sopen.bus.bus_number }}
+                                {{ sopen.bus.name }}
                             </td>
+                            <td>{{ sopen.bus.bus_number }}</td>
 
                             <td>
                                 <ng-template #tipContent1>
@@ -42,7 +44,7 @@
                                 </ng-template>
                                 <span [ngbTooltip]="tipContent1" >
                                     <span *ngFor="let locationfr of sopen.base_from_location"  >
-                                        <b>{{ locationfr.name }}</b>
+                                        <strong>{{ locationfr.name }}</strong>
                                     </span>
                                     -
                                     <span *ngFor="let locationot of sopen.base_to_location">
@@ -50,15 +52,11 @@
                                     </span>
                                 </span>
                             </td>
-
                             <td>{{ sopen.bus.bus_operator.operator_name }}</td>
                             <td>
-                                <div *ngFor="
-                              let seat of sopen.seat_open_seats;
-                              let seatIndex = index
-                            ">
-                                    <strong>{{ seatIndex + 1 }}</strong>.{{ seat.seats.seatText }}
-                                </div>
+                                <span *ngFor="let seat of sopen.seat_open_seats;let seatIndex = index">
+                                    {{ seat.seats.seatText }},
+                                </span>
                             </td>
                             <td>{{ sopen.reason }}</td>
                             <td>

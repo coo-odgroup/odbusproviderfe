@@ -147,14 +147,15 @@
 
                             </td>
                             <td>
-                                <p *ngFor="let fare of complete.booking_detail;" >
+                                <!-- <p *ngFor="let fare of complete.booking_detail;" >
                                     {{fare.owner_fare}}
-                               </p>  
+                               </p>   -->
+                               <i class="fas fa-rupee-sign"></i> - <b>{{complete.owner_fare}}</b>
                             </td>
                             <td>      
                                                           
                                 <p >
-                                    <i class="fas fa-rupee-sign"></i> - <b>{{complete.customer_payment.amount}}</b>
+                                    <i class="fas fa-rupee-sign"></i> - <b>{{complete.total_fare}}</b>
                                </p>  
                                
                             </td>

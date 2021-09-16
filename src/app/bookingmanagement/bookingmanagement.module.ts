@@ -8,7 +8,7 @@ import { SeatopenComponent } from './seatopen/seatopen.component';
 import { SpecialfareComponent } from './specialfare/specialfare.component';
 import { OwnerfareComponent } from './ownerfare/ownerfare.component';
 import { FestivalfareComponent } from './festivalfare/festivalfare.component';
-
+import { OwnerpaymentComponent } from './ownerpayment/ownerpayment.component';
 
 @NgModule({
   declarations: [],
