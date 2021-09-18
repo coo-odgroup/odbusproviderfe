@@ -9,6 +9,7 @@
               <th>Id</th>
               <th>Operator Name</th>
               <th>Payment Date</th>
+              <th>Transaction Id</th>
               <th>Amount</th>
               <th> Remark</th>
               <th>Created At</th>
@@ -19,11 +20,10 @@
               <td>{{ ownerFare.id }}</td>
               <td>
                 {{ownerFare.bus_operator.operator_name}}
-                <!-- <div *ngFor="let busName of ownerFare.bus_operator; let nameIndex=index;">
-                  <strong>{{nameIndex+1}}</strong>.{{busName.operator_name}}
-                </div> -->
+               
               </td>
-              <td>{{ ownerFare.date }}</td>
+              <td>{{ ownerFare.payment_date }}</td>
+              <td>{{ownerFare.transaction_id}}</td>
               <td>{{ ownerFare.amount }}</td>
               <td>{{ ownerFare.remark }}</td>
               <td>{{ ownerFare.created_at }}</td>
@@ -97,9 +97,9 @@
 
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="date" class="col-sm-4 col-form-label">Date<span
+                            <label for="date" class="col-sm-3 col-form-label">Date<span
                                 class="text-danger">*</span></label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-9">
                               <input type="date" class="form-control" placeholder="Enter Date" required
                                 formControlName="date" />
                               <span class="text-danger"
@@ -126,6 +126,21 @@
                         </div>
 
                         <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="remark" class="col-sm-3 col-form-label">Transaction Id<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" placeholder="Enter transaction Id" required formControlName="transaction_id" />
+                              
+                              <span class="text-danger"
+                                *ngIf="ownerpaymentForm.controls['transaction_id'].touched && ownerpaymentForm.controls['transaction_id'].hasError('required')">
+                                Transaction is required! </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
                           <div class="form-group row">
                             <label for="remark" class="col-sm-2 col-form-label">Remark<span
                                 class="text-danger">*</span></label>

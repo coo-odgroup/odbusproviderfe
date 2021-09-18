@@ -72,7 +72,8 @@ export class OwnerpaymentComponent implements OnInit {
   }
   ngOnInit(): void {
     this.ownerpaymentForm = this.fb.group({     
-      bus_operator_id: [null],      
+      bus_operator_id: [null],
+      transaction_id:[null],      
       date: [null],
       amount: [null],
       remark: [null]
@@ -160,8 +161,9 @@ export class OwnerpaymentComponent implements OnInit {
       },
       columns: [{ data: 'id' },
       { data: 'bus_operator.operator_name' },
-      { data: 'date' },
+      { data: 'payment_date' },
       { data: 'amount' },
+      { data: 'transaction_id' },
       { data: 'remark' },
       { data: 'created_at' }]            
     };
@@ -179,6 +181,7 @@ export class OwnerpaymentComponent implements OnInit {
     this.ownerpaymentForm = this.fb.group({
       bus_operator_id: [null],      
       date: [null],
+      transaction_id:[null],
       amount: [null],
       remark: [null]
       
@@ -257,6 +260,7 @@ findSource()
     const data ={
       bus_operator_id: this.ownerpaymentForm.value.bus_operator_id,      
       date: this.ownerpaymentForm.value.date,
+      transaction_id:this.ownerpaymentForm.value.transaction_id,
       amount: this.ownerpaymentForm.value.amount,
       remark: this.ownerpaymentForm.value.remark,
       created_by:'Admin',
