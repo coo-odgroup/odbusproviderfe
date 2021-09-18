@@ -61,8 +61,13 @@ export class ReportsService {
     )
   }
 
-  
 
+  cancelticketReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/cancelticketreport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  
 
 
 

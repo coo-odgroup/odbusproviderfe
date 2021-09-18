@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <app-card cardTitle="Failled Transaction Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+        <app-card cardTitle="Cancel Ticket Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
             <div class="container">
                 <form>
                     
@@ -25,6 +25,146 @@
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
+                    <tbody *ngIf="cancelticketdata?.length != 0">
+                        <tr *ngFor="let complete of cancelticketdata; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>
+                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )
+                                <br>
+                                <span  *ngFor="let frlocation of complete.from_location" >
+                                    {{frlocation.name}}
+                                </span> - 
+                                ( <b>{{complete.boarding_point}} </b> )<br>
+                                Boarding Time : <b>{{complete.boarding_time}}</b>
+                                <br>
+                                {{complete.customer_payment.order_id}}
+                                <br>
+                                {{complete.customer_payment.razorpay_id}}
+                            </td>
+                            <td>
+                                {{ complete.updated_at | date }}  
+                            </td>
+                            
+                           
+                            <td>
+                                <strong>{{ complete.bus.name }}</strong><br>
+                                {{ complete.bus.bus_number }}<br>
+                                <ng-template #tipContent1>
+                                    <table style="width: 350px;">
+                                        <tr>
+                                            <th style="text-align: left;">
+                                                Start
+                                            </th>
+                                            <th style="text-align: left;">
+                                                End
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left;">
+                                                <span  *ngFor="let frlocation of complete.source" >
+                                                    {{frlocation[0].name}}<br />
+                                                </span>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <span  *ngFor="let tolocation of complete.destination" > 
+                                                    {{tolocation[0].name}}   <br /> 
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </ng-template>
+
+                                <span [ngbTooltip]="tipContent1" >
+                                      <!-- {{ complete.source_id }} - {{ complete.destination_id }} -->
+                                        <span *ngFor="let boarding of complete.from_location;">
+                                            {{boarding.name}}
+                                        </span> - 
+                                         <span *ngFor="let dropping of complete.to_location;">
+                                            {{dropping.name}}
+                                        </span>
+                                </span>
+                            </td>                           
+
+                            <td>
+                                <p *ngFor="let seat of complete.booking_detail;">
+                                   
+                                     {{seat.bus_seats.seats.seatText}}
+                                </p>                                    
+                            </td>
+                            <td class="text-capitalize">
+                                <ng-template #tipContent>
+                                    
+                                    <table>
+                                        <tr>
+                                            <td>Phone-</td>
+                                            <td><b>{{complete.users.phone}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email-</td>
+                                            <td>{{complete.users.email}}</td>
+                                        </tr>
+                                    </table>
+                                </ng-template>
+
+                                <strong [ngbTooltip]="tipContent">
+                                    {{complete.users.name}} 
+                                </strong> <br>
+
+                                <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2" placement="bottom" ngbTooltip= "Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-danger text-light mt-2" placement="bottom" ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)" >
+                                    <i class="far fa-envelope"></i>
+                                </button>
+                              
+                            </td>
+                            <td>                               
+                                <p *ngFor="let passanger of complete.booking_detail;" >
+                                    <ng-template #tipContent1>
+                                        <table>
+                                            <tr>
+                                                <td>Gender-</td>
+                                                <td><b>{{passanger.passenger_gender}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Age-</td>
+                                                <td><b>{{passanger.passenger_age}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Seat No-</td>
+                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
+                                            </tr>
+                                        </table>
+                                    </ng-template>
+                                   <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}}</strong>
+                               </p>                                
+                             </td>
+
+                            <td>
+                                
+                                <strong placement="top" ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong> / 
+                                     <strong placement="top" ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong> 
+
+                            </td>
+                            <td>
+                                <!-- <p *ngFor="let fare of complete.booking_detail;" >
+                                    {{fare.owner_fare}}
+                               </p>   -->
+                               <i class="fas fa-rupee-sign"></i> - <b>{{complete.owner_fare}}</b>
+                            </td>
+                            <td>      
+                                                          
+                                <p >
+                                    <i class="fas fa-rupee-sign"></i> - <b>{{complete.total_fare}}</b>
+                               </p>  
+                               
+                            </td>
+                            <td>
+                                -----
+                            </td>                          
+                        </tr>
+                    </tbody>  
                    
                 </table>
             </div>

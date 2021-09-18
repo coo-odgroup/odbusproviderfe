@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ReportsService } from '../../services/reports.service' ;
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-cancelticketsreport',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CancelticketsreportComponent implements OnInit {
 
-  constructor() { }
+  cancelticketdata: any;
+
+  constructor(private http: HttpClient , private rs:ReportsService) { }
 
   ngOnInit(): void {
+  
+    this.getall();
   }
+
+
+  getall() {
+    this.rs.cancelticketReport().subscribe(
+      res => {
+        this.cancelticketdata= res.data; 
+      }
+    );
+  }
+
 
 }
