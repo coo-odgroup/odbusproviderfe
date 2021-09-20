@@ -7,6 +7,7 @@ export interface Busoperator {
     organisation_name:string;
     location_name:string;
     address:string;
+    operator_info:any;
     additional_email:any;
     additional_contact:any;
     bank_account_name:string;

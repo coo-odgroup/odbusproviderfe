@@ -40,7 +40,11 @@ const routes: Routes = [
       {
         path: 'cleartransactionreport',
         loadChildren: () => import('./cleartransactionreport/cleartransactionreport.module').then(module => module.ClearTransactionReportModule)
-      }           
+      },
+      {
+        path: 'couponuseduserreport',
+        loadChildren: () => import('./couponuseduserreport/couponuseduserreport.model').then(module => module.CouponUsedUserReportModule)
+      }              
     ]
   }
 ];

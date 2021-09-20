@@ -73,6 +73,12 @@ export class ReportsService {
       catchError(this.errorHandler)
     )
   }
+
+  CouponUsedUserReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/couponuseduserreport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
   
 
 

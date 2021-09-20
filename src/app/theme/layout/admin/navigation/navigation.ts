@@ -301,6 +301,12 @@ const NavigationItems = [
               url  : 'reports/cleartransactionreport'
             },
             {
+              id   : 'couponuseduserreport',
+              title: 'Coupon Used User Report',
+              type : 'item',
+              url  : 'reports/couponuseduserreport'
+            },
+            {
                 id   : 'seat',
                 title: 'Seat',
                 type : 'item',

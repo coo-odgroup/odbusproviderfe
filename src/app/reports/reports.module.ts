@@ -13,6 +13,7 @@ import { CancelticketsreportComponent } from './cancelticketsreport/cancelticket
 import { BuscancellationreportComponent } from './buscancellationreport/buscancellationreport.component';
 import { OwnerpaymentreportComponent } from './ownerpaymentreport/ownerpaymentreport.component';
 import { CleartransactionreportComponent } from './cleartransactionreport/cleartransactionreport.component';
+import { CouponuseduserreportComponent } from './couponuseduserreport/couponuseduserreport.component';
 
 
 
@@ -23,10 +24,6 @@ import { CleartransactionreportComponent } from './cleartransactionreport/cleart
 
 @NgModule({
   declarations: [ 
-  
-
-  
-   
   ],
   imports: [
     CommonModule,
