@@ -158,7 +158,7 @@ export class BusoperatorComponent implements OnInit {
       bank_name: [null],
       bank_ifsc: [null],
       bank_account_number: [null],
-      need_gst_bill: ['0'],
+      need_gst_bill: [''],
       gst_number: [null],
       gst_amount: [null]
     });
@@ -225,7 +225,7 @@ export class BusoperatorComponent implements OnInit {
       bank_name: ['', Validators.compose([Validators.maxLength(100)])],
       bank_ifsc: ['', Validators.compose([Validators.pattern("^[a-zA-Z0-9]*$"),Validators.maxLength(20)])],
       bank_account_number: ['', Validators.compose([Validators.pattern("^[0-9]*$"),Validators.maxLength(20)])],
-      need_gst_bill: ['0'],
+      need_gst_bill: [''],
       gst_number: [''],
       gst_amount: ['']
     });
@@ -331,6 +331,11 @@ export class BusoperatorComponent implements OnInit {
   
   addBusOperator()
   {
+    let gst_need=this.form.value.need_gst_bill;
+    if(gst_need=="")
+    {
+      gst_need="0";
+    }
 
     const data ={
       email_id:this.form.value.email_id,
@@ -347,7 +352,7 @@ export class BusoperatorComponent implements OnInit {
       bank_name:this.form.value.bank_name,
       bank_ifsc:this.form.value.bank_ifsc,
       bank_account_number:this.form.value.bank_account_number,
-      need_gst_bill: this.form.value.need_gst_bill,
+      need_gst_bill: gst_need,
       gst_number: this.form.value.gst_number,
       gst_amount: this.form.value.gst_amount,
       created_by:"Admin",

@@ -1,315 +1,376 @@
-<div class="row">  
-    <div class="col-sm-12">
-      <app-card cardTitle="Bus Operators" cardClass="card-datatable" [options]="true"  [isCardFooter]="true">
-        <div class="table-responsive">
-          <table datatable [dtOptions]="dtOptionOperators"  [dtTrigger]="dtTrigger" class="table table-striped table-bordered table-hover  mb-0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Operator Name</th>
-                <th>Contact Number</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="BusOperators?.length != 0">
-                <tr *ngFor="let operator of BusOperators; let i=index; ">
-                    <td>{{ operator.id }}</td><td>{{ operator.email_id }}</td><td>{{ operator.operator_name }}</td><td>{{ operator.contact_number }}</td> <td>{{ operator.updated_at }}</td>
-                    
-                    <td>
-                      <label *ngIf="operator.status==1" class="badge badge-light-success pointer" (click)="changeStatus($event, operator.id);" >Active</label>
-                      <label *ngIf="operator.status==0" class="badge badge-light-warning pointer" (click)="changeStatus($event, operator.id);" >Pending</label>
-                    </td>
-                    
-                    <td><a (click)="editoperators($event, i); OpenModal(content);" style="cursor: pointer;" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i></a><a style="cursor: pointer;" (click)="deleteBusOperator(confirmDialog, operator.id)"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>
-                </tr>
-            </tbody>
-            <tbody *ngIf="BusOperators?.length == 0">
-              <tr>
-                <td colspan="7" class="no-data-available">No data!</td>
-              </tr>
-            <tbody>
-          </table>  
-        </div>
-        <div class="app-card-footer">
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Bus Operators" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+      <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptionOperators" [dtTrigger]="dtTrigger"
+          class="table table-striped table-bordered table-hover  mb-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Operator Name</th>
+              <th>Contact Number</th>
+              <th>Created At</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="BusOperators?.length != 0">
+            <tr *ngFor="let operator of BusOperators; let i=index; ">
+              <td>{{ operator.id }}</td>
+              <td>{{ operator.email_id }}</td>
+              <td>{{ operator.operator_name }}</td>
+              <td>{{ operator.contact_number }}</td>
+              <td>{{ operator.updated_at }}</td>
 
-          <ng-template #confirmDialog let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      Would you Like to Delete the Record
-                      <form [formGroup]="formConfirm" class="editForm" novalidate>
-                        <input type="hidden" formControlName="id">
-                      </form>
-                    </div>
+              <td>
+                <label *ngIf="operator.status==1" class="badge badge-light-success pointer"
+                  (click)="changeStatus($event, operator.id);">Active</label>
+                <label *ngIf="operator.status==0" class="badge badge-light-warning pointer"
+                  (click)="changeStatus($event, operator.id);">Pending</label>
+              </td>
+
+              <td><a (click)="editoperators($event, i); OpenModal(content);" style="cursor: pointer;"><i
+                    class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i></a><a style="cursor: pointer;"
+                  (click)="deleteBusOperator(confirmDialog, operator.id)"><i
+                    class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="BusOperators?.length == 0">
+            <tr>
+              <td colspan="7" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+      <div class="app-card-footer">
+
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                      <input type="hidden" formControlName="id">
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
-              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
-            </div>
-          </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
 
-          <button type="button"#addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal" (click)="ResetAttributes();OpenModal(content);">Add </button>    
-          <!-- <app-ui-modal #modalDefault> -->
-            <ng-template #content let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5" id="boxheading">{{ModalHeading}}</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      <form [formGroup]="form" class="editForm" novalidate>     
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Email ID<span class="text-danger">*</span></label>
-                              <div class="col-sm-8">  
-                                <input type="text" class="form-control" placeholder="Enter Email Id" required formControlName="email_id" (change)="checkEmail()" [pattern]="emailPattern" [value]="BusOperatorRecord.email_id" />
-                                <span class="text-danger">{{validEmail}}</span>
-                                
-                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('required')">
-                                  Valid Email id is Required 
-                                </span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].errors?.pattern">
-                                  Email input type not valid.
-                                </span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('minlength')">
-                                  Minimum 5 Characters Required 
-                                </span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('maxlength')">
-                                  Maximum 50 Characters Allowed
-                                </span>
-                              </div>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes();OpenModal(content);">Add </button>
+        <!-- <app-ui-modal #modalDefault> -->
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5" id="boxheading">{{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form [formGroup]="form" class="editForm" novalidate>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Email ID<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" placeholder="Enter Email Id" required
+                                formControlName="email_id" (change)="checkEmail()" [pattern]="emailPattern"
+                                [value]="BusOperatorRecord.email_id" />
+                              <span class="text-danger">{{validEmail}}</span>
+
+                              <span class="text-danger row col-12"
+                                *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('required')">
+                                Valid Email id is Required
+                              </span>
+                              <span class="text-danger row col-12" *ngIf="form.controls['email_id'].errors?.pattern">
+                                Email input type not valid.
+                              </span>
+                              <span class="text-danger row col-12"
+                                *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('minlength')">
+                                Minimum 5 Characters Required
+                              </span>
+                              <span class="text-danger row col-12"
+                                *ngIf="form.controls['email_id'].touched && form.controls['email_id'].hasError('maxlength')">
+                                Maximum 50 Characters Allowed
+                              </span>
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Password<span class="text-danger">*</span></label>
-                              <div class="col-sm-8"> 
-                                <div class="input-group ">
-                                  <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" placeholder="Enter Password" required formControlName="password" [value]="BusOperatorRecord.Password"/>
-                                  <div class="input-group-append">
-                                    <span class="input-group-text">
-                                    <i
-                                    class="fa"
-                                    [ngClass]="{
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Password<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <div class="input-group ">
+                                <input [type]="fieldTextType ? 'text' : 'password'" class="form-control"
+                                  placeholder="Enter Password" required formControlName="password"
+                                  [value]="BusOperatorRecord.Password" />
+                                <div class="input-group-append">
+                                  <span class="input-group-text">
+                                    <i class="fa" [ngClass]="{
                                       'fa-eye-slash': !fieldTextType,
                                       'fa-eye': fieldTextType
-                                    }"
-                                    (click)="toggleFieldTextType()"
-                                  ></i>
+                                    }" (click)="toggleFieldTextType()"></i>
                                   </span>
-                                    </div>
-                                  
-                                  
                                 </div>
-                                <span class="text-danger" *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
-                                  Password is Required 
-                                </span>
-                              
-                                <span class="text-danger" *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
-                                  Minimum 8 Characters Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['password'].touched && form.controls['password'].hasError('maxlength')">
-                                  Maximum 15 Characters Allowed
-                                </span>
+
+
                               </div>
-                              
-                          </div> 
-                          </div>                   
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Operator Name<span class="text-danger">*</span></label>
-                              <div class="col-sm-8">   
-                                
-                                <input type="text" class="form-control" placeholder="Enter Operator Name" required formControlName="operator_name" [value]="BusOperatorRecord.operator_name"/>
-                                <span class="text-danger" *ngIf="form.controls['operator_name'].touched && form.controls['operator_name'].hasError('required')">
-                                  Operator Name is Required  
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['operator_name'].touched && form.controls['operator_name'].hasError('minlength')">
-                                  Minimum 2 Characters Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['operator_name'].touched && form.controls['operator_name'].hasError('maxlength')">
-                                  Maximum 50 Characters Allowed
-                                </span>
-                                
-                              </div>
-                            </div> 
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Contact Number<span class="text-danger">*</span></label>
-                              <div class="col-sm-8">  
-                                <input type="text" class="form-control" (change)="checkPhone()" placeholder="Enter Contact Number" required formControlName="contact_number" [value]="BusOperatorRecord.contact_number"/>
-                                <span class="text-danger row col-12">{{validPhone}}</span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('required')">
-                                  Contact Number is Required 
-                                </span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('minlength')">
-                                  10 Digit Number is Required 
-                                </span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('maxlength')">
-                                  10 Digit Number is Required 
-                                </span>
-                              </div>
-                            </div> 
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Organisation<span class="text-danger">*</span></label>
-                              <div class="col-sm-8"> 
-                                
-                                <input  type="text" class="form-control uppercase" placeholder="Enter Organisation Name" required formControlName="organisation_name" [value]="BusOperatorRecord.organisation_name"/>
-                                <span class="text-danger" *ngIf="form.controls['organisation_name'].touched && form.controls['organisation_name'].hasError('required')">
-                                  Organisation Name is Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['organisation_name'].touched && form.controls['organisation_name'].hasError('minlength')">
-                                  Minimum 2 Characters Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['organisation_name'].touched && form.controls['organisation_name'].hasError('maxlength')">
-                                  Maximum 50 Characters Allowed
-                                </span>
-                              </div>
+                              <span class="text-danger"
+                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
+                                Password is Required
+                              </span>
+
+                              <span class="text-danger"
+                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
+                                Minimum 8 Characters Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('maxlength')">
+                                Maximum 15 Characters Allowed
+                              </span>
                             </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="location_name" class="col-sm-4 col-form-label">City Name<span class="text-danger">*</span></label>
-                              <div class="col-sm-8">  
-                                <input type="text" class="form-control" placeholder="Enter Location Name" formControlName="location_name" [value]="BusOperatorRecord.location_name"  />                        
-                                <span class="text-danger" *ngIf="form.controls['location_name'].touched && form.controls['location_name'].hasError('maxlength')">
-                                  Maximum 200 Characters Allowed
-                                </span>
 
-
-                                <span class="text-danger" *ngIf="form.controls['location_name'].touched && form.controls['organisation_name'].hasError('required')">
-                                  City Name is Required 
-                                </span>
-
-
-
-                              </div>
-                            </div> 
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Additional Email</label>
-                              <div class="col-sm-8">                        
-                                <input type="text" class="form-control" placeholder="Enter Additional Email" formControlName="additional_email"[pattern]="emailPattern" [value]="BusOperatorRecord.additional_email" />
-                                <span class="text-danger" *ngIf="form.controls['additional_email'].errors?.pattern">
-                                  Email input type not valid.
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['additional_email'].touched && form.controls['additional_email'].hasError('minlength')">
-                                  Minimum 5 Characters Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['additional_email'].touched && form.controls['additional_email'].hasError('maxlength')">
-                                  Maximum 50 Characters Allowed
-                                </span>
-                              </div>
-                            </div> 
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Additional Contact</label>
-                              <div class="col-sm-8">  
-                                <input type="text" class="form-control"  placeholder="Enter additional_contact" formControlName="additional_contact" [value]="BusOperatorRecord.additional_contact"/>  
-                                <span class="text-danger" *ngIf="form.controls['additional_contact'].touched && form.controls['additional_contact'].hasError('minlength')">
-                                  10 Digit Number is Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['additional_contact'].touched && form.controls['additional_contact'].hasError('maxlength')">
-                                  10 Digit Number is Required 
-                                </span>                    
-                              </div>
-                            </div> 
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Address<span class="text-danger">*</span></label>
-                              <div class="col-sm-8">
-                                <textarea class ="form-control" placeholder="Enter Address" formControlName="address" >{{BusOperatorRecord.address}}</textarea>
-                                <span class="text-danger" *ngIf="form.controls['address'].touched && form.controls['address'].hasError('required')">
-                                  address is Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['address'].touched && form.controls['address'].hasError('minlength')">
-                                  Minimum 3 Characters Required 
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['address'].touched && form.controls['address'].hasError('maxlength')">
-                                  Maximum 200 Characters Allowed
-                                </span>
-                              </div>
-                            </div> 
-                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Operator Name<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
 
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Operator Info</label>
-                              <div class="col-sm-8">
-                                <textarea class ="form-control" placeholder="Enter Operator Info" formControlName="operator_info" >{{BusOperatorRecord.operator_info}}</textarea>
-                                
-                              </div>
-                            </div> 
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <h4 for="" class="col-sm-12 col-form-label">Bank Information</h4>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Bank Acc Name</label>
-                              <div class="col-sm-8">    
-                                <input type="text" class="form-control" placeholder="Enter Bank Account Name "formControlName="bank_account_name" [value]="BusOperatorRecord.bank_account_name" /> 
-                                <span class="text-danger" *ngIf="form.controls['bank_account_name'].touched && form.controls['bank_account_name'].hasError('maxlength')">
-                                  Maximum 100 Characters Allowed
-                                </span>             
-                              </div>
-                            </div> 
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">IFSC CODE</label>
-                              <div class="col-sm-8">  
-                                <input type="text" class="form-control uppercase"  placeholder="Enter Bank Ifsc Code" formControlName="bank_ifsc" [value]="BusOperatorRecord.bank_ifsc" (change)="checkIfsc()" /> 
-                                {{validIFSC}}
-                                <span class="text-danger" *ngIf="form.controls['bank_ifsc'].errors?.pattern">
-                                  Enter only Alphanumeric
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['bank_ifsc'].touched && form.controls['bank_ifsc'].hasError('maxlength')">
-                                  Maximum 20 Characters Allowed
-                                </span>                       
-                              </div>
+                              <input type="text" class="form-control" placeholder="Enter Operator Name" required
+                                formControlName="operator_name" [value]="BusOperatorRecord.operator_name" />
+                              <span class="text-danger"
+                                *ngIf="form.controls['operator_name'].touched && form.controls['operator_name'].hasError('required')">
+                                Operator Name is Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['operator_name'].touched && form.controls['operator_name'].hasError('minlength')">
+                                Minimum 2 Characters Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['operator_name'].touched && form.controls['operator_name'].hasError('maxlength')">
+                                Maximum 50 Characters Allowed
+                              </span>
+
                             </div>
                           </div>
                         </div>
-                        
-                        <div class="row">
-                          <div class="col-md-6">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Contact Number<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" (change)="checkPhone()"
+                                placeholder="Enter Contact Number" required formControlName="contact_number"
+                                [value]="BusOperatorRecord.contact_number" />
+                              <span class="text-danger row col-12">{{validPhone}}</span>
+                              <span class="text-danger row col-12"
+                                *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('required')">
+                                Contact Number is Required
+                              </span>
+                              <span class="text-danger row col-12"
+                                *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('minlength')">
+                                10 Digit Number is Required
+                              </span>
+                              <span class="text-danger row col-12"
+                                *ngIf="form.controls['contact_number'].touched && form.controls['contact_number'].hasError('maxlength')">
+                                10 Digit Number is Required
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Organisation<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
 
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Bank Name</label>
-                              <div class="col-sm-8"> 
-                                
-                                <!-- <ng-select 
+                              <input type="text" class="form-control uppercase" placeholder="Enter Organisation Name"
+                                required formControlName="organisation_name"
+                                [value]="BusOperatorRecord.organisation_name" />
+                              <span class="text-danger"
+                                *ngIf="form.controls['organisation_name'].touched && form.controls['organisation_name'].hasError('required')">
+                                Organisation Name is Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['organisation_name'].touched && form.controls['organisation_name'].hasError('minlength')">
+                                Minimum 2 Characters Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['organisation_name'].touched && form.controls['organisation_name'].hasError('maxlength')">
+                                Maximum 50 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="location_name" class="col-sm-4 col-form-label">City Name<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" placeholder="Enter Location Name"
+                                formControlName="location_name" [value]="BusOperatorRecord.location_name" />
+                              <span class="text-danger"
+                                *ngIf="form.controls['location_name'].touched && form.controls['location_name'].hasError('maxlength')">
+                                Maximum 200 Characters Allowed
+                              </span>
+
+
+                              <span class="text-danger"
+                                *ngIf="form.controls['location_name'].touched && form.controls['organisation_name'].hasError('required')">
+                                City Name is Required
+                              </span>
+
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Additional Email</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" placeholder="Enter Additional Email"
+                                formControlName="additional_email" [pattern]="emailPattern"
+                                [value]="BusOperatorRecord.additional_email" />
+                              <span class="text-danger" *ngIf="form.controls['additional_email'].errors?.pattern">
+                                Email input type not valid.
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['additional_email'].touched && form.controls['additional_email'].hasError('minlength')">
+                                Minimum 5 Characters Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['additional_email'].touched && form.controls['additional_email'].hasError('maxlength')">
+                                Maximum 50 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Additional Contact</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" placeholder="Enter additional_contact"
+                                formControlName="additional_contact" [value]="BusOperatorRecord.additional_contact" />
+                              <span class="text-danger"
+                                *ngIf="form.controls['additional_contact'].touched && form.controls['additional_contact'].hasError('minlength')">
+                                10 Digit Number is Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['additional_contact'].touched && form.controls['additional_contact'].hasError('maxlength')">
+                                10 Digit Number is Required
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Address<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <textarea class="form-control" placeholder="Enter Address"
+                                formControlName="address">{{BusOperatorRecord.address}}</textarea>
+                              <span class="text-danger"
+                                *ngIf="form.controls['address'].touched && form.controls['address'].hasError('required')">
+                                address is Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['address'].touched && form.controls['address'].hasError('minlength')">
+                                Minimum 3 Characters Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['address'].touched && form.controls['address'].hasError('maxlength')">
+                                Maximum 200 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Operator Info</label>
+                            <div class="col-sm-8">
+                              <textarea class="form-control" placeholder="Enter Operator Info"
+                                formControlName="operator_info">{{BusOperatorRecord.operator_info}}</textarea>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <h4 for="" class="col-sm-12 col-form-label">Bank Information</h4>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Bank Acc Name</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" placeholder="Enter Bank Account Name "
+                                formControlName="bank_account_name" [value]="BusOperatorRecord.bank_account_name" />
+                              <span class="text-danger"
+                                *ngIf="form.controls['bank_account_name'].touched && form.controls['bank_account_name'].hasError('maxlength')">
+                                Maximum 100 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">IFSC CODE</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control uppercase" placeholder="Enter Bank Ifsc Code"
+                                formControlName="bank_ifsc" [value]="BusOperatorRecord.bank_ifsc"
+                                (change)="checkIfsc()" />
+                              {{validIFSC}}
+                              <span class="text-danger" *ngIf="form.controls['bank_ifsc'].errors?.pattern">
+                                Enter only Alphanumeric
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['bank_ifsc'].touched && form.controls['bank_ifsc'].hasError('maxlength')">
+                                Maximum 20 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Bank Name</label>
+                            <div class="col-sm-8">
+
+                              <!-- <ng-select 
                                       [items]="bankNames"
                                       bindLabel="items"
                                       bindValue="items"
@@ -318,90 +379,94 @@
                                       [clearable]="true"
                                       >
                                 </ng-select>  -->
-                                <input type="text" formControlName="bank_name" class="form-control" placeholder="Bank Name">
-                                
-                               
-                                <span class="text-danger" *ngIf="form.controls['bank_name'].touched && form.controls['bank_name'].hasError('maxlength')">
-                                  Maximum 100 Characters Allowed
-                                </span>                              
-                              </div>
+                              <input type="text" formControlName="bank_name" class="form-control"
+                                placeholder="Bank Name">
+
+
+                              <span class="text-danger"
+                                *ngIf="form.controls['bank_name'].touched && form.controls['bank_name'].hasError('maxlength')">
+                                Maximum 100 Characters Allowed
+                              </span>
                             </div>
-                            
                           </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="busoperator" class="col-sm-4 col-form-label">Bank Acc No</label>
-                              <div class="col-sm-8"> 
-                                <input type="text" class="form-control uppercase" placeholder="Enter Bank Account Number " formControlName="bank_account_number" [value]="BusOperatorRecord.bank_account_number" />   
-                                <span class="text-danger" *ngIf="form.controls['bank_account_number'].errors?.pattern">
-                                  Enter only number
-                                </span>
-                                <span class="text-danger" *ngIf="form.controls['bank_account_number'].touched && form.controls['bank_account_number'].hasError('maxlength')">
-                                  Maximum 20 Characters Allowed
-                                </span>                            
+
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="busoperator" class="col-sm-4 col-form-label">Bank Acc No</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control uppercase" placeholder="Enter Bank Account Number "
+                                formControlName="bank_account_number" [value]="BusOperatorRecord.bank_account_number" />
+                              <span class="text-danger" *ngIf="form.controls['bank_account_number'].errors?.pattern">
+                                Enter only number
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['bank_account_number'].touched && form.controls['bank_account_number'].hasError('maxlength')">
+                                Maximum 20 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <h4 for="" class="col-sm-12 col-form-label">GST Information</h4>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+
+                          <div class="form-group row">
+                            <div class="col-sm-8 col-form-label">
+                              <input type="checkbox" value="1" class="checkmark" formControlName='need_gst_bill'>
+
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="col-md-12" *ngIf="form.controls.need_gst_bill.value=='1'">
+                          <div class="row">
+                            <div class="col-md-4">
+
+                              <div class="form-group row">
+                                <label for="need_gst_bill" class="col-sm-4 col-form-label">GST Number</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" formControlName="gst_number">
+                                </div>
                               </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                              <div class="form-group row">
+                                <label for="need_gst_bill" class="col-sm-4 col-form-label">GST (%)</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" formControlName="gst_amount">
+
+                                </div>
+                              </div>
+
                             </div>
                           </div>
                         </div>
 
-                        <div class="form-group row">
-                          <h4 for="" class="col-sm-12 col-form-label">GST Information</h4>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-4">
 
-                            <div class="form-group row">
-                              <label for="need_gst_bill" class="col-sm-4 col-form-label">Need GST</label>
-                              <div class="col-sm-8"> 
-                                <select class="form-control" formControlName="need_gst_bill">
-                                  <option value="0">No</option>
-                                  <option value="1">Yes</option>
-                                </select>
-                                                         
-                              </div>
-                            </div>
-                            
-                          </div>
-                          <div class="col-md-4">
+                      </div>
 
-                            <div class="form-group row">
-                              <label for="need_gst_bill" class="col-sm-4 col-form-label">GST Number</label>
-                              <div class="col-sm-8"> 
-                                <input type="text" class="form-control" formControlName="gst_number">
-                                                         
-                              </div>
-                            </div>
-                            
-                          </div>
-                          <div class="col-md-4">
-
-                            <div class="form-group row">
-                              <label for="need_gst_bill" class="col-sm-4 col-form-label">GST (%)</label>
-                              <div class="col-sm-8"> 
-                                <input type="text" class="form-control" formControlName="gst_amount">
-                                                         
-                              </div>
-                            </div>
-                            
-                          </div>
-
-                        </div>
-
-                      </form>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" [disabled]="!form.valid" (click)="addBusOperator()" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
-              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
-            </div>
-          </ng-template>
-          <!-- </app-ui-modal>   -->
-        </div>  
-          </app-card>  
-    </div>  
-    </div>
- 
-    
+          </div>
+          <div class="modal-footer">
+            <button type="button" [disabled]="!form.valid" (click)="addBusOperator()" class="btn btn-primary"
+              ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+        <!-- </app-ui-modal>   -->
+      </div>
+    </app-card>
+  </div>
+</div>
