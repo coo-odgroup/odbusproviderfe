@@ -12,8 +12,8 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Bus Owner & Org Name</th>
-                            <th scope="col">Transination Id </th>
+                            <th scope="col">Operator Name</th>
+                            <th scope="col">Transaction Id </th>
                             <th scope="col">Payment Date</th>
                             <th scope="col">Amount</th>
                             <th scope="col">Remark</th>
@@ -37,7 +37,8 @@
                             </td>
 
                             <td>
-                                -----
+                                
+                                {{payment.transaction_id}}
                                 <!-- <ng-template #tipContent>
                                     <h5 class="text-white">Bus Details</h5>
                                     <hr>
@@ -53,7 +54,7 @@
 
                             <td>
                              
-                                {{payment.date}}
+                                {{payment.payment_date}}
                             </td>
                             <td>
                                 {{payment.amount}}

@@ -67,6 +67,12 @@ export class ReportsService {
       catchError(this.errorHandler)
     )
   }
+
+  cleartransactionReport(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/cleartransactionreport').pipe(
+      catchError(this.errorHandler)
+    )
+  }
   
 
 
