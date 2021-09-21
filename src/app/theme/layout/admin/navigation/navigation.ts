@@ -234,18 +234,18 @@ const NavigationItems = [
             type     : 'collapse',
             icon     : 'add_shopping_cart',
             children : [
-              {
-                id   : 'routes',
-                title: 'Routes Report',
-                type : 'item',
-                url  : 'reports/routes'
-            },
-            {
-                id   : 'ticket',
-                title: 'Ticket',
-                type : 'item',
-                url  : 'reports/ticket'
-            },
+            //   {
+            //     id   : 'routes',
+            //     title: 'Routes Report',
+            //     type : 'item',
+            //     url  : 'reports/routes'
+            // },
+            // {
+            //     id   : 'ticket',
+            //     title: 'Ticket',
+            //     type : 'item',
+            //     url  : 'reports/ticket'
+            // },
             {
               id   : 'seatopenreport',
               title: 'Seat Open Report',
@@ -306,36 +306,36 @@ const NavigationItems = [
               type : 'item',
               url  : 'reports/couponuseduserreport'
             },
-            {
-                id   : 'seat',
-                title: 'Seat',
-                type : 'item',
-                url  : 'reports/seat'
-            },
-            {
-                id   : 'specialfare',
-                title: 'SpecialFare',
-                type : 'item',
-                url  : 'reports/specialfare'
-            },
-            {
-                id   : 'Bus',
-                title: 'Bus',
-                type : 'item',
-                url  : 'reports/bus'
-            },
-            {
-                id   : 'trasaction',
-                title: 'Trasaction',
-                type : 'item',
-                url  : 'reports/trasaction'
-            },
-            {
-                id   : 'owener ',
-                title: 'Owner',
-                type : 'item',
-                url  : 'reports/Owner'
-            }
+            // {
+            //     id   : 'seat',
+            //     title: 'Seat',
+            //     type : 'item',
+            //     url  : 'reports/seat'
+            // },
+            // {
+            //     id   : 'specialfare',
+            //     title: 'SpecialFare',
+            //     type : 'item',
+            //     url  : 'reports/specialfare'
+            // },
+            // {
+            //     id   : 'Bus',
+            //     title: 'Bus',
+            //     type : 'item',
+            //     url  : 'reports/bus'
+            // },
+            // {
+            //     id   : 'trasaction',
+            //     title: 'Trasaction',
+            //     type : 'item',
+            //     url  : 'reports/trasaction'
+            // },
+            // {
+            //     id   : 'owener ',
+            //     title: 'Owner',
+            //     type : 'item',
+            //     url  : 'reports/Owner'
+            // }
             
             ]
         },  

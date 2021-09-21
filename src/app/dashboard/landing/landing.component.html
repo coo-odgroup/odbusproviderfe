@@ -25,7 +25,7 @@
     
         <div class="col-md-3">
             <app-card [hidHeader]="true" cardClass="bg-c-blue text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">500</h2>
+                <h2 class="text-white">{{dashboarddata.active_operator}}</h2>
                 <h6 class="text-white">Total Operators</h6>
                 <i class="feather icon-file-text"></i>
               </app-card>
@@ -33,14 +33,14 @@
         </div>
         <div class="col-md-3">
           <app-card [hidHeader]="true" cardClass="bg-c-green text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">100</h2>
+                <h2 class="text-white">{{dashboarddata.active_bus}}</h2>
                 <h6 class="text-white">Active Buses</h6>
                 <i class="feather icon-file-text"></i>
               </app-card>      
         </div>
         <div class="col-md-3">
             <app-card [hidHeader]="true" cardClass="bg-c-red text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">60</h2>
+                <h2 class="text-white">{{dashboarddata.today_pnr}}</h2>
                 <h6 class="text-white">PNR Bokked Today</h6>
                 <i class="feather icon-award"></i>
               </app-card>
@@ -48,7 +48,7 @@
         </div>
         <div class="col-md-3">
             <app-card [hidHeader]="true" cardClass="bg-c-yellow text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">102</h2>
+                <h2 class="text-white">{{dashboarddata.upcoming_pnr}}</h2>
                 <h6 class="text-white">PNR Upcoming Booking</h6>
                 <i class="feather icon-file-text"></i>
               </app-card>
@@ -78,23 +78,23 @@
 
           <div class="col-md-12 col-xl-4">
             <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card borderless">
-              <h6 class="text-white">Sales Today:$42,562</h6>              
-              <h6 class="text-white">Sales This Week:$2,562</h6>
-              <h6 class="text-white">Sales This Month:$2,562</h6>
+              <h6 class="text-white">Sales Today: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_today}}</h6>              
+              <h6 class="text-white">Sales This Week: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_week}}</h6>
+              <h6 class="text-white">Sales This Month: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_month}}</h6>
               <i class="card-icon feather icon-filter"></i>
             </app-card>
           </div>
           <div class="col-md-6 col-xl-4">
             <app-card [hidHeader]="true" cardClass="bg-c-blue order-card borderless">
               <h6 class="text-white">Booking Profit</h6>
-              <h2 class="text-white">486</h2>             
+              <h2 class="text-white">{{dashboarddata.booking_profit}}</h2>             
               <i class="card-icon feather icon-users"></i>
             </app-card>
           </div>
           <div class="col-md-6 col-xl-4">
             <app-card [hidHeader]="true" cardClass="bg-c-green order-card borderless">
               <h6 class="text-white">Cancellation Profit</h6>
-              <h2 class="text-white">1641</h2>             
+              <h2 class="text-white">{{dashboarddata.cancellation_profit}}</h2>             
               <i class="card-icon feather icon-radio"></i>
             </app-card>
           </div>

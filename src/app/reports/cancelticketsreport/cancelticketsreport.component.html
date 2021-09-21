@@ -19,10 +19,9 @@
                             <th scope="col">User Details</th>
                             <th scope="col">Passenger Details</th>
                             <th scope="col">Seater / Sleeper </th>
-                            <th scope="col">Owner Fare</th>
-                            <th scope="col">Total Fare</th>
-                            <th scope="col">Od Bus Received</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">ODBUS Fare</th>
+                            <th scope="col">Refund Price</th>
+                            <th scope="col">Cancel By</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="cancelticketdata?.length != 0">
@@ -86,10 +85,13 @@
                             </td>                           
 
                             <td>
-                                <p *ngFor="let seat of complete.booking_detail;">
+                                <div *ngIf="complete.booking_detail?.length != 0">
+                                    <p *ngFor="let seat of complete.booking_detail;">
                                    
-                                     {{seat.bus_seats.seats.seatText}}
-                                </p>                                    
+                                        {{seat.bus_seats.seats.seatText}}
+                                   </p> 
+                                </div>
+                                                                 
                             </td>
                             <td class="text-capitalize">
                                 <ng-template #tipContent>
@@ -119,33 +121,35 @@
                                 </button>
                               
                             </td>
-                            <td>                               
-                                <p *ngFor="let passanger of complete.booking_detail;" >
-                                    <ng-template #tipContent1>
-                                        <table>
-                                            <tr>
-                                                <td>Gender-</td>
-                                                <td><b>{{passanger.passenger_gender}}</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Age-</td>
-                                                <td><b>{{passanger.passenger_age}}</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Seat No-</td>
-                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
-                                   <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}}</strong>
-                               </p>                                
+                            <td> 
+                                <div *ngIf="complete.booking_detail?.length != 0">                             
+                                    <p *ngFor="let passanger of complete.booking_detail;" >
+                                        <ng-template #tipContent1>
+                                            <table>
+                                                <tr>
+                                                    <td>Gender-</td>
+                                                    <td><b>{{passanger.passenger_gender}}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Age-</td>
+                                                    <td><b>{{passanger.passenger_age}}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Seat No-</td>
+                                                    <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
+                                                </tr>
+                                            </table>
+                                        </ng-template>
+                                    <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}}</strong>
+                                    </p>     
+                                </div>                            
                              </td>
 
                             <td>
-                                
-                                <strong placement="top" ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong> / 
+                                <div *ngIf="complete.booking_detail?.length != 0">   
+                                    <strong placement="top" ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong> / 
                                      <strong placement="top" ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong> 
-
+                                </div>
                             </td>
                             <td>
                                 <!-- <p *ngFor="let fare of complete.booking_detail;" >

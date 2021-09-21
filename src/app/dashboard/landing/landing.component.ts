@@ -6,6 +6,7 @@ import { SeoChart2 } from '../chart/seo-chart-2';
 import { SeoChart3 } from '../chart/seo-chart-3';
 import { PowerCardChart1 } from '../chart/power-card-chart-1';
 import { PowerCardChart2 } from '../chart/power-card-chart-2';
+import {DashboardService} from '../../services/dashboard.service';
 
 
 import * as Highcharts from 'highcharts';
@@ -50,9 +51,10 @@ export class LandingComponent implements OnInit {
   public barBasicChartOption: any;
   @ViewChild('barBasicChart') barBasicChart: ElementRef; // used barStackedChart, barHorizontalChart
   public barBasicChartTag: CanvasRenderingContext2D;
+  dashboarddata: any;
 
 
-    constructor() {
+    constructor(private http: HttpClient , private ds:DashboardService) {
  
       this.isCollapsed = false;
       this.isMail = 'inbox';
@@ -203,6 +205,16 @@ export class LandingComponent implements OnInit {
     }
   
     ngOnInit() {
+      this.getall();
     }
 
+   
+    getall() {
+      this.ds.dashboard().subscribe(
+        res => {
+          this.dashboarddata= res.data;
+          // console.log(res.data);
+        }
+      );
+    }
 }
