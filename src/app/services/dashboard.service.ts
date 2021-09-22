@@ -24,6 +24,17 @@ export class DashboardService {
     )
   }
 
+  toproute(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/toproutedata').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  operatordata(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/operatordata').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

@@ -78,16 +78,20 @@
 
           <div class="col-md-12 col-xl-4">
             <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card borderless">
-              <h6 class="text-white">Sales Today: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_today}}</h6>              
-              <h6 class="text-white">Sales This Week: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_week}}</h6>
-              <h6 class="text-white">Sales This Month: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_month}}</h6>
+              <h6 class="text-white">Sales Today: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_today[0].today_amount}}</h6>              
+              <h6 class="text-white">Sales This Week: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_week[0].weak_amount}}</h6>
+              <h6 class="text-white">Sales This Month: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_month[0].month_amount}}</h6>
               <i class="card-icon feather icon-filter"></i>
             </app-card>
           </div>
           <div class="col-md-6 col-xl-4">
             <app-card [hidHeader]="true" cardClass="bg-c-blue order-card borderless">
               <h6 class="text-white">Booking Profit</h6>
-              <h2 class="text-white">{{dashboarddata.booking_profit}}</h2>             
+              <h2 class="text-white">
+                <span *ngFor="let book_pft of dashboarddata.booking_profit;">
+                      {{book_pft.odbus_amount}}
+                </span>
+              </h2>             
               <i class="card-icon feather icon-users"></i>
             </app-card>
           </div>
@@ -104,28 +108,22 @@
               <div class="table-responsive">
                 <table class="table table-hover mb-0">
                   <thead>
-                  <tr>                  
-                    <th>ROUTES</th>
-                    <th>PNR</th>
-                    <th>PRICE</th>                    
-                  </tr>
+                    <tr>   
+                      <th>#</th>               
+                      <th>ROUTES</th>
+                      <th>PNR</th>
+                      <th>PRICE</th>                    
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td> Bhubaneswr – Rourkela</td>
-                    <td>46 PNR</td>
-                    <td>₹ 26500</td>                   
-                  </tr>
-                  <tr>
-                    <td> Bhubaneswr – Balangir </td>
-                    <td>26 PNR</td>
-                    <td>₹ 19500</td>                   
-                  </tr>
-                  <tr>
-                    <td> Bhubaneswr – Kolkata </td>
-                    <td>14 PNR</td>
-                    <td>₹ 8500</td>                   
-                  </tr>
+                    <tr *ngFor="let route of routedata; let i = index">
+                      <td>{{i+1}}</td>
+                      <td>
+                        {{route.from_location[0].name}} - {{route.to_location[0].name}}
+                      </td>
+                      <td>{{route.pnr_count}} PNR</td>
+                      <td><i class="fas fa-rupee-sign"></i> {{route.amount}}</td>                   
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -143,20 +141,10 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td> Dilkhus	Travels</td>
-                    <td>46 PNR</td>
-                    <td>₹ 26500</td>                   
-                  </tr>
-                  <tr>
-                    <td> Sarala Travels  </td>
-                    <td>26 PNR</td>
-                    <td>₹ 19500</td>                   
-                  </tr>
-                  <tr>
-                    <td> Tirupati Travels  </td>
-                    <td>14 PNR</td>
-                    <td>₹ 8500</td>                   
+                  <tr *ngFor="let Operator of oprdata; let i = index">
+                    <td> {{Operator.operatorName}} </td>
+                    <td> {{Operator.count}} PNR</td>
+                    <td><i class="fas fa-rupee-sign"></i> {{Operator.amount}}</td>                   
                   </tr>
                   </tbody>
                 </table>

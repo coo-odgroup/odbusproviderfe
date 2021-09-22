@@ -12,7 +12,7 @@
                             <th scope="col">Operator Name</th>
                             <th scope="col">Block Seats</th>
                             <th scope="col">Reason</th>
-                            <th scope="col">Status</th>
+                            <!-- <th scope="col">Status</th> -->
                         </tr>
                     </thead>
                     <tbody *ngIf="seatblock?.length != 0">
@@ -64,10 +64,10 @@
                                 </div>
                             </td>
                             <td>{{ sblock.reason }}</td>
-                            <td>
+                            <!-- <td>
                                 <label *ngIf="sblock.status == 1" class="badge badge-light-success ">Active</label>
                                 <label *ngIf="sblock.status == 0" class="badge badge-light-danger ">Pending</label>
-                            </td>
+                            </td> -->
 
                         </tr>
                     </tbody>

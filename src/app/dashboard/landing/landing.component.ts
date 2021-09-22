@@ -51,7 +51,10 @@ export class LandingComponent implements OnInit {
   public barBasicChartOption: any;
   @ViewChild('barBasicChart') barBasicChart: ElementRef; // used barStackedChart, barHorizontalChart
   public barBasicChartTag: CanvasRenderingContext2D;
+  
   dashboarddata: any;
+  routedata: any;
+  oprdata: any;
 
 
     constructor(private http: HttpClient , private ds:DashboardService) {
@@ -206,6 +209,8 @@ export class LandingComponent implements OnInit {
   
     ngOnInit() {
       this.getall();
+      this.toproute();
+      this.operatordata();
     }
 
    
@@ -213,6 +218,24 @@ export class LandingComponent implements OnInit {
       this.ds.dashboard().subscribe(
         res => {
           this.dashboarddata= res.data;
+          // console.log(res.data);
+        }
+      );
+    }
+
+    toproute() {
+      this.ds.toproute().subscribe(
+        res => {
+          this.routedata= res.data;
+          // console.log(res.data);
+        }
+      );
+    }
+
+    operatordata() {
+      this.ds.operatordata().subscribe(
+        res => {
+          this.oprdata= res.data;
           // console.log(res.data);
         }
       );

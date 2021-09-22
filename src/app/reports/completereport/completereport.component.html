@@ -150,17 +150,34 @@
                                 <!-- <p *ngFor="let fare of complete.booking_detail;" >
                                     {{fare.owner_fare}}
                                </p>   -->
-                               <i class="fas fa-rupee-sign"></i> - <b>{{complete.owner_fare}}</b>
+                               <i class="fas fa-rupee-sign"></i>  <b>{{complete.owner_fare}}</b>
                             </td>
-                            <td>      
+                            <td>  
+                                <ng-template #tipContent2>
+                                  
+                                    <table>
+                                        <tr>
+                                            <td>ODBUS GST</td>
+                                            <td><b>{{complete.odbus_gst_amount}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>OWNER GST</td>
+                                            <td>{{complete.owner_gst_amount}}</td>
+                                        </tr>
+                                    </table>
+                                </ng-template>    
                                                           
-                                <p >
-                                    <i class="fas fa-rupee-sign"></i> - <b>{{complete.total_fare}}</b>
+                                <p  [ngbTooltip]="tipContent2">
+                                    <i class="fas fa-rupee-sign"></i>  <b>{{complete.total_fare}}</b>
                                </p>  
                                
                             </td>
                             <td>
-                                -----
+                                
+
+                                <p>
+                                    <i class="fas fa-rupee-sign"></i>  <b>{{complete.odbus_charges}}</b>
+                               </p>  
                             </td>                          
                         </tr>
                     </tbody>  

@@ -143,15 +143,14 @@
                              </td>
 
                             <td>
-                                
-                                <strong placement="top" ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong> / 
+                                <div *ngIf="complete.booking_detail?.length != 0">
+                                     <strong placement="top" ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong> / 
                                      <strong placement="top" ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong> 
+                                </div>
 
                             </td>
                             <td>
-                                <p *ngFor="let fare of complete.booking_detail;" >
-                                    {{fare.owner_fare}}
-                               </p>  
+                                <b>{{complete.owner_fare}}</b>
                             </td>
                             <td>      
                                                           
@@ -161,7 +160,7 @@
                                
                             </td>
                             <td>
-                                -----
+                                <b>{{complete.odbus_charges}}</b>
                             </td>
                             <td>
                                 <button class="btn btn-success btn-sm">GENERATE</button>

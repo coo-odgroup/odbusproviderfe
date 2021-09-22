@@ -294,12 +294,12 @@ const NavigationItems = [
               type : 'item',
               url  : 'reports/ownerpaymentreport'
             },
-            {
-              id   : 'cleartransactionreport',
-              title: 'Clear Transaction Tickets Report',
-              type : 'item',
-              url  : 'reports/cleartransactionreport'
-            },
+            // {
+            //   id   : 'cleartransactionreport',
+            //   title: 'Clear Transaction Tickets Report',
+            //   type : 'item',
+            //   url  : 'reports/cleartransactionreport'
+            // },
             {
               id   : 'couponuseduserreport',
               title: 'Coupon Used User Report',
