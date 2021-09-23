@@ -1127,7 +1127,7 @@ export class BusComponent implements OnInit {
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
-                seatId:[seatId],
+                seatId:[seatData.id],
                 busId:[this.busRecord.id]
               });
               this.seatLayoutCol.insert(collen, columnData);
@@ -1169,7 +1169,7 @@ export class BusComponent implements OnInit {
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
-                seatId:[seatId],
+                seatId:[seatData.id],
                 busId:[this.busRecord.id]
               });
               this.seatLayoutCol.insert(collen, columnData);
@@ -1417,7 +1417,7 @@ export class BusComponent implements OnInit {
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
-                seatId:[seatId],
+                seatId:[seatData.id],
                 busId:[this.busRecord.id]
               });
               this.seatLayoutCol.insert(collen, columnData);
@@ -1459,7 +1459,7 @@ export class BusComponent implements OnInit {
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
-                seatId:[seatId],
+                seatId:[seatData.id],
                 busId:[this.busRecord.id]
               });
               this.seatLayoutCol.insert(collen, columnData);
@@ -1641,7 +1641,7 @@ export class BusComponent implements OnInit {
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
       created_by:'Admin',
     };
-    //console.log(data);
+    
     if(data.id!=null)
     {
       this.busService.updateSelectedData(data.bus_id,data).subscribe(
@@ -1740,7 +1740,7 @@ export class BusComponent implements OnInit {
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
-                seatId:[seatId],
+                seatId:[seatData.id],
                 busId:[this.busRecord.id]
               });
               this.seatLayoutCol.insert(collen, columnData);
@@ -1782,7 +1782,7 @@ export class BusComponent implements OnInit {
                 berthType:[seatData.berthType],
                 seatChecked:[checkedval],
                 category:['0'],
-                seatId:[seatId],
+                seatId:[seatData.id],
                 busId:[this.busRecord.id]
               });
               this.seatLayoutCol.insert(collen, columnData);
@@ -1879,7 +1879,7 @@ export class BusComponent implements OnInit {
                     berthType:[seatData.berthType],
                     seatChecked:[{value:true,disabled:true}],
                     category:['0'],
-                    seatId:[seatId],
+                    seatId:[seatData.id],
                     busId:[this.busRecord.id],
                     extraSeat:[durationCheck]
                   });
@@ -1893,7 +1893,7 @@ export class BusComponent implements OnInit {
                     berthType:[seatData.berthType],
                     seatChecked:["true"],
                     category:['0'],
-                    seatId:[seatId],
+                    seatId:[seatData.id],
                     busId:[this.busRecord.id],
                     extraSeat:[durationCheck]
                   });
@@ -1909,7 +1909,7 @@ export class BusComponent implements OnInit {
                   berthType:[seatData.berthType],
                   seatChecked:[checkedval],
                   category:['0'],
-                  seatId:[seatId],
+                  seatId:[seatData.id],
                   busId:[this.busRecord.id],
                   extraSeat:[durationCheck]
                 });
@@ -1962,7 +1962,7 @@ export class BusComponent implements OnInit {
                     berthType:[seatData.berthType],
                     seatChecked:[{value:true,disabled:true}],
                     category:['0'],
-                    seatId:[seatId],
+                    seatId:[seatData.id],
                     busId:[this.busRecord.id],
                     extraSeat:[durationCheck]
                   });
@@ -1976,7 +1976,7 @@ export class BusComponent implements OnInit {
                     berthType:[seatData.berthType],
                     seatChecked:["true"],
                     category:['0'],
-                    seatId:[seatId],
+                    seatId:[seatData.id],
                     busId:[this.busRecord.id],
                     extraSeat:[durationCheck]
                   });
@@ -1992,7 +1992,7 @@ export class BusComponent implements OnInit {
                   berthType:[seatData.berthType],
                   seatChecked:[checkedval],
                   category:['0'],
-                  seatId:[seatId],
+                  seatId:[seatData.id],
                   busId:[this.busRecord.id],
                   extraSeat:[durationCheck]
                 });
