@@ -55,6 +55,12 @@ export class LandingComponent implements OnInit {
   dashboarddata: any;
   routedata: any;
   oprdata: any;
+  ticketdata: any;
+  bookingdata: any;
+  prndata: any;
+
+  pnr_date: any;
+  pnr_label: any;
 
 
     constructor(private http: HttpClient , private ds:DashboardService) {
@@ -181,7 +187,6 @@ export class LandingComponent implements OnInit {
 
     ngAfterViewInit()
     {
-
       setTimeout(() => {
         const barBasicTag = (((this.barBasicChart.nativeElement as HTMLCanvasElement).children));
       this.barBasicChartTag = ((barBasicTag['bar_basic_chart']).lastChild).getContext('2d');
@@ -191,17 +196,27 @@ export class LandingComponent implements OnInit {
       const def = (this.barBasicChartTag).createLinearGradient(0, 300, 0, 0);
       def.addColorStop(0, '#0e9e4a');
       def.addColorStop(1, '#0e9e4a');
-      this.barBasicChartData = {
-        labels: ['Jan-1','Jan-2','Jan-3','Jan-4','Jan-5','Jan-6','Jan-7','Jan-8'],
-        datasets: [{
-          label: 'PNR',
-          data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.54],
-          borderColor: abc,
-          backgroundColor: abc,
-          hoverborderColor: abc,
-          hoverBackgroundColor: abc,
-        }]
-      };
+       // pnr_date;
+          // pnr_label;
+      this.ds.pnrstaticsdata().subscribe(
+        res => {
+          this.prndata= res.data;
+          // console.log(res.data);
+          
+          this.barBasicChartData = {
+            labels: this.prndata.date,
+            datasets: [{
+              label: 'PNR',
+              data:this.prndata.pnr,
+              borderColor: abc,
+              backgroundColor: abc,
+              hoverborderColor: abc,
+              hoverBackgroundColor: abc,
+            }]
+          };
+        }
+      );
+      
         
     });
       
@@ -211,6 +226,7 @@ export class LandingComponent implements OnInit {
       this.getall();
       this.toproute();
       this.operatordata();
+      // this.pnrstaticsdata();
     }
 
    
@@ -240,4 +256,27 @@ export class LandingComponent implements OnInit {
         }
       );
     }
+
+    ticketstaticsdata() {
+      this.ds.ticketstaticsdata().subscribe(
+        res => {
+          this.ticketdata= res.data;
+          // console.log(res.data);
+        }
+      );
+    }
+
+    bookingbydevicedata() {
+      this.ds.bookingbydevicedata().subscribe(
+        res => {
+          this.bookingdata= res.data;
+          // console.log(res.data);
+        }
+      );
+    }
+    
+
+    // pnrstaticsdata() {
+      
+    // }
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportsService } from '../../services/reports.service' ;
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BusOperatorService } from './../../services/bus-operator.service';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-completereport',
@@ -8,14 +12,25 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
   styleUrls: ['./completereport.component.scss']
 })
 export class CompletereportComponent implements OnInit {
+
+  public searchFrom: FormGroup;
   completedata: any;
   totalfare = 0  ;
+  busoperators: any;
 
-  constructor(private http: HttpClient , private rs:ReportsService) { }
+  constructor(private http: HttpClient , private rs:ReportsService, private busOperatorService: BusOperatorService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-  
+
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      date: [null],
+      payment_id : [null],
+      date_type:[null]
+    })  
     this.getall();
+    this.loadServices();
+
   }
 
 
@@ -25,6 +40,12 @@ export class CompletereportComponent implements OnInit {
         this.completedata= res.data;
       }
     );
+  }
+
+  search()
+  {
+     console.log(this.searchFrom.value);
+     
   }
 
 
@@ -42,6 +63,26 @@ export class CompletereportComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+
+
+  loadServices() {
+    // this.busService.all().subscribe(
+    //   res => {
+    //     this.buses = res.data;
+    //   }
+    // );
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+      }
+    );
+    // this.locationService.readAll().subscribe(
+    //   records => {
+    //     this.locations = records.data;
+    //   }
+    // );
   }
 
 }

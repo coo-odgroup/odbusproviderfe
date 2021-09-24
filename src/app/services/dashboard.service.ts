@@ -35,6 +35,26 @@ export class DashboardService {
     )
   }
 
+  ticketstaticsdata(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/ticketstaticsdata').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  
+  bookingbydevicedata(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/bookingbydevicedata').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+ 
+
+  pnrstaticsdata(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/pnrstaticsdata').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
