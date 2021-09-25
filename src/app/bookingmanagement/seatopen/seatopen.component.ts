@@ -172,7 +172,7 @@ export class SeatopenComponent implements OnInit {
             Constants.BASE_URL + '/getseatopenDT',
             dataTablesParameters, {}
           ).subscribe(resp => {
-            console.log(resp);
+            // console.log(resp);
             this.seatOpen = resp.data.aaData;
 
             // console.log(this.seatOpen);

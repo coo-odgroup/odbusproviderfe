@@ -37,17 +37,26 @@ export class ReportsService {
     )
   }
 
-  // completeReport(): Observable<any> {
-  //   return this.httpClient.post(this.apiURL + '/completereport', this.httpOptions).pipe(
-  //     catchError(this.errorHandler)
-  //   )
-  // }
-
-  completeReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/completereport').pipe(
+  completeReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/completereport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
+
+
+  completepaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  // completeReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/completereport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // (data): Observable<any>
+  // return this.httpClient.post<any>(this.apiURL + '/seatopen', JSON.stringify(data), this.httpOptions)
+  // }
  
   failledtransactionReport(): Observable<any> {
     return this.httpClient.get(this.apiURL + '/failledtransactionreport').pipe(

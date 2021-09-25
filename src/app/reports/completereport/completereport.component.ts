@@ -3,6 +3,7 @@ import { ReportsService } from '../../services/reports.service' ;
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {CompleteReport} from '../../model/completereport'
 
 
 
@@ -14,39 +15,85 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CompletereportComponent implements OnInit {
 
   public searchFrom: FormGroup;
+
+  completeReport: CompleteReport[];
+  completeReportRecord: CompleteReport;
+
   completedata: any;
   totalfare = 0  ;
   busoperators: any;
+  url: any;
 
-  constructor(private http: HttpClient , private rs:ReportsService, private busOperatorService: BusOperatorService, private fb: FormBuilder) { }
+  constructor(
+    private http: HttpClient , 
+    private rs:ReportsService, 
+    private busOperatorService: BusOperatorService, 
+    private fb: FormBuilder,
+    // private cr:CompleteReport
+    ) { }
 
   ngOnInit(): void {
 
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
-      date: [null],
+      date_range: [null],
       payment_id : [null],
-      date_type:[null]
+      date_type:['booking'],
+      rows_number: 10
+
     })  
-    this.getall();
+
+   
+
+    this.search();
     this.loadServices();
 
   }
 
 
-  getall() {
-    this.rs.completeReport().subscribe(
-      res => {
-        this.completedata= res.data;
-      }
-    );
+
+  page(label:any){
+    return label;
+   }
+  search(pageurl="")
+  {
+     this.completeReportRecord = this.searchFrom.value ; 
+    
+
+    const data = {
+      bus_operator_id: this.completeReportRecord.bus_operator_id,
+      date_range: this.completeReportRecord.date_range,
+      payment_id:this.completeReportRecord.payment_id,
+      date_type :this.completeReportRecord.date_type,
+      rows_number:this.completeReportRecord.rows_number
+            
+    };
+   
+    console.log(data);
+    if(pageurl!="")
+    {
+      this.rs.completepaginationReport(pageurl,data).subscribe(
+        res => {
+          this.completedata= res.data;
+          // console.log( this.completedata);
+        }
+      );
+    }
+    else
+    {
+      this.rs.completeReport(data).subscribe(
+        res => {
+          this.completedata= res.data;
+          console.log( this.completedata);
+        }
+      );
+    }
+
+
+    
   }
 
-  search()
-  {
-     console.log(this.searchFrom.value);
-     
-  }
+  
 
 
 ///////////////Function to Copy data to Clipboard/////////////////
@@ -68,21 +115,12 @@ export class CompletereportComponent implements OnInit {
 
 
   loadServices() {
-    // this.busService.all().subscribe(
-    //   res => {
-    //     this.buses = res.data;
-    //   }
-    // );
+
     this.busOperatorService.readAll().subscribe(
       res => {
         this.busoperators = res.data;
       }
     );
-    // this.locationService.readAll().subscribe(
-    //   records => {
-    //     this.locations = records.data;
-    //   }
-    // );
   }
 
 }
