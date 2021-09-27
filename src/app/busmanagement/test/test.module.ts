@@ -8,6 +8,8 @@ import { TestComponent } from './test.component';
 import {NotificationService} from '../../services/notification.service';
 
 import { DragulaModule } from 'ng2-dragula';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +18,7 @@ import { DragulaModule } from 'ng2-dragula';
     FormsModule,
     DataTablesModule,
     ReactiveFormsModule,
+    NgbModule,
     DragulaModule.forRoot()
   ],
   declarations: [ TestComponent],
