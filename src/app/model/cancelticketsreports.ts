@@ -1,4 +1,4 @@
-export interface CompleteReport {   
+export interface CancelTicketsReport {   
     bus_operator_id: any;   
     date_range: any;
     payment_id: any;

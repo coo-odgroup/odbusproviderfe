@@ -3,7 +3,11 @@ import { ReportsService } from '../../services/reports.service' ;
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {CompleteReport} from '../../model/completereport'
+import {CompleteReport} from '../../model/completereport';
+import { LocationService } from '../../services/location.service';
+import { BusService} from '../../services/bus.service';
+
+
 
 
 
@@ -23,13 +27,16 @@ export class CompletereportComponent implements OnInit {
   totalfare = 0  ;
   busoperators: any;
   url: any;
+  locations: any;
+  buses: any;
 
   constructor(
     private http: HttpClient , 
     private rs:ReportsService, 
     private busOperatorService: BusOperatorService, 
     private fb: FormBuilder,
-    // private cr:CompleteReport
+    private locationService:LocationService,
+    private busService:BusService
     ) { }
 
   ngOnInit(): void {
@@ -39,10 +46,11 @@ export class CompletereportComponent implements OnInit {
       date_range: [null],
       payment_id : [null],
       date_type:['booking'],
-      rows_number: 10
+      rows_number: 10,
+      source_id:[null],
+      destination_id:[null]
 
     })  
-
    
 
     this.search();
@@ -58,18 +66,19 @@ export class CompletereportComponent implements OnInit {
   search(pageurl="")
   {
      this.completeReportRecord = this.searchFrom.value ; 
-    
-
+     
     const data = {
       bus_operator_id: this.completeReportRecord.bus_operator_id,
       date_range: this.completeReportRecord.date_range,
       payment_id:this.completeReportRecord.payment_id,
       date_type :this.completeReportRecord.date_type,
-      rows_number:this.completeReportRecord.rows_number
+      rows_number:this.completeReportRecord.rows_number,
+      source_id:this.completeReportRecord.source_id,
+      destination_id:this.completeReportRecord.destination_id
             
     };
    
-    console.log(data);
+    // console.log(data);
     if(pageurl!="")
     {
       this.rs.completepaginationReport(pageurl,data).subscribe(
@@ -84,7 +93,7 @@ export class CompletereportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata= res.data;
-          console.log( this.completedata);
+          // console.log( this.completedata);
         }
       );
     }
@@ -112,6 +121,12 @@ export class CompletereportComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
+  refresh()
+  {
+    this.searchFrom.reset();
+    this.search();
+  }
+
 
 
   loadServices() {
@@ -121,6 +136,35 @@ export class CompletereportComponent implements OnInit {
         this.busoperators = res.data;
       }
     );
+    this.locationService.readAll().subscribe(
+      records=>{
+        this.locations=records.data;
+      }
+    );
   }
+
+  findSource(event:any)
+{
+  let source_id=this.searchFrom.controls.source_id.value;
+  let destination_id=this.searchFrom.controls.destination_id.value;
+
+
+  if(source_id!="" && destination_id!="")
+  {
+    this.busService.findSource(source_id,destination_id).subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
+  else
+  {
+    this.busService.all().subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
+}
 
 }

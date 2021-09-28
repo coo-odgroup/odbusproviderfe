@@ -278,7 +278,7 @@ const NavigationItems = [
             },
             {
               id   : 'failedtransactionreport',
-              title: 'Failed Transaction Tickets Report',
+              title: 'Failed Transaction Report',
               type : 'item',
               url  : 'reports/failedtransactionreport'
             },

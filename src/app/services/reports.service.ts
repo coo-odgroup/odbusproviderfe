@@ -54,15 +54,30 @@ export class ReportsService {
   //   return this.httpClient.get(this.apiURL + '/completereport').pipe(
   //     catchError(this.errorHandler)
   //   )
-  // (data): Observable<any>
-  // return this.httpClient.post<any>(this.apiURL + '/seatopen', JSON.stringify(data), this.httpOptions)
-  // }
+  
  
-  failledtransactionReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/failledtransactionreport').pipe(
+  // failledtransactionReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/failledtransactionreport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+
+  failledtransactionReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/failledtransactionreport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
+
+  failledtransactionpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+
+
 
   buscancellationReport(): Observable<any> {
     return this.httpClient.get(this.apiURL + '/buscancellationreport').pipe(
@@ -70,18 +85,58 @@ export class ReportsService {
     )
   }
 
-  ownerpaymentReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/ownerpaymentreport').pipe(
+  // ownerpaymentReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/ownerpaymentreport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+  ownerpaymentReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/ownerpaymentreport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
 
 
-  cancelticketReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/cancelticketreport').pipe(
+  ownerpaymentpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
+
+
+
+
+
+
+  // cancelticketReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/cancelticketreport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+
+  cancelticketReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/cancelticketreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  cancelticketpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+
+
+
+
+
+
+
 
   cleartransactionReport(): Observable<any> {
     return this.httpClient.get(this.apiURL + '/cleartransactionreport').pipe(

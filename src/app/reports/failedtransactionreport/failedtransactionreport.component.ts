@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportsService } from '../../services/reports.service' ;
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BusOperatorService } from './../../services/bus-operator.service';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FailedtransactionReport} from '../../model/failedtransactionreport';
+import { LocationService } from '../../services/location.service';
+import { BusService} from '../../services/bus.service';
 
 
 @Component({
@@ -9,24 +14,91 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
   styleUrls: ['./failedtransactionreport.component.scss']
 })
 export class FailedtransactionreportComponent implements OnInit {
+  public searchFrom: FormGroup;
+
+  failedtransactionReport: FailedtransactionReport[];
+  failedtransactionReportRecord: FailedtransactionReport;
+
   completedata: any;
   totalfare = 0  ;
+  busoperators: any;
+  url: any;
+  locations: any;
+  buses: any;
 
-  constructor(private http: HttpClient , private rs:ReportsService) { }
+
+  constructor(
+    private http: HttpClient , 
+    private rs:ReportsService, 
+    private busOperatorService: BusOperatorService, 
+    private fb: FormBuilder,
+    private locationService:LocationService,
+    private busService:BusService
+    ) { }
 
   ngOnInit(): void {
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      date_range: [null],
+      payment_id : [null],
+      date_type:['booking'],
+      rows_number: 10,
+      source_id:[null],
+      destination_id:[null]
+
+    })  
+   
+
+    this.search();
+    this.loadServices();
+  }
+
+
+  page(label:any){
+    return label;
+   }
+  search(pageurl="")
+  {
+     this.failedtransactionReportRecord = this.searchFrom.value ; 
+     
+    const data = {
+      bus_operator_id: this.failedtransactionReportRecord.bus_operator_id,
+      date_range: this.failedtransactionReportRecord.date_range,
+      payment_id:this.failedtransactionReportRecord.payment_id,
+      date_type :this.failedtransactionReportRecord.date_type,
+      rows_number:this.failedtransactionReportRecord.rows_number,
+      source_id:this.failedtransactionReportRecord.source_id,
+      destination_id:this.failedtransactionReportRecord.destination_id
+            
+            
+    };
+   
+    
+
+    if(pageurl!="")
+    {
+      this.rs.failledtransactionpaginationReport(pageurl,data).subscribe(
+        res => {
+          this.completedata= res.data;
+          // console.log( this.completedata);
+        }
+      );
+    }
+    else
+    {
+      this.rs.failledtransactionReport(data).subscribe(
+        res => {
+          this.completedata= res.data;
+          // console.log( this.completedata);
+        }
+      );
+    }
+
+
+    
+  }
+
   
-    this.getall();
-  }
-
-
-  getall() {
-    this.rs.failledtransactionReport().subscribe(
-      res => {
-        this.completedata= res.data;
-      }
-    );
-  }
 
 
 ///////////////Function to Copy data to Clipboard/////////////////
@@ -44,5 +116,51 @@ export class FailedtransactionreportComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selBox);
   }
+
+
+  refresh()
+  {
+    this.searchFrom.reset();
+    this.search();
+  }
+
+
+  loadServices() {
+
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+      }
+    );
+    this.locationService.readAll().subscribe(
+      records=>{
+        this.locations=records.data;
+      }
+    );
+  }
+
+  findSource(event:any)
+{
+  let source_id=this.searchFrom.controls.source_id.value;
+  let destination_id=this.searchFrom.controls.destination_id.value;
+
+
+  if(source_id!="" && destination_id!="")
+  {
+    this.busService.findSource(source_id,destination_id).subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
+  else
+  {
+    this.busService.all().subscribe(
+      res=>{
+        this.buses=res.data;
+      }
+    );
+  }
+}
 
 }
