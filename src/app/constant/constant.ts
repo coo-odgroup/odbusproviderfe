@@ -12,7 +12,7 @@ export class Constants {
     public static RecordAddTitle: any = "Record Added Successfully";
     public static RecordUpdateTitle: any = "Record Updated Successfully";
     public static RecordDeleteTitle: any = "Record Deleted Successfully";
-
+    public static RecordLimit: any = 10 ;
     //FOR LOCAL
     //public static BASE_URL:any ='http://127.0.0.1:8000/api';
     public static BASE_URL:any ='https://provider.neoflix.in/api';
