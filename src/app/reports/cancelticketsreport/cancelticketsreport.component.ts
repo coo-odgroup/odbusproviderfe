@@ -5,7 +5,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { LocationService } from '../../services/location.service';
 import { BusService} from '../../services/bus.service';
-import {CancelTicketsReport } from '../../model/cancelticketsreports'
+import {CancelTicketsReport } from '../../model/cancelticketsreports';
+import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import {Constants} from '../../constant/constant' ;
 
 
 
@@ -29,25 +31,37 @@ export class CancelticketsreportComponent implements OnInit {
   buses: any;
   // completedata: any;
 
+  hoveredDate: NgbDate | null = null;
+  fromDate: NgbDate | null;
+  toDate: NgbDate | null;
+
+
   constructor(
      private http: HttpClient ,
      private fb: FormBuilder,
      private locationService:LocationService,
      private busService:BusService, 
      private rs:ReportsService,
-     private busOperatorService: BusOperatorService
-     ) { }
+     private busOperatorService: BusOperatorService ,
+     private calendar: NgbCalendar, 
+     public formatter: NgbDateParserFormatter 
+    ) {
+      this.fromDate = calendar.getToday();
+      this.toDate = calendar.getToday();
+     }
+
 
   ngOnInit(): void {
 
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
-      date_range: [null],
       payment_id : [null],
       date_type:['booking'],
       rows_number: 10,
       source_id:[null],
-      destination_id:[null]
+      destination_id:[null],
+      rangeFromDate:[null],
+      rangeToDate :[null]
 
     })  
   
@@ -74,12 +88,13 @@ export class CancelticketsreportComponent implements OnInit {
      
     const data = {
       bus_operator_id: this.cancelTicketsReportRecord.bus_operator_id,
-      date_range: this.cancelTicketsReportRecord.date_range,
       payment_id:this.cancelTicketsReportRecord.payment_id,
       date_type :this.cancelTicketsReportRecord.date_type,
       rows_number:this.cancelTicketsReportRecord.rows_number,
       source_id:this.cancelTicketsReportRecord.source_id,
-      destination_id:this.cancelTicketsReportRecord.destination_id
+      destination_id:this.cancelTicketsReportRecord.destination_id,
+      rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
+      rangeToDate :this.cancelTicketsReportRecord.rangeToDate
             
     };
    
@@ -98,7 +113,7 @@ export class CancelticketsreportComponent implements OnInit {
       this.rs.cancelticketReport(data).subscribe(
         res => {
           this.cancelticketdata= res.data;
-          console.log( this.cancelticketdata);
+          // console.log( this.cancelticketdata);
         }
       );
     }
@@ -154,5 +169,49 @@ export class CancelticketsreportComponent implements OnInit {
     }
   }
 
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+  
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+  
+    return [year, month, day].join('-');
+  }
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.searchFrom.controls.rangeFromDate.setValue(date);
+      this.fromDate = date;
+    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+      this.toDate = date;
+      this.searchFrom.controls.rangeToDate.setValue(date);
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+      this.searchFrom.controls.rangeFromDate.setValue(date);
+    }
+  }
+  
+  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+    const parsed = this.formatter.parse(input);
+    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  }
+  isHovered(date: NgbDate) {
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+  }
+  
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+  
+  isRange(date: NgbDate) {
+    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
+  }
+  
 
 }

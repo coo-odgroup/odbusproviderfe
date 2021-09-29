@@ -18,15 +18,40 @@ export class ReportsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  seatopenReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/seatopenreport/').pipe(
+  // seatopenReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/seatopenreport/').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+  seatopenReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/seatopenreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  seatopenpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
 
 
-  seatblockReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/seatblockreport').pipe(
+
+  // seatblockReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/seatblockreport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+  seatblockReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/seatblockreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  seatblockpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
@@ -79,12 +104,24 @@ export class ReportsService {
 
 
 
-  buscancellationReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/buscancellationreport').pipe(
+  // buscancellationReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/buscancellationreport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+
+  buscancellationReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/buscancellationreport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
 
+  buscancellationpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
   // ownerpaymentReport(): Observable<any> {
   //   return this.httpClient.get(this.apiURL + '/ownerpaymentreport').pipe(
   //     catchError(this.errorHandler)

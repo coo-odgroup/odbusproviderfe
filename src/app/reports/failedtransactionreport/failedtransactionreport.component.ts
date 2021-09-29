@@ -6,6 +6,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {FailedtransactionReport} from '../../model/failedtransactionreport';
 import { LocationService } from '../../services/location.service';
 import { BusService} from '../../services/bus.service';
+import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import {Constants} from '../../constant/constant' ;
 
 
 @Component({
@@ -26,6 +28,10 @@ export class FailedtransactionreportComponent implements OnInit {
   locations: any;
   buses: any;
 
+  hoveredDate: NgbDate | null = null;
+  fromDate: NgbDate | null;
+  toDate: NgbDate | null;
+
 
   constructor(
     private http: HttpClient , 
@@ -33,18 +39,24 @@ export class FailedtransactionreportComponent implements OnInit {
     private busOperatorService: BusOperatorService, 
     private fb: FormBuilder,
     private locationService:LocationService,
-    private busService:BusService
-    ) { }
+    private busService:BusService,  
+    private calendar: NgbCalendar, 
+    public formatter: NgbDateParserFormatter 
+    ) {
+      this.fromDate = calendar.getToday();
+      this.toDate = calendar.getToday();
+     }
 
   ngOnInit(): void {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
-      date_range: [null],
       payment_id : [null],
       date_type:['booking'],
-      rows_number: 10,
+      rows_number: Constants.RecordLimit,
       source_id:[null],
-      destination_id:[null]
+      destination_id:[null],
+      rangeFromDate:[null],
+      rangeToDate :[null]
 
     })  
    
@@ -63,12 +75,13 @@ export class FailedtransactionreportComponent implements OnInit {
      
     const data = {
       bus_operator_id: this.failedtransactionReportRecord.bus_operator_id,
-      date_range: this.failedtransactionReportRecord.date_range,
       payment_id:this.failedtransactionReportRecord.payment_id,
       date_type :this.failedtransactionReportRecord.date_type,
       rows_number:this.failedtransactionReportRecord.rows_number,
       source_id:this.failedtransactionReportRecord.source_id,
-      destination_id:this.failedtransactionReportRecord.destination_id
+      destination_id:this.failedtransactionReportRecord.destination_id,
+      rangeFromDate:this.failedtransactionReportRecord.rangeFromDate,
+      rangeToDate :this.failedtransactionReportRecord.rangeToDate
             
             
     };
@@ -161,6 +174,51 @@ export class FailedtransactionreportComponent implements OnInit {
       }
     );
   }
+}
+
+
+
+formatDate(date) {
+  var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) 
+      month = '0' + month;
+  if (day.length < 2) 
+      day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+onDateSelection(date: NgbDate) {
+  if (!this.fromDate && !this.toDate) {
+    this.searchFrom.controls.rangeFromDate.setValue(date);
+    this.fromDate = date;
+  } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+    this.toDate = date;
+    this.searchFrom.controls.rangeToDate.setValue(date);
+  } else {
+    this.toDate = null;
+    this.fromDate = date;
+    this.searchFrom.controls.rangeFromDate.setValue(date);
+  }
+}
+
+validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+  const parsed = this.formatter.parse(input);
+  return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+}
+isHovered(date: NgbDate) {
+  return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+}
+
+isInside(date: NgbDate) {
+  return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+}
+
+isRange(date: NgbDate) {
+  return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
 }
 
 }
