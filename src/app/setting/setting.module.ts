@@ -13,11 +13,7 @@ import { SeosettingComponent } from './seosetting/seosetting.component';
 
 @NgModule({
   declarations: [
-  
-    MastersettingComponent,
-       BannermanagementComponent,
-       SpecialsliderComponent,
-       SeosettingComponent
+    
   ],
   imports: [
     CommonModule,
