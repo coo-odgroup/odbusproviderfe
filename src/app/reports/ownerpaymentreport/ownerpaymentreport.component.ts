@@ -4,6 +4,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OwnerpaymentReport } from '../../model/ownerpaymentreport';
+import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import {Constants} from '../../constant/constant' ;
 
 
 
@@ -19,14 +21,32 @@ export class OwnerpaymentreportComponent implements OnInit {
   ownerpaymentReport: OwnerpaymentReport[];
   ownerpaymentReportRecord: OwnerpaymentReport;
 
-  constructor(private http: HttpClient , private rs:ReportsService ,  private fb: FormBuilder, private busOperatorService: BusOperatorService,) { }
+  hoveredDate: NgbDate | null = null;
+  fromDate: NgbDate | null;
+  toDate: NgbDate | null;
+
+
+  constructor(
+    private http: HttpClient , 
+    private rs:ReportsService ,  
+    private fb: FormBuilder, 
+    private busOperatorService: BusOperatorService, 
+    private calendar: NgbCalendar, 
+    public formatter: NgbDateParserFormatter 
+    ) 
+    {
+      this.fromDate = calendar.getToday();
+      this.toDate = calendar.getToday();
+    }
   busoperators: any;
   ngOnInit(): void {
 
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       date_range: [null],
-      rows_number: 10,
+      rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate :[null]
 
     })  
    
@@ -34,16 +54,6 @@ export class OwnerpaymentreportComponent implements OnInit {
     this.search();
     this.loadServices();
   }
-
-
-  // getall() {
-  //   this.rs.ownerpaymentReport().subscribe(
-  //     res => {
-  //       this.completedata= res.data;
-  //       // console.log(this.completedata);
-  //     }
-  //   );
-  // }
 
   page(label:any){
     return label;
@@ -57,7 +67,9 @@ export class OwnerpaymentreportComponent implements OnInit {
     const data = {
       bus_operator_id: this.ownerpaymentReportRecord.bus_operator_id,
       date_range: this.ownerpaymentReportRecord.date_range,
-      rows_number:this.ownerpaymentReportRecord.rows_number,       
+      rows_number:this.ownerpaymentReportRecord.rows_number, 
+      rangeFromDate:this.ownerpaymentReportRecord.rangeFromDate,
+      rangeToDate :this.ownerpaymentReportRecord.rangeToDate      
     };
       
     // console.log(data);
@@ -102,6 +114,50 @@ export class OwnerpaymentreportComponent implements OnInit {
       }
     );
  
+  }
+
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+  
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+  
+    return [year, month, day].join('-');
+  }
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.searchFrom.controls.rangeFromDate.setValue(date);
+      this.fromDate = date;
+    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+      this.toDate = date;
+      this.searchFrom.controls.rangeToDate.setValue(date);
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+      this.searchFrom.controls.rangeFromDate.setValue(date);
+    }
+  }
+  
+  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+    const parsed = this.formatter.parse(input);
+    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  }
+  isHovered(date: NgbDate) {
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+  }
+  
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+  
+  isRange(date: NgbDate) {
+    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
   }
 
 }

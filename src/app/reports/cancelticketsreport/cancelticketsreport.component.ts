@@ -57,27 +57,16 @@ export class CancelticketsreportComponent implements OnInit {
       bus_operator_id: [null],
       payment_id : [null],
       date_type:['booking'],
-      rows_number: 10,
+      rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
       rangeToDate :[null]
 
     })  
-  
-    // this.getall();
     this.search(); 
     this.loadServices();
   }
-
-
-  // getall() {
-  //   this.rs.cancelticketReport().subscribe(
-  //     res => {
-  //       this.cancelticketdata= res.data; 
-  //     }
-  //   );
-  // }
   
   page(label:any){
     return label;

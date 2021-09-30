@@ -56,11 +56,27 @@ export class ReportsService {
     )
   }
 
-  extraseatopenReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/extraseatopenreport').pipe(
+  // extraseatopenReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/extraseatopenreport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+
+  extraseatopenReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/completereport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
+
+
+  extraseatopenpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
 
   completeReport(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/completereport',JSON.stringify(data), this.httpOptions).pipe(
@@ -181,8 +197,21 @@ export class ReportsService {
     )
   }
 
-  CouponUsedUserReport(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/couponuseduserreport').pipe(
+  // CouponUsedUserReport(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/couponuseduserreport').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+  couponUsedUserReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/couponuseduserreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  couponUsedUserpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }

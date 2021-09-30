@@ -129,7 +129,7 @@
             </div>
             
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -183,12 +183,9 @@
 
 
                             <td>
-                                <div *ngFor="
-                              let seat of sblock.seat_block_seats;
-                              let seatIndex = index
-                            ">
-                                    <strong>{{ seatIndex + 1 }}</strong>.{{ seat.seats.seatText }}
-                                </div>
+                                <span *ngFor=" let seat of sblock.seat_block_seats;let seatIndex = index">
+                                    {{ seat.seats.seatText }},
+                                </span>
                             </td>
                             <td>{{ sblock.reason }}</td>
                             <!-- <td>
