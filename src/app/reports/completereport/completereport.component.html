@@ -207,7 +207,7 @@
 
                                
 
-                                <div class="col-1">
+                                <div class="col-1 p-0">
                                     <div class="dropdown float-right">
                                         <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
                                             <option value=10>10</option>
@@ -272,12 +272,12 @@
                                     </div>
                                                                       
                                 </div>
-                                <div class="col-2">                            
+                                <div class="col-2 p-0">                            
                                     <div class="float-right">
-                                        <button type="submit" class="btn btn-dark mr-2 btn-sm">
+                                        <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 btn-sm">
                                             <i class="fas fa-file-export"></i> Export
                                         </button>
-                                        <button type="reset" class="btn btn-dark btn-sm">
+                                        <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark btn-sm" [useExistingCss]="true">
                                             <i class="fas fa-print"></i> Print
                                         </button>
                                     </div>
@@ -290,7 +290,7 @@
             </div>
 
             
-            <div class="table-responsive">
+            <div class="table-responsive"  id="print-section">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -391,12 +391,12 @@
                                     {{complete.users.name}}
                                 </strong> <br>
 
-                                <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2" placement="bottom"
+                                <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print" placement="bottom"
                                     ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
                                     <i class="fas fa-mobile-alt"></i>
                                 </button>
 
-                                <button class="btn btn-sm btn-danger text-light mt-2" placement="bottom"
+                                <button class="btn btn-sm btn-danger text-light mt-2 hide_print" placement="bottom"
                                     ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
                                     <i class="far fa-envelope"></i>
                                 </button>
@@ -469,7 +469,7 @@
                 <div *ngIf="completedata?.length != 0">
                     <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="completedata?.data.links">
                         <nav class="my-1 pt-1 ">
-                            <ul class="pagination pagination-circle pg-blue mb-0">
+                            <ul class="pagination pagination-circle pg-blue mb-0 hide_print">
                                 <li (click)="search(completedata.data.links.first_page_url,statusLabel)"
                                     class="page-item {{ completedata.data.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
                                     <a class="page-link">First</a>

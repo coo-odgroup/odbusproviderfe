@@ -12,6 +12,13 @@ img#main-logo {
 body {
   padding: 20px;
 }
-
-
+a.active.page-link {
+  background: #2c3e50;
+  color: #FFF;
+}
+@media print {
+  .hide_print {
+    display: none !important;
+  }
+}
 
