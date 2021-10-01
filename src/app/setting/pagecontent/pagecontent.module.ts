@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import {PageContentRoutingModule} from './pagecontent-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     NgSelectModule,
     DataTablesModule,
-    NgbModule
+    NgbModule,
+    AngularEditorModule 
   ],
   declarations: [ PagecontentComponent],
   providers: [NotificationService]

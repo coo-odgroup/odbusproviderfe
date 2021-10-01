@@ -1,1 +1,97 @@
-<p>socialmedia works!</p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Update Social Media" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+            <div class=" mb-3">
+                <div class="row p-0">
+                    <div class="col-12">
+                        <!-- <form [formGroup]="searchFrom">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                                placeholder="Select Operator" formControlName="bus_operator_id"
+                                                [clearable]="false">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                
+                        </form> -->
+
+                        <form [formGroup]="socialFrom">
+                            <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label ">Facebook Link <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">                                    
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text icon"><i class="fab fa-facebook-f"></i></div>
+                                      </div>
+                                      <input type="text" class="form-control"  placeholder="Enter Facebook Link" formControlName="facebook_link">
+                                    </div>
+                                  </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label ">Twitter Link <span class="text-danger">*</span> </label>
+                                <div class="col-sm-10">                                    
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text icon"><i class="fab fa-twitter"></i></div>
+                                      </div>
+                                      <input type="text" class="form-control" placeholder="Enter Twitter Link" formControlName="twitter_link">
+                                    </div>
+                                  </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Instagram Link <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">                                    
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text icon"><i class="fab fa-instagram font-weight-bold"></i></div>
+                                      </div>
+                                      <input type="text" class="form-control" placeholder="Enter Instagram Link" formControlName="instagram_link">
+                                    </div>
+                                  </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Googleplus Link <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">                                    
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text icon"><i class="fab fa-google-plus-g"></i></div>
+                                      </div>
+                                      <input type="text" class="form-control"  placeholder="Enter Googleplus Link" formControlName="googleplus_link">
+                                    </div>
+                                  </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Linkedin Link <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">                                    
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text icon"><i class="fab fa-linkedin-in"></i></div>
+                                      </div>
+                                      <input type="text" class="form-control"  placeholder="Enter Linkedin Link" formControlName="linkedin_link" required>
+                                    </div>
+                                  </div>
+                              </div>     
+                              <div class="from-group row">
+                                  <div class="col-sm-12 text-right">
+                                    <button type="submit" class="btn btn-success mr-5 " (click) = 'update()'>
+                                        Submit
+                                       </button>
+                                  </div>                              
+                              </div>                        
+                          </form>
+                    </div>                   
+                </div>
+            </div>           
+        </app-card>
+    </div>
+</div>
