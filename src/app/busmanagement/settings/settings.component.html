@@ -4,6 +4,7 @@
         <div class="table-responsive">
             <form [formGroup]="settingForm" class="editForm" novalidate>
                 <table class="table table-striped table-bordered table-hover  mb-0 ">
+                    <!-- <table style="width:1000px;"> -->
                     <tr>
                         <th>Items</th>
                         <th>Values</th>
@@ -11,7 +12,7 @@
                     <tr>
                         <th>Payment Gateway Charges (%)</th>
                         <td>
-                            <div class="input-group ">
+                            <div class="input-group col-md-6">
                                 <input type="text" class="form-control" formControlName="payment_gateway_charges"  placeholder="Payment Gateway Charges" aria-label="Payment Gateway Charges" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                   <span class="input-group-text" id="basic-addon1">%</span>
@@ -25,7 +26,7 @@
                     <tr>
                         <th>Email and SMS Charges (INR)</th>
                         <td>
-                            <div class="input-group ">
+                            <div class="input-group col-md-6">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon5"><i class="fas fa-rupee-sign"></i></span>
                                 </div>
@@ -43,7 +44,7 @@
                     <tr>
                         <th>ODBUS GST Charges</th>
                         <td>
-                            <div class="input-group ">
+                            <div class="input-group col-md-6">
                                 <input type="text" class="form-control" formControlName="odbus_gst_charges"  placeholder="ODBUS GST Charges" aria-label="ODBUS GST Charges" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                   <span class="input-group-text" id="basic-addon6">%</span>
@@ -52,6 +53,93 @@
                             <span class="text-danger" *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">
                                 ODBUS GST Charges are required! </span>
 
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>No of Advance Days Show In Calender<span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="advance_days_show"  placeholder="advance days show" aria-label="advance days show" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['advance_days_show'].touched && settingForm.controls['advance_days_show'].hasError('required')">
+                                No of Advance Days Show required! </span>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Support Email<span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="support_email"  placeholder="support email" aria-label="support email" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['support_email'].touched && settingForm.controls['support_email'].hasError('required')">
+                                Support Email required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Booking Email <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="booking_email"  placeholder="booking Email " aria-label="booking email" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['booking_email'].touched && settingForm.controls['booking_email'].hasError('required')">
+                                Booking Email  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Request Email <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="request_email"  placeholder="request Email" aria-label="request Email" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['request_email'].touched && settingForm.controls['request_email'].hasError('required')">
+                                Request Email  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Other Email</th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="other_email"  placeholder="other email" aria-label="other email" aria-describedby="basic-addon2">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number1 <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="mobile_no_1"  placeholder="mobile no1" aria-label="mobile_no_1" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['mobile_no_1'].touched && settingForm.controls['mobile_no_1'].hasError('required')">
+                                Mobile Number1  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number2 <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="mobile_no_2"  placeholder="mobile no2" aria-label="mobile_no_2" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['mobile_no_2'].touched && settingForm.controls['mobile_no_2'].hasError('required')">
+                                Mobile Number2  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number3 <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="mobile_no_3"  placeholder="mobile no3" aria-label="mobile_no_3" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['mobile_no_3'].touched && settingForm.controls['mobile_no_3'].hasError('required')">
+                                Mobile Number3  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number4</th> 
+                        <td>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" formControlName="mobile_no_4"  placeholder="Mobile Number4" aria-label="mobile no4" aria-describedby="basic-addon2">
+                            </div>
                         </td>
                     </tr>
                     <tr>
