@@ -19,14 +19,16 @@
                             <th scope="col" width ="100px">Action </th>                        
                         </tr>
                     </thead>
-                    <tbody>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
+                    <tbody *ngIf="pagecontent?.length != 0">
+                      <tr  *ngFor="let page of pagecontent; let i=index;">
+                        <td>{{i+1}}</td>
+                        <td>{{page.page_name}}</td>
+                        <td>{{page.page_url}}</td>
                         <td >
-                            <button class="btn btn-light text-info" title="Edit" (click) = "editData();OpenModal(content)"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-light text-danger"title="Delete"><i class="fas fa-trash-alt"></i></button>
+                            <button class="btn btn-light text-info" title="Edit" (click) = "editData(i);OpenModal(content)"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-light text-danger"title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
                         </td>
+                      </tr>                        
                     </tbody>
                 </table>
             </div>

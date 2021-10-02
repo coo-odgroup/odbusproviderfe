@@ -1,4 +1,5 @@
 export interface Pagecontent {
+    id:any ;
     page_name:any;
     page_url:any;
     page_description:any;
