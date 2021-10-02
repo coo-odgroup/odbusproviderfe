@@ -20,12 +20,15 @@ import { SafetyComponent } from './safety/safety.component';
 import { BusgalleryComponent } from './busgallery/busgallery.component';
 import { SettingsComponent } from './settings/settings.component';
 import { OffersComponent } from './offers/offers.component';
+import { CouponComponent } from './coupon/coupon.component';
 
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    
+  ],
   imports: [
     CommonModule,
     SharedModule,

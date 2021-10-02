@@ -10,6 +10,10 @@ const routes: Routes = [
         loadChildren: () => import('./bustype/bustype.module').then(module => module.BusTypedModule)
       },
       {
+        path: 'coupon',
+        loadChildren: () => import('./coupon/coupon.module').then(module => module.CouponModule)
+      },
+      {
         path: 'cancellationslab',
         loadChildren: () => import('./cancellationslab/cancellationslab.module').then(module => module.CancellationSlabedModule)
       },

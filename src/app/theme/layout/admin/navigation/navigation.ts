@@ -66,6 +66,12 @@ const NavigationItems = [
             url: 'busmanagement/managebus'
           },
           {
+            id: 'coupon',
+            title: 'Coupon',
+            type: 'item',
+            url: 'busmanagement/coupon'
+          },
+          {
             id: 'gallery',
             title: 'Gallery',
             type: 'item',
