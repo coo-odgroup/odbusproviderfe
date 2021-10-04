@@ -70,6 +70,19 @@ export class PagecontentComponent implements OnInit {
   }
   ResetAttributes()
   { 
+    this.pagecontentRecord = {} as Pagecontent;
+    this.form = this.fb.group({
+      id:[null],
+      page_name: [null],
+      page_url: [null],
+      page_description: [null],
+      meta_title: [null],
+      meta_keyword: [null],
+      meta_description: [null],
+      extra_meta: [null],
+      canonical_url: [null]
+      
+    });
     this.form.reset();
     this.ModalHeading = "Add Page";
     this.ModalBtn = "Save";
@@ -84,6 +97,7 @@ export class PagecontentComponent implements OnInit {
       }
     );
   }
+ 
 
   addData() {
 
@@ -105,7 +119,7 @@ export class PagecontentComponent implements OnInit {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
-            this.form.reset();
+            this.ResetAttributes();
             this.getAll();
 
           }
@@ -122,7 +136,7 @@ export class PagecontentComponent implements OnInit {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
-            this.form.reset();
+            this.ResetAttributes();
             this.getAll();
 
            
@@ -171,7 +185,7 @@ export class PagecontentComponent implements OnInit {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
           this.confirmDialogReference.close();
-          this.form.reset();
+          this.ResetAttributes();
           this.getAll();         
         }
         else {
