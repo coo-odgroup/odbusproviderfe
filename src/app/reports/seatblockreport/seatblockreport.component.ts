@@ -7,6 +7,8 @@ import {SeatBlockReport} from '../../model/seatblockreport';
 import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
+import * as XLSX from 'xlsx';
+
 
 
 @Component({
@@ -43,6 +45,9 @@ export class SeatblockreportComponent implements OnInit {
         this.toDate = calendar.getToday();
       }
 
+      title = 'angular-app';
+      fileName= 'Seat-Block-Report.xlsx';
+ 
   ngOnInit(): void {
 
     this.searchFrom = this.fb.group({
@@ -61,6 +66,23 @@ export class SeatblockreportComponent implements OnInit {
     this.loadServices(); 
 
   }
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
   
 
   page(label:any){

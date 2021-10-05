@@ -8,6 +8,7 @@ import { LocationService } from '../../services/location.service';
 import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -46,6 +47,9 @@ export class FailedtransactionreportComponent implements OnInit {
       this.fromDate = calendar.getToday();
       this.toDate = calendar.getToday();
      }
+
+     title = 'angular-app';
+     fileName= 'Failled-Transaction-Report.xlsx';
 
   ngOnInit(): void {
     this.searchFrom = this.fb.group({
@@ -112,6 +116,23 @@ export class FailedtransactionreportComponent implements OnInit {
   }
 
   
+
+  
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
 
 
 ///////////////Function to Copy data to Clipboard/////////////////

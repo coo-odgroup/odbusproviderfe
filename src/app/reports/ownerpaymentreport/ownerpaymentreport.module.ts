@@ -9,7 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import {OwnerPaymentReportRoutingModule} from './ownerpaymentreport-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -19,7 +19,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     NgSelectModule,
     DataTablesModule,
-    NgbModule
+    NgbModule,
+    NgxPrintModule
   ],
   declarations: [ OwnerpaymentreportComponent],
   providers: [NotificationService]

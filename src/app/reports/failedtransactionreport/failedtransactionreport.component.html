@@ -18,12 +18,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="col-3">
-                                    <div class="col-sm-12">
-                                        <input type="date" class="form-control sml_input" placeholder="Enter Date" required
-                                            formControlName="date_range" />
-                                    </div>
-                                </div> -->
                                 <div class="col-4">
                                     <div class="row">
                                         <input class="form-control hidden" ngbDatepicker #datepicker="ngbDatepicker"
@@ -148,11 +142,11 @@
                                                                       
                                 </div>
                                 <div class="col-4">                            
-                                    <div class="float-right">
-                                        <button type="submit" class="btn btn-dark mr-2 btn-sm">
+                                    <div class="float-right">                                        
+                                        <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 btn-sm">
                                             <i class="fas fa-file-export"></i> Export
                                         </button>
-                                        <button type="reset" class="btn btn-dark btn-sm">
+                                        <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark btn-sm" [useExistingCss]="true">
                                             <i class="fas fa-print"></i> Print
                                         </button>
                                     </div>
@@ -164,7 +158,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive" id="print-section">
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -312,7 +306,7 @@
                             <td>      
                                                           
                                 <p >
-                                    <i class="fas fa-rupee-sign"></i> - <b>{{complete.customer_payment.amount}}</b>
+                                    <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.customer_payment.amount}}</b>
                                </p>  
                                
                             </td>
@@ -325,7 +319,7 @@
                         </tr>
                     </tbody>  
                 </table>
-                <div *ngIf="completedata?.length != 0">
+                <div *ngIf="completedata?.length != 0"  class="hide_print">
                     <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="completedata.data.links">
                         <nav class="my-1 pt-1 ">
                             <ul class="pagination pagination-circle pg-blue mb-0">

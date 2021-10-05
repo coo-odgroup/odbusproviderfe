@@ -6,6 +6,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OwnerpaymentReport } from '../../model/ownerpaymentreport';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
+import * as XLSX from 'xlsx';
 
 
 
@@ -54,6 +55,8 @@ export class OwnerpaymentreportComponent implements OnInit {
     this.search();
     this.loadServices();
   }
+     title = 'angular-app';
+     fileName= 'Owner-Payment-Report.xlsx';
 
   page(label:any){
     return label;
@@ -104,7 +107,21 @@ export class OwnerpaymentreportComponent implements OnInit {
     this.search();
   }
 
-
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
 
   loadServices() {
 

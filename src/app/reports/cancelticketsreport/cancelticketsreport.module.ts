@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import {CancleTicketsReportRoutingModule} from './cancelticketsreport-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgxPrintModule} from 'ngx-print';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     NgSelectModule,
     DataTablesModule,
-    NgbModule
+    NgbModule,
+    NgxPrintModule
   ],
   declarations: [ CancelticketsreportComponent],
   providers: [NotificationService]

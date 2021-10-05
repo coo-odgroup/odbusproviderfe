@@ -1,161 +1,193 @@
-
 <div class="row">
-    <div class="col-sm-12">
-        <app-card cardTitle="Testimonial Listing" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
-           <div class="row  mb-2">
-               <div class="col-8">
-                <form [formGroup]="searchform" class="editForm" novalidate>
-                    <div class="row">
-                        <div class="from-group col-9">   
-                            <input type="text" class="form-control sml_input" formControlName="searchvalue" placeholder="Search Content">
-                            </div>
-        
-                            <div class="from-group col-3">   
-                               <button class="btn btn-sm btn-dark" (click)="getAll()">Search</button>
+  <div class="col-sm-12">
+    <app-card cardTitle="Testimonial Listing" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+      <div class="row  mb-2">
+        <div class="col-8">
+          <form [formGroup]="searchform" class="editForm" novalidate>
+            <div class="row">
+              <div class="from-group col-9">
+                <input type="text" class="form-control sml_input" formControlName="searchvalue"
+                  placeholder="Search Content">
+              </div>
 
-                               <button class="btn btn-sm btn-danger ml-2" (click)="refresh()">Refresh</button>
-                            </div>
+              <div class="from-group col-3">
+                <button class="btn sml_input btn-success" (click)="getAll()">Search</button>
 
-                    </div>
-                    
-                  </form>
-               </div>
-               <div class="col-4">
-                <div class="from-group text-right">                
-                    <button class="btn btn-sm btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)" >
-                        Add Testimonial
-                    </button>                
-                </div>
-               </div>
+                <button class="btn sml_input btn-danger ml-2" (click)="refresh()">Refresh</button>
+              </div>
 
-           </div>
-            
-            
-            
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col" width ="100px">#</th>
-                            <th scope="col">Testimonial</th>
-                            <th scope="col">By/Location</th>
-                            <th scope="col">Status</th>
-                            <th scope="col" width ="100px">Action </th>                        
-                        </tr>
-                    </thead>
-                    <tbody *ngIf="testimonial?.length != 0">
-                      <tr  *ngFor="let page of testimonial; let i=index;">
-                        <td>{{i+1}}</td>
-                        <td>{{page.testinmonial_content}}</td>
-                        <td>{{page.posted_by}} <br> {{page.location}}</td>
-                        <td>
-                            <label *ngIf="page.status==1" class="badge badge-light-success pointer" (click)="changeStatus($event, page.id);" >Active</label>
-                            <label *ngIf="page.status==0" class="badge badge-light-warning pointer" (click)="changeStatus($event, page.id);">Pending</label>
-                          </td>
-                        <td >
-                            <button class="btn btn-light text-info" title="Edit" (click) = "editData(i);OpenModal(content)"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-light text-danger"title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
-                        </td>
-                      </tr>                        
-                    </tbody>
-                </table>
             </div>
 
+          </form>
+        </div>
+        <div class="col-4">
+          <div class="from-group text-right">
+            <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
+              Add Testimonial
+            </button>
+          </div>
+        </div>
 
-            <div class="app-card-footer">
-                <ng-template #confirmDialog let-modal>
-                  <div class="modal-header">
-                    <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
-                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-material">
-                          <div class="right-icon-control">
-                            Would you Like to Delete the Record
-                            <form [formGroup]="formConfirm" class="editForm" novalidate>
-                              <input type="hidden" formControlName="id">
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
-                    <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
-                  </div>
-                </ng-template>
-                <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"(click)="ResetAttributes();OpenModal(content)">Add </button>   
-                <ng-template #content let-modal>
-                  <div class="modal-header">
-                    <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
-                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-material">
-                          <div class="right-icon-control">
-                            <form [formGroup]="form" class="editForm" novalidate>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>Testimonial Content</h5>
-                                        <div class="from-group">
-                                            <!-- <label>Page name :</label> -->
-                                            <label for="name" class="col-sm-3 col-form-label">Posted By :<span class="text-danger">*</span></label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Posted By" required formControlName="posted_by" />
-                                                <span class="text-danger" *ngIf="form.controls['posted_by'].touched && form.controls['posted_by'].hasError('required')">
-                                                    Posted By is Required 
-                                                </span>
-                                            </div>                                             
-                                        </div>
+      </div>
 
-                                        <div>
-                                            <label for="name" class="col-sm-5 col-form-label">Testinmonial Content  :<span class="text-danger">*</span></label>
-                                        <angular-editor formControlName="testinmonial_content" [config]="editorConfig" ></angular-editor>
-                                        </div>
-                                         
-                                        <div class="from-group">
-                                            <!-- <label>Page name :</label> -->
-                                            <label for="name" class="col-sm-3 col-form-label">Location :<span class="text-danger">*</span></label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name" required formControlName="location" />
-                                                <span class="text-danger" *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
-                                                    Location is Required 
-                                                </span>
-                                            </div>                                             
-                                        </div>
-                                        <div class="from-group">
-                                            <!-- <label>Page name :</label> -->
-                                            <label for="name" class="col-sm-3 col-form-label">Designation :<span class="text-danger">*</span></label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Designation" required formControlName="designation" />
-                                                <span class="text-danger" *ngIf="form.controls['designation'].touched && form.controls['designation'].hasError('required')">
-                                                    Designation is Required 
-                                                </span>
-                                            </div>                                             
-                                        </div>
 
-                                     </div>  
-                                    
-                                </div>   
-                                                                                                                            
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" width="100px">#</th>
+              <th scope="col">Testimonial</th>
+              <th scope="col">By/Location</th>
+              <th scope="col">Status</th>
+              <th scope="col" width="100px">Action </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="testimonial?.length != 0">
+            <tr *ngFor="let page of testimonial; let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{page.testinmonial_content}}</td>
+              <td>{{page.posted_by}} <br> {{page.location}}</td>
+              <td>
+                <label *ngIf="page.status==1" class="badge badge-light-success pointer"
+                  (click)="changeStatus($event, page.id);">Active</label>
+                <label *ngIf="page.status==0" class="badge badge-light-warning pointer"
+                  (click)="changeStatus($event, page.id);">Pending</label>
+              </td>
+              <td>
+                <button class="btn btn-light text-info" title="Edit" (click)="editData(i);OpenModal(content)"><i
+                    class="fas fa-edit"></i></button>
+                <button class="btn btn-light text-danger" title="Delete"
+                  (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="app-card-footer">
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                      <input type="hidden" formControlName="id">
+                    </form>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" (click)="addData()" [disabled]="!form.valid" class="btn btn-primary" >{{ModalBtn}}</button>
-                    <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
-                  </div>
-                </ng-template>
-                 
+                </div>
               </div>
-        </app-card>
-    </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes();OpenModal(content)">Add </button>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form [formGroup]="form" class="editForm" novalidate>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5>Testimonial Content</h5>
+                          <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                              <div class="from-group">
+                                <!-- <label>Page name :</label> -->
+                                <label for="name" class="col-sm-5 col-form-label">Posted By :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Posted By"
+                                    required formControlName="posted_by" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['posted_by'].touched && form.controls['posted_by'].hasError('required')">
+                                    Posted By is Required
+                                  </span>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="col-md-4 col-sm-4">
+                              <div class="from-group">
+                                <!-- <label>Page name :</label> -->
+                                <label for="name" class="col-sm-5 col-form-label">Location :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
+                                    required formControlName="location" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
+                                    Location is Required
+                                  </span>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="col-md-4 col-sm-4">
+                              <div class="from-group">
+                                <!-- <label>Page name :</label> -->
+                                <label for="name" class="col-sm-5 col-form-label">Designation :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Designation"
+                                    required formControlName="designation" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['designation'].touched && form.controls['designation'].hasError('required')">
+                                    Designation is Required
+                                  </span>
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+
+
+                          <div>
+                            <label for="name" class="col-sm-5 col-form-label">Testinmonial Content :<span
+                                class="text-danger">*</span></label>
+                            <angular-editor formControlName="testinmonial_content" [config]="editorConfig">
+                            </angular-editor>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="addData()" [disabled]="!form.valid"
+              class="btn btn-primary">{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+
+      </div>
+    </app-card>
+  </div>
 </div>
