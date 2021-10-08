@@ -7,7 +7,7 @@ import { Constants} from '../constant/constant';
 @Injectable({
   providedIn: 'root'
 })
-export class PagecontentService {
+export class ContactreportService {
   private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({
@@ -18,32 +18,19 @@ export class PagecontentService {
   constructor(private httpClient: HttpClient) { }
 
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/pagecontent').pipe(
+    return this.httpClient.get(this.apiURL + '/contactreport').pipe(
       catchError(this.errorHandler)
     )
   }
 
-  create(data): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/pagecontent', JSON.stringify(data), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
-
-  update(id, data): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/pagecontent/' + id, JSON.stringify(data), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
   delete(id){
-    return this.httpClient.delete<any>(this.apiURL + '/pagecontent/' + id, this.httpOptions)
+    return this.httpClient.delete<any>(this.apiURL + '/contactreport/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
-  
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
@@ -53,5 +40,11 @@ export class PagecontentService {
     }
     return throwError(errorMessage);
  }
+
+
+
+
+
+
 
 }

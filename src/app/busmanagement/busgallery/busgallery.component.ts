@@ -1,18 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BusService } from '../../services/bus.service';
-import {Constants} from '../../constant/constant';
-import { DataTablesResponse} from '../../model/datatable';
+import { Constants } from '../../constant/constant';
+import { DataTablesResponse } from '../../model/datatable';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../services/notification.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Bus } from '../../model/bus';
-import {Busgallery} from '../../model/busgallery';
-import {BusgalleryService} from '../../services/busgallery.service';
+import { Busgallery } from '../../model/busgallery';
+import { BusgalleryService } from '../../services/busgallery.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { count } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-busgallery',
@@ -21,34 +22,43 @@ import * as _ from 'lodash';
   providers: [NgbModalConfig, NgbModal]
 })
 export class BusgalleryComponent implements OnInit {
-  public ModalHeading:any;
-  public ModalBtn:any;
+  public ModalHeading: any;
+  public ModalBtn: any;
   public busForm: FormGroup;
 
-  public busGallerries:Busgallery[];
-  public busGalleryRecord:Busgallery;
+  confirmDialogReference: NgbModalRef;
+
+  public busGallerries: Busgallery[];
+  public busGalleryRecord: Busgallery;
 
   imgURL: any;
   imageSrc: string;
   File: any;
   finalJson = {};
-  base64result:any;
-  iconSrc:any;
+  base64result: any;
+  iconSrc: any;
   imageError: string;
   modalReference: NgbModalRef;
   @ViewChild("addnew") addnew;
 
-  counter=0;
-  constructor(private http: HttpClient, private busgalleryService:BusgalleryService, private busService:BusService, private notificationService: NotificationService,  private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal) {
-    this.busRecord={} as Bus; 
+  counter = 0;
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private busgalleryService: BusgalleryService,
+    private busService: BusService,
+    private notificationService: NotificationService,
+    private fb: FormBuilder,
+    config: NgbModalConfig,
+    private modalService: NgbModal) {
+    this.busRecord = {} as Bus;
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add New Bus";
     this.ModalBtn = "Save";
-   
   }
   //@ViewChild("closebutton") closebutton;
-  @ViewChild(DataTableDirective, {static: false})
+  @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
   position = 'bottom-right';
   dtTrigger: Subject<any> = new Subject();
@@ -58,120 +68,77 @@ export class BusgalleryComponent implements OnInit {
   dtSeatTypesOptionsData: any = {};
   buses: Bus[];
   busRecord: Bus;
-  loadBus(){
-    
-    this.dtOptionsBus = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],
-      language: {
-        searchPlaceholder: "Find Bus",
-        processing: "<img src='assets/images/loading.gif' width='30'>"
-      },
-        
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     } },
-      { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     } },
-      { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     } },
-      
-     {
-      text:"Add",
-      className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      action:() => {
-       this.addnew.nativeElement.click();
-      }
-    }
-    ],
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/busDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
-           
-            this.buses = resp.data.aaData;
-            
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [
-      { data: 'id' },
-      { data: 'name'},
-      { data: 'via'}, 
-      { data: 'bus_number'},
-      { title:'Action',data: null,orderable:false},
-    ]         
-    }; 
 
-   
-  }
   OpenModal(content) {
-   
-    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
+
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
-  saveGallery()
+
+
+  allBus()
   {
+    this.busService.readAll().subscribe(
+      resp => {
+     this.buses = resp.data;
+      });
+    
+  }
+  // readAll
+
+galleryData()
+{
+  this.busgalleryService.getAll().subscribe(
+    resp => {
+   this.busGallerries = resp.result;
+    });
+}
+
+  saveGallery() {
     this.finalJson = {
       "File": this.imageSrc,
     }
-    
-    //let id=this.busGalleryRecord.id;  
-    const data ={
-      bus_id:this.busForm.value.bus_id,
-      icon:this.busForm.value.iconSrc,
-      created_by:'Admin',
+  
+    const data = {
+      bus_id: this.busForm.value.bus_id,
+      icon: this.busForm.value.iconSrc,
+      created_by: 'Admin',
     };
-      this.busgalleryService.create(data).subscribe(
-        resp => {
-          if(resp.status==1)
-          {
-              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:'success'});
-              this.modalReference.close();
-              this.ResetAttributes();
-              this.rerender();
-          }
-          else{
-              this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
-          }
+    this.busgalleryService.create(data).subscribe(
+      resp => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: 'success' });
+          this.modalReference.close();
+          this.ResetAttributes();
+          this.galleryData();
         }
-      )
-    
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+        }
+      }
+    )
+
   }
-  ResetAttributes()
-  {
+  ResetAttributes() {
     this.busForm = this.fb.group({
-      id:[null],
-      bus_id: [null,Validators.compose([Validators.required])],
-      icon: [null,Validators.compose([Validators.required])],
-      iconSrc:[null]
-    }); 
-    this.imgURL="";
-    this.imageSrc="";
+      id: [null],
+      bus_id: [null, Validators.compose([Validators.required])],
+      icon: [null, Validators.compose([Validators.required])],
+      iconSrc: [null]
+    });
+    this.imgURL = "";
+    this.imageSrc = "";
   }
   ngOnInit(): void {
-    this.loadBus();
     this.busForm = this.fb.group({
-      id:[null],
-      bus_id: [null,Validators.compose([Validators.required])],
-      icon: [null,Validators.compose([Validators.required])],
-      iconSrc:[null]
-    }); 
+      id: [null],
+      bus_id: [null, Validators.compose([Validators.required])],
+      icon: [null, Validators.compose([Validators.required])],
+      iconSrc: [null]
+    });
+
+ 
+    this.allBus() ;
+    this.galleryData();
   }
   ngAfterViewInit(): void {
     this.dtTrigger.next();
@@ -188,67 +155,67 @@ export class BusgalleryComponent implements OnInit {
       this.dtTrigger.next();
     });
   }
-  public picked(event:any, fileSrc:any) {
+  public picked(event: any, fileSrc: any) {
     //////image validation////////
     this.imageError = null;
-            const max_size = 1024000;
-            const allowed_types = ['image/png', 'image/jpeg' ,'image/jpg'];
-            const max_height = 100;
-            const max_width = 200;
+    const max_size = 1024000;
+    const allowed_types = ['image/png', 'image/jpeg', 'image/jpg'];
+    const max_height = 100;
+    const max_width = 200;
     let fileList: FileList = event.target.files;
-    
+
     if (event.target.files[0].size > max_size) {
       this.imageError =
-          'Maximum size allowed is ' + max_size/1024  + 'Kb';
-          this.busForm.value.imagePath = '';
-          this.imgURL='';
+        'Maximum size allowed is ' + max_size / 1024 + 'Kb';
+      this.busForm.value.imagePath = '';
+      this.imgURL = '';
       return false;
-  }
+    }
 
-  if (!_.includes(allowed_types, event.target.files[0].type)) {
+    if (!_.includes(allowed_types, event.target.files[0].type)) {
       this.imageError = 'Only Images are allowed ( JPG | PNG |JPEG)';
       this.busForm.value.imagePath = '';
-      this.imgURL='';
+      this.imgURL = '';
       return false;
-  }
-  const reader = new FileReader();
-  reader.onload = (e: any) => {
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
       const image = new Image();
       image.src = e.target.result;
       image.onload = rs => {
-          const img_height = rs.currentTarget['height'];
-          const img_width = rs.currentTarget['width'];
+        const img_height = rs.currentTarget['height'];
+        const img_width = rs.currentTarget['width'];
 
-          if (img_height > max_height && img_width > max_width) {
-            this.imageError =
-                'Maximum dimentions allowed ' +
-                max_height +
-                '*' +
-                max_width +
-                'px';
-                this.busForm.value.imagePath = '';
-                this.imgURL='';
-            return false;
-        } 
+        if (img_height > max_height && img_width > max_width) {
+          this.imageError =
+            'Maximum dimentions allowed ' +
+            max_height +
+            '*' +
+            max_width +
+            'px';
+          this.busForm.value.imagePath = '';
+          this.imgURL = '';
+          return false;
+        }
       };
-  };
-  
+    };
+
     if (fileList.length > 0) {
       const file: File = fileList[0];
-      
-        this.busForm.value.File = file;
 
-        this.handleInputChange(file); //turn into base64
-      
+      this.busForm.value.File = file;
+
+      this.handleInputChange(file); //turn into base64
+
     }
     else {
       //alert("No file selected");
     }
 
     this.preview(fileSrc);
-    
+
   }
-  
+
   handleInputChange(files) {
     let file = files;
     let pattern = /image-*/;
@@ -259,17 +226,17 @@ export class BusgalleryComponent implements OnInit {
     }
     reader.onloadend = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
-    
+
   }
   _handleReaderLoaded(e) {
     let reader = e.target;
     this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
     //this.imageSrc = base64result;
-  
+
     this.imageSrc = this.base64result;
-    this.busForm.value.icon=this.base64result;
-    this.busForm.value.iconSrc=this.base64result;
-    
+    this.busForm.value.icon = this.base64result;
+    this.busForm.value.iconSrc = this.base64result;
+
   }
   public imagePath;
   public message: string;
@@ -277,19 +244,56 @@ export class BusgalleryComponent implements OnInit {
   preview(files) {
     if (files.length === 0)
       return;
- 
+
     let mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
       this.message = "Only images are supported.";
       return;
     }
- 
+
     let reader = new FileReader();
     this.busForm.value.imagePath = files;
-    reader.readAsDataURL(files[0]); 
-    reader.onload = (_event) => { 
-      this.imgURL = reader.result; 
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
     }
   }
+
+
+  delete(index)
+  {
+    console.log(index);
+    this.busGalleryRecord = this.busGallerries[index];
+    console.log(this.busGalleryRecord);
+  }
+
+
+  openConfirmDialog(content, id: any) {
+    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+    this.busGalleryRecord = this.busGallerries[id];
+  }
+
+  deleteRecord() {
+
+    let delitem = this.busGalleryRecord.id;
+    this.busgalleryService.delete(delitem).subscribe(
+      resp => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.confirmDialogReference.close();
+          this.ResetAttributes();
+          this.galleryData();         
+        }
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+        }
+      });
+  }
+
+
+  getBannerImagepath(slider_img :any){
+    let objectURL = 'data:image/*;base64,'+slider_img;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+   }
 
 }

@@ -20,12 +20,19 @@ export class BusgalleryService {
 
   constructor(private httpClient: HttpClient) { }
 
-  all(): Observable<any> {
+  getAll(): Observable<any> {
     return this.httpClient.get<any>(this.apiURL + '/busGallery',  this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+  // getAll(): Observable<any> {
+  //   return this.httpClient.get<any>(this.apiURL + '/busGallery',  this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
 
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/busGallery', JSON.stringify(post), this.httpOptions)

@@ -306,6 +306,12 @@ const NavigationItems = [
           //   url  : 'reports/cleartransactionreport'
           // },
           {
+            id: 'contactreport',
+            title: 'Contact Report',
+            type: 'item',
+            url: 'reports/contactreport'
+          },
+          {
             id: 'couponuseduserreport',
             title: 'Coupon Used User Report',
             type: 'item',

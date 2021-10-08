@@ -44,7 +44,11 @@ const routes: Routes = [
       {
         path: 'couponuseduserreport',
         loadChildren: () => import('./couponuseduserreport/couponuseduserreport.model').then(module => module.CouponUsedUserReportModule)
-      }              
+      },
+      {
+        path: 'contactreport',
+        loadChildren: () => import('./contactreport/contactreport.module').then(module => module.ContactReportModule)
+      }                 
     ]
   }
 ];

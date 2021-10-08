@@ -1,0 +1,133 @@
+
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Contact Details" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+            <div class="from-group text-right">
+               
+                <!-- <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"(click)="ResetAttributes();OpenModal(content)">Add </button> -->
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col" width ="50px">#</th>
+                            <th scope="col" width ="150px">Date</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Email Id</th>
+                            <th scope="col" width ="100px"> View </th>                        
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="contactcontent?.length != 0">
+                      <tr  *ngFor="let contact of contactcontent; let i=index;">
+                        <td>{{i+1}}</td>
+                        <td>{{contact.created_at | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{contact.name}}</td>
+                        <td>{{contact.phone}}</td>
+                        <td>{{contact.email}}</td>
+                        <td >
+                         <button class="btn btn-success text btn-sm m-1"  (click)="viewDetails(i);OpenModal(content)" title="Details">
+                           <i class="fas fa-eye"></i>
+                          </button>
+
+                          <button class="btn btn-danger text btn-sm m-1"  (click)="openConfirmDialog(confirmDialog, i)" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                           </button>
+                        </td>
+                      </tr>                        
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="app-card-footer">
+
+              <ng-template #confirmDialog let-modal>
+                <div class="modal-header">
+                  <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+                  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-material">
+                        <div class="right-icon-control">
+                          Would you Like to Delete the Record
+                          <form [formGroup]="formConfirm" class="editForm" novalidate>
+                            <input type="hidden" formControlName="id">
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+                  <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
+                </div>
+              </ng-template>
+
+
+
+
+                
+                <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"(click)="ResetAttributes();OpenModal(content)">Add </button>   
+                <ng-template #content let-modal>
+                  <div class="modal-header">
+                    <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-material">
+                          <div class="right-icon-control">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                      <tr>                                        
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Service</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>                                        
+                                        <td>{{contactcontentRecord.name}}</td>
+                                        <td>{{contactcontentRecord.phone}}</td>
+                                        <td>{{contactcontentRecord.email}}</td>
+                                        <td>{{contactcontentRecord.service}}</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="col" colspan="4" >MESSAGE</th>
+                                      </tr>
+                                      <tr>                                       
+                                        <td colspan="4">
+                                          <div class="from-group">                                      
+                                            <div class="col-sm-12">                                                
+                                                <textarea class="form-control text-capitalize" rows="5" readonly>{{contactcontentRecord.message}}</textarea>
+                                            </div>                                             
+                                          </div>
+                                        </td>
+                                            
+                                      
+                                      </tr>
+                                    </tbody>
+                                  </table>
+
+                            </div>                   
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <hr>
+                  </div>
+                </ng-template>
+                 
+              </div>
+        </app-card>
+    </div>
+</div>
