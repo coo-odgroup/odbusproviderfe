@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import { CancellationslabComponent } from './cancellationslab.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     DataTablesModule,
     NgbModule,
+    AngularEditorModule
   ],
   declarations: [ CancellationslabComponent],
   providers: [NotificationService]

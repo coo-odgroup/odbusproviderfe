@@ -110,15 +110,21 @@
                               </div>
                             </div>
                           </div>
-                        </div>                       
-                          <div class="row col-12">
-                            <div class="col-5 nopad">
+                        </div>   
+                        <div class="row">
+                          <div class="col-12">
+                            <label for="cancellation_policy_desc" class="col-form-label">Cancellation Policy</label>
+                            <angular-editor formControlName="cancellation_policy_desc" [config]="editorConfig" ></angular-editor>
+                          </div>
+                        </div>                    
+                          <div class="row">
+                            <div class="col-5">
                               <label for="duration" class="col-form-label">Duration (Hour)</label>
                             </div>
                             <div class="col-5">
                               <label for="deduction" class="col-form-label">Deduction (%)</label>
                             </div>
-                            <div class="form-group col-md-2 text-right nopad">
+                            <div class="form-group col-md-2 mt-2 " style="display: flex;justify-content: flex-end;">
                               <button (click)="addSlabs()" class = "btn btn-info btn-sm addbtn">+</button>
                               </div>
                           </div>
@@ -144,7 +150,9 @@
                                   </span>
                                 </div>
                                 <div class="col-md-1">
-                              <button class="btn btn-danger btn-sm removebtn" type="button" (click)="removeSlab(j)">X</button>
+                              <button class="btn btn-danger btn-sm removebtn" type="button" (click)="removeSlab(j)">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
                             </div>
                             
                           </div>

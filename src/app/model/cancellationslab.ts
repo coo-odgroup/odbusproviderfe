@@ -7,5 +7,5 @@ export interface Cancellationslab {
     status:1;
     api_name:any;
     slab_info:any;
-    
+    cancellation_policy_desc:any;
 }

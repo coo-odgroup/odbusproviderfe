@@ -9,7 +9,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 @Component({
   selector: 'app-cancellationslab',
   templateUrl: './cancellationslab.component.html',
@@ -17,6 +17,53 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
   providers: [NgbModalConfig, NgbModal]
 })
 export class CancellationslabComponent implements OnInit {
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: '250px',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Enter text here...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    // upload: (file: File) => { ... }
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+};
   
   public form: FormGroup;
   public formConfirm: FormGroup;
@@ -221,6 +268,7 @@ export class CancellationslabComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       api_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
+      cancellation_policy_desc:[null],
       rule_name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       slabs: this.fb.array([this.createSlab()]),
     });
@@ -252,6 +300,7 @@ export class CancellationslabComponent implements OnInit {
     const data ={
       api_id:this.form.value.api_id,
       rule_name:this.form.value.rule_name,
+      cancellation_policy_desc:this.form.value.cancellation_policy_desc,
       slabs:this.form.value.slabs
     };
 
@@ -296,6 +345,7 @@ export class CancellationslabComponent implements OnInit {
     this.cancellationSlabRecord=this.cancellationSlabs[id] ; 
     this.form = this.fb.group({
       id:[this.cancellationSlabRecord.id],
+      cancellation_policy_desc:[this.cancellationSlabRecord.cancellation_policy_desc],
       api_id: [this.cancellationSlabRecord.api_id, Validators.compose([Validators.required,Validators.minLength(2)])],
       rule_name: [this.cancellationSlabRecord.rule_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       slabs: this.fb.array([this.createSlab()]),
