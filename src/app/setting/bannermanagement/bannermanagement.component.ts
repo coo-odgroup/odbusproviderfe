@@ -1,4 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { BannerService } from '../../services/banner.service' ;
+import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Banner} from '../../model/banner';
+import {Constants} from '../../constant/constant' ;
+import { NotificationService } from '../../services/notification.service';
+
+import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-bannermanagement',
@@ -7,9 +17,333 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BannermanagementComponent implements OnInit {
 
-  constructor() { }
+  per_page=Constants.RecordLimit;
+  searchBy='';
+  status=''; 
+  bannerForm: FormGroup;
+  public formConfirm: FormGroup;
+  public searchForm: FormGroup;
 
+  modalReference: NgbModalRef;
+  confirmDialogReference: NgbModalRef;
+  banners: Banner[];
+  bannerRecord: Banner;
+  imageSrc:any;
+  iconSrc:any;
+  imageError:any;
+  imgURL: any;
+  base64result:any;
+  finalJson = {};
+  fileName= 'Banner.xlsx';
+  public isSubmit: boolean;
+  public mesgdata:any;
+  public ModalHeading:any;
+  public ModalBtn:any;
+  public message: string;
+  public pagination: any;
+  public imageSizeFlag = true;
+
+  constructor(private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer)
+     { 
+        this.isSubmit = false;
+        this.bannerRecord= {} as Banner;
+        config.backdrop = 'static';
+        config.keyboard = false;
+        this.ModalHeading = "Add Banner Line";
+        this.ModalBtn = "Save";
+   }
+   getAll(url:any=''){
+            const data= {
+              status:this.searchForm.value.status,
+              searchBy:this.searchForm.value.searchBy,
+              per_page:this.searchForm.value.per_page
+            }; 
+     this.bannerService.bannerDataTable(url,data).subscribe(
+            res=>{    
+              this.banners= res.data.data.data; 
+              this.pagination = res.data.data;
+              //console.log(res.data.data.data);
+            },
+    );
+   }
+   refresh()
+    {
+      this.searchForm.reset();
+      this.getAll();
+    }
+    page(label:any){
+      return label;
+     }
+   OpenModal(content) {
+    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
+  }
   ngOnInit(): void {
+    this.searchForm =this.fb.group({
+      searchBy:[null],
+      status:[null],
+      per_page:Constants.RecordLimit,
+    })
+    this.bannerForm = this.fb.group({
+      id:[null],
+      occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      category: [null],
+      url:[null],
+      banner_img:[null],
+      start_date: [null, Validators.compose([Validators.required])],
+      start_time: [null, Validators.compose([Validators.required])],
+      alt_tag: [null, Validators.compose([Validators.required])],
+      end_date: [null, Validators.compose([Validators.required])],
+      end_time: [null, Validators.compose([Validators.required])],
+      iconSrc:[null]
+    });
+    this.formConfirm=this.fb.group({
+      id:[null],
+    });
+    this.getAll();
+  }
+ 
+  //////image validation////////
+  public picked(event:any, fileSrc:any) {
+    this.imageError = null;
+            const max_size = 102400;
+            //const allowed_types = ['image/svg+xml'];
+            const allowed_types = ['image/x-png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+            const max_height = 100;
+            const max_width = 200;
+    let fileList: FileList = event.target.files;
+    this.imageSizeFlag = true;
+    if (event.target.files[0].size > max_size) {
+      this.imageError =
+          'Maximum size allowed is ' + max_size/1024  + 'Kb';
+          this.bannerForm.value.imagePath = '';
+          this.imgURL='';
+          this.imageSizeFlag = false;
+      return false;
+  }
+  if (!_.includes(allowed_types, event.target.files[0].type)) {
+
+      this.imageError = 'Only Images are allowed';
+      this.bannerForm.value.imagePath = '';
+      this.bannerForm.controls.banner_img.setValue('');
+      this.imgURL='';
+      return false;
+  }
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+      const image = new Image();
+      image.src = e.target.result;
+
+      image.onload = rs => {
+          const img_height = rs.currentTarget['height'];
+          const img_width = rs.currentTarget['width'];
+
+          if (img_height > max_height && img_width > max_width) {
+            this.imageError =
+                'Maximum dimentions allowed ' +
+                max_height +
+                '*' +
+                max_width +
+                'px';
+                this.bannerForm.value.imagePath = '';
+                this.imgURL='';
+            return false;
+        } 
+      };
+  };
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+      
+        this.bannerForm.value.File = file;
+
+        this.handleInputChange(file); //turn into base64  
+    }
+    else {
+      //alert("No file selected");
+    }
+    this.preview(fileSrc); 
+  }
+  handleInputChange(files) {
+    let file = files;
+    let pattern = /image-*/;
+    let reader = new FileReader();
+    // if (!file.type.match(pattern)) {
+    //   //alert('invalid format');
+    //   return;
+    // }
+    reader.onloadend = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+    
+  }
+  _handleReaderLoaded(e) {
+    let reader = e.target;
+    this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+    this.imageSrc = this.base64result;
+    this.bannerForm.value.banner_img=this.base64result;
+    this.bannerForm.value.iconSrc=this.base64result;
+    this.bannerForm.controls.iconSrc.setValue(this.base64result); 
+  }
+  preview(files) {
+    if (files.length === 0)
+      return;
+    let mimeType = files[0].type;
+
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = "Only images are supported.";
+      return;
+    }
+    let reader = new FileReader();
+    this.bannerForm.value.imagePath = files;
+    reader.readAsDataURL(files[0]); 
+    reader.onload = (_event) => { 
+      this.imgURL = reader.result; 
+      this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
+    }
+
+  }
+  ResetAttributes()
+  {
+    this.bannerForm = this.fb.group({
+      id:[null],
+      occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      category: [null],
+      url:[null],
+      banner_img:[null],
+      start_date: [null, Validators.compose([Validators.required])],
+      start_time: [null, Validators.compose([Validators.required])],
+      alt_tag: [null, Validators.compose([Validators.required])],
+      end_date: [null, Validators.compose([Validators.required])],
+      end_time: [null, Validators.compose([Validators.required])],
+      iconSrc:[null]
+    });
+    this.ModalHeading = "Add Banner";
+    this.ModalBtn = "Save";
+    this.imgURL="";
+    this.imageSrc="";
+    this.bannerRecord.banner_img="";  
+  }
+  addBanner()
+  {
+
+    this.finalJson = {
+      "File": this.imageSrc,
+    }
+
+    const data ={
+      occassion:this.bannerForm.value.occassion,
+      category:this.bannerForm.value.category,
+      url:this.bannerForm.value.url,
+      start_date:this.bannerForm.value.start_date,
+      start_time:this.bannerForm.value.start_time,
+      alt_tag:this.bannerForm.value.alt_tag,
+      end_date:this.bannerForm.value.end_date,
+      end_time:this.bannerForm.value.end_time,
+      banner_img:this.bannerForm.value.iconSrc,
+      created_by:'Admin',
+    };
+    let id = this.bannerRecord?.id;
+    if (id != null) {
+      this.bannerService.update(id, data).subscribe(
+        resp => {
+          if (resp.status == 1) {
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.getAll();
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          }
+        }
+      );
+    }
+    else {
+      this.bannerService.create(data).subscribe(
+        resp => {
+          if (resp.status == 1) {
+
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.getAll(); 
+          }
+          else {
+
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          }
+        }
+      );
+    }
+  }
+  ngAfterViewInit(): void {   
+  }
+  ngOnDestroy(): void {  
+  }
+  rerender(): void {  
+  }
+  editBanner(id)
+  { 
+    this.bannerRecord = this.banners[id]; 
+    
+    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.bannerRecord.banner_img); 
+    //bannerImgPreview
+    let objectURL = 'data:image/*;base64,'+ this.imgURL.changingThisBreaksApplicationSecurity;
+
+    this.bannerForm=this.fb.group({
+      id:[this.bannerRecord.id],
+      occassion:[this.bannerRecord.occassion],
+      category:[this.bannerRecord.category],
+      url:[this.bannerRecord.url],
+      start_date:[this.bannerRecord.start_date],
+      start_time:[this.bannerRecord.start_time],
+      alt_tag:[this.bannerRecord.alt_tag],
+      end_date:[this.bannerRecord.end_date],
+      end_time:[this.bannerRecord.end_time],
+      banner_img: [],
+      iconSrc:[this.bannerRecord.banner_img]
+    });
+  
+    this.ModalHeading = "Edit Banner";
+    this.ModalBtn = "Update";  
+  }
+  getBannerImagepath(banner_img :any){
+    let objectURL = 'data:image/*;base64,'+banner_img;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+   }
+
+  openConfirmDialog(content, id: any) {
+    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+    this.bannerRecord = this.banners[id];  
+  }
+  deleteRecord() {
+    let delitem = this.bannerRecord.id;
+    this.bannerService.delete(delitem).subscribe(
+      resp => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.confirmDialogReference.close();
+          this.ResetAttributes();
+          this.getAll();         
+        }
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+        }
+      });
+  }
+  changeStatus(event : Event, stsitem:any)
+  {
+    this.bannerService.chngsts(stsitem).subscribe(
+      resp => {
+        if(resp.status==1)
+        {
+            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+            this.rerender();
+            this.getAll();
+        }
+        else{
+            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+      }
+    );
   }
 
 }
