@@ -30,6 +30,18 @@ export class ContactreportService {
     )
   }
 
+  contactReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/contactreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  contactpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
 
   errorHandler(error) {
     let errorMessage = '';

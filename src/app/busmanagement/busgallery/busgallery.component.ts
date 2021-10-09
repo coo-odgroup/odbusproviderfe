@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BusService } from '../../services/bus.service';
+import { BusOperatorService } from './../../services/bus-operator.service';
 import { Constants } from '../../constant/constant';
 import { DataTablesResponse } from '../../model/datatable';
 import { DataTableDirective } from 'angular-datatables';
@@ -14,6 +15,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { count } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-busgallery',
@@ -25,6 +27,8 @@ export class BusgalleryComponent implements OnInit {
   public ModalHeading: any;
   public ModalBtn: any;
   public busForm: FormGroup;
+  public searchForm: FormGroup;
+
 
   confirmDialogReference: NgbModalRef;
 
@@ -42,11 +46,15 @@ export class BusgalleryComponent implements OnInit {
   @ViewChild("addnew") addnew;
 
   counter = 0;
+  busoperators: any;
+  buss: any;
+  pagination: any;
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private busgalleryService: BusgalleryService,
-    private busService: BusService,
+      private busOperatorService: BusOperatorService,
+      private busService: BusService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
     config: NgbModalConfig,
@@ -57,6 +65,10 @@ export class BusgalleryComponent implements OnInit {
     this.ModalHeading = "Add New Bus";
     this.ModalBtn = "Save";
   }
+
+
+  title = 'angular-app';
+  fileName= 'Bus-Gallery.xlsx';
   //@ViewChild("closebutton") closebutton;
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
@@ -129,6 +141,8 @@ galleryData()
     this.imageSrc = "";
   }
   ngOnInit(): void {
+    this.loadServices(); 
+
     this.busForm = this.fb.group({
       id: [null],
       bus_id: [null, Validators.compose([Validators.required])],
@@ -136,9 +150,17 @@ galleryData()
       iconSrc: [null]
     });
 
+    this.searchForm = this.fb.group({  
+      bus_id: [null],   
+      rows_number: Constants.RecordLimit,
+    });
+
  
     this.allBus() ;
     this.galleryData();
+    this.search();
+    
+
   }
   ngAfterViewInit(): void {
     this.dtTrigger.next();
@@ -260,14 +282,6 @@ galleryData()
   }
 
 
-  delete(index)
-  {
-    console.log(index);
-    this.busGalleryRecord = this.busGallerries[index];
-    console.log(this.busGalleryRecord);
-  }
-
-
   openConfirmDialog(content, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.busGalleryRecord = this.busGallerries[id];
@@ -295,5 +309,81 @@ galleryData()
     let objectURL = 'data:image/*;base64,'+slider_img;
     return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
    }
+
+   page(label:any){
+    return label;
+   }
+   search(pageurl="")
+  {
+      
+    const data = { 
+      bus_id: this.searchForm.value.bus_id,
+      rows_number:this.searchForm.value.rows_number,  
+    };
+   
+    console.log(data);
+    if(pageurl!="")
+    {
+      this.busgalleryService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.busGallerries= res.data.data;
+          this.pagination= res.data.links;
+          // console.log( this.busGallerries);
+        }
+      );
+    }
+    else
+    {
+      this.busgalleryService.getAllData(data).subscribe(
+        res => {
+          this.busGallerries= res.data.data;
+          this.pagination= res.data;
+          // console.log( this.busGallerries);
+        }
+      );
+    }
+
+
+  }
+   refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+   }
+
+   loadServices() {
+
+    this.busService.all().subscribe(
+      res => {
+        this.buss = res.data;
+        //  console.log(this.buss);
+      }
+    );
+    
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+       
+      }
+    );
+  }
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
 
 }

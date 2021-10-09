@@ -6,6 +6,9 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BusgalleryComponent } from './busgallery.component';
 import {NotificationService} from '../../services/notification.service';
+import {NgxPrintModule} from 'ngx-print';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -13,10 +16,13 @@ import {NotificationService} from '../../services/notification.service';
   imports: [
     CommonModule,
     BusGalleryRoutingModule,
-    SharedModule,
+    SharedModule,NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule  ],
+    DataTablesModule,
+    NgxPrintModule,
+    NgSelectModule  
+  ],
   declarations: [ BusgalleryComponent],
   providers:[NotificationService]
 })
