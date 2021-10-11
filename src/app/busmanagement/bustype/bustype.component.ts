@@ -9,6 +9,9 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
+import * as XLSX from 'xlsx';
+
 
 
 @Component({
@@ -21,6 +24,10 @@ export class BustypeComponent implements OnInit {
 
   public form: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+
+
+
   //@ViewChild('closebutton') closebutton;
   @ViewChild("addnew") addnew;
   modalReference: NgbModalRef;
@@ -40,6 +47,7 @@ export class BustypeComponent implements OnInit {
 
   public ModalHeading:any;
   public ModalBtn:any;
+  pagination: any;
   
   constructor(private busTypeService: BusTypeService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
@@ -53,94 +61,94 @@ export class BustypeComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
   }
    
-   loadBusType(){
-    this.dtOptionsSeatType = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip', 
-      order:["0","desc"],  
-      aLengthMenu:[10, 25, 50, 100, "All"],  
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-        },
-        exportOptions: {
-          columns: "thead th:not(.noExport)"
-         }  
-    },
-      { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      exportOptions: {
-        columns: "thead th:not(.noExport)"
-       }
-    },
-      { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      exportOptions: {
-        columns: "thead th:not(.noExport)"
-       }
-     },
-      { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      exportOptions: {
-        columns: "thead th:not(.noExport)"
-       } 
-    },
-    {
-      text:"Add",
-      className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      action:() => {
-       this.addnew.nativeElement.click();
-      }
-    }
-    ],
-    language: {
-      searchPlaceholder: "Find BusTypes",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/BusTypeDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {   
-            console.log(resp);        
-            this.busTypes = resp.data.aaData;
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [{ data: 'id' }, 
-      { 
-        title: 'Type',
-        data: 'type',
-        render:function(data)
-        {
-          return (data=="1")?"AC":"NON AC";
-        }
-      }, 
-      { title: 'Name',data: 'name' },{ title: 'Created By',data: 'created_by' },{ title: 'Created At',data: 'created_at' },{ title: 'Updated At',data: 'updated_at' }, { 
-        title: 'Status',
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }
-       }, 
-      {  
-        title:'Action',data: null, orderable:false,className: "noExport" }]      
-    };
-   }
+  //  loadBusType(){
+  //   this.dtOptionsSeatType = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip', 
+  //     order:["0","desc"],  
+  //     aLengthMenu:[10, 25, 50, 100, "All"],  
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //       },
+  //       exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //        }  
+  //   },
+  //     { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     exportOptions: {
+  //       columns: "thead th:not(.noExport)"
+  //      }
+  //   },
+  //     { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     exportOptions: {
+  //       columns: "thead th:not(.noExport)"
+  //      }
+  //    },
+  //     { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     exportOptions: {
+  //       columns: "thead th:not(.noExport)"
+  //      } 
+  //   },
+  //   {
+  //     text:"Add",
+  //     className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     action:() => {
+  //      this.addnew.nativeElement.click();
+  //     }
+  //   }
+  //   ],
+  //   language: {
+  //     searchPlaceholder: "Find BusTypes",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/BusTypeDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {   
+  //           console.log(resp);        
+  //           this.busTypes = resp.data.aaData;
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [{ data: 'id' }, 
+  //     { 
+  //       title: 'Type',
+  //       data: 'type',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"AC":"NON AC";
+  //       }
+  //     }, 
+  //     { title: 'Name',data: 'name' },{ title: 'Created By',data: 'created_by' },{ title: 'Created At',data: 'created_at' },{ title: 'Updated At',data: 'updated_at' }, { 
+  //       title: 'Status',
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       }
+  //      }, 
+  //     {  
+  //       title:'Action',data: null, orderable:false,className: "noExport" }]      
+  //   };
+  //  }
  
    ngOnInit() { 
     this.form = this.fb.group({
@@ -151,7 +159,14 @@ export class BustypeComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-     this.loadBusType(); 
+
+    this.searchForm = this.fb.group({  
+      name: [null], 
+      bus_type: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+     this.search(); 
     
   }
   ngAfterViewInit(): void {
@@ -171,6 +186,54 @@ export class BustypeComponent implements OnInit {
       this.dtTrigger.next();
     });
   }
+
+  page(label:any){
+    return label;
+   }
+
+  search(pageurl="")
+  {
+      
+    const data = { 
+      name: this.searchForm.value.name,
+      bus_type: this.searchForm.value.bus_type,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.busTypeService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.busTypes= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.busTypes);
+        }
+      );
+    }
+    else
+    {
+      this.busTypeService.getAllData(data).subscribe(
+        res => {
+          this.busTypes= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+
+
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+   }
+
+
+  
   ResetAttributes()
   {
     this.busTypeRecord = {
@@ -192,7 +255,7 @@ export class BustypeComponent implements OnInit {
       type:this.form.value.type,
       name:this.form.value.name  
     };
-    console.log(data);
+    // console.log(data);
     if(id==null)
     {
       this.busTypeService.create(data).subscribe(
@@ -203,7 +266,7 @@ export class BustypeComponent implements OnInit {
           this.modalReference.close();
           //this.closebutton.nativeElement.click();
           this.ResetAttributes();
-          this.rerender();
+          this.search();
           
        }
        else
@@ -222,7 +285,7 @@ export class BustypeComponent implements OnInit {
                 //this.closebutton.nativeElement.click();
                 this.modalReference.close();
                 this.ResetAttributes();
-                this.rerender();
+                this.search();
             }
             else
             {
@@ -257,7 +320,7 @@ export class BustypeComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.search();
             }
             else{
                
@@ -280,7 +343,7 @@ export class BustypeComponent implements OnInit {
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.search();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
@@ -288,5 +351,27 @@ export class BustypeComponent implements OnInit {
       }
     );
   }
+
+  title = 'angular-app';
+  fileName= 'Bus-Type.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
   
 }

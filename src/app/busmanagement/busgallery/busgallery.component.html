@@ -33,7 +33,7 @@
                           <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
                               <i class="fas fa-search"></i> 
                           </button>
-                          <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                          <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                               <i class="fas fa-sync-alt"></i> 
                           </button>
                       </div>
@@ -52,21 +52,6 @@
                             </select>
                         </div>
                     </div>
-
-
-                    <!-- <div class="col-2">
-                      <div class="dropdown float-right">
-                          <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 btn-sm"  title="Export">
-                              <i class="fas fa-file-export"></i> 
-                          </button>
-                          <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark btn-sm" [useExistingCss]="true" title="Print">
-                              <i class="fas fa-print"></i> 
-                          </button>
-                      </div>
-                    </div> -->
-            
-                    
-            
                 </div>
             </form>
 
@@ -94,7 +79,7 @@
                   <tbody *ngIf="busGallerries?.length != 0">
                     <tr *ngFor="let gallery of busGallerries; let i=index; ">
                         
-                        <td>{{ gallery.id }}</td>
+                        <td>{{ i+1 }}</td>
                         <td>{{ gallery.bus.name }}</td>
                         <!-- <td class="text-capitalize">{{ gallery.bus.via }}</td> -->
                         <td>{{ gallery.bus.bus_number }}</td>

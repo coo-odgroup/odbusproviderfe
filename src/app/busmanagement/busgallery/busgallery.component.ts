@@ -29,7 +29,6 @@ export class BusgalleryComponent implements OnInit {
   public busForm: FormGroup;
   public searchForm: FormGroup;
 
-
   confirmDialogReference: NgbModalRef;
 
   public busGallerries: Busgallery[];
@@ -69,6 +68,7 @@ export class BusgalleryComponent implements OnInit {
 
   title = 'angular-app';
   fileName= 'Bus-Gallery.xlsx';
+
   //@ViewChild("closebutton") closebutton;
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
@@ -80,6 +80,8 @@ export class BusgalleryComponent implements OnInit {
   dtSeatTypesOptionsData: any = {};
   buses: Bus[];
   busRecord: Bus;
+
+
 
   OpenModal(content) {
 
@@ -313,7 +315,7 @@ galleryData()
    page(label:any){
     return label;
    }
-   search(pageurl="")
+  search(pageurl="")
   {
       
     const data = { 
@@ -321,7 +323,7 @@ galleryData()
       rows_number:this.searchForm.value.rows_number,  
     };
    
-    console.log(data);
+    // console.log(data);
     if(pageurl!="")
     {
       this.busgalleryService.getAllaginationData(pageurl,data).subscribe(

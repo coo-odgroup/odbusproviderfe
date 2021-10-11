@@ -23,6 +23,21 @@ export class SafetyService {
       catchError(this.errorHandler)
     )
   }
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/getAllData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/Safety', JSON.stringify(post), this.httpOptions)
     .pipe(

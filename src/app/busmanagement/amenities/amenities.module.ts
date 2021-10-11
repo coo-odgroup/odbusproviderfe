@@ -6,6 +6,7 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { AmenitiesComponent } from './amenities.component';
 import {NotificationService} from '../../services/notification.service';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -13,7 +14,9 @@ import {NotificationService} from '../../services/notification.service';
     AmenitiesRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule  ],
+    DataTablesModule,
+    NgxPrintModule
+    ],
   declarations: [ AmenitiesComponent],
   providers:[NotificationService]
 })

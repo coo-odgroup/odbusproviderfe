@@ -22,6 +22,21 @@ export class BusTypeService {
     )
   }
 
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/BusTypeData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/BusType', JSON.stringify(post), this.httpOptions)
     .pipe(

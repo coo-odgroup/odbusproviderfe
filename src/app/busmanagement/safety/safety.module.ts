@@ -6,6 +6,8 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SafetyComponent } from './safety.component';
 import {NotificationService} from '../../services/notification.service';
+import {NgxPrintModule} from 'ngx-print';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -13,7 +15,8 @@ import {NotificationService} from '../../services/notification.service';
     SharedModule,
     FormsModule,
     DataTablesModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPrintModule
   ],
   declarations: [ SafetyComponent],
   providers:[NotificationService]

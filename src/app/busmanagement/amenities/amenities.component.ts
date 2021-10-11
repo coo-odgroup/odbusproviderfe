@@ -11,6 +11,8 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import {Constants} from '../../constant/constant';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-amenities',
   templateUrl: './amenities.component.html',
@@ -23,7 +25,9 @@ export class AmenitiesComponent implements OnInit {
   public form: FormGroup;
   public form1: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
   
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   statusDialogReference: NgbModalRef;
@@ -60,6 +64,7 @@ export class AmenitiesComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
+  pagination: any;
 
   constructor(private http: HttpClient,private AmenitiesService:AmenitiesService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) { 
     this.isSubmit = false;
@@ -75,88 +80,88 @@ export class AmenitiesComponent implements OnInit {
   statusDialog(content) {
     this.statusDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
   }
-  loadAmenities(){
-    this.dtOptionAmenities = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',
-      order:["0","desc"],
-      aLengthMenu:[10, 25, 50, 100, "All"],     
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-      { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-      { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-      { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-     {
-      text:"Add",
-      className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      action:() => {
-       this.addnew.nativeElement.click();
-      }
-    }
-    ],
-    language: {
-      searchPlaceholder: "Find Amenities",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/AmenitiesDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
-            this.Amenities = resp.data.aaData;
-            for(let items of this.Amenities)
-            {
-              this.AmenitiesRecord=items;
-              let icon='data:image/svg+xml;charset=utf-8;base64,'+this.AmenitiesRecord.icon;
-              this.AmenitiesRecord.icon=icon;
-            }
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [{ data: 'id' }, { data: 'name' }, { data: 'created_at' },{ data: 'created_by' }, { 
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        } 
-      },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
+  // loadAmenities(){
+  //   this.dtOptionAmenities = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',
+  //     order:["0","desc"],
+  //     aLengthMenu:[10, 25, 50, 100, "All"],     
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //     { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //     { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //     { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //    {
+  //     text:"Add",
+  //     className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     action:() => {
+  //      this.addnew.nativeElement.click();
+  //     }
+  //   }
+  //   ],
+  //   language: {
+  //     searchPlaceholder: "Find Amenities",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/AmenitiesDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
+  //           this.Amenities = resp.data.aaData;
+  //           for(let items of this.Amenities)
+  //           {
+  //             this.AmenitiesRecord=items;
+  //             let icon='data:image/svg+xml;charset=utf-8;base64,'+this.AmenitiesRecord.icon;
+  //             this.AmenitiesRecord.icon=icon;
+  //           }
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [{ data: 'id' }, { data: 'name' }, { data: 'created_at' },{ data: 'created_by' }, { 
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       } 
+  //     },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
       
-    };
-  }
+  //   };
+  // }
   
   
   ngOnInit(): void {
@@ -170,10 +175,81 @@ export class AmenitiesComponent implements OnInit {
       name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       icon: [null,Validators.compose([Validators.required])],
       iconSrc:[null]
-    });  
+    }); 
+    
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
 
-    this.loadAmenities();
+    this.search();
   }
+
+
+  page(label:any){
+    return label;
+   }
+
+  search(pageurl="")
+  {
+      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.AmenitiesService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.Amenities= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.Amenities);
+        }
+      );
+    }
+    else
+    {
+      this.AmenitiesService.getAllData(data).subscribe(
+        res => {
+          this.Amenities= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+   title = 'angular-app';
+  fileName= 'Amenities.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
 
   ResetAttributes()
   {
@@ -210,6 +286,11 @@ export class AmenitiesComponent implements OnInit {
       this.dtTrigger.next();
     });
   }
+  
+  getBannerImagepath(slider_img :any){
+    let objectURL = 'data:image/*;base64,'+slider_img;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+   }
 
   addAmenities()
   {

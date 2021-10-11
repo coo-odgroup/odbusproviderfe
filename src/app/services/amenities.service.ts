@@ -25,6 +25,19 @@ export class AmenitiesService {
       catchError(this.errorHandler)
     )
   }
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/AmenitiesData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/Amenities', JSON.stringify(post), this.httpOptions)

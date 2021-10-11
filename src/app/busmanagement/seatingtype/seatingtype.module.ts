@@ -7,6 +7,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { SeatingtypeComponent } from './seatingtype.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgxPrintModule} from 'ngx-print';
 
 
 @NgModule({
@@ -16,7 +17,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule, NgbModule
+    DataTablesModule,
+    NgbModule,
+    NgxPrintModule
   ],
   declarations: [ SeatingtypeComponent],
   providers: [NotificationService]

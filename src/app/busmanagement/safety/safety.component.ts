@@ -12,6 +12,9 @@ import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import * as XLSX from 'xlsx';
+
+
 @Component({
   selector: 'app-safety',
   templateUrl: './safety.component.html',
@@ -23,6 +26,9 @@ export class SafetyComponent implements OnInit {
   @ViewChild("addnew") addnew;
   public form: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   @ViewChild(DataTableDirective, {static: false})
@@ -42,9 +48,17 @@ export class SafetyComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
+  pagination: any;
 
 
-  constructor(private safetyService: SafetyService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer)
+  constructor(
+          private safetyService: SafetyService,
+          private http: HttpClient,
+          private notificationService: NotificationService, 
+          private fb: FormBuilder,config: NgbModalConfig, 
+          private modalService: NgbModal,
+          private sanitizer: DomSanitizer
+    )
    {
     this.isSubmit = false;
     this.SafetyRecord= {} as Safety;
@@ -66,8 +80,60 @@ export class SafetyComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null],
     });
-    this.loadSeatData();
+
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search(); 
   }
+
+ 
+  page(label:any){
+    return label;
+   }
+
+  search(pageurl="")
+  {
+      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.safetyService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.Safetys= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.Safetys);
+        }
+      );
+    }
+    else
+    {
+      this.safetyService.getAllData(data).subscribe(
+        res => {
+          this.Safetys= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+   }
+
+
+
   public picked(event:any, fileSrc:any) {
     //////image validation////////
     this.imageError = null;
@@ -177,86 +243,7 @@ export class SafetyComponent implements OnInit {
       this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
     }
   }
-  loadSeatData()
-  {
-    
-    this.dtOptionsSafety = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],  
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-            columns: "thead th:not(.noExport)"
-           } 
-        },
-        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { 
-          extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        {
-          text:"Add",
-          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          action:() => {
-           this.addnew.nativeElement.click();
-          }
-        }
-      ],
-    language: {
-      searchPlaceholder: "Find Safety Service",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/SafetyDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
-           // console.log(resp.data.aaData);
-            this.Safetys = resp.data.aaData;
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [ { data: 'id' },{ data: 'name' },{ title:"Created By",data: 'created_by' },{ data: 'created_at' },{ data: 'updated_at' },{ 
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }  
 
-      },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-    }; 
-  }
   ResetAttriutes()
   {
     
@@ -309,7 +296,7 @@ export class SafetyComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttriutes();
-              this.rerender();
+             this.search(); 
           }
           else
           {
@@ -327,7 +314,7 @@ export class SafetyComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttriutes();
-              this.rerender();
+             this.search(); 
             }
             else
             {                
@@ -358,7 +345,8 @@ export class SafetyComponent implements OnInit {
   {
     this.SafetyRecord=this.Safetys[id] ;
     // console.log(this.SafetyRecord);
-    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl("data:image/svg+xml;charset=utf-8;base64,"+this.SafetyRecord.icon);
+    // this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl("data:image/svg+xml;charset=utf-8;base64,"+this.SafetyRecord.icon);
+    this.imgURL = this.SafetyRecord.icon;
     
     //console.log(this.imgURL);
     this.form = this.fb.group({
@@ -374,13 +362,18 @@ export class SafetyComponent implements OnInit {
     
     //console.log(this.seatingTypes);
   }
-  openConfirmDialog(content)
+
+  // Safetys: Safety[];
+  // SafetyRecord: Safety;
+  openConfirmDialog(content, id: any)
   {
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
+    this.SafetyRecord = this.Safetys[id];
   }
   deleteRecord()
   {
-    let delitem=this.formConfirm.value.id;
+    // let delitem=this.formConfirm.value.id;
+    let delitem = this.SafetyRecord.id;
      this.safetyService.delete(delitem).subscribe(
       resp => {
         if(resp.status==1)
@@ -388,7 +381,7 @@ export class SafetyComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+               this.search(); 
             }
             else{
                
@@ -405,6 +398,11 @@ export class SafetyComponent implements OnInit {
     
   }
 
+  getBannerImagepath(slider_img :any){
+    let objectURL = 'data:image/*;base64,'+slider_img;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+   }
+
   changeStatus(event : Event, stsitem:any)
   {
     this.safetyService.chngsts(stsitem).subscribe(
@@ -412,7 +410,7 @@ export class SafetyComponent implements OnInit {
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+           this.search(); 
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
@@ -420,5 +418,26 @@ export class SafetyComponent implements OnInit {
       }
     );
   }
+
+
+  title = 'angular-app';
+  fileName= 'Safety.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
 
 }

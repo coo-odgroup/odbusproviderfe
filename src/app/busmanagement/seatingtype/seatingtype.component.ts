@@ -10,6 +10,8 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-seatingtype',
@@ -22,6 +24,9 @@ export class SeatingtypeComponent implements OnInit {
   @ViewChild("addnew") addnew;
   public form: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   @ViewChild(DataTableDirective, {static: false})
@@ -41,6 +46,7 @@ export class SeatingtypeComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
+  pagination: any;
   constructor(private seatingTypeService: SeatingtypeService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal)
    {
     this.isSubmit = false;
@@ -62,88 +68,141 @@ export class SeatingtypeComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.loadSeatData();
-  }
-  loadSeatData()
-  {
-    
-    this.dtOptionsSeatingType = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],  
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-            columns: "thead th:not(.noExport)"
-           } 
-        },
-        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { 
-          extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        {
-          text:"Add",
-          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          action:() => {
-           this.addnew.nativeElement.click();
-          }
-        }
-      ],
-    language: {
-      searchPlaceholder: "Find Seating Type",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/BusSittingDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
-           // console.log(resp.data.aaData);
-            this.seatingTypes = resp.data.aaData;
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [ { data: 'id' },{ data: 'name' },{ title:"Created By",data: 'created_by' },{ data: 'created_at' },{ data: 'updated_at' },{ 
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }  
 
-      },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-    }; 
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+
+    this.search();
   }
+
+  page(label:any){
+    return label;
+   }
+
+  search(pageurl="")
+  {
+      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.seatingTypeService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.seatingTypes= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.seatingTypes);
+        }
+      );
+    }
+    else
+    {
+      this.seatingTypeService.getAllData(data).subscribe(
+        res => {
+          this.seatingTypes= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+
+  // loadSeatData()
+  // {
+    
+  //   this.dtOptionsSeatingType = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',  
+  //     order:["0","desc"], 
+  //     aLengthMenu:[10, 25, 50, 100, "All"],  
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //           columns: "thead th:not(.noExport)"
+  //          } 
+  //       },
+  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //         $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { 
+  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       {
+  //         text:"Add",
+  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         action:() => {
+  //          this.addnew.nativeElement.click();
+  //         }
+  //       }
+  //     ],
+  //   language: {
+  //     searchPlaceholder: "Find Seating Type",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/BusSittingDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
+  //          // console.log(resp.data.aaData);
+  //           this.seatingTypes = resp.data.aaData;
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [ { data: 'id' },{ data: 'name' },{ title:"Created By",data: 'created_by' },{ data: 'created_at' },{ data: 'updated_at' },{ 
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       }  
+
+  //     },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
+  //   }; 
+  // }
   ResetAttriutes()
   {
     
@@ -183,7 +242,7 @@ export class SeatingtypeComponent implements OnInit {
           this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
           this.modalReference.close();
           this.ResetAttriutes();
-          this.rerender();
+         this.search();
          
        }
        else
@@ -202,7 +261,7 @@ export class SeatingtypeComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttriutes();
-              this.rerender();
+             this.search();
             }
             else
             {                
@@ -255,7 +314,7 @@ export class SeatingtypeComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+               this.search();
             }
             else{
                
@@ -279,7 +338,7 @@ export class SeatingtypeComponent implements OnInit {
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+           this.search();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
@@ -288,4 +347,25 @@ export class SeatingtypeComponent implements OnInit {
     );
   }
   
+
+  title = 'angular-app';
+  fileName= 'Seating-Type.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
 }
