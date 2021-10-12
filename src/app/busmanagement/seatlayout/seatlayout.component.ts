@@ -14,6 +14,7 @@ import { DragulaService, DragulaDirective  } from 'ng2-dragula';
 import * as dragula from 'dragula';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+import * as XLSX from 'xlsx';
 
 interface SeatBlock{
   rowNumber?:any;
@@ -39,6 +40,10 @@ export class SeatlayoutComponent implements OnInit {
 
   public SeatLayoutForm: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+
+
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   @ViewChild(DataTableDirective, {static: false})
@@ -67,6 +72,7 @@ export class SeatlayoutComponent implements OnInit {
   lowerBerthArray=[];
   upperBerthArray=[];
   seatText=[];
+  pagination: any;
 
  
   constructor(private http: HttpClient, private notificationService: NotificationService, private sLayout: SeatlayoutService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private dragulaService: DragulaService) {
@@ -268,7 +274,7 @@ export class SeatlayoutComponent implements OnInit {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
             this.modalReference.close();
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -453,7 +459,7 @@ export class SeatlayoutComponent implements OnInit {
         this.upperBerthBasketText[rowCounter]=rowArray; //Value Pushed to Array
       }  
 
-      console.log( this.upperBerthBasketText);
+      // console.log( this.upperBerthBasketText);
     });
     
     this.SeatLayoutForm = this.fb.group({
@@ -465,8 +471,86 @@ export class SeatlayoutComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.loadSeatLayout();
+
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
+    // this.loadSeatLayout();
   }
+
+
+
+
+  page(label:any){
+    return label;
+   }
+
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.sLayout.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.SeatLayouts= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.SeatLayouts);
+        }
+      );
+    }
+    else
+    {
+      this.sLayout.getAllData(data).subscribe(
+        res => {
+          this.SeatLayouts= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+   title = 'angular-app';
+  fileName= 'Seat-layout.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+
+
   formSeater=[];
   formSleeper=[];
   saveLayout(form: NgForm)
@@ -575,7 +659,7 @@ export class SeatlayoutComponent implements OnInit {
         {
           this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
           this.modalReference.close();
-          this.rerender();
+          this.refresh();
         }
         else{
           this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -643,7 +727,7 @@ export class SeatlayoutComponent implements OnInit {
             {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
-                this.rerender();
+                this.refresh();
             }
             else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -668,7 +752,7 @@ export class SeatlayoutComponent implements OnInit {
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

@@ -7,6 +7,8 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BusoperatorComponent } from './busoperator.component';
 import {NotificationService} from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {NgxPrintModule} from 'ngx-print';
+
 
 
 @NgModule({
@@ -17,7 +19,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     NgSelectModule,
     ReactiveFormsModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxPrintModule
   ],
   declarations: [ BusoperatorComponent],
   providers:[NotificationService]

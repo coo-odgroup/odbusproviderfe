@@ -8,6 +8,7 @@ import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import {SeatOpenRoutingModule} from './seatopen-routing.module';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import {SeatOpenRoutingModule} from './seatopen-routing.module';
     SharedModule,
     FormsModule,
     NgSelectModule,
+    NgxPrintModule,
     DataTablesModule
   ],
   declarations: [ SeatopenComponent],

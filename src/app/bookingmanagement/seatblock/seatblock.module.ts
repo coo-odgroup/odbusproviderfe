@@ -7,6 +7,7 @@ import {SeatblockComponent} from './seatblock.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {SeatBlockRoutingModule} from './seatblock-routing.module';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {SeatBlockRoutingModule} from './seatblock-routing.module';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxPrintModule
   ],
   declarations: [ SeatblockComponent],
   providers: [NotificationService]

@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import { SeatlayoutComponent } from './seatlayout.component';
 import { NotificationService } from '../../services/notification.service';
 import { DragulaModule } from 'ng2-dragula';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { DragulaModule } from 'ng2-dragula';
     SharedModule,
     FormsModule,
     DataTablesModule,
+    NgxPrintModule,
     DragulaModule.forRoot()
   ],
   declarations: [ SeatlayoutComponent],

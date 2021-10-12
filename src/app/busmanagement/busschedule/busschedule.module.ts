@@ -7,6 +7,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BusscheduleComponent } from './busschedule.component';
 import {NotificationService} from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {NgxPrintModule} from 'ngx-print';
 
 
 
@@ -18,7 +19,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
-    NgSelectModule  ],
+    NgSelectModule,
+    NgxPrintModule
+    ],
   declarations: [ BusscheduleComponent],
   providers:[NotificationService]
 })

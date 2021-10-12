@@ -47,6 +47,21 @@ export class BusOperatorService {
     )
   }
 
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(Constants.BASE_URL+ '/BusbyOperatorData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   create(post): Observable<any> {
     return this.httpClient.post<any>(Constants.BASE_URL+'/busoperator', JSON.stringify(post), this.httpOptions)
     .pipe(

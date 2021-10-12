@@ -79,7 +79,7 @@
                 <th>Created By</th>
                 <th>Preview</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th class="hide_print">Actions</th>
               </tr>
             </thead>
             <tbody *ngIf="Amenities?.length != 0">
@@ -96,7 +96,9 @@
                       <label *ngIf="amenity.status==0" class="badge badge-light-warning pointer" (click)="cs(amenity.id);">Pending</label>
                     </td>
                     
-                    <td><a (click)="editAmenities($event, i); OpenModal(content);" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i></a><a (click)="deleteAmenities(confirmDialog, amenity.id);"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>
+                    <td class="hide_print">
+                      <a (click)="editAmenities($event, i); OpenModal(content);" ><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i></a>
+                      <a (click)="deleteAmenities(confirmDialog, amenity.id);"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>
                 </tr>
             </tbody>
             <tbody *ngIf="Amenities?.length == 0">

@@ -9,6 +9,9 @@ import { NotificationService } from '../../services/notification.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import * as XLSX from 'xlsx';
+
+
 @Component({
   selector: 'app-busoperator',
   templateUrl: './busoperator.component.html',
@@ -19,6 +22,10 @@ export class BusoperatorComponent implements OnInit {
  
   public form: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+
+
+
   public bankNames:any;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
@@ -46,6 +53,7 @@ export class BusoperatorComponent implements OnInit {
   public validIFSC:any;
   public validEmail:any;
   public validPhone:any;
+  pagination: any;
   constructor(private http: HttpClient, private busOperatorService:BusOperatorService, private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
     this.isSubmit = false;
     this.BusOperatorRecord= {} as Busoperator;
@@ -57,90 +65,90 @@ export class BusoperatorComponent implements OnInit {
   OpenModal(content) {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
-  loadOperators()
-  {
-      this.dtOptionOperators = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',
-      order:["0","desc"],
-      aLengthMenu:[10, 25, 50, 100, "All"],
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     }  
-    },
-      { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-      { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-      { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-     {
-      text:"Add",
-      className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      action:() => {
-       this.addnew.nativeElement.click();
-      }
-    }
-    ],
-    language: {
-      searchPlaceholder: "Find Operators",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
+  // loadOperators()
+  // {
+  //     this.dtOptionOperators = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',
+  //     order:["0","desc"],
+  //     aLengthMenu:[10, 25, 50, 100, "All"],
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    }  
+  //   },
+  //     { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //     { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //     { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //    {
+  //     text:"Add",
+  //     className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     action:() => {
+  //      this.addnew.nativeElement.click();
+  //     }
+  //   }
+  //   ],
+  //   language: {
+  //     searchPlaceholder: "Find Operators",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
 
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/busoperatorsDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
-           // console.log(resp.data.aaData);
-            this.BusOperators = resp.data.aaData;
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/busoperatorsDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
+  //          // console.log(resp.data.aaData);
+  //           this.BusOperators = resp.data.aaData;
             
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
           
-      },
+  //     },
       
-      columns: [{ data: 'id' }, { data: 'email_id' }, { title:'Operator Name',data: 'operator_name' },{ title:'Contact Number',data: 'contact_number' },{data:'created_at'}, {
-        data: 'status',
-        render:function(data)
-        {
-          return (data==1)?"Active":"Pending"
-        }
+  //     columns: [{ data: 'id' }, { data: 'email_id' }, { title:'Operator Name',data: 'operator_name' },{ title:'Contact Number',data: 'contact_number' },{data:'created_at'}, {
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data==1)?"Active":"Pending"
+  //       }
       
-    },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
+  //   },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
       
-    }; 
+  //   }; 
     
-  }
+  // }
   ngOnInit(){
     this.form = this.fb.group({
       id:[null],
@@ -165,7 +173,7 @@ export class BusoperatorComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.loadOperators();
+    // this.loadOperators();
 
     // this.bankNames=[
     //   "Axis Bank",
@@ -203,9 +211,87 @@ export class BusoperatorComponent implements OnInit {
     //   "Union Bank of India",
     //   "Yes Bank"
     // ];
+
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
     
     
   }
+  
+
+  page(label:any){
+    return label;
+   }
+
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.busOperatorService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.BusOperators= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.BusOperators);
+        }
+      );
+    }
+    else
+    {
+      this.busOperatorService.getAllData(data).subscribe(
+        res => {
+          this.BusOperators= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+   title = 'angular-app';
+  fileName= 'Seat-layout.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+
+
+
+
   ResetAttributes()
   {
     
@@ -286,14 +372,14 @@ export class BusoperatorComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+  // refresh(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to refresh again
+  //     this.dtTrigger.next();
+  //   });
+  // }
 
 
   
@@ -368,7 +454,7 @@ export class BusoperatorComponent implements OnInit {
               //this.closebutton.nativeElement.click();
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -384,7 +470,7 @@ export class BusoperatorComponent implements OnInit {
               //this.closebutton.nativeElement.click();
               this.notificationService.addToast({title:Constants.RecordUpdateTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -434,7 +520,7 @@ export class BusoperatorComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.refresh();
             }
             else{
                
@@ -458,7 +544,7 @@ export class BusoperatorComponent implements OnInit {
         {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-            this.rerender();
+            this.refresh();
         }
         else{
           this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});

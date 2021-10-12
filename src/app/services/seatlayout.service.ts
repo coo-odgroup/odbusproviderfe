@@ -22,6 +22,23 @@ export class SeatlayoutService {
       catchError(this.errorHandler)
     )
   }
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/BusSeatLayoutData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+
   seatsBus(post){
     return this.httpClient.post<any>(this.apiURL + '/seatsBus',JSON.stringify(post), this.httpOptions)
     .pipe(

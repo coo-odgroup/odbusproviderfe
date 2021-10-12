@@ -10,6 +10,8 @@ import { Subject } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-cancellationslab',
   templateUrl: './cancellationslab.component.html',
@@ -67,6 +69,8 @@ export class CancellationslabComponent implements OnInit {
   
   public form: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+
   public CancelationSlabList: FormArray;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
@@ -97,6 +101,7 @@ export class CancellationslabComponent implements OnInit {
   public allDeductions:string;
   public ModalHeading:any;
   public ModalBtn:any;
+  pagination: any;
   // returns all form groups under Cancellation Slab
   get slabFormGroup() {
     return this.form.get('slabs') as FormArray;
@@ -113,119 +118,119 @@ export class CancellationslabComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
   }
  
-  loadcSlab()
-  {
-    this.dtOptioncSlab = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',
-      order:["0","desc"],
-      aLengthMenu:[10, 25, 50, 100, "All"], 
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-            columns: "thead th:not(.noExport)"
-           } 
-        },
-        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { 
-          extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        {
-          text:"Add",
-          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          action:() => {
-           this.addnew.nativeElement.click();
-          }
-        }
-      ],
-    language: {
-      searchPlaceholder: "Find CancellationSlab",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/cancellationslabsDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
-            this.cancellationSlabs = resp.data.aaData;
-            console.log(this.cancellationSlabs);
-            for(let items of this.cancellationSlabs)
-            {
-              this.cancellationSlabRecord=items;
-              this.cancellationSlabRecord.duration="";
-              this.cancellationSlabRecord.deduction="";
-            }
+  // loadcSlab()
+  // {
+  //   this.dtOptioncSlab = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',
+  //     order:["0","desc"],
+  //     aLengthMenu:[10, 25, 50, 100, "All"], 
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //           columns: "thead th:not(.noExport)"
+  //          } 
+  //       },
+  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //         $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { 
+  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       {
+  //         text:"Add",
+  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         action:() => {
+  //          this.addnew.nativeElement.click();
+  //         }
+  //       }
+  //     ],
+  //   language: {
+  //     searchPlaceholder: "Find CancellationSlab",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/cancellationslabsDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
+  //           this.cancellationSlabs = resp.data.aaData;
+  //           console.log(this.cancellationSlabs);
+  //           for(let items of this.cancellationSlabs)
+  //           {
+  //             this.cancellationSlabRecord=items;
+  //             this.cancellationSlabRecord.duration="";
+  //             this.cancellationSlabRecord.deduction="";
+  //           }
             
-            //this.cancellationSlabs.duration;
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [{ data: 'id' }, { data: 'api_id' }, { data: 'rule_name' },{ 
-        title:'Duration (Hour)',
-        data: 'duration',
-        render:function(data){
-          let bdata="";
-          for(let ditems of data)
-          {
-            bdata+=(bdata=="")?ditems:", <br />"+ditems;
-          }
-          return bdata;
-        }
-      },
-        { 
-          title:"Deduction (%)",data: 'deduction',
-        render:function(data){
-        let bdata="";
-        for(let ditems of data)
-        {
-          bdata+=(bdata=="")?ditems:", <br />"+ditems;
-        }
-        return bdata;
-      }
-        }, 
-        {
-           data: 'status',
-           render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        } 
-           },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
+  //           //this.cancellationSlabs.duration;
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [{ data: 'id' }, { data: 'api_id' }, { data: 'rule_name' },{ 
+  //       title:'Duration (Hour)',
+  //       data: 'duration',
+  //       render:function(data){
+  //         let bdata="";
+  //         for(let ditems of data)
+  //         {
+  //           bdata+=(bdata=="")?ditems:", <br />"+ditems;
+  //         }
+  //         return bdata;
+  //       }
+  //     },
+  //       { 
+  //         title:"Deduction (%)",data: 'deduction',
+  //       render:function(data){
+  //       let bdata="";
+  //       for(let ditems of data)
+  //       {
+  //         bdata+=(bdata=="")?ditems:", <br />"+ditems;
+  //       }
+  //       return bdata;
+  //     }
+  //       }, 
+  //       {
+  //          data: 'status',
+  //          render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       } 
+  //          },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
       
-    }; 
+  //   }; 
     
-  }
+  // }
   ngOnInit(){
-    this.loadcSlab();
+    // this.loadcSlab();
     this.form = this.fb.group({
       id:[null],
       api_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
@@ -238,7 +243,89 @@ export class CancellationslabComponent implements OnInit {
     id:[null]
   });
 
+  this.searchForm = this.fb.group({  
+    name: [null],  
+    rows_number: Constants.RecordLimit,
+  });
+
+  this.search();
+
   }
+
+  page(label:any){
+    return label;
+   }
+
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.cSlabService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.cancellationSlabs= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.cancellationSlabs);
+        }
+      );
+    }
+    else
+    {
+      this.cSlabService.getAllData(data).subscribe(
+        res => {
+          this.cancellationSlabs= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+   title = 'angular-app';
+  fileName= 'Cancellation-Slab.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   // CanclationSlab formgroup
   createSlab(): FormGroup {
     return this.fb.group({ 
@@ -284,14 +371,6 @@ export class CancellationslabComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
   addCancellationSlab()
   {
     this.allDurations="";
@@ -314,7 +393,7 @@ export class CancellationslabComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -331,7 +410,7 @@ export class CancellationslabComponent implements OnInit {
               this.notificationService.addToast({title:Constants.RecordUpdateTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.rerender();
+              this.refresh();
           }
           else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -385,7 +464,7 @@ export class CancellationslabComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.refresh();
             }
             else{
                
@@ -408,7 +487,7 @@ export class CancellationslabComponent implements OnInit {
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

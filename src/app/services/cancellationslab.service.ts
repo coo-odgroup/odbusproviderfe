@@ -16,12 +16,30 @@ export class CancellationslabService {
   }
 
   constructor(private httpClient: HttpClient) { }
+
   readAll(): Observable<any> {
     return this.httpClient.get<any>(this.endPoint + '/cancellationslabs',  this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.endPoint+ '/cancellationslabData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   getByID(id): Observable<any> {
     return this.httpClient.get<any>(this.endPoint + '/cancellationslab/'+id,  this.httpOptions)
     .pipe(

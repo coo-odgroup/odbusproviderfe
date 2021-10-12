@@ -13,6 +13,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-busschedule',
@@ -25,6 +26,10 @@ export class BusscheduleComponent implements OnInit {
   @ViewChild("addnew") addnew;
   public busScheduleForm: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+
+
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   viewEntryDates: NgbModalRef;
@@ -52,6 +57,7 @@ public showdates:any;
 public selectedCar: number;
 
 FormOne: FormGroup;
+  pagination: any;
   constructor(private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
    // this.selectedCar = 1;
@@ -81,9 +87,80 @@ FormOne: FormGroup;
     });
     this.loadBusScheduleData();
 
+    // this.searchForm = this.fb.group({  
+    //   name: [null],  
+    //   rows_number: Constants.RecordLimit,
+    // });
 
-
+    // this.search();
   }
+
+
+  // page(label:any){
+  //   return label;
+  //  }
+
+   
+  // search(pageurl="")
+  // {      
+  //   const data = { 
+  //     name: this.searchForm.value.name,
+  //     rows_number:this.searchForm.value.rows_number, 
+  //   };
+   
+  //   // console.log(data);
+  //   if(pageurl!="")
+  //   {
+  //     this.busscheduleService.getAllaginationData(pageurl,data).subscribe(
+  //       res => {
+  //         this.busSchedules= res.data.data.data;
+  //         this.pagination= res.data.data;
+  //         // console.log( this.busSchedules);
+  //       }
+  //     );
+  //   }
+  //   else
+  //   {
+  //     this.busscheduleService.getAllData(data).subscribe(
+  //       res => {
+  //         this.busSchedules= res.data.data.data;
+  //         this.pagination= res.data.data;
+  //         // console.log( res.data);
+  //       }
+  //     );
+  //   }
+  // }
+
+
+  // refresh()
+  //  {
+  //    this.searchForm.reset();
+  //    this.search();
+    
+  //  }
+
+
+  //  title = 'angular-app';
+  // fileName= 'Cancellation-Slab.xlsx';
+
+  // exportexcel(): void
+  // {
+    
+  //   /* pass here the table id */
+  //   let element = document.getElementById('print-section');
+  //   const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+  //   /* generate workbook and add the worksheet */
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+  //   /* save to file */  
+  //   XLSX.writeFile(wb, this.fileName);
+ 
+  // }
+
+
+
   loadBusScheduleData()
   {
     this.dtOptionsBusSchedule = {
@@ -239,7 +316,7 @@ FormOne: FormGroup;
           this.modalReference.close();
           this.ResetAttributes();
           this.loadServices();
-          this.rerender();  
+          this.refresh();  
        }
        else
        { 
@@ -255,7 +332,7 @@ FormOne: FormGroup;
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.rerender();
+              this.refresh();
             }
             else
             {                
@@ -277,11 +354,11 @@ FormOne: FormGroup;
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
+  refresh(): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();
-      // Call the dtTrigger to rerender again
+      // Call the dtTrigger to refresh again
       this.dtTrigger.next();
     });
   }
@@ -338,7 +415,7 @@ FormOne: FormGroup;
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.refresh();
             }
             else{
                
@@ -362,7 +439,7 @@ FormOne: FormGroup;
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
