@@ -9,6 +9,7 @@ import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import {BookingSeizedRoutingModule} from './bookingseized-routing.module';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import {BookingSeizedRoutingModule} from './bookingseized-routing.module';
     FormsModule,
     NgSelectModule,
     DataTablesModule,
-   
+    NgxPrintModule
   ],
   declarations: [BookingseizedComponent],
   providers: [NotificationService]

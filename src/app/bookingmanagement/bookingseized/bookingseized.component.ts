@@ -6,6 +6,8 @@ import { BookingseizedService } from "../../services/bookingseized.service";
 import { Bookingseized } from "../../model/bookingseized";
 import { NotificationService } from '../../services/notification.service';
 import {Constants} from '../../constant/constant';
+import * as XLSX from 'xlsx';
+
 
 
 
@@ -22,6 +24,8 @@ export class BookingseizedComponent implements OnInit {
   bookingSeized : Bookingseized[];
   bookingSeizedRecord : Bookingseized;
 
+  public searchForm: FormGroup;
+
   ModalHeading:any;
   
   public ModalBtn :any;
@@ -30,6 +34,7 @@ export class BookingseizedComponent implements OnInit {
   opertaors_name: any;
   buss_name: any;
   buss_number: any;
+  pagination: any;
 
   constructor(
     private http: HttpClient,
@@ -58,8 +63,80 @@ export class BookingseizedComponent implements OnInit {
       
     });
 
-    this.getAll();
+    // this.getAll();
+
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
   }
+
+
+  page(label:any){
+    return label;
+   }
+
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.bookingseizedService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.bookingSeized= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.BusOperators);
+        }
+      );
+    }
+    else
+    {
+      this.bookingseizedService.getAllData(data).subscribe(
+        res => {
+          this.bookingSeized= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+  title = 'angular-app';
+  fileName= 'Seat-Open.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
 
 
   getAll()
@@ -117,7 +194,7 @@ export class BookingseizedComponent implements OnInit {
 
     this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
     this.modalReference.close();
-    this.getAll();
+    this.search();
     
     });
 

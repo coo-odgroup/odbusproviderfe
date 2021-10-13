@@ -19,6 +19,8 @@ import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../model/location';
+import * as XLSX from 'xlsx';
+
 //import {IOption} from 'ng-select';
 @Component({
   selector: 'app-specialfare',
@@ -55,10 +57,14 @@ export class SpecialfareComponent implements OnInit {
   public ModalBtn:any;
   public searchBy:any;
 
+  public searchForm: FormGroup;
+
+
 
   //simpleOption: Array<IOption>;
   selectedOperator: Array<string>;
   pricePattern = "^-?[0-9]*$";
+  pagination: any;
   constructor(private specialfareService: SpecialfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService,private busstoppageService:BusstoppageService) { 
     this.isSubmit = false;
     this.specialFareRecord= {} as Specialfare;
@@ -88,98 +94,174 @@ export class SpecialfareComponent implements OnInit {
       id:[null]
     });
     var currentTimeInSeconds=Math.floor(Date.now()/1000);
-    console.log("Start Time loadSpecialFareData: "+currentTimeInSeconds);
-    this.loadSpecialFareData();
-     
-  }
-  loadSpecialFareData()
-  {
-    this.dtOptionsSpecialFare = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],  
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-            columns: "thead th:not(.noExport)"
-           } 
-        },
-        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { 
-          extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        {
-          text:"Add",
-          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          action:() => {
-           this.addnew.nativeElement.click();
-          }
-        }
-      ],
-    language: {
-      searchPlaceholder: "Find Special Fare",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/busSpecialFareDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
-            //console.log(resp.data);
-            this.specialFares = resp.data.aaData;
-            for(let items of this.specialFares)
-            {
-              this.specialFareRecord=items;
-              
-              this.specialFareRecord.name=this.specialFareRecord.name.split(",");
-            }
-            var currentTimeInSeconds=Math.floor(Date.now()/1000);
-            console.log("End Time loadSpecialFareData: "+currentTimeInSeconds);
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [{ data: 'id' },{ data: 'name' },{ data: 'date' },{ data: 'seater_price' },{ data: 'sleeper_price' },{ title:"Created On",data: 'created_at' },{ 
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }  
+    // console.log("Start Time loadSpecialFareData: "+currentTimeInSeconds);
+    // this.loadSpecialFareData();
 
-      },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-    };
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
      
   }
+
+
+  
+  page(label:any){
+    return label;
+   }
+
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.specialfareService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.specialFares= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.BusOperators);
+        }
+      );
+    }
+    else
+    {
+      this.specialfareService.getAllData(data).subscribe(
+        res => {
+          this.specialFares= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+  title = 'angular-app';
+  fileName= 'Special-Fare.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+
+  // loadSpecialFareData()
+  // {
+  //   this.dtOptionsSpecialFare = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',  
+  //     order:["0","desc"], 
+  //     aLengthMenu:[10, 25, 50, 100, "All"],  
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //           columns: "thead th:not(.noExport)"
+  //          } 
+  //       },
+  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //         $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { 
+  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       {
+  //         text:"Add",
+  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         action:() => {
+  //          this.addnew.nativeElement.click();
+  //         }
+  //       }
+  //     ],
+  //   language: {
+  //     searchPlaceholder: "Find Special Fare",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/busSpecialFareDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
+  //           //console.log(resp.data);
+  //           this.specialFares = resp.data.aaData;
+  //           for(let items of this.specialFares)
+  //           {
+  //             this.specialFareRecord=items;
+              
+  //             this.specialFareRecord.name=this.specialFareRecord.name.split(",");
+  //           }
+  //           var currentTimeInSeconds=Math.floor(Date.now()/1000);
+  //           console.log("End Time loadSpecialFareData: "+currentTimeInSeconds);
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [{ data: 'id' },{ data: 'name' },{ data: 'date' },{ data: 'seater_price' },{ data: 'sleeper_price' },{ title:"Created On",data: 'created_at' },{ 
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       }  
+
+  //     },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
+  //   };
+     
+  // }
 
   ResetAttributes()
   {

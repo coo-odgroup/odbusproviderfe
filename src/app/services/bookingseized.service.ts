@@ -24,6 +24,21 @@ export class BookingseizedService {
     )
   }
 
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/bookingseizedData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   update(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/bookingseized' , JSON.stringify(post), this.httpOptions)
     .pipe(

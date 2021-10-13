@@ -84,7 +84,7 @@
               <th>Open Seats</th>
               <th>Reason</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th class="hide_print">Actions</th>
             </tr>
           </thead>
           <tbody *ngIf="seatOpen?.length != 0">
@@ -120,7 +120,7 @@
                   >Pending</label
                 >
               </td>
-              <td style="text-align: center">
+              <td style="text-align: center" class="hide_print">
                 <a (click)="editsopen(i); OpenModal(content)" class="pointer"
                   ><i
                     class="icon feather icon-edit f-w-600 f-16  m-r-15 text-c-green "></i

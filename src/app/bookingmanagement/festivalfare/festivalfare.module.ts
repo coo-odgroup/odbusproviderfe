@@ -7,6 +7,8 @@ import {FormsModule} from '@angular/forms';
 import {FestivalfareComponent} from './festivalfare.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {NgxPrintModule} from 'ngx-print';
+
 
 @NgModule({
   imports: [
@@ -15,7 +17,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SharedModule,
     FormsModule,
     DataTablesModule,
-    NgSelectModule
+    NgSelectModule,NgxPrintModule
   ],
   declarations: [ FestivalfareComponent],
   providers: [NotificationService]

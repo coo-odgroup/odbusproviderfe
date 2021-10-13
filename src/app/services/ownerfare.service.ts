@@ -21,6 +21,22 @@ export class OwnerfareService {
       catchError(this.errorHandler)
     )
   }
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/busOwnerFareData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/busOwnerFare', JSON.stringify(post), this.httpOptions)
     .pipe(

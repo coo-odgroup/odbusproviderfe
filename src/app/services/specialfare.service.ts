@@ -28,6 +28,22 @@ export class SpecialfareService {
       catchError(this.errorHandler)
     )
   }
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/busSpecialFareData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/busSpecialFare', JSON.stringify(post), this.httpOptions)
     .pipe(

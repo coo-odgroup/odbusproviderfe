@@ -1,236 +1,310 @@
-<div class="row">  
-    <div class="col-sm-12">
-      <app-card cardTitle="FESTIVAL FARES" cardClass="card-datatable" [options]="true"  [isCardFooter]="true">
-        <div class="table-responsive">
-          <table datatable [dtOptions]="dtOptionsFestivalFare"  [dtTrigger]="dtTrigger" class="table table-striped table-bordered table-hover  mb-0">
-            <thead>
-              <tr>
-                <th>Id</th><th>Bus Name</th><th>Date</th><th>Seater Price</th><th>Sleeper Price</th><th>Created At</th><th>Status</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="festivalFares?.length != 0">
-                <tr *ngFor="let festivalFare of festivalFares; let i=index; "><td>{{ festivalFare.id }}</td>
-                   <td><div  *ngFor="let busName of festivalFare.name; let nameIndex=index;">
-                      <strong>{{nameIndex+1}}</strong>.{{busName}}</div></td><td>{{ festivalFare.date }}</td>
-                      <td>{{ festivalFare.seater_price }}</td><td>{{ festivalFare.sleeper_price }}</td>
-                    <td>{{ festivalFare.created_at }}</td>
-                    <td>
-                      <label *ngIf="festivalFare.status==1" class="badge badge-light-success pointer" (click)="changeStatus($event, festivalFare.id);" >Active</label>
-                      <label *ngIf="festivalFare.status==0" class="badge badge-light-warning pointer" (click)="changeStatus($event, festivalFare.id);">Pending</label>
-                    </td>
-                    <td>
-                      <a   (click)="ResetAttributes();editfestivalFare($event, i); OpenModal(content);" class="pointer"><i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green" ></i></a>
-                      <a   (click)="deletefestivalFare(confirmDialog,festivalFare.id)" class="pointer"><i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody *ngIf="festivalFares?.length == 0">
-              <tr>
-                <td colspan="8" class="no-data-available">No data!</td>
-              </tr>
-            <tbody>
-          </table>  
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="FESTIVAL FARES" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+      <div class="row">
+        <div class="col-2">
+          <div class="from-group ">
+            <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
+              Add Page
+            </button>
+          </div>
         </div>
-        <div class="app-card-footer">
-          <ng-template #confirmDialog let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+        <div class="col-10">
+          <form [formGroup]="searchForm">
+            <div class="row">
+
+              <div class="col-6">
+                <div class="form-group row">
+
+                  <div class="col-sm-12">
+                    <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                      formControlName="name" />
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-2">
+                <div class="dropdown float-left">
+                  <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="float-right">
+                  <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 sml_input" title="Export">
+                    <i class="fas fa-file-export"></i>
+                  </button>
+                  <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark sml_input"
+                    [useExistingCss]="true" title="Print">
+                    <i class="fas fa-print"></i>
+                  </button>
+                </div>
+              </div>
+
+
+              <div class="col-2">
+                <div class="dropdown float-right">
+                  <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                    <option value='all'>All</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      Would you Like to Delete the Record
-                      <form [formGroup]="formConfirm" class="editForm" novalidate>
-                        <input type="hidden" formControlName="id">
-                      </form>
-                      
-                    </div>
+          </form>
+
+
+        </div>
+
+      </div>
+
+      <div class="table-responsive" id="print-section">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Bus Name</th>
+              <th>Date</th>
+              <th>Seater Price</th>
+              <th>Sleeper Price</th>
+              <!-- <th>Created At</th> -->
+              <th>Status</th>
+              <th class="hide_print">Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="festivalFares?.length != 0">
+            <tr *ngFor="let festivalFare of festivalFares; let i=index; ">
+              <td>{{ festivalFare.id }}</td>
+              <td>
+                <div *ngFor="let busName of festivalFare.bus; let nameIndex=index;">
+                  {{busName.name}}
+                </div>
+              </td>
+              <td>{{ festivalFare.date }}</td>
+              <td>{{ festivalFare.seater_price }}</td>
+              <td>{{ festivalFare.sleeper_price }}</td>
+              <!-- <td>{{ festivalFare.created_at }}</td> -->
+              <td>
+                <label *ngIf="festivalFare.status==1" class="badge badge-light-success pointer"
+                  (click)="changeStatus($event, festivalFare.id);">Active</label>
+                <label *ngIf="festivalFare.status==0" class="badge badge-light-warning pointer"
+                  (click)="changeStatus($event, festivalFare.id);">Pending</label>
+              </td>
+              <td class="hide_print">
+                <a (click)="ResetAttributes();editfestivalFare($event, i); OpenModal(content);" class="pointer"><i
+                    class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i></a>
+                <a (click)="deletefestivalFare(confirmDialog,festivalFare.id)" class="pointer"><i
+                    class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="festivalFares?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+      <div class="app-card-footer">
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                      <input type="hidden" formControlName="id">
+                    </form>
+
                   </div>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
-              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
-            </div>
-          </ng-template>
-          <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal" (click)="ResetAttributes();loadServices();OpenModal(content);">Add </button>    
-          <ng-template #content let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      <form [formGroup]="festivalFareForm" class="editForm" novalidate>   
-                        <div class="row">
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label for="festival fare">Select</label>
-                            </div>
-                          </div>
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label for="operator"><input id="operator" type="radio" value="operator"  formControlName="searchBy">
-                            Operator</label>
-                          </div>
-                         </div>
-                         <div class="col-md-2">
-                          <div class="form-group">
-                            <label for="routes"><input id="routes" type="radio" value="routes" formControlName="searchBy">
-                            Routes</label>
-                          </div>
-                         </div>
-                      </div>   
-                        <div class="row" *ngIf="festivalFareForm.controls.searchBy.value=='operator'">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="bus" class="col-sm-4 col-form-label">Operator<span class="text-danger">*</span></label>
-                                <div class="col-sm-8"> 
-                                  
-                                  <ng-select 
-                                  [items]="busoperators"
-                                  bindLabel="operator_name"
-                                  bindValue="id"
-                                  placeholder="Select Operator"                                       
-                                  formControlName="bus_operator_id"
-                                  [clearable]="false"
-                                  (change)="findOperator($event)"
-                                  >
-                                  </ng-select> 
-                                  
-                               
-                                </div>                      
-                              </div> 
-                            </div>
-                          </div>  
-
-                          <div class="row" *ngIf="festivalFareForm.controls.searchBy.value=='routes'">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="routes" class="col-sm-4 col-form-label">Routes<span class="text-danger">*</span></label>
-                                <div class="col-sm-8"> 
-                                  <ng-select 
-                                  [items]="locations"
-                                  bindLabel="name"
-                                  bindValue="id"
-                                  placeholder="Select Source"                                       
-                                  formControlName="source_id"
-                                  [clearable]="false"
-                                  (change)="findSource()"
-                                  >
-                                  </ng-select> 
-                               
-                                </div>                      
-                              </div> 
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <div class="col-sm-8"> 
-                                  <ng-select 
-                                  [items]="locations"
-                                  bindLabel="name"
-                                  bindValue="id"
-                                  placeholder="Select Destination"                                       
-                                  formControlName="destination_id"
-                                  [clearable]="false"
-                                  (change)="findSource()"
-                                  >
-                                  </ng-select> 
-                               
-                                </div>                      
-                              </div> 
-                            </div>
-                          </div>  
-
-                          <div class="row">
-                            <div class="col-md-8">
-                              <div class="form-group row">
-                                <label for="busname" class="col-sm-3 col-form-label">Bus Name/Number<span class="text-danger">*</span></label>
-                                <div class="col-sm-9"> 
-                                  <ng-select 
-                                  [items]="buses"
-                                  bindLabel="name"
-                                  bindValue="id"
-                                  placeholder="Select Bus"                                       
-                                  formControlName="bus_id"
-                                  [multiple]="true"
-                                  [clearable]="false"
-                                  >
-                                  </ng-select> 
-                                </div>                      
-                              </div> 
-                            </div>
-                          </div>  
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="seaterprice" class="col-sm-4 col-form-label">Seater Price<span class="text-danger">*</span></label>
-                                <div class="col-sm-8"> 
-                                  <input type="text" class="form-control" placeholder="Enter Seater Price" required formControlName="seater_price" [value]="festivalFareRecord.seater_price"  /> 
-                                <span class="text-danger" *ngIf="festivalFareForm.controls['seater_price'].touched && festivalFareForm.controls['seater_price'].hasError('required')">
-                                  Seater Price is required! </span>
-                                </div>                      
-                              </div> 
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="sleeperprice" class="col-sm-4 col-form-label">sleeper Price<span class="text-danger">*</span></label>
-                                <div class="col-sm-8">                        
-                                  <input type="text" class="form-control" placeholder="Enter Sleeper Price" required formControlName="sleeper_price" [value]="festivalFareRecord.sleeper_price"  />
-                                  <span class="text-danger" *ngIf="festivalFareForm.controls['sleeper_price'].touched && festivalFareForm.controls['sleeper_price'].hasError('required')">
-                                    Sleeper Price is required! </span>  
-                                </div>
-                              </div>
-                            </div>
-                          </div> 
-                          <div class="row"> 
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="date" class="col-sm-4 col-form-label">Date<span class="text-danger">*</span></label>
-                                <div class="col-sm-8">                        
-                                  <input type="date" class="form-control" placeholder="Enter Date" required formControlName="date" [value]="festivalFareRecord.date"  />
-                                  <span class="text-danger" *ngIf="festivalFareForm.controls['date'].touched && festivalFareForm.controls['date'].hasError('required')">
-                                    Date of festival fare required! </span>  
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">                                                      
-                              <div class="form-group row">
-                                <label for="reason" class="col-sm-2 col-form-label">Reason<span class="text-danger">*</span></label>
-                                <div class="col-sm-10">                        
-                                  <input type="text" class="form-control" placeholder="Enter Reason" required formControlName="reason" [value]="festivalFareRecord.reason" />
-                                  <span class="text-danger" *ngIf="festivalFareForm.controls['reason'].touched && festivalFareForm.controls['reason'].hasError('required')">
-                                  Reason is required! </span>
-                                </div>
-                              </div>  
-                            </div> 
-                        
-
-                        </div>        
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" [disabled]="!festivalFareForm.valid" (click)="addfestivalFare()" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
-              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
         </ng-template>
-        </div>  
-          </app-card>  
-    </div>  
-    </div>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes();loadServices();OpenModal(content);">Add </button>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form [formGroup]="festivalFareForm" class="editForm" novalidate>
+                      <div class="row">
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="festival fare">Select</label>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="operator"><input id="operator" type="radio" value="operator"
+                                formControlName="searchBy">
+                              Operator</label>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="routes"><input id="routes" type="radio" value="routes"
+                                formControlName="searchBy">
+                              Routes</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="festivalFareForm.controls.searchBy.value=='operator'">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="bus" class="col-sm-4 col-form-label">Operator<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
 
-    
-    
-     
-     
+                              <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false"
+                                (change)="findOperator($event)">
+                              </ng-select>
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row" *ngIf="festivalFareForm.controls.searchBy.value=='routes'">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="routes" class="col-sm-4 col-form-label">Routes<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Source"
+                                formControlName="source_id" [clearable]="false" (change)="findSource()">
+                              </ng-select>
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <div class="col-sm-8">
+                              <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                placeholder="Select Destination" formControlName="destination_id" [clearable]="false"
+                                (change)="findSource()">
+                              </ng-select>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="form-group row">
+                            <label for="busname" class="col-sm-3 col-form-label">Bus Name/Number<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                              <ng-select [items]="buses" bindLabel="name" bindValue="id" placeholder="Select Bus"
+                                formControlName="bus_id" [multiple]="true" [clearable]="false">
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="seaterprice" class="col-sm-4 col-form-label">Seater Price<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" placeholder="Enter Seater Price" required
+                                formControlName="seater_price" [value]="festivalFareRecord.seater_price" />
+                              <span class="text-danger"
+                                *ngIf="festivalFareForm.controls['seater_price'].touched && festivalFareForm.controls['seater_price'].hasError('required')">
+                                Seater Price is required! </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="sleeperprice" class="col-sm-4 col-form-label">sleeper Price<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" placeholder="Enter Sleeper Price" required
+                                formControlName="sleeper_price" [value]="festivalFareRecord.sleeper_price" />
+                              <span class="text-danger"
+                                *ngIf="festivalFareForm.controls['sleeper_price'].touched && festivalFareForm.controls['sleeper_price'].hasError('required')">
+                                Sleeper Price is required! </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="date" class="col-sm-4 col-form-label">Date<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <input type="date" class="form-control" placeholder="Enter Date" required
+                                formControlName="date" [value]="festivalFareRecord.date" />
+                              <span class="text-danger"
+                                *ngIf="festivalFareForm.controls['date'].touched && festivalFareForm.controls['date'].hasError('required')">
+                                Date of festival fare required! </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="reason" class="col-sm-2 col-form-label">Reason<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" placeholder="Enter Reason" required
+                                formControlName="reason" [value]="festivalFareRecord.reason" />
+                              <span class="text-danger"
+                                *ngIf="festivalFareForm.controls['reason'].touched && festivalFareForm.controls['reason'].hasError('required')">
+                                Reason is required! </span>
+                            </div>
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" [disabled]="!festivalFareForm.valid" (click)="addfestivalFare()"
+              class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+      </div>
+    </app-card>
+  </div>
+</div>

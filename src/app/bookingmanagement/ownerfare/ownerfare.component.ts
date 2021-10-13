@@ -18,6 +18,8 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../model/location';
 import {IOption} from 'ng-select';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-ownerfare',
@@ -57,6 +59,11 @@ export class OwnerfareComponent implements OnInit {
   public ModalBtn:any;
   public searchBy:any;
 
+
+  public searchForm: FormGroup;
+  pagination: any;
+
+
   constructor(private ownerfareService: OwnerfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService) { 
     this.isSubmit = false;
     this.ownerFareRecord= {} as Ownerfare;
@@ -86,98 +93,175 @@ export class OwnerfareComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.loadOwnerFareData();
+    // this.loadOwnerFareData();
+
+    
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
+    this.loadServices();
+
   }
-  loadOwnerFareData()
-  {
-    this.dtOptionsOwnerFare = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],  
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-            columns: "thead th:not(.noExport)"
-           } 
-        },
-        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { 
-          extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        {
-          text:"Add",
-          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          action:() => {
-           this.addnew.nativeElement.click();
-          }
-        }
-      ],
-    language: {
-      searchPlaceholder: "Find Owner Fare",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/busOwnerFareDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
 
-            this.ownerFares = resp.data.aaData;
-            for(let items of this.ownerFares)
-            {
-              this.ownerFareRecord=items;
-              this.ownerFareRecord.name=this.ownerFareRecord.name.split(",");
-            }
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [{ data: 'id' },{ data: 'name' },{ data: 'date' },{ data: 'seater_price' },{ data: 'sleeper_price' },{ title:"Created On",data: 'created_at' },{ 
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }  
+  page(label:any){
+    return label;
+   }
 
-      },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
     };
-
-    this.busService.readAll().subscribe(
-      res=>{
-        this.buses=res.data;
-      }
-    );
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.ownerfareService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.ownerFares= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.BusOperators);
+        }
+      );
+    }
+    else
+    {
+      this.ownerfareService.getAllData(data).subscribe(
+        res => {
+          this.ownerFares= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
   }
+
+
+  refresh()
+   {
+     this.searchForm.reset();
+     this.search();
+    
+   }
+
+
+  title = 'angular-app';
+  fileName= 'Owner-Fare.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+
+  // loadOwnerFareData()
+  // {
+  //   this.dtOptionsOwnerFare = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',  
+  //     order:["0","desc"], 
+  //     aLengthMenu:[10, 25, 50, 100, "All"],  
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //           columns: "thead th:not(.noExport)"
+  //          } 
+  //       },
+  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //         $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { 
+  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       {
+  //         text:"Add",
+  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         action:() => {
+  //          this.addnew.nativeElement.click();
+  //         }
+  //       }
+  //     ],
+  //   language: {
+  //     searchPlaceholder: "Find Owner Fare",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/busOwnerFareDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
+
+  //           this.ownerFares = resp.data.aaData;
+  //           for(let items of this.ownerFares)
+  //           {
+  //             this.ownerFareRecord=items;
+  //             this.ownerFareRecord.name=this.ownerFareRecord.name.split(",");
+  //           }
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [{ data: 'id' },{ data: 'name' },{ data: 'date' },{ data: 'seater_price' },{ data: 'sleeper_price' },{ title:"Created On",data: 'created_at' },{ 
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       }  
+
+  //     },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
+  //   };
+
+  //   this.busService.readAll().subscribe(
+  //     res=>{
+  //       this.buses=res.data;
+  //     }
+  //   );
+  // }
   ResetAttributes()
   {
     this.ownerFareRecord = {} as Ownerfare;
@@ -307,7 +391,7 @@ findSource()
           this.modalReference.close();
           this.ResetAttributes();
           this.loadServices();
-          this.rerender();
+          this.refresh();
         
        }
        else
@@ -326,7 +410,7 @@ findSource()
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.rerender();
+              this.refresh();
             }
             else
             {                
@@ -346,14 +430,14 @@ findSource()
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+  // refresh(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to refresh again
+  //     this.dtTrigger.next();
+  //   });
+  // }
   editOwnerFare(event : Event, id : any)
   {
     //this.loadServices();
@@ -437,7 +521,7 @@ findSource()
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.refresh();
             }
             else{
                
@@ -462,7 +546,7 @@ findSource()
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

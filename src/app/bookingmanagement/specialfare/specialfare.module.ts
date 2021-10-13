@@ -8,6 +8,7 @@ import {SpecialfareComponent} from './specialfare.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 //import {SelectModule} from 'ng-select';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     DataTablesModule,
     //SelectModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxPrintModule
   ],
   declarations: [ SpecialfareComponent],
   providers: [NotificationService]

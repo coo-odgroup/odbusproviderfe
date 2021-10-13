@@ -7,6 +7,8 @@ import {FormsModule} from '@angular/forms';
 import {OwnerfareComponent} from './ownerfare.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {NgxPrintModule} from 'ngx-print';
+
 
 @NgModule({
   imports: [
@@ -15,7 +17,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxPrintModule
   ],
   declarations: [ OwnerfareComponent],
   providers: [NotificationService]
