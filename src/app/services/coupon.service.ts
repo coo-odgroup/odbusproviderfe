@@ -37,7 +37,16 @@ export class CouponService {
       catchError(this.errorHandler)
     )
   }
- 
+  couponDataTable(data): Observable<any> {
+    return this.httpClient.post<any>(Constants.BASE_URL + '/getData',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  couponPaginate(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
   errorHandler(error:any) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

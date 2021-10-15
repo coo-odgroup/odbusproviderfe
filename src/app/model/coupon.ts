@@ -1,9 +1,9 @@
 export interface Coupon {
     id:any;
     coupon_title:any;
-    short_description:any;
-    full_description:any;
-    coupon_type:any;
+    short_desc:any;
+    full_desc:any;
+    type:any;
     percentage:any;
     max_discount:any;
     cut_off_amount:any;
@@ -12,4 +12,5 @@ export interface Coupon {
     from_date:any;
     to_date:any;
     max_redeem:any;
+    coupon_code:any;
 }

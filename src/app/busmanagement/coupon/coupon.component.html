@@ -12,24 +12,57 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col" width="100px">#</th>
+                            <th scope="col" width ="50px">#</th>
+                            <th scope="col" width ="150px">Valid From</th>
+                            <th scope="col" width ="150px">Valid Till</th>
                             <th scope="col">Coupon Title</th>
                             <th scope="col">Coupon Code</th>
-                            <th scope="col" width="100px">Action </th>
+                            <th scope="col">Max Redeem</th>
+                            <th scope="col" width ="100px"> View </th>                        
                         </tr>
                     </thead>
-                    <tbody>
-                        <td>1</td>
-                        <td>20% Off Flat</td>
-                        <td>OD20FLATNEW</td>
-                        <td>
-                            <button class="btn btn-light text-info" title="Edit"
-                                (click)="editData();OpenModal(content)"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-light text-danger" title="Delete"><i
-                                    class="fas fa-trash-alt"></i></button>
+                    <tbody *ngIf="coupons?.length != 0">
+                      <tr  *ngFor="let couponData of coupons; let i=index;">
+                        <td>{{i+1}}</td>
+                        <td>{{couponData.from_date | date: 'MMM d, y'}}</td>
+                        <td>{{couponData.to_date | date: 'MMM d, y'}}</td>
+                        <td>{{couponData.coupon_title}}</td>
+                        <td>{{couponData.coupon_code}}</td>
+                        <td>{{couponData.max_redeem}}</td>
+                        <td >
+                         <button class="btn btn-success text btn-sm m-1"  (click)="loadElements(i);OpenModal(content)" title="Details">
+                           <i class="fas fa-edit"></i>
+                          </button>
+
+                          <button class="btn btn-danger text btn-sm m-1"  (click)="openConfirmDialog(confirmDialog, i)" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                           </button>
                         </td>
+                      </tr>                        
                     </tbody>
                 </table>
+
+                <!-- <div *ngIf="pagination?.length != 0" class="hide_print">
+                  <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                      <nav class="my-1 pt-1 ">
+                          <ul class="pagination pagination-circle pg-blue mb-0">
+                              <li (click)="search(pagination.links.first_page_url,statusLabel)"
+                                  class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                                  <a class="page-link">First</a>
+                              </li>
+                              <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                                  <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                                      (click)="(b.url) ? search(b.url) : ''"
+                                      [innerHTML]="page(b.label)"></a>
+                              </li>
+                              <li class="page-item {{ pagination.links.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                                  (click)="search(pagination.links.last_page_url,statusLabel)">
+                                  <a class="page-link">Last</a>
+                              </li>
+                          </ul>
+                      </nav>
+                  </div>
+              </div> -->
             </div>
 
 

@@ -27,7 +27,7 @@ export class CouponComponent implements OnInit {
 
   coupons: Coupon[];
   couponRecord: Coupon;
-
+  pagination: any;
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
@@ -70,7 +70,63 @@ export class CouponComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
+    this.search();
     
+  }
+  loadElements(index:any)
+  {
+    this.ModalHeading = "Edit Coupon";
+    this.ModalBtn = "Update"; 
+    this.couponRecord= this.coupons[index];
+    console.log(this.couponRecord);
+    this.form.controls.coupon_title.setValue(this.couponRecord.coupon_title);
+    this.form.controls.coupon_code.setValue(this.couponRecord.coupon_code);
+    this.form.controls.short_description.setValue(this.couponRecord.short_desc);
+    this.form.controls.full_description.setValue(this.couponRecord.full_desc);
+    this.form.controls.coupon_type.setValue(this.couponRecord.type);
+    this.form.controls.max_discount.setValue(this.couponRecord.max_discount);
+    this.form.controls.cut_off_amount.setValue(this.couponRecord.cut_off_amount);
+    this.form.controls.min_tran_amount.setValue(this.couponRecord.min_tran_amount);
+    this.form.controls.valid_by.setValue(this.couponRecord.valid_by);
+    this.form.controls.from_date.setValue(this.couponRecord.from_date);
+    this.form.controls.to_date.setValue(this.couponRecord.to_date);
+    this.form.controls.max_redeem.setValue(this.couponRecord.max_redeem);
+
+  }
+  search(pageurl="")
+  {
+
+      
+    const data = {
+      rows_number:this.form.value.rows_number,  
+      rangeFromDate:this.form.value.coupon_title,
+      rangeToDate :this.form.value.rangeToDate
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.couponService.couponPaginate(pageurl,data).subscribe(
+        res => {
+          
+          this.coupons= res.data.data.data;
+          this.pagination= res.data;
+          // console.log( this.contactcontent);
+        }
+      );
+    }
+    else
+    {
+      this.couponService.couponDataTable(data).subscribe(
+        res => {
+          this.coupons= res.data.data.data;
+          this.pagination= res.data;
+          // console.log(  res.data);
+        }
+      );
+    }
+
+
   }
 
 
