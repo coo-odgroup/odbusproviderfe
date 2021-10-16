@@ -160,12 +160,16 @@
                             <label for="Type" class="col-sm-5 col-form-label">Define Your Slider<span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input type="text" class="form-control" ngbAutofocus
+                              <ng-select [items]="sliderDefinations" bindLabel="name" bindValue="name" placeholder="Choose slider defination"
+                                formControlName="occassion" [clearable]="false">
+                              </ng-select>
+
+                              <!-- <input type="text" class="form-control" ngbAutofocus
                                 placeholder="Enter slider description" required formControlName="occassion" />
                               <span class="text-danger"
                                 *ngIf="sliderForm.controls['occassion'].touched && sliderForm.controls['occassion'].hasError('required')">
                                 slider description required
-                              </span>
+                              </span> -->
                             </div>
                           </div>
                         </div>
@@ -173,7 +177,7 @@
                           <div class="form-group row">
                             <label for="Name" class="col-sm-5 col-form-label">URL(if any)</label>
                             <div class="col-sm-7">
-                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
+                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Url"
                                 required formControlName="url" />
                             </div>
                           </div>

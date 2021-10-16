@@ -36,6 +36,11 @@ export class SpecialsliderComponent implements OnInit {
   base64result:any;
   finalJson = {};
   fileName= 'Special-Slider.xlsx';
+  sliderDefinations = [
+    { id: 1, name: 'Bus Offers'},
+    { id: 2, name: 'Festive Offers'},
+  ];
+  //sliderDefinations: ['offer1','offer2'];
   public isSubmit: boolean;
   public mesgdata:any;
   public ModalHeading:any;
