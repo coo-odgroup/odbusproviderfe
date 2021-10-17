@@ -109,3 +109,11 @@
 {
     color: #FFF;
 }
+
+
+
+@media print {
+    ::ng-deep .hide_print {
+      display: none !important;
+    }
+  }

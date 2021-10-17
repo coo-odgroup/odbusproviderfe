@@ -9,6 +9,8 @@ import {NotificationService} from '../../services/notification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ArchwizardModule } from 'angular-archwizard';
+import {NgxPrintModule} from 'ngx-print';
+
 @NgModule({
   imports: [
     NgbModule,
@@ -19,7 +21,9 @@ import { ArchwizardModule } from 'angular-archwizard';
     DataTablesModule,
     NgSelectModule,
     ReactiveFormsModule,
-    ArchwizardModule  ],
+    ArchwizardModule,
+    NgxPrintModule
+    ],
   declarations: [ SeatfareComponent],
   providers:[NotificationService]
 })

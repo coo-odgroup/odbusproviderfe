@@ -22,6 +22,22 @@ export class BuscancellationService {
       catchError(this.errorHandler)
     )
   }
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/busCancelledData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/busCancelled/', JSON.stringify(post), this.httpOptions)
     .pipe(

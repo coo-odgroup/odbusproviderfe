@@ -9,6 +9,7 @@ import { NotificationService } from '../../services/notification.service';
 //import {SelectModule} from 'ng-select';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import {NgxPrintModule} from 'ngx-print';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { FormsModule } from '@angular/forms';
     DataTablesModule,
    // SelectModule,
    NgSelectModule,
-    FormsModule
+    FormsModule,NgxPrintModule
   ],
   declarations: [ BuscancellationComponent],
   providers: [NotificationService]

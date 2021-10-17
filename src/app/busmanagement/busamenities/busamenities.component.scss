@@ -1,3 +1,10 @@
 ::ng-deep table.dataTable td.dataTables_empty {
     display: none;
 }
+
+
+@media print {
+    ::ng-deep .hide_print {
+      display: none !important;
+    }
+  }

@@ -349,7 +349,11 @@ galleryData()
   }
    refresh()
    {
-     this.searchForm.reset();
+    this.searchForm = this.fb.group({  
+      bus_id: [null],   
+      rows_number: Constants.RecordLimit,
+    });
+    
      this.search();
    }
 

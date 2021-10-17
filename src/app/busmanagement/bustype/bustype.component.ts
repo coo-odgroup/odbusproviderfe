@@ -228,7 +228,11 @@ export class BustypeComponent implements OnInit {
 
   refresh()
    {
-     this.searchForm.reset();
+    this.searchForm = this.fb.group({  
+      name: [null], 
+      bus_type: [null],  
+      rows_number: Constants.RecordLimit,
+    });
      this.search();
    }
 

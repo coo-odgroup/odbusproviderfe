@@ -73,9 +73,6 @@ FormOne: FormGroup;
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit() {
-
-
-
     this.busScheduleForm = this.fb.group({
       bus_id: '',
       bus_operator_id: '',
@@ -85,161 +82,165 @@ FormOne: FormGroup;
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.loadBusScheduleData();
+    // this.loadBusScheduleData();
 
-    // this.searchForm = this.fb.group({  
-    //   name: [null],  
-    //   rows_number: Constants.RecordLimit,
-    // });
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
 
-    // this.search();
+    this.search();
   }
 
 
-  // page(label:any){
-  //   return label;
-  //  }
+  page(label:any){
+    return label;
+   }
 
    
-  // search(pageurl="")
-  // {      
-  //   const data = { 
-  //     name: this.searchForm.value.name,
-  //     rows_number:this.searchForm.value.rows_number, 
-  //   };
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
    
-  //   // console.log(data);
-  //   if(pageurl!="")
-  //   {
-  //     this.busscheduleService.getAllaginationData(pageurl,data).subscribe(
-  //       res => {
-  //         this.busSchedules= res.data.data.data;
-  //         this.pagination= res.data.data;
-  //         // console.log( this.busSchedules);
-  //       }
-  //     );
-  //   }
-  //   else
-  //   {
-  //     this.busscheduleService.getAllData(data).subscribe(
-  //       res => {
-  //         this.busSchedules= res.data.data.data;
-  //         this.pagination= res.data.data;
-  //         // console.log( res.data);
-  //       }
-  //     );
-  //   }
-  // }
-
-
-  // refresh()
-  //  {
-  //    this.searchForm.reset();
-  //    this.search();
-    
-  //  }
-
-
-  //  title = 'angular-app';
-  // fileName= 'Cancellation-Slab.xlsx';
-
-  // exportexcel(): void
-  // {
-    
-  //   /* pass here the table id */
-  //   let element = document.getElementById('print-section');
-  //   const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
-  //   /* generate workbook and add the worksheet */
-  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-  //   /* save to file */  
-  //   XLSX.writeFile(wb, this.fileName);
- 
-  // }
-
-
-
-  loadBusScheduleData()
-  {
-    this.dtOptionsBusSchedule = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],  
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-            columns: "thead th:not(.noExport)"
-           } 
-        },
-        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { 
-          extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        {
-          text:"Add",
-          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          action:() => {
-           this.addnew.nativeElement.click();
-          }
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.busscheduleService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.busSchedules= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.busSchedules);
         }
-      ],
-    language: {
-      searchPlaceholder: "Find bus",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-    ajax: (dataTablesParameters: any, callback) => {
-      this.http
-        .post<DataTablesResponse>(
-          Constants.BASE_URL+'/busScheduleDT',
-          dataTablesParameters, {}
-        ).subscribe(resp => {
-        //  console.log(resp.data.aaData);
-          this.busSchedules = resp.data.aaData;
-          callback({
-            recordsTotal: resp.data.iTotalRecords,
-            recordsFiltered: resp.data.iTotalDisplayRecords,
-            data: resp.data.aaData
-          });
-        });
-    },
-      columns: [ { data: 'id' },{ data: 'operatorName' },{ title:"Routes",data: 'routes' },{ data: 'name' },{ 
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }  
-
-      },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-    }; 
+      );
+    }
+    else
+    {
+      this.busscheduleService.getAllData(data).subscribe(
+        res => {
+          this.busSchedules= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
   }
+
+
+  refresh()
+   {
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+     this.search();
+    
+   }
+
+
+   title = 'angular-app';
+  fileName= 'Bus-Schedule.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+  // loadBusScheduleData()
+  // {
+  //   this.dtOptionsBusSchedule = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',  
+  //     order:["0","desc"], 
+  //     aLengthMenu:[10, 25, 50, 100, "All"],  
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //           columns: "thead th:not(.noExport)"
+  //          } 
+  //       },
+  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //         $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { 
+  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       {
+  //         text:"Add",
+  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         action:() => {
+  //          this.addnew.nativeElement.click();
+  //         }
+  //       }
+  //     ],
+  //   language: {
+  //     searchPlaceholder: "Find bus",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //   ajax: (dataTablesParameters: any, callback) => {
+  //     this.http
+  //       .post<DataTablesResponse>(
+  //         Constants.BASE_URL+'/busScheduleDT',
+  //         dataTablesParameters, {}
+  //       ).subscribe(resp => {
+  //       //  console.log(resp.data.aaData);
+  //         this.busSchedules = resp.data.aaData;
+  //         callback({
+  //           recordsTotal: resp.data.iTotalRecords,
+  //           recordsFiltered: resp.data.iTotalDisplayRecords,
+  //           data: resp.data.aaData
+  //         });
+  //       });
+  //   },
+  //     columns: [ { data: 'id' },{ data: 'operatorName' },{ title:"Routes",data: 'routes' },{ data: 'name' },{ 
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       }  
+
+  //     },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
+  //   }; 
+  // }
   ResetAttributes()
   {
     this.showdates='0';
@@ -354,14 +355,14 @@ FormOne: FormGroup;
     this.dtTrigger.unsubscribe();
   }
 
-  refresh(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to refresh again
-      this.dtTrigger.next();
-    });
-  }
+  // refresh(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to refresh again
+  //     this.dtTrigger.next();
+  //   });
+  // }
   editBusSchedule(event : Event, id : any)
   {
     this.showdates='0';
@@ -399,6 +400,7 @@ FormOne: FormGroup;
   {
     this.showdates='1';
     this.busScheduleRecord=this.busSchedules[id];
+    // console.log(this.busScheduleRecord);
     // this.busScheduleForm = this.fb.group({
     //   entryDates:this.busScheduleForm.value.entryDates,
     // });

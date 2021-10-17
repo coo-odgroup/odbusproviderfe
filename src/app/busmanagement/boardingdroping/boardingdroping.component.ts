@@ -11,6 +11,7 @@ import {BoardingdropingService} from '../../services/boardingdroping.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {LocationService} from '../../services/location.service';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-boardingdroping',
@@ -20,7 +21,14 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 })
 export class BoardingdropingComponent implements OnInit {
   public form: FormGroup;
-  public formConfirm: FormGroup;
+  public formConfirm: FormGroup;  
+  public searchForm: FormGroup;
+  pagination: any;
+
+
+
+
+
   public boardingList: FormArray;
   public droppingList: FormArray;
   @ViewChild("addnew") addnew;
@@ -74,104 +82,104 @@ export class BoardingdropingComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
   }
    
-  loadBoardDrop() : void
-  {
-    this.dtOptionBoardingDropping = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],      
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-    },
-      { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
-      { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     },
-     exportOptions: {
-      columns: "thead th:not(.noExport)"
-     } 
-     },
+  // loadBoardDrop() : void
+  // {
+  //   this.dtOptionBoardingDropping = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',
+  //     order:["0","desc"], 
+  //     aLengthMenu:[10, 25, 50, 100, "All"],      
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //   },
+  //     { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
+  //     { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    },
+  //    exportOptions: {
+  //     columns: "thead th:not(.noExport)"
+  //    } 
+  //    },
 
-     {
-      text:"Add",
-      className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      action:() => {
-       this.addnew.nativeElement.click();
-      }
-    }
-    ],
-    language: {
-      searchPlaceholder: "Find Stoppage",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/boardingDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
+  //    {
+  //     text:"Add",
+  //     className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     action:() => {
+  //      this.addnew.nativeElement.click();
+  //     }
+  //   }
+  //   ],
+  //   language: {
+  //     searchPlaceholder: "Find Stoppage",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/boardingDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
             
-            this.BoardingDroppings = resp.data.aaData;
-            // for(let items of this.BoardingDroppings)
-            // {
-            //   this.BoardingDroppingRecord=items;
-            //   //this.BoardingDroppingRecord.boarding_point=this.BoardingDroppingRecord.boarding_point.split("#$");
-            // }
+  //           this.BoardingDroppings = resp.data.aaData;
+  //           // for(let items of this.BoardingDroppings)
+  //           // {
+  //           //   this.BoardingDroppingRecord=items;
+  //           //   //this.BoardingDroppingRecord.boarding_point=this.BoardingDroppingRecord.boarding_point.split("#$");
+  //           // }
             
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });   
-      },
-      columns: [{ data: 'id' }, { data: 'location_name' }, { 
-        title:'Stoppage',
-        //data:'location_name'
-       data: 'boarding_dropping',
-        render:function(data){
-          let bdata="";
-          for(let ditems of data)
-          {
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });   
+  //     },
+  //     columns: [{ data: 'id' }, { data: 'location_name' }, { 
+  //       title:'Stoppage',
+  //       //data:'location_name'
+  //      data: 'boarding_dropping',
+  //       render:function(data){
+  //         let bdata="";
+  //         for(let ditems of data)
+  //         {
             
-            bdata+=(bdata=="")?ditems.boarding_point:", <br />"+ditems.boarding_point;
-          }
-          return bdata;
-        }
-     }, 
-     { title:'Created At',data: 'created_at' }, { title:'Created By',data: 'created_by'}, { 
-       data: 'status', 
-       render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }
-      },{ title:'Action',data: null, orderable:false, className: "noExport" }]      
+  //           bdata+=(bdata=="")?ditems.boarding_point:", <br />"+ditems.boarding_point;
+  //         }
+  //         return bdata;
+  //       }
+  //    }, 
+  //    { title:'Created At',data: 'created_at' }, { title:'Created By',data: 'created_by'}, { 
+  //      data: 'status', 
+  //      render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       }
+  //     },{ title:'Action',data: null, orderable:false, className: "noExport" }]      
       
-    }; 
-    this.locationService.readAll().subscribe(
-      res=>{
-        this.locations=res.data;
-      }
-    );
+  //   }; 
+  //   this.locationService.readAll().subscribe(
+  //     res=>{
+  //       this.locations=res.data;
+  //     }
+  //   );
 
-  }
+  // }
   ngOnInit() {
     this.form = this.fb.group({
       id:[null],
@@ -185,8 +193,88 @@ export class BoardingdropingComponent implements OnInit {
       id:[null]
     });
 
-    this.loadBoardDrop();
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
+
+    // this.loadBoardDrop();
   }
+
+  page(label:any){
+    return label;
+   }
+
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.BoardDropService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.BoardingDroppings= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.BusOperators);
+        }
+      );
+    }
+    else
+    {
+      this.BoardDropService.getAllData(data).subscribe(
+        res => {
+          this.BoardingDroppings= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh()
+   {  
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+     this.search();
+    
+   }
+
+
+  title = 'angular-app';
+  fileName= 'Boarding-Droping.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+
+
+
+
   // boardingDropping formgroup
   createBoard(): FormGroup {
     return this.fb.group({ 
@@ -247,14 +335,14 @@ export class BoardingdropingComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+  // refresh(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to refresh again
+  //     this.dtTrigger.next();
+  //   });
+  // }
 
   
   
@@ -277,7 +365,7 @@ export class BoardingdropingComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -294,7 +382,7 @@ export class BoardingdropingComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.rerender();
+              this.refresh();
           }
           else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -346,7 +434,7 @@ export class BoardingdropingComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.refresh();
             }
             else{
                
@@ -369,7 +457,7 @@ export class BoardingdropingComponent implements OnInit {
         {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

@@ -6,6 +6,8 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LocationComponent } from './location.component';
 import { NotificationService } from '../../services/notification.service';
+import {NgxPrintModule} from 'ngx-print';
+
 
 @NgModule({
   imports: [
@@ -14,7 +16,8 @@ import { NotificationService } from '../../services/notification.service';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxPrintModule
   ],
   declarations: [ LocationComponent],
   providers: [NotificationService]

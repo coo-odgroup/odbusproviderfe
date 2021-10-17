@@ -18,6 +18,8 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../model/location';
 import {IOption} from 'ng-select';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-ownerpayment',
   templateUrl: './ownerpayment.component.html',
@@ -28,6 +30,9 @@ export class OwnerpaymentComponent implements OnInit {
   @ViewChild("addnew") addnew;
   public ownerpaymentForm: FormGroup;
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+  pagination: any;
+  
 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
@@ -81,99 +86,174 @@ export class OwnerpaymentComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.loadOwnerFareData();
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
+
   }
-  loadOwnerFareData()
-  {
-    this.dtOptionsOwnerFare = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],  
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-            columns: "thead th:not(.noExport)"
-           } 
-        },
-        { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        { 
-          extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          exportOptions: {
-          columns: "thead th:not(.noExport)"
-          } 
-        },
-        {
-          text:"Add",
-          className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-            $(node).removeClass('dt-button')
-          },
-          action:() => {
-           this.addnew.nativeElement.click();
-          }
-        }
-      ],
-    language: {
-      searchPlaceholder: "Find Owner Fare",
-      processing: "<img src='assets/images/loading.gif' width='30'>"
-    },
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/getownerpaymentDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
 
-            this.ownerpayments = resp.data.aaData;
-            console.log(this.ownerpayments);
+  page(label:any){
+    return label;
+   }
 
-            for(let items of this.ownerpayments)
-            {
-              this.ownerpaymentRecord=items;
-              // this.ownerpaymentRecord.name=this.ownerpaymentRecord.name.split(",");
-            }
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [{ data: 'id' },
-      { data: 'bus_operator.operator_name' },
-      { data: 'payment_date' },
-      { data: 'amount' },
-      { data: 'transaction_id' },
-      { data: 'remark' },
-      { data: 'created_at' }]            
+   
+  search(pageurl="")
+  {      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
     };
-
-    this.busService.readAll().subscribe(
-      res=>{
-        this.buses=res.data;
-      }
-    );
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.ownerpaymentservice.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.ownerpayments= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.BusOperators);
+        }
+      );
+    }
+    else
+    {
+      this.ownerpaymentservice.getAllData(data).subscribe(
+        res => {
+          this.ownerpayments= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
   }
+
+
+  refresh()
+   {  
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+     this.search();
+    
+   }
+
+
+  title = 'angular-app';
+  fileName= 'Owner-Payment.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+
+
+  // loadOwnerFareData()
+  // {
+  //   this.dtOptionsOwnerFare = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',  
+  //     order:["0","desc"], 
+  //     aLengthMenu:[10, 25, 50, 100, "All"],  
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //           columns: "thead th:not(.noExport)"
+  //          } 
+  //       },
+  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //         $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       { 
+  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         exportOptions: {
+  //         columns: "thead th:not(.noExport)"
+  //         } 
+  //       },
+  //       {
+  //         text:"Add",
+  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //           $(node).removeClass('dt-button')
+  //         },
+  //         action:() => {
+  //          this.addnew.nativeElement.click();
+  //         }
+  //       }
+  //     ],
+  //   language: {
+  //     searchPlaceholder: "Find Owner Fare",
+  //     processing: "<img src='assets/images/loading.gif' width='30'>"
+  //   },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/getownerpaymentDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
+
+  //           this.ownerpayments = resp.data.aaData;
+  //           console.log(this.ownerpayments);
+
+  //           for(let items of this.ownerpayments)
+  //           {
+  //             this.ownerpaymentRecord=items;
+  //             // this.ownerpaymentRecord.name=this.ownerpaymentRecord.name.split(",");
+  //           }
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [{ data: 'id' },
+  //     { data: 'bus_operator.operator_name' },
+  //     { data: 'payment_date' },
+  //     { data: 'amount' },
+  //     { data: 'transaction_id' },
+  //     { data: 'remark' },
+  //     { data: 'created_at' }]            
+  //   };
+
+  //   this.busService.readAll().subscribe(
+  //     res=>{
+  //       this.buses=res.data;
+  //     }
+  //   );
+  // }
   ResetAttributes()
   {
     this.ownerpaymentRecord = {} as Ownerpayment;
@@ -275,7 +355,7 @@ findSource()
           this.modalReference.close();
           this.ResetAttributes();
           this.loadServices();
-          this.rerender();
+          this.refresh();
          }
      }
    )    
@@ -290,14 +370,14 @@ findSource()
     this.dtTrigger.unsubscribe();
   }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+  // refresh(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to refresh again
+  //     this.dtTrigger.next();
+  //   });
+  // }
  
   openConfirmDialog(content)
   {
@@ -313,7 +393,7 @@ findSource()
   //               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
   //               this.confirmDialogReference.close();
 
-  //               this.rerender();
+  //               this.refresh();
   //           }
   //           else{
                
@@ -338,7 +418,7 @@ findSource()
   //       if(resp.status==1)
   //       {
   //           this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-  //           this.rerender();
+  //           this.refresh();
   //       }
   //       else{
   //           this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

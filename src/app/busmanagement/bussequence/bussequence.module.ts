@@ -6,6 +6,7 @@ import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { BussequenceComponent } from './bussequence.component';
 import {NotificationService} from '../../services/notification.service';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import {NotificationService} from '../../services/notification.service';
     BusSequenceRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule
+    DataTablesModule,NgxPrintModule
   ],
   declarations: [ BussequenceComponent],
   providers:[NotificationService]

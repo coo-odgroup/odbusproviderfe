@@ -522,7 +522,10 @@ export class SeatlayoutComponent implements OnInit {
 
   refresh()
    {
-     this.searchForm.reset();
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
      this.search();
     
    }

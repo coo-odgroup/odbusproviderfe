@@ -7,6 +7,7 @@ import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BoardingdropingComponent } from './boardingdroping.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     DataTablesModule,
     NgSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPrintModule
   ],
   declarations: [ BoardingdropingComponent],
   providers: [NotificationService]
