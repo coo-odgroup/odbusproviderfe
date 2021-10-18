@@ -67,7 +67,7 @@ export class SocialmediaComponent implements OnInit {
       googleplus_link:this.socialdataRecord.googleplus_link,
       linkedin_link:this.socialdataRecord.linkedin_link,     
     };
-    console.log(data);
+    // console.log(data);
 
     this.sm.update(data).subscribe(
       res => {

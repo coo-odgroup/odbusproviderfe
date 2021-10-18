@@ -11,8 +11,6 @@ import { Location } from '../../model/location';
 import { Busstoppage } from '../../model/busstoppage';
 import { BoardingDropping } from '../../model/boardingdropping';
 import {Constants} from '../../constant/constant';
-import { DataTablesResponse} from '../../model/datatable';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../services/notification.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
@@ -33,6 +31,8 @@ import { BoardingdropingService } from '../../services/boardingdroping.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { count } from 'rxjs/operators';
+import * as XLSX from 'xlsx';
+
 
 interface SeatBlock{
   rowNumber?:any;
@@ -64,6 +64,9 @@ export class BusComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
+  public searchForm: FormGroup;
+
+
   seatBlock:SeatBlock;
   seatBlocks:SeatBlock[]=[];
   selectedLocation:SelectedLocation;
@@ -87,6 +90,7 @@ export class BusComponent implements OnInit {
   counter=0;
   public seatLayoutData:any;  
   public seatLayoutCol:any;
+  pagination: any;
   getSeatLayout($event:any)
   {
     this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
@@ -169,7 +173,7 @@ export class BusComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.refresh();
             }
             else{
                
@@ -191,14 +195,8 @@ export class BusComponent implements OnInit {
     return this.busForm.get('businfo') as FormArray;
   }
   @ViewChild("closebutton") closebutton;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsBus: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
+
+  
   buses: Bus[];
   busRecord: Bus;
   operators: Busoperator[];
@@ -275,77 +273,79 @@ export class BusComponent implements OnInit {
    
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
-  
-  loadBus(){
+
+
+
+  // loadBus(){
     
-    this.dtOptionsBus = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      dom: 'lBfrtip',  
-      order:["0","desc"], 
-      aLengthMenu:[10, 25, 50, 100, "All"],
-      language: {
-        searchPlaceholder: "Find Bus",
-        processing: "<img src='assets/images/loading.gif' width='30'>"
-      },
+  //   this.dtOptionsBus = {
+  //     pagingType: 'full_numbers',
+  //     pageLength: 10,
+  //     serverSide: true,
+  //     processing: true,
+  //     dom: 'lBfrtip',  
+  //     order:["0","desc"], 
+  //     aLengthMenu:[10, 25, 50, 100, "All"],
+  //     language: {
+  //       searchPlaceholder: "Find Bus",
+  //       processing: "<img src='assets/images/loading.gif' width='30'>"
+  //     },
         
-      buttons: [
-        { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     } },
-      { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     } },
-      { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-     } },
+  //     buttons: [
+  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    } },
+  //     { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    } },
+  //     { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //    } },
       
-     {
-      text:"Add",
-      className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-        $(node).removeClass('dt-button')
-      },
-      action:() => {
-       this.addnew.nativeElement.click();
-      }
-    }
-    ],
-      ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .post<DataTablesResponse>(
-            Constants.BASE_URL+'/busDT',
-            dataTablesParameters, {}
-          ).subscribe(resp => {
+  //    {
+  //     text:"Add",
+  //     className: 'btn btn-sm btn-warning',init: function(api, node, config) {
+  //       $(node).removeClass('dt-button')
+  //     },
+  //     action:() => {
+  //      this.addnew.nativeElement.click();
+  //     }
+  //   }
+  //   ],
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       this.http
+  //         .post<DataTablesResponse>(
+  //           Constants.BASE_URL+'/busDT',
+  //           dataTablesParameters, {}
+  //         ).subscribe(resp => {
            
-            this.buses = resp.data.aaData;
+  //           this.buses = resp.data.aaData;
             
-            callback({
-              recordsTotal: resp.data.iTotalRecords,
-              recordsFiltered: resp.data.iTotalDisplayRecords,
-              data: resp.data.aaData
-            });
-          });
-      },
-      columns: [
-      { data: 'id' },
-      { data: 'name'},
-      { data: 'via'}, 
-      { data: 'bus_number'},
-      { 
-        data: 'status',
-        render:function(data)
-        {
-          return (data=="1")?"Active":"Pending"
-        }
-      },
-      { title:'Action',data: null,orderable:false},
-    ]         
-    }; 
+  //           callback({
+  //             recordsTotal: resp.data.iTotalRecords,
+  //             recordsFiltered: resp.data.iTotalDisplayRecords,
+  //             data: resp.data.aaData
+  //           });
+  //         });
+  //     },
+  //     columns: [
+  //     { data: 'id' },
+  //     { data: 'name'},
+  //     { data: 'via'}, 
+  //     { data: 'bus_number'},
+  //     { 
+  //       data: 'status',
+  //       render:function(data)
+  //       {
+  //         return (data=="1")?"Active":"Pending"
+  //       }
+  //     },
+  //     { title:'Action',data: null,orderable:false},
+  //   ]         
+  //   }; 
 
    
-  }
+  // }
   dropfg:any;
   allDestinationDroppings:FormArray;
   ngOnInit() {
@@ -413,8 +413,85 @@ export class BusComponent implements OnInit {
     this.seatlayoutList = this.busForm.get('bus_seat_layout_data') as FormArray;
     this.allDestinationDroppings = this.busForm.controls.busRoutes.get('destinationDroppings') as FormArray;
     this.businfoList = this.busForm.get('businfo') as FormArray;
-    this.loadBus();
+    // this.loadBus();
+
+    this.searchForm = this.fb.group({  
+      name: [null], 
+      bus_type: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+     this.search(); 
   }
+
+
+  page(label:any){
+    return label;
+   }
+
+  search(pageurl="")
+  {
+      
+    const data = { 
+      name: this.searchForm.value.name,
+      rows_number:this.searchForm.value.rows_number, 
+    };
+   
+    // console.log(data);
+    if(pageurl!="")
+    {
+      this.busService.getAllaginationData(pageurl,data).subscribe(
+        res => {
+          this.buses= res.data.data.data;
+          this.pagination= res.data.data;
+          // console.log( this.busTypes);
+        }
+      );
+    }
+    else
+    {
+      this.busService.getAllData(data).subscribe(
+        res => {
+          this.buses= res.data.data.data;
+          this.pagination= res.data.data;
+          console.log( res.data);
+        }
+      );
+    }
+
+
+  }
+
+
+  refresh()
+   {
+    this.searchForm = this.fb.group({  
+      name: [null], 
+      rows_number: Constants.RecordLimit,
+    });
+     this.search();
+   }
+
+   
+   title = 'angular-app';
+   fileName= 'Bus.xlsx';
+ 
+   exportexcel(): void
+   {
+     
+     /* pass here the table id */
+     let element = document.getElementById('print-section');
+     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+  
+     /* generate workbook and add the worksheet */
+     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+     /* save to file */  
+     XLSX.writeFile(wb, this.fileName);
+  
+   }
+
   // route formgroup
   createRoute(): FormGroup {
       return this.fb.group({
@@ -483,21 +560,15 @@ export class BusComponent implements OnInit {
   createSourceBoarding(): FormGroup {
     return this.fb.group({});
   }
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+ 
+  // refresh(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to refresh again
+  //     this.dtTrigger.next();
+  //   });
+  // }
   lowerlayoutData:FormArray;
   upperlayoutData:FormArray;
   seatLayout=[];
@@ -693,7 +764,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -728,7 +799,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -800,7 +871,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -816,7 +887,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -1030,7 +1101,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -1623,7 +1694,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -1651,7 +1722,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.rerender();
+              this.refresh();
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -2102,7 +2173,7 @@ export class BusComponent implements OnInit {
         {
             this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -2113,13 +2184,14 @@ export class BusComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    // console.log(stsitem);
     this.busService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)
         {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

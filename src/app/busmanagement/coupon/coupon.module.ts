@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CouponRoutingModule } from './coupon-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
-import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { CouponComponent } from './coupon.component';
 import {NotificationService} from '../../services/notification.service';
@@ -15,7 +14,6 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     CouponRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule,
     NgSelectModule,
     NgbModule,
     AngularEditorModule

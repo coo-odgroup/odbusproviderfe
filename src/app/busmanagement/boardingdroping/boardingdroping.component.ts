@@ -3,8 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BoardingDropping} from '../../model/boardingdropping';
 import { Location} from '../../model/location';
 import {Constants} from '../../constant/constant';
-import { DataTablesResponse} from '../../model/datatable';
-import { DataTableDirective } from 'angular-datatables';
+
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../services/notification.service';
 import {BoardingdropingService} from '../../services/boardingdroping.service';
@@ -33,17 +32,11 @@ export class BoardingdropingComponent implements OnInit {
   public droppingList: FormArray;
   @ViewChild("addnew") addnew;
   //@ViewChild("closebutton") closebutton;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
+ 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionBoardingDropping: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
+
   endpoint = Constants.BASE_URL;
   BoardingDroppings: BoardingDropping[];
   BoardingDroppingRecord: BoardingDropping;
@@ -326,23 +319,7 @@ export class BoardingdropingComponent implements OnInit {
     this.ModalBtn = "Save";
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
+  
 
   
   

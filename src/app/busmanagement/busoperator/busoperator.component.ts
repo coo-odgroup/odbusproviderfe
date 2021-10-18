@@ -4,9 +4,7 @@ import { BusOperatorService} from '../../services/bus-operator.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Busoperator} from '../../model/busoperator';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataTablesResponse} from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
@@ -30,16 +28,7 @@ export class BusoperatorComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   @ViewChild("addnew") addnew;
-  //@ViewChild("closebutton") closebutton;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-  
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionOperators: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
+ 
   BusOperators: Busoperator[];
   BusOperatorRecord: Busoperator;
   
@@ -173,44 +162,7 @@ export class BusoperatorComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    // this.loadOperators();
-
-    // this.bankNames=[
-    //   "Axis Bank",
-    //   "Bandhan Bank",
-    //   "Bank of Baroda",
-    //   "Bank of India",
-    //   "Bank of Maharashtra",
-    //   "Canara Bank",
-    //   "Catholic Syrian Bank",
-    //   "Central Bank of India",
-    //   "City Union Bank",
-    //   "DCB Bank",
-    //   "Dhanlaxmi Bank",
-    //   "Federal Bank",
-    //   "HDFC Bank",
-    //   "ICICI Bank",
-    //   "IDBI Bank",
-    //   "IDFC First Bank",
-    //   "Indian Bank",
-    //   "Indian Overseas Bank",
-    //   "IndusInd Bank",
-    //   "Jammu & Kashmir Bank",
-    //   "Karnataka Bank",
-    //   "Karur Vysya Bank",
-    //   "Kotak Mahindra Bank",
-    //   "Lakshmi Vilas Bank",
-    //   "Nainital Bank",
-    //   "Punjab & Sindh Bank",
-    //   "Punjab National Bank",
-    //   "RBL Bank",
-    //   "South Indian Bank",
-    //   "State Bank of India (SBI)",
-    //   "Tamilnad Mercantile Bank Limited",
-    //   "UCO Bank",
-    //   "Union Bank of India",
-    //   "Yes Bank"
-    // ];
+    
 
     this.searchForm = this.fb.group({  
       name: [null],  
@@ -323,9 +275,7 @@ export class BusoperatorComponent implements OnInit {
     this.ModalBtn = "Save";
   }
   
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
+ 
   checkEmail()
   {
     const data={
@@ -370,10 +320,7 @@ export class BusoperatorComponent implements OnInit {
         }
     });
   }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
+ 
 
   // refresh(): void {
   //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -406,7 +353,7 @@ export class BusoperatorComponent implements OnInit {
         ,
         error => {
           this.validIFSC="INVALID VALID IFSC CODE";
-          console.log(error.error.message);
+          // console.log(error.error.message);
           
         }
       );

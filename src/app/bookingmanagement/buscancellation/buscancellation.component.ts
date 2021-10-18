@@ -4,11 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Buscancellation } from '../../model/buscancellation';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { BusService} from '../../services/bus.service';
-import { DataTablesResponse} from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
 import { BuscancellationService } from '../../services/buscancellation.service';
 import { FormArray,FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -33,14 +31,6 @@ export class BuscancellationComponent implements OnInit{
 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
- @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-  position = 'bottom-right'; 
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsBusCancellation: any = {};
-  dtBusCancellationOptions: any = {};
-  dtBusCancellationOptionsData: any = {};
   busCancellations: Buscancellation[];
   busCancellationRecord: Buscancellation;
   buses: any;
@@ -197,105 +187,7 @@ export class BuscancellationComponent implements OnInit{
     });
   }
 
-  // loadBusCancellationData()
-  // {
-    
-  //   this.dtOptionsBusCancellation = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',  
-  //     order:["0","desc"], 
-  //     aLengthMenu:[10, 25, 50, 100, "All"],  
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //           columns: "thead th:not(.noExport)"
-  //          } 
-  //       },
-  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { 
-  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       {
-  //         text:"Add",
-  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         action:() => {
-  //          this.addnew.nativeElement.click();
-  //         }
-  //       }
-        
-  //     ],
-  //   language: {
-  //     searchPlaceholder: "Find Cancelled Bus",
-  //     processing: "<img src='assets/images/loading.gif'>"
-  //   },
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL+'/busCancelledDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-  //           //console.log(resp.data);
-  //           this.busCancellations = resp.data.aaData;
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             data: resp.data.aaData
-  //           });
-  //         });
-  //     },
-  //     columns: [ { data: 'id' },{ data: 'operatorName' },{ data: 'name' },{ data: 'routes' },{ data: 'reason' },{ title:"Cancelled By",data: 'cancelled_by' },{ 
-  //        data: 'status', 
-  //        render:function(data)
-  //        {
-  //          return (data=="1")?"Active":"Pending"
-  //        }   }
-  //     ,{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-  //   }; 
-  // }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-    this.busCancellationForm.get('bus_operator_id').setValue(this.busCancellationRecord.operatorId);
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
+  
   ResetAttributes()
   {
     this.showdates='0';

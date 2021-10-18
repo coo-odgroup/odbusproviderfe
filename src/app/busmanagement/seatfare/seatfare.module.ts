@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SeatFareRoutingModule } from './seatfare-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
-import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SeatfareComponent } from './seatfare.component';
 import {NotificationService} from '../../services/notification.service';
@@ -18,7 +17,6 @@ import {NgxPrintModule} from 'ngx-print';
     SeatFareRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule,
     NgSelectModule,
     ReactiveFormsModule,
     ArchwizardModule,

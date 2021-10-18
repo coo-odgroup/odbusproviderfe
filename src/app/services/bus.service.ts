@@ -25,6 +25,23 @@ export class BusService {
     )
   }
 
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/BusData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+
   getBusScheduleEntryDates(busId):Observable<any> {
     return this.httpClient.get(this.apiURL+'/getBusScheduleEntryDates/' +busId,this.httpOptions).pipe(
       catchError(this.errorHandler)

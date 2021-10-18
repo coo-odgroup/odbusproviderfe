@@ -1,15 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Amenities} from '../../model/amenities';
-import {DataTablesResponse} from '../../model/datatable';
-import {AmenitiesService} from  '../../services/amenities.service';
-import {FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Amenities } from '../../model/amenities';
+import { AmenitiesService } from '../../services/amenities.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../services/notification.service';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import {Constants} from '../../constant/constant';
-import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
+import { Constants } from '../../constant/constant';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as _ from 'lodash';
 import * as XLSX from 'xlsx';
 
@@ -26,159 +24,67 @@ export class AmenitiesComponent implements OnInit {
   public form1: FormGroup;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
-  
+
 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   statusDialogReference: NgbModalRef;
-  //@ViewChild("closebutton") closebutton;
-  //@ViewChild("closebutton2") closebutton2;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-  
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionAmenities: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
+
   Amenities: Amenities[];
   AmenitiesRecord: Amenities;
   imgURL: any;
-  
+
   //Image upload
 
   File: any;
-  
+
   //base64s
   imageSrc: string;
-  
+
   //json
   finalJson = {};
-  base64result:any;
-  iconSrc:any;
+  base64result: any;
+  iconSrc: any;
 
   imageError: string;
-  
+
   public isSubmit: boolean;
-  public mesgdata:any;
-  public ModalHeading:any;
-  public ModalBtn:any;
+  public mesgdata: any;
+  public ModalHeading: any;
+  public ModalBtn: any;
   pagination: any;
 
-  constructor(private http: HttpClient,private AmenitiesService:AmenitiesService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) { 
+  constructor(private http: HttpClient, private AmenitiesService: AmenitiesService, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) {
     this.isSubmit = false;
-    this.AmenitiesRecord= {} as Amenities;
+    this.AmenitiesRecord = {} as Amenities;
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add Amenities";
     this.ModalBtn = "Save";
   }
   OpenModal(content) {
-    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
   statusDialog(content) {
-    this.statusDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
+    this.statusDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
   }
-  // loadAmenities(){
-  //   this.dtOptionAmenities = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',
-  //     order:["0","desc"],
-  //     aLengthMenu:[10, 25, 50, 100, "All"],     
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //    },
-  //    exportOptions: {
-  //     columns: "thead th:not(.noExport)"
-  //    } 
-  //    },
-  //     { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //    },
-  //    exportOptions: {
-  //     columns: "thead th:not(.noExport)"
-  //    } 
-  //    },
-  //     { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //    },
-  //    exportOptions: {
-  //     columns: "thead th:not(.noExport)"
-  //    } 
-  //    },
-  //     { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //    },
-  //    exportOptions: {
-  //     columns: "thead th:not(.noExport)"
-  //    } 
-  //    },
-  //    {
-  //     text:"Add",
-  //     className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //     },
-  //     action:() => {
-  //      this.addnew.nativeElement.click();
-  //     }
-  //   }
-  //   ],
-  //   language: {
-  //     searchPlaceholder: "Find Amenities",
-  //     processing: "<img src='assets/images/loading.gif' width='30'>"
-  //   },
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL+'/AmenitiesDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-  //           this.Amenities = resp.data.aaData;
-  //           for(let items of this.Amenities)
-  //           {
-  //             this.AmenitiesRecord=items;
-  //             let icon='data:image/svg+xml;charset=utf-8;base64,'+this.AmenitiesRecord.icon;
-  //             this.AmenitiesRecord.icon=icon;
-  //           }
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             data: resp.data.aaData
-  //           });
-  //         });
-  //     },
-  //     columns: [{ data: 'id' }, { data: 'name' }, { data: 'created_at' },{ data: 'created_by' }, { 
-  //       data: 'status',
-  //       render:function(data)
-  //       {
-  //         return (data=="1")?"Active":"Pending"
-  //       } 
-  //     },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
-      
-  //   };
-  // }
-  
-  
+
+
   ngOnInit(): void {
-    this.form1=this.fb.group({
-      id:[null],
-      reason: [null,Validators.compose([Validators.required])]
+    this.form1 = this.fb.group({
+      id: [null],
+      reason: [null, Validators.compose([Validators.required])]
     });
 
     this.form = this.fb.group({
-      id:[null],
-      name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
-      icon: [null,Validators.compose([Validators.required])],
-      iconSrc:[null]
-    }); 
-    
-    this.searchForm = this.fb.group({  
-      name: [null],  
+      id: [null],
+      name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
+      icon: [null, Validators.compose([Validators.required])],
+      iconSrc: [null]
+    });
+
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -186,35 +92,32 @@ export class AmenitiesComponent implements OnInit {
   }
 
 
-  page(label:any){
+  page(label: any) {
     return label;
-   }
+  }
 
-  search(pageurl="")
-  {
-      
-    const data = { 
+  search(pageurl = "") {
+
+    const data = {
       name: this.searchForm.value.name,
-      rows_number:this.searchForm.value.rows_number, 
+      rows_number: this.searchForm.value.rows_number,
     };
-   
+
     // console.log(data);
-    if(pageurl!="")
-    {
-      this.AmenitiesService.getAllaginationData(pageurl,data).subscribe(
+    if (pageurl != "") {
+      this.AmenitiesService.getAllaginationData(pageurl, data).subscribe(
         res => {
-          this.Amenities= res.data.data.data;
-          this.pagination= res.data.data;
+          this.Amenities = res.data.data.data;
+          this.pagination = res.data.data;
           // console.log( this.Amenities);
         }
       );
     }
-    else
-    {
+    else {
       this.AmenitiesService.getAllData(data).subscribe(
         res => {
-          this.Amenities= res.data.data.data;
-          this.pagination= res.data.data;
+          this.Amenities = res.data.data.data;
+          this.pagination = res.data.data;
           // console.log( res.data);
         }
       );
@@ -222,279 +125,248 @@ export class AmenitiesComponent implements OnInit {
   }
 
 
-  refresh()
-   {
-     this.searchForm.reset();
-     this.search();
-    
-   }
+  refresh() {
+    this.searchForm.reset();
+    this.search();
+
+  }
 
 
-   title = 'angular-app';
-  fileName= 'Amenities.xlsx';
+  title = 'angular-app';
+  fileName = 'Amenities.xlsx';
 
-  exportexcel(): void
-  {
-    
+  exportexcel(): void {
+
     /* pass here the table id */
     let element = document.getElementById('print-section');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
+
+    /* save to file */
     XLSX.writeFile(wb, this.fileName);
- 
+
   }
 
 
 
-  ResetAttributes()
-  {
-    this.AmenitiesRecord={
-      name:''
+  ResetAttributes() {
+    this.AmenitiesRecord = {
+      name: ''
     } as Amenities;
     this.ModalHeading = "Add Amenities";
     this.ModalBtn = "Save";
-    this.AmenitiesRecord.icon="";
-    this.imgURL="";
-    this.imageSrc="";
+    this.AmenitiesRecord.icon = "";
+    this.imgURL = "";
+    this.imageSrc = "";
     this.form = this.fb.group({
-      id:[null],
-      name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
-      icon: ['',Validators.compose([Validators.required])],
-      iconSrc:[null]
+      id: [null],
+      name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
+      icon: ['', Validators.compose([Validators.required])],
+      iconSrc: [null]
     });
 
   }
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
 
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-  
-  getBannerImagepath(slider_img :any){
-    let objectURL = 'data:image/*;base64,'+slider_img;
+  getBannerImagepath(slider_img: any) {
+    let objectURL = 'data:image/*;base64,' + slider_img;
     return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-   }
+  }
 
-  addAmenities()
-  {
+  addAmenities() {
     this.finalJson = {
       "File": this.imageSrc,
     }
-    
-    let id:any=this.form.value.id;  
-    const data ={
+
+    let id: any = this.form.value.id;
+    const data = {
       //id:this.AmenitiesRecord.id,
-      name:this.form.value.name,
+      name: this.form.value.name,
       //icon:this.base64result,
-      icon:this.form.value.iconSrc,
-      created_by:'Admin',
+      icon: this.form.value.iconSrc,
+      created_by: 'Admin',
     };
-    if(id==null)
-    {
+    if (id == null) {
       this.AmenitiesService.create(data).subscribe(
         resp => {
-          if(resp.status==1)
-          {
-              //this.closebutton.nativeElement.click();
-              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:'success'});
-              this.modalReference.close();
-              this.ResetAttributes();
-              this.rerender();
+          if (resp.status == 1) {
+            //this.closebutton.nativeElement.click();
+            this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.refresh();
           }
-          else{
-              this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
           }
         }
       );
     }
-    else{
-      this.AmenitiesService.update(id,data).subscribe(
+    else {
+      this.AmenitiesService.update(id, data).subscribe(
         resp => {
-          if(resp.status==1)
-          {
-              //this.closebutton.nativeElement.click();
-              this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-              this.ResetAttributes();
-              this.modalReference.close();
-              this.rerender();
+          if (resp.status == 1) {
+            //this.closebutton.nativeElement.click();
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.ResetAttributes();
+            this.modalReference.close();
+            this.refresh();
           }
-          else{
-              this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
           }
         }
       );
     }
   }
-  
-  editAmenities(event : Event, id : any)
-  {
+
+  editAmenities(event: Event, id: any) {
     this.ModalHeading = "Edit Amenities";
     this.ModalBtn = "Update";
-    this.AmenitiesRecord=this.Amenities[id];
+    this.AmenitiesRecord = this.Amenities[id];
 
-    
 
-    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.AmenitiesRecord.icon);
+
+    this.imgURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.AmenitiesRecord.icon);
     this.form = this.fb.group({
-      id:[this.AmenitiesRecord.id],
-      name: [this.AmenitiesRecord.name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      id: [this.AmenitiesRecord.id],
+      name: [this.AmenitiesRecord.name, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
       icon: [],
-      iconSrc:[this.AmenitiesRecord.icon]
+      iconSrc: [this.AmenitiesRecord.icon]
     });
-    
+
   }
-  openConfirmDialog(content)
-  {
-    this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
+  openConfirmDialog(content) {
+    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
-  deleteRecord()
-  {
-    let delitem=this.formConfirm.value.id;
-     this.AmenitiesService.delete(delitem).subscribe(
+  deleteRecord() {
+    let delitem = this.formConfirm.value.id;
+    this.AmenitiesService.delete(delitem).subscribe(
       resp => {
-        if(resp.status==1)
-            {
-                this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-                this.confirmDialogReference.close();
-                this.rerender();
-            }
-            else{
-               
-              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-            }
-      }); 
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
+          this.confirmDialogReference.close();
+          this.refresh();
+        }
+        else {
+
+          this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
+        }
+      });
   }
-  changeStatus()
-  { 
-    const data ={
-      reason:this.form1.value.reason,
-      id:this.form1.value.id
+  changeStatus() {
+    const data = {
+      reason: this.form1.value.reason,
+      id: this.form1.value.id
     };
     this.AmenitiesService.chngsts(data.id, data).subscribe(
       resp => {
-        if(resp.status==1)
-        {
-            //this.closebutton2.nativeElement.click();
-            //info, success, wait, error, warning.
-            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.statusDialogReference.close();
-            this.rerender();
+        if (resp.status == 1) {
+          //this.closebutton2.nativeElement.click();
+          //info, success, wait, error, warning.
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.statusDialogReference.close();
+          this.refresh();
         }
-        else{
-            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
         }
       }
     );
   }
-  cs(id : any){
+  cs(id: any) {
     //this.AmenitiesRecord=this.Amenities[id] ;
-    
-    const data ={
-      reason:this.form1.value.reason,
-      id:this.form1.value.id
+
+    const data = {
+      reason: this.form1.value.reason,
+      id: this.form1.value.id
     };
     this.AmenitiesService.chngsts(id, data).subscribe(
       resp => {
-        if(resp.status==1)
-        {
-            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.refresh();
         }
-        else{
-            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
         }
       }
     );
   }
 
-  deleteAmenities(content, delitem:any)
-  {
-    this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
-    this.formConfirm=this.fb.group({
-      id:[delitem]
+  deleteAmenities(content, delitem: any) {
+    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+    this.formConfirm = this.fb.group({
+      id: [delitem]
     });
   }
 
-  public picked(event:any, fileSrc:any) {
+  public picked(event: any, fileSrc: any) {
 
     //////image validation////////
     this.imageError = null;
-            const max_size = 102400;
-            const allowed_types = ['image/svg+xml'];
-            const max_height = 100;
-            const max_width = 200;
+    const max_size = 102400;
+    const allowed_types = ['image/svg+xml'];
+    const max_height = 100;
+    const max_width = 200;
     let fileList: FileList = event.target.files;
-    
+
     if (event.target.files[0].size > max_size) {
       this.imageError =
-          'Maximum size allowed is ' + max_size/1024  + 'Kb';
-          this.form.value.imagePath = '';
-          this.imgURL='';
+        'Maximum size allowed is ' + max_size / 1024 + 'Kb';
+      this.form.value.imagePath = '';
+      this.imgURL = '';
       return false;
-  }
+    }
 
-  if (!_.includes(allowed_types, event.target.files[0].type)) {
+    if (!_.includes(allowed_types, event.target.files[0].type)) {
       this.imageError = '\r\nOnly Images are allowed (SVG)';
       this.form.value.imagePath = '';
       this.form.controls.icon.setValue('');
-      this.imgURL='';
+      this.imgURL = '';
       return false;
-  }
-  const reader = new FileReader();
-  reader.onload = (e: any) => {
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
       const image = new Image();
       image.src = e.target.result;
       image.onload = rs => {
-          const img_height = rs.currentTarget['height'];
-          const img_width = rs.currentTarget['width'];
+        const img_height = rs.currentTarget['height'];
+        const img_width = rs.currentTarget['width'];
 
-          if (img_height > max_height && img_width > max_width) {
-            this.imageError =
-                'Maximum dimentions allowed ' +
-                max_height +
-                '*' +
-                max_width +
-                'px';
-                this.form.value.imagePath = '';
-                this.imgURL='';
-            return false;
-        } 
+        if (img_height > max_height && img_width > max_width) {
+          this.imageError =
+            'Maximum dimentions allowed ' +
+            max_height +
+            '*' +
+            max_width +
+            'px';
+          this.form.value.imagePath = '';
+          this.imgURL = '';
+          return false;
+        }
       };
-  };
-  
+    };
+
     if (fileList.length > 0) {
       const file: File = fileList[0];
-      
-        this.form.value.File = file;
 
-        this.handleInputChange(file); //turn into base64
-      
+      this.form.value.File = file;
+
+      this.handleInputChange(file); //turn into base64
+
     }
     else {
       //alert("No file selected");
     }
 
     this.preview(fileSrc);
-    
+
   }
-  
+
   handleInputChange(files) {
     let file = files;
     let pattern = /image-*/;
@@ -505,16 +377,16 @@ export class AmenitiesComponent implements OnInit {
     }
     reader.onloadend = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
-    
+
   }
   _handleReaderLoaded(e) {
     let reader = e.target;
     this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
     //this.imageSrc = base64result;
-    
+
     this.imageSrc = this.base64result;
-    this.form.value.icon=this.base64result;
-    this.form.value.iconSrc=this.base64result;
+    this.form.value.icon = this.base64result;
+    this.form.value.iconSrc = this.base64result;
 
     this.form.controls.iconSrc.setValue(this.base64result);
   }
@@ -524,20 +396,20 @@ export class AmenitiesComponent implements OnInit {
   preview(files) {
     if (files.length === 0)
       return;
- 
+
     let mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-      
+
       this.message = "Only images are supported.";
       return;
     }
- 
+
     let reader = new FileReader();
     this.form.value.imagePath = files;
-    reader.readAsDataURL(files[0]); 
-    reader.onload = (_event) => { 
-      this.imgURL = reader.result; 
-      this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
+      this.imgURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
     }
   }
 }

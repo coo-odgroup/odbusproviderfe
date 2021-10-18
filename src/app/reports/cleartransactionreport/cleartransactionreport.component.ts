@@ -21,7 +21,7 @@ export class CleartransactionreportComponent implements OnInit {
     this.rs.cleartransactionReport().subscribe(
       res => {
         this.transactiondata = res.data;
-        console.log(this.transactiondata);
+        // console.log(this.transactiondata);
       }
     );
   }

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {SharedModule} from '../../theme/shared/shared.module';
-import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import {SeatopenComponent} from './seatopen.component';
 import { NotificationService } from '../../services/notification.service';
@@ -17,8 +16,7 @@ import {NgxPrintModule} from 'ngx-print';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgxPrintModule,
-    DataTablesModule
+    NgxPrintModule
   ],
   declarations: [ SeatopenComponent],
   providers: [NotificationService]

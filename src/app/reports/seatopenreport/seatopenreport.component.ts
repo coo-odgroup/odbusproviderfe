@@ -98,7 +98,7 @@ export class SeatopenreportComponent implements OnInit {
       this.rs.seatopenReport(data).subscribe(
         res => {
           this.seatopendata= res.data;
-          console.log( this.seatopendata);
+          // console.log( this.seatopendata);
         }
       );
     }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SeatingTypeRoutingModule } from './seatingtype-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
-import {DataTablesModule} from 'angular-datatables';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { SeatingtypeComponent } from './seatingtype.component';
 import { NotificationService } from '../../services/notification.service';
@@ -17,7 +16,6 @@ import {NgxPrintModule} from 'ngx-print';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule,
     NgbModule,
     NgxPrintModule
   ],

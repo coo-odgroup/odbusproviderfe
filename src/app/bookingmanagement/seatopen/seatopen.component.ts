@@ -2,12 +2,10 @@ import { BusOperatorService } from './../../services/bus-operator.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Seatopen } from '../../model/seatopen';
-import { DataTablesResponse } from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
 import { SeatopenService } from '../../services/seatopen.service';
 import { BusService } from '../../services/bus.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -31,15 +29,7 @@ export class SeatopenComponent implements OnInit {
 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
 
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsOwnerFare: any = {};
-  dtOwnerFareOptions: any = {};
-  dtOwnerFareOptionsData: any = {};
   seatOpen: Seatopen[];
   seatOpenRecord: Seatopen;
 
@@ -516,23 +506,6 @@ export class SeatopenComponent implements OnInit {
       }
     );
   }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
 
   openConfirmDialog(content, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });

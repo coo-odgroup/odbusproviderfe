@@ -3,9 +3,7 @@ import { CancellationslabService} from '../../services/cancellationslab.service'
 import {Constants} from '../../constant/constant';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Cancellationslab} from '../../model/cancellationslab';
-import { DataTablesResponse} from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -75,16 +73,7 @@ export class CancellationslabComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   @ViewChild("addnew") addnew;
-  //@ViewChild("closebutton") closebutton;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-  
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptioncSlab: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
+
   cancellationSlabs: Cancellationslab[];
   cancellationSlabRecord: Cancellationslab;
 
@@ -367,14 +356,6 @@ export class CancellationslabComponent implements OnInit {
     this.ModalHeading = "Add CancelationSlab";
     this.ModalBtn = "Save";
   }
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
   addCancellationSlab()
   {
     this.allDurations="";

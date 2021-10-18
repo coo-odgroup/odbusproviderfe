@@ -167,7 +167,7 @@ export class PagecontentComponent implements OnInit {
     this.form.controls.extra_meta.setValue(this.pagecontentRecord.extra_meta);
     this.form.controls.canonical_url.setValue(this.pagecontentRecord.canonical_url);
 
-    this.ModalHeading = "Edit Location";
+    this.ModalHeading = "Edit Page";
     this.ModalBtn = "Update";
   
 

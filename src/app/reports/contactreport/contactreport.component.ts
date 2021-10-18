@@ -159,7 +159,7 @@ export class ContactreportComponent implements OnInit {
 
   deleteRecord(){
     let delitem = this.contactcontentRecord.id;
-    console.log(delitem);
+    // console.log(delitem);
     this.cs.delete(delitem).subscribe(
       resp => {
         if (resp.status == 1) {

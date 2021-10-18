@@ -7,13 +7,11 @@ import { Component, OnInit,ViewChild,AfterViewInit} from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Specialfare } from '../../model/specialfare';
 import { SpecialfareWithBus } from '../../model/specialfarewithbus';
-import { DataTablesResponse} from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
 import { SpecialfareService } from '../../services/specialfare.service';
 import { Bus} from '../../model/bus';``
 import { BusService} from '../../services/bus.service';
 import { FormArray,FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -36,14 +34,7 @@ export class SpecialfareComponent implements OnInit {
   public formConfirm: FormGroup;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-  position = 'bottom-right'; 
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsSpecialFare: any = {};
-  dtSpecialFareOptions: any = {};
-  dtSpecialFareOptionsData: any = {};
+
   specialfareWithBus: SpecialfareWithBus[];
   specialFares: Specialfare[];
   specialFareRecord: Specialfare;
@@ -177,94 +168,6 @@ export class SpecialfareComponent implements OnInit {
 
 
 
-  // loadSpecialFareData()
-  // {
-  //   this.dtOptionsSpecialFare = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',  
-  //     order:["0","desc"], 
-  //     aLengthMenu:[10, 25, 50, 100, "All"],  
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //           columns: "thead th:not(.noExport)"
-  //          } 
-  //       },
-  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { 
-  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       {
-  //         text:"Add",
-  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         action:() => {
-  //          this.addnew.nativeElement.click();
-  //         }
-  //       }
-  //     ],
-  //   language: {
-  //     searchPlaceholder: "Find Special Fare",
-  //     processing: "<img src='assets/images/loading.gif' width='30'>"
-  //   },
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL+'/busSpecialFareDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-  //           //console.log(resp.data);
-  //           this.specialFares = resp.data.aaData;
-  //           for(let items of this.specialFares)
-  //           {
-  //             this.specialFareRecord=items;
-              
-  //             this.specialFareRecord.name=this.specialFareRecord.name.split(",");
-  //           }
-  //           var currentTimeInSeconds=Math.floor(Date.now()/1000);
-  //           console.log("End Time loadSpecialFareData: "+currentTimeInSeconds);
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             data: resp.data.aaData
-  //           });
-  //         });
-  //     },
-  //     columns: [{ data: 'id' },{ data: 'name' },{ data: 'date' },{ data: 'seater_price' },{ data: 'sleeper_price' },{ title:"Created On",data: 'created_at' },{ 
-  //       data: 'status',
-  //       render:function(data)
-  //       {
-  //         return (data=="1")?"Active":"Pending"
-  //       }  
-
-  //     },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-  //   };
-     
-  // }
 
   ResetAttributes()
   {
@@ -367,7 +270,7 @@ findOperator(event:any)
           this.modalReference.close();
           this.ResetAttributes();
           this.loadServices();
-          this.rerender();
+          this.refresh();
        }
        else
        {
@@ -384,7 +287,7 @@ findOperator(event:any)
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.rerender();
+              this.refresh();
             }
             else
             {                
@@ -395,21 +298,7 @@ findOperator(event:any)
     
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next(); 
-  }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+ 
   editSpecialFare(event : Event, id : any)
   {
    
@@ -475,16 +364,16 @@ findOperator(event:any)
       searchBy: [this.searchBy],
 
     });
-    if(this.specialFareRecord.bus_operator_id != null)
-    {
-      $("#operator").prop("checked","true");
-      $("#routes").prop("checked","false");
-    }
-    else
-    {
-      $("#operator").prop("checked","false");
-      $("#routes").prop("checked","true");
-    }
+    // if(this.specialFareRecord.bus_operator_id != null)
+    // {
+    //   $("#operator").prop("checked","true");
+    //   $("#routes").prop("checked","false");
+    // }
+    // else
+    // {
+    //   $("#operator").prop("checked","false");
+    //   $("#routes").prop("checked","true");
+    // }
     //console.log(this.specialFareForm);
     console.log(this.specialFareForm.value);
 
@@ -506,7 +395,7 @@ findOperator(event:any)
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.rerender();
+                this.refresh();
             }
             else{
                
@@ -531,7 +420,7 @@ findOperator(event:any)
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.rerender();
+            this.refresh();
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

@@ -3,8 +3,6 @@ import { BusService } from '../../services/bus.service';
 import { BusSeatsService } from '../../services/bus-seats.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { DataTablesResponse } from '../../model/datatable';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Bus } from '../../model/bus';
@@ -27,14 +25,6 @@ export class SeatfareComponent implements OnInit {
   modalReference: NgbModalRef;
 
   @ViewChild("closebutton") closebutton;
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsBus: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
   buses: Bus[];
   busRecord: Bus;
 
@@ -106,7 +96,7 @@ export class SeatfareComponent implements OnInit {
     this.fareRecord.clear();
     this.busSeatsService.readAll(this.busRecord.id).subscribe(records => {
 
-      console.log(records);
+      // console.log(records);
       this.ticketPrice = records.result;
       let baseSeaterFare = "";
       let baseSleeperFare = "";
@@ -139,7 +129,7 @@ export class SeatfareComponent implements OnInit {
     });
   }
   updatePrice() {
-    console.log(this.fareGroup);
+    // console.log(this.fareGroup);
     const data = {
       fare_info: this.fareGroup.value.fareArray
     };
@@ -157,80 +147,7 @@ export class SeatfareComponent implements OnInit {
       }
     );
   }
-  // loadBus() {
 
-  //   this.dtOptionsBus = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',
-  //     order: ["0", "desc"],
-  //     aLengthMenu: [10, 25, 50, 100, "All"],
-  //     language: {
-  //       searchPlaceholder: "Find Bus",
-  //       processing: "<img src='assets/images/loading.gif' width='30'>"
-  //     },
-
-  //     buttons: [
-  //       {
-  //         extend: 'copy', className: 'btn btn-sm btn-primary', init: function (api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         }
-  //       },
-  //       {
-  //         extend: 'print', className: 'btn btn-sm btn-danger', init: function (api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         }
-  //       },
-  //       {
-  //         extend: 'excel', className: 'btn btn-sm btn-info', init: function (api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         }
-  //       },
-
-  //       {
-  //         text: "Add",
-  //         className: 'btn btn-sm btn-warning', init: function (api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         action: () => {
-  //           this.addnew.nativeElement.click();
-  //         }
-  //       }
-  //     ],
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL + '/busDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-
-  //           this.buses = resp.data.aaData;
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             data: resp.data.aaData
-  //           });
-  //         });
-  //     },
-  //     columns: [
-  //       { data: 'id' },
-  //       { data: 'name' },
-  //       { data: 'via' },
-  //       { data: 'bus_number' },
-  //       {
-  //         data: 'status',
-  //         render: function (data) {
-  //           return (data == "1") ? "Active" : "Pending"
-  //         }
-  //       },
-  //       { title: 'Action', data: null, orderable: false },
-  //     ]
-  //   };
-
-
-  // }
   dropfg: any;
   ngOnInit(): void {
     this.fareGroup = this.fb.group({
@@ -314,26 +231,5 @@ export class SeatfareComponent implements OnInit {
 
   }
 
-
-
-
-
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
 
 }

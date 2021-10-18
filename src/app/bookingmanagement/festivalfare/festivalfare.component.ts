@@ -6,13 +6,11 @@ import { Busstoppage } from '../../model/busstoppage';
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Festivalfare } from '../../model/festivalfare';
-import { DataTablesResponse} from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
 import { FestivalfareService } from '../../services/festivalfare.service';
 import { Bus} from '../../model/bus';
 import { BusService} from '../../services/bus.service';
 import { FormArray,FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -36,18 +34,11 @@ export class FestivalfareComponent implements OnInit {
 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
+
 
   public searchForm: FormGroup;
   pagination: any;
 
-  position = 'bottom-right'; 
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsFestivalFare: any = {};
-  dtFestivalFareOptions: any = {};
-  dtFestivalFareOptionsData: any = {};
   festivalFares: Festivalfare[];
   festivalFareRecord: Festivalfare;
   //buses: Bus[];
@@ -172,97 +163,6 @@ export class FestivalfareComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
  
   }
-
-  // loadFestivalFareData()
-  // {
-  //   this.dtOptionsFestivalFare = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',  
-  //     order:["0","desc"], 
-  //     aLengthMenu:[10, 25, 50, 100, "All"],  
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //           columns: "thead th:not(.noExport)"
-  //          } 
-  //       },
-  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { 
-  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       {
-  //         text:"Add",
-  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         action:() => {
-  //          this.addnew.nativeElement.click();
-  //         }
-  //       }
-  //     ],
-  //   language: {
-  //     searchPlaceholder: "Find Owner Fare",
-  //     processing: "<img src='assets/images/loading.gif' width='30'>"
-  //   },
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL+'/festivalFareDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-
-  //           this.festivalFares = resp.data.aaData;
-  //           for(let items of this.festivalFares)
-  //           {
-  //             this.festivalFareRecord=items;
-  //             this.festivalFareRecord.name=this.festivalFareRecord.name.split(",");
-  //           }
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             data: resp.data.aaData
-  //           });
-  //         });
-  //     },
-  //     columns: [{ data: 'id' },{ data: 'name' },{ data: 'date' },{ data: 'seater_price' },{ data: 'sleeper_price' },{ title:"Created On",data: 'created_at' },{ 
-  //       data: 'status',
-  //       render:function(data)
-  //       {
-  //         return (data=="1")?"Active":"Pending"
-  //       }  
-
-  //     },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-  //   };
-
-  //   this.busService.readAll().subscribe(
-  //     res=>{
-  //       this.buses=res.data;
-  //     }
-  //   );
-  // }
   ResetAttributes()
   {
     this.festivalFareRecord = {} as Festivalfare;
@@ -398,23 +298,6 @@ addfestivalFare()
     
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
 
   editfestivalFare(event : Event, id : any)
   {

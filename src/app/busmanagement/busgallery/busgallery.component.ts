@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { BusService } from '../../services/bus.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { Constants } from '../../constant/constant';
-import { DataTablesResponse } from '../../model/datatable';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../services/notification.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
@@ -14,7 +12,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { count } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -52,8 +50,8 @@ export class BusgalleryComponent implements OnInit {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private busgalleryService: BusgalleryService,
-      private busOperatorService: BusOperatorService,
-      private busService: BusService,
+    private busOperatorService: BusOperatorService,
+    private busService: BusService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
     config: NgbModalConfig,
@@ -67,17 +65,8 @@ export class BusgalleryComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Bus-Gallery.xlsx';
+  fileName = 'Bus-Gallery.xlsx';
 
-  //@ViewChild("closebutton") closebutton;
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  position = 'bottom-right';
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsBus: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
   buses: Bus[];
   busRecord: Bus;
 
@@ -89,29 +78,27 @@ export class BusgalleryComponent implements OnInit {
   }
 
 
-  allBus()
-  {
+  allBus() {
     this.busService.readAll().subscribe(
       resp => {
-     this.buses = resp.data;
+        this.buses = resp.data;
       });
-    
+
   }
   // readAll
 
-galleryData()
-{
-  this.busgalleryService.getAll().subscribe(
-    resp => {
-   this.busGallerries = resp.result;
-    });
-}
+  galleryData() {
+    this.busgalleryService.getAll().subscribe(
+      resp => {
+        this.busGallerries = resp.result;
+      });
+  }
 
   saveGallery() {
     this.finalJson = {
       "File": this.imageSrc,
     }
-  
+
     const data = {
       bus_id: this.busForm.value.bus_id,
       icon: this.busForm.value.iconSrc,
@@ -124,6 +111,7 @@ galleryData()
           this.modalReference.close();
           this.ResetAttributes();
           this.galleryData();
+          this.refresh();
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -143,7 +131,7 @@ galleryData()
     this.imageSrc = "";
   }
   ngOnInit(): void {
-    this.loadServices(); 
+    this.loadServices();
 
     this.busForm = this.fb.group({
       id: [null],
@@ -152,33 +140,19 @@ galleryData()
       iconSrc: [null]
     });
 
-    this.searchForm = this.fb.group({  
-      bus_id: [null],   
+    this.searchForm = this.fb.group({
+      bus_id: [null],
       rows_number: Constants.RecordLimit,
     });
 
- 
-    this.allBus() ;
+
+    this.allBus();
     this.galleryData();
     this.search();
-    
+
 
   }
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+ 
   public picked(event: any, fileSrc: any) {
     //////image validation////////
     this.imageError = null;
@@ -298,7 +272,7 @@ galleryData()
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
           this.confirmDialogReference.close();
           this.ResetAttributes();
-          this.galleryData();         
+          this.galleryData();
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -307,39 +281,36 @@ galleryData()
   }
 
 
-  getBannerImagepath(slider_img :any){
-    let objectURL = 'data:image/*;base64,'+slider_img;
+  getBannerImagepath(slider_img: any) {
+    let objectURL = 'data:image/*;base64,' + slider_img;
     return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-   }
+  }
 
-   page(label:any){
+  page(label: any) {
     return label;
-   }
-  search(pageurl="")
-  {
-      
-    const data = { 
+  }
+  search(pageurl = "") {
+
+    const data = {
       bus_id: this.searchForm.value.bus_id,
-      rows_number:this.searchForm.value.rows_number,  
+      rows_number: this.searchForm.value.rows_number,
     };
-   
+
     // console.log(data);
-    if(pageurl!="")
-    {
-      this.busgalleryService.getAllaginationData(pageurl,data).subscribe(
+    if (pageurl != "") {
+      this.busgalleryService.getAllaginationData(pageurl, data).subscribe(
         res => {
-          this.busGallerries= res.data.data;
-          this.pagination= res.data.links;
+          this.busGallerries = res.data.data;
+          this.pagination = res.data.links;
           // console.log( this.busGallerries);
         }
       );
     }
-    else
-    {
+    else {
       this.busgalleryService.getAllData(data).subscribe(
         res => {
-          this.busGallerries= res.data.data;
-          this.pagination= res.data;
+          this.busGallerries = res.data.data;
+          this.pagination = res.data;
           // console.log( this.busGallerries);
         }
       );
@@ -347,17 +318,16 @@ galleryData()
 
 
   }
-   refresh()
-   {
-    this.searchForm = this.fb.group({  
-      bus_id: [null],   
+  refresh() {
+    this.searchForm = this.fb.group({
+      bus_id: [null],
       rows_number: Constants.RecordLimit,
     });
-    
-     this.search();
-   }
 
-   loadServices() {
+    this.search();
+  }
+
+  loadServices() {
 
     this.busService.all().subscribe(
       res => {
@@ -365,29 +335,28 @@ galleryData()
         //  console.log(this.buss);
       }
     );
-    
+
     this.busOperatorService.readAll().subscribe(
       res => {
         this.busoperators = res.data;
-       
+
       }
     );
   }
 
-  exportexcel(): void
-  {
-    
+  exportexcel(): void {
+
     /* pass here the table id */
     let element = document.getElementById('print-section');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
+
+    /* save to file */
     XLSX.writeFile(wb, this.fileName);
- 
+
   }
 
 

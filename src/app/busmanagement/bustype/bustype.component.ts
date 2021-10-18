@@ -4,8 +4,6 @@ import { BusTypeService } from '../../services/bus-type.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Bustype} from '../../model/bustype';
-import { DataTablesResponse} from '../../model/datatable';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -32,15 +30,6 @@ export class BustypeComponent implements OnInit {
   @ViewChild("addnew") addnew;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-
-  position = 'bottom-right'; 
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsSeatType: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
   busTypes: Bustype[];
   busTypeRecord: Bustype;
   public isSubmit: boolean;
@@ -168,23 +157,6 @@ export class BustypeComponent implements OnInit {
 
      this.search(); 
     
-  }
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
   }
 
   page(label:any){

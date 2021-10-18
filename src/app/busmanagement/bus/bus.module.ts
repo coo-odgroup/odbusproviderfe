@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BusRoutingModule } from './bus-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
-import {DataTablesModule} from 'angular-datatables';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BusComponent } from './bus.component';
 import {NotificationService} from '../../services/notification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ArchwizardModule } from 'angular-archwizard';
+import {NgxPrintModule} from 'ngx-print';
+
 @NgModule({
   imports: [
     NgbModule,
@@ -16,10 +17,11 @@ import { ArchwizardModule } from 'angular-archwizard';
     BusRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule,
     NgSelectModule,
     ReactiveFormsModule,
-    ArchwizardModule  ],
+    ArchwizardModule,
+    NgxPrintModule
+    ],
   declarations: [ BusComponent],
   providers:[NotificationService]
 })

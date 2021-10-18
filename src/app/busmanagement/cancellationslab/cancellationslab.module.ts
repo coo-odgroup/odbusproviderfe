@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CancellationSlabRoutingModule } from './cancellationslab-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
-import {DataTablesModule} from 'angular-datatables';
 import {FormsModule} from '@angular/forms';
 import { CancellationslabComponent } from './cancellationslab.component';
 import { NotificationService } from '../../services/notification.service';
@@ -15,7 +14,6 @@ import {NgxPrintModule} from 'ngx-print';
     CancellationSlabRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule,
     NgbModule,NgxPrintModule,
     AngularEditorModule
   ],

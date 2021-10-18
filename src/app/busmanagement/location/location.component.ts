@@ -2,10 +2,8 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Location, LocationCode } from '../../model/location';
-import { DataTablesResponse} from '../../model/datatable';
 import { NotificationService } from '../../services/notification.service';
 import {LocationService} from '../../services/location.service';
-import { DataTableDirective } from 'angular-datatables';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import {Constants} from '../../constant/constant';
@@ -30,16 +28,6 @@ export class LocationComponent implements OnInit {
   @ViewChild("addnew") addnew;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
- 
-  
-  position = 'bottom-right'; 
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsLocation: any = {};
-  dtSeatTypesOptions: any = {};
-  dtSeatTypesOptionsData: any = {};
   locations: Location[];
   locationRecord: Location;
   locationCodes: LocationCode[];
@@ -293,23 +281,6 @@ export class LocationComponent implements OnInit {
     }    
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
   editLocation(event : Event, id : any)
   {
     this.locationRecord=this.locations[id] ;

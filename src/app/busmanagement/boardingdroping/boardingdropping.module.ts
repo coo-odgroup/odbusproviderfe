@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BoardingDroppingRoutingModule } from './boardingdroping-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
-import {DataTablesModule} from 'angular-datatables';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { BoardingdropingComponent } from './boardingdroping.component';
 import { NotificationService } from '../../services/notification.service';
@@ -15,7 +14,6 @@ import {NgxPrintModule} from 'ngx-print';
     BoardingDroppingRoutingModule,
     SharedModule,
     FormsModule,
-    DataTablesModule,
     NgSelectModule,
     ReactiveFormsModule,
     NgxPrintModule

@@ -2,14 +2,12 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Busschedule } from '../../model/Busschedule';
-import { DataTablesResponse} from '../../model/datatable';
 import { Bus} from '../../model/bus';
 import { NotificationService } from '../../services/notification.service';
 import { BusscheduleService } from '../../services/busschedule.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { BusService } from './../../services/bus.service';
 import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -33,16 +31,7 @@ export class BusscheduleComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   viewEntryDates: NgbModalRef;
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
  
-  
-  position = 'bottom-right'; 
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {};
-  dtOptionsBusSchedule: any = {};
-  dtBusSchedulesOptions: any = {};
-  dtBusSchedulesOptionsData: any = {};
   busSchedules: Busschedule[];
   busScheduleRecord: Busschedule;
   operators: any;
@@ -343,26 +332,7 @@ FormOne: FormGroup;
     }    
   }
   
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-   // console.log("xxxxxxxxxxxxxx"+ this.busScheduleForm.controls['carChoices']);
-    
-  }
- 
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
+  
   editBusSchedule(event : Event, id : any)
   {
     this.showdates='0';
