@@ -7,6 +7,8 @@ import { Testimonial } from '../../model/testimonial';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {TestimonialService } from '../../services/testimonial.service';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+import{Constants} from '../../constant/constant';
+
 
 @Component({
   selector: 'app-testimonial',
@@ -15,7 +17,8 @@ import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 })
 export class TestimonialComponent implements OnInit {
   public form: FormGroup;
-  public searchform: FormGroup;
+  public searchForm: FormGroup;
+  pagination: any;
 
 
   public formConfirm: FormGroup;
@@ -46,9 +49,7 @@ export class TestimonialComponent implements OnInit {
     }
 
     ngOnInit(): void {
-      this.searchform =this.fb.group({
-        searchvalue:[null]
-      })
+      
       this.form = this.fb.group({
         id:[null],
         posted_by: [null, Validators.compose([Validators.required])],
@@ -59,7 +60,11 @@ export class TestimonialComponent implements OnInit {
       this.formConfirm=this.fb.group({
         id:[null]
       });
-      this.getAll();
+      this.searchForm = this.fb.group({  
+        name: [null],  
+        rows_number: Constants.RecordLimit,
+      });
+      this.search();
     }
 
   
@@ -82,30 +87,52 @@ export class TestimonialComponent implements OnInit {
       this.ModalBtn = "Save";
     }
   
-    getAll()
-    { 
 
-      const data = {
-        searchvalue:this.searchform.value.searchvalue
+    page(label:any){
+      return label;
+     }
+  
+     
+    search(pageurl="")
+    {      
+      const data = { 
+        name: this.searchForm.value.name,
+        rows_number:this.searchForm.value.rows_number, 
       };
-      // this.ts.readAll().subscribe(
-      //   res=>{
-      //     this.testimonial = res.data;
-      //     // console.log(this.testimonial);
-      //   }
-      // );
+     
       // console.log(data);
-      this.ts.readAll(data).subscribe(
-        res =>{
-          this.testimonial = res.data;
-        }
-      )
+      if(pageurl!="")
+      {
+        this.ts.getAllaginationData(pageurl,data).subscribe(
+          res => {
+            this.testimonial= res.data.data.data;
+            this.pagination= res.data.data;
+            // console.log( this.BusOperators);
+          }
+        );
+      }
+      else
+      {
+        this.ts.getAllData(data).subscribe(
+          res => {
+            this.testimonial= res.data.data.data;
+            this.pagination= res.data.data;
+            // console.log( res.data);
+          }
+        );
+      }
     }
+  
+  
     refresh()
-    {
-      this.searchform.reset();
-      this.getAll();
-    }
+     {  
+      this.searchForm = this.fb.group({  
+        name: [null],  
+        rows_number: Constants.RecordLimit,
+      });
+       this.search();
+      
+     }
   
     addData() { 
       // console.log(this.form.value);return false; 
@@ -124,7 +151,7 @@ export class TestimonialComponent implements OnInit {
               this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
               this.modalReference.close();
               this.ResetAttributes();
-              this.getAll();
+              this.refresh();
             }
             else {
               this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -140,7 +167,7 @@ export class TestimonialComponent implements OnInit {
               this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
               this.modalReference.close();
               this.ResetAttributes();
-              this.getAll();            
+              this.refresh();            
             }
             else {
               this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -180,7 +207,7 @@ export class TestimonialComponent implements OnInit {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.confirmDialogReference.close();
             this.ResetAttributes();
-            this.getAll();         
+            this.refresh();         
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -189,7 +216,7 @@ export class TestimonialComponent implements OnInit {
     }
     
 
-    changeStatus(event : Event, stsitem:any)
+  changeStatus(event : Event, stsitem:any)
   {
     this.ts.changestatus(stsitem).subscribe(
       resp => {
@@ -198,7 +225,7 @@ export class TestimonialComponent implements OnInit {
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
             this.ResetAttributes();
-            this.getAll(); 
+            this.refresh(); 
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

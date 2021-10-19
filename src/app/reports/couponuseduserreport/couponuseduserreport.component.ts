@@ -60,7 +60,7 @@ export class CouponuseduserreportComponent implements OnInit {
       rangeToDate :[null]
 
     })  
-    this.search(); 
+    // this.search(); 
     this.loadServices();
   }
   

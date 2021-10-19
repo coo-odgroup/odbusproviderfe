@@ -177,7 +177,7 @@
                         </tr>
                     </thead>
                     <tbody *ngIf="completedata?.length != 0">
-                        <tr *ngFor="let complete of completedata.data.data; let i = index">
+                        <tr *ngFor="let complete of completedata?.data.data; let i = index">
                             <td>{{ i+1 }}</td>
                             <td>
                                 <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )
@@ -320,7 +320,7 @@
                     </tbody>  
                 </table>
                 <div *ngIf="completedata?.length != 0"  class="hide_print">
-                    <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="completedata.data.links">
+                    <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="completedata?.data.links">
                         <nav class="my-1 pt-1 ">
                             <ul class="pagination pagination-circle pg-blue mb-0">
                                 <li (click)="search(completedata.data.links.first_page_url,statusLabel)"

@@ -17,17 +17,23 @@ export class TestimonialService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // readAll(): Observable<any> {
-  //   return this.httpClient.get(this.apiURL + '/testimonial/').pipe(
-  //     catchError(this.errorHandler)
-  //   )
-  // }
-  readAll(data): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/gettestimonial', JSON.stringify(data), this.httpOptions)
+
+
+
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/gettestimonial', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  
 
   create(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/testimonial', JSON.stringify(data), this.httpOptions)

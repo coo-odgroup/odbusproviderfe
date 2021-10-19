@@ -24,6 +24,21 @@ export class SeosettingService {
     )
   }
 
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/seosettingData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   create(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/seosetting', JSON.stringify(data), this.httpOptions)
     .pipe(

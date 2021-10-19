@@ -7,6 +7,7 @@ import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {SeoSettingRoutingModule} from './seosetting-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgxPrintModule} from 'ngx-print';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule
+    NgbModule,
+    NgxPrintModule
   ],
   declarations: [ SeosettingComponent],
   providers: [NotificationService]
