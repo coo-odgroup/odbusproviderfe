@@ -44,6 +44,16 @@ export class SeosettingService {
     )
   }
 
+  chngsts(id){
+    return this.httpClient.put<any>(this.apiURL + '/changeStatusseosetting/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  
+  
+
   
   errorHandler(error) {
     let errorMessage = '';

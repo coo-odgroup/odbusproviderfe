@@ -15,19 +15,28 @@
                         <tr>
                             <th scope="col" width ="100px">#</th>                            
                             <th scope="col">Page URL</th>
-                            <th scope="col" width ="100px">Action </th>                        
+                            <th scope="col">Status</th>
+                            <th scope="col" width ="150px">Action </th>                        
                         </tr>
                     </thead>
-                    <!-- <tbody *ngIf="pagecontent?.length != 0">
-                      <tr  *ngFor="let page of pagecontent; let i=index;">
+                    <tbody *ngIf="urlcontent?.length != 0">
+                      <tr  *ngFor="let page of urlcontent; let i=index;">
                         <td>{{i+1}}</td>
                         <td>{{page.page_url}}</td>
+
+                        <td >
+                          <label *ngIf="page.status==1" class="badge badge-light-success pointer"
+                            (click)="changeStatus($event, page.id);">Active</label>
+                          <label *ngIf="page.status==0" class="badge badge-light-warning pointer"
+                            (click)="changeStatus($event, page.id);">Pending</label>
+                        </td>
+
                         <td >
                             <button class="btn btn-light text-info" title="Edit" (click) = "editData(i);OpenModal(content)"><i class="fas fa-edit"></i></button>
                             <button class="btn btn-light text-danger"title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
                         </td>
                       </tr>                        
-                    </tbody> -->
+                    </tbody>
                 </table>
             </div>
 

@@ -91,6 +91,7 @@ export class SeosettingComponent implements OnInit {
     this.ss.readAll().subscribe(
       res=>{
         this.urlcontent = res.data;
+        // console.log(res.data);
       }
     );
   }
@@ -186,6 +187,23 @@ export class SeosettingComponent implements OnInit {
       });
   }
  
+
+  changeStatus(event : Event, stsitem:any)
+  {
+    this.ss.chngsts(stsitem).subscribe(
+      resp => {
+        
+        if(resp.status==1)
+        {
+            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+            this.getAll();
+        }
+        else{
+            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+      }
+    );
+  }
 
 
 

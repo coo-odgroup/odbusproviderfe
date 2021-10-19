@@ -40,7 +40,7 @@
               <th scope="col">Testimonial</th>
               <th scope="col">By/Location</th>
               <th scope="col">Status</th>
-              <th scope="col" width="100px">Action </th>
+              <th scope="col" width="150px">Action </th>
             </tr>
           </thead>
           <tbody *ngIf="testimonial?.length != 0">
@@ -55,7 +55,7 @@
                   (click)="changeStatus($event, page.id);">Pending</label>
               </td>
               <td>
-                <button class="btn btn-light text-info" title="Edit" (click)="editData(i);OpenModal(content)"><i
+                <button class="btn btn-light text-info  mr-2" title="Edit" (click)="editData(i);OpenModal(content)"><i
                     class="fas fa-edit"></i></button>
                 <button class="btn btn-light text-danger" title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
               </td>
