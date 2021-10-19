@@ -37,6 +37,7 @@ export class BusscheduleComponent implements OnInit {
   operators: any;
   buses: any;
   eDates: any;
+  scheduleRecord:any;
   runningCycles= ['1', '2','3', '4','5','6','7'];
   public isSubmit: boolean;
   public mesgdata:any;
@@ -148,88 +149,6 @@ FormOne: FormGroup;
     XLSX.writeFile(wb, this.fileName);
  
   }
-
-
-
-  // loadBusScheduleData()
-  // {
-  //   this.dtOptionsBusSchedule = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',  
-  //     order:["0","desc"], 
-  //     aLengthMenu:[10, 25, 50, 100, "All"],  
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //           columns: "thead th:not(.noExport)"
-  //          } 
-  //       },
-  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { 
-  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       {
-  //         text:"Add",
-  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         action:() => {
-  //          this.addnew.nativeElement.click();
-  //         }
-  //       }
-  //     ],
-  //   language: {
-  //     searchPlaceholder: "Find bus",
-  //     processing: "<img src='assets/images/loading.gif' width='30'>"
-  //   },
-  //   ajax: (dataTablesParameters: any, callback) => {
-  //     this.http
-  //       .post<DataTablesResponse>(
-  //         Constants.BASE_URL+'/busScheduleDT',
-  //         dataTablesParameters, {}
-  //       ).subscribe(resp => {
-  //       //  console.log(resp.data.aaData);
-  //         this.busSchedules = resp.data.aaData;
-  //         callback({
-  //           recordsTotal: resp.data.iTotalRecords,
-  //           recordsFiltered: resp.data.iTotalDisplayRecords,
-  //           data: resp.data.aaData
-  //         });
-  //       });
-  //   },
-  //     columns: [ { data: 'id' },{ data: 'operatorName' },{ title:"Routes",data: 'routes' },{ data: 'name' },{ 
-  //       data: 'status',
-  //       render:function(data)
-  //       {
-  //         return (data=="1")?"Active":"Pending"
-  //       }  
-
-  //     },{ title:'Action',data: null,orderable:false,className: "noExport"  }]            
-  //   }; 
-  // }
   ResetAttributes()
   {
     this.showdates='0';
@@ -337,8 +256,10 @@ FormOne: FormGroup;
   {
     this.showdates='0';
     this.loadServices();
+
     this.busScheduleRecord=this.busSchedules[id];
-    console.log(this.busScheduleRecord);
+    this.scheduleRecord=this.busScheduleRecord;
+    console.log(this.scheduleRecord);
     // this.busScheduleForm.patchValue({
     //   //bus_id:this.busScheduleRecord.bus_id,
     //   bus_operator_id:this.busScheduleRecord.bus_operator_id,
@@ -348,9 +269,9 @@ FormOne: FormGroup;
 
     this.busScheduleForm = this.fb.group({
       id:this.busScheduleRecord.id,
-      bus_id: [this.busScheduleRecord.id, Validators.compose([Validators.required])],
-      bus_operator_id:this.busScheduleRecord.bus_operator_id,
-      entry_date:this.busScheduleRecord.entry_date,
+      bus_id: [this.scheduleRecord.bus_id, Validators.compose([Validators.required])],
+      bus_operator_id:this.scheduleRecord.bus.bus_operator_id,
+      entry_date:this.scheduleRecord.bus_schedule_date[0].entry_date,
       cancelled_by:'Admin', 
       running_cycle:this.busScheduleForm.value.running_cycle,
     });

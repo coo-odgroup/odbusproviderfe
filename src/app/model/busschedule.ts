@@ -7,4 +7,6 @@ export interface Busschedule {
     created_by: 'admin';
     status: 0; 
     entryDates: [];
+    bus:any;
+    bus_schedule_date:any;
 }
