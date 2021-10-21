@@ -454,7 +454,7 @@ export class BusComponent implements OnInit {
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
-          console.log( res.data);
+          // console.log( res.data);
         }
       );
     }

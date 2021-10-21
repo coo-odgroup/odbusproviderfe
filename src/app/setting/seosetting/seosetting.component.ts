@@ -55,6 +55,7 @@ export class SeosettingComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       page_url: [null, Validators.compose([Validators.required])],
+      url_description:[null],
       meta_title: [null],
       meta_keyword: [null],
       meta_description: [null],
@@ -83,6 +84,7 @@ export class SeosettingComponent implements OnInit {
     this.urlcontentRecord = {} as urlcontent;
     this.form = this.fb.group({
       id:[null],
+      url_description:[null],
       page_url: [null],
       meta_title: [null],
       meta_keyword: [null],
@@ -176,6 +178,7 @@ export class SeosettingComponent implements OnInit {
   addData() {
     const data = {
       page_url:this.form.value.page_url,
+      url_description:this.form.value.url_description,
       meta_title: this.form.value.meta_title,
       meta_keyword: this.form.value.meta_keyword,
       meta_description: this.form.value.meta_description,
@@ -230,6 +233,7 @@ export class SeosettingComponent implements OnInit {
     // console.log(this.urlcontentRecord);
     this.form.controls.id.setValue(this.urlcontentRecord.id);
     this.form.controls.page_url.setValue(this.urlcontentRecord.page_url);
+    this.form.controls.url_description.setValue(this.urlcontentRecord.url_description);
     this.form.controls.meta_title.setValue(this.urlcontentRecord.meta_title);
     this.form.controls.meta_keyword.setValue(this.urlcontentRecord.meta_keyword);
     this.form.controls.meta_description.setValue(this.urlcontentRecord.meta_description);
@@ -282,5 +286,55 @@ export class SeosettingComponent implements OnInit {
   }
 
 
+
+
+  
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: '250px',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Enter text here...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    // upload: (file: File) => { ... }
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+};
 
 }

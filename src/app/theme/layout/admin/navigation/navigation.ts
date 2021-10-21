@@ -352,7 +352,7 @@ const NavigationItems = [
       },
       {
         id: 'setting',
-        title: 'Setting',
+        title: 'Website CMS Setting',
         type: 'collapse',
         icon: 'add_shopping_cart',
         children: [
@@ -367,6 +367,12 @@ const NavigationItems = [
             title: 'Social Media',
             type: 'item',
             url: 'setting/socialmedia'
+          },
+          {
+            id: 'userreview',
+            title: 'User Review',
+            type: 'item',
+            url: 'setting/userreview'
           },
           {
             id: 'testimonial',

@@ -32,6 +32,10 @@ const routes: Routes = [
       {
         path: 'mastersetting',
         loadChildren: () => import('./mastersetting/mastersetting.module').then(module => module.MasterSettingModule)
+      }, 
+      {
+        path: 'userreview',
+        loadChildren: () => import('./userreview/userreview.module').then(module => module.UserReviewlModule)
       },
     
     

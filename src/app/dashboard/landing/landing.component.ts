@@ -188,7 +188,7 @@ export class LandingComponent implements OnInit {
     ngAfterViewInit()
     {
       setTimeout(() => {
-        const barBasicTag = (((this.barBasicChart.nativeElement as HTMLCanvasElement).children));
+        const barBasicTag = (((this.barBasicChart?.nativeElement as HTMLCanvasElement)?.children));
       this.barBasicChartTag = ((barBasicTag['bar_basic_chart']).lastChild).getContext('2d');
       const abc = (this.barBasicChartTag).createLinearGradient(0, 300, 0, 0);
       abc.addColorStop(0, '#00acc1');

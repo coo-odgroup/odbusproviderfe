@@ -9,10 +9,13 @@ import { MastersettingComponent } from './mastersetting/mastersetting.component'
 import { BannermanagementComponent } from './bannermanagement/bannermanagement.component';
 import { SpecialsliderComponent } from './specialslider/specialslider.component';
 import { SeosettingComponent } from './seosetting/seosetting.component';
+import { UserreviewComponent } from './userreview/userreview.component';
 
 
 @NgModule({
   declarations: [
+    
+  
     
   ],
   imports: [

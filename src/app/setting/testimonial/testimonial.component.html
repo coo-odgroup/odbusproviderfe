@@ -93,7 +93,10 @@
             <tr>
               <th scope="col" width="100px">#</th>
               <th scope="col">Testimonial</th>
-              <th scope="col">By/Location</th>
+              <th scope="col">Route</th>
+              <th scope="col">Posted By</th>
+              <th scope="col">operator</th>
+              <th scope="col">Travel Date</th>
               <th scope="col">Status</th>
               <th scope="col" width="150px">Action </th>
             </tr>
@@ -102,7 +105,11 @@
             <tr *ngFor="let page of testimonial; let i=index;">
               <td>{{i+1}}</td>
               <td>{{page.testinmonial_content}}</td>
-              <td>{{page.posted_by}} <br> {{page.location}}</td>
+              <td>{{page.source}}  >>  {{page.destination}}</td>
+              <td>{{page.posted_by}}</td>
+              <td>{{page.operator}}</td>
+              <td>{{page.travel_date}}</td>
+
               <td>
                 <label *ngIf="page.status==1" class="badge badge-light-success pointer"
                   (click)="changeStatus($event, page.id);">Active</label>
@@ -188,12 +195,12 @@
                     <form [formGroup]="form" class="editForm" novalidate>
                       <div class="row">
                         <div class="col-md-12">
-                          <h5>Testimonial Content</h5>
+                          
                           <div class="row">
-                            <div class="col-md-4 col-sm-4">
+                            <div class="col-md-4 ">
                               <div class="from-group">
                                 <!-- <label>Page name :</label> -->
-                                <label for="name" class="col-sm-5 col-form-label">Posted By :<span
+                                <label for="name" class=" col-form-label">Posted By :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="text" class="form-control" ngbAutofocus placeholder="Enter Posted By"
@@ -207,27 +214,72 @@
 
                             </div>
 
-                            <div class="col-md-4 col-sm-4">
+            
+                            <div class="col-md-4 ">
                               <div class="from-group">
-                                <!-- <label>Page name :</label> -->
-                                <label for="name" class="col-sm-5 col-form-label">Location :<span
+                                <label for="name" class=" col-form-label">Source :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
-                                    required formControlName="location" />
+                                    required formControlName="source" />
                                   <span class="text-danger"
-                                    *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
-                                    Location is Required
+                                    *ngIf="form.controls['source'].touched && form.controls['source'].hasError('required')">
+                                    Source is Required
                                   </span>
                                 </div>
                               </div>
-
                             </div>
 
-                            <div class="col-md-4 col-sm-4">
+                            <div class="col-md-4 ">
+                              <div class="from-group">
+                                <label for="name" class=" col-form-label">Destination :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
+                                    required formControlName="destination" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['destination'].touched && form.controls['destination'].hasError('required')">
+                                    Destination is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4 ">
+                              <div class="from-group">
+                                <label for="name" class=" col-form-label">Operator Name :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
+                                    required formControlName="operator" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['operator'].touched && form.controls['operator'].hasError('required')">
+                                    Operator is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4 ">
+                              <div class="from-group">
+                                <label for="name" class=" col-form-label">Date of Travel :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="date" class="form-control" ngbAutofocus placeholder="Enter Page name"
+                                    required formControlName="travel_date" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['travel_date'].touched && form.controls['travel_date'].hasError('required')">
+                                    Date of Travel is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            
+
+                            <div class="col-md-4 ">
                               <div class="from-group">
                                 <!-- <label>Page name :</label> -->
-                                <label for="name" class="col-sm-5 col-form-label">Designation :<span
+                                <label for="name" class=" col-form-label">Designation :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="text" class="form-control" ngbAutofocus placeholder="Enter Designation"
@@ -245,7 +297,7 @@
 
 
                           <div>
-                            <label for="name" class="col-sm-5 col-form-label">Testinmonial Content :<span
+                            <label for="name" class=" col-form-label">Testinmonial Content :<span
                                 class="text-danger">*</span></label>
                             <angular-editor formControlName="testinmonial_content" [config]="editorConfig">
                             </angular-editor>

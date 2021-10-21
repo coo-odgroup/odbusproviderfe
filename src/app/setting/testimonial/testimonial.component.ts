@@ -48,14 +48,19 @@ export class TestimonialComponent implements OnInit {
       this.ModalBtn = "Save"; 
     }
 
+
     ngOnInit(): void {
       
       this.form = this.fb.group({
         id:[null],
         posted_by: [null, Validators.compose([Validators.required])],
         testinmonial_content: [null, Validators.compose([Validators.required])],
-        location: [null, Validators.compose([Validators.required])],
-        designation: [null, Validators.compose([Validators.required])]
+        designation: [null, Validators.compose([Validators.required])],
+        travel_date: [null, Validators.compose([Validators.required])],
+        operator: [null, Validators.compose([Validators.required])],
+        destination: [null, Validators.compose([Validators.required])],
+        source: [null, Validators.compose([Validators.required])]
+
       });
       this.formConfirm=this.fb.group({
         id:[null]
@@ -74,16 +79,19 @@ export class TestimonialComponent implements OnInit {
       this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
     }
     ResetAttributes()
-    { 
-      this.form = this.fb.group({
+    {  this.testimonialRecord = {} as Testimonial;
+      
+    this.form = this.fb.group({
         id:[null],
         posted_by: [null],
         testinmonial_content: [null],
-        location: [null],
-        designation: [null]
-        
+        designation: [null],
+        travel_date: [null],
+        operator: [null],
+        destination: [null],
+        source: [null] 
       });
-      this.ModalHeading = "Add Page";
+      this.ModalHeading = "Add Testimonial Content";
       this.ModalBtn = "Save";
     }
   
@@ -139,8 +147,12 @@ export class TestimonialComponent implements OnInit {
       const data = {
         posted_by:this.form.value.posted_by,
         testinmonial_content:this.form.value.testinmonial_content,
-        location:this.form.value.location,
-        designation: this.form.value.designation,  
+        designation: this.form.value.designation, 
+        travel_date: this.form.value.travel_date,
+        operator: this.form.value.operator,
+        destination: this.form.value.destination,
+        source: this.form.value.source
+ 
       };
       // console.log(data);
       let id = this.testimonialRecord?.id;
@@ -179,6 +191,7 @@ export class TestimonialComponent implements OnInit {
   
     }
   
+ 
   
     editData(id)
     {  
@@ -186,9 +199,13 @@ export class TestimonialComponent implements OnInit {
       this.form.controls.id.setValue(this.testimonialRecord.id);
       this.form.controls.posted_by.setValue(this.testimonialRecord.posted_by);
       this.form.controls.testinmonial_content.setValue(this.testimonialRecord.testinmonial_content);
-      this.form.controls.location.setValue(this.testimonialRecord.location);
-      this.form.controls.designation.setValue(this.testimonialRecord.designation);  
-      this.ModalHeading = "Edit Location";
+      this.form.controls.designation.setValue(this.testimonialRecord.designation);
+      this.form.controls.travel_date.setValue(this.testimonialRecord.travel_date);
+      this.form.controls.operator.setValue(this.testimonialRecord.operator);
+      this.form.controls.destination.setValue(this.testimonialRecord.destination);
+      this.form.controls.source.setValue(this.testimonialRecord.source);
+        
+      this.ModalHeading = "Edit Testimonial Content";
       this.ModalBtn = "Update";    
   
     }

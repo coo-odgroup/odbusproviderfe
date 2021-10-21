@@ -2,29 +2,27 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {SharedModule} from '../../theme/shared/shared.module';
 import {FormsModule} from '@angular/forms';
-import {SeosettingComponent} from './seosetting.component';
+import {UserreviewComponent} from './userreview.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
-import {SeoSettingRoutingModule} from './seosetting-routing.module';
+import {UserReviewRoutingModule} from './userreview-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {NgxPrintModule} from 'ngx-print';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
 
 
 @NgModule({
   imports: [
     CommonModule,
-    SeoSettingRoutingModule,
+    UserReviewRoutingModule,
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule,
-    NgxPrintModule,
-    AngularEditorModule
+    NgbModule,AngularEditorModule
   ],
-  declarations: [ SeosettingComponent],
+  declarations: [ UserreviewComponent],
   providers: [NotificationService]
 })
 
-export class SeoSettingModule { }
+export class UserReviewlModule { }
+
+
