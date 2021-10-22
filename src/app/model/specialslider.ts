@@ -1,5 +1,6 @@
 export interface SpecialSlider {
     id:any;
+    bus_operator_id:any;
     occassion:any;
     category:any;
     url:any;

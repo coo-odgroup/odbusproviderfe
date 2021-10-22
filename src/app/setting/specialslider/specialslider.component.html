@@ -157,28 +157,31 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="Type" class="col-sm-5 col-form-label">Define Your Slider<span
+                            <label for="Type" class="col-sm-5 col-form-label">Operator<span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <ng-select [items]="sliderDefinations" bindLabel="name" bindValue="name" placeholder="Choose slider defination"
-                                formControlName="occassion" [clearable]="false">
-                              </ng-select>
-
-                              <!-- <input type="text" class="form-control" ngbAutofocus
-                                placeholder="Enter slider description" required formControlName="occassion" />
+                              <ng-select [items]="operators" bindLabel="operator_name" bindValue="id"
+                                    placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
+                                  </ng-select>
                               <span class="text-danger"
-                                *ngIf="sliderForm.controls['occassion'].touched && sliderForm.controls['occassion'].hasError('required')">
-                                slider description required
-                              </span> -->
+                                *ngIf="sliderForm.controls['bus_operator_id'].touched && sliderForm.controls['bus_operator_id'].hasError('required')">
+                                Bus Operator Id required
+                              </span>
                             </div>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="Name" class="col-sm-5 col-form-label">URL(if any)</label>
+                            <label for="Name" class="col-sm-5 col-form-label">Define Your Slider<span
+                              class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Url"
-                                required formControlName="url" />
+                              <ng-select [items]="sliderDefinations" bindLabel="name" bindValue="name" placeholder="Choose slider defination"
+                                formControlName="occassion" [clearable]="false">
+                              </ng-select>
+                              <span class="text-danger"
+                                *ngIf="sliderForm.controls['occassion'].touched && sliderForm.controls['occassion'].hasError('required')">
+                                slider description required
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -282,6 +285,17 @@
                             </div>
                           </div>
                         </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="Type" class="col-sm-5 col-form-label">URL(if any)</label>
+                            <div class="col-sm-7">
+                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Url"
+                                required formControlName="url"/>
+                            </div>
+                          </div>
+                        </div> 
                       </div>
                     </form>
                   </div>
