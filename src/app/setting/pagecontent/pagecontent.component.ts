@@ -4,6 +4,7 @@ import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Pagecontent } from '../../model/pagecontent';
+import {Constants} from '../../constant/constant' ;
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {PagecontentService } from '../../services/pagecontent.service';
 @Component({
@@ -102,6 +103,7 @@ export class PagecontentComponent implements OnInit {
   addData() {
 
     const data = {
+      bus_operator_id:Constants.BUS_OPERATOR_ID,
       page_name:this.form.value.page_name,
       page_url:this.form.value.page_url,
       page_description:this.form.value.page_description,
