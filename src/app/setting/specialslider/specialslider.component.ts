@@ -5,7 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {SpecialSlider} from '../../model/specialslider';
 import {Constants} from '../../constant/constant' ;
 import { NotificationService } from '../../services/notification.service';
-
+import { BusOperatorService } from '../../services/bus-operator.service';
+import { Busoperator } from '../../model/busoperator';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
@@ -24,7 +25,7 @@ export class SpecialsliderComponent implements OnInit {
   sliderForm: FormGroup;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
-
+  operators: Busoperator[];
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   sliders: SpecialSlider[];
@@ -49,7 +50,7 @@ export class SpecialsliderComponent implements OnInit {
   public pagination: any;
   public imageSizeFlag = true;
 
-  constructor(private specialsliderService: SpecialsliderService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer)
+  constructor(private specialsliderService: SpecialsliderService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer,private busOperartorService:BusOperatorService)
      { 
         this.isSubmit = false;
         this.sliderRecord= {} as SpecialSlider;
@@ -207,11 +208,20 @@ export class SpecialsliderComponent implements OnInit {
     }
 
   }
+  LoadAllService()
+  {
+    this.busOperartorService.readAll().subscribe(
+      record=>{
+      this.operators=record.data;
+      }
+    );
+  }
   ResetAttributes()
   {
     //this.sliderRecord = {} as SpecialSlider;
     this.sliderForm = this.fb.group({
       id:[null],
+      bus_operator_id: [null, Validators.compose([Validators.required])],
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
@@ -223,6 +233,7 @@ export class SpecialsliderComponent implements OnInit {
       end_time: [null, Validators.compose([Validators.required])],
       iconSrc:[null]
     });
+    this.LoadAllService();
     this.ModalHeading = "Add Special Slider";
     this.ModalBtn = "Save";
     this.imgURL="";
@@ -237,6 +248,7 @@ export class SpecialsliderComponent implements OnInit {
     }
 
     const data ={
+      bus_operator_id:this.sliderForm.value.bus_operator_id,
       occassion:this.sliderForm.value.occassion,
       category:this.sliderForm.value.category,
       url:this.sliderForm.value.url,
@@ -302,6 +314,7 @@ export class SpecialsliderComponent implements OnInit {
 
     this.sliderForm=this.fb.group({
       id:[this.sliderRecord.id],
+      bus_operator_id:[this.sliderRecord.bus_operator_id],
       occassion:[this.sliderRecord.occassion],
       category:[this.sliderRecord.category],
       url:[this.sliderRecord.url],
