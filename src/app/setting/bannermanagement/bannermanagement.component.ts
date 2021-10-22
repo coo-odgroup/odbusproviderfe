@@ -229,6 +229,7 @@ export class BannermanagementComponent implements OnInit {
     }
 
     const data ={
+      bus_operator_id:Constants.BUS_OPERATOR_ID,
       occassion:this.bannerForm.value.occassion,
       category:this.bannerForm.value.category,
       url:this.bannerForm.value.url,
@@ -290,6 +291,7 @@ export class BannermanagementComponent implements OnInit {
 
     this.bannerForm=this.fb.group({
       id:[this.bannerRecord.id],
+      bus_operator_id:Constants.BUS_OPERATOR_ID,
       occassion:[this.bannerRecord.occassion],
       category:[this.bannerRecord.category],
       url:[this.bannerRecord.url],

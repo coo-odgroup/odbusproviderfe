@@ -422,6 +422,8 @@ export class BusComponent implements OnInit {
     });
 
      this.search(); 
+
+    
   }
 
 
@@ -701,6 +703,8 @@ export class BusComponent implements OnInit {
       o_sms_ticket: ["true"], 
       o_sms_cancel: ["true"]
     });
+
+    this.LoadAllService();
     this.ModalHeading = "Add New Bus";
     this.ModalBtn = "Save";
     this.selectedLocation=[];
