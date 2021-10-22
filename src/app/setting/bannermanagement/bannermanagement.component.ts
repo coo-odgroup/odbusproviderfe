@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BannerService } from '../../services/banner.service' ;
 import { HttpClient } from '@angular/common/http';
+import { Busoperator } from '../../model/busoperator';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Banner} from '../../model/banner';
 import {Constants} from '../../constant/constant' ;
 import { NotificationService } from '../../services/notification.service';
-
+import { BusOperatorService } from '../../services/bus-operator.service';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
@@ -23,7 +24,7 @@ export class BannermanagementComponent implements OnInit {
   bannerForm: FormGroup;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
-
+  operators: Busoperator[];
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   banners: Banner[];
@@ -43,7 +44,7 @@ export class BannermanagementComponent implements OnInit {
   public pagination: any;
   public imageSizeFlag = true;
 
-  constructor(private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer)
+  constructor(private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer, private busOperartorService:BusOperatorService)
      { 
         this.isSubmit = false;
         this.bannerRecord= {} as Banner;
@@ -88,6 +89,7 @@ export class BannermanagementComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
+      bus_operator_id:[null],
       banner_img:[null],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -105,11 +107,11 @@ export class BannermanagementComponent implements OnInit {
   //////image validation////////
   public picked(event:any, fileSrc:any) {
     this.imageError = null;
-            const max_size = 102400;
+            const max_size = 819200;
             //const allowed_types = ['image/svg+xml'];
             const allowed_types = ['image/x-png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
-            const max_height = 100;
-            const max_width = 200;
+            const max_height = 600;
+            const max_width = 2400;
     let fileList: FileList = event.target.files;
     this.imageSizeFlag = true;
     if (event.target.files[0].size > max_size) {
@@ -207,6 +209,7 @@ export class BannermanagementComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
+      bus_operator_id:[],
       banner_img:[null],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -220,6 +223,11 @@ export class BannermanagementComponent implements OnInit {
     this.imgURL="";
     this.imageSrc="";
     this.bannerRecord.banner_img="";  
+    this.busOperartorService.readAll().subscribe(
+      record=>{
+      this.operators=record.data;
+      }
+    );
   }
   addBanner()
   {
@@ -229,7 +237,7 @@ export class BannermanagementComponent implements OnInit {
     }
 
     const data ={
-      bus_operator_id:Constants.BUS_OPERATOR_ID,
+      bus_operator_id:this.bannerForm.value.bus_operator_id,
       occassion:this.bannerForm.value.occassion,
       category:this.bannerForm.value.category,
       url:this.bannerForm.value.url,
@@ -291,7 +299,7 @@ export class BannermanagementComponent implements OnInit {
 
     this.bannerForm=this.fb.group({
       id:[this.bannerRecord.id],
-      bus_operator_id:Constants.BUS_OPERATOR_ID,
+      bus_operator_id:this.bannerRecord.bus_operator_id,
       occassion:[this.bannerRecord.occassion],
       category:[this.bannerRecord.category],
       url:[this.bannerRecord.url],
@@ -303,6 +311,12 @@ export class BannermanagementComponent implements OnInit {
       banner_img: [],
       iconSrc:[this.bannerRecord.banner_img]
     });
+
+    this.busOperartorService.readAll().subscribe(
+      record=>{
+      this.operators=record.data;
+      }
+    );
   
     this.ModalHeading = "Edit Banner";
     this.ModalBtn = "Update";  

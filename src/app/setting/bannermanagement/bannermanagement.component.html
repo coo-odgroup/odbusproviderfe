@@ -148,6 +148,23 @@
                     <div class="right-icon-control">
                       <form [formGroup]="bannerForm" class="editForm" novalidate>
                         <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group row">
+
+                              <label for="bus" class="col-sm-4 col-form-label">Operator <span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-8">
+                                <ng-select [items]="operators" bindLabel="operator_name" bindValue="id"
+                                  placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
+                                </ng-select>
+                                <span class="text-danger"
+                                  *ngIf="bannerForm.controls['bus_operator_id'].touched && bannerForm.controls['bus_operator_id'].hasError('required')">
+                                  Operator Name is required! </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-6">
                             <div class="form-group row">
                               <label for="Type" class="col-sm-5 col-form-label">Occassion<span
