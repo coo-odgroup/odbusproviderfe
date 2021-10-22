@@ -1,1 +1,138 @@
-<p>mastersetting works!</p>
+<div class="row">  
+    <div class="col-sm-12">
+      <app-card cardTitle="Master Setting" cardClass="card-datatable" [options]="true"  [isCardFooter]="true">
+        <div class="table-responsive">
+            <form [formGroup]="settingForm" class="editForm" novalidate>
+                <table class="table table-striped table-bordered table-hover  mb-0 ">
+                    
+                    <tr>
+                        <th>Items</th>
+                        <th>Values</th>
+                    </tr>
+                   
+                    <tr>
+                        <th>No of Advance Days Show In Calender<span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="advance_days_show"  placeholder="advance days show" aria-label="advance days show" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['advance_days_show'].touched && settingForm.controls['advance_days_show'].hasError('required')">
+                                No of Advance Days Show required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Support Email<span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="support_email"  placeholder="support email" aria-label="support email" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['support_email'].touched && settingForm.controls['support_email'].hasError('required')">
+                                Support Email required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Booking Email <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="booking_email"  placeholder="booking Email " aria-label="booking email" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['booking_email'].touched && settingForm.controls['booking_email'].hasError('required')">
+                                Booking Email  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Request Email <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="request_email"  placeholder="request Email" aria-label="request Email" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['request_email'].touched && settingForm.controls['request_email'].hasError('required')">
+                                Request Email  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Other Email</th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="other_email"  placeholder="other email" aria-label="other email" aria-describedby="basic-addon2">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number1 <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="mobile_no_1"  placeholder="mobile no1" aria-label="mobile_no_1" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['mobile_no_1'].touched && settingForm.controls['mobile_no_1'].hasError('required')">
+                                Mobile Number1  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number2 <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="mobile_no_2"  placeholder="mobile no2" aria-label="mobile_no_2" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['mobile_no_2'].touched && settingForm.controls['mobile_no_2'].hasError('required')">
+                                Mobile Number2  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number3 <span class="text-danger">*</span> </th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="mobile_no_3"  placeholder="mobile no3" aria-label="mobile_no_3" aria-describedby="basic-addon2">
+                            </div>
+                            <span class="text-danger" *ngIf="settingForm.controls['mobile_no_3'].touched && settingForm.controls['mobile_no_3'].hasError('required')">
+                                Mobile Number3  required! </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mobile Number4</th> 
+                        <td>
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" formControlName="mobile_no_4"  placeholder="Mobile Number4" aria-label="mobile no4" aria-describedby="basic-addon2">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Logo</th> 
+                        <!-- <td>
+                            <div class="input-group col-md-6">
+                                <input type="file" class="form-control" formControlName="logo"  aria-label="mobile no4" aria-describedby="basic-addon2">
+                            </div>
+                        </td> -->
+                        <td>
+                            <!-- <img class="sliderImage" [attr.src]="getBannerImagepath(settingRecord[0].logo)"> -->
+
+                            <div class="input-group col-md-12">
+                                <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
+                                  class="form-control" id="slider_img" placeholder="Drop your image here"
+                                  formControlName="logo" />
+                              </div>
+                              <span class="text-danger">Max file size 100Kb</span>
+                              <span class="text-danger">{{imageError}}</span>
+                              <span class="text-danger"
+                                *ngIf="settingForm.controls['logo'].touched && settingForm.controls['logo'].hasError('required')">
+                                Image file is required! </span>
+                              <div *ngIf="imgURL">
+                                <img id="sliderImgPreview" class="sliderImage-edit"
+                                  [attr.src]="getBannerImagepath(settingForm.value['iconSrc'])">
+                              </div>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" class="text-right">
+                            <button type="button" [disabled]="!settingForm.valid" (click)="updateVal()" class="btn btn-primary" ngbAutofocus>Update Setting</button>
+                        </td>                       
+                    </tr>
+                </table>
+            </form>
+        </div>
+      </app-card>
+    </div>
+</div>    
