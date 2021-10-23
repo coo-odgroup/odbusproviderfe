@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-2">
           <div class="from-group ">
-            <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
+            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
               Add Page
             </button>
           </div>
@@ -13,7 +13,18 @@
           <form [formGroup]="searchForm">
             <div class="row">
 
-              <div class="col-6">
+              <div class="col-3">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                            placeholder="Select Operator" formControlName="bus_operator_id"
+                            [clearable]="false">
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+
+              <div class="col-3">
                 <div class="form-group row">
 
                   <div class="col-sm-12">
@@ -73,6 +84,7 @@
             <tr>
               <th scope="col" width="100px">#</th>
               <th scope="col">Page URL</th>
+              <th scope="col">Operator</th>
               <!-- <th scope="col">Url Description</th> -->
               <th class="hide_screen">Meta Title</th>
               <th class="hide_screen">Meta Keyword</th>
@@ -87,6 +99,7 @@
             <tr *ngFor="let page of urlcontent; let i=index;">
               <td>{{i+1}}</td>
               <td>{{page.page_url}}</td>
+              <td>{{page.bus_operator.operator_name}}</td>
               <!-- <td>{{page.url_description}}</td> -->
               <td class="hide_screen">{{page.meta_title}}</td>
               <td class="hide_screen">{{page.meta_keyword}}</td>
@@ -176,6 +189,25 @@
                     <form [formGroup]="form" class="editForm" novalidate>
                       <div class="row">
                         <div class="col-md-12">
+
+                          <div class="from-group">
+                            <label for="name" class="col-sm-6 col-form-label">Select Operator :<span class="text-danger">*</span></label>
+                           <div class="col-sm-12">
+                            
+                               <div class="form-group row">
+                                 <div class="col-sm-12">
+                                     <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                         placeholder="Select Operator" formControlName="bus_operator_id"
+                                         [clearable]="false">
+                                     </ng-select>                                          
+                                 </div>
+                             </div>
+                             <span class="text-danger"
+                               *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
+                               Operator is Required
+                             </span>
+                           </div>
+                         </div>
                           <div class="from-group">
                             <label for="name" class="col-sm-3 col-form-label"> URL :<span
                                 class="text-danger">*</span></label>
@@ -188,6 +220,9 @@
                               </span>
                             </div>
                           </div>
+                        
+                           
+                          
 
                           <div>
                             <label for="name" class="col-sm-5 col-form-label">URL Description :<span

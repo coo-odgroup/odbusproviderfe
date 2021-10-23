@@ -1,7 +1,7 @@
-
-export interface urlcontent {
+export interface Urlcontent {
     id:any ;
     page_url:any;
+    bus_operator_id:any;
     url_description:any;
     meta_title:any;
     meta_keyword:any;

@@ -3,10 +3,11 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { urlcontent } from '../../model/urlcontent';
+import { Urlcontent } from '../../model/urlcontent';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import {SeosettingService } from '../../services/seosetting.service';
-import{Constants} from '../../constant/constant';
+import { BusOperatorService } from './../../services/bus-operator.service';
+import { SeosettingService } from '../../services/seosetting.service';
+import { Constants } from '../../constant/constant';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -26,72 +27,74 @@ export class SeosettingComponent implements OnInit {
   confirmDialogReference: NgbModalRef;
 
   public isSubmit: boolean;
-  public ModalHeading:any;
-  public ModalBtn:any;
+  public ModalHeading: any;
+  public ModalBtn: any;
 
-  urlcontent: urlcontent[];
-  urlcontentRecord: urlcontent;
+  urlcontent: Urlcontent[];
+  urlcontentRecord: Urlcontent;
+  busoperators: any;
 
   constructor(
-    private http: HttpClient, 
-    private notificationService: NotificationService, 
-    private fb: FormBuilder,
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private fb: FormBuilder, private busOperatorService: BusOperatorService,
     private ss: SeosettingService,
     private modalService: NgbModal,
     config: NgbModalConfig
-    )
-    { 
-      config.backdrop = 'static';
-      config.keyboard = false;
-      this.ModalHeading = "Add New Location";
-      this.ModalBtn = "Save"; 
-    }
+  ) {
+    config.backdrop = 'static';
+    config.keyboard = false;
+    this.ModalHeading = "Add New Location";
+    this.ModalBtn = "Save";
+  }
 
 
-    
-    
+
+
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      id:[null],
+      id: [null],
       page_url: [null, Validators.compose([Validators.required])],
-      url_description:[null],
+      bus_operator_id: [null, Validators.compose([Validators.required])],
+      url_description: [null],
       meta_title: [null],
       meta_keyword: [null],
       meta_description: [null],
       extra_meta: [null],
       canonical_url: [null]
     });
-    this.formConfirm=this.fb.group({
-      id:[null]
+    this.formConfirm = this.fb.group({
+      id: [null]
     });
-    this.searchForm = this.fb.group({  
-      name: [null],  
+    this.searchForm = this.fb.group({
+      bus_operator_id: [null],
+      name: [null],
       rows_number: Constants.RecordLimit,
     });
 
     this.search();
     // this.getAll();
+    this.loadServices();
   }
 
 
-  OpenModal(content) 
-  {
-    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
+  OpenModal(content) {
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
-  ResetAttributes()
-  { 
-    this.urlcontentRecord = {} as urlcontent;
+  ResetAttributes() {
+    this.urlcontentRecord = {} as Urlcontent;
     this.form = this.fb.group({
-      id:[null],
-      url_description:[null],
+      id: [null],
+      url_description: [null],
+      bus_operator_id: [null],
       page_url: [null],
       meta_title: [null],
       meta_keyword: [null],
       meta_description: [null],
       extra_meta: [null],
       canonical_url: [null]
-      
+
     });
     this.form.reset();
     this.ModalHeading = "Add URL";
@@ -108,35 +111,33 @@ export class SeosettingComponent implements OnInit {
   //   );
   // }
 
-  page(label:any){
+  page(label: any) {
     return label;
-   }
+  }
 
-   
-  search(pageurl="")
-  {      
-    const data = { 
+
+  search(pageurl = "") {
+    const data = {
       name: this.searchForm.value.name,
-      rows_number:this.searchForm.value.rows_number, 
+      bus_operator_id: this.searchForm.value.bus_operator_id,
+      rows_number: this.searchForm.value.rows_number,
     };
-   
+
     // console.log(data);
-    if(pageurl!="")
-    {
-      this.ss.getAllaginationData(pageurl,data).subscribe(
+    if (pageurl != "") {
+      this.ss.getAllaginationData(pageurl, data).subscribe(
         res => {
-          this.urlcontent= res.data.data.data;
-          this.pagination= res.data.data;
+          this.urlcontent = res.data.data.data;
+          this.pagination = res.data.data;
           // console.log( this.BusOperators);
         }
       );
     }
-    else
-    {
+    else {
       this.ss.getAllData(data).subscribe(
         res => {
-          this.urlcontent= res.data.data.data;
-          this.pagination= res.data.data;
+          this.urlcontent = res.data.data.data;
+          this.pagination = res.data.data;
           // console.log( res.data);
         }
       );
@@ -144,41 +145,49 @@ export class SeosettingComponent implements OnInit {
   }
 
 
-  refresh()
-   {  
-    this.searchForm = this.fb.group({  
-      name: [null],  
+  refresh() {
+    this.searchForm = this.fb.group({
+      name: [null],
+      bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
     });
-     this.search();
-    
-   }
+    this.search();
 
-   title = 'angular-app';
-   fileName= 'Seo-Setting.xlsx';
- 
-   exportexcel(): void
-   {
-     
-     /* pass here the table id */
-     let element = document.getElementById('print-section');
-     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
-  
-     /* generate workbook and add the worksheet */
-     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  
-     /* save to file */  
-     XLSX.writeFile(wb, this.fileName);
-  
-   }
- 
- 
+  }
+
+  title = 'angular-app';
+  fileName = 'Seo-Setting.xlsx';
+
+  exportexcel(): void {
+
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.fileName);
+
+  }
+
+
+  loadServices() {
+
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+      }
+    );
+  }
 
   addData() {
     const data = {
-      page_url:this.form.value.page_url,
-      url_description:this.form.value.url_description,
+      page_url: this.form.value.page_url,
+      bus_operator_id:this.form.value.bus_operator_id,
+      url_description: this.form.value.url_description,
       meta_title: this.form.value.meta_title,
       meta_keyword: this.form.value.meta_keyword,
       meta_description: this.form.value.meta_description,
@@ -213,7 +222,7 @@ export class SeosettingComponent implements OnInit {
             this.ResetAttributes();
             this.refresh();
 
-           
+
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -226,12 +235,12 @@ export class SeosettingComponent implements OnInit {
   }
 
 
-  editData(id)
-  {  
+  editData(id) {
     this.urlcontentRecord = this.urlcontent[id];
-    
+
     // console.log(this.urlcontentRecord);
     this.form.controls.id.setValue(this.urlcontentRecord.id);
+    this.form.controls.bus_operator_id.setValue(this.urlcontentRecord.bus_operator_id);
     this.form.controls.page_url.setValue(this.urlcontentRecord.page_url);
     this.form.controls.url_description.setValue(this.urlcontentRecord.url_description);
     this.form.controls.meta_title.setValue(this.urlcontentRecord.meta_title);
@@ -242,7 +251,7 @@ export class SeosettingComponent implements OnInit {
 
     this.ModalHeading = "Edit URL";
     this.ModalBtn = "Update";
-  
+
 
   }
 
@@ -259,27 +268,25 @@ export class SeosettingComponent implements OnInit {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
           this.confirmDialogReference.close();
           this.ResetAttributes();
-          this.refresh();         
+          this.refresh();
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
         }
       });
   }
- 
 
-  changeStatus(event : Event, stsitem:any)
-  {
+
+  changeStatus(event: Event, stsitem: any) {
     this.ss.chngsts(stsitem).subscribe(
       resp => {
-        
-        if(resp.status==1)
-        {
-            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.refresh();
+
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.refresh();
         }
-        else{
-            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
         }
       }
     );
@@ -288,30 +295,30 @@ export class SeosettingComponent implements OnInit {
 
 
 
-  
+
 
   editorConfig: AngularEditorConfig = {
     editable: true,
-      spellcheck: true,
-      height: '250px',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-      ],
-      customClasses: [
+    spellcheck: true,
+    height: '250px',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
+    customClasses: [
       {
         name: 'quote',
         class: 'quote',
@@ -335,6 +342,6 @@ export class SeosettingComponent implements OnInit {
       ['bold', 'italic'],
       ['fontSize']
     ]
-};
+  };
 
 }
