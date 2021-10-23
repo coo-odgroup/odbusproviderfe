@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap'; 
 // import { Contactreport } from '../../model/contactreport';
 import { Userreview } from '../../model/userreview';
-
+import { BusOperatorService } from './../../services/bus-operator.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {ContactreportService } from '../../services/contactreport.service';
 import {Constants} from '../../constant/constant' ;
@@ -26,7 +26,7 @@ export class UserreviewComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
-   public isSubmit: boolean;
+  public isSubmit: boolean;
   public ModalHeading:any;
   public ModalBtn:any;
 
@@ -37,11 +37,13 @@ export class UserreviewComponent implements OnInit {
   contactcontent: Userreview[];
   contactcontentRecord: Userreview;
   pagination: any;
+  busoperators: any;
 
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
+    private busOperatorService: BusOperatorService ,
     private us: UserreviewService,
     private modalService: NgbModal,
     config: NgbModalConfig,
@@ -67,12 +69,14 @@ export class UserreviewComponent implements OnInit {
 
     
     this.searchFrom = this.fb.group({
+      bus_operator_id:[null],
       rows_number: Constants.RecordLimit,
       rangeFromDate:[null],
       rangeToDate:[null]    
     })
 
-    this.search();
+    this.search();   
+    this.loadServices();
   }
 
 
@@ -89,6 +93,7 @@ export class UserreviewComponent implements OnInit {
 
       
     const data = {
+      bus_operator_id:this.searchFrom.value.bus_operator_id,
       rows_number:this.searchFrom.value.rows_number,  
       rangeFromDate:this.searchFrom.value.rangeFromDate,
       rangeToDate :this.searchFrom.value.rangeToDate
@@ -121,11 +126,24 @@ export class UserreviewComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id:[null],
+      rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null]    
+    })
+
     this.search();
   }
 
+  loadServices() {
 
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+      }
+    );
+  }
 
   ResetAttributes()
   {     

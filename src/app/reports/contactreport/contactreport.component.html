@@ -6,10 +6,20 @@
             <div class="row ">
                 <div class="col-12">
                     <form [formGroup]="searchFrom">
-                        <div class="row">
-                            
+                        <div class="row">  
+                          
+                          <div class="col-3">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                        placeholder="Select Operator" formControlName="bus_operator_id"
+                                        [clearable]="false">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="row">
                                     <input class="form-control hidden" ngbDatepicker #datepicker="ngbDatepicker"
                                     [autoClose]="'outside'" (dateSelect)="onDateSelection($event)"
@@ -48,7 +58,7 @@
                                 
                             </div>
 
-                            <div class="col-4 ">
+                            <div class="col-3 ">
                               <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="Search">
                                   <i class="fas fa-search"></i> 
                               </button>
@@ -87,6 +97,7 @@
                             <th scope="col" width ="150px">Date</th>
                             <th scope="col">Name</th>
                             <th scope="col">Phone Number</th>
+                            <th scope="col">Operator</th>
                             <th scope="col">Email Id</th>
                             <th scope="col" width ="150px"> View </th>                        
                         </tr>
@@ -97,6 +108,7 @@
                         <td>{{contact.created_at | date: 'dd/MM/yyyy'}}</td>
                         <td>{{contact.name}}</td>
                         <td>{{contact.phone}}</td>
+                        <td>{{contact.bus_operator.operator_name}}</td>
                         <td>{{contact.email}}</td>
                         <td >
                          <button class="btn btn-success text btn-sm m-1"  (click)="viewDetails(i);OpenModal(content)" title="Details">

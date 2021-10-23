@@ -6,6 +6,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { Contactreport } from '../../model/contactreport';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {ContactreportService } from '../../services/contactreport.service';
+import { BusOperatorService } from './../../services/bus-operator.service';
 import {Constants} from '../../constant/constant' ;
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 
@@ -36,11 +37,13 @@ export class ContactreportComponent implements OnInit {
   contactcontent: Contactreport[];
   contactcontentRecord: Contactreport;
   pagination: any;
+  busoperators: any;
 
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
+    private busOperatorService: BusOperatorService ,
     private cs: ContactreportService,
     private modalService: NgbModal,
     config: NgbModalConfig,
@@ -66,15 +69,19 @@ export class ContactreportComponent implements OnInit {
 
     
     this.searchFrom = this.fb.group({
+      bus_operator_id:[null],
       rows_number: Constants.RecordLimit,
       rangeFromDate:[null],
       rangeToDate:[null]    
     })
 
     this.search();
+    this.loadServices();
+
   }
 
 
+  
   OpenModal(content) 
   {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
@@ -88,6 +95,7 @@ export class ContactreportComponent implements OnInit {
 
       
     const data = {
+      bus_operator_id:this.searchFrom.value.bus_operator_id,
       rows_number:this.searchFrom.value.rows_number,  
       rangeFromDate:this.searchFrom.value.rangeFromDate,
       rangeToDate :this.searchFrom.value.rangeToDate
@@ -124,6 +132,14 @@ export class ContactreportComponent implements OnInit {
     this.search();
   }
 
+  loadServices() {
+
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+      }
+    );
+  }
 
 
   ResetAttributes()
