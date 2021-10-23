@@ -6,6 +6,7 @@ import {SocialmediaComponent} from './socialmedia.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {SocialMediaRoutingModule} from './socialmedia-routing.module';
+import {NgxPrintModule} from 'ngx-print';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -16,7 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule
+    NgbModule,NgxPrintModule
   ],
   declarations: [ SocialmediaComponent],
   providers: [NotificationService]
