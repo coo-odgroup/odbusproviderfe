@@ -7,6 +7,8 @@ import { Pagecontent } from '../../model/pagecontent';
 import {Constants} from '../../constant/constant' ;
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {PagecontentService } from '../../services/pagecontent.service';
+import { BusOperatorService } from './../../services/bus-operator.service';
+
 @Component({
   selector: 'app-pagecontent',
   templateUrl: './pagecontent.component.html',
@@ -16,6 +18,8 @@ export class PagecontentComponent implements OnInit {
   public form: FormGroup;
 
   public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+  pagination: any;
 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
@@ -26,12 +30,14 @@ export class PagecontentComponent implements OnInit {
 
   pagecontent: Pagecontent[];
   pagecontentRecord: Pagecontent;
+  busoperators: any;
 
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
     private pc: PagecontentService,
+    private busOperatorService: BusOperatorService ,
     private modalService: NgbModal,
     config: NgbModalConfig
     )
@@ -46,24 +52,91 @@ export class PagecontentComponent implements OnInit {
     
     
 
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      id:[null],
-      page_name: [null, Validators.compose([Validators.required])],
-      page_url: [null, Validators.compose([Validators.required])],
-      page_description: [null, Validators.compose([Validators.required])],
-      meta_title: [null],
-      meta_keyword: [null],
-      meta_description: [null],
-      extra_meta: [null],
-      canonical_url: [null]
-    });
-    this.formConfirm=this.fb.group({
-      id:[null]
-    });
-    this.getAll();
-  }
+    ngOnInit(): void {
+      this.form = this.fb.group({
+        id:[null],
+        bus_operator_id : [null, Validators.compose([Validators.required])],
+        page_name: [null, Validators.compose([Validators.required])],
+        page_url: [null, Validators.compose([Validators.required])],
+        page_description: [null, Validators.compose([Validators.required])],
+        meta_title: [null],
+        meta_keyword: [null],
+        meta_description: [null],
+        extra_meta: [null],
+        canonical_url: [null]
+      });
+      this.formConfirm=this.fb.group({
+        id:[null]
+      });
+      this.searchForm = this.fb.group({  
+        name: [null],  
+        bus_operator_id:[null],
+        rows_number: Constants.RecordLimit,
+      });
+      this.search();
+  
+      // this.getAll();
+  
+      this.loadServices();
+    }
+  
+    page(label:any){
+      return label;
+     }
+  
+     
+    search(pageurl="")
+    {      
+      const data = { 
+        name: this.searchForm.value.name,
+        bus_operator_id:  this.searchForm.value.bus_operator_id,
+        rows_number:this.searchForm.value.rows_number, 
+      };
+     
+      // console.log(data);
+      if(pageurl!="")
+      {
+        this.pc.getAllaginationData(pageurl,data).subscribe(
+          res => {
+            this.pagecontent= res.data.data.data;
+            this.pagination= res.data.data;
+            // console.log( this.BusOperators);
+          }
+        );
+      }
+      else
+      {
+        this.pc.getAllData(data).subscribe(
+          res => {
+            this.pagecontent= res.data.data.data;
+            this.pagination= res.data.data;
+            // console.log( res.data);
+          }
+        );
+      }
+    }
+  
+  
+    refresh()
+     {  
+      this.searchForm = this.fb.group({  
+        name: [null],
+        bus_operator_id:[null],
+        rows_number: Constants.RecordLimit,
+      });
+       this.search();
+      
+     }
+  
 
+     loadServices() {
+
+      this.busOperatorService.readAll().subscribe(
+        res => {
+          this.busoperators = res.data;
+        }
+      );
+    }
 
   OpenModal(content) 
   {
@@ -74,6 +147,7 @@ export class PagecontentComponent implements OnInit {
     this.pagecontentRecord = {} as Pagecontent;
     this.form = this.fb.group({
       id:[null],
+      bus_operator_id:[null],
       page_name: [null],
       page_url: [null],
       page_description: [null],
@@ -103,7 +177,7 @@ export class PagecontentComponent implements OnInit {
   addData() {
 
     const data = {
-
+      bus_operator_id:this.form.value.bus_operator_id,
       page_name:this.form.value.page_name,
       page_url:this.form.value.page_url,
       page_description:this.form.value.page_description,
@@ -154,12 +228,14 @@ export class PagecontentComponent implements OnInit {
   }
 
 
+ 
   editData(id)
   {  
     this.pagecontentRecord = this.pagecontent[id];
     
     // console.log(this.pagecontentRecord);
     this.form.controls.id.setValue(this.pagecontentRecord.id);
+    this.form.controls.bus_operator_id.setValue(this.pagecontentRecord.bus_operator_id);
     this.form.controls.page_name.setValue(this.pagecontentRecord.page_name);
     this.form.controls.page_url.setValue(this.pagecontentRecord.page_url);
     this.form.controls.page_description.setValue(this.pagecontentRecord.page_description);
@@ -188,7 +264,7 @@ export class PagecontentComponent implements OnInit {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
           this.confirmDialogReference.close();
           this.ResetAttributes();
-          this.getAll();         
+          this.search();         
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });

@@ -23,6 +23,22 @@ export class PagecontentService {
     )
   }
 
+  
+  getAllData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/pagecontentData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   create(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/pagecontent', JSON.stringify(data), this.httpOptions)
     .pipe(
