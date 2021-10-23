@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BusOperatorService } from './../../services/bus-operator.service';
 import { Testimonial } from '../../model/testimonial';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {TestimonialService } from '../../services/testimonial.service';
@@ -29,6 +30,8 @@ export class TestimonialComponent implements OnInit {
   public isSubmit: boolean;
   public ModalHeading:any;
   public ModalBtn:any;
+  busoperators: any;
+
 
   testimonial: Testimonial[];
   testimonialRecord: Testimonial;
@@ -37,7 +40,7 @@ export class TestimonialComponent implements OnInit {
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
-    private ts: TestimonialService,
+    private ts: TestimonialService, private busOperatorService: BusOperatorService ,
     private modalService: NgbModal,
     config: NgbModalConfig
     )
@@ -67,9 +70,12 @@ export class TestimonialComponent implements OnInit {
       });
       this.searchForm = this.fb.group({  
         name: [null],  
+        bus_operator_id:[null],
         rows_number: Constants.RecordLimit,
       });
       this.search();
+
+      this.loadServices();
     }
 
   
@@ -105,6 +111,7 @@ export class TestimonialComponent implements OnInit {
     {      
       const data = { 
         name: this.searchForm.value.name,
+        bus_operator_id:  this.searchForm.value.bus_operator_id,
         rows_number:this.searchForm.value.rows_number, 
       };
      
@@ -135,7 +142,8 @@ export class TestimonialComponent implements OnInit {
     refresh()
      {  
       this.searchForm = this.fb.group({  
-        name: [null],  
+        name: [null],
+        bus_operator_id:[null],
         rows_number: Constants.RecordLimit,
       });
        this.search();
@@ -196,12 +204,13 @@ export class TestimonialComponent implements OnInit {
     editData(id)
     {  
       this.testimonialRecord = this.testimonial[id];
+      console.log(this.testimonialRecord);
       this.form.controls.id.setValue(this.testimonialRecord.id);
       this.form.controls.posted_by.setValue(this.testimonialRecord.posted_by);
       this.form.controls.testinmonial_content.setValue(this.testimonialRecord.testinmonial_content);
       this.form.controls.designation.setValue(this.testimonialRecord.designation);
       this.form.controls.travel_date.setValue(this.testimonialRecord.travel_date);
-      this.form.controls.operator.setValue(this.testimonialRecord.operator);
+      this.form.controls.operator.setValue(this.testimonialRecord.bus_operator_id);
       this.form.controls.destination.setValue(this.testimonialRecord.destination);
       this.form.controls.source.setValue(this.testimonialRecord.source);
         
@@ -251,6 +260,16 @@ export class TestimonialComponent implements OnInit {
     );
   }
    
+
+  loadServices() {
+
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+      }
+    );
+  }
+
   
   
   

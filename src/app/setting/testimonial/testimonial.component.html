@@ -1,40 +1,13 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Testimonial Listing" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
-      <!-- <div class="row  mb-2">
-        <div class="col-8">
-          <form [formGroup]="searchform" class="editForm" novalidate>
-            <div class="row">
-              <div class="from-group col-9">
-                <input type="text" class="form-control sml_input" formControlName="searchvalue"
-                  placeholder="Search Content">
-              </div>
-
-              <div class="from-group col-3">
-                <button class="btn sml_input btn-success" (click)="getAll()">Search</button>
-
-                <button class="btn sml_input btn-danger ml-2" (click)="refresh()">Refresh</button>
-              </div>
-
-            </div>
-
-          </form>
-        </div>
-        <div class="col-4">
-          <div class="from-group text-right">
-            <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Testimonial
-            </button>
-          </div>
-        </div>
-
-      </div> -->
+     
 
       
       <div class="row">
         <div class="col-2">
           <div class="from-group ">
-            <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
+            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
               Add Page
             </button>
           </div>
@@ -42,8 +15,18 @@
         <div class="col-10">
           <form [formGroup]="searchForm">
             <div class="row">
+              <div class="col-3">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                            placeholder="Select Operator" formControlName="bus_operator_id"
+                            [clearable]="false">
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
 
-              <div class="col-6">
+              <div class="col-4">
                 <div class="form-group row">
 
                   <div class="col-sm-12">
@@ -54,7 +37,8 @@
               </div>
 
 
-              <div class="col-4">
+
+              <div class="col-3">
                 <div class="dropdown float-left">
                   <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
                     <i class="fas fa-search"></i>
@@ -107,7 +91,7 @@
               <td>{{page.testinmonial_content}}</td>
               <td>{{page.source}}  >>  {{page.destination}}</td>
               <td>{{page.posted_by}}</td>
-              <td>{{page.operator}}</td>
+              <td>{{page.bus_operator.operator_name}}</td>
               <td>{{page.travel_date}}</td>
 
               <td>
@@ -250,8 +234,16 @@
                                 <label for="name" class=" col-form-label">Operator Name :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
-                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
-                                    required formControlName="operator" />
+                                  <!-- <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
+                                    required formControlName="operator" /> -->
+                                    <div class="form-group row">
+                                      <div class="col-sm-12">
+                                          <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                              placeholder="Select Operator" formControlName="operator"
+                                              [clearable]="false">
+                                          </ng-select>                                          
+                                      </div>
+                                  </div>
                                   <span class="text-danger"
                                     *ngIf="form.controls['operator'].touched && form.controls['operator'].hasError('required')">
                                     Operator is Required

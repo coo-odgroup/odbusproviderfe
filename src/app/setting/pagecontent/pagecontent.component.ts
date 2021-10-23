@@ -103,7 +103,7 @@ export class PagecontentComponent implements OnInit {
   addData() {
 
     const data = {
-      bus_operator_id:Constants.BUS_OPERATOR_ID,
+
       page_name:this.form.value.page_name,
       page_url:this.form.value.page_url,
       page_description:this.form.value.page_description,
