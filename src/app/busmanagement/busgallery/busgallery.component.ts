@@ -100,6 +100,7 @@ export class BusgalleryComponent implements OnInit {
     }
 
     const data = {
+      bus_operator_id:this.busForm.value.bus_operator_id,
       bus_id: this.busForm.value.bus_id,
       icon: this.busForm.value.iconSrc,
       created_by: 'Admin',
@@ -123,6 +124,7 @@ export class BusgalleryComponent implements OnInit {
   ResetAttributes() {
     this.busForm = this.fb.group({
       id: [null],
+      bus_operator_id: [null, Validators.compose([Validators.required])],
       bus_id: [null, Validators.compose([Validators.required])],
       icon: [null, Validators.compose([Validators.required])],
       iconSrc: [null]
@@ -135,6 +137,7 @@ export class BusgalleryComponent implements OnInit {
 
     this.busForm = this.fb.group({
       id: [null],
+      bus_operator_id: [null, Validators.compose([Validators.required])],
       bus_id: [null, Validators.compose([Validators.required])],
       icon: [null, Validators.compose([Validators.required])],
       iconSrc: [null]
@@ -142,6 +145,7 @@ export class BusgalleryComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       bus_id: [null],
+      bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -293,6 +297,7 @@ export class BusgalleryComponent implements OnInit {
 
     const data = {
       bus_id: this.searchForm.value.bus_id,
+      bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
     };
 
@@ -311,7 +316,7 @@ export class BusgalleryComponent implements OnInit {
         res => {
           this.busGallerries = res.data.data;
           this.pagination = res.data;
-          // console.log( this.busGallerries);
+          console.log(this.busGallerries);
         }
       );
     }
@@ -321,6 +326,7 @@ export class BusgalleryComponent implements OnInit {
   refresh() {
     this.searchForm = this.fb.group({
       bus_id: [null],
+      bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -332,7 +338,6 @@ export class BusgalleryComponent implements OnInit {
     this.busService.all().subscribe(
       res => {
         this.buss = res.data;
-        //  console.log(this.buss);
       }
     );
 
@@ -343,6 +348,22 @@ export class BusgalleryComponent implements OnInit {
       }
     );
   }
+
+  findOperator(event:any)
+  {
+    let operatorId=event.id;
+    if(operatorId)
+    {
+      this.busService.getByOperaor(operatorId).subscribe(
+        res=>{
+          this.buses=res.data;
+        }
+      );
+    }
+    
+  }
+
+
 
   exportexcel(): void {
 

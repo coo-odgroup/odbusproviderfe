@@ -71,6 +71,7 @@
           <thead>
             <tr>
               <th>Id</th>
+              <th>Operator</th>
               <th>Bus Name</th>
               <th>Date</th>
               <th>Seater Price</th>
@@ -83,6 +84,11 @@
           <tbody *ngIf="ownerFares?.length != 0">
             <tr *ngFor="let ownerFare of ownerFares; let i=index; ">
               <td>{{ ownerFare.id }}</td>
+              <td>
+                <div *ngFor="let busName of ownerFare.bus; let nameIndex=index;">
+                  {{busName.bus_operator.operator_name}}
+                </div>
+              </td>
               <td>
                 <div *ngFor="let busName of ownerFare.bus; let nameIndex=index;">
                   {{busName.name}}

@@ -125,7 +125,7 @@
                     <tbody *ngIf="seatopendata?.data.data?.length != 0">
                         <tr *ngFor="let sopen of seatopendata?.data.data; let i = index">
                             <td>{{ i+1 }}</td>
-                            <td>{{ sopen.date_applied}}</td>
+                            <td>{{ sopen.date_applied | date: 'dd/MM/yyyy'}}</td>
                             <td>
                                 {{ sopen.bus.name }}
                             </td>

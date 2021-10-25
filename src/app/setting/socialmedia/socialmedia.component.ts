@@ -181,7 +181,7 @@ export class SocialmediaComponent implements OnInit {
       linkedin_link: this.socialFrom.value.linkedin_link,
      
     };
-    console.log(data); return false;
+    // console.log(data); 
     let id = this.socialRecord?.id;
     if (id != null) {
       this.ss.update(id, data).subscribe(

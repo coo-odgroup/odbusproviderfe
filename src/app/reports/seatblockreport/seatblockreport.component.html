@@ -128,7 +128,7 @@
                     <tbody *ngIf="seatblockdata?.data.data?.length != 0">
                         <tr *ngFor="let sblock of seatblockdata?.data.data; let i = index">
                             <td>{{ i+1 }}</td>
-                            <td>{{ sblock.date_applied}}</td>
+                            <td>{{ sblock.date_applied | date: 'dd/MM/yyyy'}}</td>
                             <td>
                                 {{ sblock.bus.name }} <br> {{ sblock.bus.bus_number }}
                             </td>

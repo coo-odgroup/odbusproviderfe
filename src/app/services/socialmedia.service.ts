@@ -67,7 +67,7 @@ export class SocialmediaService {
   }
 
   chngsts(id){
-    return this.httpClient.put<any>(this.apiURL + '/changeStatussocialmedia/' + id, this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/changeStatus/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

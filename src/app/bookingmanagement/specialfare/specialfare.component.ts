@@ -94,6 +94,7 @@ export class SpecialfareComponent implements OnInit {
     });
 
     this.search();
+    this.loadServices();
      
   }
 
