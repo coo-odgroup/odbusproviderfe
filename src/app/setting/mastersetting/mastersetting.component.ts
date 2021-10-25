@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {SettingsService} from '../../services/settings.service';
 import { SettingsRecords } from '../../model/settings';
+import { BusOperatorService } from '../../services/bus-operator.service';
+import { Busoperator } from '../../model/busoperator';
 import { Constants } from '../../constant/constant';
+import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import { NotificationService } from '../../services/notification.service';
 import * as _ from 'lodash';
@@ -10,27 +13,77 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-mastersetting',
   templateUrl: './mastersetting.component.html',
-  styleUrls: ['./mastersetting.component.scss']
+  styleUrls: ['./mastersetting.component.scss'],
+  providers: [NgbModalConfig, NgbModal]
 })
 export class MastersettingComponent implements OnInit {
 
-  
+  per_page=Constants.RecordLimit;
+  searchBy='';
+  confirmDialogReference: NgbModalRef;
+  settings: SettingsRecords[];
   settingRecord: SettingsRecords;
+  operators: Busoperator[];
+  modalReference: NgbModalRef;
   message: string;
-
-  constructor( private fb: FormBuilder,private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer) { }
-  public settingForm: FormGroup;
-
   imageSrc:any;
   iconSrc:any;
   imageError:any;
   imgURL: any;
   base64result:any;
   finalJson = {};
+  public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+  public settingForm: FormGroup;
+  public isSubmit: boolean;
+  public mesgdata:any;
+  public ModalHeading:any;
+  public ModalBtn:any;
+  //public message: string;
+  public pagination: any;
   public imageSizeFlag = true;
 
+  constructor( private fb: FormBuilder,private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer,config: NgbModalConfig,private modalService: NgbModal,private busOperartorService:BusOperatorService)
+   {
+    this.isSubmit = false;
+    this.settingRecord= {} as SettingsRecords;
+    config.backdrop = 'static';
+    config.keyboard = false;
+    this.ModalHeading = "Add Master Settings";
+    this.ModalBtn = "Save";
+   }
+  
+  getAll(url:any=''){
+     const data= {
+          name:this.searchForm.value.name,
+          per_page:this.searchForm.value.per_page
+     }; 
+     this.settingsService.DataTable(url,data).subscribe(
+            res=>{    
+              this.settings= res.data.data.data; 
+              this.pagination = res.data.data;
+              //console.log(res.data.data.data);
+            },
+    );
+   }
+   refresh()
+    {
+      this.searchForm.reset();
+      this.getAll();
+    }
+    page(label:any){
+      return label;
+     }
+   OpenModal(content) {
+    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
+  }
 
   ngOnInit(): void {
+    
+    this.searchForm =this.fb.group({
+      name:[null],
+      per_page:Constants.RecordLimit,
+    })
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
       email_sms_charges:[null,Validators.compose([Validators.required])],
@@ -38,76 +91,25 @@ export class MastersettingComponent implements OnInit {
       advance_days_show:[null, Validators.compose([Validators.required])],
       support_email:[null,Validators.compose([Validators.required])],
       booking_email:[null,Validators.compose([Validators.required])],
-      request_email:[null,Validators.compose([Validators.required])],
+      request_email:[null],
       other_email:[null],
       mobile_no_1:[null,Validators.compose([Validators.required])],
       mobile_no_2:[null,Validators.compose([Validators.required])],
-      mobile_no_3:[null,Validators.compose([Validators.required])],
+      mobile_no_3:[null],
       mobile_no_4:[null],
       logo:[null],
       iconSrc:[null]
-
     });
-    this.settingsService.getbyId('1').subscribe(
-      resp=>{       
-        this.settingRecord=resp.data;
-        this.settingForm.controls.payment_gateway_charges.setValue(this.settingRecord[0].payment_gateway_charges);
-        this.settingForm.controls.email_sms_charges.setValue(this.settingRecord[0].email_sms_charges);
-        this.settingForm.controls.odbus_gst_charges.setValue(this.settingRecord[0].odbus_gst_charges);
-        this.settingForm.controls.advance_days_show.setValue(this.settingRecord[0].advance_days_show);
-        this.settingForm.controls.support_email.setValue(this.settingRecord[0].support_email);
-        this.settingForm.controls.booking_email.setValue(this.settingRecord[0].booking_email);
-        this.settingForm.controls.request_email.setValue(this.settingRecord[0].request_email);
-        this.settingForm.controls.other_email.setValue(this.settingRecord[0].other_email);
-        this.settingForm.controls.mobile_no_1.setValue(this.settingRecord[0].mobile_no_1);
-        this.settingForm.controls.mobile_no_2.setValue(this.settingRecord[0].mobile_no_2);
-        this.settingForm.controls.mobile_no_3.setValue(this.settingRecord[0].mobile_no_3);
-        this.settingForm.controls.mobile_no_4.setValue(this.settingRecord[0].mobile_no_4);
-        this.settingForm.controls.iconSrc.setValue(this.settingRecord[0].logo);
-
-        this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.settingRecord[0].logo); 
-
-      }
-    );
-      
-  }
-  updateVal()
-  {
-    const data={
-      payment_gateway_charges:this.settingForm.value.payment_gateway_charges,
-      email_sms_charges:this.settingForm.value.email_sms_charges,
-      odbus_gst_charges:this.settingForm.value.odbus_gst_charges,
-      advance_days_show:this.settingForm.value.advance_days_show,
-      support_email:this.settingForm.value.support_email,
-      booking_email:this.settingForm.value.booking_email,
-      request_email:this.settingForm.value.request_email,
-      other_email:this.settingForm.value.other_email,
-      mobile_no_1:this.settingForm.value.mobile_no_1,
-      mobile_no_2:this.settingForm.value.mobile_no_2,
-      mobile_no_3:this.settingForm.value.mobile_no_3,
-      mobile_no_4:this.settingForm.value.mobile_no_4,
-      logo:this.settingForm.value.iconSrc,
-      created_by:'Admin'
-    };
-    this.settingsService.update(1,data).subscribe(
-      resp => {
-        if(resp.status==1)
-          {
-              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-          }
-          else
-          {
-              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-          }
+    this.formConfirm=this.fb.group({
+      id:[null],
     });
+    this.getAll();     
   }
-
-
+  
     //////image validation////////
     public picked(event:any, fileSrc:any) {
       this.imageError = null;
               const max_size = 102400;
-              //const allowed_types = ['image/svg+xml'];
               const allowed_types = ['image/x-png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
               const max_height = 100;
               const max_width = 200;
@@ -167,10 +169,6 @@ export class MastersettingComponent implements OnInit {
       let file = files;
       let pattern = /image-*/;
       let reader = new FileReader();
-      // if (!file.type.match(pattern)) {
-      //   //alert('invalid format');
-      //   return;
-      // }
       reader.onloadend = this._handleReaderLoaded.bind(this);
       reader.readAsDataURL(file);
       
@@ -199,12 +197,172 @@ export class MastersettingComponent implements OnInit {
         this.imgURL = reader.result; 
         this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
       }
-  
     }
-    getBannerImagepath(logo :any){
-      let objectURL = 'data:image/*;base64,'+logo;
-      return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-     }
+    LoadAllService()
+    {
+      this.busOperartorService.readAll().subscribe(
+        record=>{
+        this.operators=record.data;
+        }
+      );
+    }
+    ResetAttributes()
+  {
+    this.settingForm = this.fb.group({
+      id:[null],
+      bus_operator_id: [null, Validators.compose([Validators.required])],
+      payment_gateway_charges: [null, Validators.compose([Validators.required])],
+      email_sms_charges: [null, Validators.compose([Validators.required])],
+      odbus_gst_charges:[null, Validators.compose([Validators.required])],
+      advance_days_show:[null, Validators.compose([Validators.required])],
+      support_email: [null, Validators.compose([Validators.required])],
+      booking_email: [null, Validators.compose([Validators.required])],
+      request_email: [null],
+      other_email: [null],
+      mobile_no_1: [null, Validators.compose([Validators.required])],
+      mobile_no_2: [null, Validators.compose([Validators.required])],
+      mobile_no_3: [null],
+      mobile_no_4: [null],
+      logo:[null],
+      iconSrc:[null]
+    });
+    this.LoadAllService();
+    this.ModalHeading = "Add Master Settings";
+    this.ModalBtn = "Save";
+    this.imgURL="";
+    this.imageSrc="";
+    this.settingRecord.logo="";  
+  }
+  addSettings()
+  {
+
+    this.finalJson = {
+      "File": this.imageSrc,
+    }
+    const data ={
+      bus_operator_id:this.settingForm.value.bus_operator_id,
+      payment_gateway_charges:this.settingForm.value.payment_gateway_charges,
+      email_sms_charges:this.settingForm.value.email_sms_charges,
+      odbus_gst_charges:this.settingForm.value.odbus_gst_charges,
+      advance_days_show:this.settingForm.value.advance_days_show,
+      support_email:this.settingForm.value.support_email,
+      booking_email:this.settingForm.value.booking_email,
+      request_email:this.settingForm.value.request_email,
+      other_email:this.settingForm.value.other_email,
+      mobile_no_1:this.settingForm.value.mobile_no_1,
+      mobile_no_2:this.settingForm.value.mobile_no_2,
+      mobile_no_3:this.settingForm.value.mobile_no_3,
+      mobile_no_4:this.settingForm.value.mobile_no_4,
+      logo:this.settingForm.value.iconSrc,
+      created_by:'Admin',
+    };
+    let id = this.settingRecord?.id;
+    if (id != null) {
+      this.settingsService.update(id, data).subscribe(
+        resp => {
+          if (resp.status == 1) {
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.getAll();
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          }
+        }
+      );
+    }
+    else {
+      this.settingsService.create(data).subscribe(
+        resp => {
+          if (resp.status == 1) {
+
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.getAll(); 
+          }
+          else {
+
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          }
+        }
+      );
+    }
+  }
+  ngAfterViewInit(): void {   
+  }
+  ngOnDestroy(): void {  
+  }
+  rerender(): void {  
+  }
+  editSettings(id)
+  { 
+    this.settingRecord = this.settings[id]; 
+    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.settingRecord.logo); 
+    
+    this.settingForm=this.fb.group({
+      id:[this.settingRecord.id],
+      bus_operator_id:[this.settingRecord.bus_operator_id],
+      payment_gateway_charges:[this.settingRecord.payment_gateway_charges],
+      email_sms_charges:[this.settingRecord.email_sms_charges],
+      odbus_gst_charges:[this.settingRecord.odbus_gst_charges],
+      advance_days_show:[this.settingRecord.advance_days_show],
+      support_email:[this.settingRecord.support_email],
+      booking_email:[this.settingRecord.booking_email],
+      request_email:[this.settingRecord.request_email],
+      other_email:[this.settingRecord.other_email],
+      mobile_no_1:[this.settingRecord.mobile_no_1],
+      mobile_no_2:[this.settingRecord.mobile_no_2],
+      mobile_no_3:[this.settingRecord.mobile_no_3],
+      mobile_no_4:[this.settingRecord.mobile_no_4],
+      logo: [],
+      iconSrc:[this.settingRecord.logo]
+    });
+    this.LoadAllService();
+    this.ModalHeading = "Edit Master Settings";
+    this.ModalBtn = "Update";  
+  }
+  getImagepath(logo :any){
+    let objectURL = 'data:image/*;base64,'+logo;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+   }
+
+  openConfirmDialog(content, id: any) {
+    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+    this.settingRecord = this.settings[id];  
+  }
+  deleteRecord() {
+    let delitem = this.settingRecord.id;
+    this.settingsService.delete(delitem).subscribe(
+      resp => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.confirmDialogReference.close();
+          this.ResetAttributes();
+          this.getAll();         
+        }
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+        }
+      });
+  }
+  changeStatus(event : Event, stsitem:any)
+  {
+    this.settingsService.chngsts(stsitem).subscribe(
+      resp => {
+        if(resp.status==1)
+        {
+            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+            this.rerender();
+            this.getAll();
+        }
+        else{
+            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+      }
+    );
+  }
   
 
 }

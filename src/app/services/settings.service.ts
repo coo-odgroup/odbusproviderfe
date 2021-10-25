@@ -14,15 +14,48 @@ export class SettingsService {
       'Content-Type': 'application/json'
     })
   }
-
+  DataTable(url,data): Observable<any> {
+    
+    let APIurl=this.apiURL+"/odbusChargesData";
+    if(url!=''){
+      APIurl = url;
+    }
+    return this.httpClient.post<any>(APIurl,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  all(): Observable<any> {
+    return this.httpClient.get<any>(this.apiURL + '/odbusCharges',  this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  create(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/odbusCharges', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   constructor(private httpClient: HttpClient) { }
   getbyId(id): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/odbus_charges/'+id ).pipe(
+    return this.httpClient.get(this.apiURL + '/odbusCharges/'+id ).pipe(
       catchError(this.errorHandler)
     )
   }
   update(id, data): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/odbus_charges/' + id, JSON.stringify(data), this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/odbusCharges/' + id, JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  delete(id){
+    return this.httpClient.delete<any>(this.apiURL + '/odbusCharges/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  chngsts(id){
+    return this.httpClient.put<any>(this.apiURL + '/changeStatus/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

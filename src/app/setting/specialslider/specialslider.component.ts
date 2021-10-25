@@ -340,6 +340,7 @@ export class SpecialsliderComponent implements OnInit {
     //   end_time: [null, Validators.compose([Validators.required])],
     //   iconSrc:[this.sliderRecord.slider_img]
     // });
+    this.LoadAllService();
     this.ModalHeading = "Edit Special slider";
     this.ModalBtn = "Update";  
   }
