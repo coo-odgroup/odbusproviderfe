@@ -177,20 +177,38 @@
                           </div>
                         </div>  
                         
-                        <div class="form-group row">
+                         <div class="form-group row">
                           <label for="safety" class="col-sm-4 col-form-label">Image</label>
                           <div class="col-sm-8">                        
-                            <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept=".svg" class="form-control" id="icon" placeholder="Safety Icon" formControlName="icon"  />
-                                  <span class="text-danger">Max file size 100Kb and supports SVG</span>
+                            <input type="file" #file accept='image/*' (change)="picked($event,file.files);"   accept='image/*'
+                            accept=".png, .jpg, .jpeg" class="form-control" id="icon" placeholder="Safety Icon" formControlName="icon"  />
+                                  <span class="text-danger">Max file size 100Kb and supports jpg/jpeg/png</span>
                                   <span class="text-danger" >{{imageError}}</span>
                                   <span class="text-danger" *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
                                     Icon file is required! </span>
-                            <!-- <img [src]="imgURL" height="50" *ngIf="imgURL" >   -->
-                            <img class="sliderImage" [attr.src]="getBannerImagepath(imgURL)" height="100">      
+                            <img [src]="imgURL" height="50" *ngIf="imgURL" >
+                            <!-- <img class="sliderImage" [attr.src]="getBannerImagepath(imgURL)" height="100" >       -->
                             
                               
                           </div>
                         </div> 
+
+                        <!-- <div class="row form-group col-sm-12">
+                          <div class="col-md-3">
+                            Choose Image
+                          </div>
+                          <div class="col-md-9">
+                            <input type="file" (change)="picked($event,file.files);" #file accept='image/*'
+                              accept=".png, .jpg, .jpeg" class="form-control" id="icon" placeholder="Gallery Icon"
+                              formControlName="icon" />
+                            <span class="text-danger">Max file size 100Kb and supports jpg/jpeg/png</span>
+                            <span class="text-danger">{{imageError}}</span>
+                            <span class="text-danger"
+                              *ngIf="busForm.controls['icon'].touched && busForm.controls['icon'].hasError('required')">
+                              Icon file is required! </span><br />
+                            <img [src]="imgURL" height="50" *ngIf="imgURL">
+                          </div>
+                        </div> -->
                         
                       </form>
                     </div>

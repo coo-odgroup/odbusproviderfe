@@ -27,6 +27,14 @@ export class SafetyComponent implements OnInit {
   public searchForm: FormGroup;
 
 
+  imgURL: any;
+  imageSrc: string;
+  File: any;
+  finalJson = {};
+  base64result: any;
+  iconSrc: any;
+  imageError: string;
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   Safetys: Safety[];
@@ -76,7 +84,115 @@ export class SafetyComponent implements OnInit {
 
     this.search(); 
   }
+  public picked(event: any, fileSrc: any) {
+    //////image validation////////
+    this.imageError = null;
+    const max_size = 102400;
+    const allowed_types = ['image/png', 'image/jpeg', 'image/jpg'];
+    const max_height = 100;
+    const max_width = 200;
+    let fileList: FileList = event.target.files;
 
+    if (event.target.files[0].size > max_size) {
+      this.imageError =
+        'Maximum size allowed is ' + max_size / 1024 + 'Kb';
+      this.form.value.imagePath = '';
+      this.imgURL = '';
+      return false;
+    }
+
+    if (!_.includes(allowed_types, event.target.files[0].type)) {
+      this.imageError = 'Only Images are allowed ( JPG | PNG |JPEG)';
+      this.form.value.imagePath = '';
+      this.imgURL = '';
+      return false;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const image = new Image();
+      image.src = e.target.result;
+      image.onload = rs => {
+        const img_height = rs.currentTarget['height'];
+        const img_width = rs.currentTarget['width'];
+
+        if (img_height > max_height && img_width > max_width) {
+          this.imageError =
+            'Maximum dimentions allowed ' +
+            max_height +
+            '*' +
+            max_width +
+            'px';
+          this.form.value.imagePath = '';
+          this.imgURL = '';
+          return false;
+        }
+      };
+    };
+
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+
+      this.form.value.File = file;
+
+      this.handleInputChange(file); //turn into base64
+
+    }
+    else {
+      //alert("No file selected");
+    }
+
+    this.preview(fileSrc);
+
+  }
+
+  handleInputChange(files) {
+    let file = files;
+    let pattern = /image-*/;
+    let reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      //alert('invalid format');
+      return;
+    }
+    reader.onloadend = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+
+  }
+  _handleReaderLoaded(e) {
+    let reader = e.target;
+    this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+    //this.imageSrc = base64result;
+
+    this.imageSrc = this.base64result;
+    this.form.value.icon = this.base64result;
+    this.form.value.iconSrc = this.base64result;
+
+  }
+  public imagePath;
+  public message: string;
+
+  preview(files) {
+    if (files.length === 0)
+      return;
+
+        
+    let mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = "Only images are supported.";
+      return;
+    }
+
+    let reader = new FileReader();
+    this.form.value.imagePath = files;
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
+    }
+  }
+
+  getBannerImagepath(slider_img: any) {
+    let objectURL = 'data:image/*;base64,' + slider_img;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+  }
  
   page(label:any){
     return label;
@@ -126,116 +242,6 @@ export class SafetyComponent implements OnInit {
 
 
 
-  public picked(event:any, fileSrc:any) {
-    //////image validation////////
-    this.imageError = null;
-            const max_size = 102400;
-            const allowed_types = ['image/svg+xml'];
-            const max_height = 100;
-            const max_width = 200;
-    let fileList: FileList = event.target.files;
-    
-    if (event.target.files[0].size > max_size) {
-      this.imageError =
-          'Maximum size allowed is ' + max_size/1024  + 'Kb';
-          this.form.value.imagePath = '';
-          this.imgURL='';
-      return false;
-  }
-
-  if (!_.includes(allowed_types, event.target.files[0].type)) {
-      this.imageError = 'Only Images are allowed ( SVG)';
-      this.form.value.imagePath = '';
-      this.form.controls.icon.setValue('');
-      this.imgURL='';
-      return false;
-  }
-  
-  const reader = new FileReader();
-  reader.onload = (e: any) => {
-      const image = new Image();
-      image.src = e.target.result;
-      image.onload = rs => {
-          const img_height = rs.currentTarget['height'];
-          const img_width = rs.currentTarget['width'];
-
-          if (img_height > max_height && img_width > max_width) {
-            this.imageError =
-                'Maximum dimentions allowed ' +
-                max_height +
-                '*' +
-                max_width +
-                'px';
-                this.form.value.imagePath = '';
-                this.imgURL='';
-            return false;
-        } 
-      };
-  };
-  
-    if (fileList.length > 0) {
-      const file: File = fileList[0];
-      
-        this.form.value.File = file;
-
-        this.handleInputChange(file); //turn into base64
-      
-    }
-    else {
-      //alert("No file selected");
-    }
-
-    this.preview(fileSrc);
-    
-  }
-  handleInputChange(files) {
-    let file = files;
-    let pattern = /image-*/;
-    let reader = new FileReader();
-    if (!file.type.match(pattern)) {
-      //alert('invalid format');
-      return;
-    }
-    reader.onloadend = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
-    
-  }
-  _handleReaderLoaded(e) {
-    let reader = e.target;
-    this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
-    //this.imageSrc = base64result;
-  
-    this.imageSrc = this.base64result;
-    this.form.value.icon=this.base64result;
-    this.form.value.iconSrc=this.base64result;
-    this.form.controls.iconSrc.setValue(this.base64result);
-    
-  }
-  public imagePath;
-  public message: string;
-  imgURL: any;
-  base64result:any;
-  imageSrc:any;
-  imageError:any;
-  preview(files) {
-    if (files.length === 0)
-      return;
- 
-    let mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
-      this.message = "Only images are supported.";
-      return;
-    }
- 
-    let reader = new FileReader();
-    this.form.value.imagePath = files;
-    reader.readAsDataURL(files[0]); 
-    reader.onload = (_event) => { 
-      this.imgURL = reader.result; 
-      this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
-    }
-  }
-
   ResetAttriutes()
   {
     
@@ -257,22 +263,6 @@ export class SafetyComponent implements OnInit {
   addsafety()
   {
     let id=this.SafetyRecord.id;
-    //let data;
-    // if(this.form.value.icon==null)
-    // {
-    //   data ={
-    //     name:this.form.value.name,
-    //     icon:this.SafetyRecord.icon,
-    //     created_by:"Admin"
-    //   };
-    // }
-    // else{
-    //   data ={
-    //     name:this.form.value.name,
-    //     icon:this.form.value.icon,
-    //     created_by:"Admin"
-    //   };
-    // }
     const data ={
       name:this.form.value.name,
       icon:this.form.value.iconSrc,
@@ -315,13 +305,14 @@ export class SafetyComponent implements OnInit {
       });         
     }    
   }
+  
 
   editsafety(event : Event, id : any)
   {
     this.SafetyRecord=this.Safetys[id] ;
-    // console.log(this.SafetyRecord);
+    console.log(this.SafetyRecord);
     // this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl("data:image/svg+xml;charset=utf-8;base64,"+this.SafetyRecord.icon);
-    this.imgURL = this.SafetyRecord.icon;
+    this.imgURL = this.getBannerImagepath(this.SafetyRecord.icon);
     
     //console.log(this.imgURL);
     this.form = this.fb.group({
@@ -373,10 +364,7 @@ export class SafetyComponent implements OnInit {
     
   }
 
-  getBannerImagepath(slider_img :any){
-    let objectURL = 'data:image/*;base64,'+slider_img;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-   }
+
 
   changeStatus(event : Event, stsitem:any)
   {

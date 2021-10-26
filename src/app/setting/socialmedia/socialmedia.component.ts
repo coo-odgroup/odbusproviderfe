@@ -68,7 +68,6 @@ export class SocialmediaComponent implements OnInit {
     });
     this.searchForm = this.fb.group({
       bus_operator_id: [null],
-      name: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -105,7 +104,6 @@ export class SocialmediaComponent implements OnInit {
 
   search(pageurl = "") {
     const data = {
-      name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
     };
@@ -134,7 +132,6 @@ export class SocialmediaComponent implements OnInit {
 
   refresh() {
     this.searchForm = this.fb.group({
-      name: [null],
       bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
     });
