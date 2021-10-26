@@ -126,7 +126,10 @@ export class AmenitiesComponent implements OnInit {
 
 
   refresh() {
-    this.searchForm.reset();
+    this.searchForm = this.fb.group({
+      name: [null],
+      rows_number: Constants.RecordLimit,
+    });
     this.search();
 
   }
@@ -171,10 +174,10 @@ export class AmenitiesComponent implements OnInit {
   }
 
 
-  getBannerImagepath(slider_img: any) {
-    let objectURL = 'data:image/*;base64,' + slider_img;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-  }
+  // getBannerImagepath(slider_img: any) {
+  //   let objectURL = 'data:image/*;base64,' + slider_img;
+  //   return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+  // }
 
   addAmenities() {
     this.finalJson = {
@@ -228,9 +231,7 @@ export class AmenitiesComponent implements OnInit {
     this.ModalBtn = "Update";
     this.AmenitiesRecord = this.Amenities[id];
 
-
-
-    this.imgURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.AmenitiesRecord.icon);
+    this.imgURL = this.getBannerImagepath(this.AmenitiesRecord.icon);
     this.form = this.fb.group({
       id: [this.AmenitiesRecord.id],
       name: [this.AmenitiesRecord.name, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
@@ -305,11 +306,10 @@ export class AmenitiesComponent implements OnInit {
   }
 
   public picked(event: any, fileSrc: any) {
-
     //////image validation////////
     this.imageError = null;
     const max_size = 102400;
-    const allowed_types = ['image/svg+xml'];
+    const allowed_types = ['image/png', 'image/jpeg', 'image/jpg'];
     const max_height = 100;
     const max_width = 200;
     let fileList: FileList = event.target.files;
@@ -323,9 +323,8 @@ export class AmenitiesComponent implements OnInit {
     }
 
     if (!_.includes(allowed_types, event.target.files[0].type)) {
-      this.imageError = '\r\nOnly Images are allowed (SVG)';
+      this.imageError = 'Only Images are allowed ( JPG | PNG |JPEG)';
       this.form.value.imagePath = '';
-      this.form.controls.icon.setValue('');
       this.imgURL = '';
       return false;
     }
@@ -388,7 +387,6 @@ export class AmenitiesComponent implements OnInit {
     this.form.value.icon = this.base64result;
     this.form.value.iconSrc = this.base64result;
 
-    this.form.controls.iconSrc.setValue(this.base64result);
   }
   public imagePath;
   public message: string;
@@ -397,9 +395,9 @@ export class AmenitiesComponent implements OnInit {
     if (files.length === 0)
       return;
 
+        
     let mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-
       this.message = "Only images are supported.";
       return;
     }
@@ -409,7 +407,12 @@ export class AmenitiesComponent implements OnInit {
     reader.readAsDataURL(files[0]);
     reader.onload = (_event) => {
       this.imgURL = reader.result;
-      this.imgURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
     }
   }
+
+  getBannerImagepath(slider_img: any) {
+    let objectURL = 'data:image/*;base64,' + slider_img;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+  }
+
 }

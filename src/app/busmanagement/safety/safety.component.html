@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-2">
             <div class="from-group ">
-              <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttriutes();OpenModal(content)" >
+              <button class="btn sml_input btn-success mb-2 " (click)="ResetAttriutes();OpenModal(content)" >
                   Add Page
               </button>
             </div>
@@ -75,7 +75,7 @@
                     <th>ID</th><th>Name</th>
                     <th>Created By</th>
                     <th>Created</th>
-                    <th>Preview</th>
+                    <th class="text-center">Preview</th>
                     <th>Status</th>
                     <th class="hide_print">Actions</th>
                                           
@@ -87,7 +87,7 @@
                     <td>{{ safety.name }}</td>
                     <td>{{ safety.created_by }}</td>
                     <td>{{ safety.created_at | date: 'dd/MM/yyyy'}}</td>
-                    <td>
+                    <td class="text-center">
                       <img class="sliderImage" [attr.src]="getBannerImagepath(safety.icon)" height="100">
                     </td>
                     <td>
@@ -186,29 +186,9 @@
                                   <span class="text-danger" >{{imageError}}</span>
                                   <span class="text-danger" *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
                                     Icon file is required! </span>
-                            <img [src]="imgURL" height="50" *ngIf="imgURL" >
-                            <!-- <img class="sliderImage" [attr.src]="getBannerImagepath(imgURL)" height="100" >       -->
-                            
-                              
+                            <img [src]="imgURL" height="50" *ngIf="imgURL" >    
                           </div>
-                        </div> 
-
-                        <!-- <div class="row form-group col-sm-12">
-                          <div class="col-md-3">
-                            Choose Image
-                          </div>
-                          <div class="col-md-9">
-                            <input type="file" (change)="picked($event,file.files);" #file accept='image/*'
-                              accept=".png, .jpg, .jpeg" class="form-control" id="icon" placeholder="Gallery Icon"
-                              formControlName="icon" />
-                            <span class="text-danger">Max file size 100Kb and supports jpg/jpeg/png</span>
-                            <span class="text-danger">{{imageError}}</span>
-                            <span class="text-danger"
-                              *ngIf="busForm.controls['icon'].touched && busForm.controls['icon'].hasError('required')">
-                              Icon file is required! </span><br />
-                            <img [src]="imgURL" height="50" *ngIf="imgURL">
-                          </div>
-                        </div> -->
+                        </div>                       
                         
                       </form>
                     </div>

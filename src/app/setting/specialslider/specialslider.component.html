@@ -2,6 +2,13 @@
   <div class="col-sm-12">
     <app-card cardTitle="Special Slider" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
       <div class="row  mb-2">
+        <div class="col-2">
+          <div class="from-group text-left">
+            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+              Add Special Slider
+            </button>
+          </div>
+        </div>
         <div class="col-10">
           <form [formGroup]="searchForm" class="editForm" novalidate>
             <div class="row">
@@ -35,13 +42,7 @@
             </div>
           </form>
         </div>
-        <div class="col-1">
-          <div class="from-group text-right">
-            <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add
-            </button>
-          </div>
-        </div>
+        
       </div>
       <div class="table-responsive">
         <table class="table table-striped">

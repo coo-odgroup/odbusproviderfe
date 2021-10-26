@@ -310,8 +310,7 @@ export class SafetyComponent implements OnInit {
   editsafety(event : Event, id : any)
   {
     this.SafetyRecord=this.Safetys[id] ;
-    console.log(this.SafetyRecord);
-    // this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl("data:image/svg+xml;charset=utf-8;base64,"+this.SafetyRecord.icon);
+    // console.log(this.SafetyRecord);
     this.imgURL = this.getBannerImagepath(this.SafetyRecord.icon);
     
     //console.log(this.imgURL);
@@ -320,17 +319,10 @@ export class SafetyComponent implements OnInit {
       icon: [],
       iconSrc:[this.SafetyRecord.icon]
     });
-    // this.imgURL ="data:image/png;base64,"+this.SafetyRecord.icon;
-    
-
     this.ModalHeading = "Edit Safety Line";
-    this.ModalBtn = "Update";
-    
-    //console.log(this.seatingTypes);
+    this.ModalBtn = "Update";   
   }
 
-  // Safetys: Safety[];
-  // SafetyRecord: Safety;
   openConfirmDialog(content, id: any)
   {
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });

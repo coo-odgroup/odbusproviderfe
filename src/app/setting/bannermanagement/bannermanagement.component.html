@@ -2,9 +2,18 @@
     <div class="col-sm-12">
       <app-card cardTitle="Banner" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
         <div class="row  mb-2">
+          <div class="col-2">
+            <div class="from-group text-left">
+              <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                Add Banner
+              </button>
+            </div>
+          </div>
           <div class="col-10">
             <form [formGroup]="searchForm" class="editForm" novalidate>
               <div class="row">
+
+                
                 <div class="from-group col-3">
                   <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By">
                 </div>
@@ -35,13 +44,7 @@
               </div>
             </form>
           </div>
-          <div class="col-1">
-            <div class="from-group text-right">
-              <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                Add
-              </button>
-            </div>
-          </div>
+          
         </div>
         <div class="table-responsive">
           <table class="table table-striped">
