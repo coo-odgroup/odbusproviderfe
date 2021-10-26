@@ -81,6 +81,7 @@ export class OwnerpaymentComponent implements OnInit {
     });
 
     this.search();
+    this.loadServices();
 
   }
 
