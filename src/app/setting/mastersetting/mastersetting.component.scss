@@ -3,6 +3,12 @@
     width: 50px;
 }
 .sliderImage-edit {
-    height: 50px;
-    width: 50px;
+    height: 125px;
+    width: 125px;
+}
+
+::ng-deep .sml_input
+{
+height: calc(1.5em + 1rem);
+padding:0px 10px;
 }

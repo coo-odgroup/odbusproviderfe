@@ -62,7 +62,7 @@ export class MastersettingComponent implements OnInit {
             res=>{    
               this.settings= res.data.data.data; 
               this.pagination = res.data.data;
-              //console.log(res.data.data.data);
+              console.log(res.data.data.data);
             },
     );
    }

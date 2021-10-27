@@ -140,12 +140,12 @@ const NavigationItems = [
             type: 'item',
             url: 'busmanagement/busschedule'
           },
-          {
-            id: 'Settings',
-            title: 'Fare Setting',
-            type: 'item',
-            url: 'busmanagement/settings'
-          },
+          // {
+          //   id: 'Settings',
+          //   title: 'Fare Setting',
+          //   type: 'item',
+          //   url: 'busmanagement/settings'
+          // },
           {
             id: 'Offers',
             title: 'Offers',
@@ -170,7 +170,7 @@ const NavigationItems = [
       },
       {
         id: 'bookingmanagement',
-        title: 'Bookig Management',
+        title: 'Booking Management',
         //translate: 'NAV.BOOKINGMANAGEMENT',
         type: 'collapse',
         icon: 'add_shopping_cart',

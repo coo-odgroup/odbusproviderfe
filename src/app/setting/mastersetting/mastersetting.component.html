@@ -1,355 +1,340 @@
 <div class="row">
-    <div class="col-sm-12">
-      <app-card cardTitle="Master Settings" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
-        <div class="row  mb-2">
-          <div class="col-10">
-            <form [formGroup]="searchForm" class="editForm" novalidate>
-              <div class="row">
-                <div class="from-group col-6">
-                  <input type="text" class="form-control sml_input" formControlName="name" placeholder="Search Here">
-                </div>
-                <div class="from-group col-4">
-                  <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i>Search</button>
-                  <button class="btn sml_input btn-danger ml-2" (click)="refresh()"> <i
-                      class="fas fa-sync-alt"></i>Refresh</button>
-                </div>
-        
-                <div class="col-2">
-                  <div class="dropdown float-right">
-                    <select class="form-control sml_input" formControlName="per_page" (change)="getAll()">
-                      <option value=10>10</option>
-                      <option value=25>25</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                      <option value='all'>All</option>
-                    </select>
-                  </div>
-                </div>
+  <div class="col-sm-12">
+    <app-card cardTitle="Master Settings" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+      <div class="row  mb-2">
+        <div class="col-2">
+          <div class="from-group ">
+            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+              Add Settings
+            </button>
+          </div>
+        </div>
+        <div class="col-10">
+          <form [formGroup]="searchForm" class="editForm" novalidate>
+            <div class="row">
+              <div class="from-group col-6">
+                <input type="text" class="form-control sml_input" formControlName="name" placeholder="Search Here">
               </div>
-            </form>
-          </div>
-          <div class="col-1">
-            <div class="from-group text-right">
-              <button class="btn sml_input btn-dark mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Operator Name </th>
-                <th scope="col">logo</th>
-                <th scope="col">Status </th>
-                <th scope="col" width="100px">Action </th>
-              </tr>
-            </thead>
-            <tbody *ngIf="settings?.length != 0">
-              <tr *ngFor="let settingdata of settings; let i = index">
-                <td>{{ i+1 }}</td>
-                <td>{{settingdata.bus_operator.operator_name}} </td>
-                <td>
-                  <img class="sliderImage" [attr.src]="getImagepath(settingdata.logo)">
-                </td>
-                <td>
-                  <label *ngIf="settingdata.status==1" class="badge badge-light-success pointer"
-                    (click)="changeStatus($event, settingdata.id);">Active</label>
-                  <label *ngIf="settingdata.status==0" class="badge badge-light-warning pointer"
-                    (click)="changeStatus($event, settingdata.id);">Pending</label>
-                </td>
-                <td>
-                  <button class="btn btn-light text-info" title="Edit" (click)="editSettings(i);OpenModal(content)"><i
-                      class="fas fa-edit"></i></button>
-                  <button class="btn btn-light text-danger" title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i
-                      class="fas fa-trash-alt"></i></button>
-                </td>
-              </tr>
-            </tbody>
-            <tbody *ngIf="settings?.length == 0">
-              <tr>
-                <td colspan="5" class="no-data-available">No data!</td>
-              </tr>
-            </tbody>
-          </table>
-        
-        </div>
-        <!-- /////Paginate Code -->
-        <div *ngIf="pagination?.length != 0">
-          <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-            <nav class="my-1 pt-1 ">
-              <ul class="pagination pagination-circle pg-blue mb-0 hide_print">
-                <li (click)="getAll(pagination.first_page_url,statusLabel)"
-                  class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                  <a class="page-link">First</a>
-                </li>
-                <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                  <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                    (click)="(b.url) ? getAll(b.url,statusLabel) : ''" [innerHTML]="page(b.label)"></a>
-                </li>
-                <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
-                  (click)="getAll(pagination.last_page_url,statusLabel)">
-                  <a class="page-link">Last</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <div class="app-card-footer">
-          <ng-template #confirmDialog let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
-                  aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      Would you Like to Delete the Record
-                      <form [formGroup]="formConfirm" class="editForm" novalidate>
-                      </form>
-                    </div>
-                  </div>
+              <div class="from-group col-4">
+                <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i> </button>
+                <button class="btn sml_input btn-danger ml-2" (click)="refresh()"> <i class="fas fa-sync-alt"></i>
+                </button>
+              </div>
+
+              <div class="col-2">
+                <div class="dropdown float-right">
+                  <select class="form-control sml_input" formControlName="per_page" (change)="getAll()">
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                    <option value='all'>All</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-                (click)="modal.dismiss('Cross click')">Cancel</button>
+          </form>
+        </div>
+
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Operator Name </th>
+              <th scope="col">Operator Number/ Email </th>
+              <th scope="col">logo</th>
+              <th scope="col">Status </th>
+              <th scope="col" width="150px">Action </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="settings?.length != 0">
+            <tr *ngFor="let settingdata of settings; let i = index">
+              <td>{{ i+1 }}</td>
+              <td>{{settingdata.bus_operator.operator_name}} </td>
+              <td>{{settingdata.bus_operator.contact_number}}<br>{{settingdata.bus_operator.email_id}}</td>
+              <td>
+                <img class="sliderImage" [attr.src]="getImagepath(settingdata.logo)">
+              </td>
+              <td>
+                <label *ngIf="settingdata.status==1" class="badge badge-light-success pointer"
+                  (click)="changeStatus($event, settingdata.id);">Active</label>
+                <label *ngIf="settingdata.status==0" class="badge badge-light-warning pointer"
+                  (click)="changeStatus($event, settingdata.id);">Pending</label>
+              </td>
+              <td>
+                <button class="btn btn-light text-info" title="Edit" (click)="editSettings(i);OpenModal(content)"><i
+                    class="fas fa-edit"></i></button>
+                <button class="btn btn-light text-danger" title="Delete"
+                  (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="settings?.length == 0">
+            <tr>
+              <td colspan="6" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <!-- /////Paginate Code -->
+      <div *ngIf="pagination?.length != 0">
+        <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+          <nav class="my-1 pt-1 ">
+            <ul class="pagination pagination-circle pg-blue mb-0 hide_print">
+              <li (click)="getAll(pagination.first_page_url,statusLabel)"
+                class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                <a class="page-link">First</a>
+              </li>
+              <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                  (click)="(b.url) ? getAll(b.url,statusLabel) : ''" [innerHTML]="page(b.label)"></a>
+              </li>
+              <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                (click)="getAll(pagination.last_page_url,statusLabel)">
+                <a class="page-link">Last</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="app-card-footer">
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
-          </ng-template>
-          <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
-            (click)="ResetAttributes();OpenModal(content)">Add </button>
-          <ng-template #content let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
-                  aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      <form [formGroup]="settingForm" class="editForm" novalidate>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Type" class="col-sm-5 col-form-label">Operator<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <ng-select [items]="operators" bindLabel="operator_name" bindValue="id"
-                                      placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
-                                    </ng-select>
-                                <span class="text-danger"
-                                  *ngIf="settingForm.controls['bus_operator_id'].touched && settingForm.controls['bus_operator_id'].hasError('required')">
-                                  Bus Operator Name required
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Type" class="col-sm-5 col-form-label">payment gateway charges<span
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes();OpenModal(content)">Add </button>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form [formGroup]="settingForm" class="editForm" novalidate>
+                      <div class="row">
+                        <div class="col-md-6">
+
+                          <div class="form-group row">
+                            <label  class="col-sm-5 col-form-label"><strong>Operator</strong> <span
                                 class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="payment gateway charges" required
-                                  formControlName="payment_gateway_charges" />
-                                <span class="text-danger"
-                                  *ngIf="settingForm.controls['payment_gateway_charges'].touched && settingForm.controls['payment_gateway_charges'].hasError('required')">
-                                  payment gateway charges required
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Type" class="col-sm-5 col-form-label">email sms charges<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="email sms charges" required
-                                  formControlName="email_sms_charges" />
-                                <span class="text-danger"
-                                  *ngIf="settingForm.controls['email_sms_charges'].touched && settingForm.controls['email_sms_charges'].hasError('required')">
-                                  email sms charges required
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Name" class="col-sm-5 col-form-label">odbus gst charges<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="odbus gst charges" required
-                                formControlName="odbus_gst_charges" />
+                            <div class="col-sm-7">
+                              <ng-select  [items]="operators" bindLabel="operator_name" bindValue="id"
+                                    placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
+                                  </ng-select>
                               <span class="text-danger"
-                                *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">
-                                odbus gst charges required
+                                *ngIf="settingForm.controls['bus_operator_id'].touched && settingForm.controls['bus_operator_id'].hasError('required')">
+                                Bus Operator Name required
                               </span>
-                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Type" class="col-sm-5 col-form-label">advance days show<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="advance days show" required
-                                formControlName="advance_days_show" />
+
+                          <div class="form-group row">
+                            <label for="pay_chrg" class="col-sm-5 col-form-label"><strong> payment gateway charges</strong><span
+                              class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="pay_chrg" type="text" class="form-control" ngbAutofocus placeholder="payment gateway charges" required
+                                formControlName="payment_gateway_charges" />
                               <span class="text-danger"
-                                *ngIf="settingForm.controls['advance_days_show'].touched && settingForm.controls['advance_days_show'].hasError('required')">
-                                advance days show required
+                                *ngIf="settingForm.controls['payment_gateway_charges'].touched && settingForm.controls['payment_gateway_charges'].hasError('required')">
+                                payment gateway charges required
                               </span>
-                              </div>
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Name" class="col-sm-5 col-form-label">support email<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="support email" required
-                                formControlName="support_email" />
+
+                          <div class="form-group row">
+                            <label for="eml_chrg" class="col-sm-5 col-form-label"><strong>Email Sms charges</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="eml_chrg" type="text" class="form-control" ngbAutofocus placeholder="email sms charges" required
+                                formControlName="email_sms_charges" />
                               <span class="text-danger"
-                                *ngIf="settingForm.controls['support_email'].touched && settingForm.controls['support_email'].hasError('required')">
-                                support email required
+                                *ngIf="settingForm.controls['email_sms_charges'].touched && settingForm.controls['email_sms_charges'].hasError('required')">
+                                email sms charges required
                               </span>
-                              </div>
                             </div>
                           </div>
+
+                          <div class="form-group row">
+                            <label for="gst" class="col-sm-5 col-form-label"><strong>Gst Charges</strong><span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="gst" type="text" class="form-control" ngbAutofocus placeholder="odbus gst charges" required
+                              formControlName="odbus_gst_charges" />
+                            <span class="text-danger"
+                              *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">
+                              odbus gst charges required
+                            </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="s_eml" class="col-sm-5 col-form-label"><strong>Support email</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="s_eml" type="text" class="form-control" ngbAutofocus placeholder="support email" required
+                              formControlName="support_email" />
+                            <span class="text-danger"
+                              *ngIf="settingForm.controls['support_email'].touched && settingForm.controls['support_email'].hasError('required')">
+                              support email required
+                            </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="b_eml" class="col-sm-5 col-form-label"><strong>Booking email</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="b_eml" type="text" class="form-control" ngbAutofocus placeholder="booking email" required
+                                formControlName="booking_email" />
+                              <span class="text-danger"
+                                *ngIf="settingForm.controls['booking_email'].touched && settingForm.controls['booking_email'].hasError('required')">
+                                booking email required
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="r_eml" class="col-sm-5 col-form-label"><strong>Request email</strong> </label>
+                            <div class="col-sm-7">
+                              <input id="r_eml" type="text" class="form-control" ngbAutofocus placeholder="request email"
+                                formControlName="request_email" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="o_eml" class="col-sm-5 col-form-label"><strong>Other email</strong> </label>
+                            <div class="col-sm-7">
+                              <input id="o_eml" type="text" class="form-control" ngbAutofocus placeholder="other email"
+                                 formControlName="other_email"/>
+                            </div>
+                          </div>
+
                         </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Type" class="col-sm-5 col-form-label">booking email<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="booking email" required
-                                  formControlName="booking_email" />
+
+                        <div class="col-md-6">
+
+                          <div class="form-group row">
+                            <label for="adv" class="col-sm-5 col-form-label"><strong>Advance days show</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="adv" type="text" class="form-control" ngbAutofocus placeholder="advance days show" required
+                              formControlName="advance_days_show" />
+                            <span class="text-danger"
+                              *ngIf="settingForm.controls['advance_days_show'].touched && settingForm.controls['advance_days_show'].hasError('required')">
+                              advance days show required
+                            </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="mob_1" class="col-sm-5 col-form-label"><strong>Mobile no:1 </strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="mob_1" type="text" class="form-control" ngbAutofocus placeholder="mobile no:1" required
+                                formControlName="mobile_no_1" />
                                 <span class="text-danger"
-                                  *ngIf="settingForm.controls['booking_email'].touched && settingForm.controls['booking_email'].hasError('required')">
-                                  booking email required
-                                </span>
+                              *ngIf="settingForm.controls['mobile_no_1'].touched && settingForm.controls['mobile_no_1'].hasError('required')">
+                              mobile no:1 required
+                            </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="mob_2" class="col-sm-5 col-form-label"><strong>Mobile no:2</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input id="mob_2" type="text" class="form-control" ngbAutofocus placeholder="mobile no:2"
+                                required formControlName="mobile_no_2"/>
+                                <span class="text-danger"
+                              *ngIf="settingForm.controls['mobile_no_2'].touched && settingForm.controls['mobile_no_2'].hasError('required')">
+                              mobile no:2 required
+                            </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="mob_3" class="col-sm-5 col-form-label"><strong> Mobile no:3</strong></label>
+                            <div class="col-sm-7">
+                              <input id="mob_3" type="text" class="form-control" ngbAutofocus placeholder="mobile no:3"
+                                formControlName="mobile_no_3" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="mob_4" class="col-sm-5 col-form-label"><strong>Mobile no:4</strong></label>
+                            <div class="col-sm-7">
+                              <input id="mob_4" type="text" class="form-control" ngbAutofocus placeholder="mobile no:4"
+                                formControlName="mobile_no_4" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="logo" class="col-sm-5 col-form-label"><strong>Logo</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <div>
+                                <input  type="file" #file accept='image/*' (change)="picked($event,file.files);"
+                                  class="form-control" id="logo" placeholder="Drop logo image here"
+                                  formControlName="logo" />
+                              </div>
+                              <span class="text-danger">Max file size 100Kb</span>
+                              <span class="text-danger">{{imageError}}</span>
+                              <span class="text-danger"
+                                *ngIf="settingForm.controls['logo'].touched && settingForm.controls['logo'].hasError('required')">
+                                Image file is required! </span>
+                              <div *ngIf="imgURL">
+                                <img id="sliderImgPreview" class="sliderImage-edit"
+                                  [attr.src]="getImagepath(settingForm.value['iconSrc'])" >
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="Type" class="col-sm-5 col-form-label">request email</label>
-                                <div class="col-sm-7">
-                                  <input type="text" class="form-control" ngbAutofocus placeholder="request email"
-                                    formControlName="request_email" />
-                                </div>
-                              </div>
-                          </div>
+
+
                         </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="Type" class="col-sm-5 col-form-label">other email</label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="other email"
-                                  required formControlName="other_email"/>
-                              </div>
-                            </div>
-                          </div> 
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="Type" class="col-sm-5 col-form-label">mobile no:1<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-7">
-                                  <input type="text" class="form-control" ngbAutofocus placeholder="mobile no:1" required
-                                    formControlName="mobile_no_1" />
-                                    <span class="text-danger"
-                                  *ngIf="settingForm.controls['mobile_no_1'].touched && settingForm.controls['mobile_no_1'].hasError('required')">
-                                  mobile no:1 required
-                                </span>
-                                </div>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="Type" class="col-sm-5 col-form-label">mobile no:2<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-7">
-                                  <input type="text" class="form-control" ngbAutofocus placeholder="mobile no:2"
-                                    required formControlName="mobile_no_2"/>
-                                    <span class="text-danger"
-                                  *ngIf="settingForm.controls['mobile_no_2'].touched && settingForm.controls['mobile_no_2'].hasError('required')">
-                                  mobile no:2 required
-                                </span>
-                                </div>
-                              </div>
-                            </div> 
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                  <label for="Type" class="col-sm-5 col-form-label">mobile no:3</label>
-                                  <div class="col-sm-7">
-                                    <input type="text" class="form-control" ngbAutofocus placeholder="mobile no:3"
-                                      formControlName="mobile_no_3" />
-                                  </div>
-                                </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="Type" class="col-sm-5 col-form-label">mobile no:4</label>
-                                <div class="col-sm-7">
-                                  <input type="text" class="form-control" ngbAutofocus placeholder="mobile no:4"
-                                    formControlName="mobile_no_4" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label for="Name" class="col-sm-5 col-form-label">Logo<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-7">
-                                  <div>
-                                    <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
-                                      class="form-control" id="logo" placeholder="Drop logo image here"
-                                      formControlName="logo" />
-                                  </div>
-                                  <span class="text-danger">Max file size 100Kb</span>
-                                  <span class="text-danger">{{imageError}}</span>
-                                  <span class="text-danger"
-                                    *ngIf="settingForm.controls['logo'].touched && settingForm.controls['logo'].hasError('required')">
-                                    Image file is required! </span>
-                                  <div *ngIf="imgURL">
-                                    <img id="sliderImgPreview" class="sliderImage-edit"
-                                      [attr.src]="getImagepath(settingForm.value['iconSrc'])">
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                      </form>
-                    </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" (click)="addSettings()" [disabled]="!settingForm.valid || !imageSizeFlag"
-                class="btn btn-primary">{{ModalBtn}}</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-                (click)="modal.dismiss('Cross click')">Close</button>
-            </div>
-          </ng-template>
-        </div>
-      </app-card>
-    </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="addSettings()" [disabled]="!settingForm.valid || !imageSizeFlag"
+              class="btn btn-primary">{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+      </div>
+    </app-card>
   </div>
+</div>

@@ -80,6 +80,7 @@ FormOne: FormGroup;
     });
 
     this.search();
+    this.loadServices();
   }
 
 
