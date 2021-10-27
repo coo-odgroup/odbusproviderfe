@@ -51,17 +51,19 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Operator</th>
                 <th scope="col">Occasion </th>
                 <th scope="col">Banner</th>
                 <th scope="col">Start Date Time</th>
                 <th scope="col">End Date Time</th>
                 <th scope="col">Status </th>
-                <th scope="col" width="100px">Action </th>
+                <th scope="col" width="150px">Action </th>
               </tr>
             </thead>
             <tbody *ngIf="banners?.length != 0">
               <tr *ngFor="let bannerData of banners; let i = index">
                 <td>{{ i+1 }}</td>
+                <td>{{bannerData.bus_operator.operator_name}} </td>
                 <td>{{bannerData.occassion}} </td>
                 <td>
                   <img class="sliderImage" [attr.src]="getBannerImagepath(bannerData.banner_img)">
@@ -152,11 +154,11 @@
                       <form [formGroup]="bannerForm" class="editForm" novalidate>
                         <div class="row">
                           <div class="col-md-12">
+                            <div class="col-md-6">
                             <div class="form-group row">
-
-                              <label for="bus" class="col-sm-4 col-form-label">Operator <span
+                              <label for="bus" class="col-sm-5  col-form-label">Operator <span
                                   class="text-danger">*</span></label>
-                              <div class="col-sm-8">
+                              <div class="col-sm-7">
                                 <ng-select [items]="operators" bindLabel="operator_name" bindValue="id"
                                   placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
                                 </ng-select>
@@ -165,6 +167,24 @@
                                   Operator Name is required! </span>
                               </div>
                             </div>
+                          </div>
+<!-- 
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label for="Type" class="col-sm-5 col-form-label">Heading<span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" ngbAutofocus
+                                  placeholder="Enter banner description" required formControlName="heading" />
+                                <span class="text-danger"
+                                  *ngIf="bannerForm.controls['heading'].touched && bannerForm.controls['heading'].hasError('required')">
+                                  slider description required
+                                </span>
+                              </div>
+                            </div>
+                          </div> -->
+
+
                           </div>
                         </div>
                         <div class="row">

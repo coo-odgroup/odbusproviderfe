@@ -318,6 +318,27 @@
                             </div>
                           </div>
 
+                          <div class="form-group row">
+                            <label for="favIcon" class="col-sm-5 col-form-label"><strong>Fav Icon</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <div>
+                                <input  type="file" #file accept='image/*' (change)="pickedfav($event,file.files);"
+                                  class="form-control" id="favIcon" placeholder="Drop favIcon image here"
+                                  formControlName="favIcon" />
+                              </div>
+                              <span class="text-danger">Max file size 100Kb</span>
+                              <span class="text-danger">{{favError}}</span>
+                              <span class="text-danger"
+                                *ngIf="settingForm.controls['favIcon'].touched && settingForm.controls['favIcon'].hasError('required')">
+                                Image file is required! </span>
+                              <div *ngIf="favURL">
+                                <img  class="sliderImage-edit"
+                                  [attr.src]="getImagepath(settingForm.value['favSrc'])" >
+                              </div>
+                            </div>
+                          </div>
+
 
                         </div>
                       </div>

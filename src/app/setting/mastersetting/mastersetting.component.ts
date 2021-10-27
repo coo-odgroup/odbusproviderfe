@@ -29,7 +29,10 @@ export class MastersettingComponent implements OnInit {
   imageSrc:any;
   iconSrc:any;
   imageError:any;
+  favError:any;
   imgURL: any;
+  favURL: any;
+
   base64result:any;
   finalJson = {};
   public formConfirm: FormGroup;
@@ -62,13 +65,16 @@ export class MastersettingComponent implements OnInit {
             res=>{    
               this.settings= res.data.data.data; 
               this.pagination = res.data.data;
-              console.log(res.data.data.data);
+              // console.log(res.data.data.data);
             },
     );
    }
    refresh()
     {
-      this.searchForm.reset();
+      this.searchForm =this.fb.group({
+        name:[null],
+        per_page:Constants.RecordLimit,
+      })
       this.getAll();
     }
     page(label:any){
@@ -98,8 +104,11 @@ export class MastersettingComponent implements OnInit {
       mobile_no_3:[null],
       mobile_no_4:[null],
       logo:[null],
-      iconSrc:[null]
+      iconSrc:[null],
+      favIcon:[null],
+      favSrc:[null]
     });
+
     this.formConfirm=this.fb.group({
       id:[null],
     });
@@ -110,7 +119,7 @@ export class MastersettingComponent implements OnInit {
     public picked(event:any, fileSrc:any) {
       this.imageError = null;
               const max_size = 102400;
-              const allowed_types = ['image/x-png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+              const allowed_types = ['image/x-png','image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
               const max_height = 100;
               const max_width = 200;
       let fileList: FileList = event.target.files;
@@ -165,6 +174,8 @@ export class MastersettingComponent implements OnInit {
       }
       this.preview(fileSrc); 
     }
+
+    
     handleInputChange(files) {
       let file = files;
       let pattern = /image-*/;
@@ -198,6 +209,102 @@ export class MastersettingComponent implements OnInit {
         this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
       }
     }
+
+
+
+    public pickedfav(event:any, fileSrc:any) {
+      this.favError = null;
+              const max_size = 102400;
+              const allowed_types = ['image/x-png','image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+              const max_height = 100;
+              const max_width = 200;
+      let fileList: FileList = event.target.files;
+      this.imageSizeFlag = true;
+      if (event.target.files[0].size > max_size) {
+        this.favError =
+            'Maximum size allowed is ' + max_size/1024  + 'Kb';
+            this.settingForm.value.imagePath = '';
+            this.favURL='';
+            this.imageSizeFlag = false;
+        return false;
+    }
+    if (!_.includes(allowed_types, event.target.files[0].type)) {
+  
+        this.favError = 'Only Images are allowed';
+        this.settingForm.value.imagePath = '';
+        this.settingForm.controls.slider_img.setValue('');
+        this.favURL='';
+        return false;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+  
+        image.onload = rs => {
+            const img_height = rs.currentTarget['height'];
+            const img_width = rs.currentTarget['width'];
+  
+            if (img_height > max_height && img_width > max_width) {
+              this.favError =
+                  'Maximum dimentions allowed ' +
+                  max_height +
+                  '*' +
+                  max_width +
+                  'px';
+                  this.settingForm.value.imagePath = '';
+                  this.favURL='';
+              return false;
+          } 
+        };
+    };
+      if (fileList.length > 0) {
+        const file: File = fileList[0];
+        
+          this.settingForm.value.File = file;
+  
+          this.handleInputChangefav(file); //turn into base64  
+      }
+      else {
+        //alert("No file selected");
+      }
+      this.previewfav(fileSrc); 
+    }
+    handleInputChangefav(files) {
+      let file = files;
+      let pattern = /image-*/;
+      let reader = new FileReader();
+      reader.onloadend = this._handleReaderLoadedfav.bind(this);
+      reader.readAsDataURL(file);
+      
+    }
+    _handleReaderLoadedfav(e) {
+      let reader = e.target;
+      this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+      this.imageSrc = this.base64result;
+      this.settingForm.value.favSrc=this.base64result;
+      this.settingForm.controls.favSrc.setValue(this.base64result); 
+    }
+    previewfav(files) {
+      if (files.length === 0)
+        return;
+      let mimeType = files[0].type;
+  
+      if (mimeType.match(/image\/*/) == null) {
+        this.message = "Only images are supported.";
+        return;
+      }
+      let reader = new FileReader();
+      this.settingForm.value.favIcon = files;
+      reader.readAsDataURL(files[0]); 
+      reader.onload = (_event) => { 
+        this.favURL = reader.result; 
+        this.favURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.favURL);
+      }
+    }
+
+
+
     LoadAllService()
     {
       this.busOperartorService.readAll().subscribe(
@@ -224,7 +331,9 @@ export class MastersettingComponent implements OnInit {
       mobile_no_3: [null],
       mobile_no_4: [null],
       logo:[null],
-      iconSrc:[null]
+      iconSrc:[null],
+      favIcon:[null],
+      favSrc:[null]
     });
     this.LoadAllService();
     this.ModalHeading = "Add Master Settings";
@@ -254,6 +363,8 @@ export class MastersettingComponent implements OnInit {
       mobile_no_3:this.settingForm.value.mobile_no_3,
       mobile_no_4:this.settingForm.value.mobile_no_4,
       logo:this.settingForm.value.iconSrc,
+      favIcon:this.settingForm.value.favSrc,
+      
       created_by:'Admin',
     };
     let id = this.settingRecord?.id;
@@ -300,7 +411,7 @@ export class MastersettingComponent implements OnInit {
   { 
     this.settingRecord = this.settings[id]; 
     this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.settingRecord.logo); 
-    
+    this.favURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.settingRecord.favIcon); 
     this.settingForm=this.fb.group({
       id:[this.settingRecord.id],
       bus_operator_id:[this.settingRecord.bus_operator_id],
@@ -316,8 +427,10 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[this.settingRecord.mobile_no_2],
       mobile_no_3:[this.settingRecord.mobile_no_3],
       mobile_no_4:[this.settingRecord.mobile_no_4],
-      logo: [],
-      iconSrc:[this.settingRecord.logo]
+      logo: [],favIcon:[],
+      iconSrc:[this.settingRecord.logo],
+      favSrc:[this.settingRecord.favIcon]
+      
     });
     this.LoadAllService();
     this.ModalHeading = "Edit Master Settings";

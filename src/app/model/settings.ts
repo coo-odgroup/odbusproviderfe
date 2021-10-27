@@ -14,6 +14,7 @@ export interface SettingsRecords{
     mobile_no_3:any;
     mobile_no_4:any;
     logo:any;
+    favIcon:any;
 
   } 
   
