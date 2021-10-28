@@ -29,6 +29,7 @@ import { NgSelectModule} from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { LoginComponent } from './theme/layout/admin/login/login.component';
 
 
 
@@ -49,6 +50,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     NavRightComponent,
     ConfigurationComponent,
     ToggleFullScreenDirective,
+    LoginComponent,
   
     
   ],
