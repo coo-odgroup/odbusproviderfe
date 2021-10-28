@@ -8,6 +8,7 @@ import {NotificationService} from '../../services/notification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import {NgxPrintModule} from 'ngx-print';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +17,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     FormsModule,
     NgSelectModule,
     NgbModule,
-    AngularEditorModule
+    AngularEditorModule,
+    NgxPrintModule
   ],
   declarations: [ CouponComponent],
   providers:[NotificationService]

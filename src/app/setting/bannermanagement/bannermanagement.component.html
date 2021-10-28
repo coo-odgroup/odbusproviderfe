@@ -21,12 +21,12 @@
                   <select class="form-control sml_input" formControlName="status">
                     <option [value]="" [selected]="true">-Status-</option>
                     <option value=1>Active</option>
-                    <option value=0>Block</option>
+                    <option value=0>Pending</option>
                   </select>
                 </div>
                 <div class="from-group col-4">
                   <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i>Search</button>
-                  <button class="btn sml_input btn-danger ml-2" (click)="refresh()"> <i
+                  <button class="btn sml_input btn-danger " (click)="refresh()"> <i
                       class="fas fa-sync-alt"></i>Refresh</button>
                 </div>
         
@@ -86,7 +86,7 @@
             </tbody>
             <tbody *ngIf="banners?.length == 0">
               <tr>
-                <td colspan="7" class="no-data-available">No data!</td>
+                <td colspan="8" class="no-data-available">No data!</td>
               </tr>
             </tbody>
           </table>
@@ -152,10 +152,10 @@
                   <div class="form-material">
                     <div class="right-icon-control">
                       <form [formGroup]="bannerForm" class="editForm" novalidate>
+                        
                         <div class="row">
-                          <div class="col-md-12">
-                            <div class="col-md-6">
-                            <div class="form-group row">
+                          <div class="col-md-6">
+                            <div class="form-group row ">
                               <label for="bus" class="col-sm-5  col-form-label">Operator <span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-7">
@@ -168,23 +168,19 @@
                               </div>
                             </div>
                           </div>
-<!-- 
                           <div class="col-md-6">
                             <div class="form-group row">
                               <label for="Type" class="col-sm-5 col-form-label">Heading<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ngbAutofocus
-                                  placeholder="Enter banner description" required formControlName="heading" />
-                                <span class="text-danger"
-                                  *ngIf="bannerForm.controls['heading'].touched && bannerForm.controls['heading'].hasError('required')">
-                                  slider description required
-                                </span>
-                              </div>
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input type="text" class="form-control" ngbAutofocus
+                                placeholder="Enter banner description" required formControlName="heading" />
+                              <span class="text-danger"
+                                *ngIf="bannerForm.controls['heading'].touched && bannerForm.controls['heading'].hasError('required')">
+                                Heading required
+                              </span>
                             </div>
-                          </div> -->
-
-
+                            </div>
                           </div>
                         </div>
                         <div class="row">

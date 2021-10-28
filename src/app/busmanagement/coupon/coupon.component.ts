@@ -7,6 +7,9 @@ import { Coupon } from '../../model/coupon';
 import {CouponService} from '../../services/coupon.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {Constants} from '../../constant/constant';
+import { BusOperatorService } from '../../services/bus-operator.service';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-coupon',
   templateUrl: './coupon.component.html',
@@ -16,7 +19,8 @@ import {Constants} from '../../constant/constant';
 export class CouponComponent implements OnInit {
 
   public form: FormGroup;
-
+  public searchForm: FormGroup;
+  
   public formConfirm: FormGroup;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
@@ -28,12 +32,14 @@ export class CouponComponent implements OnInit {
   coupons: Coupon[];
   couponRecord: Coupon;
   pagination: any;
+  busoperators: any;
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
     private modalService: NgbModal,
     private couponService:CouponService,
+    private busOperatorService: BusOperatorService,
     config: NgbModalConfig
     )
     { 
@@ -56,21 +62,28 @@ export class CouponComponent implements OnInit {
       full_description: [null],
       coupon_type: [null],
       percentage: [null],
-      max_discount: [null],
-      cut_off_amount: [null],
+      max_discount_price: [null],
+      amount: [null],
       min_tran_amount: [null],
       valid_by: [null],
       from_date: [null],
       to_date: [null],
+      bus_operator_id:[null],
       max_redeem: [null]
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
     });
+
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
     this.formConfirm=this.fb.group({
       id:[null]
     });
     this.search();
+    this.loadServices();
     
   }
   loadElements(index:any)
@@ -78,29 +91,40 @@ export class CouponComponent implements OnInit {
     this.ModalHeading = "Edit Coupon";
     this.ModalBtn = "Update"; 
     this.couponRecord= this.coupons[index];
-    console.log(this.couponRecord);
+
+    var d = new Date(this.couponRecord.from_date);
+    let date = [d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2)].join('-');
+    var e = new Date(this.couponRecord.from_date);
+    let to_date = [d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2)].join('-');
+    // console.log(this.couponRecord);
     this.form.controls.coupon_title.setValue(this.couponRecord.coupon_title);
     this.form.controls.coupon_code.setValue(this.couponRecord.coupon_code);
     this.form.controls.short_description.setValue(this.couponRecord.short_desc);
     this.form.controls.full_description.setValue(this.couponRecord.full_desc);
     this.form.controls.coupon_type.setValue(this.couponRecord.type);
-    this.form.controls.max_discount.setValue(this.couponRecord.max_discount);
-    this.form.controls.cut_off_amount.setValue(this.couponRecord.cut_off_amount);
+    this.form.controls.max_discount_price.setValue(this.couponRecord.max_discount_price);
+     this.form.controls.percentage.setValue(this.couponRecord.percentage);
+    this.form.controls.amount.setValue(this.couponRecord.amount);
     this.form.controls.min_tran_amount.setValue(this.couponRecord.min_tran_amount);
     this.form.controls.valid_by.setValue(this.couponRecord.valid_by);
-    this.form.controls.from_date.setValue(this.couponRecord.from_date);
-    this.form.controls.to_date.setValue(this.couponRecord.to_date);
+    this.form.controls.from_date.setValue(date);
+    this.form.controls.to_date.setValue(to_date);
+    this.form.controls.bus_operator_id.setValue(this.couponRecord.bus_operator_id);
     this.form.controls.max_redeem.setValue(this.couponRecord.max_redeem);
 
   }
-  search(pageurl="")
-  {
 
-      
+  page(label:any){
+    return label;
+   }
+
+
+  search(pageurl="")
+  {      
     const data = {
-      rows_number:this.form.value.rows_number,  
-      rangeFromDate:this.form.value.coupon_title,
-      rangeToDate :this.form.value.rangeToDate
+      name:this.searchForm.value.name,  
+      rows_number:this.searchForm.value.rows_number,
+     
     };
    
     // console.log(data);
@@ -110,7 +134,7 @@ export class CouponComponent implements OnInit {
         res => {
           
           this.coupons= res.data.data.data;
-          this.pagination= res.data;
+          this.pagination= res.data.data;
           // console.log( this.contactcontent);
         }
       );
@@ -120,14 +144,24 @@ export class CouponComponent implements OnInit {
       this.couponService.couponDataTable(data).subscribe(
         res => {
           this.coupons= res.data.data.data;
-          this.pagination= res.data;
-          // console.log(  res.data);
+          this.pagination= res.data.data;
+          // console.log(  this.pagination);
         }
       );
     }
 
 
   }
+
+  refresh()
+   {
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
+
+     this.search();
+   }
 
 
   OpenModal(content) 
@@ -136,29 +170,55 @@ export class CouponComponent implements OnInit {
   }
   ResetAttributes()
   { 
-    this.form.reset();
+    this.couponRecord = {} as Coupon;
+    this.form = this.fb.group({
+      id:[null],
+      coupon_title: [null, Validators.compose([Validators.required])],
+      coupon_code: [null, Validators.compose([Validators.required])],
+      short_description: [null],
+      full_description: [null],
+      coupon_type: [null],
+      percentage: [null],
+      max_discount_price: [null],
+      amount: [null],
+      min_tran_amount: [null],
+      valid_by: [null],
+      from_date: [null],
+      to_date: [null],
+      bus_operator_id:[null],
+      max_redeem: [null]
+
+      // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      // synonym: [null, Validators.compose([Validators.maxLength(15)])]
+    });
     this.ModalHeading = "Add Coupon";
     this.ModalBtn = "Save";
   }
 
   addData()
   {
+    let id=this.couponRecord.id;
     const data={
       coupon_code:this.form.value.coupon_code,
       coupon_title:this.form.value.coupon_title,
       type:this.form.value.coupon_type,
-      amount:this.form.value.cut_off_amount,
+      amount:this.form.value.amount,
       full_desc:this.form.value.full_description,
-      max_discount_price:this.form.value.max_discount,
+      max_discount_price_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
       min_tran_amount:this.form.value.min_tran_amount,
       percentage:this.form.value.percentage,
       short_desc:this.form.value.short_description,
-      category:this.form.value.valid_by,
+      valid_by:this.form.value.valid_by,
       from_date:this.form.value.from_date,
       to_date:this.form.value.to_date,
+      bus_operator_id:this.form.value.bus_operator_id,
       created_by:'Admin'
     };
+
+    // console.log(data);
+    if(id==null)
+    {
     this.couponService.create(data).subscribe(
       resp => {
         if(resp.status==1)
@@ -166,12 +226,31 @@ export class CouponComponent implements OnInit {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
             this.modalReference.close();
+            this.ResetAttributes();
+            this.search(); 
         }
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
         }
       }
-    );
+    );  }
+    else{     
+     
+      this.couponService.update(id,data).subscribe(
+        resp => {
+          if(resp.status==1)
+            {                
+              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+              this.modalReference.close();
+              this.ResetAttributes();
+             this.search(); 
+            }
+            else
+            {                
+              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+            }
+      });         
+    }    
     // if(data.id != "")
     // {
     //   //UPDATE CASE
@@ -181,6 +260,8 @@ export class CouponComponent implements OnInit {
       
     // }
   }
+
+  
 
   editData()
   {
@@ -193,6 +274,34 @@ export class CouponComponent implements OnInit {
   }
 
 
+  loadServices() {
+
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+      }
+    );
+  }
+
+  
+  title = 'angular-app';
+  fileName= 'Coupon.xlsx';
+
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
 
 
 
@@ -247,5 +356,30 @@ export class CouponComponent implements OnInit {
       ['fontSize']
     ]
 };
+
+
+openConfirmDialog(content, id: any)
+{
+  this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
+  this.couponRecord = this.coupons[id];
+}
+deleteRecord()
+{
+  // let delitem=this.formConfirm.value.id;
+  let delitem = this.couponRecord.id;
+   this.couponService.delete(delitem).subscribe(
+    resp => {
+      if(resp.status==1)
+          {
+              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+              this.confirmDialogReference.close();
+              this.search(); 
+          }
+          else{
+             
+            this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+          }
+    }); 
+}
 
 }

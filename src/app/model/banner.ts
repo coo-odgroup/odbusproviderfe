@@ -4,6 +4,7 @@ export interface Banner {
     occassion:any;
     category:any;
     url:any;
+    heading:any;
     banner_img:any;
     alt_tag:any;
     start_date:any;
