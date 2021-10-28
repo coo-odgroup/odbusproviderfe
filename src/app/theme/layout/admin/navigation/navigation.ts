@@ -158,13 +158,13 @@ const NavigationItems = [
             type: 'item',
             url: 'busmanagement/BusSequence'
           }
-          //   ,
-          //   {
-          //     id   : 'formValidation',
-          //     title: 'Form Validation',
-          //     type : 'item',
-          //     url  : 'busmanagement/formValidation'
-          //   }
+            ,
+            {
+              id   : 'formValidation',
+              title: 'Demo Items',
+              type : 'item',
+              url  : 'busmanagement/formValidation'
+            }
 
         ]
       },
