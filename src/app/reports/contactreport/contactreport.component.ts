@@ -101,14 +101,12 @@ export class ContactreportComponent implements OnInit {
       rangeToDate :this.searchFrom.value.rangeToDate
     };
    
-    // console.log(data);
     if(pageurl!="")
     {
       this.cs.contactpaginationReport(pageurl,data).subscribe(
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
-          // console.log( this.contactcontent);
         }
       );
     }
@@ -118,7 +116,6 @@ export class ContactreportComponent implements OnInit {
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
-          // console.log(  res.data);
         }
       );
     }
@@ -128,7 +125,12 @@ export class ContactreportComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id:[null],
+      rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null]    
+    });
     this.search();
   }
 

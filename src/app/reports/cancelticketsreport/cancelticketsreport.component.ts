@@ -133,7 +133,18 @@ export class CancelticketsreportComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      payment_id : [null],
+      date_type:['booking'],
+      rows_number: Constants.RecordLimit,
+      source_id:[null],
+      destination_id:[null],
+      rangeFromDate:[null],
+      rangeToDate :[null]
+
+    })  
+    this.loadServices();
     this.search();
   }
 

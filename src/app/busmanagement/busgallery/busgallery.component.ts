@@ -160,7 +160,7 @@ export class BusgalleryComponent implements OnInit {
   public picked(event: any, fileSrc: any) {
     //////image validation////////
     this.imageError = null;
-    const max_size = 1024000;
+    const max_size = 512000;
     const allowed_types = ['image/png', 'image/jpeg', 'image/jpg'];
     const max_height = 100;
     const max_width = 200;

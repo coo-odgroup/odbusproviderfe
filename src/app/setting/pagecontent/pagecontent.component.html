@@ -1,12 +1,13 @@
 
 <div class="row">
   <div class="col-sm-12">
-      <app-card cardTitle="Page Content" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+        <app-card [hidHeader]="false" cardTitle="Page Content" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
         <div class="row">
           <div class="col-2">
             <div class="from-group ">
               <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                Add Page
+                Add Page Content
               </button>
             </div>
           </div>
@@ -22,22 +23,16 @@
                           </ng-select>
                       </div>
                   </div>
+              </div>           
+              <div class="col-5">
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
+              
               </div>
-  
-                
-  
-  
-  
-                <div class="col-5">
-                  <div class="dropdown float-left">
-                    <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
-                      <i class="fas fa-search"></i>
-                    </button>
-                    <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                      <i class="fas fa-sync-alt"></i>
-                    </button>
-                  </div>
-                </div>
                 
   
   
@@ -67,7 +62,7 @@
                           <th scope="col">Operator</th>
                           <th scope="col">Page Name</th>
                           <th scope="col">Page URL</th>
-                          <th scope="col" width ="150px">Action </th>                        
+                          <th width="100" class="hide_print">&nbsp; </th>                       
                       </tr>
                   </thead>
                   <tbody *ngIf="pagecontent?.length != 0">
@@ -76,13 +71,39 @@
                       <td><strong>{{page.bus_operator.operator_name}}</strong></td>
                       <td>{{page.page_name}}</td>
                       <td>{{page.page_url}}</td>
-                      <td >
-                          <button class="btn btn-light text-info mr-2" title="Edit" (click) = "editData(i);OpenModal(content)"><i class="fas fa-edit"></i></button>
-                          <button class="btn btn-light text-danger"title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
+                    
+                      <td class="hide_print">
+                        <div class="overlay-edit">
+                          <button type="button" (click) = "editData(i);OpenModal(content)"
+                            class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                          <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                              class="feather icon-trash-2"></i></button>
+                        </div>
                       </td>
                     </tr>                        
                   </tbody>
               </table>
+
+              <div *ngIf="pagination?.length!= 0" class="hide_print">
+                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                  <nav class="my-1 pt-1 ">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                      <li (click)="search(pagination.links.first_page_url,statusLabel)"
+                        class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                        <a class="page-link">First</a>
+                      </li>
+                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                        <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                          (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                      </li>
+                      <li class="page-item {{ pagination.links.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                        (click)="search(pagination.links.last_page_url,statusLabel)">
+                        <a class="page-link">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
           </div>
 
 

@@ -50,15 +50,9 @@ export class SeatopenreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],  
-      // date_range:[null], 
       rows_number: Constants.RecordLimit,
       rangeFromDate:[null],
       rangeToDate:[null]
-
-      // const jsDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
-
-      
-
     })  
   
     // this.getall();
@@ -126,7 +120,15 @@ export class SeatopenreportComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      bus_id: [null],  
+      rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null]
+    })  
+    
+    this.loadServices();
     this.search();
   }
   formatDate(date) {

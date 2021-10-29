@@ -1,11 +1,12 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="Social Links" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+      <app-card [hidHeader]="false" cardTitle="Social Media" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
       <div class="row">
         <div class="col-2">
           <div class="from-group ">
             <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Page
+              Add Media Links
             </button>
           </div>
         </div>
@@ -13,7 +14,7 @@
           <form [formGroup]="searchForm">
             <div class="row">
 
-              <div class="col-6">
+              <div class="col-5">
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
@@ -24,39 +25,22 @@
                 </div>
             </div>
 
-              <!-- <div class="col-3">
-                <div class="form-group row">
-
-                  <div class="col-sm-12">
-                    <input type="text" class="form-control sml_input" placeholder="Search Here " required
-                      formControlName="name" />
-                  </div>
-                </div>
-              </div> -->
-
-
-              <div class="col-2">
-                <div class="dropdown float-left">
-                  <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button type="reset" class="btn btn-danger sml_input " (click)="refresh()" title="refresh">
-                    <i class="fas fa-sync-alt"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="col-2">
-                <div class="dropdown float-left">
-                  <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 sml_input" title="Export">
-                    <i class="fas fa-file-export"></i>
-                  </button>
-                  <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark sml_input"
-                    [useExistingCss]="true" title="Print">
-                    <i class="fas fa-print"></i>
-                  </button>
-                </div>
-              </div>
+             
+            <div class="col-5">
+              <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                <i class="fas fa-search"> </i> Search
+              </button>
+              <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                <i class="fas fa-sync-alt"> </i> Refresh
+              </button>
+              <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                <i class="fas fa-file-export"> </i> Export
+              </button>
+              <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                [useExistingCss]="true" title="Print">
+                <i class="fas fa-print"> </i> Print
+              </button>
+            </div>
 
 
 
@@ -91,7 +75,7 @@
               <th class="hide_screen">Google Plus URL </th>
               <th class="hide_screen">Linkedin URL</th>
               <th scope="col" class="hide_print">Status</th>
-              <th scope="col" width="150px" class="hide_print">Action </th>
+              <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="social?.length != 0">
@@ -105,17 +89,20 @@
               <td class="hide_screen">{{page.googleplus_link}}</td>
               <td class="hide_screen">{{page.linkedin_link}}</td>
               <td class="hide_print">
-                <label *ngIf="page.status==1" class="badge badge-light-success pointer"
+                <label *ngIf="page.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, page.id);">Active</label>
-                <label *ngIf="page.status==0" class="badge badge-light-warning pointer"
+                <label *ngIf="page.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, page.id);">Pending</label>
               </td>
 
+
               <td class="hide_print">
-                <button class="btn btn-light text-info" title="Edit" (click)="editData(i);OpenModal(content)"><i
-                    class="fas fa-edit"></i></button>
-                <button class="btn btn-light text-danger" title="Delete"
-                  (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
+                <div class="overlay-edit">
+                  <button type="button" (click)="editData(i);OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                      class="feather icon-trash-2"></i></button>
+                </div>
               </td>
             </tr>
           </tbody>

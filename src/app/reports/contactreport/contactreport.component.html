@@ -1,7 +1,8 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <app-card cardTitle="Contact Details" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+          <app-card [hidHeader]="false" cardTitle="Contact Details" cardClass="card-datatable" [options]="true"
+          cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
           <div class=" mb-3">
             <div class="row ">
                 <div class="col-12">
@@ -58,14 +59,22 @@
                                 
                             </div>
 
-                            <div class="col-3 ">
-                              <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="Search">
-                                  <i class="fas fa-search"></i> 
+                            <div class="col-3">
+                              <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                                <i class="fas fa-search"> </i> Search
                               </button>
-                              <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="Refreh">
-                                  <i class="fas fa-sync-alt"></i> 
+                              <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                                <i class="fas fa-sync-alt"> </i> Refresh
                               </button>
-                          </div>
+                              <!-- <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                                <i class="fas fa-file-export"> </i> Export
+                              </button>
+                              <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                                [useExistingCss]="true" title="Print">
+                                <i class="fas fa-print"> </i> Print
+                              </button> -->
+                            </div>
+              
 
                            
 
@@ -99,7 +108,7 @@
                             <th scope="col">Phone Number</th>
                             <th scope="col">Operator</th>
                             <th scope="col">Email Id</th>
-                            <th scope="col" width ="150px"> View </th>                        
+                            <th width="100" class="hide_print">&nbsp; </th>                      
                         </tr>
                     </thead>
                     <tbody *ngIf="contactcontent?.length != 0">
@@ -110,14 +119,13 @@
                         <td>{{contact.phone}}</td>
                         <td>{{contact.bus_operator.operator_name}}</td>
                         <td>{{contact.email}}</td>
-                        <td >
-                         <button class="btn btn-success text btn-sm m-1"  (click)="viewDetails(i);OpenModal(content)" title="Details">
-                           <i class="fas fa-eye"></i>
-                          </button>
-
-                          <button class="btn btn-danger text btn-sm m-1"  (click)="openConfirmDialog(confirmDialog, i)" title="Delete">
-                            <i class="fas fa-trash-alt"></i>
-                           </button>
+                        <td class="hide_print">
+                          <div class="overlay-edit">
+                            <button type="button" (click)="viewDetails(i);OpenModal(content)"
+                              class="btn btn-icon btn-success"><i class="fas fa-eye"></i></button>
+                            <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                                class="feather icon-trash-2"></i></button>
+                          </div>
                         </td>
                       </tr>                        
                     </tbody>

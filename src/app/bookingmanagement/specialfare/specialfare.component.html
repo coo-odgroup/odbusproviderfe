@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="SPECIAL FARES" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
-
+      <app-card [hidHeader]="false" cardTitle="SPECIAL FARES" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
       <div class="row">
         <div class="col-2">
           <div class="from-group ">
             <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Page
+              Add Special Fare
             </button>
           </div>
         </div>
@@ -14,7 +14,7 @@
           <form [formGroup]="searchForm">
             <div class="row">
 
-              <div class="col-6">
+              <div class="col-5">
                 <div class="form-group row">
 
                   <div class="col-sm-12">
@@ -25,26 +25,20 @@
               </div>
 
 
-              <div class="col-2">
-                <div class="dropdown float-left">
-                  <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                    <i class="fas fa-sync-alt"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="float-right">
-                  <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 sml_input" title="Export">
-                    <i class="fas fa-file-export"></i>
-                  </button>
-                  <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark sml_input"
-                    [useExistingCss]="true" title="Print">
-                    <i class="fas fa-print"></i>
-                  </button>
-                </div>
+              <div class="col-5">
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
+                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                  <i class="fas fa-file-export"> </i> Export
+                </button>
+                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                  [useExistingCss]="true" title="Print">
+                  <i class="fas fa-print"> </i> Print
+                </button>
               </div>
 
 
@@ -79,7 +73,7 @@
               <th>Sleeper Price</th>
               <!-- <th>Created At</th> -->
               <th>Status</th>
-              <th class="hide_print">Actions</th>
+              <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="specialFares?.length != 0">
@@ -101,16 +95,20 @@
               <!-- <td>{{ specialFare.created_at | date: 'dd/MM/yyyy' }}</td> -->
 
               <td >
-                <label *ngIf="specialFare.status==1" class="badge badge-light-success pointer"
+                <label *ngIf="specialFare.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, specialFare.id);">Active</label>
-                <label *ngIf="specialFare.status==0" class="badge badge-light-warning pointer"
+                <label *ngIf="specialFare.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, specialFare.id);">Pending</label>
               </td>
+              
+
               <td class="hide_print">
-                <a (click)="editSpecialFare($event, i); OpenModal(content);" class="pointer"><i
-                    class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i></a>
-                <a (click)="deleteSpecialFare(confirmDialog,specialFare.id)" class="pointer"><i
-                    class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a>
+                <div class="overlay-edit">
+                  <button type="button" (click)="editSpecialFare($event, i); OpenModal(content);"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="deleteSpecialFare(confirmDialog,specialFare.id)" class="btn btn-icon btn-danger"><i
+                      class="feather icon-trash-2"></i></button>
+                </div>
               </td>
             </tr>
           </tbody>

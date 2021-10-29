@@ -1,14 +1,12 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="Testimonial Listing" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
-     
-
-      
+      <app-card [hidHeader]="false" cardTitle="Testimonial Listing" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">      
       <div class="row">
         <div class="col-2">
           <div class="from-group ">
             <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Page
+              Add Testimonial
             </button>
           </div>
         </div>
@@ -39,14 +37,12 @@
 
 
               <div class="col-3">
-                <div class="dropdown float-left">
-                  <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                    <i class="fas fa-sync-alt"></i>
-                  </button>
-                </div>
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
               </div>
               
 
@@ -82,7 +78,7 @@
               <th scope="col">operator</th>
               <th scope="col">Travel Date</th>
               <th scope="col">Status</th>
-              <th scope="col" width="150px">Action </th>
+              <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="testimonial?.length != 0">
@@ -95,15 +91,18 @@
               <td>{{page.travel_date}}</td>
 
               <td>
-                <label *ngIf="page.status==1" class="badge badge-light-success pointer"
+                <label *ngIf="page.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, page.id);">Active</label>
-                <label *ngIf="page.status==0" class="badge badge-light-warning pointer"
+                <label *ngIf="page.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, page.id);">Pending</label>
               </td>
-              <td>
-                <button class="btn btn-light text-info  mr-2" title="Edit" (click)="editData(i);OpenModal(content)"><i
-                    class="fas fa-edit"></i></button>
-                <button class="btn btn-light text-danger" title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button type="button" (click)="editData(i);OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                      class="feather icon-trash-2"></i></button>
+                </div>
               </td>
             </tr>
           </tbody>

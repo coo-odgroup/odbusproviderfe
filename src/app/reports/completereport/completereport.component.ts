@@ -62,7 +62,6 @@ export class CompletereportComponent implements OnInit {
       rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null]
-
     })  
    
 
@@ -151,7 +150,17 @@ export class CompletereportComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      rangeFromDate:[null],
+      rangeToDate:[null],
+      payment_id : [null],
+      date_type:['booking'],
+      rows_number: Constants.RecordLimit,
+      source_id:[null],
+      destination_id:[null]
+
+    })
     this.search();
   }
 

@@ -55,10 +55,7 @@ export class SeatblockreportComponent implements OnInit {
       bus_id: [null],   
       rows_number: Constants.RecordLimit,
       rangeFromDate:[null],
-      rangeToDate:[null]
-
-      
-
+      rangeToDate:[null]     
     })  
   
 
@@ -125,7 +122,15 @@ export class SeatblockreportComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      bus_id: [null],   
+      rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null]     
+    })  
+  
+    this.loadServices();
     this.search();
   }
   formatDate(date) {

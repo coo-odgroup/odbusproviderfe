@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-sm-12">
-      <app-card cardTitle="Banner" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+        <app-card [hidHeader]="false" cardTitle="Banner" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
         <div class="row  mb-2">
           <div class="col-2">
             <div class="from-group text-left">
@@ -25,9 +26,9 @@
                   </select>
                 </div>
                 <div class="from-group col-4">
-                  <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i>Search</button>
+                  <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i> Search</button>
                   <button class="btn sml_input btn-danger " (click)="refresh()"> <i
-                      class="fas fa-sync-alt"></i>Refresh</button>
+                      class="fas fa-sync-alt"></i> Refresh</button>
                 </div>
         
                 <div class="col-2">
@@ -57,7 +58,7 @@
                 <th scope="col">Start Date Time</th>
                 <th scope="col">End Date Time</th>
                 <th scope="col">Status </th>
-                <th scope="col" width="150px">Action </th>
+                <th width="100" class="hide_print">&nbsp; </th>
               </tr>
             </thead>
             <tbody *ngIf="banners?.length != 0">
@@ -76,12 +77,17 @@
                   <label *ngIf="bannerData.status==0" class="badge badge-light-warning pointer"
                     (click)="changeStatus($event, bannerData.id);">Pending</label>
                 </td>
-                <td>
-                  <button class="btn btn-light text-info" title="Edit" (click)="editBanner(i);OpenModal(content)"><i
-                      class="fas fa-edit"></i></button>
-                  <button class="btn btn-light text-danger" title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i
-                      class="fas fa-trash-alt"></i></button>
+                
+
+                <td class="hide_print">
+                  <div class="overlay-edit">
+                    <button type="button" (click)="editBanner(i);OpenModal(content)"
+                      class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                    <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                        class="feather icon-trash-2"></i></button>
+                  </div>
                 </td>
+
               </tr>
             </tbody>
             <tbody *ngIf="banners?.length == 0">

@@ -103,7 +103,14 @@ export class OwnerpaymentreportComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      date_range: [null],
+      rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate :[null]
+
+    })  
     this.search();
   }
 

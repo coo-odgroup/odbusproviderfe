@@ -1,46 +1,35 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="BUS Seat Fare" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+    <app-card [hidHeader]="false" cardTitle="BUS SEAT FARE" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
       <div class="row">
-        
+
         <div class="col-12">
           <form [formGroup]="searchForm">
             <div class="row">
-
-              <div class="col-6">
+              <div class="col-5">
                 <div class="form-group row">
-
                   <div class="col-sm-12">
                     <input type="text" class="form-control sml_input" placeholder="Search Here " required
                       formControlName="name" />
                   </div>
                 </div>
               </div>
-
-
-              <div class="col-2">
-                <div class="dropdown float-left">
-                  <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                    <i class="fas fa-sync-alt"></i>
-                  </button>
-                </div>
+              <div class="col-5">
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
+                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                  <i class="fas fa-file-export"> </i> Export
+                </button>
+                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                  [useExistingCss]="true" title="Print">
+                  <i class="fas fa-print"> </i> Print
+                </button>
               </div>
-              <div class="col-2">
-                <div class="float-right">
-                  <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 sml_input" title="Export">
-                    <i class="fas fa-file-export"></i>
-                  </button>
-                  <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark sml_input"
-                    [useExistingCss]="true" title="Print">
-                    <i class="fas fa-print"></i>
-                  </button>
-                </div>
-              </div>
-
-
               <div class="col-2">
                 <div class="dropdown float-right">
                   <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
@@ -54,10 +43,7 @@
               </div>
             </div>
           </form>
-
-
         </div>
-
       </div>
 
       <div class="table-responsive" id="print-section">
@@ -68,12 +54,8 @@
               <th>Name</th>
               <th>Via</th>
               <th>Bus number</th>
-              <!-- <th>Bus type id</th> -->
-              <!-- <th>Bus sitting id</th> -->
-              <!-- <th>Running cycle</th> -->
-              <!-- <th>Has return bus</th> -->
               <th>Last Changes</th>
-              <th>Actions</th>
+              <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="buses?.length != 0">
@@ -83,18 +65,15 @@
               <td>{{ bus.name }}</td>
               <td>{{ bus.via }}</td>
               <td>{{ bus.bus_number }}</td>
-              <!-- <td>{{ bus.bus_type_id }}</td> -->
-              <!-- <td>{{ bus.bus_sitting_id }}</td> -->
-              <!-- <td>{{ bus.running_cycle }}</td> -->
-              <!-- <td>{{ bus.has_return_bus }}</td> -->
               <td>
                 Value
               </td>
-              <td>
-                <a style="cursor: pointer;" (click)="getSeats(i);OpenModal(editFare)">
-                  <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i>
-                </a>
 
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button type="button" (click)="getSeats(i);OpenModal(editFare)" class="btn btn-icon btn-success"><i
+                      class="feather icon-edit"></i></button>
+                </div>
               </td>
             </tr>
           </tbody>

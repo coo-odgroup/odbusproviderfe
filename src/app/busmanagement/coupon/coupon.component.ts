@@ -103,7 +103,7 @@ export class CouponComponent implements OnInit {
     this.form.controls.full_description.setValue(this.couponRecord.full_desc);
     this.form.controls.coupon_type.setValue(this.couponRecord.type);
     this.form.controls.max_discount_price.setValue(this.couponRecord.max_discount_price);
-     this.form.controls.percentage.setValue(this.couponRecord.percentage);
+    this.form.controls.percentage.setValue(this.couponRecord.percentage);
     this.form.controls.amount.setValue(this.couponRecord.amount);
     this.form.controls.min_tran_amount.setValue(this.couponRecord.min_tran_amount);
     this.form.controls.valid_by.setValue(this.couponRecord.valid_by);
@@ -204,7 +204,7 @@ export class CouponComponent implements OnInit {
       type:this.form.value.coupon_type,
       amount:this.form.value.amount,
       full_desc:this.form.value.full_description,
-      max_discount_price_price:this.form.value.max_discount_price,
+      max_discount_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
       min_tran_amount:this.form.value.min_tran_amount,
       percentage:this.form.value.percentage,

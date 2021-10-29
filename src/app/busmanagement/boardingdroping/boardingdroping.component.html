@@ -1,11 +1,12 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="Bus Stoppages" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+    <app-card [hidHeader]="false" cardTitle="Boarding/Dropping  (Bus Stoppages)" cardClass="card-datatable"
+      [options]="true" cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
       <div class="row">
         <div class="col-2">
           <div class="from-group ">
             <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Page
+              Add Stoppages
             </button>
           </div>
         </div>
@@ -13,7 +14,7 @@
           <form [formGroup]="searchForm">
             <div class="row">
 
-              <div class="col-6">
+              <div class="col-5">
                 <div class="form-group row">
 
                   <div class="col-sm-12">
@@ -24,28 +25,21 @@
               </div>
 
 
-              <div class="col-2">
-                <div class="dropdown float-left">
-                  <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()" title="search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button type="reset" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                    <i class="fas fa-sync-alt"></i>
-                  </button>
-                </div>
+              <div class="col-5">
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
+                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                  <i class="fas fa-file-export"> </i> Export
+                </button>
+                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                  [useExistingCss]="true" title="Print">
+                  <i class="fas fa-print"> </i> Print
+                </button>
               </div>
-              <div class="col-2">
-                <div class="float-right">
-                  <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 sml_input" title="Export">
-                    <i class="fas fa-file-export"></i>
-                  </button>
-                  <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark sml_input"
-                    [useExistingCss]="true" title="Print">
-                    <i class="fas fa-print"></i>
-                  </button>
-                </div>
-              </div>
-
 
               <div class="col-2">
                 <div class="dropdown float-right">
@@ -67,7 +61,7 @@
       </div>
 
       <div class="table-responsive" id="print-section">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped ">
           <thead>
             <tr>
               <th>ID</th>
@@ -76,35 +70,26 @@
               <!-- <th>Created At</th>
               <th>Created By</th>
               <th>Status</th> -->
-              <th class="hide_print">Actions</th>
+              <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="BoardingDroppings?.length != 0">
             <tr *ngFor="let BoardDrop of BoardingDroppings; let i=index; ">
               <td>{{ i+1}}</td>
               <td>{{ BoardDrop.name }}</td>
-              <!-- <td>{{ BoardDrop.boarding_point }}</td> -->
               <td>
                 <div *ngFor="let bp of BoardDrop.boarding_dropping; let dura=index;"><strong>{{dura+1}}</strong>. {{
                   bp.boarding_point }}</div>
               </td>
-              <!-- <td>{{ BoardDrop.dropping_point }}</td> -->
-
-              <!-- <td>{{ BoardDrop.created_at }}</td>
-              <td>{{ BoardDrop.created_by }}</td>
-              <td>
-               
-                <label *ngIf="BoardDrop.boarding_dropping.status==1" class="badge badge-light-success pointer"
-                  (click)="changeStatus($event, BoardDrop.id);">Active</label>
-                <label *ngIf="BoardDrop.status==0" class="badge badge-light-warning pointer"
-                  (click)="changeStatus($event, BoardDrop.id);">Pending</label>
-              </td> -->
 
               <td class="hide_print">
-                <a (click)="editBoardingDropping($event, i);OpenModal(content);" class="pointer"><i
-                    class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i></a><a
-                  (click)="deleteBoardingDropping(confirmDialog, i)" class="pointer"><i
-                    class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i></a></td>
+                <div class="overlay-edit">
+                  <button type="button" (click)="editBoardingDropping($event, i);OpenModal(content);"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="deleteBoardingDropping(confirmDialog, i)"
+                    class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
+                </div>
+              </td>
             </tr>
           </tbody>
           <tbody *ngIf="BoardingDroppings?.length == 0">

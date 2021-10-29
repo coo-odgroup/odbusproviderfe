@@ -13,7 +13,6 @@
                 <div class="col-10">
                     <form [formGroup]="searchForm">
                         <div class="row">
-
                             <div class="col-5">
                                 <div class="form-group row">
 
@@ -32,7 +31,6 @@
                                     title="refresh">
                                     <i class="fas fa-sync-alt"> </i> Refresh
                                 </button>
-
                                 <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
                                     title="Export">
                                     <i class="fas fa-file-export"> </i> Export
@@ -41,12 +39,7 @@
                                     class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
                                     <i class="fas fa-print"> </i> Print
                                 </button>
-
                             </div>
-
-
-
-
                             <div class="col-2">
                                 <div class="dropdown float-right">
                                     <select class="form-control sml_input" formControlName="rows_number"
@@ -59,13 +52,9 @@
                                     </select>
                                 </div>
                             </div>
-
                         </div>
                     </form>
-
-
                 </div>
-
             </div>
             <div class="table-responsive" id="print-section">
                 <table class="table table-striped">
@@ -78,6 +67,7 @@
                             <th>Coupon Title</th>
                             <th>Coupon Code</th>
                             <th>Max Redeem</th>
+                            <th width="100" class="hide_print" >&nbsp; </th>
                         </tr>
                     </thead>
                     <tbody *ngIf="coupons?.length != 0">
@@ -89,22 +79,19 @@
                             <td>{{couponData.coupon_title}}</td>
                             <td>{{couponData.coupon_code}}</td>
                             <td>
-                                {{couponData.max_redeem}}
-
+                                {{couponData.max_redeem}}                              
+                            </td>
+                            <td class="hide_print">
                                 <div class="overlay-edit">
                                     <button type="button" (click)="loadElements(i);OpenModal(content)"
                                         class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                                     <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
                                         class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                                 </div>
-
                             </td>
-
                         </tr>
                     </tbody>
                 </table>
-
-
             </div>
             <div *ngIf="pagination?.length != 0">
                 <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
@@ -126,7 +113,6 @@
                     </nav>
                 </div>
             </div>
-
             <div class="app-card-footer">
                 <ng-template #confirmDialog let-modal>
                     <div class="modal-header">
@@ -171,10 +157,7 @@
                                         <form [formGroup]="form" class="editForm" novalidate>
                                             <div class="row">
                                                 <div class="col-md-6">
-
                                                     <h5>Coupon Info</h5>
-
-
                                                     <div class="from-group">
                                                         <label for="bus" class="col-sm-5  col-form-label">Operator <span
                                                                 class="text-danger">*</span></label>
@@ -206,7 +189,6 @@
                                                             <input type="text" class="form-control" ngbAutofocus
                                                                 formControlName="coupon_code" placeholder="Coupon Code"
                                                                 required />
-
                                                         </div>
                                                     </div>
                                                     <div class="from-group">
@@ -217,7 +199,6 @@
                                                             <textarea class="form-control"
                                                                 formControlName="short_description" ngbAutofocus
                                                                 placeholder="Short Description"></textarea>
-
                                                         </div>
                                                     </div>
                                                     <div>
@@ -227,15 +208,9 @@
                                                             formControlName="full_description" [config]="editorConfig">
                                                         </angular-editor>
                                                     </div>
-
-
-
                                                 </div>
-
                                                 <div class="col-md-6">
-
                                                     <h5>Coupon Type And Validity</h5>
-
                                                     <div class="from-group">
                                                         <label for="name" class="col-sm-3 col-form-label">Coupon Type
                                                             :</label>
@@ -246,7 +221,6 @@
                                                             </select>
                                                         </div>
                                                     </div>
-
                                                     <div class="from-group"
                                                         *ngIf="form.controls.coupon_type.value=='1'">
                                                         <label for="name" class="col-sm-3 col-form-label">Percentage
@@ -256,7 +230,6 @@
                                                                 formControlName="percentage" placeholder="Percentage">
                                                         </div>
                                                     </div>
-
                                                     <div class="from-group"
                                                         *ngIf="form.controls.coupon_type.value=='1'">
                                                         <label for="name" class="col-sm-4 col-form-label">Max Discount
@@ -267,8 +240,6 @@
                                                                 placeholder="Max Discount">
                                                         </div>
                                                     </div>
-
-
                                                     <div class="from-group"
                                                         *ngIf="form.controls.coupon_type.value=='2'">
                                                         <label for="name" class="col-sm-12 col-form-label">Cut Off
@@ -288,7 +259,6 @@
                                                                 placeholder="Min Transaction Ammount">
                                                         </div>
                                                     </div>
-
                                                     <div class="from-group">
                                                         <label for="name" class="col-sm-4 col-form-label">Valid By
                                                             :</label>
@@ -323,12 +293,8 @@
                                                                 formControlName="max_redeem" placeholder="Max Redeem">
                                                         </div>
                                                     </div>
-
                                                 </div>
-
-
                                             </div>
-
                                         </form>
                                     </div>
                                 </div>
@@ -342,7 +308,6 @@
                             (click)="modal.dismiss('Cross click')">Close</button>
                     </div>
                 </ng-template>
-
             </div>
         </app-card>
     </div>

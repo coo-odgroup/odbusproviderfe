@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="Master Settings" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+      <app-card [hidHeader]="false" cardTitle="Master Settings" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
       <div class="row  mb-2">
         <div class="col-2">
           <div class="from-group ">
@@ -16,8 +17,12 @@
                 <input type="text" class="form-control sml_input" formControlName="name" placeholder="Search Here">
               </div>
               <div class="from-group col-4">
-                <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i> </button>
-                <button class="btn sml_input btn-danger ml-2" (click)="refresh()"> <i class="fas fa-sync-alt"></i>
+
+                <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
                 </button>
               </div>
 
@@ -46,7 +51,7 @@
               <th scope="col">Operator Number/ Email </th>
               <th scope="col">logo</th>
               <th scope="col">Status </th>
-              <th scope="col" width="150px">Action </th>
+              <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="settings?.length != 0">
@@ -58,16 +63,20 @@
                 <img class="sliderImage" [attr.src]="getImagepath(settingdata.logo)">
               </td>
               <td>
-                <label *ngIf="settingdata.status==1" class="badge badge-light-success pointer"
+                <label *ngIf="settingdata.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, settingdata.id);">Active</label>
-                <label *ngIf="settingdata.status==0" class="badge badge-light-warning pointer"
+                <label *ngIf="settingdata.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, settingdata.id);">Pending</label>
               </td>
-              <td>
-                <button class="btn btn-light text-info" title="Edit" (click)="editSettings(i);OpenModal(content)"><i
-                    class="fas fa-edit"></i></button>
-                <button class="btn btn-light text-danger" title="Delete"
-                  (click)="openConfirmDialog(confirmDialog, i)"><i class="fas fa-trash-alt"></i></button>
+             
+
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button type="button" (click)="editSettings(i);OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                      class="feather icon-trash-2"></i></button>
+                </div>
               </td>
             </tr>
           </tbody>

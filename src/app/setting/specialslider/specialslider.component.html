@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="Special Slider" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+      <app-card [hidHeader]="false" cardTitle="Special Slider" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
       <div class="row  mb-2">
         <div class="col-2">
           <div class="from-group text-left">
@@ -54,7 +55,7 @@
               <th scope="col">Start Date Time</th>
               <th scope="col">End Date Time</th>
               <th scope="col">Status </th>
-              <th scope="col" width="100px">Action </th>
+              <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="sliders?.length != 0">
@@ -70,16 +71,19 @@
               <td>{{sliderdata.end_date}} {{sliderdata.end_time}}</td>
               <!-- <td>{{sliderdata.status}} </td>  -->
               <td>
-                <label *ngIf="sliderdata.status==1" class="badge badge-light-success pointer"
+                <label *ngIf="sliderdata.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, sliderdata.id);">Active</label>
-                <label *ngIf="sliderdata.status==0" class="badge badge-light-warning pointer"
+                <label *ngIf="sliderdata.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, sliderdata.id);">Pending</label>
               </td>
-              <td>
-                <button class="btn btn-light text-info" title="Edit" (click)="editSlider(i);OpenModal(content)"><i
-                    class="fas fa-edit"></i></button>
-                <button class="btn btn-light text-danger" title="Delete" (click)="openConfirmDialog(confirmDialog, i)"><i
-                    class="fas fa-trash-alt"></i></button>
+             
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button type="button" (click)="editSlider(i);OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                      class="feather icon-trash-2"></i></button>
+                </div>
               </td>
             </tr>
           </tbody>

@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-sm-12">
         <app-card cardTitle="Seat Open Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+            
             <div class=" mb-3">
                 <div class="row ">
                     <div class="col-12">
@@ -82,24 +83,21 @@
 
                             </div>
                             <div class="row ">
-                                <div class="col-8 ">
-                                    <button type="submit" class="btn btn-success mr-2 sml_input" (click)="search()">
-                                        <i class="fas fa-search"></i> Search
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                                      <i class="fas fa-search"> </i> Search
                                     </button>
-                                    <button type="reset" class="btn btn-danger sml_input" (click)="refresh()">
-                                        <i class="fas fa-sync-alt"></i> Refreh
+                                    <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                                      <i class="fas fa-sync-alt"> </i> Refresh
                                     </button>
-                                </div>
-                                <div class="col-4">
-                                    <div class="float-right">                                        
-                                        <button type="button" (click)="exportexcel()" class="btn btn-dark mr-2 btn-sm">
-                                            <i class="fas fa-file-export"></i> Export
-                                        </button>
-                                        <button type="button" printSectionId="print-section" ngxPrint class="btn btn-dark btn-sm" [useExistingCss]="true">
-                                            <i class="fas fa-print"></i> Print
-                                        </button>
-                                    </div>
-                                </div>
+                                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                                      <i class="fas fa-file-export"> </i> Export
+                                    </button>
+                                    <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                                      [useExistingCss]="true" title="Print">
+                                      <i class="fas fa-print"> </i> Print
+                                    </button>
+                                  </div>
                             </div>
                         </form>
                     </div>
@@ -108,7 +106,7 @@
             </div>
 
             <div class="table-responsive" id="print-section">
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped ">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
