@@ -2,17 +2,17 @@
     <div class="col-xl-12 ">
         <app-card   [hidHeader]="true" [options]="false">
             <div class="btn-group btn-group-toggle float-right" ngbRadioGroup name="ticketSize" data-toggle="buttons">
-                <label ngbButtonLabel class="btn btn-info active">Today
-                  <input ngbButton type="radio" value="sm-view" id="option1" checked> <i class="feather icon-align-justify m-0"></i>
+                <label ngbButtonLabel class="btn btn-info">Today
+                  <input ngbButton type="radio" name="dateRange" value="sm-view" id="option1" (click)="getall('Today')"> <i class="feather icon-align-justify m-0"></i>
                 </label>
                 <label ngbButtonLabel class="btn btn-info">This Week
-                  <input ngbButton type="radio" value="md-view" id="option2"> <i class="feather icon-menu m-0"></i>
+                  <input ngbButton type="radio" name="dateRange" value="md-view" id="option2" (click)="getall('This Week')"> <i class="feather icon-menu m-0"></i>
                 </label>
                 <label ngbButtonLabel class="btn btn-info">This Month
-                  <input ngbButton type="radio" value="large-view" id="option3"> <i class="feather icon-grid m-0"></i>
+                  <input ngbButton type="radio" name="dateRange" value="large-view" id="option3" (click)="getall('This Month')"> <i class="feather icon-grid m-0"></i>
                 </label>
                 <label ngbButtonLabel class="btn btn-info">Custom Range
-                    <input ngbButton type="radio" value="large-view" id="option3"> <i class="feather icon-plus m-0"></i>
+                    <input ngbButton type="radio" name="dateRange" value="large-view" id="option4"> <i class="feather icon-plus m-0"></i>
                   </label>
               </div>             
           </app-card>    
@@ -74,12 +74,18 @@
           
 
           <div class="col-md-12 col-xl-4">
-            <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card borderless">
-              <h6 class="text-white">Sales Today: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_today[0].today_amount}}</h6>              
-              <h6 class="text-white">Sales This Week: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_week[0].weak_amount}}</h6>
-              <h6 class="text-white">Sales This Month: <i class="fas fa-rupee-sign"></i>-{{dashboarddata.sales_this_month[0].month_amount}}</h6>
+
+            <app-card [hidHeader]="true" cardClass="bg-c-blue order-card borderless">
+              <h6 class="text-white">Sales</h6>
+              <h2 class="text-white">
+                <span *ngFor="let book_pft of dashboarddata.booking_profit;">
+                  <i class="fas fa-rupee-sign"></i> {{dashboarddata.sales_data[0].today_amount}}
+                </span>
+              </h2>             
               <i class="card-icon feather icon-filter"></i>
             </app-card>
+
+
           </div>
           <div class="col-md-6 col-xl-4">
             <app-card [hidHeader]="true" cardClass="bg-c-blue order-card borderless">

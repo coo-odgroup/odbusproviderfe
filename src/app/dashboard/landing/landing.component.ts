@@ -187,6 +187,21 @@ export class LandingComponent implements OnInit {
 
     ngAfterViewInit()
     {
+      
+    }
+  
+    ngOnInit() {
+      const data={
+        rangeFor:"",
+        rangeFrom:"",
+        rangeTo:""
+      };
+      this.getall(data);
+      this.toproute();
+      this.operatordata();
+      // this.pnrstaticsdata();
+
+
       setTimeout(() => {
         const barBasicTag = (((this.barBasicChart?.nativeElement as HTMLCanvasElement)?.children));
       this.barBasicChartTag = ((barBasicTag['bar_basic_chart']).lastChild).getContext('2d');
@@ -201,8 +216,7 @@ export class LandingComponent implements OnInit {
       this.ds.pnrstaticsdata().subscribe(
         res => {
           this.prndata= res.data;
-          // console.log(res.data);
-          
+         
           this.barBasicChartData = {
             labels: this.prndata.date,
             datasets: [{
@@ -221,20 +235,18 @@ export class LandingComponent implements OnInit {
     });
       
     }
-  
-    ngOnInit() {
-      this.getall();
-      this.toproute();
-      this.operatordata();
-      // this.pnrstaticsdata();
-    }
 
    
-    getall() {
-      this.ds.dashboard().subscribe(
+    getall(range:any) {
+      const data={
+        rangeFor:range,
+        rangeFrom:"",
+        rangeTo:""
+      };
+      this.ds.dashboard(data).subscribe(
         res => {
           this.dashboarddata= res.data;
-          // console.log(res.data);
+          console.log(res.data);
         }
       );
     }

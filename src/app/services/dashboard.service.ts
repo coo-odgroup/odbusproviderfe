@@ -18,8 +18,9 @@ export class DashboardService {
 
   constructor(private httpClient: HttpClient) { }
 
-  dashboard(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/dashboarddata').pipe(
+  dashboard(post:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/dashboarddata', JSON.stringify(post), this.httpOptions)
+    .pipe(
       catchError(this.errorHandler)
     )
   }
