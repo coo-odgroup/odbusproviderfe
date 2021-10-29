@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-      <app-card [hidHeader]="false" cardTitle="SEO Setting" cardClass="card-datatable" [options]="true"
+    <app-card [hidHeader]="false" cardTitle="SEO Setting" cardClass="card-datatable" [options]="true"
       cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
       <div class="row">
         <div class="col-2">
@@ -16,14 +16,13 @@
 
               <div class="col-3">
                 <div class="form-group row">
-                    <div class="col-sm-12">
-                        <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
-                            placeholder="Select Operator" formControlName="bus_operator_id"
-                            [clearable]="false">
-                        </ng-select>
-                    </div>
+                  <div class="col-sm-12">
+                    <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                      placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
+                    </ng-select>
+                  </div>
                 </div>
-            </div>
+              </div>
 
               <div class="col-2">
                 <div class="form-group row">
@@ -85,7 +84,7 @@
               <th class="hide_screen">Meta Description</th>
               <th class="hide_screen">Extra Meta </th>
               <th class="hide_screen">Canonical URL</th>
-              <th scope="col" class="hide_print">Status</th>
+              <th scope="col">Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
@@ -100,7 +99,7 @@
               <td class="hide_screen">{{page.meta_description}}</td>
               <td class="hide_screen">{{page.extra_meta}}</td>
               <td class="hide_screen">{{page.canonical_url}}</td>
-              <td class="hide_print">
+              <td>
                 <label *ngIf="page.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, page.id);">Active</label>
                 <label *ngIf="page.status==0" class="badge badge-light-danger pointer text-dark"
@@ -109,8 +108,8 @@
 
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button type="button" (click)="editData(i);OpenModal(content)"
-                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="editData(i);OpenModal(content)" class="btn btn-icon btn-success"><i
+                      class="feather icon-edit"></i></button>
                   <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
                       class="feather icon-trash-2"></i></button>
                 </div>
@@ -187,23 +186,23 @@
                         <div class="col-md-12">
 
                           <div class="from-group">
-                            <label for="name" class="col-sm-6 col-form-label">Select Operator :<span class="text-danger">*</span></label>
-                           <div class="col-sm-12">
-                            
-                               <div class="form-group row">
-                                 <div class="col-sm-12">
-                                     <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
-                                         placeholder="Select Operator" formControlName="bus_operator_id"
-                                         [clearable]="false">
-                                     </ng-select>                                          
-                                 </div>
-                             </div>
-                             <span class="text-danger"
-                               *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
-                               Operator is Required
-                             </span>
-                           </div>
-                         </div>
+                            <label for="name" class="col-sm-6 col-form-label">Select Operator :<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                    placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
+                                  </ng-select>
+                                </div>
+                              </div>
+                              <span class="text-danger"
+                                *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
+                                Operator is Required
+                              </span>
+                            </div>
+                          </div>
                           <div class="from-group">
                             <label for="name" class="col-sm-3 col-form-label"> URL :<span
                                 class="text-danger">*</span></label>
@@ -216,9 +215,9 @@
                               </span>
                             </div>
                           </div>
-                        
-                           
-                          
+
+
+
 
                           <div>
                             <label for="name" class="col-sm-5 col-form-label">URL Description :<span
