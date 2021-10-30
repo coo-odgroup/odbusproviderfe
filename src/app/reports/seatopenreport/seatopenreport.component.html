@@ -170,6 +170,12 @@
 
                         </tr>
                     </tbody>
+
+                    <tbody *ngIf="seatopendata?.data.data?.length == 0">
+                        <tr>
+                          <td colspan="8" class="no-data-available">No data!</td>
+                        </tr>
+                    <tbody>
                 </table>
                 <div *ngIf="seatopendata?.length != 0" class="hide_print">
                     <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="seatopendata?.data.links">
