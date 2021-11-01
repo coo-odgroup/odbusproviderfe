@@ -63,7 +63,7 @@ export class BannermanagementComponent implements OnInit {
             res=>{    
               this.banners= res.data.data.data; 
               this.pagination = res.data.data;
-              console.log(res.data.data.data);
+              // console.log(res.data.data.data);
             },
     );
    }

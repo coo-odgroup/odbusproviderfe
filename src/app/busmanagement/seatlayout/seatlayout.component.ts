@@ -113,9 +113,6 @@ export class SeatlayoutComponent implements OnInit {
   sleeper_row_arr=[];
   viewSeatLayout(event : Event, id : any)
   {
-
-    // SeatLayouts: SeatLayout[];
-    // SeatLayoutRecord: SeatLayout;
     this.SeatLayoutRecord=this.SeatLayouts[id] ;
 
     this.row_arr=[];
@@ -135,6 +132,7 @@ export class SeatlayoutComponent implements OnInit {
         this.lowerBerthBasketText=[];
         this.upperBerthBasketText=[];
         let rowArray=new Array();
+        let upperrowArray=new Array();
         this.lowerBerthSeats=[];
         this.upperBerthSeats=[];
         
@@ -169,19 +167,19 @@ export class SeatlayoutComponent implements OnInit {
           for(var items of this.upperBerthSeats)
           {
             let cellData=new Array();
-            rowArray=new Array();
-            rowArray.length=0;
+            upperrowArray=new Array();
+            upperrowArray.length=0;
             let counterItem=0;
             for(var coldata of items)
             {
               cellData[coldata.rowNumber]=[coldata.rowNumber,coldata.colNumber,coldata.seatType,2];
-              rowArray.push(cellData);
+              upperrowArray.push(cellData);
               counterItem++;
 
               var seatData: SeatBlock = {rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:2, seatText:''};
               this.seatBlocks.push(seatData); //Value Pushed to Interface
             }
-            this.upperBerthBasketText[rowCounter]=rowArray; //Value Pushed to Array
+            this.upperBerthBasketText[rowCounter]=upperrowArray; //Value Pushed to Array
             rowCounter++;
           }
         }
@@ -202,11 +200,9 @@ export class SeatlayoutComponent implements OnInit {
     const lowerBerth=form.value.lowerBerth;
     const upperBerth=form.value.upperBerth;
     var counter=0;
-    
-    var counter=0;
-    if(form.value.lowerBerth)
+    if(Object.keys(lowerBerth).length > 0)
     {
-      for (var [key,items] of Object.entries(form.value.lowerBerth)) {
+      for (var [key,items] of Object.entries(lowerBerth)) {
         key=key.replace("lower_",'');
         this.formSeater[key]=[];
         for(const [subkey,subItems] of Object.entries(items))
@@ -214,19 +210,25 @@ export class SeatlayoutComponent implements OnInit {
           this.formSeater[key][subkey]=subItems.seatText;
         }
       }
+     
       for(var rowBlocks of this.seatBlocks)
       { 
         let rowNum=rowBlocks.rowNumber;
         let colNum=rowBlocks.colNumber;
+       
         if(this.formSeater[rowNum][colNum] && this.seatBlocks[counter].berthType=="1")
         {
+          
             this.seatBlocks[counter].seatText=this.formSeater[rowNum][colNum];
-            counter++;
+           
         }
+        counter++;
       }
+    
     }
     if(form.value.upperBerth)
     {
+      counter=0;
       for (var [key,items] of Object.entries(form.value.upperBerth)) {
         key=key.replace("upper_",'');
         this.formSleeper[key]=[];
@@ -244,8 +246,9 @@ export class SeatlayoutComponent implements OnInit {
           if(this.formSleeper[rowNum] && this.seatBlocks[counter].berthType=="2")
           {
               this.seatBlocks[counter].seatText=this.formSleeper[rowNum][colNum];
-              counter++;
+             
           }
+          counter++;
         }
       }
     }
@@ -255,12 +258,13 @@ export class SeatlayoutComponent implements OnInit {
       name:layoutName,
       layout_data:JSON.stringify(this.seatBlocks)
     }
+
+   
    
     this.sLayout.update(this.SeatLayoutRecord.id, data).subscribe(
       resp => {
         if(resp.status==1)
         {
-            //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
             this.modalReference.close();
             this.refresh();
@@ -526,14 +530,16 @@ export class SeatlayoutComponent implements OnInit {
           if(this.formSeater[rowNum][colNum] && this.seatBlocks[counter].berthType=="1")
           {
               this.seatBlocks[counter].seatText=this.formSeater[rowNum][colNum];
-              counter++;
+              
           }
+          counter++;
         }
        
       }
     }
     if(form.value.upperBerthArray)
     {
+      counter=0;
       for (var [key,items] of Object.entries(form.value.upperBerthArray)) {
         key=key.replace("upper_",'');
         this.formSleeper[key]=[];
@@ -553,8 +559,9 @@ export class SeatlayoutComponent implements OnInit {
             if(this.formSleeper[rowNum] && this.seatBlocks[counter].berthType=="2")
             {
                 this.seatBlocks[counter].seatText=this.formSleeper[rowNum][colNum];
-                counter++;
+               
             }
+            counter++;
           }
           
         }

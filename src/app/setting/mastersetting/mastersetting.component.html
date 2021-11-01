@@ -72,7 +72,7 @@
 
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button type="button" (click)="editSettings(i);OpenModal(content)"
+                  <button type="button" (click)="ResetAttributes();editSettings(i);OpenModal(content)"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                   <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
                       class="feather icon-trash-2"></i></button>
@@ -86,7 +86,6 @@
             </tr>
           </tbody>
         </table>
-
       </div>
       <!-- /////Paginate Code -->
       <div *ngIf="pagination?.length != 0">

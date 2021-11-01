@@ -229,6 +229,12 @@ export class BoardingdropingComponent implements OnInit {
         }
       );
     }
+
+    this.locationService.readAll().subscribe(
+          res=>{
+            this.locations=res.data;
+          }
+        );
   }
 
 

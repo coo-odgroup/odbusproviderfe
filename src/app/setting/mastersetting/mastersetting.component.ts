@@ -339,8 +339,9 @@ export class MastersettingComponent implements OnInit {
     this.ModalHeading = "Add Master Settings";
     this.ModalBtn = "Save";
     this.imgURL="";
+    this.favURL="";
     this.imageSrc="";
-    this.settingRecord.logo="";  
+    // this.settingRecord.logo="";  
   }
   addSettings()
   {

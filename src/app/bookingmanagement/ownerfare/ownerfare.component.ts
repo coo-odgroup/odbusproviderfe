@@ -376,7 +376,7 @@ findSource()
     this.ownerFareForm = this.fb.group({
 
       id:[this.ownerFareRecord.id],
-      bus_id: [this.ownerFareRecord.bus_id],
+      bus_id: [null],
       date: [date],
       seater_price: [this.ownerFareRecord.seater_price],
       sleeper_price: [this.ownerFareRecord.sleeper_price],
@@ -386,6 +386,14 @@ findSource()
       bus_operator_id: [this.ownerFareRecord.bus_operator_id],
       searchBy: [this.searchBy],
     });
+    let selBusses=[];
+    for(let busData of this.ownerFareRecord.bus)
+    {
+      selBusses.push(JSON.parse(busData.id));
+    }
+    
+    this.ownerFareForm.controls.bus_id.setValue(selBusses);
+
     this.ModalHeading = "Edit Owner Fare";
     this.ModalBtn = "Update";
   }

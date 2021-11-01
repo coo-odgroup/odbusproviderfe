@@ -354,7 +354,7 @@ findOperator(event:any)
     this.specialFareForm = this.fb.group({
     
       id:[this.specialFareRecord.id],
-      bus_id: [this.specialFareRecord.bus_id],
+      bus_id: [null],
       date: [date],
       seater_price: [this.specialFareRecord.seater_price],
       sleeper_price: [this.specialFareRecord.sleeper_price],
@@ -365,19 +365,15 @@ findOperator(event:any)
       searchBy: [this.searchBy],
 
     });
-    // if(this.specialFareRecord.bus_operator_id != null)
-    // {
-    //   $("#operator").prop("checked","true");
-    //   $("#routes").prop("checked","false");
-    // }
-    // else
-    // {
-    //   $("#operator").prop("checked","false");
-    //   $("#routes").prop("checked","true");
-    // }
-    //console.log(this.specialFareForm);
-    console.log(this.specialFareForm.value);
 
+    let selBusses=[];
+    for(let busData of this.specialFareRecord.bus)
+    {
+      selBusses.push(JSON.parse(busData.id));
+    }
+    
+    this.specialFareForm.controls.bus_id.setValue(selBusses);
+    
     this.ModalHeading = "Edit Special Fare";
     this.ModalBtn = "Update";
     

@@ -1,6 +1,7 @@
 export interface Festivalfare {
     searchBy: any;
     id: any;
+    bus:any;
     bus_operator_id: any;
     source_id: any;
     destination_id:any;

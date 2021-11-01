@@ -344,10 +344,11 @@ addfestivalFare()
     
     var d = new Date(this.festivalFareRecord.date);
     let date = [d.getFullYear(),('0' + (d.getMonth() + 1)).slice(-2),('0' + d.getDate()).slice(-2)].join('-');
+    console.log((this.festivalFareRecord.bus));
     this.festivalFareForm = this.fb.group({
 
       id:[this.festivalFareRecord.id],
-      bus_id: [this.festivalFareRecord.bus_id],
+      bus_id: [null],
       date: [date],
       seater_price: [this.festivalFareRecord.seater_price],
       sleeper_price: [this.festivalFareRecord.sleeper_price],
@@ -357,7 +358,13 @@ addfestivalFare()
       bus_operator_id: [this.festivalFareRecord.bus_operator_id],
       searchBy: [this.searchBy],
     });
+    let selBusses=[];
+    for(let busData of this.festivalFareRecord.bus)
+    {
+      selBusses.push(JSON.parse(busData.id));
+    }
     
+    this.festivalFareForm.controls.bus_id.setValue(selBusses);
 
     this.ModalHeading = "Edit Festival Fare";
     this.ModalBtn = "Update";

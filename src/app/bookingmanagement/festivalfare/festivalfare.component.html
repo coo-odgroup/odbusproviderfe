@@ -79,9 +79,10 @@
             <tr *ngFor="let festivalFare of festivalFares; let i=index; ">
               <td>{{ festivalFare.id }}</td>
               <td>
-                <div *ngFor="let busName of festivalFare.bus; let nameIndex=index;">
+                {{festivalFare.bus[0].bus_operator.operator_name}}
+                <!-- <div *ngFor="let busName of festivalFare.bus; let nameIndex=index;">
                   {{busName.bus_operator.operator_name}}
-                </div>
+                </div> -->
               </td>
               <td>
                 <div *ngFor="let busName of festivalFare.bus; let nameIndex=index;">

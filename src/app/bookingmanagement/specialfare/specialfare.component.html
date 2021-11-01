@@ -80,9 +80,10 @@
             <tr *ngFor="let specialFare of specialFares; let i=index; ">
               <td>{{ specialFare.id }}</td>
               <td>
-                <div *ngFor="let busName of specialFare.bus; let nameIndex=index;">
+                {{specialFare.bus[0].bus_operator.operator_name}}
+                <!-- <div *ngFor="let busName of specialFare.bus; let nameIndex=index;">
                   {{busName.bus_operator.operator_name}}
-                </div>
+                </div> -->
               </td>
               <td>
                 <div *ngFor="let busName of specialFare.bus; let nameIndex=index;">

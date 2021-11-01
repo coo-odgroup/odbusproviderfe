@@ -78,13 +78,13 @@ export class BusgalleryComponent implements OnInit {
   }
 
 
-  allBus() {
-    this.busService.readAll().subscribe(
-      resp => {
-        this.buses = resp.data;
-      });
+  // allBus() {
+  //   this.busService.readAll().subscribe(
+  //     resp => {
+  //       this.buses = resp.data;
+  //     });
 
-  }
+  // }
   // readAll
 
   galleryData() {
@@ -150,7 +150,7 @@ export class BusgalleryComponent implements OnInit {
     });
 
 
-    this.allBus();
+    // this.allBus();
     this.galleryData();
     this.search();
 
@@ -329,15 +329,16 @@ export class BusgalleryComponent implements OnInit {
       bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
     });
-
+    this.loadServices();
     this.search();
+   
   }
 
   loadServices() {
 
     this.busService.all().subscribe(
       res => {
-        this.buss = res.data;
+        this.buses = res.data;
       }
     );
 
