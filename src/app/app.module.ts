@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
+import { Routeguard } from './helpers/routeguard';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './theme/shared/shared.module';
 
@@ -26,7 +26,7 @@ import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule,
 
 import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule} from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
@@ -65,9 +65,10 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     NgbModule,
     NgSelectModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot()
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},NavigationItem],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},NavigationItem, Routeguard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

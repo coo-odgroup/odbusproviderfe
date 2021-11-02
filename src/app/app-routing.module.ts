@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { LoginComponent  } from './theme/layout/admin/login/login.component';
 import {AuthComponent} from './theme/layout/auth/auth.component';
+import { Routeguard } from './helpers/routeguard';
 
 const routes: Routes = [
   {
     path: '',
-    component: LoginComponent,
+    //component: LoginComponent,
     children:[
       {
         path: '',
@@ -23,6 +24,7 @@ const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
+    
     children: [
       {
         path: '',
@@ -31,23 +33,28 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.module').then(module => module.DashboardModule)
+        loadChildren: () => import('./dashboard/dashboard.module').then(module => module.DashboardModule),
+        canActivate: [Routeguard]
       },
       {
         path: 'busmanagement',
-        loadChildren: () => import('./busmanagement/busmanagement.module').then(module => module.BusmanagementModule)
+        loadChildren: () => import('./busmanagement/busmanagement.module').then(module => module.BusmanagementModule),
+        canActivate: [Routeguard]
       },
       {
         path: 'bookingmanagement',
-        loadChildren: () => import('./bookingmanagement/bookingmanagement.module').then(module => module.BookingmanagementModule)
+        loadChildren: () => import('./bookingmanagement/bookingmanagement.module').then(module => module.BookingmanagementModule),
+        canActivate: [Routeguard]
       },
       {
         path: 'reports',
-        loadChildren: () => import('./reports/reports.module').then(module => module.ReportsModule)
+        loadChildren: () => import('./reports/reports.module').then(module => module.ReportsModule),
+        canActivate: [Routeguard]
       },
       {
         path: 'setting',
-        loadChildren: () => import('./setting/setting.module').then(module => module.SettingModule)
+        loadChildren: () => import('./setting/setting.module').then(module => module.SettingModule),
+        canActivate: [Routeguard]
       },
     ]
   }
