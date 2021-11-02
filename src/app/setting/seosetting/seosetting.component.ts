@@ -138,7 +138,7 @@ export class SeosettingComponent implements OnInit {
         res => {
           this.urlcontent = res.data.data.data;
           this.pagination = res.data.data;
-          console.log( res.data);
+          // console.log( res.data);
         }
       );
     }

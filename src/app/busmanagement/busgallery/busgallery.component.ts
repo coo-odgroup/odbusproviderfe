@@ -87,12 +87,12 @@ export class BusgalleryComponent implements OnInit {
   // }
   // readAll
 
-  galleryData() {
-    this.busgalleryService.getAll().subscribe(
-      resp => {
-        this.busGallerries = resp.result;
-      });
-  }
+  // galleryData() {
+  //   this.busgalleryService.getAll().subscribe(
+  //     resp => {
+  //       this.busGallerries = resp.result;
+  //     });
+  // }
 
   saveGallery() {
     this.finalJson = {
@@ -111,7 +111,7 @@ export class BusgalleryComponent implements OnInit {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: 'success' });
           this.modalReference.close();
           this.ResetAttributes();
-          this.galleryData();
+         
           this.refresh();
         }
         else {
@@ -151,7 +151,7 @@ export class BusgalleryComponent implements OnInit {
 
 
     // this.allBus();
-    this.galleryData();
+ 
     this.search();
 
 
@@ -268,7 +268,6 @@ export class BusgalleryComponent implements OnInit {
   }
 
   deleteRecord() {
-
     let delitem = this.busGalleryRecord.id;
     this.busgalleryService.delete(delitem).subscribe(
       resp => {
@@ -276,7 +275,7 @@ export class BusgalleryComponent implements OnInit {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
           this.confirmDialogReference.close();
           this.ResetAttributes();
-          this.galleryData();
+          this.refresh();
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });

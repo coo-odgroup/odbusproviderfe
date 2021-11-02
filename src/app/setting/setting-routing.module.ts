@@ -37,6 +37,10 @@ const routes: Routes = [
         path: 'userreview',
         loadChildren: () => import('./userreview/userreview.module').then(module => module.UserReviewlModule)
       },
+      {
+        path: 'user',
+        loadChildren: () => import('./user/user.module').then(module => module.UserModule)
+      },
     
     
       

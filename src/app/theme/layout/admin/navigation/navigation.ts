@@ -404,6 +404,12 @@ const NavigationItems = [
             type: 'item',
             url: 'setting/mastersetting'
           },
+          {
+            id: 'user',
+            title: 'User',
+            type: 'item',
+            url: 'setting/user'
+          },
         ]
       },
     ]

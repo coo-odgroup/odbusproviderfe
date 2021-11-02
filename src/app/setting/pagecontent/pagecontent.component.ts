@@ -196,7 +196,7 @@ export class PagecontentComponent implements OnInit {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
             this.ResetAttributes();
-            this.getAll();
+            this.refresh();
 
           }
           else {
@@ -213,7 +213,7 @@ export class PagecontentComponent implements OnInit {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
             this.ResetAttributes();
-            this.getAll();
+            this.refresh();
 
            
           }

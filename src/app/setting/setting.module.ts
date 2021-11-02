@@ -10,13 +10,12 @@ import { BannermanagementComponent } from './bannermanagement/bannermanagement.c
 import { SpecialsliderComponent } from './specialslider/specialslider.component';
 import { SeosettingComponent } from './seosetting/seosetting.component';
 import { UserreviewComponent } from './userreview/userreview.component';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
   declarations: [
-    
   
-    
   ],
   imports: [
     CommonModule,
