@@ -11,11 +11,16 @@ import { SpecialsliderComponent } from './specialslider/specialslider.component'
 import { SeosettingComponent } from './seosetting/seosetting.component';
 import { UserreviewComponent } from './userreview/userreview.component';
 import { UserComponent } from './user/user.component';
+import { AgentComponent } from './agent/agent.component';
+import { AgentcomissionComponent } from './agentcomission/agentcomission.component';
+import { AgentfeeComponent } from './agentfee/agentfee.component';
 
 
 @NgModule({
   declarations: [
   
+  
+   
   ],
   imports: [
     CommonModule,

@@ -41,6 +41,18 @@ const routes: Routes = [
         path: 'user',
         loadChildren: () => import('./user/user.module').then(module => module.UserModule)
       },
+      {
+        path: 'agent',
+        loadChildren: () => import('./agent/agent.module').then(module => module.AgentModule)
+      },
+      {
+        path: 'agentcomission',
+        loadChildren: () => import('./agentcomission/agentcomission.module').then(module => module.AgentComissionModule)
+      },
+      {
+        path: 'agentfee',
+        loadChildren: () => import('./agentfee/agentfee.module').then(module => module.AgentFeeModule)
+      },
     
     
       

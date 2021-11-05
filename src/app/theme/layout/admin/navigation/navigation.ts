@@ -409,6 +409,24 @@ const NavigationItems = [
             title: 'User',
             type: 'item',
             url: 'setting/user'
+          }, 
+          {
+            id: 'agent',
+            title: 'Agent',
+            type: 'item',
+            url: 'setting/agent'
+          },
+          {
+            id: 'agentcomission',
+            title: 'Agent Comission Slab',
+            type: 'item',
+            url: 'setting/agentcomission'
+          },
+          {
+            id: 'agentfee',
+            title: 'Agent Fee Slab',
+            type: 'item',
+            url: 'setting/agentfee'
           },
         ]
       },
