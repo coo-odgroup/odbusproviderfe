@@ -225,11 +225,11 @@
                                                             </span>
                                                         
                                                             <span class="text-danger"
-                                                                *ngIf="specialFareForm.controls['password'].touched && specialFareForm.controls['password'].hasError('minlength')">
+                                                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
                                                                 minimum 5 Characters Allowed
                                                             </span>
                                                             <span class="text-danger"
-                                                                *ngIf="specialFareForm.controls['password'].touched && specialFareForm.controls['password'].hasError('maxlength')">
+                                                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('maxlength')">
                                                                 Maximum 10 Characters Allowed
                                                             </span>
                                                         </div>
