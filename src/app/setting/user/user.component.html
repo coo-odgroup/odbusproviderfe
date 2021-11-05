@@ -223,6 +223,15 @@
                                                                 *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
                                                                 Password is Required
                                                             </span>
+                                                        
+                                                            <span class="text-danger"
+                                                                *ngIf="specialFareForm.controls['password'].touched && specialFareForm.controls['password'].hasError('minlength')">
+                                                                minimum 5 Characters Allowed
+                                                            </span>
+                                                            <span class="text-danger"
+                                                                *ngIf="specialFareForm.controls['password'].touched && specialFareForm.controls['password'].hasError('maxlength')">
+                                                                Maximum 10 Characters Allowed
+                                                            </span>
                                                         </div>
                                                     </div>
 
@@ -370,6 +379,14 @@
                                                                 *ngIf="pwdform.controls['password'].touched && pwdform.controls['password'].hasError('required')">
                                                                Password is Required
                                                             </span>
+                                                            <span class="text-danger"
+                                                            *ngIf="pwdform.controls['password'].touched && pwdform.controls['password'].hasError('minlength')">
+                                                            minimum 5 Characters Allowed
+                                                        </span>
+                                                        <span class="text-danger"
+                                                            *ngIf="pwdform.controls['password'].touched && pwdform.controls['password'].hasError('maxlength')">
+                                                            Maximum 10 Characters Allowed
+                                                        </span>
                                                         </div>
                                                     </div>
                                                     <div class="from-group">
@@ -381,10 +398,10 @@
                                                                 formControlName="conf_password" />
                                                             <span class="text-danger"
                                                                 *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('required') ">
-                                                                Passwords don't match.
+                                                                Confirm Password is Required
                                                             </span> 
                                                             
-                                                            <span *ngIf="pwdform.controls['conf_password']?.mismatch">
+                                                            <span  *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('mismatch') ">
                                                                 Password doesn't match
                                                               </span>
                                                                                                                   

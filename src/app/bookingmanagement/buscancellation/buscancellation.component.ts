@@ -320,7 +320,8 @@ export class BuscancellationComponent implements OnInit{
       reason:this.busCancellationForm.value.reason,
       //BELOW ELEMENTS ARE ARRAY
       buses:this.busCancellationForm.value.buses,
-    };console.log(data);
+    };
+    // console.log(data);
    
     if(id==null)
     {

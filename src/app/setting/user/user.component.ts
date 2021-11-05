@@ -60,7 +60,7 @@ export class UserComponent implements OnInit {
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
       phone: [null, Validators.compose([Validators.required])],
-      password: [null, Validators.compose([Validators.required])]
+      password: [null,Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])]
     });
 
     this.editform = this.fb.group({
@@ -73,7 +73,7 @@ export class UserComponent implements OnInit {
 
     this.pwdform = this.fb.group({
       id: [null],
-      password: [null, Validators.compose([Validators.required])],
+      password: [null, Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])],
       conf_password: [null, Validators.compose([Validators.required])]
       
     }, 

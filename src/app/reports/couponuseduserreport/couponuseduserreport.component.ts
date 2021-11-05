@@ -8,6 +8,7 @@ import { BusService} from '../../services/bus.service';
 import {CouponUsedUserReport } from '../../model/couponuseduserreport';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-couponuseduserreport',
@@ -57,10 +58,11 @@ export class CouponuseduserreportComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
-      rangeToDate :[null]
+      rangeToDate :[null],
+      coupon:[null]
 
     })  
-    // this.search(); 
+    this.search(); 
     this.loadServices();
   }
   
@@ -79,7 +81,8 @@ export class CouponuseduserreportComponent implements OnInit {
       source_id:this.couponUseUserReportRecord.source_id,
       destination_id:this.couponUseUserReportRecord.destination_id,
       rangeFromDate:this.couponUseUserReportRecord.rangeFromDate,
-      rangeToDate :this.couponUseUserReportRecord.rangeToDate
+      rangeToDate :this.couponUseUserReportRecord.rangeToDate,
+      coupon:this.couponUseUserReportRecord.coupon
             
     };
    
@@ -98,7 +101,7 @@ export class CouponuseduserreportComponent implements OnInit {
       this.rs.couponUsedUserReport(data).subscribe(
         res => {
           this.couponused= res.data;
-          // console.log( this.couponused);
+          console.log( this.couponused);
         }
       );
     }
@@ -110,10 +113,39 @@ export class CouponuseduserreportComponent implements OnInit {
 
   refresh()
   {
-    this.searchFrom.reset();
+    this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      payment_id : [null],
+      date_type:['booking'],
+      rows_number: Constants.RecordLimit,
+      source_id:[null],
+      destination_id:[null],
+      rangeFromDate:[null],
+      rangeToDate :[null],
+      coupon:[null]
+
+    })
+
     this.search();
   }
 
+  title = 'angular-app';
+  fileName= 'Coupan-USed-User-Report.xlsx';
+  exportexcel(): void
+  {
+    
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
 
   
   loadServices() {

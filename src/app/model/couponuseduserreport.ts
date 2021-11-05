@@ -7,4 +7,5 @@ export interface CouponUsedUserReport {
     destination_id:any ;
     rangeFromDate:any ;
     rangeToDate :any ;
+    coupon:any;
 }

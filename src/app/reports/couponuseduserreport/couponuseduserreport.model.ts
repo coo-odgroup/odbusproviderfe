@@ -7,7 +7,7 @@ import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {CouponUsedUserReportRoutingModule} from './couponuseduserreport-route.model';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule
+    NgbModule,NgxPrintModule
   ],
   declarations: [ CouponuseduserreportComponent],
   providers: [NotificationService]
