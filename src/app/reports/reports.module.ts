@@ -15,6 +15,7 @@ import { OwnerpaymentreportComponent } from './ownerpaymentreport/ownerpaymentre
 import { CleartransactionreportComponent } from './cleartransactionreport/cleartransactionreport.component';
 import { CouponuseduserreportComponent } from './couponuseduserreport/couponuseduserreport.component';
 import { ContactreportComponent } from './contactreport/contactreport.component';
+import { AgentwalletrequestComponent } from './agentwalletrequest/agentwalletrequest.component';
 
 
 
@@ -25,7 +26,6 @@ import { ContactreportComponent } from './contactreport/contactreport.component'
 
 @NgModule({
   declarations: [ 
-  
   ],
   imports: [
     CommonModule,
