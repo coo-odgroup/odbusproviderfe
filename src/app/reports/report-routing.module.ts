@@ -48,7 +48,11 @@ const routes: Routes = [
       {
         path: 'contactreport',
         loadChildren: () => import('./contactreport/contactreport.module').then(module => module.ContactReportModule)
-      }                 
+      }, 
+      {
+        path: 'agentwalletrequest',
+        loadChildren: () => import('./agentwalletrequest/agentwalletrequest.module').then(module => module.AgentWalletRequestReportModule)
+      }                  
     ]
   }
 ];

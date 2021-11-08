@@ -8,12 +8,13 @@ import { AgentWallet } from '../../model/agentwallet';
 import { Constants } from '../../constant/constant';
 import * as XLSX from 'xlsx';
 
+
 @Component({
-  selector: 'app-wallet',
-  templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.scss']
+  selector: 'app-agentwalletrequest',
+  templateUrl: './agentwalletrequest.component.html',
+  styleUrls: ['./agentwalletrequest.component.scss']
 })
-export class WalletComponent implements OnInit {
+export class AgentwalletrequestComponent implements OnInit {
 
   public form: FormGroup;
 
@@ -54,11 +55,7 @@ export class WalletComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [null],
-      transaction_id: [null, Validators.compose([Validators.required])],
-      payment_via: [null, Validators.compose([Validators.required])],
-      amount: [null],
-      remarks: [null],
-      user_id: 2
+      otp: [null, Validators.compose([Validators.required])]
     });
     this.formConfirm = this.fb.group({
       id: [null]
@@ -74,23 +71,20 @@ export class WalletComponent implements OnInit {
   }
 
 
-  OpenModal(content) {
-    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
+  OpenModal(content,id) {
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+    this.walletRecord =this.wallet[id];
+    // console.log(this.walletRecord);
   }
   ResetAttributes() {
     this.walletRecord = {} as AgentWallet;
     this.form = this.fb.group({
       id: [null],
-      transaction_id: [null, Validators.compose([Validators.required])],
-      reference_id: [null],
-      payment_via: [null, Validators.compose([Validators.required])],
-      amount:  [null, Validators.compose([Validators.required,Validators.min(2000),Validators.required,Validators.max(49000)])],
-      remarks: [null], 
-      user_id: 2
+      otp: [null, Validators.compose([Validators.required])]
     });
     this.form.reset();
-    this.ModalHeading = "Enter Payment Details";
-    this.ModalBtn = "Request";
+    this.ModalHeading = "Enter OTP to Active ";
+    this.ModalBtn = "Submit";
   }
 
 
@@ -106,8 +100,7 @@ export class WalletComponent implements OnInit {
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
     };
-
-    console.log(data);
+    // console.log(data);
     if (pageurl != "") {
       this.ws.getAllaginationData(pageurl, data).subscribe(
         res => {
@@ -126,6 +119,31 @@ export class WalletComponent implements OnInit {
         }
       );
     }
+  }
+
+  changeStatus()
+  {
+    let id:any=this.walletRecord.id;
+    
+    const data ={
+      otp:this.form.value.otp,
+    };
+
+    this.ws.chngsts(id,data).subscribe(
+      resp => {
+        
+        if(resp.status==1)
+        {
+            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+            this.refresh();
+            this.ResetAttributes();
+            this.modalReference.close();
+        }
+        else{
+            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+      }
+    );
   }
 
 
@@ -157,34 +175,9 @@ export class WalletComponent implements OnInit {
 
   }
 
+  
 
-  addData() {
-    const data = {
-      transaction_id: this.form.value.transaction_id,
-      reference_id: this.form.value.reference_id,
-      payment_via:this.form.value.payment_via,
-      amount: this.form.value.amount,
-      remarks: this.form.value.remarks,
-      user_id: 2,
-      transaction_type: "c",
-    };
-    console.log(data);
-   
-      this.ws.create(data).subscribe(
-        resp => {
 
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          }
-        }
-      );   
-
-  }
+ 
 
 }

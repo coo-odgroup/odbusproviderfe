@@ -251,6 +251,13 @@ const NavigationItems = [
           //     type : 'item',
           //     url  : 'reports/ticket'
           // },
+
+          {
+            id: 'agentwalletrequest',
+            title: 'Agent Wallet Request',
+            type: 'item',
+            url: 'reports/agentwalletrequest'
+          },
           {
             id: 'seatopenreport',
             title: 'Seat Open Report',
@@ -428,6 +435,26 @@ const NavigationItems = [
             type: 'item',
             url: 'setting/agentfee'
           },
+        ]
+      },
+      {
+        id: 'agent',
+        title: 'Agent',
+        type: 'collapse',
+        icon: 'add_shopping_cart',
+        children: [
+          {
+            id: 'notification',
+            title: 'Notification',
+            type: 'item',
+            url: 'agent/notification'
+          }, 
+          {
+            id: 'wallet',
+            title: 'Wallet',
+            type: 'item',
+            url: 'agent/wallet'
+          }
         ]
       },
     ]

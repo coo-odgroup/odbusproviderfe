@@ -64,6 +64,11 @@ const routes: Routes = [
         loadChildren: () => import('./setting/setting.module').then(module => module.SettingModule),
         canActivate: [Routeguard]
       },
+      {
+        path: 'agent',
+        loadChildren: () => import('./agent/agent.module').then(module => module.AgentModule),
+        canActivate: [Routeguard]
+      },
     ]
   }
 ];
