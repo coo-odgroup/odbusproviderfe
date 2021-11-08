@@ -8,7 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import {AgentComissionRoutingModule} from './agentcomission-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     AgentComissionRoutingModule,
     SharedModule,
     FormsModule,
-    NgSelectModule,
+    NgSelectModule,NgxPrintModule,
     NgbModule,AngularEditorModule
   ],
   declarations: [ AgentcomissionComponent],
