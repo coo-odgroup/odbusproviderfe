@@ -5,7 +5,8 @@ export interface Login {
     name:any,
     password:any,
     phone:any;
-    role:Role
+    role:Role,
+    user_type:any;
 }
 export interface Role{
     id:any,
