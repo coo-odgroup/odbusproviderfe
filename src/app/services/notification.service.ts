@@ -4,7 +4,8 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class NotificationService {
-
+  
+  timeout:any='4000';
   position = 'toast-bottom-right';
   title: string;
   msg: string;
@@ -56,6 +57,29 @@ export class NotificationService {
         this.toastr.error(options.msg, options.title, config); break;
     }
    
+  }
+  notify(message:any,type:any){
+
+    if(type=='Error'){
+
+      this.toastr.error(message, type, {
+        timeOut: this.timeout,
+        positionClass: 'toast-bottom-right'
+      });
+
+    }
+
+    if(type=='Success'){
+
+      this.toastr.success(message, type, {
+        timeOut: this.timeout,
+        positionClass: 'toast-bottom-right'
+      });
+
+    }
+
+   
+
   }
 }
 

@@ -3,10 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {  BehaviorSubject,Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {Constants} from '../constant/constant';
+
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class SignupService {
   private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({
@@ -15,15 +16,15 @@ export class LoginService {
   }
   private alert = new  BehaviorSubject('');
   constructor(private httpClient: HttpClient) { }
+  
   currentalert = this.alert.asObservable();
 
   setAlert(message: any) {
     this.alert.next(message);
  }
   
-  
-  checkLogin(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/Login', JSON.stringify(post), this.httpOptions)
+  signup(params :any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/Register', JSON.stringify(params), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
