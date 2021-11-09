@@ -8,7 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import {AgentFeeRoutingModule} from './agentfee-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule,AngularEditorModule
+    NgbModule,AngularEditorModule,NgxPrintModule
   ],
   declarations: [ AgentfeeComponent],
   providers: [NotificationService]
