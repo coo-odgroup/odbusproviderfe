@@ -259,6 +259,12 @@ const NavigationItems = [
             url: 'reports/agentwalletrequest'
           },
           {
+            id: 'pushnotification',
+            title: 'Push Notification',
+            type: 'item',
+            url: 'reports/pushnotification'
+          },
+          {
             id: 'seatopenreport',
             title: 'Seat Open Report',
             type: 'item',

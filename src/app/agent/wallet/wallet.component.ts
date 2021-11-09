@@ -107,7 +107,7 @@ export class WalletComponent implements OnInit {
       rows_number: this.searchForm.value.rows_number,
     };
 
-    console.log(data);
+    // console.log(data);
     if (pageurl != "") {
       this.ws.getAllaginationData(pageurl, data).subscribe(
         res => {
@@ -168,7 +168,7 @@ export class WalletComponent implements OnInit {
       user_id: 2,
       transaction_type: "c",
     };
-    console.log(data);
+    // console.log(data);
    
       this.ws.create(data).subscribe(
         resp => {

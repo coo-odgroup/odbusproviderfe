@@ -52,7 +52,11 @@ const routes: Routes = [
       {
         path: 'agentwalletrequest',
         loadChildren: () => import('./agentwalletrequest/agentwalletrequest.module').then(module => module.AgentWalletRequestReportModule)
-      }                  
+      },
+      {
+        path: 'pushnotification',
+        loadChildren: () => import('./pushnotification/pushnotification.module').then(module => module.PushNotificationModule)
+      }                   
     ]
   }
 ];
