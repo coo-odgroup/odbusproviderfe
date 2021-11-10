@@ -33,6 +33,7 @@ export class PushnotificationComponent implements OnInit {
   pushRecord: Pushnotification;
 
   user:any; 
+  userAll: any;
 
   constructor(
     private http: HttpClient,
@@ -99,9 +100,9 @@ export class PushnotificationComponent implements OnInit {
   search(pageurl = "") {
     const data = {
       name: this.searchForm.value.name,
-      bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
     };
+    // console.log(data);
     if (pageurl != "") {
       this.pns.getAllaginationData(pageurl, data).subscribe(
         res => {
@@ -116,6 +117,7 @@ export class PushnotificationComponent implements OnInit {
         res => {
           this.push = res.data.data.data;
           this.pagination = res.data.data;
+          console.log(this.push);
          
         }
       );
@@ -156,7 +158,7 @@ export class PushnotificationComponent implements OnInit {
   {
     this.pns.allUser().subscribe(
       res => {
-        this.user = res.data;       
+        this.user = res.data;  
       }
     );
   }
@@ -164,47 +166,25 @@ export class PushnotificationComponent implements OnInit {
 
   addData() {
     const data = {
-      subject: this.form.value.page_url,
-      notification:this.form.value.bus_operator_id,
-      user: this.form.value.url_description
+      subject: this.form.value.subject,
+      notification:this.form.value.notification,
+      user_id: this.form.value.user,
     };
-    let id = this.pushRecord?.id;
-    if (id != null) {
-      this.pns.update(id, data).subscribe(
-        resp => {
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
+    // console.log(data);
 
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          }
-        }
-      );
-    }
-    else {
       this.pns.create(data).subscribe(
         resp => {
-
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
             this.ResetAttributes();
             this.refresh();
-
-
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
           }
         }
       );
-
-    }
-
   }
 
 
@@ -257,6 +237,8 @@ export class PushnotificationComponent implements OnInit {
       }
     );
   }
+
+  
 
   
   

@@ -460,7 +460,43 @@ const NavigationItems = [
             title: 'Wallet',
             type: 'item',
             url: 'agent/wallet'
-          }
+          },
+          {
+            id: 'walletreport',
+            title: 'Wallet Report',
+            type: 'item',
+            url: 'agent/walletreport'
+          },
+          {
+            id: 'cancellationreport',
+            title: 'Cancellation Report',
+            type: 'item',
+            url: 'agent/cancellationreport'
+          },
+          {
+            id: 'completereport',
+            title: 'Complete Report',
+            type: 'item',
+            url: 'agent/completereport'
+          },
+          {
+            id: 'commissionreport',
+            title: 'Commission Report',
+            type: 'item',
+            url: 'agent/commissionreport'
+          },
+          {
+            id: 'commissionslab',
+            title: 'Commission Slab',
+            type: 'item',
+            url: 'agent/commissionslab'
+          },
+          {
+            id: 'customercommissionslab',
+            title: 'Customer Commission Slab',
+            type: 'item',
+            url: 'agent/customercommissionslab'
+          },
         ]
       },
     ]

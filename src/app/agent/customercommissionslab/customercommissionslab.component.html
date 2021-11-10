@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Customer Commission Slab" cardClass="card-datatable" [options]="true" [isCardFooter]="true"> 
+            <h6> Agent can put commission value that received from customer according to following fare while booking</h6>
+            <div class="table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">No Of Seats Range From - To</th>
+                            <th scope="col">Commission (Rs.)</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="completedata?.length != 0">
+                        <tr *ngFor="let complete of completedata?.data.data; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>
+                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )                               
+                            </td>
+                            <td>
+                                <strong>{{ complete.bus.name }}</strong><br>
+                            </td>
+                            
+                        </tr>
+                    </tbody> 
+                    <tbody *ngIf="completedata?.length == 0">
+                        <tr>
+                          <td colspan="10" class="no-data-available">No data!</td>
+                        </tr>
+                    <tbody>                   
+                </table>
+               
+            </div>
+        </app-card>
+    </div>
+</div>
