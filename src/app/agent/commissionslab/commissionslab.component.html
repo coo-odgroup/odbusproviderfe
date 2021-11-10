@@ -13,13 +13,13 @@
                         </tr>
                     </thead>
                     <tbody *ngIf="completedata?.length != 0">
-                        <tr *ngFor="let complete of completedata?.data.data; let i = index">
+                        <tr *ngFor="let complete of completedata; let i = index">
                             <td>{{ i+1 }}</td>
                             <td>
-                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )                               
+                                From <strong>{{complete.range_from}}</strong>to <strong>{{complete.range_to}}</strong>  Seats                               
                             </td>
                             <td>
-                                <strong>{{ complete.bus.name }}</strong><br>
+                                <i class="fas fa-rupee-sign"></i> .<strong>{{ complete.comission_per_seat }}</strong><br>
                             </td>
                             
                         </tr>

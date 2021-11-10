@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        <app-card cardTitle="Customer Commission Slab" cardClass="card-datatable" [options]="true" [isCardFooter]="true"> 
+        <app-card cardTitle="Customer Commission Fee Slab" cardClass="card-datatable" [options]="true" [isCardFooter]="true"> 
             <h6> Agent can put commission value that received from customer according to following fare while booking</h6>
             <div class="table-responsive">
                 <table class="table table-striped ">
@@ -12,13 +12,13 @@
                         </tr>
                     </thead>
                     <tbody *ngIf="completedata?.length != 0">
-                        <tr *ngFor="let complete of completedata?.data.data; let i = index">
+                        <tr *ngFor="let complete of completedata; let i = index">
                             <td>{{ i+1 }}</td>
                             <td>
-                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )                               
+                               Fare From <i class="fas fa-rupee-sign"></i>.<strong>{{complete.price_from}}</strong>   To   <i class="fas fa-rupee-sign"></i>.<strong>{{complete.price_to}}</strong>                                 
                             </td>
                             <td>
-                                <strong>{{ complete.bus.name }}</strong><br>
+                                <i class="fas fa-rupee-sign"></i> .<strong>{{ complete.max_comission }}</strong><br>
                             </td>
                             
                         </tr>

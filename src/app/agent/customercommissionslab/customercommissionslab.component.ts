@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgentreportService } from '../../services/agentreport.service' ;
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { AgentcommissionslabService} from './../../services/agentcommissionslab.service';
-import {Agentcommissionslab} from '../../model/agentcommissionslab';
+import {Customercommisionslab} from '../../model/customercommisionslab';
 
 
 @Component({
@@ -12,8 +12,8 @@ import {Agentcommissionslab} from '../../model/agentcommissionslab';
 })
 export class CustomercommissionslabComponent implements OnInit {
 
-  commissionSlab: Agentcommissionslab[];
-  commissionSlabRecord: Agentcommissionslab;
+  commissionSlab: Customercommisionslab[];
+  commissionSlabRecord: Customercommisionslab;
 
   completedata: any;
   totalfare = 0  ;
