@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        <app-card cardTitle="Cancel Ticket Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
+        <app-card cardTitle="Agent Cancel Ticket Report" cardClass="card-datatable" [options]="true" [isCardFooter]="true">
 
             <div class=" mb-3">
                 <div class="row p-0">
@@ -157,10 +157,10 @@
                             <th scope="col">Seat No</th>
                             <th scope="col">User Details</th>
                             <th scope="col">Passenger Details</th>
-                            <th scope="col">Seater / Sleeper </th>
-                            <th scope="col">ODBUS Fare</th>
+                            <!-- <th scope="col">Seater / Sleeper </th> -->
+                            <th scope="col">Fare</th>
                             <th scope="col">Refund Price</th>
-                            <th scope="col">Cancel By</th>
+                            <!-- <th scope="col">Cancel By</th> -->
                         </tr>
                     </thead>
                     <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
@@ -251,7 +251,7 @@
                                     {{complete.users.name}}
                                 </strong> <br>
 
-                                <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2" placement="bottom"
+                                <!-- <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2" placement="bottom"
                                     ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
                                     <i class="fas fa-mobile-alt"></i>
                                 </button>
@@ -259,7 +259,7 @@
                                 <button class="btn btn-sm btn-danger text-light mt-2" placement="bottom"
                                     ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
                                     <i class="far fa-envelope"></i>
-                                </button>
+                                </button> -->
 
                             </td>
                             <td>
@@ -286,7 +286,7 @@
                                 </div>
                             </td>
 
-                            <td>
+                            <!-- <td>
                                 <div *ngIf="complete.booking_detail?.length != 0">
                                     <strong placement="top"
                                         ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
@@ -294,7 +294,7 @@
                                     <strong placement="top"
                                         ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
                                 </div>
-                            </td>
+                            </td> -->
                             <td>
 
                                 <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
@@ -308,15 +308,15 @@
                                 <h5>Coming<br> Soon</h5>
 
                             </td>
-                            <td>
+                            <!-- <td>
                                 -----
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
 
                     <tbody *ngIf="cancelticketdata?.data.data?.length == 0">
                         <tr>
-                          <td colspan="7" class="no-data-available">No data!</td>
+                          <td colspan="10" class="no-data-available">No data!</td>
                         </tr>
                     <tbody>
 

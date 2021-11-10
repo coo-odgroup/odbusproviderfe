@@ -197,12 +197,6 @@ export class ReportsService {
     )
   }
 
-  // CouponUsedUserReport(): Observable<any> {
-  //   return this.httpClient.get(this.apiURL + '/couponuseduserreport').pipe(
-  //     catchError(this.errorHandler)
-  //   )
-  // }
-
   couponUsedUserReport(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/couponuseduserreport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)

@@ -1,0 +1,165 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { NotificationService } from '../../services/notification.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { AgentreportService } from '../../services/agentreport.service'
+import { AgentWallet } from '../../model/agentwallet';
+import { Constants } from '../../constant/constant';
+import * as XLSX from 'xlsx';
+
+
+@Component({
+  selector: 'app-agentwalletreport',
+  templateUrl: './agentwalletreport.component.html',
+  styleUrls: ['./agentwalletreport.component.scss']
+})
+export class AgentwalletreportComponent implements OnInit {
+
+  public form: FormGroup;
+
+  public formConfirm: FormGroup;
+  public searchForm: FormGroup;
+  pagination: any;
+
+  modalReference: NgbModalRef;
+  confirmDialogReference: NgbModalRef;
+
+  public isSubmit: boolean;
+  public ModalHeading: any;
+  public ModalBtn: any;
+
+  wallet: AgentWallet[];
+  walletRecord: AgentWallet;
+  busoperators: any;
+
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private fb: FormBuilder, 
+
+    private ws: AgentreportService,
+    private modalService: NgbModal,
+    config: NgbModalConfig
+  ) {
+    config.backdrop = 'static';
+    config.keyboard = false;
+    this.ModalHeading = "Add New Location";
+    this.ModalBtn = "Save";
+  }
+
+
+
+
+
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      id: [null],
+      transaction_id: [null, Validators.compose([Validators.required])],
+      payment_via: [null, Validators.compose([Validators.required])],
+      amount: [null],
+      remarks: [null],
+      user_id: 2
+    });
+    this.formConfirm = this.fb.group({
+      id: [null]
+    });
+    this.searchForm = this.fb.group({
+      bus_operator_id: [null],
+      name: [null],
+      rows_number: Constants.RecordLimit,
+    });
+
+    this.search();
+
+  }
+
+
+  OpenModal(content) {
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
+  }
+  ResetAttributes() {
+    this.walletRecord = {} as AgentWallet;
+    this.form = this.fb.group({
+      id: [null],
+      transaction_id: [null, Validators.compose([Validators.required])],
+      reference_id: [null],
+      payment_via: [null, Validators.compose([Validators.required])],
+      amount:  [null, Validators.compose([Validators.required,Validators.min(2000),Validators.required,Validators.max(49000)])],
+      remarks: [null], 
+      user_id: 2
+    });
+    this.form.reset();
+    this.ModalHeading = "Enter Payment Details";
+    this.ModalBtn = "Request";
+  }
+
+
+
+  page(label: any) {
+    return label;
+  }
+
+
+  search(pageurl = "") {
+    const data = {
+      name: this.searchForm.value.name,
+      bus_operator_id: this.searchForm.value.bus_operator_id,
+      rows_number: this.searchForm.value.rows_number,
+    };
+
+    // console.log(data);
+    if (pageurl != "") {
+      this.ws.agentwalletpaginationReport(pageurl, data).subscribe(
+        res => {
+          this.wallet = res.data.data.data;
+          this.pagination = res.data.data;
+          // console.log( this.BusOperators);
+        }
+      );
+    }
+    else {
+      this.ws.agentwalletReport(data).subscribe(
+        res => {
+          this.wallet = res.data.data.data;
+          this.pagination = res.data.data;
+          // console.log( res.data);
+        }
+      );
+    }
+  }
+
+
+  refresh() {
+    this.searchForm = this.fb.group({
+      name: [null],
+      bus_operator_id: [null],
+      rows_number: Constants.RecordLimit,
+    });
+    this.search();
+
+  }
+
+  title = 'angular-app';
+  fileName = 'Seo-Setting.xlsx';
+
+  exportexcel(): void {
+
+    /* pass here the table id */
+    let element = document.getElementById('print-section');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.fileName);
+
+  }
+
+
+  
+
+
+}

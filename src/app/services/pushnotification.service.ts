@@ -25,13 +25,13 @@ export class PushnotificationService {
   }
 
   allUser(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/allUser').pipe(
+    return this.httpClient.get(this.apiURL + '/allAgent').pipe(
       catchError(this.errorHandler)
     )
   }
 
   getAllData(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/pushnotificationData', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/allPushNotification', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -46,20 +46,20 @@ export class PushnotificationService {
 
 
   create(data): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/pushnotification', JSON.stringify(data), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/addPushNotification', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
-  update(id, data): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/pushnotification/' + id, JSON.stringify(data), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
+  // update(id, data): Observable<any> {
+  //   return this.httpClient.put<any>(this.apiURL + '/pushnotification/' + id, JSON.stringify(data), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
   delete(id){
-    return this.httpClient.delete<any>(this.apiURL + '/pushnotification/' + id, this.httpOptions)
+    return this.httpClient.delete<any>(this.apiURL + '/deletePushNotification/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
