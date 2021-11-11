@@ -27,6 +27,10 @@ const routes: Routes = [
         path: 'otp',
         loadChildren: () => import('./otp/otp.module').then(module =>module.OtpModule)
       },
+      {
+        path: 'agentDetails',
+        loadChildren: () => import('./agent-details/agent-details.module').then(module =>module.AgentDetailsModule)
+      },
     ]
   },
   {

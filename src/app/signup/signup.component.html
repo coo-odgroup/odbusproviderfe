@@ -1,51 +1,30 @@
 <div class="auth-wrapper">
-    <div class="auth-content text-center">
-      <img src="assets/images/odbus-logo.svg" alt="" class="img-fluid mb-4">
-      <div class="card borderless">
-        <div class="row align-items-center text-center">
-          <div class="col-md-12">
-            <div class="card-body">
-                    <h4 class="mb-3 f-w-400">Signup</h4>
-                    <form [formGroup]="form" class="editForm" novalidate>
-                      <div class=" mb-3">
-                        <input type="email" class="form-control" formControlName="name" placeholder="Agent name">
-                        <span class="text-danger"
-                                *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
-                                Agent name is required! </span>
-                      </div>
-                      <div class=" mb-4">
-                        <input type="phone" class="form-control" formControlName="phone"  placeholder="Agent phone">
-                        <span class="text-danger"
-                                *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
-                                Phone is required! </span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['phone'].errors?.pattern">
-                                    Enter 10 digit Mobile Number
-                                  </span>
-                      </div>
-                      <div class=" mb-4">
-                        <ng-select [items]="usertypes" bindLabel="role" bindValue="role"
-                        placeholder="Select Agent Role" formControlName="user_type" [clearable]="false">
-                      </ng-select>
-                        <!-- <input type="role" class="form-control" formControlName="user_type"  placeholder="user role"> -->
-                        <span class="text-danger"
-                                *ngIf="form.controls['user_type'].touched && form.controls['user_type'].hasError('required')">
-                                Role of Agent is required! </span>
-                      </div>
-                      
-                      <div class="form-group text-left mt-2">
-                      <!-- <div class="checkbox checkbox-primary d-inline">
-      
-                          <label for="checkbox-fill-a1" class="cr"> <input type="checkbox" 
-                              id="checkbox-fill-a1"> Save credentials</label>
-                      </div> -->
-                      </div>
-                      <button class="btn btn-block btn-primary mb-4" type="button" (click)="check_credentials()">Signup</button>
-                     
-                      <p class="text-center">Already Registered? <a class="formlink" routerLink="/login">Login</a> </p>  
-                  </form>
-            </div>
+  <div class="auth-content text-center">
+    <img src="assets/images/odbus-logo.svg" alt="" class="img-fluid mb-4">
+    <div class="card borderless">
+      <div class="row align-items-center text-center">
+        <div class="col-md-12">
+          <div class="card-body">
+            <h4 class="mb-3 f-w-400">Signup</h4>
+            <form [formGroup]="form" class="editForm" novalidate>
+
+              <div class=" mb-4">
+                <input type="phone" class="form-control" formControlName="phone" placeholder="Enter mobile no">
+                <span class="text-danger"
+                  *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
+                  Phone is required! </span>
+                <span class="text-danger row col-12" *ngIf="form.controls['phone'].errors?.pattern">
+                  Enter 10 digit Mobile Number
+                </span>
+              </div>
+              <button class="btn btn-block btn-primary mb-4" type="button" (click)="check_credentials()">Get
+                OTP</button>
+              <p class="text-center"> <a class="formlink" routerLink="/dashboard/landing">Back to home</a> </p>
+              <!-- <p class="text-center">Already Registered? <a class="formlink" routerLink="/login">Login</a> </p>   -->
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>

@@ -5,31 +5,22 @@
         <div class="row align-items-center text-center">
           <div class="col-md-12">
             <div class="card-body">
-                    <h4 class="mb-3 f-w-400">Signin</h4>
+                    <h4 class="mb-3 f-w-400">Login</h4>
                     <form [formGroup]="form" class="editForm" novalidate>
-                      <!-- <div class=" mb-3">
-                        <input type="email" class="form-control" formControlName="username" placeholder="Email address">
+                      <div class=" mb-3">
+                        <input type="email" class="form-control" formControlName="email" placeholder="Email address">
                         <span class="text-danger"
-                                *ngIf="form.controls['username'].touched && form.controls['username'].hasError('required')">
-                                Username is required! </span>
+                                *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
+                                Email is required! </span>
                       </div>
                       <div class=" mb-4">
                         <input type="password" class="form-control" formControlName="password"  placeholder="Password">
                         <span class="text-danger"
                                 *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
                                 Password is required! </span>
-                      </div> -->
-                      <div class=" mb-3">
-                        <input type="phone" class="form-control" formControlName="phone"  placeholder="Agent phone">
-                                <span class="text-danger"
-                                *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
-                                Phone is required! </span>
-                                <span class="text-danger row col-12" *ngIf="form.controls['phone'].errors?.pattern">
-                                    Enter 10 digit Mobile Number
-                                </span>
                       </div>
-                      <div class=" mb-4">
-                        <ng-select [items]="usertypes" bindLabel="role" bindValue="role"
+                      <div class="mb-4">
+                        <ng-select [items]="usertypes" style="height: 40px;" class="list-display1" bindLabel="name" bindValue="name"
                         placeholder="Select Agent Role" formControlName="user_type" [clearable]="false">
                       </ng-select>
                         <span class="text-danger"
@@ -37,14 +28,19 @@
                                 Role of Agent is required! </span>
                       </div>
                       <div class="form-group text-left mt-2">
+                        <label>
+                        <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox" [checked]="saveUsername"
+                          (change)="onSaveUsernameChanged(saveUserNameCheckBox.checked)" />Save credentials</label>
+                      </div>
+                      <!-- <div class="form-group text-left mt-2">
                       <div class="checkbox checkbox-primary d-inline">
       
                           <label for="checkbox-fill-a1" class="cr"> <input type="checkbox" 
                               id="checkbox-fill-a1"> Save credentials</label>
                       </div>
-                      </div>
-                      <button class="btn btn-block btn-primary mb-4" type="button" (click)="check_credentials()">Signin</button>
-                      <p class="text-center">Don't have an account with us? <a class="formlink" routerLink="/signup">Signup</a> </p>  
+                      </div> -->
+                      <button class="btn btn-block btn-primary mb-4" type="button" (click)="check_credentials()">Login</button>
+                      <p class="text-center">Don't have an account? <a class="formlink" routerLink="/signup">Signup</a> </p>  
                   </form>
             </div>
           </div>

@@ -9,11 +9,12 @@
                      <ngb-alert *ngIf="alert!=''">
                         {{ alert }}
                       </ngb-alert>
-                    <div class="form-group phone">
+                      <div class="otp-msg">OTP has been send to: {{mobileNo}}</div>
+                      <div class="form-group phone">
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <!-- <span class="input-group-addon"><i class="fa fa-phone fa" aria-hidden="true"></i></span> -->
-                                <input type="text" class="form-control"  formControlName="otp" id="otp" placeholder="Enter OTP" />
+                                <input type="text" class="form-control"  formControlName="otp" id="otp" placeholder="Enter OTP here" />
                                 <div *ngIf="submitted && f.otp.errors" class="invalid-feedback">
                                     <div *ngIf="f.otp.errors.required">OTP is required</div>
                                 </div>
@@ -21,7 +22,7 @@
                         </div>
                     </div>
                     <div class="form-group login-app center ">
-                        <button class="btn btn-block btn-primary mb-4" type="submit">Submit</button>
+                        <button class="btn btn-block btn-primary mb-4" type="submit">Verify</button>
                     </div>
                      <!-- <p class="text-center" *ngIf="ResendTimer">
                         Resend OTP after <countdown #countdown [config]="{leftTime: Timer, format: 'ss' }" (event)="handleEvent($event)"></countdown> Seconds..
