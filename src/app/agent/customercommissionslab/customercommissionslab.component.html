@@ -1,13 +1,15 @@
 <div class="row">
     <div class="col-sm-12">
-        <app-card cardTitle="Customer Commission Fee Slab" cardClass="card-datatable" [options]="true" [isCardFooter]="true"> 
+ 
+            <app-card [hidHeader]="false" cardTitle="Customer Commission Fee Slab" cardClass="card-datatable" [options]="true"
+        cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
             <h6> Agent can put commission value that received from customer according to following fare while booking</h6>
             <div class="table-responsive">
                 <table class="table table-striped ">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">No Of Seats Range From - To</th>
+                            <th scope="col">Fare Range From - To</th>
                             <th scope="col">Commission (Rs.)</th>
                         </tr>
                     </thead>
