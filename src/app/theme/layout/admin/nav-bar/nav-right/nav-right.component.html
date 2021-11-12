@@ -13,7 +13,7 @@
       <div class=" dropdown-menu-right profile-notification" ngbDropdownMenu>
         <div class="pro-head">
           <img src="assets/images/user/cs.png" class="img-radius" alt="User-Profile-Image">
-          <span>Priyadarshi</span>
+          <span>{{username}}</span>
           <a href="javascript:" class="dud-logout" title="Logout">
             <i class="feather icon-log-out"></i>
           </a>
@@ -21,7 +21,7 @@
         <ul class="pro-body">
           <li><a href="javascript:" class="dropdown-item"><i class="fas fa-user-circle"></i> Profile</a></li>
           <li><a href="javascript:" class="dropdown-item"><i class="fas fa-cogs"></i> Settings</a></li>
-          <li><a href="javascript:" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+          <li><a href="javascript:" (click)="logout()" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
       </div>
     </div>

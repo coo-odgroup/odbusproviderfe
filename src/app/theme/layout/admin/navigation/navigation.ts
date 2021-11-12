@@ -24,6 +24,86 @@ export interface NavigationItem {
 export interface Navigation extends NavigationItem {
   children?: NavigationItem[];
 }
+
+
+
+
+const AgentItems = [
+  {
+    id: 'odbus',
+    title: '',
+    //translate: 'NAV.ODBUS',
+    type: 'group',
+    icon: 'feather icon-home',
+    children: [
+      {
+        id: 'dashboards',
+        title: 'Dashboards',
+        //translate: 'NAV.DASHBOARDS',
+        type: 'item',
+        icon: 'feather icon-home',
+        url: 'dashboard/landing'
+      },
+      {
+        id: 'agent',
+        title: 'Agent',
+        type: 'collapse',
+        icon: 'add_shopping_cart',
+        children: [
+          {
+            id: 'notification',
+            title: 'Notification',
+            type: 'item',
+            url: 'agent/notification'
+          }, 
+          {
+            id: 'wallet',
+            title: 'Wallet',
+            type: 'item',
+            url: 'agent/wallet'
+          },
+          {
+            id: 'walletreport',
+            title: 'Wallet Report',
+            type: 'item',
+            url: 'agent/walletreport'
+          },
+          {
+            id: 'cancellationreport',
+            title: 'Cancellation Report',
+            type: 'item',
+            url: 'agent/cancellationreport'
+          },
+          {
+            id: 'completereport',
+            title: 'Complete Report',
+            type: 'item',
+            url: 'agent/completereport'
+          },
+          {
+            id: 'commissionreport',
+            title: 'Commission Report',
+            type: 'item',
+            url: 'agent/commissionreport'
+          },
+          {
+            id: 'commissionslab',
+            title: 'Commission Slab',
+            type: 'item',
+            url: 'agent/commissionslab'
+          },
+          {
+            id: 'customercommissionslab',
+            title: 'Customer Commission Slab',
+            type: 'item',
+            url: 'agent/customercommissionslab'
+          },
+        ]
+      },
+    ]
+  }
+];
+
 const NavigationItems = [
   {
     id: 'odbus',
@@ -443,62 +523,7 @@ const NavigationItems = [
           },
         ]
       },
-      {
-        id: 'agent',
-        title: 'Agent',
-        type: 'collapse',
-        icon: 'add_shopping_cart',
-        children: [
-          {
-            id: 'notification',
-            title: 'Notification',
-            type: 'item',
-            url: 'agent/notification'
-          }, 
-          {
-            id: 'wallet',
-            title: 'Wallet',
-            type: 'item',
-            url: 'agent/wallet'
-          },
-          {
-            id: 'walletreport',
-            title: 'Wallet Report',
-            type: 'item',
-            url: 'agent/walletreport'
-          },
-          {
-            id: 'cancellationreport',
-            title: 'Cancellation Report',
-            type: 'item',
-            url: 'agent/cancellationreport'
-          },
-          {
-            id: 'completereport',
-            title: 'Complete Report',
-            type: 'item',
-            url: 'agent/completereport'
-          },
-          {
-            id: 'commissionreport',
-            title: 'Commission Report',
-            type: 'item',
-            url: 'agent/commissionreport'
-          },
-          {
-            id: 'commissionslab',
-            title: 'Commission Slab',
-            type: 'item',
-            url: 'agent/commissionslab'
-          },
-          {
-            id: 'customercommissionslab',
-            title: 'Customer Commission Slab',
-            type: 'item',
-            url: 'agent/customercommissionslab'
-          },
-        ]
-      },
+
     ]
   }
 ];
@@ -506,6 +531,15 @@ const NavigationItems = [
 @Injectable()
 export class NavigationItem {
   public get() {
-    return NavigationItems;
+    var ROLE_ID = localStorage.getItem("ROLE_ID");
+    if(ROLE_ID=="1")
+    {
+      return NavigationItems;
+    }
+    else if(ROLE_ID=="3")
+    {
+      return AgentItems;
+    }
+    
   }
 }
