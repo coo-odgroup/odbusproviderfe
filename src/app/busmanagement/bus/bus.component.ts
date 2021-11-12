@@ -1681,6 +1681,7 @@ export class BusComponent implements OnInit {
   }
   updateExtraSeatLayout()
   {
+
     const data ={
       id:this.busRecord.id,
       user_id :'1',
@@ -1689,13 +1690,13 @@ export class BusComponent implements OnInit {
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
       created_by:'Admin',
     };
+
     if(data.id!=null)
     {
       this.busService.updateExtraSeat(data.id,data).subscribe(
         resp => {
           if(resp.status==1)
-          {   
-              
+          {                 
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.refresh();
@@ -1872,6 +1873,7 @@ export class BusComponent implements OnInit {
   editExtraSeat(event : Event, id : any)
   {
     this.busRecord=this.buses[id] ;
+    // console.log(this.busRecord);
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
       bus_description:[this.busRecord.bus_description],
@@ -1907,12 +1909,18 @@ export class BusComponent implements OnInit {
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
         this.selectedSeats=seatData.data;
+     
+        this.busForm.controls.duration_minuties.setValue(this.selectedSeats[0]['duration']);
+      
+        
       }
     );
    
     this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
       resp=>{
+        // console.log(resp);
         let counter=0;
+        
         this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
         
         if(resp.data.lowerBerth!=undefined)
@@ -1946,6 +1954,7 @@ export class BusComponent implements OnInit {
               
               if(checkedval=="1")
               {
+                //console.log("hello");
                 if(durationCheck==0)
                 {
                   let columnData: FormGroup = this.fb.group({ 
