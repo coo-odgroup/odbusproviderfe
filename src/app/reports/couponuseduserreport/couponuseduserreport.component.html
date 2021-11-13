@@ -177,6 +177,8 @@
                             <th scope="col">Total Fare</th>
                             <th scope="col">Od Bus Received</th>
                             <th scope="col">Used Coupon </th>
+                            <th scope="col">Coupon Discount </th>
+                            <th scope="col">Payable Amount </th>
                         </tr>
                     </thead>
                     <tbody *ngIf="couponused?.length != 0">
@@ -339,6 +341,12 @@
 
                             <td>
                                 <b class="badge badge-light-primary text-dark">{{complete.coupon_code}}</b>
+                            </td>
+                            <td>
+                                <b> <i class="fas fa-rupee-sign"></i> {{complete.coupon_discount}}</b>
+                            </td>
+                            <td>
+                                <b>  <i class="fas fa-rupee-sign"></i>{{complete.payable_amount}}</b>
                             </td>
                         </tr>
                     </tbody> 

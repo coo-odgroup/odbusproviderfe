@@ -164,9 +164,10 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Ticket Details</th>
+                            <th scope="col">Boarding Point/Time</th>
                             <th scope="col">Bus Details </th>
-                            <th scope="col">Seat No</th>
-                            <th scope="col">User Details</th>
+                            <th scope="col">Source >> Destination</th>
+                            <th scope="col">Seat No</th>                            
                             <th scope="col">Passenger Details</th>
                             <!-- <th scope="col">Seater / Sleeper </th> -->
                             <th scope="col">Fare</th>
@@ -176,23 +177,25 @@
                         <tr *ngFor="let complete of completedata?.data.data; let i = index">
                             <td>{{ i+1 }}</td>
                             <td>
-                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )
-                                <br>
-                                <span *ngFor="let frlocation of complete.from_location">
-                                    {{frlocation.name}}
-                                </span> -
-                                ( <b>{{complete.boarding_point}} </b> )<br>
-                                Boarding Time : <b>{{complete.boarding_time}}</b>
+                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )                                
                                 <br>
                                 <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
                                 <br>
                                 <strong style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
-
-
+                            </td>
+                            <td>                               
+                                <span *ngFor="let frlocation of complete.from_location">
+                                    {{frlocation.name}}
+                                </span> -
+                                ( <b>{{complete.boarding_point}} </b> )<br>
+                                Time : <b>{{complete.boarding_time }}</b>
                             </td>
                             <td>
-                                <strong>{{ complete.bus.name }}</strong><br>
-                                {{ complete.bus.bus_number }}<br>
+                                <strong>{{ complete.bus.name }}<br>
+                                {{ complete.bus.bus_number }}</strong>
+                               
+                            </td>
+                            <td>
                                 <ng-template #tipContent1>
                                     <table style="width: 350px;">
                                         <tr>
@@ -221,23 +224,22 @@
                                 <span [ngbTooltip]="tipContent1">
                                     <!-- {{ complete.source_id }} - {{ complete.destination_id }} -->
                                     <span *ngFor="let boarding of complete.from_location;">
-                                        {{boarding.name}}
-                                    </span> -
+                                        <strong> {{boarding.name}}</strong>
+                                    </span> >>
                                     <span *ngFor="let dropping of complete.to_location;">
-                                        {{dropping.name}}
+                                       <strong> {{dropping.name}}</strong> 
                                     </span>
                                 </span>
                             </td>
                             <td>
                                 <p *ngFor="let seat of complete.booking_detail;">
-
                                     {{seat.bus_seats.seats.seatText}}
                                 </p>
                             </td>
-                            <td class="text-capitalize">
+                            <!-- <td class="text-capitalize">
                                 <ng-template #tipContent>
-                                    <!-- Phone- <b>{{complete.users.phone}}</b>
-                                    <br>Email-{{complete.users.email}} -->
+                                    Phone- <b>{{complete.users.phone}}</b>
+                                    <br>Email-{{complete.users.email}}
                                     <table>
                                         <tr>
                                             <td>Phone-</td>
@@ -251,9 +253,9 @@
                                 </ng-template>
 
                                 <strong [ngbTooltip]="tipContent">
-                                    {{complete.users.name}}
+                                    {{complete.users?.name}}
                                 </strong> <br>
-<!-- 
+
                                 <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print" placement="bottom"
                                     ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
                                     <i class="fas fa-mobile-alt"></i>
@@ -262,9 +264,9 @@
                                 <button class="btn btn-sm btn-danger text-light mt-2 hide_print" placement="bottom"
                                     ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
                                     <i class="far fa-envelope"></i>
-                                </button> -->
+                                </button>
 
-                            </td>
+                            </td> -->
                             <td>
                                 <p *ngFor="let passanger of complete.booking_detail;">
                                     <ng-template #tipContent1>

@@ -6,7 +6,7 @@ import {ExtraseatopenreportComponent} from './extraseatopenreport.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {ExtraSeatOpenReportRoutingModule} from './extraseatopenreport-routing.module';
-
+import {NgxPrintModule} from 'ngx-print';
 @NgModule({
   imports: [
     CommonModule,
@@ -14,6 +14,7 @@ import {ExtraSeatOpenReportRoutingModule} from './extraseatopenreport-routing.mo
     SharedModule,
     FormsModule,
     NgSelectModule,
+    NgxPrintModule
   ],
   declarations: [ ExtraseatopenreportComponent],
   providers: [NotificationService]

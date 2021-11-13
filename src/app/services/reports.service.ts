@@ -64,7 +64,7 @@ export class ReportsService {
 
 
   extraseatopenReport(data): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/completereport',JSON.stringify(data), this.httpOptions).pipe(
+    return this.httpClient.post<any>(this.apiURL + '/extraseatopenreport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }
