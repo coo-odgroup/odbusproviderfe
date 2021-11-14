@@ -31,6 +31,19 @@ export class AgentreportService {
     )
   }
 
+  commissionReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/agentcommissionreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  commissionpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
 
   cancelticketReport(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/agentcancelticketreport',JSON.stringify(data), this.httpOptions).pipe(
