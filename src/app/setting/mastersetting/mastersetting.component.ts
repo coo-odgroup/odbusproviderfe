@@ -106,7 +106,8 @@ export class MastersettingComponent implements OnInit {
       logo:[null],
       iconSrc:[null],
       favIcon:[null],
-      favSrc:[null]
+      favSrc:[null],
+      user_name : localStorage.getItem('USERNAME'),
     });
 
     this.formConfirm=this.fb.group({
@@ -333,7 +334,8 @@ export class MastersettingComponent implements OnInit {
       logo:[null],
       iconSrc:[null],
       favIcon:[null],
-      favSrc:[null]
+      favSrc:[null],
+      user_name : localStorage.getItem('USERNAME'),
     });
     this.LoadAllService();
     this.ModalHeading = "Add Master Settings";
@@ -364,9 +366,8 @@ export class MastersettingComponent implements OnInit {
       mobile_no_3:this.settingForm.value.mobile_no_3,
       mobile_no_4:this.settingForm.value.mobile_no_4,
       logo:this.settingForm.value.iconSrc,
-      favIcon:this.settingForm.value.favSrc,
-      
-      created_by:'Admin',
+      favIcon:this.settingForm.value.favSrc,      
+      created_by:localStorage.getItem('USERNAME'),
     };
     let id = this.settingRecord?.id;
     if (id != null) {

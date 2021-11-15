@@ -58,7 +58,7 @@
                     <thead>
                         <tr>
                             <th scope="col" width="100px">#</th>
-                            <th scope="col">Operator</th>
+                            <!-- <th scope="col">Operator</th> -->
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
@@ -70,7 +70,7 @@
                     <tbody *ngIf="user?.length != 0">
                         <tr *ngFor="let page of user; let i=index;">
                             <td>{{i+1}}</td>
-                            <td><strong>{{page.bus_operator.operator_name}}</strong></td>
+                            <!-- <td><strong>{{page.bus_operator.operator_name}}</strong></td> -->
                             <td>{{page.name}}</td>
                             <td>{{page.email}}</td>
                             <td>{{page.phone}}</td>
@@ -401,7 +401,7 @@
                                                                 Confirm Password is Required
                                                             </span> 
                                                             
-                                                            <span  *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('mismatch') ">
+                                                            <span  *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('notSame') ">
                                                                 Password doesn't match
                                                               </span>
                                                                                                                   

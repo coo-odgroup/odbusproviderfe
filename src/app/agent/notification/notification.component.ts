@@ -99,8 +99,6 @@ export class NotificationComponent implements OnInit {
         }
       );
     }
-
-
   }
 
   refresh()

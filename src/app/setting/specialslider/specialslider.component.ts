@@ -259,7 +259,7 @@ export class SpecialsliderComponent implements OnInit {
       end_time:this.sliderForm.value.end_time,
       //slider_img:this.sliderForm.value.slider_img,
       slider_img:this.sliderForm.value.iconSrc,
-      created_by:'Admin',
+      created_by: localStorage.getItem('USERNAME'),
     };
     let id = this.sliderRecord?.id;
     if (id != null) {

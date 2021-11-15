@@ -127,6 +127,7 @@ export class AgentwalletrequestComponent implements OnInit {
     
     const data ={
       otp:this.form.value.otp,
+      user_name : localStorage.getItem('USERNAME'),
     };
 
     this.ws.chngsts(id,data).subscribe(

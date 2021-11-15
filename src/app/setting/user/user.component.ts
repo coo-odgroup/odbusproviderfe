@@ -56,7 +56,6 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [null],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
       phone: [null, Validators.compose([Validators.required])],
@@ -65,7 +64,6 @@ export class UserComponent implements OnInit {
 
     this.editform = this.fb.group({
       id: [null],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
       phone: [null, Validators.compose([Validators.required])],
@@ -74,10 +72,9 @@ export class UserComponent implements OnInit {
     this.pwdform = this.fb.group({
       id: [null],
       password: [null, Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])],
-      conf_password: [null, Validators.compose([Validators.required])]
-      
+      conf_password: [null, Validators.compose([Validators.required])]      
     }, 
-    {validator: this.passwordMatchValidator});
+    {validator: this.checkPasswords});
 
 
     this.formConfirm = this.fb.group({
@@ -95,9 +92,15 @@ export class UserComponent implements OnInit {
     this.loadServices();
   }
 
-  passwordMatchValidator(frm: FormGroup) {
-    return frm.controls['password'].value === frm.controls['conf_password'].value ? null : {'mismatch': true};
-  }
+
+
+    checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+      const password = group.get('password').value;
+      const confirmPassword = group.get('conf_password').value;
+    
+      return password === confirmPassword ? null : { notSame: true }     
+    }
+
 
 
 
