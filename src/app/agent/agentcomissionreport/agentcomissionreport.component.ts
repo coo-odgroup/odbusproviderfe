@@ -99,17 +99,15 @@ export class AgentcomissionreportComponent implements OnInit {
       source_id:this.completeReportRecord.source_id,
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
-      rangeToDate :this.completeReportRecord.rangeToDate
-            
+      rangeToDate :this.completeReportRecord.rangeToDate,
+      user_id : localStorage.getItem('USERID'),       
     };
    
-    // console.log(data);
     if(pageurl!="")
     {
       this.rs.commissionpaginationReport(pageurl,data).subscribe(
         res => {
           this.completedata= res.data;
-          // console.log( this.completedata);
         }
       );
     }
@@ -118,7 +116,6 @@ export class AgentcomissionreportComponent implements OnInit {
       this.rs.commissionReport(data).subscribe(
         res => {
           this.completedata= res.data;
-          console.log( this.completedata);
         }
       );
     }

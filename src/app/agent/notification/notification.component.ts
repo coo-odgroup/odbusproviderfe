@@ -55,7 +55,6 @@ export class NotificationComponent implements OnInit {
   ngOnInit(): void {
    
     this.searchFrom = this.fb.group({
-      bus_operator_id:[null],
       rows_number: Constants.RecordLimit,
       rangeFromDate:[null],
       rangeToDate:[null]    
@@ -75,11 +74,10 @@ export class NotificationComponent implements OnInit {
    search(pageurl="")
   {      
     const data = {
-      bus_operator_id:this.searchFrom.value.bus_operator_id,
       rows_number:this.searchFrom.value.rows_number,  
       rangeFromDate:this.searchFrom.value.rangeFromDate,
       rangeToDate :this.searchFrom.value.rangeToDate,
-      user_id: 2
+      user_id : localStorage.getItem('USERID'),
     };
    
     if(pageurl!="")
@@ -108,7 +106,6 @@ export class NotificationComponent implements OnInit {
   refresh()
   {
     this.searchFrom = this.fb.group({
-      bus_operator_id:[null],
       rows_number: Constants.RecordLimit,
       rangeFromDate:[null],
       rangeToDate:[null]    
@@ -116,8 +113,6 @@ export class NotificationComponent implements OnInit {
     this.search();
   }
 
-
-  
   viewDetails(index)
   {
     this.notificationcontentRecord = this.notificationcontent[index];

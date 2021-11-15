@@ -41,37 +41,19 @@ export class AgentwalletreportComponent implements OnInit {
     private ws: AgentreportService,
     private modalService: NgbModal,
     config: NgbModalConfig
-  ) {
-    config.backdrop = 'static';
-    config.keyboard = false;
-    this.ModalHeading = "Add New Location";
-    this.ModalBtn = "Save";
-  }
+  ) {  }
 
 
 
 
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      id: [null],
-      transaction_id: [null, Validators.compose([Validators.required])],
-      payment_via: [null, Validators.compose([Validators.required])],
-      amount: [null],
-      remarks: [null],
-      user_id: 2
-    });
-    this.formConfirm = this.fb.group({
-      id: [null]
-    });
     this.searchForm = this.fb.group({
-      bus_operator_id: [null],
       name: [null],
       rows_number: Constants.RecordLimit,
+      user_id : localStorage.getItem('USERID'),
     });
-
     this.search();
-
   }
 
 
@@ -80,15 +62,6 @@ export class AgentwalletreportComponent implements OnInit {
   }
   ResetAttributes() {
     this.walletRecord = {} as AgentWallet;
-    this.form = this.fb.group({
-      id: [null],
-      transaction_id: [null, Validators.compose([Validators.required])],
-      reference_id: [null],
-      payment_via: [null, Validators.compose([Validators.required])],
-      amount:  [null, Validators.compose([Validators.required,Validators.min(2000),Validators.required,Validators.max(49000)])],
-      remarks: [null], 
-      user_id: 2
-    });
     this.form.reset();
     this.ModalHeading = "Enter Payment Details";
     this.ModalBtn = "Request";
@@ -106,6 +79,7 @@ export class AgentwalletreportComponent implements OnInit {
       name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
+      user_id : localStorage.getItem('USERID')
     };
 
     // console.log(data);
@@ -114,7 +88,6 @@ export class AgentwalletreportComponent implements OnInit {
         res => {
           this.wallet = res.data.data.data;
           this.pagination = res.data.data;
-          // console.log( this.BusOperators);
         }
       );
     }
@@ -123,7 +96,6 @@ export class AgentwalletreportComponent implements OnInit {
         res => {
           this.wallet = res.data.data.data;
           this.pagination = res.data.data;
-          // console.log( res.data);
         }
       );
     }
@@ -133,11 +105,10 @@ export class AgentwalletreportComponent implements OnInit {
   refresh() {
     this.searchForm = this.fb.group({
       name: [null],
-      bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
+      user_id : localStorage.getItem('USERID')
     });
     this.search();
-
   }
 
   title = 'angular-app';

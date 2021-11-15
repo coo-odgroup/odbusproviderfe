@@ -83,17 +83,15 @@ export class AgentticketcancellationreportComponent implements OnInit {
       source_id:this.cancelTicketsReportRecord.source_id,
       destination_id:this.cancelTicketsReportRecord.destination_id,
       rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
-      rangeToDate :this.cancelTicketsReportRecord.rangeToDate
-            
+      rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
+      user_id : localStorage.getItem('USERID'),               
     };
-   
-    // console.log(data);
+
     if(pageurl!="")
     {
       this.rs.cancelticketpaginationReport(pageurl,data).subscribe(
         res => {
           this.cancelticketdata= res.data;
-          // console.log( this.cancelticketdata);
         }
       );
     }
@@ -102,7 +100,6 @@ export class AgentticketcancellationreportComponent implements OnInit {
       this.rs.cancelticketReport(data).subscribe(
         res => {
           this.cancelticketdata= res.data;
-          // console.log( this.cancelticketdata);
         }
       );
     }

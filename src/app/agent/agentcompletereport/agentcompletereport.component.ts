@@ -98,11 +98,10 @@ export class AgentcompletereportComponent implements OnInit {
       source_id:this.completeReportRecord.source_id,
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
-      rangeToDate :this.completeReportRecord.rangeToDate
-            
+      rangeToDate :this.completeReportRecord.rangeToDate,
+      user_id : localStorage.getItem('USERID'),        
     };
    
-    // console.log(data);
     if(pageurl!="")
     {
       this.rs.completepaginationReport(pageurl,data).subscribe(
