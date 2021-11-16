@@ -64,11 +64,14 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("USERID",JSON.stringify(this.loginRecord.id)); 
           localStorage.setItem("ROLE_ID",JSON.stringify(this.loginRecord.role_id)); 
           localStorage.setItem("USERNAME",this.loginRecord.name); 
+          localStorage.setItem("USER_BUS_OPERATOR_ID",''); 
+          if(this.loginRecord.role_id==4)
+          {
+            localStorage.setItem("USER_BUS_OPERATOR_ID",this.loginRecord.user_bus_operator.bus_operator.id); 
+          }
           // var ROLE_ID = localStorage.getItem("ROLE_ID");
           // var USERID = localStorage.getItem("USERID");
           // console.log("ROLE ID : "+ROLE_ID+", USER ID : "+USERID);
-
-
           this.router.navigate(['dashboard/landing']);
         }else{
           this.notify.notify(res.message,"Error");

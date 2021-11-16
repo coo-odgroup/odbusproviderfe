@@ -26,7 +26,165 @@ export interface Navigation extends NavigationItem {
 }
 
 
+const OperatorItems =[{
+  id: 'odbus',
+  title: '',
+  //translate: 'NAV.ODBUS',
+  type: 'group',
+  icon: 'feather icon-home',
+  children: [
+    {
+      id: 'dashboards',
+      title: 'Dashboards',
+      //translate: 'NAV.DASHBOARDS',
+      type: 'item',
+      icon: 'feather icon-home',
+      url: 'dashboard/landing'
+    },
+    {
+      id: 'busmanagement',
+      title: 'Bus Management',
+      //translate: 'NAV.BUSMANAGEMENT',
+      type: 'collapse',
+      icon: 'all_out',
+      children: [
+        {
+          id: 'managelocation',
+          title: 'Location',
+          type: 'item',
+          url: 'busmanagement/managelocation'
+        },
+        {
+          id: 'BoardingDropping',
+          title: 'Boarding/Dropping',
+          type: 'item',
+          url: 'busmanagement/BoardingDropping'
+        },
+        {
+          id: 'manageus',
+          title: 'Bus',
+          type: 'item',
+          url: 'busmanagement/managebus'
+        },
+        {
+          id: 'coupon',
+          title: 'Coupon',
+          type: 'item',
+          url: 'busmanagement/coupon'
+        },
+        {
+          id: 'gallery',
+          title: 'Gallery',
+          type: 'item',
+          url: 'busmanagement/busgallery'
+        },
+        {
+          id: 'seatfare',
+          title: 'Seat Fare',
+          type: 'item',
+          url: 'busmanagement/seatfare'
+        },
+        {
+          id: 'bustype',
+          title: 'Bus Type',
+          type: 'item',
+          url: 'busmanagement/bustype'
+        },
+        {
+          id: 'SeatLayout ',
+          title: 'Seat Layout',
+          type: 'item',
+          url: 'busmanagement/SeatLayout'
+        },
+        {
+          id: 'CancellationSlab',
+          title: 'Cancellation Slab',
+          type: 'item',
+          url: 'busmanagement/cancellationslab'
+        },
+        {
+          id: 'BusSchedule',
+          title: 'Bus Schedule',
+          type: 'item',
+          url: 'busmanagement/busschedule'
+        },
+        {
+          id: 'Offers',
+          title: 'Offers',
+          type: 'item',
+          url: 'busmanagement/offers'
+        }
 
+
+      ]
+    },
+    {
+      id: 'bookingmanagement',
+      title: 'Booking Management',
+      type: 'collapse',
+      icon: 'add_shopping_cart',
+      children: [
+        {
+          id: 'BusCancellation',
+          title: 'Bus Cancellation',
+          type: 'item',
+          url: 'bookingmanagement/buscancellation'
+        },
+        {
+          id: 'seatBlock',
+          title: 'seat  Block',
+          type: 'item',
+          url: 'bookingmanagement/seatblock'
+        },
+        {
+          id: 'seatopen',
+          title: 'Seat Open',
+          type: 'item',
+          url: 'bookingmanagement/seatopen'
+        }
+      ]
+    },
+    {
+      id: 'reports',
+      title: 'Reports',
+      type: 'collapse',
+      icon: 'add_shopping_cart',
+      children: [   
+        {
+          id: 'seatopenreport',
+          title: 'Seat Open Report',
+          type: 'item',
+          url: 'reports/seatopenReport'
+        },
+        {
+          id: 'extraseatopenreport',
+          title: 'Extra Seat Open Report',
+          type: 'item',
+          url: 'reports/extraseatopenReport'
+        },
+        {
+          id: 'seatblockreport',
+          title: 'Seat Block Report',
+          type: 'item',
+          url: 'reports/seatblockReport'
+        },
+        {
+          id: 'cancleticketsReport',
+          title: 'Cancel Tickets Report',
+          type: 'item',
+          url: 'reports/cancleticketsReport'
+        },
+        {
+          id: 'buscancellationreport',
+          title: 'Bus Cancellation Report',
+          type: 'item',
+          url: 'reports/buscancellationreport'
+        }
+      ]
+    }
+
+  ]
+}];
 
 const AgentItems = [
   {
@@ -539,6 +697,10 @@ export class NavigationItem {
     else if(ROLE_ID=="3")
     {
       return AgentItems;
+    }
+    else if(ROLE_ID=="4")
+    {
+      return OperatorItems;
     }
     
   }

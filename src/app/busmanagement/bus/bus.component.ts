@@ -42,6 +42,9 @@ interface SeatBlock{
   seatText?:any;
   seatId?:any;
 }
+interface sequenceItem{
+  sequence:any;
+}
 interface SelectedLocation{
   [index: number]: { id: any; location_name: any};
 }
@@ -68,6 +71,8 @@ export class BusComponent implements OnInit {
 
 
   seatBlock:SeatBlock;
+  sequenceItem:sequenceItem[];
+  sequenceItemRecord:sequenceItem;
   seatBlocks:SeatBlock[]=[];
   selectedLocation:SelectedLocation;
   selectedLocations:SelectedLocation[]=[];
@@ -230,7 +235,6 @@ export class BusComponent implements OnInit {
   destination: any;
   
   
-  
   public isSubmit: boolean;
   public mesgdata:any;
   public sources:any={};
@@ -265,87 +269,11 @@ export class BusComponent implements OnInit {
 
     dpconfig.placement = 'top-left';
     dpconfig.autoClose = false;
-    
-
-    
   }
   OpenModal(content) {
    
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
-
-
-
-  // loadBus(){
-    
-  //   this.dtOptionsBus = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',  
-  //     order:["0","desc"], 
-  //     aLengthMenu:[10, 25, 50, 100, "All"],
-  //     language: {
-  //       searchPlaceholder: "Find Bus",
-  //       processing: "<img src='assets/images/loading.gif' width='30'>"
-  //     },
-        
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //    } },
-  //     { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //    } },
-  //     { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //    } },
-      
-  //    {
-  //     text:"Add",
-  //     className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //       $(node).removeClass('dt-button')
-  //     },
-  //     action:() => {
-  //      this.addnew.nativeElement.click();
-  //     }
-  //   }
-  //   ],
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL+'/busDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-           
-  //           this.buses = resp.data.aaData;
-            
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             data: resp.data.aaData
-  //           });
-  //         });
-  //     },
-  //     columns: [
-  //     { data: 'id' },
-  //     { data: 'name'},
-  //     { data: 'via'}, 
-  //     { data: 'bus_number'},
-  //     { 
-  //       data: 'status',
-  //       render:function(data)
-  //       {
-  //         return (data=="1")?"Active":"Pending"
-  //       }
-  //     },
-  //     { title:'Action',data: null,orderable:false},
-  //   ]         
-  //   }; 
-
-   
-  // }
   dropfg:any;
   allDestinationDroppings:FormArray;
   ngOnInit() {
@@ -414,39 +342,30 @@ export class BusComponent implements OnInit {
     this.allDestinationDroppings = this.busForm.controls.busRoutes.get('destinationDroppings') as FormArray;
     this.businfoList = this.busForm.get('businfo') as FormArray;
     // this.loadBus();
-
     this.searchForm = this.fb.group({  
       name: [null], 
       bus_type: [null],  
       rows_number: Constants.RecordLimit,
     });
-
      this.search(); 
-
-    
   }
-
-
   page(label:any){
     return label;
    }
-
   search(pageurl="")
   {
-      
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
-   
-    // console.log(data);
+    //console.log(pageurl);
     if(pageurl!="")
     {
       this.busService.getAllaginationData(pageurl,data).subscribe(
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( this.busTypes);
         }
       );
     }
@@ -456,15 +375,10 @@ export class BusComponent implements OnInit {
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( res.data);
         }
       );
     }
-
-
   }
-
-
   refresh()
    {
     this.searchForm = this.fb.group({  
@@ -473,11 +387,8 @@ export class BusComponent implements OnInit {
     });
      this.search();
    }
-
-   
    title = 'angular-app';
    fileName= 'Bus.xlsx';
- 
    exportexcel(): void
    {
      
@@ -562,15 +473,6 @@ export class BusComponent implements OnInit {
   createSourceBoarding(): FormGroup {
     return this.fb.group({});
   }
- 
-  // refresh(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to refresh again
-  //     this.dtTrigger.next();
-  //   });
-  // }
   lowerlayoutData:FormArray;
   upperlayoutData:FormArray;
   seatLayout=[];
@@ -591,11 +493,26 @@ export class BusComponent implements OnInit {
   
   LoadAllService()
   {
-    this.busOperartorService.readAll().subscribe(
-      record=>{
-      this.operators=record.data;
-      }
-    );
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    {
+      this.busOperartorService.readAll().subscribe(
+        record=>{
+        this.operators=record.data;
+        }
+      );
+    }
+    else
+    {
+      this.busOperartorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+        record=>{
+        this.operators=record.data;
+        }
+      );
+    }
+    
     this.busTypeService.readAll().subscribe(
       rec=>{
       this.busTypes=rec.data;
@@ -986,17 +903,20 @@ export class BusComponent implements OnInit {
     });
     this.busService.fetchBusTime(this.busRecord.id).subscribe(
       timing=>{
+        //console.log(timing);
         if(timing.status==1)
         {
           
           this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
           let stoppages=timing.data.stoppage_timing;
           //this.busRoutesRecords.clear();
+          let counter=0;
+          this.sequenceItem=timing.data.sequence;
           for(let items of timing.data.routes)
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
-              sequence:[null,Validators.compose([Validators.required])],
+              sequence:[this.sequenceItem[counter][0].sequence,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -1037,6 +957,7 @@ export class BusComponent implements OnInit {
                 }
               }
             ); 
+            counter++;
           }
 
         }
@@ -2093,11 +2014,26 @@ export class BusComponent implements OnInit {
   }
   editBus(event : Event, id : any)
   {
-    this.busOperartorService.readAll().subscribe(
-      record=>{
-      this.operators=record.data;
-      }
-    );
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    {
+      this.busOperartorService.readAll().subscribe(
+        record=>{
+        this.operators=record.data;
+        }
+      );
+    }
+    else
+    {
+      this.busOperartorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+              record=>{
+              this.operators=record.data;
+              }
+            );
+    }
+    
     this.busTypeService.readAll().subscribe(
       rec=>{
       this.busTypes=rec.data;

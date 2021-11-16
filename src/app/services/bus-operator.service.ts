@@ -46,6 +46,11 @@ export class BusOperatorService {
       catchError(this.errorHandler)
     )
   }
+  readOne(BusOperatorId): Observable<any> {
+    return this.httpClient.get(this.endPoint+'/busoperator/'+BusOperatorId ).pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(Constants.BASE_URL+ '/BusbyOperatorData', JSON.stringify(post), this.httpOptions)
