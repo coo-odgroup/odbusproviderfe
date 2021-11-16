@@ -189,7 +189,8 @@ export class BookingseizedComponent implements OnInit {
   
 
     const data = {
-      busSeized: this.bookingseizedForm.controls.bookingseized.value
+      busSeized: this.bookingseizedForm.controls.bookingseized.value,
+      created_by: localStorage.getItem('USERNAME')
     }
 
     this.bookingseizedService.update(data).subscribe(

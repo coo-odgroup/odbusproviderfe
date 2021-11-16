@@ -455,6 +455,7 @@ export class SeatopenComponent implements OnInit {
       reason: this.seatOpenForm.value.reason,
       date: this.seatOpenForm.value.date,
       bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
+      created_by: localStorage.getItem('USERNAME')
     };
 
     let id = this.seatOpenRecord.id;

@@ -214,7 +214,7 @@ FormOne: FormGroup;
       bus_operator_id:this.busScheduleForm.value.bus_operator_id,
       entry_date:this.busScheduleForm.value.entry_date,
       running_cycle:this.busScheduleForm.value.running_cycle,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME')
     };
     if(id==null)
     {

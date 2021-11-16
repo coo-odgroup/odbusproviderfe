@@ -250,7 +250,7 @@ export class BannermanagementComponent implements OnInit {
       end_date:this.bannerForm.value.end_date,
       end_time:this.bannerForm.value.end_time,
       banner_img:this.bannerForm.value.iconSrc,
-      created_by:'Admin',
+      created_by: localStorage.getItem('USERNAME') 
     };
     let id = this.bannerRecord?.id;
     if (id != null) {

@@ -252,7 +252,7 @@ addfestivalFare()
       bus_operator_id:this.festivalFareForm.value.bus_operator_id,
       source_id:this.festivalFareForm.value.source_id,
       destination_id:this.festivalFareForm.value.destination_id,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
       bus_id:this.festivalFareForm.value.bus_id,
     };
   //  return false;

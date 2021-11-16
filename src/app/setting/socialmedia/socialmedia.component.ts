@@ -176,9 +176,9 @@ export class SocialmediaComponent implements OnInit {
       instagram_link: this.socialFrom.value.instagram_link,
       googleplus_link: this.socialFrom.value.googleplus_link,
       linkedin_link: this.socialFrom.value.linkedin_link,
-     
+      created_by: localStorage.getItem('USERNAME')
     };
-    // console.log(data); 
+
     let id = this.socialRecord?.id;
     if (id != null) {
       this.ss.update(id, data).subscribe(

@@ -312,16 +312,14 @@ export class BuscancellationComponent implements OnInit{
   {
     let id:any=this.busCancellationRecord.id;
     const data ={
-      //busOperatorname:this.busCancellationForm.value.busOperatorname,
       bus_operator_id:this.busCancellationForm.value.bus_operator_id,
-      cancelled_by:'Admin',
+      cancelled_by:localStorage.getItem('USERNAME'),
       month:this.busCancellationForm.value.month,
       year:this.busCancellationForm.value.year,
       reason:this.busCancellationForm.value.reason,
       //BELOW ELEMENTS ARE ARRAY
       buses:this.busCancellationForm.value.buses,
     };
-    // console.log(data);
    
     if(id==null)
     {

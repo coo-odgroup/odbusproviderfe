@@ -253,7 +253,7 @@ export class CancellationslabComponent implements OnInit {
       rows_number:this.searchForm.value.rows_number, 
     };
    
-    // console.log(data);
+
     if(pageurl!="")
     {
       this.cSlabService.getAllaginationData(pageurl,data).subscribe(
@@ -365,7 +365,8 @@ export class CancellationslabComponent implements OnInit {
       api_id:this.form.value.api_id,
       rule_name:this.form.value.rule_name,
       cancellation_policy_desc:this.form.value.cancellation_policy_desc,
-      slabs:this.form.value.slabs
+      slabs:this.form.value.slabs,
+      created_by:localStorage.getItem('USERNAME') 
     };
 
     if(id==null)

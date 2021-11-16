@@ -213,7 +213,7 @@ export class CouponComponent implements OnInit {
       from_date:this.form.value.from_date,
       to_date:this.form.value.to_date,
       bus_operator_id:this.form.value.bus_operator_id,
-      created_by:'Admin'
+      created_by:localStorage.getItem('USERNAME') 
     };
 
     // console.log(data);

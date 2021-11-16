@@ -391,7 +391,7 @@ export class BusoperatorComponent implements OnInit {
       need_gst_bill: gst_need,
       gst_number: this.form.value.gst_number,
       gst_amount: this.form.value.gst_amount,
-      created_by:"Admin",
+      created_by:localStorage.getItem('USERNAME'),
       status:'0',
       id:this.BusOperatorRecord.id,
     };

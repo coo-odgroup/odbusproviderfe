@@ -253,7 +253,7 @@ findOperator(event:any)
       seater_price:this.specialFareForm.value.seater_price,
       sleeper_price:this.specialFareForm.value.sleeper_price,
       reason:this.specialFareForm.value.reason,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
       bus_id:this.specialFareForm.value.bus_id,
       bus_operator_id:this.specialFareForm.value.bus_operator_id,
       source_id:this.specialFareForm.value.source_id,

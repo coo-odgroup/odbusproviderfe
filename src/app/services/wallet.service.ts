@@ -32,6 +32,20 @@ export class WalletService {
     )
   }
 
+  getAllagentData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/agentWalletAllData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllAgentPaginationData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
 
   create(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/agentWallet', JSON.stringify(data), this.httpOptions)

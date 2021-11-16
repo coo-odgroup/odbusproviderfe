@@ -137,6 +137,12 @@
               </td>
             </tr>
           </tbody>
+
+          <tbody *ngIf="contactcontent?.length == 0">
+            <tr>
+              <td colspan="7" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
         </table>
 
         <div *ngIf="pagination?.length != 0" class="hide_print">

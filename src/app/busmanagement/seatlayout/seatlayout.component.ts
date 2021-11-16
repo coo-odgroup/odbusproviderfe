@@ -256,7 +256,8 @@ export class SeatlayoutComponent implements OnInit {
     delete seatContext.SeatLayoutName;
     const data={
       name:layoutName,
-      layout_data:JSON.stringify(this.seatBlocks)
+      layout_data:JSON.stringify(this.seatBlocks),
+      created_by:localStorage.getItem('USERNAME')   
     }
 
    
@@ -569,7 +570,8 @@ export class SeatlayoutComponent implements OnInit {
     }
     const data ={
       name:layoutName,
-      layout_data:JSON.stringify(this.seatBlocks)
+      layout_data:JSON.stringify(this.seatBlocks),
+      created_by:localStorage.getItem('USERNAME')   
       //layout_data:this.seatBlocks
     }
   //  console.log(data);

@@ -242,7 +242,7 @@ export class LocationComponent implements OnInit {
       name:this.form.value.name,
       synonym:this.form.value.synonym,
       status:'1',
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME') 
     };
     if(id==null)
     {

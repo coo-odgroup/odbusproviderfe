@@ -82,7 +82,7 @@
               <td (click)="showCancelledDates($event,i)"><b>{{ busCancellation.bus.name }}  <br> {{ busCancellation.bus.bus_number }} </b></td>
               <!-- <td>{{ busCancellation.routes }}</td> -->
               <td>{{ busCancellation.reason }}</td>
-              <td>{{ busCancellation.cancelled_by }}</td>
+              <td>{{ busCancellation.created_by }}</td>
               <td>
                 <label *ngIf="busCancellation.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, busCancellation.id);">Active</label>

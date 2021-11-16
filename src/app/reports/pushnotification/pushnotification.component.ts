@@ -102,13 +102,12 @@ export class PushnotificationComponent implements OnInit {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
     };
-    // console.log(data);
+
     if (pageurl != "") {
       this.pns.getAllaginationData(pageurl, data).subscribe(
         res => {
           this.push = res.data.data.data;
           this.pagination = res.data.data;
-         
         }
       );
     }
@@ -116,9 +115,7 @@ export class PushnotificationComponent implements OnInit {
       this.pns.getAllData(data).subscribe(
         res => {
           this.push = res.data.data.data;
-          this.pagination = res.data.data;
-          console.log(this.push);
-         
+          this.pagination = res.data.data;         
         }
       );
     }
@@ -169,6 +166,7 @@ export class PushnotificationComponent implements OnInit {
       subject: this.form.value.subject,
       notification:this.form.value.notification,
       user_id: this.form.value.user,
+    
     };
     // console.log(data);
 

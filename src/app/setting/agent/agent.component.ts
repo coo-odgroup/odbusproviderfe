@@ -220,6 +220,8 @@ export class AgentComponent implements OnInit {
       bank_account_no:this.form.value.bank_account_no,  
       branch_name:this.form.value.branch_name,  
       upi_id:this.form.value.upi_id,  
+      created_by: localStorage.getItem('USERNAME') 
+      
     };
     console.log(data);
     if(id==null)

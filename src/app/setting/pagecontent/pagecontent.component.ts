@@ -185,8 +185,8 @@ export class PagecontentComponent implements OnInit {
       meta_keyword: this.form.value.meta_keyword,
       meta_description: this.form.value.meta_description,
       extra_meta: this.form.value.extra_meta,
-      canonical_url: this.form.value.canonical_url
-
+      canonical_url: this.form.value.canonical_url,
+      created_by: localStorage.getItem('USERNAME') 
     };
     let id = this.pagecontentRecord?.id;
     if (id != null) {

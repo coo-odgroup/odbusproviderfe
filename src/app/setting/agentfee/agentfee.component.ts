@@ -139,7 +139,8 @@ export class AgentfeeComponent implements OnInit {
     const data = {
       price_from:this.form.value.price_from,
       price_to:this.form.value.price_to,
-      max_comission:this.form.value.max_comission  
+      max_comission:this.form.value.max_comission,
+      created_by: localStorage.getItem('USERNAME')   
     };
     
     if(id==null)
@@ -150,7 +151,6 @@ export class AgentfeeComponent implements OnInit {
        {
           this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
           this.modalReference.close();
-          //this.closebutton.nativeElement.click();
           this.ResetAttributes();
           this.search();
           

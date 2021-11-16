@@ -103,7 +103,7 @@ export class BusgalleryComponent implements OnInit {
       bus_operator_id:this.busForm.value.bus_operator_id,
       bus_id: this.busForm.value.bus_id,
       icon: this.busForm.value.iconSrc,
-      created_by: 'Admin',
+      created_by:localStorage.getItem('USERNAME'),
     };
     this.busgalleryService.create(data).subscribe(
       resp => {

@@ -68,7 +68,7 @@
             <tr>
               <th scope="col" width="100px">#</th>
               <th scope="col">Operator</th>
-              <!-- <th scope="col">Url Description</th> -->
+
               <th class="hide_screen">Facebook URL</th>
               <th class="hide_screen">Instagram URL</th>
               <th class="hide_screen">Twitter URL</th>
@@ -82,7 +82,7 @@
             <tr *ngFor="let page of social; let i=index;">
               <td>{{i+1}}</td>
               <td>{{page.bus_operator.operator_name}}</td>
-              <!-- <td>{{page.url_description}}</td> -->
+             
               <td class="hide_screen">{{page.facebook_link}}</td>
               <td class="hide_screen">{{page.instagram_link}}</td>
               <td class="hide_screen">{{page.twitter_link}}</td>
@@ -104,6 +104,11 @@
                       class="feather icon-trash-2"></i></button>
                 </div>
               </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="social?.length == 0">
+            <tr>
+              <td colspan="4" class="no-data-available">No data!</td>
             </tr>
           </tbody>
         </table>

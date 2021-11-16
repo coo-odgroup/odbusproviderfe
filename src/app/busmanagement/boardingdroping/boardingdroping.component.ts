@@ -334,7 +334,7 @@ export class BoardingdropingComponent implements OnInit {
     const data ={
       id:this.BoardingDroppingRecord.id,
       location_id :this.form.value.location_id,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
       boarding_point:this.form.value.boards
     };
 

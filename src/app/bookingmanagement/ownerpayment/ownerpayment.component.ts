@@ -221,7 +221,7 @@ findSource()
       transaction_id:this.ownerpaymentForm.value.transaction_id,
       amount: this.ownerpaymentForm.value.amount,
       remark: this.ownerpaymentForm.value.remark,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
     };
   //  console.log(data);
   //  return false;

@@ -464,6 +464,7 @@ export class SeatblockComponent implements OnInit {
       reason: this.seatBlockForm.value.reason,
       date: this.seatBlockForm.value.date,
       bus_seat_layout_data: this.seatBlockForm.value.bus_seat_layout_data,
+      created_by: localStorage.getItem('USERNAME')
     };
     let id = this.seatBlockRecord.id;
     if (id != null) {

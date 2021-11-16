@@ -225,11 +225,11 @@ export class BustypeComponent implements OnInit {
   }
   
   addBusTypes(){  
-
     let id:any=this.busTypeRecord.id;  
     const data = {
       type:this.form.value.type,
-      name:this.form.value.name  
+      name:this.form.value.name ,
+      created_by:localStorage.getItem('USERNAME') 
     };
     // console.log(data);
     if(id==null)

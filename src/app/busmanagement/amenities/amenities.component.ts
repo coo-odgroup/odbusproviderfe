@@ -190,7 +190,7 @@ export class AmenitiesComponent implements OnInit {
       name: this.form.value.name,
       //icon:this.base64result,
       icon: this.form.value.iconSrc,
-      created_by: 'Admin',
+      created_by:localStorage.getItem('USERNAME'),
     };
     if (id == null) {
       this.AmenitiesService.create(data).subscribe(

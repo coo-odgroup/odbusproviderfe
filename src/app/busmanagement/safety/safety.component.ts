@@ -266,7 +266,7 @@ export class SafetyComponent implements OnInit {
     const data ={
       name:this.form.value.name,
       icon:this.form.value.iconSrc,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME')
     };
 
     if(id==null)

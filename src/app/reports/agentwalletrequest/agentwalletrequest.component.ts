@@ -102,7 +102,7 @@ export class AgentwalletrequestComponent implements OnInit {
     };
     // console.log(data);
     if (pageurl != "") {
-      this.ws.getAllaginationData(pageurl, data).subscribe(
+      this.ws.getAllAgentPaginationData(pageurl, data).subscribe(
         res => {
           this.wallet = res.data.data.data;
           this.pagination = res.data.data;
@@ -111,7 +111,7 @@ export class AgentwalletrequestComponent implements OnInit {
       );
     }
     else {
-      this.ws.getAllData(data).subscribe(
+      this.ws.getAllagentData(data).subscribe(
         res => {
           this.wallet = res.data.data.data;
           this.pagination = res.data.data;
