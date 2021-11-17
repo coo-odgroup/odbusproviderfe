@@ -184,16 +184,25 @@ export class AmenitiesComponent implements OnInit {
       "File": this.imageSrc,
     }
 
+    let fd: any = new FormData();
+    fd.append("icon", this.form.get('icon').value);
+    fd.append("name",this.form.value.name);
+    fd.append("created_by",localStorage.getItem('USERNAME'));
+    // for (var pair of fd.entries()) {
+    //   console.log(pair[0]+ ', ' + pair[1]); 
+    // }
+
     let id: any = this.form.value.id;
-    const data = {
-      //id:this.AmenitiesRecord.id,
-      name: this.form.value.name,
-      //icon:this.base64result,
-      icon: this.form.value.iconSrc,
-      created_by:localStorage.getItem('USERNAME'),
-    };
+    // const data = {
+    //   //id:this.AmenitiesRecord.id,
+    //   name: this.form.value.name,
+    //   //icon:this.base64result,
+    //   icon: this.form.value.iconSrc,
+    //   created_by:localStorage.getItem('USERNAME'),
+    //};
     if (id == null) {
-      this.AmenitiesService.create(data).subscribe(
+      
+      this.AmenitiesService.create(fd).subscribe(
         resp => {
           if (resp.status == 1) {
             //this.closebutton.nativeElement.click();
@@ -209,7 +218,7 @@ export class AmenitiesComponent implements OnInit {
       );
     }
     else {
-      this.AmenitiesService.update(id, data).subscribe(
+      this.AmenitiesService.update(id, fd).subscribe(
         resp => {
           if (resp.status == 1) {
             //this.closebutton.nativeElement.click();
@@ -351,9 +360,20 @@ export class AmenitiesComponent implements OnInit {
     };
 
     if (fileList.length > 0) {
-      const file: File = fileList[0];
 
-      this.form.value.File = file;
+      //const file = event.target.files[0];
+      const file: File = fileList[0];
+      this.form.patchValue({
+        icon: file
+      });
+      //this.form.get('icon').updateValueAndValidity()
+
+      console.log(file);
+
+
+      //const file: File = fileList[0];
+
+      //this.form.value.File = file;
 
       this.handleInputChange(file); //turn into base64
 

@@ -39,12 +39,22 @@ export class AmenitiesService {
     )
   }
 
+  // create(post): Observable<any> {
+  //   return this.httpClient.post<any>(this.apiURL + '/Amenities', JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/Amenities', JSON.stringify(post), this.httpOptions)
+    
+    return this.httpClient.post<any>(this.apiURL + '/Amenities',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+
   update(id, post): Observable<any> {
     return this.httpClient.put<any>(this.apiURL + '/Amenities/' + id, JSON.stringify(post), this.httpOptions)
     .pipe(

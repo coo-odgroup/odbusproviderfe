@@ -60,7 +60,6 @@ export class OtpComponent implements OnInit {
                     userId : this.userId,
                     otp : this.otpForm.value.otp
                    };
-                   console.log(JSON.stringify(param));
       this.otpService.submit_otp(param).subscribe(
         res=>{ 
           if(res.status==1){
