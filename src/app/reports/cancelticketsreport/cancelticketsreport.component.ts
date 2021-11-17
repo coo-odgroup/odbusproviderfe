@@ -86,7 +86,8 @@ export class CancelticketsreportComponent implements OnInit {
       source_id:this.cancelTicketsReportRecord.source_id,
       destination_id:this.cancelTicketsReportRecord.destination_id,
       rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
-      rangeToDate :this.cancelTicketsReportRecord.rangeToDate
+      rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
             
     };
    

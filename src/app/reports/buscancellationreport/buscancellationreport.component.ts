@@ -89,7 +89,8 @@ export class BuscancellationreportComponent implements OnInit {
       bus_id: this.BusCancellationReportRecord.bus_id,
       rows_number:this.BusCancellationReportRecord.rows_number,  
       rangeFromDate:this.BusCancellationReportRecord.rangeFromDate,
-      rangeToDate :this.BusCancellationReportRecord.rangeToDate
+      rangeToDate :this.BusCancellationReportRecord.rangeToDate,
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);

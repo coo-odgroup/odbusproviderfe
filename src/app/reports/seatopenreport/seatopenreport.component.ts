@@ -74,7 +74,8 @@ export class SeatopenreportComponent implements OnInit {
       bus_id: this.seatOpenReportRecord.bus_id,
       rows_number:this.seatOpenReportRecord.rows_number,  
       rangeFromDate:this.seatOpenReportRecord.rangeFromDate,
-      rangeToDate :this.seatOpenReportRecord.rangeToDate
+      rangeToDate :this.seatOpenReportRecord.rangeToDate,
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);

@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-4 p-0">
                                     <button type="button" class="btn btn-success  sml_input" (click)="search()"
                                         title="search">
                                         <i class="fas fa-search"> </i> Search
@@ -251,7 +251,7 @@
                                     {{complete.users.name}}
                                 </strong> <br>
 
-                                <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2" placement="bottom"
+                                <button class="btn btn-sm btn-info text-light  mr-1 ml-1 mt-2" placement="bottom"
                                     ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
                                     <i class="fas fa-mobile-alt"></i>
                                 </button>
@@ -316,7 +316,7 @@
 
                     <tbody *ngIf="cancelticketdata?.data.data?.length == 0">
                         <tr>
-                          <td colspan="7" class="no-data-available">No data!</td>
+                          <td colspan="11" class="no-data-available">No data!</td>
                         </tr>
                     <tbody>
 

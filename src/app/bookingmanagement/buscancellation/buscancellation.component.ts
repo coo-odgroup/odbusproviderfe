@@ -100,6 +100,7 @@ export class BuscancellationComponent implements OnInit{
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);
@@ -301,12 +302,26 @@ export class BuscancellationComponent implements OnInit{
   }
   loadOperators()
   {
-    this.busOperatorService.readAll().subscribe(
-      resp=>{
-        this.operators=resp.data;
-        //console.log(this.operators);
-      }
-    );
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.operators=record.data;
+        }
+      );
+    }
+    else
+    {
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+        record=>{
+        this.operators=record.data;
+        }
+      );
+    }
+    
   }
   addBusCancellation()
   {

@@ -122,6 +122,7 @@ export class SeatopenComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);
@@ -403,11 +404,25 @@ export class SeatopenComponent implements OnInit {
         this.buses = res.data;
       }
     );
-    this.busOperatorService.readAll().subscribe(
-      res => {
-        this.busoperators = res.data;
-      }
-    );
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.busoperators=record.data;
+        }
+      );
+    }
+    else
+    {
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+        record=>{
+        this.busoperators=record.data;
+        }
+      );
+    }
     this.locationService.readAll().subscribe(
       records => {
         this.locations = records.data;

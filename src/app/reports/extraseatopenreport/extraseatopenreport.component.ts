@@ -73,6 +73,7 @@ export class ExtraseatopenreportComponent implements OnInit {
       bus_operator_id: this.seatOpenReportRecord.bus_operator_id,
       bus_id: this.seatOpenReportRecord.bus_id,
       rows_number:this.seatOpenReportRecord.rows_number,  
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);
