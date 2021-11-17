@@ -85,7 +85,9 @@
                     <td>{{ amenity.created_at | date: 'dd/MM/yyyy'}}</td>
                     <td>{{ amenity.created_by }}</td>
                     <td>
-                      <img class="sliderImage" [attr.src]="getBannerImagepath(amenity.icon)" height="100">
+                      <!-- <img class="sliderImage" [attr.src]="getBannerImagepath(amenity.icon)" height="100"> -->
+                      <!-- <img class="sliderImage" [attr.src]="getFilePath(amenity.amenities_image)" height="100"> -->
+                      <img src = "../../../../../odbusconsumerfe/src/assets/uploads/amenities/water_bottle.png">
                     </td>
                     <td > 
                       <label *ngIf="amenity.status==1" class="badge badge-light-primary pointer text-dark" (click)="cs(amenity.id);" >Active</label>

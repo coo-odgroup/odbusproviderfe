@@ -53,6 +53,8 @@ export class AmenitiesComponent implements OnInit {
   public ModalHeading: any;
   public ModalBtn: any;
   pagination: any;
+ 
+  path_url = Constants.PATH_URL;
 
   constructor(private http: HttpClient, private AmenitiesService: AmenitiesService, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) {
     this.isSubmit = false;
@@ -105,17 +107,20 @@ export class AmenitiesComponent implements OnInit {
 
     // console.log(data);
     if (pageurl != "") {
+
       this.AmenitiesService.getAllaginationData(pageurl, data).subscribe(
         res => {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
-          // console.log( this.Amenities);
+           //console.log( this.Amenities);
         }
       );
     }
     else {
+      
       this.AmenitiesService.getAllData(data).subscribe(
         res => {
+          //console.log(res);
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
           // console.log( res.data);
@@ -188,6 +193,7 @@ export class AmenitiesComponent implements OnInit {
     fd.append("icon", this.form.get('icon').value);
     fd.append("name",this.form.value.name);
     fd.append("created_by",localStorage.getItem('USERNAME'));
+    
     // for (var pair of fd.entries()) {
     //   console.log(pair[0]+ ', ' + pair[1]); 
     // }
@@ -200,8 +206,7 @@ export class AmenitiesComponent implements OnInit {
     //   icon: this.form.value.iconSrc,
     //   created_by:localStorage.getItem('USERNAME'),
     //};
-    if (id == null) {
-      
+    if (id == null) { 
       this.AmenitiesService.create(fd).subscribe(
         resp => {
           if (resp.status == 1) {
@@ -368,11 +373,8 @@ export class AmenitiesComponent implements OnInit {
       });
       //this.form.get('icon').updateValueAndValidity()
 
-      console.log(file);
-
 
       //const file: File = fileList[0];
-
       //this.form.value.File = file;
 
       this.handleInputChange(file); //turn into base64
@@ -433,6 +435,9 @@ export class AmenitiesComponent implements OnInit {
   getBannerImagepath(slider_img: any) {
     let objectURL = 'data:image/*;base64,' + slider_img;
     return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+  }
+  getFilePath(img:any){
+    return this.path_url + img;
   }
 
 }
