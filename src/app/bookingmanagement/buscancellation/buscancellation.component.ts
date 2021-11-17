@@ -28,7 +28,7 @@ export class BuscancellationComponent implements OnInit{
   public searchForm: FormGroup;
   pagination: any;
 
-
+  public selectedCancelBus:Array<any> = [];
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   busCancellations: Buscancellation[];
@@ -89,7 +89,7 @@ export class BuscancellationComponent implements OnInit{
 
   }
 
-
+ 
   page(label:any){
     return label;
    }
@@ -224,21 +224,7 @@ export class BuscancellationComponent implements OnInit{
   {
     this.showdates='1';
     this.busCancellationRecord=this.busCancellations[id];
-    //console.log(this.busCancellationRecord);
-    //console.log(this.busCancellationRecord.cancelledDates); 
   }
-  // getBusbyOperator(event)
-  // {  
-  //   if(event.value!="")
-  //   {
-  //   this.busOperatorService.getBusbyOperator(event.value).subscribe(
-  //     resp=>{
-  //     this.buses=resp.data;
-  //     });  
-  //   }
-  // }
-
-
   getBusbyOperator()
   {   
     //alert("getBusbyOperator: "+event.value);
@@ -255,15 +241,14 @@ export class BuscancellationComponent implements OnInit{
   public DatesRecord:any;
   getBusScheduleEntryDatesFilter()
   {  
-     if(this.busCancellationForm.value.month == null|| this.busCancellationForm.value.year==null)
-     return false;
-     //reset the selected values
+      if(this.busCancellationForm.value.month == null|| this.busCancellationForm.value.year==null)
+        return false;
       const arr = <FormArray>this.busCancellationForm.controls.buses;
       arr.controls = [];
-    this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
-      resp=>{
-      this.busDatas=resp.data.busDatas;
-      //console.log(this.busDatas);
+      //console.log(this.busCancellationForm.value);
+      this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
+      response=>{
+      this.busDatas=response.data.busDatas;
       let counter = 0;
       for(let bData of this.busDatas)
       {
@@ -273,14 +258,14 @@ export class BuscancellationComponent implements OnInit{
           busName: [bData.busName],
           dateLists: this.fb.array([
           ]),
-       })
+        })
         this.busesRecord.insert(counter, busesGroup); 
         this.DatesRecord = (<FormArray>this.busCancellationForm.controls['buses']).at(counter).get('dateLists') as FormArray;
-        //this.cancellationDateRecord.removeAt(0);
-      //console.log(this.busDatas);
+
         let arraylen = this.DatesRecord.length;
         for(let eDate of bData.entryDates)
         {
+          console.log(eDate.entry_date);
           let newDatesgroup: FormGroup = this.fb.group({
             entryDates: [eDate.entry_date],
            // busScheduleId:[eDate.busScheduleId],
@@ -289,9 +274,8 @@ export class BuscancellationComponent implements OnInit{
           this.DatesRecord.insert(arraylen, newDatesgroup); 
         }
         counter++;
-        //console.log(this.DatesRecord);
       }
-       
+      response=[];
       }
     );  
   }
@@ -377,31 +361,35 @@ export class BuscancellationComponent implements OnInit{
   {    
     this.showdates='0';
     this.busCancellationRecord=this.busCancellations[id] ;
-     console.log(this.busCancellationRecord);  
-   
+     //console.log(this.busCancellationRecord);  
+  //  console.log(this.selectedCancelBus);
+    
+    this.selectedCancelBus.push(JSON.parse(this.busCancellationRecord.bus_id));
     this.busCancellationForm.patchValue({
-    bus_operator_id:this.busCancellationRecord.bus_operator_id,
-    month:this.busCancellationRecord.month,
-    year:this.busCancellationRecord.year,
-    reason:this.busCancellationRecord.reason,
+      bus_operator_id:this.busCancellationRecord.bus_operator_id,
+      month:this.busCancellationRecord.month,
+      year:this.busCancellationRecord.year,
+      reason:this.busCancellationRecord.reason,
+    
+      busLists : this.selectedCancelBus
+    });
+    this.getBusbyOperator();
+    
+    // setTimeout(() => { 
+    //   this.busCancellationForm.get('bus_operator_id').patchValue(this.busCancellationRecord.operatorId); 
+    //   console.log("formControl value updated"); 
+    // }, 3000); 
   
-    busLists : this.busCancellationRecord.name
-  });
-  this.getBusbyOperator();
-  // setTimeout(() => { 
-  //   this.busCancellationForm.get('bus_operator_id').patchValue(this.busCancellationRecord.operatorId); 
-  //   console.log("formControl value updated"); 
-  // }, 3000); 
- 
-  // call the change event's function after initialized the component. 
-  // setTimeout(() => { 
-  //   this.onChange(); 
-  // }, 3500); 
+    // call the change event's function after initialized the component. 
+    // setTimeout(() => { 
+    //   this.onChange(); 
+    // }, 3500); 
     this.ModalHeading = "Edit Bus Cancellation";
     this.ModalBtn = "Update";  
     //reset the selected values
     const arr = <FormArray>this.busCancellationForm.controls.buses;
     arr.controls = [];
+    this.getBusScheduleEntryDatesFilter();
   }
   // onChange()
   // {
