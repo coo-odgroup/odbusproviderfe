@@ -13,13 +13,13 @@
                                 *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
                                 Email is required! </span>
                       </div>
-                      <div class=" mb-4">
+                      <div class=" mb-3">
                         <input type="password" class="form-control" formControlName="password"  placeholder="Password">
                         <span class="text-danger"
                                 *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
                                 Password is required! </span>
                       </div>
-                      <div class="mb-4">
+                      <div class="mb-3">
                         <ng-select [items]="usertypes" style="height: 40px;" class="list-display1" bindLabel="name" bindValue="id"
                         placeholder="User Role" formControlName="user_type" [clearable]="false">
                       </ng-select>

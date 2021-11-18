@@ -798,42 +798,20 @@
                 .pcoded-submenu {
                     position: relative;
 
-                    &:after {
-                        // content: "";
-                        // position: absolute;
-                        // top: 0;
-                        // left: 25px;
-                        // width: 1px;
-                        // height: calc(100% - 36px);
-                        // background: transparentize($menu-dark-text-color,.8);
-                    }
+                   
 
                     li {
                         position: relative;
-
-                        &:after {
-                            // content: "";
-                            // position: absolute;
-                            // top: 20px;
-                            // left: 26px;
-                            // width: 20px;
-                            // height: 1px;
-                            // background: transparentize($menu-dark-text-color,.8);
-                        }
+                        background: #192028;
+                       
 
                         > a {
                             text-align: left;
-                            padding: 7px 7px 7px 45px;
+                            padding: 7px 7px 7px 12px;
                             margin: 0;
                             display: block;
 
-                            &:before {
-                                content: "\e844";
-                                font-family: 'feather';
-                                position: absolute;
-                                top: 10px;
-                                left: 24px;
-                            }
+                            
                         }
 
                         .pcoded-submenu {
@@ -892,7 +870,7 @@
 
     .pcoded-submenu {
         background: $menu-dark-background;
-        padding: 15px 0;
+       
     }
 
     a {
@@ -1209,32 +1187,13 @@
                 }
             }
 
-            .pcoded-submenu > li {
-                &.active,
-                &:focus,
-                &:hover {
-                    > a {
-                        &:before {
-                            // background: #e5efff;
-                        }
-                    }
-                }
-            }
+            
         }
 
         > li {
             &.active,
             &.pcoded-trigger {
-                &:after {
-                    // content: "";
-                    // background-color: $primary-color;
-                    // z-index: 1027;
-                    // position: absolute;
-                    // left: 0;
-                    // top: 5px;
-                    // width: 3px;
-                    // height: calc(100% - 5px);
-                }
+               
 
                 > a {
                     background: $primary-color;
