@@ -54,8 +54,6 @@ export class AmenitiesComponent implements OnInit {
   public ModalBtn: any;
   pagination: any;
  
-  path_url = Constants.PATH_URL;
-
   constructor(private http: HttpClient, private AmenitiesService: AmenitiesService, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) {
     this.isSubmit = false;
     this.AmenitiesRecord = {} as Amenities;
@@ -70,8 +68,6 @@ export class AmenitiesComponent implements OnInit {
   statusDialog(content) {
     this.statusDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
   }
-
-
   ngOnInit(): void {
     this.form1 = this.fb.group({
       id: [null],
@@ -92,8 +88,6 @@ export class AmenitiesComponent implements OnInit {
 
     this.search();
   }
-
-
   page(label: any) {
     return label;
   }
@@ -104,32 +98,24 @@ export class AmenitiesComponent implements OnInit {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
     };
-
-    // console.log(data);
     if (pageurl != "") {
 
       this.AmenitiesService.getAllaginationData(pageurl, data).subscribe(
         res => {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
-           //console.log( this.Amenities);
         }
       );
     }
-    else {
-      
+    else { 
       this.AmenitiesService.getAllData(data).subscribe(
         res => {
-          //console.log(res);
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
-          // console.log( res.data);
         }
       );
     }
   }
-
-
   refresh() {
     this.searchForm = this.fb.group({
       name: [null],
@@ -138,8 +124,6 @@ export class AmenitiesComponent implements OnInit {
     this.search();
 
   }
-
-
   title = 'angular-app';
   fileName = 'Amenities.xlsx';
 
@@ -157,9 +141,6 @@ export class AmenitiesComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
 
   }
-
-
-
   ResetAttributes() {
     this.AmenitiesRecord = {
       name: ''
@@ -177,8 +158,6 @@ export class AmenitiesComponent implements OnInit {
     });
 
   }
-
-
   // getBannerImagepath(slider_img: any) {
   //   let objectURL = 'data:image/*;base64,' + slider_img;
   //   return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
@@ -188,17 +167,13 @@ export class AmenitiesComponent implements OnInit {
     this.finalJson = {
       "File": this.imageSrc,
     }
-
+    let id: any = this.form.value.id;
     let fd: any = new FormData();
+    fd.append("id",this.form.value.id);
     fd.append("icon", this.form.get('icon').value);
     fd.append("name",this.form.value.name);
     fd.append("created_by",localStorage.getItem('USERNAME'));
-    
-    // for (var pair of fd.entries()) {
-    //   console.log(pair[0]+ ', ' + pair[1]); 
-    // }
-
-    let id: any = this.form.value.id;
+   
     // const data = {
     //   //id:this.AmenitiesRecord.id,
     //   name: this.form.value.name,
@@ -223,7 +198,7 @@ export class AmenitiesComponent implements OnInit {
       );
     }
     else {
-      this.AmenitiesService.update(id, fd).subscribe(
+      this.AmenitiesService.update(fd).subscribe(
         resp => {
           if (resp.status == 1) {
             //this.closebutton.nativeElement.click();
@@ -365,25 +340,19 @@ export class AmenitiesComponent implements OnInit {
     };
 
     if (fileList.length > 0) {
-
       //const file = event.target.files[0];
       const file: File = fileList[0];
       this.form.patchValue({
         icon: file
       });
       //this.form.get('icon').updateValueAndValidity()
-
-
       //const file: File = fileList[0];
       //this.form.value.File = file;
-
       this.handleInputChange(file); //turn into base64
-
     }
     else {
       //alert("No file selected");
     }
-
     this.preview(fileSrc);
 
   }
@@ -436,8 +405,4 @@ export class AmenitiesComponent implements OnInit {
     let objectURL = 'data:image/*;base64,' + slider_img;
     return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
   }
-  getFilePath(img:any){
-    return this.path_url + img;
-  }
-
 }

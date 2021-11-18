@@ -47,20 +47,24 @@ export class AmenitiesService {
   // }
 
   create(post): Observable<any> {
-    
     return this.httpClient.post<any>(this.apiURL + '/Amenities',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-
-
-  update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/Amenities/' + id, JSON.stringify(post), this.httpOptions)
+  update(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/AmenitiesUpdate/',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+  // update(id, post): Observable<any> {
+  //   return this.httpClient.put<any>(this.apiURL + '/Amenities/' + id, JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
   delete(id){
     return this.httpClient.delete<any>(this.apiURL + '/Amenities/' + id, this.httpOptions)
     .pipe(
