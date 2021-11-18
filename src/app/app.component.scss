@@ -28,3 +28,14 @@
 {
     text-align: left;
 }
+::ng-deep perfect-scrollbar
+{
+    height: auto !important;
+}
+::ng-deep img#main-logo
+{
+    width: 69%;
+}
+::ng-deep .pcoded-navbar .pcoded-inner-navbar app-nav-group:first-child > .pcoded-menu-caption {
+   margin-top: -26px !important;
+}

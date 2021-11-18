@@ -18,7 +18,7 @@ export class NavContentComponent implements OnInit, AfterViewInit {
   public scrollWidth: any;
   public windowWidth: number;
   public isNavProfile: boolean;
-
+  public adminType:any;
   @Output() onNavMobCollapse = new EventEmitter();
 
   @ViewChild('navbarContent') navbarContent: ElementRef;
@@ -38,6 +38,21 @@ export class NavContentComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    switch(localStorage.getItem("ROLE_ID"))
+    {
+      case "1":
+        this.adminType="Super Admin";
+        break;
+      case "2":
+        this.adminType="Admin";
+        break;
+      case "3":
+        this.adminType="Agent";
+        break;
+      case "4":
+        this.adminType="Operator";
+        break;    
+    }
     if (this.windowWidth < 992) {
       this.flatConfig['layout'] = 'vertical';
       setTimeout(() => {
