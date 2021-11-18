@@ -248,10 +248,12 @@ export class BuscancellationComponent implements OnInit{
       //console.log(this.busCancellationForm.value);
       this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
       response=>{
+        console.log(response);
       this.busDatas=response.data.busDatas;
       let counter = 0;
       for(let bData of this.busDatas)
       {
+        
         this.busesRecord = (<FormArray>this.busCancellationForm.controls['buses']) as FormArray;
         let busesGroup: FormGroup = this.fb.group({
           bus_id: [bData.bus_id], 
@@ -265,7 +267,7 @@ export class BuscancellationComponent implements OnInit{
         let arraylen = this.DatesRecord.length;
         for(let eDate of bData.entryDates)
         {
-          console.log(eDate.entry_date);
+          //console.log(eDate.entry_date);
           let newDatesgroup: FormGroup = this.fb.group({
             entryDates: [eDate.entry_date],
            // busScheduleId:[eDate.busScheduleId],

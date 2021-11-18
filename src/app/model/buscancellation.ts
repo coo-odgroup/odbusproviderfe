@@ -13,4 +13,11 @@ export interface Buscancellation {
      reason: any;
      status: 1; 
      busLists: any;
+     bus_cancelled_date:BusCancellationDate
+}
+export interface BusCancellationDate{
+     id:any;
+     bus_cancelled_id:any;
+     cancelled_date:any;
+     created_by:any;
 }
