@@ -39,13 +39,13 @@ export class SafetyService {
   }
 
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/Safety', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/addSafety',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/Safety/' + id, JSON.stringify(post), this.httpOptions)
+  update(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/Safety/',post)
     .pipe(
       catchError(this.errorHandler)
     )

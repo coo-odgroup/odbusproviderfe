@@ -82,9 +82,18 @@
               <td>{{ safety.name }}</td>
               <td>{{ safety.created_by }}</td>
               <td>{{ safety.created_at | date: 'dd/MM/yyyy'}}</td>
+              
               <td class="text-center">
-                <img class="sliderImage" [attr.src]="getBannerImagepath(safety.icon)" height="100">
-              </td>
+                <div *ngIf="safety.safety_image!='' && safety.safety_image!=null" >             
+                  <img   class="sliderImage" src="../../../assets/uploads/safety/{{safety.safety_image}}"  height="100px"/>
+                </div>
+
+                <div *ngIf="safety.safety_image=='' || safety.safety_image==null" >             
+                  <img   class="sliderImage" src="https://icon-library.com/images/no-image-available-icon/no-image-available-icon-13.jpg"  height="100px"/>
+                </div>       
+              </td>          
+
+              
               <td>
                 <!-- {{ safety.status }} -->
                 <label *ngIf="safety.status==1" class="badge badge-light-primary pointer text-dark"
@@ -192,12 +201,33 @@
                           <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
                             accept='image/*' accept=".png, .jpg, .jpeg" class="form-control" id="icon"
                             placeholder="Safety Icon" formControlName="icon" />
-                          <span class="text-danger">Max file size 100Kb and supports jpg/jpeg/png</span>
+                          <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
                           <span class="text-danger">{{imageError}}</span>
                           <span class="text-danger"
                             *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
-                            Icon file is required! </span>
-                          <img [src]="imgURL" height="50" *ngIf="imgURL">
+                            Icon file is required! </span> 
+                          <div class="col-12">
+                            <div class="row">
+                              <div class="col-md-6" *ngIf="SafetyRecord.safety_image">
+                                <span><b>Existing Image</b></span>                        
+                                <img    class="sliderImage" src="../../../assets/uploads/safety/{{SafetyRecord.safety_image}}" height="100"/>
+
+                              </div>
+                              <div class="col-md-6" *ngIf="imgURL">
+                                <span ><b>New image</b></span><br>
+                                  <img class="sliderImage" [src]="imgURL" height="100" >
+
+                              </div>
+
+                            </div>
+
+                          </div>
+                            
+                         
+                         
+                         
+
+
                         </div>
                       </div>
 
@@ -211,7 +241,7 @@
             <button type="button" [disabled]="!form.valid" (click)="addsafety()" class="btn btn-primary"
               ngbAutofocus>{{ModalBtn}}</button>
             <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-              (click)="modal.dismiss('Cross click')">Close</button>
+              (click)="ResetAttriutes();modal.dismiss('Cross click')">Close</button>
           </div>
         </ng-template>
       </div>

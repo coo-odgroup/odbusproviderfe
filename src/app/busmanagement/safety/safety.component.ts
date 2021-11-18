@@ -26,7 +26,7 @@ export class SafetyComponent implements OnInit {
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
 
-
+  finalImage:any;
   imgURL: any;
   imageSrc: string;
   File: any;
@@ -64,19 +64,20 @@ export class SafetyComponent implements OnInit {
     this.ModalBtn = "Save";
   }
   OpenModal(content) {
-    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
+    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
   }
   
   ngOnInit() {
     this.form = this.fb.group({
       id:[null],
       icon:[null],
+      safety_image:[null],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
     });
     this.formConfirm=this.fb.group({
       id:[null],
     });
-
+    this.finalImage = null;
     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
@@ -133,9 +134,9 @@ export class SafetyComponent implements OnInit {
       const file: File = fileList[0];
 
       this.form.value.File = file;
-
-      this.handleInputChange(file); //turn into base64
-
+      
+      
+      this.handleInputChange(file); //turn into base64   
     }
     else {
       //alert("No file selected");
@@ -186,6 +187,9 @@ export class SafetyComponent implements OnInit {
     reader.readAsDataURL(files[0]);
     reader.onload = (_event) => {
       this.imgURL = reader.result;
+
+      this.finalImage= this.form.value.imagePath[0];
+      
     }
   }
 
@@ -223,7 +227,7 @@ export class SafetyComponent implements OnInit {
         res => {
           this.Safetys= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( res.data);
+          console.log( res.data);
         }
       );
     }
@@ -250,6 +254,7 @@ export class SafetyComponent implements OnInit {
       id:[null],
       name: ['',Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       icon: ['',Validators.compose([Validators.required])],
+      safety_image:[null],
       iconSrc:[null]
     });
     this.ModalHeading = "Add Safety Line";
@@ -259,19 +264,29 @@ export class SafetyComponent implements OnInit {
     this.SafetyRecord.icon="";
     
   }
-  
+  // this.finalImage= this.form.value.imagePath[0];
   addsafety()
   {
     let id=this.SafetyRecord.id;
-    const data ={
-      name:this.form.value.name,
-      icon:this.form.value.iconSrc,
-      created_by:localStorage.getItem('USERNAME')
-    };
+    // console.log(this.form.value.imagePath[0]);
+    // const data ={
+    //   name:this.form.value.name,
+    //   icon:this.form.value.icon,
+    //   created_by:localStorage.getItem('USERNAME')
+    // };
+    let fd: any = new FormData();
+    fd.append("icon", this.finalImage);
+    fd.append("name",this.form.value.name);
+    fd.append("created_by",localStorage.getItem('USERNAME'));
+
+  //   for (var pair of fd.entries()) {
+  //     console.log(pair[0]+ ', ' + pair[1]); 
+  // }
+  // return false;
 
     if(id==null)
     {
-      this.safetyService.create(data).subscribe(
+      this.safetyService.create(fd).subscribe(
         resp => {
           if(resp.status==1)
           {
@@ -288,8 +303,13 @@ export class SafetyComponent implements OnInit {
       );    
     }
     else{     
-     
-      this.safetyService.update(id,data).subscribe(
+      fd.append("id",this.SafetyRecord.id);   
+      //     for (var pair of fd.entries()) {
+      //   console.log(pair[0]+ ', ' + pair[1]); 
+      // }
+      // return false;
+
+      this.safetyService.update(fd).subscribe(
         resp => {
           if(resp.status==1)
             {                
@@ -310,8 +330,8 @@ export class SafetyComponent implements OnInit {
   editsafety(event : Event, id : any)
   {
     this.SafetyRecord=this.Safetys[id] ;
-    // console.log(this.SafetyRecord);
-    this.imgURL = this.getBannerImagepath(this.SafetyRecord.icon);
+    // console.log(this.SafetyRecord.safety_image);
+    // this.imgURL = this.getBannerImagepath(this.SafetyRecord.icon);
     
     //console.log(this.imgURL);
     this.form = this.fb.group({
