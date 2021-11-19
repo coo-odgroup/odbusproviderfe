@@ -13,7 +13,6 @@
         <div class="col-10">
           <form [formGroup]="searchForm">
             <div class="row">
-
               <div class="col-3">
                 <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id" placeholder="Select Operator"
                   formControlName="bus_operator_id" [clearable]="false" (change)="findOperator($event)">
@@ -36,8 +35,6 @@
                   <i class="fas fa-sync-alt"> </i> Refresh
                 </button>
               </div>
-
-
               <div class="col-2">
                 <div class="dropdown float-right">
                   <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
@@ -51,15 +48,8 @@
               </div>
             </div>
           </form>
-
-
         </div>
-
       </div>
-
-
-
-
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
@@ -81,12 +71,19 @@
               <td>{{ gallery.bus.name }}</td>
               <td>{{ gallery.bus.bus_number }}</td>
               <td>{{ gallery.created_at | date: 'dd/MM/yyyy'}}</td>
-              <td>
-                <img class="sliderImage" [attr.src]="getBannerImagepath(gallery.image)" height="100">
+              <td *ngIf="(gallery.bus_image=='' || gallery.bus_image==null)">
+                ----no image available----
               </td>
-
+              <td *ngIf="gallery.bus_image !='' && gallery.bus_image != null">
+                <img  src="../../../assets/uploads/bus_photos/{{gallery.bus_image}}" height="100">
+              </td>
+              <!-- <td>
+                <img class="sliderImage" [attr.src]="getBannerImagepath(gallery.image)" height="100">
+              </td> -->
               <td class="hide_print">
                 <div class="overlay-edit">
+                  <button type="button" (click)="editGallery($event, i); OpenModal(content);"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                   <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
                       class="feather icon-trash-2"></i></button>
                 </div>
@@ -141,8 +138,6 @@
                   <div class="right-icon-control">
                     <form [formGroup]="busForm" class="editForm" novalidate>
                       <div class="row">
-
-
                         <div class="row form-group col-sm-12">
                           <div class="col-md-3">
                             Select Operator
@@ -154,11 +149,9 @@
                             </ng-select>
                             <span class="text-danger"
                               *ngIf="busForm.controls['bus_id'].touched && busForm.controls['bus_id'].hasError('required')">
-                              Bus Name is required! </span>
-
+                              Operator Name is required! </span>
                           </div>
                         </div>
-
                         <div class="row form-group col-sm-12">
                           <div class="col-md-3">
                             Select Bus
@@ -182,7 +175,8 @@
                             <span class="text-danger"
                               *ngIf="busForm.controls['icon'].touched && busForm.controls['icon'].hasError('required')">
                               Icon file is required! </span><br />
-                            <img [src]="imgURL" height="50" *ngIf="imgURL">
+                              <!-- <img src="../../../assets/uploads/bus_photos/{{busGalleryRecord.bus_image}}" height="50"> -->
+                            <!-- <img [src]="imgURL" height="50" *ngIf="imgURL"> -->
                           </div>
                         </div>
                       </div>

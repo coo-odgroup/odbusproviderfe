@@ -42,18 +42,30 @@ export class BusgalleryService {
     )
   }
 
+  // create(post): Observable<any> {
+  //   return this.httpClient.post<any>(this.apiURL + '/busGallery', JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/busGallery', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/busGallery',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/busGallery/' + id, JSON.stringify(post), this.httpOptions)
+  update(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/BusGalleryUpdate',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+  // update(id, post): Observable<any> {
+  //   return this.httpClient.put<any>(this.apiURL + '/busGallery/' + id, JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
   delete(id){
     return this.httpClient.delete<any>(this.apiURL + '/busGallery/' + id, this.httpOptions)
     .pipe(
