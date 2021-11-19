@@ -49,12 +49,14 @@ export class DashboardService {
     )
   }
  
-
-  pnrstaticsdata(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/pnrstaticsdata').pipe(
+  pnrstaticsdata(data:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/pnrstaticsdata', JSON.stringify(data), this.httpOptions)
+    .pipe(
       catchError(this.errorHandler)
     )
   }
+
+
 
   errorHandler(error) {
     let errorMessage = '';

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        <app-card [hidHeader]="false" cardTitle="User" cardClass="card-datatable" [options]="true"
+        <app-card [hidHeader]="false" cardTitle="Operators" cardClass="card-datatable" [options]="true"
             cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
             <div class="row">
                 <div class="col-2">
@@ -168,87 +168,88 @@
                                     <div class="right-icon-control">
                                         <form [formGroup]="form" class="editForm" novalidate>
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <!-- <h5>USER</h5> -->
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-6 col-form-label">Select
-                                                            Operator :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <ng-select [items]="busoperators" bindLabel="operator_name"
-                                                                bindValue="id" placeholder="Select Operator"
-                                                                formControlName="bus_operator_id" [clearable]="false">
-                                                            </ng-select>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
-                                                                Operator is Required
-                                                            </span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Name :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Page name" required
-                                                                formControlName="name" />
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
-                                                                Name is Required
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Email :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Page name" required
-                                                                formControlName="email" />
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
-                                                                Email is Required
-                                                            </span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Password
-                                                            :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="password" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Page name" required
-                                                                formControlName="password" />
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
-                                                                Password is Required
-                                                            </span>
-                                                        
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
-                                                                minimum 5 Characters Allowed
-                                                            </span>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['password'].touched && form.controls['password'].hasError('maxlength')">
-                                                                Maximum 10 Characters Allowed
-                                                            </span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Phone :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Page name" required
-                                                                formControlName="phone" />
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
-                                                                Phone is Required
-                                                            </span>
-                                                        </div>
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Select
+                                                        Operator :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <ng-select [items]="busoperators" bindLabel="operator_name" ngbAutofocus
+                                                            bindValue="id" placeholder="Select Operator"
+                                                            formControlName="bus_operator_id" [clearable]="false">
+                                                        </ng-select>
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
+                                                            Operator is Required
+                                                        </span>
                                                     </div>
                                                 </div>
+
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Name :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Page name" required
+                                                            formControlName="name" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
+                                                            Name is Required
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Phone :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Page name" required
+                                                            formControlName="phone" />
+                                                            <span class="text-danger"
+                                                            *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
+                                                            Phone is required! </span>
+                                                          <span class="text-danger row col-12" *ngIf="form.controls['phone'].errors?.pattern">
+                                                            Enter 10 digit Mobile Number
+                                                          </span>
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-12">
+                                                    <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Login Credentials</label>
+                                                </div>
+                                                <div class="from-group col-md-6">
+                                                    <label for="email" class="col-sm-12 col-form-label">Email :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Page name" required
+                                                            formControlName="email" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
+                                                            Email is Required
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-6">
+                                                    <label for="name" class="col-sm-12 col-form-label">Password
+                                                        :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="password" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Page name" required
+                                                            formControlName="password" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
+                                                            Password is Required
+                                                        </span>
+                                                    
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
+                                                            minimum 5 Characters Allowed
+                                                        </span>
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['password'].touched && form.controls['password'].hasError('maxlength')">
+                                                            Maximum 10 Characters Allowed
+                                                        </span>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </form>
                                     </div>
@@ -277,25 +278,12 @@
                                     <div class="right-icon-control">
                                         <form [formGroup]="editform" class="editForm" novalidate>
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                
                                                     <!-- <h5>USER</h5> -->
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-6 col-form-label">Select
-                                                            Operator :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <ng-select [items]="busoperators" bindLabel="operator_name"
-                                                                bindValue="id" placeholder="Select Operator"
-                                                                formControlName="bus_operator_id" [clearable]="false">
-                                                            </ng-select>
-                                                            <span class="text-danger"
-                                                                *ngIf="editform.controls['bus_operator_id'].touched && editform.controls['bus_operator_id'].hasError('required')">
-                                                                Operator is Required
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                                   
 
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Name :<span
+                                                    <div class="from-group col-md-4">
+                                                        <label for="name" class="col-sm-12 col-form-label">Name :<span
                                                                 class="text-danger">*</span></label>
                                                         <div class="col-sm-12">
                                                             <input type="text" class="form-control" ngbAutofocus
@@ -307,8 +295,8 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Email :<span
+                                                    <div class="from-group col-md-4">
+                                                        <label for="name" class="col-sm-12 col-form-label">Email :<span
                                                                 class="text-danger">*</span></label>
                                                         <div class="col-sm-12">
                                                             <input type="text" class="form-control" ngbAutofocus
@@ -323,8 +311,8 @@
 
                                                    
 
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Phone :<span
+                                                    <div class="from-group col-md-4">
+                                                        <label for="name" class="col-sm-12 col-form-label">Phone :<span
                                                                 class="text-danger">*</span></label>
                                                         <div class="col-sm-12">
                                                             <input type="text" class="form-control" ngbAutofocus
@@ -337,7 +325,7 @@
                                                             
                                                         </div>
                                                     </div>
-                                                </div>
+                                                
                                             </div>
                                         </form>
                                     </div>

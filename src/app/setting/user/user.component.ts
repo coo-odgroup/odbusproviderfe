@@ -41,7 +41,7 @@ export class UserComponent implements OnInit {
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    private us: UserService,
+    private userService: UserService,
     private busOperatorService: BusOperatorService,
     private modalService: NgbModal,
     config: NgbModalConfig
@@ -58,7 +58,7 @@ export class UserComponent implements OnInit {
       id: [null],
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
-      phone: [null, Validators.compose([Validators.required])],
+      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
       password: [null,Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])]
     });
 
@@ -66,7 +66,7 @@ export class UserComponent implements OnInit {
       id: [null],
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
-      phone: [null, Validators.compose([Validators.required])],
+      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
     });
 
     this.pwdform = this.fb.group({
@@ -119,7 +119,7 @@ export class UserComponent implements OnInit {
 
     // console.log(data);
     if (pageurl != "") {
-      this.us.getAllaginationData(pageurl, data).subscribe(
+      this.userService.getAllaginationData(pageurl, data).subscribe(
         res => {
           this.user = res.data.data.data;
           this.pagination = res.data.data;
@@ -128,7 +128,7 @@ export class UserComponent implements OnInit {
       );
     }
     else {
-      this.us.getAllData(data).subscribe(
+      this.userService.getAllData(data).subscribe(
         res => {
           this.user = res.data.data.data;
           this.pagination = res.data.data;
@@ -158,7 +158,7 @@ export class UserComponent implements OnInit {
   }
 
   OpenModal(content) {
-    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
   }
   ResetAttributes() {
     this.userRecord = {} as User;
@@ -167,7 +167,7 @@ export class UserComponent implements OnInit {
       bus_operator_id: [null],
       name: [null],
       email: [null],
-      phone: [null],
+      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
       password: [null]
     });
 
@@ -176,7 +176,7 @@ export class UserComponent implements OnInit {
       bus_operator_id: [null],
       name: [null],
       email: [null],
-      phone: [null],
+      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
     });
     this.pwdform = this.fb.group({
       id: [null],
@@ -185,7 +185,7 @@ export class UserComponent implements OnInit {
     });
 
     this.form.reset();
-    this.ModalHeading = "Add User";
+    this.ModalHeading = "Add Operator";
     this.ModalBtn = "Save";
   }
 
@@ -209,8 +209,9 @@ export class UserComponent implements OnInit {
       phone: this.form.value.phone,
       password: this.form.value.password
     };
+
+  
     const updateDate={
-      bus_operator_id: this.editform.value.bus_operator_id,
       name: this.editform.value.name,
       email: this.editform.value.email,
       phone: this.editform.value.phone,
@@ -220,7 +221,7 @@ export class UserComponent implements OnInit {
     // console.log(data);
     let id = this.userRecord?.id;
     if (id != null) {
-      this.us.update(id, updateDate).subscribe(
+      this.userService.update(id, updateDate).subscribe(
         resp => {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -236,7 +237,7 @@ export class UserComponent implements OnInit {
       );
     }
     else {
-      this.us.create(data).subscribe(
+      this.userService.create(data).subscribe(
         resp => {
 
           if (resp.status == 1) {
@@ -262,13 +263,12 @@ export class UserComponent implements OnInit {
     this.userRecord = this.user[id];
   
     this.editform.controls.id.setValue(this.userRecord.id);
-    this.editform.controls.bus_operator_id.setValue(this.userRecord.bus_operator_id);
     this.editform.controls.name.setValue(this.userRecord.name);
     this.editform.controls.email.setValue(this.userRecord.email);
     this.editform.controls.phone.setValue(this.userRecord.phone);
    
 
-    this.ModalHeading = "Edit User";
+    this.ModalHeading = "Edit Operator";
     this.ModalBtn = "Update";
   }
 
@@ -279,7 +279,7 @@ export class UserComponent implements OnInit {
 
   deleteRecord() {
     let delitem = this.userRecord.id;
-    this.us.delete(delitem).subscribe(
+    this.userService.delete(delitem).subscribe(
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -307,7 +307,7 @@ export class UserComponent implements OnInit {
       password: this.pwdform.value.password
     }
 
-    this.us.changepwd(id, updateDate).subscribe(
+    this.userService.changepwd(id, updateDate).subscribe(
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -326,7 +326,7 @@ export class UserComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
-    this.us.changestatus(stsitem).subscribe(
+    this.userService.changestatus(stsitem).subscribe(
       resp => {
         
         if(resp.status==1)

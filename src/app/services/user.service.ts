@@ -18,14 +18,14 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
   // readAll(): Observable<any> {
-  //   return this.httpClient.get(this.apiURL + '/userContent').pipe(
+  //   return this.httpClient.get(this.apiURL + '/BusOperator').pipe(
   //     catchError(this.errorHandler)
   //   )
   // }
 
   
   getAllData(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/userContentData', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/BusOperatorData', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -39,20 +39,20 @@ export class UserService {
   }
 
   create(data): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/userContent', JSON.stringify(data), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/BusOperator', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
   update(id, data): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/userContent/' + id, JSON.stringify(data), this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/BusOperator/' + id, JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
   delete(id){
-    return this.httpClient.delete<any>(this.apiURL + '/userContent/' + id, this.httpOptions)
+    return this.httpClient.delete<any>(this.apiURL + '/BusOperator/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
