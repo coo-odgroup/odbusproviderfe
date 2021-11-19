@@ -66,9 +66,22 @@
                 <td>{{ i+1 }}</td>
                 <td>{{bannerData.bus_operator.operator_name}} </td>
                 <td>{{bannerData.occassion}} </td>
-                <td>
+               
+                <!-- <td>
+                  ./../../assets/uploads/operatorbanner/{{bannerRecord.banner_img}}
                   <img class="sliderImage" [attr.src]="getBannerImagepath(bannerData.banner_img)">
-                </td>
+                  ../../../assets/uploads/operatorbanner/1965715062-SamplePNGImage_100kbmb.png
+                </td> -->
+
+                <td class="text-center">
+                  <div *ngIf="bannerData.banner_image!='' && bannerData.banner_image!=null" >             
+                    <img   class="sliderImage" src="../../../assets/uploads/operatorbanner/{{bannerData.banner_image}}"  height="100px"/>
+                  </div>
+  
+                  <div *ngIf="bannerData.banner_image=='' || bannerData.banner_image==null" >             
+                    <img   class="sliderImage" src="https://icon-library.com/images/no-image-available-icon/no-image-available-icon-13.jpg"  height="100px"/>
+                  </div>       
+                </td>        
                 <td>{{bannerData.start_date}} {{bannerData.start_time}} </td>
                 <td>{{bannerData.end_date}} {{bannerData.end_time}}</td>
                 <td>
@@ -209,7 +222,7 @@
                               <label for="Name" class="col-sm-5 col-form-label">URL(if any)</label>
                               <div class="col-sm-7">
                                 <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
-                                  required formControlName="url" />
+                                   formControlName="url" />
                               </div>
                             </div>
                           </div>
@@ -292,7 +305,7 @@
                             </div>
                           </div>
                           <div class="col-md-6">
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                               <label for="Name" class="col-sm-5 col-form-label">Banner Image<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-7">
@@ -307,9 +320,38 @@
                                   *ngIf="bannerForm.controls['banner_img'].touched && bannerForm.controls['banner_img'].hasError('required')">
                                   Image file is required! </span>
                                 <div *ngIf="imgURL">
-                                  <img id="sliderImgPreview" class="sliderImage-edit"
+                                  <img class="sliderImage" [src]="imgURL" height="100" >
+                                   <img id="sliderImgPreview" class="sliderImage-edit"
                                     [attr.src]="getBannerImagepath(bannerForm.value['iconSrc'])">
                                 </div>
+                              </div>
+                            </div> -->
+
+                            <div class="form-group row">
+                              <label for="safety" class="col-sm-4 col-form-label">Image</label>
+                              <div class="col-sm-8">
+                                <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
+                                  accept='image/*' accept=".png, .jpg, .jpeg" class="form-control" id="banner_img"
+                                  placeholder="Banner Image" formControlName="banner_img" />
+                                <small class="text-info">Max file size 1 M.B and supports jpg/jpeg/png</small><br>
+                                <span class="text-danger">{{imageError}}</span>
+                                <span class="text-danger"
+                                  *ngIf="bannerForm.controls['banner_img'].touched && bannerForm.controls['banner_img'].hasError('required')">
+                                  Banner image file is required! </span> 
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-md-6" *ngIf="bannerRecord.banner_image">
+                                      <span><b>Existing Image</b></span> <br>                       
+                                      <img    class="sliderImage" src="../../../assets/uploads/operatorbanner/{{bannerRecord.banner_image}}" height="100"/>
+      
+                                    </div>
+                                    <div class="col-md-6" *ngIf="imgURL">
+                                      <span ><b>New image</b></span><br>
+                                        <img class="sliderImage" [src]="imgURL" height="100" >
+                                        <!-- banner_image -->
+                                    </div>
+                                  </div>
+                                </div>                      
                               </div>
                             </div>
                           </div>

@@ -33,6 +33,9 @@ export class BannermanagementComponent implements OnInit {
   iconSrc:any;
   imageError:any;
   imgURL: any;
+  finalImage:any;
+  public imagePath;
+
   base64result:any;
   finalJson = {};
   fileName= 'Banner.xlsx';
@@ -82,6 +85,7 @@ export class BannermanagementComponent implements OnInit {
     this.searchForm =this.fb.group({
       searchBy:[null],
       status:[null],
+      banner_image:[null],
       per_page:Constants.RecordLimit,
     })
     this.bannerForm = this.fb.group({
@@ -99,6 +103,7 @@ export class BannermanagementComponent implements OnInit {
       end_time: [null, Validators.compose([Validators.required])],
       iconSrc:[null]
     });
+    this.finalImage = null;
     this.formConfirm=this.fb.group({
       id:[null],
     });
@@ -108,9 +113,9 @@ export class BannermanagementComponent implements OnInit {
   //////image validation////////
   public picked(event:any, fileSrc:any) {
     this.imageError = null;
-            const max_size = 819200;
+            const max_size = 1000000;
             //const allowed_types = ['image/svg+xml'];
-            const allowed_types = ['image/x-png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+            const allowed_types = ['image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
             const max_height = 600;
             const max_width = 2400;
     let fileList: FileList = event.target.files;
@@ -195,20 +200,23 @@ export class BannermanagementComponent implements OnInit {
       return;
     }
     let reader = new FileReader();
-    this.bannerForm.value.imagePath = files;
+    this.bannerForm.value.imagePath = files[0];
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
-      this.imgURL = reader.result; 
-      this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
+    this.imgURL = reader.result; 
+   
+      this.finalImage= files[0];
+      
     }
 
   }
   ResetAttributes()
   {
+    this.bannerRecord = {} as Banner;
     this.bannerForm = this.fb.group({
       id:[null],
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
-      category: [null],
+      // category: [null],
       url:[null],
       heading:[null],
       bus_operator_id:[],
@@ -218,7 +226,8 @@ export class BannermanagementComponent implements OnInit {
       alt_tag: [null, Validators.compose([Validators.required])],
       end_date: [null, Validators.compose([Validators.required])],
       end_time: [null, Validators.compose([Validators.required])],
-      iconSrc:[null]
+      iconSrc:[null],
+      banner_image:[null],
     });
     this.ModalHeading = "Add Banner";
     this.ModalBtn = "Save";
@@ -234,27 +243,52 @@ export class BannermanagementComponent implements OnInit {
   addBanner()
   {
 
-    this.finalJson = {
-      "File": this.imageSrc,
-    }
+    // this.finalJson = {
+    //   "File": this.imageSrc,
+    // }
 
-    const data ={
-      bus_operator_id:this.bannerForm.value.bus_operator_id,
-      occassion:this.bannerForm.value.occassion,
-      category:this.bannerForm.value.category,
-      url:this.bannerForm.value.url,
-      heading:this.bannerForm.value.heading,
-      start_date:this.bannerForm.value.start_date,
-      start_time:this.bannerForm.value.start_time,
-      alt_tag:this.bannerForm.value.alt_tag,
-      end_date:this.bannerForm.value.end_date,
-      end_time:this.bannerForm.value.end_time,
-      banner_img:this.bannerForm.value.iconSrc,
-      created_by: localStorage.getItem('USERNAME') 
-    };
+    // const data ={
+    //   bus_operator_id:this.bannerForm.value.bus_operator_id,
+    //   occassion:this.bannerForm.value.occassion,
+    //   category:this.bannerForm.value.category,
+    //   url:this.bannerForm.value.url,
+    //   heading:this.bannerForm.value.heading,
+    //   start_date:this.bannerForm.value.start_date,
+    //   start_time:this.bannerForm.value.start_time,
+    //   alt_tag:this.bannerForm.value.alt_tag,
+    //   end_date:this.bannerForm.value.end_date,
+    //   end_time:this.bannerForm.value.end_time,
+    //   banner_img:this.bannerForm.value.iconSrc,
+    //   created_by: localStorage.getItem('USERNAME') 
+    // };
+    let fd: any = new FormData();
+    fd.append("banner_img", this.finalImage);
+    fd.append("bus_operator_id",this.bannerForm.value.bus_operator_id);
+    fd.append("occassion",this.bannerForm.value.occassion);
+    // fd.append("category",this.bannerForm.value.category);
+    fd.append("url",this.bannerForm.value.url);
+    fd.append("heading",this.bannerForm.value.heading);
+    fd.append("start_date",this.bannerForm.value.start_date);
+    fd.append("start_time",this.bannerForm.value.start_time);
+    fd.append("alt_tag",this.bannerForm.value.alt_tag);
+    fd.append("end_date",this.bannerForm.value.end_date);
+    fd.append("end_time",this.bannerForm.value.end_time);
+    fd.append("created_by",localStorage.getItem('USERNAME'));
+
+  //   for (var pair of fd.entries()) {
+  //     console.log(pair[0]+ ', ' + pair[1]); 
+  // }
+  // return false;
     let id = this.bannerRecord?.id;
     if (id != null) {
-      this.bannerService.update(id, data).subscribe(
+      fd.append("id",this.bannerRecord.id); 
+
+        // for (var pair of fd.entries()) {
+        //     console.log(pair[0]+ ', ' + pair[1]); 
+        // }
+        // return false;
+
+      this.bannerService.update(fd).subscribe(
         resp => {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -269,7 +303,8 @@ export class BannermanagementComponent implements OnInit {
       );
     }
     else {
-      this.bannerService.create(data).subscribe(
+
+      this.bannerService.create(fd).subscribe(
         resp => {
           if (resp.status == 1) {
 
@@ -293,18 +328,14 @@ export class BannermanagementComponent implements OnInit {
   rerender(): void {  
   }
   editBanner(id)
-  { 
+  { this.imgURL='';
     this.bannerRecord = this.banners[id]; 
-    
-    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.bannerRecord.banner_img); 
-    //bannerImgPreview
-    let objectURL = 'data:image/*;base64,'+ this.imgURL.changingThisBreaksApplicationSecurity;
 
     this.bannerForm=this.fb.group({
       id:[this.bannerRecord.id],
       bus_operator_id:this.bannerRecord.bus_operator_id,
       occassion:[this.bannerRecord.occassion],
-      category:[this.bannerRecord.category],
+      // category:[this.bannerRecord.category],
       url:[this.bannerRecord.url],
       heading:[this.bannerRecord.heading],
       start_date:[this.bannerRecord.start_date],

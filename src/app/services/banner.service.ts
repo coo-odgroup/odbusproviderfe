@@ -35,13 +35,13 @@ export class BannerService {
     )
   }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/banner', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/addBanner', post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/banner/' + id, JSON.stringify(post), this.httpOptions)
+  update(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/updateBanner/', post)
     .pipe(
       catchError(this.errorHandler)
     )

@@ -59,9 +59,18 @@
               <td>{{ i+1 }}</td>
               <td>{{settingdata.bus_operator.operator_name}} </td>
               <td>{{settingdata.bus_operator.contact_number}}<br>{{settingdata.bus_operator.email_id}}</td>
-              <td>
+              <!-- <td>
                 <img class="sliderImage" [attr.src]="getImagepath(settingdata.logo)">
-              </td>
+              </td> -->
+              <td >
+                <div *ngIf="settingdata.logo_image!='' && settingdata.logo_image!=null" >             
+                  <img  src="../../../assets/uploads/logo/{{settingdata.logo_image}}"  height="100px"/>
+                </div>
+
+                <div *ngIf="settingdata.logo_image=='' || settingdata.logo_image==null" >             
+                  <img   class="sliderImage" src="https://icon-library.com/images/no-image-available-icon/no-image-available-icon-13.jpg"  height="100px"/>
+                </div>       
+              </td>         
               <td>
                 <label *ngIf="settingdata.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, settingdata.id);">Active</label>
@@ -246,6 +255,14 @@
                             </div>
                           </div>
 
+                          <div class="form-group row">
+                            <label for="opr_slogan" class="col-sm-5 col-form-label"><strong>Operator Slogan</strong> </label>
+                            <div class="col-sm-7">
+                              <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="operator slogan"
+                                 formControlName="operator_slogan"/>
+                            </div>
+                          </div>                         
+
                         </div>
 
                         <div class="col-md-6">
@@ -314,15 +331,28 @@
                                   class="form-control" id="logo" placeholder="Drop logo image here"
                                   formControlName="logo" />
                               </div>
-                              <span class="text-danger">Max file size 100Kb</span>
+                              <span class="text-info">Max file size 100Kb</span><br>
                               <span class="text-danger">{{imageError}}</span>
                               <span class="text-danger"
                                 *ngIf="settingForm.controls['logo'].touched && settingForm.controls['logo'].hasError('required')">
                                 Image file is required! </span>
-                              <div *ngIf="imgURL">
-                                <img id="sliderImgPreview" class="sliderImage-edit"
-                                  [attr.src]="getImagepath(settingForm.value['iconSrc'])" >
-                              </div>
+                             
+
+                              <div class="col-12">
+                                <div class="row">
+                                  <div class="col-md-6" *ngIf="settingRecord.logo_image">
+                                    <span><b>Existing Image</b></span> <br>                       
+                                    <img    class="sliderImage" src="../../../assets/uploads/logo/{{settingRecord.logo_image}}" height="70"/>
+    
+                                  </div>
+                                  <div class="col-md-6" *ngIf="imgURL">
+                                    <span ><b>New image</b></span><br>
+                                    <img id="sliderImgPreview" class="sliderImage-edit"
+                                    [attr.src]="getImagepath(settingForm.value['iconSrc'])" height="70">
+    
+                                  </div>
+                                </div>
+                              </div>        
                             </div>
                           </div>
 
@@ -331,19 +361,45 @@
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
                               <div>
-                                <input  type="file" #file accept='image/*' (change)="pickedfav($event,file.files);"
+                                <!-- <input  type="file" #file accept='image/*' (change)="pickedfav($event,file.files);"
+                                  class="form-control" id="favIcon" placeholder="Drop favIcon image here"
+                                  formControlName="favIcon" /> -->
+
+                                  <input  type="file" accept='image/*' (change)="pickedfav($event);"
                                   class="form-control" id="favIcon" placeholder="Drop favIcon image here"
                                   formControlName="favIcon" />
+
                               </div>
-                              <span class="text-danger">Max file size 100Kb</span>
+                              <span class="text-info">Max file size 100Kb</span><br>
                               <span class="text-danger">{{favError}}</span>
                               <span class="text-danger"
                                 *ngIf="settingForm.controls['favIcon'].touched && settingForm.controls['favIcon'].hasError('required')">
                                 Image file is required! </span>
-                              <div *ngIf="favURL">
-                                <img  class="sliderImage-edit"
-                                  [attr.src]="getImagepath(settingForm.value['favSrc'])" >
-                              </div>
+
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-md-6" *ngIf="settingRecord.favicon_image">
+                                      <span><b>Existing Image</b></span> <br>                       
+                                      <img  src="../../../assets/uploads/favIcon/{{settingRecord.favicon_image}}" height="70"/>
+      
+                                    </div>
+                                    <div class="col-md-6" *ngIf="favURL">
+                                      <span ><b>New image</b></span><br>
+                                      <img  class="sliderImage-edit"
+                                       [attr.src]="getImagepath(settingForm.value['favSrc'])" height="70">
+      
+                                    </div>
+                                  </div>
+                                </div>                             
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="opr_content" class="col-sm-5 col-form-label"><strong>Operator Home Content</strong> </label>
+                            <div class="col-sm-7">
+                              <!-- <input id="opr_content" type="text" class="form-control" ngbAutofocus placeholder="operator home content"
+                                 formControlName="operator_home_content"/> -->
+                                 <textarea id="opr_content" class="form-control" ngbAutofocus placeholder="operator home content" formControlName="operator_home_content"></textarea>
                             </div>
                           </div>
 

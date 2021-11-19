@@ -31,7 +31,7 @@ export class SettingsService {
     )
   }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/odbusCharges', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/addOdbusCharges',post)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -42,8 +42,8 @@ export class SettingsService {
       catchError(this.errorHandler)
     )
   }
-  update(id, data): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/odbusCharges/' + id, JSON.stringify(data), this.httpOptions)
+  update(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/updateOdbusCharges', data)
     .pipe(
       catchError(this.errorHandler)
     )
