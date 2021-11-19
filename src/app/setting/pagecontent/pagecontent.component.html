@@ -145,37 +145,34 @@
                         <div class="right-icon-control">
                           <form [formGroup]="form" class="editForm" novalidate>
                               <div class="row">
-                                  <div class="col-md-6">
+                                  
+                                      <div class="from-group col-md-4">
+                                        <!-- <label>Page name :</label> -->
+                                        <label for="name" class="col-sm-12 col-form-label">Select Operator :<span class="text-danger">*</span></label>
+                                        <div class="col-sm-12">
+                                          <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                          placeholder="Select Operator" formControlName="bus_operator_id"
+                                          [clearable]="false">
+                                          </ng-select>
+                                            <span class="text-danger" *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
+                                                Operator is Required 
+                                            </span>
+                                        </div>                                             
+                                      </div>
 
-                                      <h5>Page Content</h5>
-                                    
-                                    <div class="from-group">
-                                      <!-- <label>Page name :</label> -->
-                                      <label for="name" class="col-sm-6 col-form-label">Select Operator :<span class="text-danger">*</span></label>
-                                      <div class="col-sm-12">
-                                        <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
-                                        placeholder="Select Operator" formControlName="bus_operator_id"
-                                        [clearable]="false">
-                                    </ng-select>
-                                          <span class="text-danger" *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
-                                              Operator is Required 
-                                          </span>
-                                      </div>                                             
-                                  </div>
-
-                                      <div class="from-group">
+                                      <div class="from-group col-md-4">
                                           <!-- <label>Page name :</label> -->
-                                          <label for="name" class="col-sm-3 col-form-label">Page name :<span class="text-danger">*</span></label>
+                                          <label for="name" class="col-sm-12 col-form-label">Page name :<span class="text-danger">*</span></label>
                                           <div class="col-sm-12">
-                                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name" required formControlName="page_name" />
+                                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name" required formControlName="page_name" (keyup)="generate_url()" />
                                               <span class="text-danger" *ngIf="form.controls['page_name'].touched && form.controls['page_name'].hasError('required')">
                                                   Page name is Required 
                                               </span>
                                           </div>                                             
                                       </div>
-                                      <div class="from-group">
+                                      <div class="from-group col-md-4">
                                           <!-- <label>Page name :</label> -->
-                                          <label for="name" class="col-sm-3 col-form-label">Page URL :<span class="text-danger">*</span></label>
+                                          <label for="name" class="col-sm-12 col-form-label">Page URL :<span class="text-danger">*</span></label>
                                           <div class="col-sm-12">
                                               <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name" required formControlName="page_url" />
                                               <span class="text-danger" *ngIf="form.controls['page_url'].touched && form.controls['page_url'].hasError('required')">
@@ -183,57 +180,50 @@
                                               </span>
                                           </div>                                             
                                       </div>
-                                      <div>
-                                          <label for="name" class="col-sm-5 col-form-label">Page Description :<span class="text-danger">*</span></label>
-                                      <angular-editor formControlName="page_description" [config]="editorConfig" ></angular-editor>
+                                      <div class="col-md-12">
+                                        
+                                          <label for="name" class="col-sm-12 col-form-label">Page Description :<span class="text-danger">*</span></label>
+                                          <div class="col-md-12">
+                                            <angular-editor formControlName="page_description" [config]="editorConfig" ></angular-editor>
+                                          </div>
                                       </div>
-                                     
-                                      
-                                      
-                                  </div>
-
-                                  <div class="col-md-6">
-
-                                      <h5>SEO Content</h5>
-
-                                      <div class="from-group">
+                                      <div class="from-group col-md-12">
                                           <label for="name" class="col-sm-3 col-form-label">Meta Title :</label>
                                           <div class="col-sm-12">
                                               <input type="text" class="form-control" ngbAutofocus placeholder="Enter Meta Title"  formControlName="meta_title" />                                               
                                           </div>                                             
                                       </div>
 
-                                      <div class="from-group">                                            
-                                          <label for="name" class="col-sm-3 col-form-label">Meta Keyword :</label>
+                                      <div class="from-group col-md-12">
+                                        <label for="name" class="col-sm-3 col-form-label">Meta Keyword :</label>
                                           <div class="col-sm-12">
                                               <input type="text" class="form-control" ngbAutofocus placeholder="Enter Meta Keyword"  formControlName="meta_keyword" />                                               
                                           </div>                                             
                                       </div>
 
-                                      <div class="from-group">                                           
-                                          <label for="name" class="col-sm-4 col-form-label">Meta Description :</label>
+                                      <div class="from-group col-md-12">
+                                        <label for="name" class="col-sm-4 col-form-label">Meta Description :</label>
                                           <div class="col-sm-12">
-                                              <textarea class="form-control" ngbAutofocus placeholder="Enter Meta Description"  formControlName="meta_description" rows="3" ></textarea>                                            
+                                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Meta Description"  formControlName="meta_description">      
                                           </div>                                             
                                       </div>
 
                                       
-                                      <div class="from-group">                                           
+                                      <div class="from-group col-md-6">     
                                           <label for="name" class="col-sm-4 col-form-label">Extra Meta :</label>
                                           <div class="col-sm-12">
                                               <textarea class="form-control" ngbAutofocus placeholder="Enter Extra Meta"  formControlName="extra_meta" rows="3"></textarea>                                            
                                           </div>                                             
                                       </div>
 
-                                      <div class="from-group">
-                                      
-                                          <label for="name" class="col-sm-3 col-form-label">Canonical URL :</label>
+                                      <div class="from-group col-md-6">
+                                        <label for="name" class="col-sm-3 col-form-label">Canonical URL :</label>
                                           <div class="col-sm-12">                                                
                                               <textarea class="form-control" ngbAutofocus placeholder="Enter Canonical URL"  formControlName="canonical_url" rows="3"></textarea>
                                           </div>                                             
                                       </div>
 
-                                  </div>
+                                 
 
                                   
                               </div>   

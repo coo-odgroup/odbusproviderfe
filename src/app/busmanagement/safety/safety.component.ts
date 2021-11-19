@@ -217,7 +217,6 @@ export class SafetyComponent implements OnInit {
         res => {
           this.Safetys= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( this.Safetys);
         }
       );
     }
@@ -226,8 +225,7 @@ export class SafetyComponent implements OnInit {
       this.safetyService.getAllData(data).subscribe(
         res => {
           this.Safetys= res.data.data.data;
-          this.pagination= res.data.data;
-          console.log( res.data);
+          this.pagination= res.data.data;  
         }
       );
     }
@@ -264,16 +262,11 @@ export class SafetyComponent implements OnInit {
     this.SafetyRecord.icon="";
     
   }
-  // this.finalImage= this.form.value.imagePath[0];
+ 
   addsafety()
   {
     let id=this.SafetyRecord.id;
-    // console.log(this.form.value.imagePath[0]);
-    // const data ={
-    //   name:this.form.value.name,
-    //   icon:this.form.value.icon,
-    //   created_by:localStorage.getItem('USERNAME')
-    // };
+  
     let fd: any = new FormData();
     fd.append("icon", this.finalImage);
     fd.append("name",this.form.value.name);
@@ -304,11 +297,6 @@ export class SafetyComponent implements OnInit {
     }
     else{     
       fd.append("id",this.SafetyRecord.id);   
-      //     for (var pair of fd.entries()) {
-      //   console.log(pair[0]+ ', ' + pair[1]); 
-      // }
-      // return false;
-
       this.safetyService.update(fd).subscribe(
         resp => {
           if(resp.status==1)
@@ -330,10 +318,6 @@ export class SafetyComponent implements OnInit {
   editsafety(event : Event, id : any)
   {
     this.SafetyRecord=this.Safetys[id] ;
-    // console.log(this.SafetyRecord.safety_image);
-    // this.imgURL = this.getBannerImagepath(this.SafetyRecord.icon);
-    
-    //console.log(this.imgURL);
     this.form = this.fb.group({
       name: [this.SafetyRecord.name, Validators.compose([Validators.required,Validators.minLength(2)])],
       icon: [],

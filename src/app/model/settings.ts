@@ -15,6 +15,10 @@ export interface SettingsRecords{
     mobile_no_4:any;
     logo:any;
     favIcon:any;
+    logo_image:any;
+    favicon_image:any;
+    operator_slogan:any;
+    operator_home_content:any;
 
   } 
   

@@ -14,4 +14,5 @@ export interface Banner {
     iconSrc:any;
     created_by: string;
     status: 1;
+    banner_image:[null];
 }
