@@ -36,18 +36,30 @@ export class SpecialsliderService {
       catchError(this.errorHandler)
     )
   }
+  // create(post): Observable<any> {
+  //   return this.httpClient.post<any>(this.apiURL + '/slider', JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/slider', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/slider',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/slider/' + id, JSON.stringify(post), this.httpOptions)
+  update(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/sliderUpdate',post)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+  // update(id, post): Observable<any> {
+  //   return this.httpClient.put<any>(this.apiURL + '/slider/' + id, JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
   delete(id){
     return this.httpClient.delete<any>(this.apiURL + '/slider/' + id, this.httpOptions)
     .pipe(

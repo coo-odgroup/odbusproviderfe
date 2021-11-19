@@ -338,22 +338,28 @@ export class AmenitiesComponent implements OnInit {
         }
       };
     };
-
     if (fileList.length > 0) {
-      //const file = event.target.files[0];
       const file: File = fileList[0];
       this.form.patchValue({
         icon: file
       });
-      //this.form.get('icon').updateValueAndValidity()
-      //const file: File = fileList[0];
-      //this.form.value.File = file;
       this.handleInputChange(file); //turn into base64
+
     }
+    // if (fileList.length > 0) {
+    //   const file: File = fileList[0];
+
+    //   this.form.value.File = file;
+      
+      
+    //   this.handleInputChange(file); //turn into base64   
+    // }
     else {
       //alert("No file selected");
     }
+
     this.preview(fileSrc);
+
 
   }
 
@@ -394,9 +400,11 @@ export class AmenitiesComponent implements OnInit {
     }
 
     let reader = new FileReader();
+    debugger;
     this.form.value.imagePath = files;
     reader.readAsDataURL(files[0]);
     reader.onload = (_event) => {
+      debugger;
       this.imgURL = reader.result;
     }
   }
