@@ -45,6 +45,10 @@ export class MastersettingComponent implements OnInit {
   //public message: string;
   public pagination: any;
   public imageSizeFlag = true;
+  finalLogo: any;
+  finalFavIcon: any;
+  favSrc: any[];
+
 
   constructor( private fb: FormBuilder,private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer,config: NgbModalConfig,private modalService: NgbModal,private busOperartorService:BusOperatorService)
    {
@@ -90,6 +94,11 @@ export class MastersettingComponent implements OnInit {
       name:[null],
       per_page:Constants.RecordLimit,
     })
+    this.finalLogo =[null];
+    // this.favURL=[null];
+    // this.imgURL = [null];
+    // this.iconSrc=[null];
+    // this.favSrc = [null];
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
       email_sms_charges:[null,Validators.compose([Validators.required])],
@@ -108,6 +117,10 @@ export class MastersettingComponent implements OnInit {
       favIcon:[null],
       favSrc:[null],
       user_name : localStorage.getItem('USERNAME'),
+      logo_image:[null],
+      favicon_image:[null],
+      operator_slogan:[null],
+      operator_home_content:[null]
     });
 
     this.formConfirm=this.fb.group({
@@ -207,16 +220,18 @@ export class MastersettingComponent implements OnInit {
       reader.readAsDataURL(files[0]); 
       reader.onload = (_event) => { 
         this.imgURL = reader.result; 
-        this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
+        // this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
+        this.finalLogo= files[0] ;
       }
     }
 
 
 
-    public pickedfav(event:any, fileSrc:any) {
+    public pickedfav(event:any) {
+
       this.favError = null;
               const max_size = 102400;
-              const allowed_types = ['image/x-png','image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+              const allowed_types = ['image/png','image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
               const max_height = 100;
               const max_width = 200;
       let fileList: FileList = event.target.files;
@@ -230,7 +245,6 @@ export class MastersettingComponent implements OnInit {
         return false;
     }
     if (!_.includes(allowed_types, event.target.files[0].type)) {
-  
         this.favError = 'Only Images are allowed';
         this.settingForm.value.imagePath = '';
         this.settingForm.controls.slider_img.setValue('');
@@ -260,16 +274,15 @@ export class MastersettingComponent implements OnInit {
         };
     };
       if (fileList.length > 0) {
-        const file: File = fileList[0];
-        
-          this.settingForm.value.File = file;
-  
-          this.handleInputChangefav(file); //turn into base64  
+         const file: File = fileList[0];        
+          this.settingForm.value.favIcon = file[0];  
+          this.handleInputChangefav(file); //turn into base64 
+          this.previewfav(fileList); 
       }
       else {
         //alert("No file selected");
       }
-      this.previewfav(fileSrc); 
+
     }
     handleInputChangefav(files) {
       let file = files;
@@ -287,10 +300,12 @@ export class MastersettingComponent implements OnInit {
       this.settingForm.controls.favSrc.setValue(this.base64result); 
     }
     previewfav(files) {
+     
       if (files.length === 0)
+      
         return;
       let mimeType = files[0].type;
-  
+      
       if (mimeType.match(/image\/*/) == null) {
         this.message = "Only images are supported.";
         return;
@@ -299,8 +314,11 @@ export class MastersettingComponent implements OnInit {
       this.settingForm.value.favIcon = files;
       reader.readAsDataURL(files[0]); 
       reader.onload = (_event) => { 
+       
         this.favURL = reader.result; 
-        this.favURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.favURL);
+        // this.favURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.favURL);
+        
+        this.finalFavIcon=  files[0];
       }
     }
 
@@ -316,6 +334,7 @@ export class MastersettingComponent implements OnInit {
     }
     ResetAttributes()
   {
+    this.settingRecord = {} as SettingsRecords;
     this.settingForm = this.fb.group({
       id:[null],
       bus_operator_id: [null, Validators.compose([Validators.required])],
@@ -336,6 +355,10 @@ export class MastersettingComponent implements OnInit {
       favIcon:[null],
       favSrc:[null],
       user_name : localStorage.getItem('USERNAME'),
+      logo_image:[null],
+      favicon_image:[null],
+      operator_slogan:[null],
+      operator_home_content:[null]
     });
     this.LoadAllService();
     this.ModalHeading = "Add Master Settings";
@@ -348,30 +371,37 @@ export class MastersettingComponent implements OnInit {
   addSettings()
   {
 
-    this.finalJson = {
-      "File": this.imageSrc,
-    }
-    const data ={
-      bus_operator_id:this.settingForm.value.bus_operator_id,
-      payment_gateway_charges:this.settingForm.value.payment_gateway_charges,
-      email_sms_charges:this.settingForm.value.email_sms_charges,
-      odbus_gst_charges:this.settingForm.value.odbus_gst_charges,
-      advance_days_show:this.settingForm.value.advance_days_show,
-      support_email:this.settingForm.value.support_email,
-      booking_email:this.settingForm.value.booking_email,
-      request_email:this.settingForm.value.request_email,
-      other_email:this.settingForm.value.other_email,
-      mobile_no_1:this.settingForm.value.mobile_no_1,
-      mobile_no_2:this.settingForm.value.mobile_no_2,
-      mobile_no_3:this.settingForm.value.mobile_no_3,
-      mobile_no_4:this.settingForm.value.mobile_no_4,
-      logo:this.settingForm.value.iconSrc,
-      favIcon:this.settingForm.value.favSrc,      
-      created_by:localStorage.getItem('USERNAME'),
-    };
     let id = this.settingRecord?.id;
+
+    let fd: any = new FormData();
+    fd.append("favicon_image", this.finalFavIcon);
+    fd.append("logo_image", this.finalLogo);
+    fd.append("bus_operator_id",this.settingForm.value.bus_operator_id);
+    fd.append("payment_gateway_charges",this.settingForm.value.payment_gateway_charges);
+    fd.append("email_sms_charges",this.settingForm.value.email_sms_charges);
+    fd.append("odbus_gst_charges",this.settingForm.value.odbus_gst_charges);
+    fd.append("advance_days_show",this.settingForm.value.advance_days_show);
+    fd.append("support_email",this.settingForm.value.support_email);
+    fd.append("booking_email",this.settingForm.value.booking_email);
+    fd.append("request_email",this.settingForm.value.request_email);
+    fd.append("other_email",this.settingForm.value.other_email);
+    fd.append("mobile_no_1",this.settingForm.value.mobile_no_1);
+    fd.append("mobile_no_2",this.settingForm.value.mobile_no_2);
+    fd.append("mobile_no_3",this.settingForm.value.mobile_no_3);
+    fd.append("mobile_no_4",this.settingForm.value.mobile_no_4);
+    fd.append("operator_slogan",this.settingForm.value.operator_slogan);
+    fd.append("operator_home_content",this.settingForm.value.operator_home_content);
+    fd.append("created_by",localStorage.getItem('USERNAME'));
+
+   
     if (id != null) {
-      this.settingsService.update(id, data).subscribe(
+
+      fd.append("id",  this.settingRecord?.id);
+    //   for (var pair of fd.entries()) {
+    //     console.log(pair[0]+ ', ' + pair[1]); 
+    // }  
+
+      this.settingsService.update(fd).subscribe(
         resp => {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -386,7 +416,7 @@ export class MastersettingComponent implements OnInit {
       );
     }
     else {
-      this.settingsService.create(data).subscribe(
+      this.settingsService.create(fd).subscribe(
         resp => {
           if (resp.status == 1) {
 
@@ -412,8 +442,8 @@ export class MastersettingComponent implements OnInit {
   editSettings(id)
   { 
     this.settingRecord = this.settings[id]; 
-    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.settingRecord.logo); 
-    this.favURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.settingRecord.favIcon); 
+    this.imgURL =''; 
+    this.favURL =''; 
     this.settingForm=this.fb.group({
       id:[this.settingRecord.id],
       bus_operator_id:[this.settingRecord.bus_operator_id],
@@ -431,8 +461,10 @@ export class MastersettingComponent implements OnInit {
       mobile_no_4:[this.settingRecord.mobile_no_4],
       logo: [],favIcon:[],
       iconSrc:[this.settingRecord.logo],
-      favSrc:[this.settingRecord.favIcon]
-      
+      favSrc:[this.settingRecord.favIcon],
+      operator_slogan:[this.settingRecord.operator_slogan],
+      operator_home_content:[this.settingRecord.operator_home_content],
+
     });
     this.LoadAllService();
     this.ModalHeading = "Edit Master Settings";

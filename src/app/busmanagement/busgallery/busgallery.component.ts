@@ -59,7 +59,7 @@ export class BusgalleryComponent implements OnInit {
     this.busRecord = {} as Bus;
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Add New Bus";
+    this.ModalHeading = "Add New Bus Photos";
     this.ModalBtn = "Save";
   }
 
@@ -99,28 +99,70 @@ export class BusgalleryComponent implements OnInit {
       "File": this.imageSrc,
     }
 
-    const data = {
-      bus_operator_id:this.busForm.value.bus_operator_id,
-      bus_id: this.busForm.value.bus_id,
-      icon: this.busForm.value.iconSrc,
-      created_by:localStorage.getItem('USERNAME'),
-    };
-    this.busgalleryService.create(data).subscribe(
-      resp => {
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: 'success' });
-          this.modalReference.close();
-          this.ResetAttributes();
-         
-          this.refresh();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-        }
-      }
-    )
+    let id: any = this.busForm.value.id;
+    let fd: any = new FormData();
+    fd.append("id",this.busForm.value.id);
+    fd.append("icon", this.busForm.get('icon').value);
+    fd.append("bus_operator_id",this.busForm.value.bus_operator_id);
+    fd.append("bus_id",this.busForm.value.bus_id);
+    fd.append("created_by",localStorage.getItem('USERNAME'));
+    // const data = {
+    //   bus_operator_id:this.busForm.value.bus_operator_id,
+    //   bus_id: this.busForm.value.bus_id,
+    //   icon: this.busForm.value.iconSrc,
+    //   created_by:localStorage.getItem('USERNAME'),
+    // };
 
+    if (id == null) { 
+      this.busgalleryService.create(fd).subscribe(
+
+        resp => {
+          if (resp.status == 1) {
+            this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.ResetAttributes(); 
+            this.refresh();
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          }
+        }
+      )
+    }
+    else {
+      this.busgalleryService.update(fd).subscribe(
+        resp => {
+          if (resp.status == 1) {
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.ResetAttributes();
+            this.modalReference.close();
+            this.refresh();
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          }
+        }
+      );
+    }
   }
+    editGallery(event: Event,id:any) {
+      this.ModalHeading = "Edit Bus Photos";
+      this.ModalBtn = "Update";
+      this.busGalleryRecord = this.busGallerries[id];
+  
+      this.imgURL = this.getBannerImagepath(this.busGalleryRecord.icon);
+      this.busForm = this.fb.group({
+        id: [this.busGalleryRecord.id],
+        bus_id: [this.busGalleryRecord.bus_id, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
+        bus_operator_id: [this.busGalleryRecord.bus_operator_id, Validators.compose([Validators.required])],
+        icon: [],
+        iconSrc: [this.busGalleryRecord.icon]
+      });
+    }
+    ///////////////////////////////////////////
+    
+
+ 
   ResetAttributes() {
     this.busForm = this.fb.group({
       id: [null],
@@ -201,11 +243,13 @@ export class BusgalleryComponent implements OnInit {
         }
       };
     };
-
     if (fileList.length > 0) {
+      //const file: File = fileList[0];
       const file: File = fileList[0];
-
-      this.busForm.value.File = file;
+      this.busForm.patchValue({
+        icon: file
+      });
+      //this.busForm.value.File = file;
 
       this.handleInputChange(file); //turn into base64
 

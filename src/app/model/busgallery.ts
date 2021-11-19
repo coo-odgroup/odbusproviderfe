@@ -9,4 +9,5 @@ export interface Busgallery {
     created_by:string;
     status:1;
     iconSrc:any;
+    bus_operator_id:any;
 }
