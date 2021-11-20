@@ -246,20 +246,17 @@ export class BusgalleryComponent implements OnInit {
     if (fileList.length > 0) {
       //const file: File = fileList[0];
       const file: File = fileList[0];
+      this.preview(fileSrc);
       this.busForm.patchValue({
         icon: file
       });
       //this.busForm.value.File = file;
 
       this.handleInputChange(file); //turn into base64
-
     }
     else {
       //alert("No file selected");
     }
-
-    this.preview(fileSrc);
-
   }
 
   handleInputChange(files) {

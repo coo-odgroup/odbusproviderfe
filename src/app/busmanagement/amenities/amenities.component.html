@@ -20,9 +20,7 @@
                           formControlName="name" /> 
                       </div>
                   </div>
-              </div>                
-          
-                 
+              </div>                    
               <div class="col-5">
                 <button type="button" class="btn btn-success  sml_input" (click)="search()"
                     title="search">
@@ -41,9 +39,6 @@
                     <i class="fas fa-print"> </i> Print
                 </button>
             </div>
-                  
-                 
-          
                   <div class="col-2">                 
                      <div class="dropdown float-right">
                           <select class="form-control sml_input" formControlName="rows_number"
@@ -56,15 +51,10 @@
                           </select>
                       </div>
                   </div>               
-          
               </div>
-          </form>
-  
-          
+          </form> 
           </div>
-  
         </div>
-        
         <div class="table-responsive"  id="print-section">
           <table class="table table-striped ">
             <thead>
@@ -84,11 +74,11 @@
                     <td>{{ amenity.name }}</td>
                     <td>{{ amenity.created_at | date: 'dd/MM/yyyy'}}</td>
                     <td>{{ amenity.created_by }}</td>
-                    <td *ngIf="(amenity.amenities_image=='' || amenity.amenities_image==null)">
-                      ----no image available----
-                    </td>
-                    <td *ngIf="amenity.amenities_image !='' && amenity.amenities_image != null">
-                      <img class="sliderImage" src="../../../assets/uploads/amenities/{{amenity.amenities_image}}" height="100">
+                    <td>
+                      <img *ngIf="amenity.amenities_image || amenity.amenities_image!==null" class="sliderImage"
+                        src="../../../assets/uploads/amenities/{{amenity.amenities_image}}" height="100">
+                      <img *ngIf="amenity.amenities_image=='' || amenity.amenities_image==null" class="sliderImage"
+                        src="https://icon-library.com/images/no-image-available-icon/no-image-available-icon-13.jpg" height="100"/>
                     </td>
                     <td>
                       <label *ngIf="amenity.status==1" class="badge badge-light-primary pointer text-dark"
@@ -210,22 +200,21 @@
                             </div> -->
 
                             <div class="form-group row">
-                              <label for="safety" class="col-sm-4 col-form-label">Image</label>
-                              <div class="col-sm-8">
+                              <label for="safety" class="col-sm-3 col-form-label">Image</label>
+                              <div class="col-sm-9">
+                                
                                 <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept='image/*'
                                   accept=".png, .jpg, .jpeg" class="form-control" id="icon" placeholder="Amenity Icon" formControlName="icon" />
                                 <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
-                                <!-- <span class="text-danger">Max file size 100Kb and supports jpg/jpeg/png</span> -->
                                 <span class="text-danger">{{imageError}}</span>
                                 <span class="text-danger" *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
                                   Icon file is required! </span>
                                 <img  *ngIf="AmenitiesRecord && AmenitiesRecord.amenities_image" class="sliderImage" src="../../../assets/uploads/amenities/{{AmenitiesRecord.amenities_image}}" height="50">
-
                               </div>
+                              <label for="amenity" class="col-sm-3 col-form-label"></label>
                               <div class="col-md-6" *ngIf="imgURL">
                                 <span ><b>New image</b></span><br>
-                                  <img class="sliderImage" [src]="imgURL" height="100" >
-
+                                  <img class="sliderImage" [src]="imgURL" height="50" >
                               </div>
                             </div>
                             </div>

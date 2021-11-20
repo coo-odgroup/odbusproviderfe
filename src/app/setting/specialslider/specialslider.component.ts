@@ -161,9 +161,10 @@ export class SpecialsliderComponent implements OnInit {
     if (fileList.length > 0) {
       //const file = event.target.files[0];
       const file: File = fileList[0];
+      this.preview(fileSrc); 
       this.sliderForm.patchValue({
         slider_img: file
-      });console.log( this.sliderForm.value.slider_img);
+      });
       //this.form.get('icon').updateValueAndValidity()
       //const file: File = fileList[0];
       //this.form.value.File = file;
@@ -174,7 +175,6 @@ export class SpecialsliderComponent implements OnInit {
     else {
       //alert("No file selected");
     }
-    this.preview(fileSrc); 
   }
   handleInputChange(files) {
     let file = files;

@@ -283,12 +283,13 @@
                               <span class="text-danger"
                                 *ngIf="sliderForm.controls['slider_img'].touched && sliderForm.controls['slider_img'].hasError('required')">
                                 Image file is required! </span>
-                              <!-- <div *ngIf="imgURL"> -->
-                              <!-- <img id="sliderImgPreview" class="sliderImage-edit"
-                                                              [attr.src]="getBannerImagepath(sliderForm.value['iconSrc'])"> -->
-                              <img id="sliderImgPreview" class="sliderImage-edit" src="../../../assets/uploads/slider_photos/{{sliderRecord.slider_photo}}" height="50">
-                              <!-- </div> -->
+                              <img id="sliderImgPreview" class="sliderImage-edit" src="../../../assets/uploads/slider_photos/{{sliderRecord.slider_photo}}" height="50">  
                             </div>
+                            <label for="slider" class="col-sm-3 col-form-label"></label>
+                              <div class="col-md-6" *ngIf="imgURL">
+                                <span ><b>New image</b></span><br>
+                                  <img class="sliderImage" [src]="imgURL" height="50" >
+                              </div>
                           </div>
                         </div>
                       </div>
