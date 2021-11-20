@@ -31,7 +31,7 @@ export class BusgalleryComponent implements OnInit {
 
   public busGallerries: Busgallery[];
   public busGalleryRecord: Busgallery;
-
+  public isSubmit: boolean;
   imgURL: any;
   imageSrc: string;
   File: any;
@@ -55,13 +55,16 @@ export class BusgalleryComponent implements OnInit {
     private notificationService: NotificationService,
     private fb: FormBuilder,
     config: NgbModalConfig,
-    private modalService: NgbModal) {
+    private modalService: NgbModal) 
+    {
     this.busRecord = {} as Bus;
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add New Bus Photos";
     this.ModalBtn = "Save";
-  }
+    this.isSubmit = false;
+    this.busGalleryRecord= {} as Busgallery;
+   }
 
 
   title = 'angular-app';
@@ -173,6 +176,7 @@ export class BusgalleryComponent implements OnInit {
     });
     this.imgURL = "";
     this.imageSrc = "";
+    this.busGalleryRecord.icon="";  
   }
   ngOnInit(): void {
     this.loadServices();
