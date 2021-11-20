@@ -62,21 +62,20 @@
             <tr *ngFor="let sliderdata of sliders; let i = index">
               <td>{{ i+1 }}</td>
               <td>{{sliderdata.occassion}} </td>
-              <td>
-                <!-- <img *ngIf="sliderdata" [src]="getBannerImagepath(sliderdata.slider_img)"/> -->
-                <img class="sliderImage" [attr.src]="getBannerImagepath(sliderdata.slider_img)">
-              </td>
-              <!-- <td>{{sliderdata.slider_img}} </td>  -->
+                <td>
+                  <img *ngIf="sliderdata.slider_photo || sliderdata.slider_photo!==null" class="sliderImage"
+                  src="../../../assets/uploads/slider_photos/{{sliderdata.slider_photo}}" height="100">
+                  <img *ngIf="sliderdata.slider_photo=='' || sliderdata.slider_photo==null" class="sliderImage"
+                    src="../../../assets/images/noImage.png" height="100">
+                </td>
               <td>{{sliderdata.start_date}} {{sliderdata.start_time}} </td>
               <td>{{sliderdata.end_date}} {{sliderdata.end_time}}</td>
-              <!-- <td>{{sliderdata.status}} </td>  -->
               <td>
                 <label *ngIf="sliderdata.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, sliderdata.id);">Active</label>
                 <label *ngIf="sliderdata.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, sliderdata.id);">Pending</label>
               </td>
-             
               <td class="hide_print">
                 <div class="overlay-edit">
                   <button type="button" (click)="editSlider(i);OpenModal(content)"
@@ -92,8 +91,7 @@
               <td colspan="7" class="no-data-available">No data!</td>
             </tr>
           </tbody>
-        </table>
-      
+        </table> 
       </div>
       <!-- /////Paginate Code -->
       <!-- {{sliders|json}} -->
@@ -270,22 +268,27 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="Name" class="col-sm-5 col-form-label">Slider Image<span
-                                class="text-danger">*</span></label>
+                            <label for="Name" class="col-sm-5 col-form-label">Slider Image<span class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <div>
-                                <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
-                                  class="form-control" id="slider_img" placeholder="Drop your image here"
-                                  formControlName="slider_img" />
-                              </div>
-                              <span class="text-danger">Max file size 100Kb</span>
+                              <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept='image/*'
+                                class="form-control" id="slider_img" placeholder="Drop your image here" formControlName="slider_img" />
+                              <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
                               <span class="text-danger">{{imageError}}</span>
                               <span class="text-danger"
                                 *ngIf="sliderForm.controls['slider_img'].touched && sliderForm.controls['slider_img'].hasError('required')">
                                 Image file is required! </span>
-                              <div *ngIf="imgURL">
-                                <img id="sliderImgPreview" class="sliderImage-edit"
-                                  [attr.src]="getBannerImagepath(sliderForm.value['iconSrc'])">
+                              <div class="col-12">
+                                <div class="row">
+                                  <div class="col-md-6" *ngIf="sliderRecord && sliderRecord.slider_photo">
+                                    <span><b>Existing Image</b></span> <br>
+                                    <img class="sliderImage" src="../../../assets/uploads/amenities/{{sliderRecord.slider_photo}}"
+                                      height="50" />
+                                  </div>
+                                  <div class="col-md-6" *ngIf="imgURL">
+                                    <span><b>New image</b></span><br>
+                                    <img class="sliderImage" [src]="imgURL" height="50">
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>

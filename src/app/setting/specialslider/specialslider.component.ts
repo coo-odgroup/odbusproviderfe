@@ -96,7 +96,7 @@ export class SpecialsliderComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
-      slider_img:[null],
+      slider_img:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
       alt_tag: [null, Validators.compose([Validators.required])],
@@ -115,7 +115,7 @@ export class SpecialsliderComponent implements OnInit {
     this.imageError = null;
             const max_size = 102400;
             //const allowed_types = ['image/svg+xml'];
-            const allowed_types = ['image/x-png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+            const allowed_types = ['image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
             const max_height = 100;
             const max_width = 200;
     let fileList: FileList = event.target.files;
@@ -159,16 +159,22 @@ export class SpecialsliderComponent implements OnInit {
       };
   };
     if (fileList.length > 0) {
+      //const file = event.target.files[0];
       const file: File = fileList[0];
-      
-        this.sliderForm.value.File = file;
+      this.preview(fileSrc); 
+      this.sliderForm.patchValue({
+        slider_img: file
+      });
+      //this.form.get('icon').updateValueAndValidity()
+      //const file: File = fileList[0];
+      //this.form.value.File = file;
+      this.handleInputChange(file); //turn into base64
 
-        this.handleInputChange(file); //turn into base64  
+       // this.sliderForm.value.File = file; 
     }
     else {
       //alert("No file selected");
     }
-    this.preview(fileSrc); 
   }
   handleInputChange(files) {
     let file = files;
@@ -225,7 +231,7 @@ export class SpecialsliderComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
-      slider_img:[null],
+      slider_img:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
       alt_tag: [null, Validators.compose([Validators.required])],
@@ -246,24 +252,52 @@ export class SpecialsliderComponent implements OnInit {
     this.finalJson = {
       "File": this.imageSrc,
     }
-
-    const data ={
-      bus_operator_id:this.sliderForm.value.bus_operator_id,
-      occassion:this.sliderForm.value.occassion,
-      category:this.sliderForm.value.category,
-      url:this.sliderForm.value.url,
-      start_date:this.sliderForm.value.start_date,
-      start_time:this.sliderForm.value.start_time,
-      alt_tag:this.sliderForm.value.alt_tag,
-      end_date:this.sliderForm.value.end_date,
-      end_time:this.sliderForm.value.end_time,
-      //slider_img:this.sliderForm.value.slider_img,
-      slider_img:this.sliderForm.value.iconSrc,
-      created_by: localStorage.getItem('USERNAME'),
-    };
-    let id = this.sliderRecord?.id;
-    if (id != null) {
-      this.specialsliderService.update(id, data).subscribe(
+    let id: any = this.sliderForm.value.id;
+    let fd: any = new FormData();
+    fd.append("id",this.sliderForm.value.id);
+    fd.append("slider_img", this.sliderForm.get('slider_img').value);
+    fd.append("bus_operator_id",this.sliderForm.value.bus_operator_id);
+    fd.append("occassion",this.sliderForm.value.occassion);
+    fd.append("url",this.sliderForm.value.url);
+    fd.append("start_date",this.sliderForm.value.start_date);
+    fd.append("start_time",this.sliderForm.value.start_time);
+    fd.append("alt_tag",this.sliderForm.value.alt_tag);
+    fd.append("end_date",this.sliderForm.value.end_date);
+    fd.append("end_time",this.sliderForm.value.end_time);
+    fd.append("created_by",localStorage.getItem('USERNAME'));
+    
+    // const data ={
+    //   bus_operator_id:this.sliderForm.value.bus_operator_id,
+    //   occassion:this.sliderForm.value.occassion,
+    //   category:this.sliderForm.value.category,
+    //   url:this.sliderForm.value.url,
+    //   start_date:this.sliderForm.value.start_date,
+    //   start_time:this.sliderForm.value.start_time,
+    //   alt_tag:this.sliderForm.value.alt_tag,
+    //   end_date:this.sliderForm.value.end_date,
+    //   end_time:this.sliderForm.value.end_time,
+    //   //slider_img:this.sliderForm.value.slider_img,
+    //   slider_img:this.sliderForm.value.iconSrc,
+    //   created_by: localStorage.getItem('USERNAME'),
+    // };
+    //let id = this.sliderRecord?.id;
+    if (id == null) {
+      this.specialsliderService.create(fd).subscribe(
+        resp => {
+          if (resp.status == 1) {
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.getAll(); 
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          }
+        }
+      );  
+    }
+    else {
+      this.specialsliderService.update(fd).subscribe(
         resp => {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -272,23 +306,6 @@ export class SpecialsliderComponent implements OnInit {
             this.getAll();
           }
           else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          }
-        }
-      );
-    }
-    else {
-      this.specialsliderService.create(data).subscribe(
-        resp => {
-          if (resp.status == 1) {
-
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.getAll(); 
-          }
-          else {
-
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
           }
         }
@@ -327,19 +344,6 @@ export class SpecialsliderComponent implements OnInit {
       slider_img: [],
       iconSrc:[this.sliderRecord.slider_img]
     });
-    
-    // this.sliderForm = this.fb.group({
-    //   occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
-    //   category: [null],
-    //   url:[null],
-    //   slider_img:[null],
-    //   start_date: [null, Validators.compose([Validators.required])],
-    //   start_time: [null, Validators.compose([Validators.required])],
-    //   alt_tag: [null, Validators.compose([Validators.required])],
-    //   end_date: [null, Validators.compose([Validators.required])],
-    //   end_time: [null, Validators.compose([Validators.required])],
-    //   iconSrc:[this.sliderRecord.slider_img]
-    // });
     this.LoadAllService();
     this.ModalHeading = "Edit Special slider";
     this.ModalBtn = "Update";  

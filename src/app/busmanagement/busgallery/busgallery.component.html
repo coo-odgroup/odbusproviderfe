@@ -65,21 +65,17 @@
           </thead>
           <tbody *ngIf="busGallerries?.length != 0">
             <tr *ngFor="let gallery of busGallerries; let i=index; ">
-
               <td>{{ i+1 }}</td>
               <td class="text-capitalize">{{ gallery.bus_operator.operator_name }}</td>
               <td>{{ gallery.bus.name }}</td>
               <td>{{ gallery.bus.bus_number }}</td>
               <td>{{ gallery.created_at | date: 'dd/MM/yyyy'}}</td>
-              <td *ngIf="(gallery.bus_image=='' || gallery.bus_image==null)">
-                ----no image available----
+              <td>
+                <img *ngIf="gallery.bus_image || gallery.bus_image!==null" class="sliderImage"
+                src="../../../assets/uploads/bus_photos/{{gallery.bus_image}}" height="100">
+                <img *ngIf="gallery.bus_image=='' || gallery.bus_image==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="100">
               </td>
-              <td *ngIf="gallery.bus_image !='' && gallery.bus_image != null">
-                <img  src="../../../assets/uploads/bus_photos/{{gallery.bus_image}}" height="100">
-              </td>
-              <!-- <td>
-                <img class="sliderImage" [attr.src]="getBannerImagepath(gallery.image)" height="100">
-              </td> -->
               <td class="hide_print">
                 <div class="overlay-edit">
                   <button type="button" (click)="editGallery($event, i); OpenModal(content);"
@@ -90,14 +86,12 @@
               </td>
             </tr>
           </tbody>
-
           <tbody *ngIf="busGallerries?.length == 0">
             <tr>
               <td colspan="7" class="no-data-available">No data!</td>
             </tr>
           <tbody>
         </table>
-
         <div *ngIf="pagination?.length != 0" class="hide_print">
           <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
             <nav class="my-1 pt-1 ">
@@ -119,10 +113,7 @@
           </div>
         </div>
       </div>
-
-
       <div class="app-card-footer">
-
         <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
           (click)="ResetAttributes();OpenModal(content)">Add </button>
         <ng-template #content let-modal>
@@ -167,17 +158,27 @@
                             Choose Image
                           </div>
                           <div class="col-md-9">
-                            <input type="file" (change)="picked($event,file.files);" #file accept='image/*'
-                              accept=".png, .jpg, .jpeg" class="form-control" id="icon" placeholder="Gallery Icon"
-                              formControlName="icon" />
-                            <span class="text-danger">Max file size 500Kb and supports jpg/jpeg/png</span>
+                            <input type="file" (change)="picked($event,file.files);" #file accept='image/*' accept=".png, .jpg, .jpeg"
+                              class="form-control" id="icon" placeholder="Gallery Icon" formControlName="icon" />
+                            <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
                             <span class="text-danger">{{imageError}}</span>
-                            <span class="text-danger"
-                              *ngIf="busForm.controls['icon'].touched && busForm.controls['icon'].hasError('required')">
+                            <span class="text-danger" *ngIf="busForm.controls['icon'].touched && busForm.controls['icon'].hasError('required')">
                               Icon file is required! </span><br />
-                              <!-- <img src="../../../assets/uploads/bus_photos/{{busGalleryRecord.bus_image}}" height="50"> -->
-                            <!-- <img [src]="imgURL" height="50" *ngIf="imgURL"> -->
-                          </div>
+                              <div class="col-12">
+                                <div class="row">
+                                  <div class="col-md-6" *ngIf="busGalleryRecord && busGalleryRecord.bus_image">
+                                    <span><b>Existing Image</b></span> <br>                       
+                                    <img    class="sliderImage" src="../../../assets/uploads/bus_photos/{{busGalleryRecord.bus_image}}" height="50"/>
+    
+                                  </div>
+                                  <div class="col-md-6" *ngIf="imgURL">
+                                    <span ><b>New image</b></span><br>
+                                      <img class="sliderImage" [src]="imgURL" height="50" >
+    
+                                  </div>
+                                </div>
+                              </div>  
+                        </div>
                         </div>
                       </div>
                     </form>

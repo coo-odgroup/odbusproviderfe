@@ -53,7 +53,7 @@ export class AmenitiesService {
     )
   }
   update(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/AmenitiesUpdate/',post)
+    return this.httpClient.post<any>(this.apiURL + '/AmenitiesUpdate',post)
     .pipe(
       catchError(this.errorHandler)
     )

@@ -41,7 +41,7 @@ export class BannerService {
     )
   }
   update(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/updateBanner/', post)
+    return this.httpClient.post<any>(this.apiURL + '/updateBanner', post)
     .pipe(
       catchError(this.errorHandler)
     )

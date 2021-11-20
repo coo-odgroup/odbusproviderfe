@@ -45,7 +45,7 @@ export class SafetyService {
     )
   }
   update(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/Safety/',post)
+    return this.httpClient.post<any>(this.apiURL + '/Safety',post)
     .pipe(
       catchError(this.errorHandler)
     )

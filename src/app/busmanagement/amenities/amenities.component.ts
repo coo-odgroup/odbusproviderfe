@@ -34,6 +34,8 @@ export class AmenitiesComponent implements OnInit {
   AmenitiesRecord: Amenities;
   imgURL: any;
 
+  
+
   //Image upload
 
   File: any;
@@ -164,9 +166,7 @@ export class AmenitiesComponent implements OnInit {
   // }
 
   addAmenities() {
-    this.finalJson = {
-      "File": this.imageSrc,
-    }
+
     let id: any = this.form.value.id;
     let fd: any = new FormData();
     fd.append("id",this.form.value.id);
@@ -338,23 +338,18 @@ export class AmenitiesComponent implements OnInit {
         }
       };
     };
-
     if (fileList.length > 0) {
-      //const file = event.target.files[0];
       const file: File = fileList[0];
+      this.preview(fileSrc);
       this.form.patchValue({
         icon: file
       });
-      //this.form.get('icon').updateValueAndValidity()
-      //const file: File = fileList[0];
-      //this.form.value.File = file;
       this.handleInputChange(file); //turn into base64
+
     }
     else {
       //alert("No file selected");
     }
-    this.preview(fileSrc);
-
   }
 
   handleInputChange(files) {
@@ -385,8 +380,7 @@ export class AmenitiesComponent implements OnInit {
   preview(files) {
     if (files.length === 0)
       return;
-
-        
+     
     let mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
       this.message = "Only images are supported.";
