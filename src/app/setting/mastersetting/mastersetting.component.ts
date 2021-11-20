@@ -95,10 +95,7 @@ export class MastersettingComponent implements OnInit {
       per_page:Constants.RecordLimit,
     })
     this.finalLogo =[null];
-    // this.favURL=[null];
-    // this.imgURL = [null];
-    // this.iconSrc=[null];
-    // this.favSrc = [null];
+    this.finalFavIcon =[null];
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
       email_sms_charges:[null,Validators.compose([Validators.required])],
@@ -106,12 +103,12 @@ export class MastersettingComponent implements OnInit {
       advance_days_show:[null, Validators.compose([Validators.required])],
       support_email:[null,Validators.compose([Validators.required])],
       booking_email:[null,Validators.compose([Validators.required])],
-      request_email:[null],
-      other_email:[null],
+      request_email:[null,Validators.compose([Validators.required])],
+      other_email:[],
       mobile_no_1:[null,Validators.compose([Validators.required])],
       mobile_no_2:[null,Validators.compose([Validators.required])],
-      mobile_no_3:[null],
-      mobile_no_4:[null],
+      mobile_no_3:[null,Validators.compose([Validators.required])],
+      mobile_no_4:[],
       logo:[null],
       iconSrc:[null],
       favIcon:[null],
@@ -274,6 +271,7 @@ export class MastersettingComponent implements OnInit {
         };
     };
       if (fileList.length > 0) {
+ 
          const file: File = fileList[0];        
           this.settingForm.value.favIcon = file[0];  
           this.handleInputChangefav(file); //turn into base64 
@@ -299,8 +297,7 @@ export class MastersettingComponent implements OnInit {
       this.settingForm.value.favSrc=this.base64result;
       this.settingForm.controls.favSrc.setValue(this.base64result); 
     }
-    previewfav(files) {
-     
+    previewfav(files) {   
       if (files.length === 0)
       
         return;
@@ -316,8 +313,7 @@ export class MastersettingComponent implements OnInit {
       reader.onload = (_event) => { 
        
         this.favURL = reader.result; 
-        // this.favURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.favURL);
-        
+               
         this.finalFavIcon=  files[0];
       }
     }
@@ -344,12 +340,12 @@ export class MastersettingComponent implements OnInit {
       advance_days_show:[null, Validators.compose([Validators.required])],
       support_email: [null, Validators.compose([Validators.required])],
       booking_email: [null, Validators.compose([Validators.required])],
-      request_email: [null],
-      other_email: [null],
+      request_email: [null, Validators.compose([Validators.required])],
+      other_email: [],
       mobile_no_1: [null, Validators.compose([Validators.required])],
       mobile_no_2: [null, Validators.compose([Validators.required])],
-      mobile_no_3: [null],
-      mobile_no_4: [null],
+      mobile_no_3: [null,Validators.compose([Validators.required])],
+      mobile_no_4: [],
       logo:[null],
       iconSrc:[null],
       favIcon:[null],
@@ -397,10 +393,10 @@ export class MastersettingComponent implements OnInit {
     if (id != null) {
 
       fd.append("id",  this.settingRecord?.id);
-    //   for (var pair of fd.entries()) {
-    //     console.log(pair[0]+ ', ' + pair[1]); 
-    // }  
-
+//       for (var pair of fd.entries()) {
+//         console.log(pair[0]+ ', ' + pair[1]); 
+//     }  
+// return;
       this.settingsService.update(fd).subscribe(
         resp => {
           if (resp.status == 1) {
