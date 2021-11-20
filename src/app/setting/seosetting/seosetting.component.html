@@ -203,6 +203,99 @@
                               </span>
                             </div>
                           </div>
+
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">                                
+                                <label for="name" class="col-sm-12 col-form-label">Select Seo Type :<span
+                                  class="text-danger">*</span></label>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label  class="col-sm-12 col-form-label">
+                                  <input  type="radio"  value="1" formControlName="seo_type" [checked]="true">
+                                  Routes</label>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label class="col-sm-12 col-form-label">
+                                  <input   type="radio"  value="2" formControlName="seo_type">
+                                  Others</label>
+                              </div>
+                            </div>
+                           
+                          </div>
+
+    
+                          <div class="row" *ngIf="form.controls.seo_type.value=='1'">
+                            <div class="col-md-3">    
+                                <label for="routes" class="col-sm-4 col-form-label">Routes<span
+                                    class="text-danger">*</span></label>                              
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <ng-select [items]="locations" 
+                                  bindLabel="name" 
+                                  bindValue="id" 
+                                  placeholder="Select Source"
+                                  formControlName="source_id"
+                                  [clearable]="false" >
+                                  </ng-select>    
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <ng-select [items]="locations" 
+                                    bindLabel="name" bindValue="id"
+                                    placeholder="Select Destination" 
+                                    formControlName="destination_id" 
+                                    [clearable]="false"> 
+                                  </ng-select>
+    
+                                </div>
+                              </div>
+                            </div>
+                           
+                          </div>
+
+                          <div class="row" *ngIf="form.controls.seo_type.value=='1'">
+                              
+                              <label for="routes" class="col-sm-4 col-form-label">URL Description :<span
+                                  class="text-danger">*</span></label>                              
+                      
+                          <div class="col-md-12">
+                            <div class="form-group row">
+                              <div class="col-sm-12">
+                                <angular-editor formControlName="url_description" [config]="editorConfig"></angular-editor>
+                              </div>
+                            </div>
+                          </div>
+                   
+                          
+                          </div>
+
+                          <!-- <div class="row"  *ngIf="form.controls.seo_type.value=='2'">
+                            <div class="col-md-3">    
+                                <label for="routes" class="col-sm-12 col-form-label">Type Name:<span
+                                    class="text-danger">*</span></label>                              
+                            </div>
+                            <div class="col-md-8">
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Type Name here" 
+                                  formControlName="other" />
+                                </div>
+                              </div>
+                            </div>
+                          </div> -->
+
+                        
+
                           <div class="from-group">
                             <label for="name" class="col-sm-3 col-form-label"> URL :<span
                                 class="text-danger">*</span></label>
@@ -219,11 +312,7 @@
 
 
 
-                          <div>
-                            <label for="name" class="col-sm-5 col-form-label">URL Description :<span
-                                class="text-danger">*</span></label>
-                            <angular-editor formControlName="url_description" [config]="editorConfig"></angular-editor>
-                          </div>
+                         
 
 
 

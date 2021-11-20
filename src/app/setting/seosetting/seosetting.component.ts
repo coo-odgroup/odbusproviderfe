@@ -8,6 +8,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { SeosettingService } from '../../services/seosetting.service';
 import { Constants } from '../../constant/constant';
+import { LocationService } from '../../services/location.service';
+import { Location } from '../../model/location';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -33,11 +35,14 @@ export class SeosettingComponent implements OnInit {
   urlcontent: Urlcontent[];
   urlcontentRecord: Urlcontent;
   busoperators: any;
+  locations: any;
 
   constructor(
+    
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, private busOperatorService: BusOperatorService,
+    private locationService:LocationService,
     private ss: SeosettingService,
     private modalService: NgbModal,
     config: NgbModalConfig
@@ -55,6 +60,9 @@ export class SeosettingComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [null],
+      seo_type: [null],     
+      source_id: [null],
+      destination_id: [null],
       page_url: [null, Validators.compose([Validators.required])],
       bus_operator_id: [null, Validators.compose([Validators.required])],
       url_description: [null],
@@ -86,6 +94,9 @@ export class SeosettingComponent implements OnInit {
     this.urlcontentRecord = {} as Urlcontent;
     this.form = this.fb.group({
       id: [null],
+      seo_type: [null],     
+      source_id: [null],
+      destination_id: [null],
       url_description: [null],
       bus_operator_id: [null],
       page_url: [null],
@@ -181,12 +192,21 @@ export class SeosettingComponent implements OnInit {
         this.busoperators = res.data;
       }
     );
+
+    this.locationService.readAll().subscribe(
+      records=>{
+        this.locations=records.data;
+      }
+    );
   }
 
   addData() {
     const data = {
       page_url: this.form.value.page_url,
       bus_operator_id:this.form.value.bus_operator_id,
+      seo_type:this.form.value.seo_type,
+      source_id:this.form.value.source_id,
+      destination_id:this.form.value.destination_id,
       url_description: this.form.value.url_description,
       meta_title: this.form.value.meta_title,
       meta_keyword: this.form.value.meta_keyword,
@@ -195,7 +215,7 @@ export class SeosettingComponent implements OnInit {
       canonical_url: this.form.value.canonical_url,
       created_by: localStorage.getItem('USERNAME') 
     };
-    
+
     let id = this.urlcontentRecord?.id;
     if (id != null) {
       this.ss.update(id, data).subscribe(
@@ -238,20 +258,42 @@ export class SeosettingComponent implements OnInit {
 
   editData(id) {
     this.urlcontentRecord = this.urlcontent[id];
-
     // console.log(this.urlcontentRecord);
-    this.form.controls.id.setValue(this.urlcontentRecord.id);
-    this.form.controls.bus_operator_id.setValue(this.urlcontentRecord.bus_operator_id);
-    this.form.controls.page_url.setValue(this.urlcontentRecord.page_url);
-    this.form.controls.url_description.setValue(this.urlcontentRecord.url_description);
-    this.form.controls.meta_title.setValue(this.urlcontentRecord.meta_title);
-    this.form.controls.meta_keyword.setValue(this.urlcontentRecord.meta_keyword);
-    this.form.controls.meta_description.setValue(this.urlcontentRecord.meta_description);
-    this.form.controls.extra_meta.setValue(this.urlcontentRecord.extra_meta);
-    this.form.controls.canonical_url.setValue(this.urlcontentRecord.canonical_url);
+    // return
+    this.form = this.fb.group({
+
+      id:[this.urlcontentRecord.id],
+      bus_operator_id: [this.urlcontentRecord.bus_operator_id],
+      page_url: [this.urlcontentRecord.page_url],
+      seo_type: [(this.urlcontentRecord.seo_type).toString()],
+      source_id: [this.urlcontentRecord.source_id],
+      destination_id: [this.urlcontentRecord.destination_id],
+      url_description: [this.urlcontentRecord.url_description],
+      meta_title: [this.urlcontentRecord.meta_title],
+      meta_keyword: [this.urlcontentRecord.meta_keyword],
+      meta_description: [this.urlcontentRecord.meta_description],
+      extra_meta: [this.urlcontentRecord.extra_meta],
+      canonical_url: [this.urlcontentRecord.canonical_url],
+      
+    });
+
+    // this.form.controls.id.setValue(this.urlcontentRecord.id);
+    // this.form.controls.bus_operator_id.setValue(this.urlcontentRecord.bus_operator_id);
+    // this.form.controls.page_url.setValue(this.urlcontentRecord.page_url);
+    // this.form.controls.seo_type.setValue(this.urlcontentRecord.seo_type);
+    // this.form.controls.source_id.setValue(this.urlcontentRecord.source_id);
+    // this.form.controls.destination_id.setValue(this.urlcontentRecord.destination_id);
+    // this.form.controls.url_description.setValue(this.urlcontentRecord.url_description);
+    // this.form.controls.meta_title.setValue(this.urlcontentRecord.meta_title);
+    // this.form.controls.meta_keyword.setValue(this.urlcontentRecord.meta_keyword);
+    // this.form.controls.meta_description.setValue(this.urlcontentRecord.meta_description);
+    // this.form.controls.extra_meta.setValue(this.urlcontentRecord.extra_meta);
+    // this.form.controls.canonical_url.setValue(this.urlcontentRecord.canonical_url);
 
     this.ModalHeading = "Edit URL";
     this.ModalBtn = "Update";
+
+    console.log(this.form.controls.seo_type.value);
 
 
   }

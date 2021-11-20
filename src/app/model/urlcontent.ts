@@ -8,4 +8,7 @@ export interface Urlcontent {
     meta_description:any;
     extra_meta:any;
     canonical_url:any;
+    seo_type: any;
+    source_id: any;
+    destination_id: any;
 }
