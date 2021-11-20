@@ -1710,8 +1710,19 @@
     min-height: 100vh;
     transition: all 0.3s ease-in-out;
 }
+perfect-scrollbar
+{
+    height: auto !important;
+}
 /* main content end*/
 /* ==========================    Rsponsive Menu  start   ====================== */
+@media only screen and (min-width: 1600px) {
+    .booking_device_height .card  .card-body
+    {
+        height: 418px;
+    }
+}
+
 @media only screen and (max-width: 991px) {
     .pcoded-header {
         // background: $header-dark-background;

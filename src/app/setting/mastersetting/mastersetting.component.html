@@ -49,7 +49,7 @@
               <th scope="col">#</th>
               <th scope="col">Operator Name </th>
               <th scope="col">Operator Number/ Email </th>
-              <th scope="col">logo</th>
+              <th scope="col">Logo</th>
               <th scope="col">Status </th>
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
@@ -169,46 +169,46 @@
                                   </ng-select>
                               <span class="text-danger"
                                 *ngIf="settingForm.controls['bus_operator_id'].touched && settingForm.controls['bus_operator_id'].hasError('required')">
-                                Bus Operator Name required
+                                Bus Operator Name Required
                               </span>
                             </div>
                           </div>
 
                           <div class="form-group row">
-                            <label for="pay_chrg" class="col-sm-5 col-form-label"><strong> payment gateway charges</strong><span
+                            <label for="pay_chrg" class="col-sm-5 col-form-label"><strong> Payment Gateway Charges</strong><span
                               class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input id="pay_chrg" type="text" class="form-control" ngbAutofocus placeholder="payment gateway charges" required
+                              <input id="pay_chrg" type="text" class="form-control" ngbAutofocus placeholder="Payment Gateway Charges" required
                                 formControlName="payment_gateway_charges" />
                               <span class="text-danger"
                                 *ngIf="settingForm.controls['payment_gateway_charges'].touched && settingForm.controls['payment_gateway_charges'].hasError('required')">
-                                payment gateway charges required
+                                Payment Gateway Charges Required
                               </span>
                             </div>
                           </div>
 
                           <div class="form-group row">
-                            <label for="eml_chrg" class="col-sm-5 col-form-label"><strong>Email Sms charges</strong> <span
+                            <label for="eml_chrg" class="col-sm-5 col-form-label"><strong>Email SMS charges</strong> <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input id="eml_chrg" type="text" class="form-control" ngbAutofocus placeholder="email sms charges" required
+                              <input id="eml_chrg" type="text" class="form-control" ngbAutofocus placeholder="Email SMS Charges" required
                                 formControlName="email_sms_charges" />
                               <span class="text-danger"
                                 *ngIf="settingForm.controls['email_sms_charges'].touched && settingForm.controls['email_sms_charges'].hasError('required')">
-                                email sms charges required
+                                Email SMS Charges Required
                               </span>
                             </div>
                           </div>
 
                           <div class="form-group row">
-                            <label for="gst" class="col-sm-5 col-form-label"><strong>Gst Charges</strong><span
+                            <label for="gst" class="col-sm-5 col-form-label"><strong>GST Charges</strong><span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input id="gst" type="text" class="form-control" ngbAutofocus placeholder="odbus gst charges" required
+                              <input id="gst" type="text" class="form-control" ngbAutofocus placeholder="GST charges" required
                               formControlName="odbus_gst_charges" />
                             <span class="text-danger"
                               *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">
-                              odbus gst charges required
+                              GST Charges Required
                             </span>
                             </div>
                           </div>
@@ -221,7 +221,7 @@
                               formControlName="support_email" />
                             <span class="text-danger"
                               *ngIf="settingForm.controls['support_email'].touched && settingForm.controls['support_email'].hasError('required')">
-                              support email required
+                              Support Email Required
                             </span>
                             </div>
                           </div>
@@ -230,11 +230,11 @@
                             <label for="b_eml" class="col-sm-5 col-form-label"><strong>Booking email</strong> <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input id="b_eml" type="text" class="form-control" ngbAutofocus placeholder="booking email" required
+                              <input id="b_eml" type="text" class="form-control" ngbAutofocus placeholder="Booking Email" required
                                 formControlName="booking_email" />
                               <span class="text-danger"
                                 *ngIf="settingForm.controls['booking_email'].touched && settingForm.controls['booking_email'].hasError('required')">
-                                booking email required
+                                Booking Email Required
                               </span>
                             </div>
                           </div>
@@ -242,7 +242,7 @@
                           <div class="form-group row">
                             <label for="r_eml" class="col-sm-5 col-form-label"><strong>Request email</strong> </label>
                             <div class="col-sm-7">
-                              <input id="r_eml" type="text" class="form-control" ngbAutofocus placeholder="request email"
+                              <input id="r_eml" type="text" class="form-control" ngbAutofocus placeholder="Request Email"
                                 formControlName="request_email" />
                             </div>
                           </div>
@@ -250,7 +250,7 @@
                           <div class="form-group row">
                             <label for="o_eml" class="col-sm-5 col-form-label"><strong>Other email</strong> </label>
                             <div class="col-sm-7">
-                              <input id="o_eml" type="text" class="form-control" ngbAutofocus placeholder="other email"
+                              <input id="o_eml" type="text" class="form-control" ngbAutofocus placeholder="Other Email"
                                  formControlName="other_email"/>
                             </div>
                           </div>
@@ -258,7 +258,7 @@
                           <div class="form-group row">
                             <label for="opr_slogan" class="col-sm-5 col-form-label"><strong>Operator Slogan</strong> </label>
                             <div class="col-sm-7">
-                              <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="operator slogan"
+                              <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="Operator Slogan"
                                  formControlName="operator_slogan"/>
                             </div>
                           </div>                         
@@ -271,11 +271,11 @@
                             <label for="adv" class="col-sm-5 col-form-label"><strong>Advance days show</strong> <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input id="adv" type="text" class="form-control" ngbAutofocus placeholder="advance days show" required
+                              <input id="adv" type="text" class="form-control" ngbAutofocus placeholder="Advance Days Show" required
                               formControlName="advance_days_show" />
                             <span class="text-danger"
                               *ngIf="settingForm.controls['advance_days_show'].touched && settingForm.controls['advance_days_show'].hasError('required')">
-                              advance days show required
+                              Advance Days Show Required
                             </span>
                             </div>
                           </div>
@@ -284,11 +284,11 @@
                             <label for="mob_1" class="col-sm-5 col-form-label"><strong>Mobile no:1 </strong> <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input id="mob_1" type="text" class="form-control" ngbAutofocus placeholder="mobile no:1" required
+                              <input id="mob_1" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:1" required
                                 formControlName="mobile_no_1" />
                                 <span class="text-danger"
                               *ngIf="settingForm.controls['mobile_no_1'].touched && settingForm.controls['mobile_no_1'].hasError('required')">
-                              mobile no:1 required
+                              Mobile No:1 Required
                             </span>
                             </div>
                           </div>
@@ -297,11 +297,11 @@
                             <label for="mob_2" class="col-sm-5 col-form-label"><strong>Mobile no:2</strong> <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input id="mob_2" type="text" class="form-control" ngbAutofocus placeholder="mobile no:2"
+                              <input id="mob_2" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:2"
                                 required formControlName="mobile_no_2"/>
                                 <span class="text-danger"
                               *ngIf="settingForm.controls['mobile_no_2'].touched && settingForm.controls['mobile_no_2'].hasError('required')">
-                              mobile no:2 required
+                              Mobile No:2 required
                             </span>
                             </div>
                           </div>
@@ -309,7 +309,7 @@
                           <div class="form-group row">
                             <label for="mob_3" class="col-sm-5 col-form-label"><strong> Mobile no:3</strong></label>
                             <div class="col-sm-7">
-                              <input id="mob_3" type="text" class="form-control" ngbAutofocus placeholder="mobile no:3"
+                              <input id="mob_3" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:3"
                                 formControlName="mobile_no_3" />
                             </div>
                           </div>
@@ -317,7 +317,7 @@
                           <div class="form-group row">
                             <label for="mob_4" class="col-sm-5 col-form-label"><strong>Mobile no:4</strong></label>
                             <div class="col-sm-7">
-                              <input id="mob_4" type="text" class="form-control" ngbAutofocus placeholder="mobile no:4"
+                              <input id="mob_4" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:4"
                                 formControlName="mobile_no_4" />
                             </div>
                           </div>
@@ -395,11 +395,11 @@
                           </div>
 
                           <div class="form-group row">
-                            <label for="opr_content" class="col-sm-5 col-form-label"><strong>Operator Home Content</strong> </label>
+                            <label for="opr_content" class="col-sm-5 col-form-label"><strong>Home Content</strong> </label>
                             <div class="col-sm-7">
                               <!-- <input id="opr_content" type="text" class="form-control" ngbAutofocus placeholder="operator home content"
                                  formControlName="operator_home_content"/> -->
-                                 <textarea id="opr_content" class="form-control" ngbAutofocus placeholder="operator home content" formControlName="operator_home_content"></textarea>
+                                 <textarea id="opr_content" class="form-control" ngbAutofocus placeholder="Home Page Content" formControlName="operator_home_content"></textarea>
                             </div>
                           </div>
 

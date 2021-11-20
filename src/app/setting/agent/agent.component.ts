@@ -4,6 +4,7 @@ import { AgentserviceService } from '../../services/agentservice.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import{Constants} from '../../constant/constant';
+import { BusOperatorService} from '../../services/bus-operator.service';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
 import { Agent } from 'src/app/model/agent';
@@ -29,12 +30,12 @@ export class AgentComponent implements OnInit {
   agents: Agent[];
   agentRecord: Agent;
   public isSubmit: boolean;
-
+  public validIFSC:any;
   public ModalHeading:any;
   public ModalBtn:any;
   pagination: any;
   
-  constructor(private AgentserviceService: AgentserviceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor(private AgentserviceService: AgentserviceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig,  private busOperatorService:BusOperatorService) {
     this.isSubmit = false;
     this.agentRecord= {} as Agent;
     config.backdrop = 'static';
@@ -56,18 +57,15 @@ export class AgentComponent implements OnInit {
       location: [null, Validators.compose([Validators.required])],
       adhar_no: [null, Validators.compose([Validators.required])],
       pancard_no: [null, Validators.compose([Validators.required])],
-      organization_name: [null, Validators.compose([Validators.required])],
+      organization_name: [null],
       address: [null, Validators.compose([Validators.required])],
-      street: [null, Validators.compose([Validators.required])],
       landmark: [null, Validators.compose([Validators.required])],
-      city: [null, Validators.compose([Validators.required])],
       pincode: [null, Validators.compose([Validators.required])],
-      name_on_bank_account: [null, Validators.compose([Validators.required])],
-      bank_name: [null, Validators.compose([Validators.required])],
-      ifsc_code: [null, Validators.compose([Validators.required])],
-      bank_account_no: [null, Validators.compose([Validators.required])],
-      branch_name: [null, Validators.compose([Validators.required])],
-      upi_id: [null, Validators.compose([Validators.required])]
+      name_on_bank_account: [null],
+      bank_name: [null],
+      ifsc_code: [null],
+      bank_account_no: [null],
+      
     });  
     this.formConfirm=this.fb.group({
       id:[null]
@@ -84,7 +82,29 @@ export class AgentComponent implements OnInit {
   page(label:any){
     return label;
    }
-
+   checkIfsc()
+   {
+     let ifsc=this.form.value.ifsc_code;
+     if(ifsc!="")
+     {
+       this.busOperatorService.getIFSC(ifsc).subscribe(
+ 
+         resp => {
+           this.validIFSC=resp.ADDRESS + ',' +resp.STATE;
+         }
+         ,
+         error => {
+           this.validIFSC="INVALID VALID IFSC CODE";
+           
+         }
+       );
+     }
+     else
+     {
+       this.validIFSC="";
+     }
+     
+   }
   search(pageurl="")
   {
       
@@ -98,16 +118,13 @@ export class AgentComponent implements OnInit {
       pancard_no:this.searchForm.value.pancard_no,
       organization_name:this.searchForm.value.organization_name,
       address:this.searchForm.value.address,
-      street:this.searchForm.value.street,
       landmark:this.searchForm.value.landmark,
-      city:this.searchForm.value.city,
       pincode:this.searchForm.value.pincode,
       name_on_bank_account:this.searchForm.value.name_on_bank_account,
       bank_name:this.searchForm.value.bank_name,
       ifsc_code:this.searchForm.value.ifsc_code,
       bank_account_no:this.searchForm.value.bank_account_no,
-      branch_name:this.searchForm.value.branch_name,
-      upi_id:this.searchForm.value.upi_id
+      
     };
    
     // console.log(data);
@@ -125,7 +142,6 @@ export class AgentComponent implements OnInit {
       this.AgentserviceService.getAllData(data).subscribe(
         res => {
           this.agents= res.data.data.data;
-          console.log(this.agents);
           this.pagination= res.data.data;
         }
       );
@@ -160,16 +176,13 @@ export class AgentComponent implements OnInit {
       pancard_no:'',
       organization_name:'',
       address:'',
-      street:'',
       landmark:'',
-      city:'',
       pincode:'',
       name_on_bank_account:'',
       bank_name:'',
       ifsc_code:'',
       bank_account_no:'',
-      branch_name:'',
-      upi_id:''
+      
     } as Agent;
     this.form = this.fb.group({
       id:[null],
@@ -182,16 +195,13 @@ export class AgentComponent implements OnInit {
       pancard_no: ['',Validators.compose([Validators.required])],
       organization_name: ['',Validators.compose([Validators.required])],
       address: ['',Validators.compose([Validators.required])],
-      street: ['',Validators.compose([Validators.required])],
       landmark: ['',Validators.compose([Validators.required])],
-      city: ['',Validators.compose([Validators.required])],
       pincode: ['',Validators.compose([Validators.required])],
-      name_on_bank_account: ['',Validators.compose([Validators.required])],
-      bank_name: ['',Validators.compose([Validators.required])],
-      ifsc_code: ['',Validators.compose([Validators.required])],
-      bank_account_no: ['',Validators.compose([Validators.required])],
-      branch_name: ['',Validators.compose([Validators.required])],
-      upi_id: ['',Validators.compose([Validators.required])]
+      name_on_bank_account: [''],
+      bank_name: [''],
+      ifsc_code: [''],
+      bank_account_no: [''],
+      
     });
     this.ModalHeading = "Add Agent";
     this.ModalBtn = "Save";
@@ -210,20 +220,17 @@ export class AgentComponent implements OnInit {
       pancard_no:this.form.value.pancard_no,
       organization_name:this.form.value.organization_name,
       address:this.form.value.address,
-      street:this.form.value.street,
       landmark:this.form.value.landmark,
-      city:this.form.value.city,
       pincode:this.form.value.pincode,
       name_on_bank_account:this.form.value.name_on_bank_account,
       bank_name:this.form.value.bank_name,
       ifsc_code:this.form.value.ifsc_code,  
       bank_account_no:this.form.value.bank_account_no,  
-      branch_name:this.form.value.branch_name,  
-      upi_id:this.form.value.upi_id,  
+      
       created_by: localStorage.getItem('USERNAME') 
       
     };
-    console.log(data);
+    //console.log(data);
     if(id==null)
     {
       this.AgentserviceService.create(data).subscribe(
@@ -277,16 +284,13 @@ export class AgentComponent implements OnInit {
       pancard_no: [this.agentRecord.pancard_no,Validators.compose([Validators.required])],
       organization_name: [this.agentRecord.organization_name,Validators.compose([Validators.required])],
       address: [this.agentRecord.address,Validators.compose([Validators.required])],
-      street: [this.agentRecord.street,Validators.compose([Validators.required])],
       landmark: [this.agentRecord.landmark,Validators.compose([Validators.required])],
-      city: [this.agentRecord.city,Validators.compose([Validators.required])],
       pincode: [this.agentRecord.pincode,Validators.compose([Validators.required])],
-      name_on_bank_account: [this.agentRecord.name_on_bank_account,Validators.compose([Validators.required])],
-      bank_name: [this.agentRecord.bank_name,Validators.compose([Validators.required])],
-      ifsc_code: [this.agentRecord.ifsc_code,Validators.compose([Validators.required])],
-      bank_account_no: [this.agentRecord.bank_account_no,Validators.compose([Validators.required])],
-      branch_name: [this.agentRecord.branch_name,Validators.compose([Validators.required])],
-      upi_id: [this.agentRecord.upi_id,Validators.compose([Validators.required])]
+      name_on_bank_account: [this.agentRecord.name_on_bank_account],
+      bank_name: [this.agentRecord.bank_name],
+      ifsc_code: [this.agentRecord.ifsc_code],
+      bank_account_no: [this.agentRecord.bank_account_no],
+      
     });
     this.ModalHeading = "Edit Agent";
     this.ModalBtn = "Update";

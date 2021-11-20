@@ -6,7 +6,7 @@
                 <div class="col-2">
                     <div class="from-group ">
                         <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                            Add User
+                            Add Operator
                         </button>
                     </div>
                 </div>
@@ -389,7 +389,7 @@
                                                                 Confirm Password is Required
                                                             </span> 
                                                             
-                                                            <span  *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('notSame') ">
+                                                            <span  *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('mustMatch') ">
                                                                 Password doesn't match
                                                               </span>
                                                                                                                   

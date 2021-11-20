@@ -167,7 +167,7 @@
                       <div class="form-group row">
                         
                           <label for="seatLayout" class="col-sm-2 col-form-label">Berth Type<span class="text-danger">*</span></label>
-                          <div class="col-sm-3 dataTables_filter">                        
+                          <div class="col-sm-3 ">                        
                             <input type="hidden" formControlName="id" [value]="SeatLayoutRecord.id">
                             <select class="form-control" formControlName="seatType">
                               <option value="Seater">Lower Berth</option>
@@ -178,7 +178,7 @@
                           </div>
                        
                           <label for="rowNumber" class="col-sm-2 col-form-label">No of Rows<span class="text-danger">*</span></label>
-                          <div class="col-sm-3 dataTables_filter">   
+                          <div class="col-sm-3 ">   
                             <input type="number" min="1" max="5" class="form-control" formControlName="rowNumber">
                             <span class="text-danger" *ngIf="SeatLayoutForm.controls['rowNumber'].touched && SeatLayoutForm.controls['rowNumber'].hasError('required')">
                               Choose Number of Rows </span>
@@ -190,6 +190,14 @@
                       </div>  
                     </form>
                     <form class="editForm" #myform="ngForm">  
+                      <div class="col-8 row form-group ">
+                        <label for="bus" class="col-sm-3 col-form-label  m-0 p-0">Seat Layout Name <span class="text-danger">*</span> </label> 
+                        <div class="col-sm-9"> 
+                          <!-- [value]="busRecord.bus_number1" alt+z-->
+                          <input type="text" name="SeatLayoutName" class="form-control" ngModel value="this.SeatLayoutRecord.name" required placeholder="Enter Seat Layout Name">
+                          
+                        </div>
+                      </div>
                       <div class="form-group row" *ngIf="seatLayoutrows?.length != 0">
                         <div class="col-1" >
                           <div class='container' dragula="COPYABLE" id="left" [(dragulaModel)]="left">
@@ -252,14 +260,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-8 row form-group dataTables_filter">
-                        <label for="bus" class="col-sm-3 col-form-label">Seat Layout Name <span class="text-danger">*</span> </label> 
-                        <div class="col-sm-9"> 
-                          <!-- [value]="busRecord.bus_number1" alt+z-->
-                          <input type="text" name="SeatLayoutName" class="form-control" ngModel value="this.SeatLayoutRecord.name" required placeholder="Enter Seat Layout Name">
-                          
-                        </div>
-                      </div>
+                      
                     </form>
                     
                   </div>

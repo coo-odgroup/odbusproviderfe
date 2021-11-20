@@ -38,12 +38,12 @@
           <table class="table table-striped ">
             <thead>
               <tr>
-                <th>SL.NO</th>
+                <th>SL</th>
                 <th>Agent Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>CREATED BY</th>
-                <th>CREATED AT</th>
+                <th>Created By</th>
+                <th>Created At</th>
                 
                 <th width="100" class="hide_print" >&nbsp; </th>
               </tr>
@@ -106,12 +106,15 @@
                     <div class="right-icon-control">
                       <form [formGroup]="form" class="editForm" novalidate>
                         <div class="row">
+                          <div class="col-md-12 text-center"><span class="heading_label">Personal Details</span></div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-4">
                             <div class="form-group row">
                               <label for="name" class="col-sm-4 col-form-label">Name<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="name">
+                                <input type="text" class="form-control" placeholder="Enter Your Name" formControlName="name">
                                 <span class="text-danger"
                                   *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
                                   Agent Name is required! </span>
@@ -123,7 +126,7 @@
                               <label for="email" class="col-sm-4 col-form-label">Email<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="email">
+                                <input type="text" class="form-control" placeholder="Login Email id" formControlName="email">
                                 <span class="text-danger"
                                   *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
                                   Email is required! </span>
@@ -135,7 +138,7 @@
                               <label for="phone" class="col-sm-4 col-form-label">Phone<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="phone">
+                                <input type="text" class="form-control" placeholder="Contact Phone Number" formControlName="phone">
                                 <span class="text-danger"
                                   *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
                                   Phone is required! </span>
@@ -150,50 +153,22 @@
                                 <label for="password" class="col-sm-4 col-form-label">Password<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="password">
+                                  <input type="text" class="form-control" placeholder="Password" formControlName="password">
                                   <span class="text-danger"
                                     *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
                                     Password is required! </span>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-4">
                               <div class="form-group row">
-                                <label for="location" class="col-sm-2 col-form-label">Location<span
+                                <label for="location" class="col-sm-4 col-form-label">Location<span
                                     class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" formControlName="location">
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Business Location" formControlName="location">
                                   <span class="text-danger"
                                     *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
                                     Location is required! </span>
-                                </div>
-                              </div>
-                            </div>
-                            
-  
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group row">
-                                  <label for="adhar_no" class="col-sm-4 col-form-label">Adhar<span
-                                      class="text-danger">*</span></label>
-                                  <div class="col-sm-8">
-                                    <input type="text" class="form-control" formControlName="adhar_no">
-                                    <span class="text-danger"
-                                      *ngIf="form.controls['adhar_no'].touched && form.controls['adhar_no'].hasError('required')">
-                                      Adhar is required! </span>
-                                  </div>
-                                </div>
-                              </div>
-                            <div class="col-md-4">
-                              <div class="form-group row">
-                                <label for="pancard_no" class="col-sm-4 col-form-label">Pancard<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="pancard_no">
-                                  <span class="text-danger"
-                                    *ngIf="form.controls['pancard_no'].touched && form.controls['pancard_no'].hasError('required')">
-                                    Pancard is required! </span>
                                 </div>
                               </div>
                             </div>
@@ -202,49 +177,10 @@
                                 <label for="organization_name" class="col-sm-4 col-form-label">Organization<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="organization_name">
+                                  <input type="text" class="form-control" placeholder="Orgaization/Shop Name" formControlName="organization_name">
                                   <span class="text-danger"
                                     *ngIf="form.controls['organization_name'].touched && form.controls['organization_name'].hasError('required')">
                                     Organization is required! </span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-8">
-                              <div class="form-group row">
-                                <label for="address" class="col-sm-2 col-form-label">Address<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                  <textarea type="text" class="form-control" formControlName="address"></textarea>
-                                  <span class="text-danger"
-                                    *ngIf="form.controls['address'].touched && form.controls['address'].hasError('required')">
-                                    Address is required! </span>
-                                </div>
-                              </div>
-                            </div>
-  
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                              <div class="form-group row">
-                                <label for="street" class="col-sm-2 col-form-label">Street<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" formControlName="street">
-                                  <span class="text-danger"
-                                    *ngIf="form.controls['street'].touched && form.controls['street'].hasError('required')">
-                                    Street is required! </span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-8">
-                              <div class="form-group row">
-                                <label for="landmark" class="col-sm-2 col-form-label">Landmark<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" formControlName="landmark">
-                                  <span class="text-danger"
-                                    *ngIf="form.controls['landmark'].touched && form.controls['landmark'].hasError('required')">
-                                    Landmark is required! </span>
                                 </div>
                               </div>
                             </div>
@@ -254,22 +190,34 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group row">
-                                  <label for="city" class="col-sm-4 col-form-label">City<span
-                                      class="text-danger">*</span></label>
+                                  <label for="adhar_no" class="col-sm-4 col-form-label">Aadhaar<span
+                                    class="text-danger">*</span></label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" formControlName="city">
+                                    <input type="text" class="form-control" placeholder="Aadhaar Number" formControlName="adhar_no">
                                     <span class="text-danger"
-                                      *ngIf="form.controls['city'].touched && form.controls['city'].hasError('required')">
-                                      City is required! </span>
+                                      *ngIf="form.controls['adhar_no'].touched && form.controls['adhar_no'].hasError('required')">
+                                      Adhar is required! </span>
                                   </div>
                                 </div>
                               </div>
                             <div class="col-md-4">
                               <div class="form-group row">
+                                <label for="pancard_no" class="col-sm-4 col-form-label">Pan Card<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Valid Pan Number" formControlName="pancard_no">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['pancard_no'].touched && form.controls['pancard_no'].hasError('required')">
+                                    Pancard is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group row">
                                 <label for="pincode" class="col-sm-4 col-form-label">Pincode<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="pincode">
+                                  <input type="text" class="form-control" placeholder="Zip Code / Pin Code" formControlName="pincode">
                                   <span class="text-danger"
                                     *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('required')">
                                     Pincode is required! </span>
@@ -277,15 +225,52 @@
                               </div>
                             </div>
                             
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="address" class="col-sm-3 col-form-label">Address<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-9 m-0 p-0">
+                                  <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['address'].touched && form.controls['address'].hasError('required')">
+                                    Address is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="landmark" class="col-sm-3 col-form-label">Landmark<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" placeholder="Landmark" formControlName="landmark">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['landmark'].touched && form.controls['landmark'].hasError('required')">
+                                    Landmark is required! </span>
+                                </div>
+                              </div>
+                            </div>
   
                         </div>
                         <div class="row">
+                          <div class="col-md-12 text-center"><span class="heading_label">Bank Details</span></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group row">
+                              <label for="bank_name" class="col-sm-4 col-form-label">Bank Name</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Bank Name" formControlName="bank_name">
+                                <span class="text-danger"
+                                  *ngIf="form.controls['bank_name'].touched && form.controls['bank_name'].hasError('required')">
+                                  Bank name is required! </span>
+                              </div>
+                            </div>
+                          </div>
                             <div class="col-md-4">
                                 <div class="form-group row">
-                                  <label for="name_on_bank_account" class="col-sm-4 col-form-label">Bank account Name<span
-                                      class="text-danger">*</span></label>
+                                  <label for="name_on_bank_account" class="col-sm-4 col-form-label pr-0">Account Name</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" formControlName="name_on_bank_account">
+                                    <input type="text" class="form-control" placeholder="Name On Bank Account" formControlName="name_on_bank_account">
                                     <span class="text-danger"
                                       *ngIf="form.controls['name_on_bank_account'].touched && form.controls['name_on_bank_account'].hasError('required')">
                                       name on bank account! </span>
@@ -294,64 +279,32 @@
                               </div>
                               <div class="col-md-4">
                                 <div class="form-group row">
-                                  <label for="bank_name" class="col-sm-4 col-form-label">Bank name<span
-                                      class="text-danger">*</span></label>
+                                  <label for="bank_account_no" class="col-sm-4 col-form-label">Account no</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" formControlName="bank_name">
+                                    <input type="text" class="form-control" placeholder="Account Number" formControlName="bank_account_no">
                                     <span class="text-danger"
-                                      *ngIf="form.controls['bank_name'].touched && form.controls['bank_name'].hasError('required')">
-                                      Bank name is required! </span>
+                                      *ngIf="form.controls['bank_account_no'].touched && form.controls['bank_account_no'].hasError('required')">
+                                      Bank account no! </span>
                                   </div>
                                 </div>
                               </div>
+                              
                             <div class="col-md-4">
                               <div class="form-group row">
-                                <label for="ifsc_code" class="col-sm-4 col-form-label">IFSC code<span
-                                    class="text-danger">*</span></label>
+                                <label for="ifsc_code" class="col-sm-4 col-form-label">IFSC code</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="ifsc_code">
+                                  <input type="text" class="form-control" placeholder="BANK IFSC Code" formControlName="ifsc_code" (change)="checkIfsc()" >
                                   <span class="text-danger"
                                     *ngIf="form.controls['ifsc_code'].touched && form.controls['ifsc_code'].hasError('required')">
                                     IFSC code is required! </span>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-4">
-                              <div class="form-group row">
-                                <label for="bank_account_no" class="col-sm-4 col-form-label">Bank account no<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="bank_account_no">
-                                  <span class="text-danger"
-                                    *ngIf="form.controls['bank_account_no'].touched && form.controls['bank_account_no'].hasError('required')">
-                                    Bank account no! </span>
-                                </div>
-                              </div>
+                            
+                            <div class="col-md-8 ml-0 pl-0">
+                              <label for="ifsc_code" class="col-sm-12 col-form-label">{{validIFSC}}</label>
                             </div>
-                            <div class="col-md-4">
-                              <div class="form-group row">
-                                <label for="branch_name" class="col-sm-4 col-form-label">Branch name<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="branch_name">
-                                  <span class="text-danger"
-                                    *ngIf="form.controls['branch_name'].touched && form.controls['branch_name'].hasError('required')">
-                                    Branch name is required! </span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group row">
-                                  <label for="upi_id" class="col-sm-4 col-form-label">UPI ID<span
-                                      class="text-danger">*</span></label>
-                                  <div class="col-sm-8">
-                                    <input type="text" class="form-control" formControlName="upi_id">
-                                    <span class="text-danger"
-                                      *ngIf="form.controls['upi_id'].touched && form.controls['upi_id'].hasError('required')">
-                                      UPI ID is required! </span>
-                                  </div>
-                                </div>
-                              </div>
+                     
   
                         </div>
   

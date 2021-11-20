@@ -75,7 +75,7 @@
               <th scope="col">Testimonial</th>
               <th scope="col">Route</th>
               <th scope="col">Posted By</th>
-              <th scope="col">operator</th>
+              <th scope="col">Operator</th>
               <th scope="col">Travel Date</th>
               <th scope="col">Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
@@ -183,7 +183,7 @@
                             <div class="col-md-4 ">
                               <div class="from-group">
                                 <!-- <label>Page name :</label> -->
-                                <label for="name" class=" col-form-label">Posted By :<span
+                                <label for="name" class=" col-form-label col-sm-12">Posted By :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="text" class="form-control" ngbAutofocus placeholder="Enter Posted By"
@@ -200,7 +200,7 @@
             
                             <div class="col-md-4 ">
                               <div class="from-group">
-                                <label for="name" class=" col-form-label">Source :<span
+                                <label for="name" class=" col-form-label col-sm-12">Source :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
@@ -215,7 +215,7 @@
 
                             <div class="col-md-4 ">
                               <div class="from-group">
-                                <label for="name" class=" col-form-label">Destination :<span
+                                <label for="name" class=" col-form-label col-sm-12">Destination :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
@@ -230,7 +230,7 @@
 
                             <div class="col-md-4 ">
                               <div class="from-group">
-                                <label for="name" class=" col-form-label">Operator Name :<span
+                                <label for="name" class=" col-form-label col-sm-12">Operator Name :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <!-- <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
@@ -253,7 +253,7 @@
 
                             <div class="col-md-4 ">
                               <div class="from-group">
-                                <label for="name" class=" col-form-label">Date of Travel :<span
+                                <label for="name" class=" col-form-label col-sm-12">Date of Travel :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="date" class="form-control" ngbAutofocus placeholder="Enter Page name"
@@ -270,7 +270,7 @@
                             <div class="col-md-4 ">
                               <div class="from-group">
                                 <!-- <label>Page name :</label> -->
-                                <label for="name" class=" col-form-label">Designation :<span
+                                <label for="name" class=" col-form-label col-sm-12">Designation :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <input type="text" class="form-control" ngbAutofocus placeholder="Enter Designation"
@@ -288,10 +288,14 @@
 
 
                           <div>
-                            <label for="name" class=" col-form-label">Testinmonial Content :<span
+                            <label for="name" class=" col-form-label col-sm-12">Testimonial Content :<span
                                 class="text-danger">*</span></label>
-                            <angular-editor formControlName="testinmonial_content" [config]="editorConfig">
-                            </angular-editor>
+                            <div class="col-sm-12">
+                              <textarea formControlName="testinmonial_content" class="form-control" rows="4" maxlength="500"></textarea>
+                              
+                              
+                            </div>
+                            
                           </div>
                         </div>
                       </div>

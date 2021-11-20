@@ -160,6 +160,9 @@ export class UserComponent implements OnInit {
   OpenModal(content) {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
   }
+  get confirm_password() {
+    return this.pwdform.controls['conf_password'];
+  }
   ResetAttributes() {
     this.userRecord = {} as User;
     this.form = this.fb.group({
@@ -178,11 +181,13 @@ export class UserComponent implements OnInit {
       email: [null],
       phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
     });
+    
     this.pwdform = this.fb.group({
       id: [null],
-      password: [null],
-      conf_password: [null]
-    });
+      password: [null, Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])],
+      conf_password: [null, Validators.compose([Validators.required])]      
+    }, 
+    {validator: this.checkPasswords});
 
     this.form.reset();
     this.ModalHeading = "Add Operator";

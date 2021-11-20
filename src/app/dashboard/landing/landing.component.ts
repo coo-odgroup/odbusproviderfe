@@ -25,41 +25,34 @@ export class LandingComponent implements OnInit {
     public seoChartData3: any;
     public powerCardChartData1: any;
     public powerCardChartData2: any;
-
-
     public barBasicChartOptions: any;
     public pie2CAC:any;
-   
     public Highcharts = Highcharts;
-
     public isCollapsed: boolean;
     public isMail: string;
     public isSubMail: string;
-
-
-
-  
-
     public barBasicChartData: any;
-  public barBasicChartOption: any;
-  @ViewChild('barBasicChart') barBasicChart: ElementRef; // used barStackedChart, barHorizontalChart
-  public barBasicChartTag: CanvasRenderingContext2D;
-  
-  dashboarddata: any;
-  routedata: any;
-  oprdata: any;
-  ticketdata: any;
-  bookingdata: any;
-  prndata: any;
+    public barBasicChartOption: any;
 
-  pnr_date: any;
-  pnr_label: any;
+    public RoleType:any;
+    @ViewChild('barBasicChart') barBasicChart: ElementRef; // used barStackedChart, barHorizontalChart
+    public barBasicChartTag: CanvasRenderingContext2D;
+    
+    dashboarddata: any;
+    routedata: any;
+    oprdata: any;
+    ticketdata: any;
+    bookingdata: any;
+    prndata: any;
+
+    pnr_date: any;
+    pnr_label: any;
 
 
     constructor(private http: HttpClient , private ds:DashboardService) {
 
       
- 
+      this.RoleType=localStorage.getItem("ROLE_ID");
       this.isCollapsed = false;
       this.isMail = 'inbox';
       this.isSubMail = 'primary';
