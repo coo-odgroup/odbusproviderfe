@@ -36,6 +36,8 @@ export class BannermanagementComponent implements OnInit {
   finalImage:any;
   public imagePath;
 
+  path = Constants.PATHURL;
+
   base64result:any;
   finalJson = {};
   fileName= 'Banner.xlsx';

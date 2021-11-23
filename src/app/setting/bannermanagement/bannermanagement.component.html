@@ -75,7 +75,7 @@
 
                 <td class="text-center">
                   <div *ngIf="bannerData.banner_image!='' && bannerData.banner_image!=null" >             
-                    <img   class="sliderImage" src="../../../assets/uploads/operatorbanner/{{bannerData.banner_image}}"  height="100px"/>
+                    <img   class="sliderImage" src="{{path}}operatorbanner/{{bannerData.banner_image}}"  height="100px"/>
                   </div>
   
                   <div *ngIf="bannerData.banner_image=='' || bannerData.banner_image==null" >             
@@ -342,7 +342,7 @@
                                   <div class="row">
                                     <div class="col-md-6" *ngIf="bannerRecord.banner_image">
                                       <span><b>Existing Image</b></span> <br>                       
-                                      <img    class="sliderImage" src="../../../assets/uploads/operatorbanner/{{bannerRecord.banner_image}}" height="100"/>
+                                      <img    class="sliderImage" src="{{path}}operatorbanner/{{bannerRecord.banner_image}}" height="100"/>
       
                                     </div>
                                     <div class="col-md-6" *ngIf="imgURL">

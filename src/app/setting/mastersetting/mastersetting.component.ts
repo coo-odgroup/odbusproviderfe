@@ -33,6 +33,7 @@ export class MastersettingComponent implements OnInit {
   imgURL: any;
   favURL: any;
 
+  path = Constants.PATHURL;
   base64result:any;
   finalJson = {};
   public formConfirm: FormGroup;

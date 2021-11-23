@@ -64,7 +64,7 @@
               </td> -->
               <td >
                 <div *ngIf="settingdata.logo_image!='' && settingdata.logo_image!=null" >             
-                  <img  src="../../../assets/uploads/logo/{{settingdata.logo_image}}"  height="100px"/>
+                  <img  src="{{path}}logo/{{settingdata.logo_image}}"  height="100px"/>
                 </div>
 
                 <div *ngIf="settingdata.logo_image=='' || settingdata.logo_image==null" >             
@@ -261,7 +261,16 @@
                               <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="Operator Slogan"
                                  formControlName="operator_slogan"/>
                             </div>
-                          </div>                         
+                          </div> 
+                          
+                          <div class="form-group row">
+                            <label for="opr_content" class="col-sm-5 col-form-label"><strong>Home Content</strong> </label>
+                            <div class="col-sm-7">
+                              <!-- <input id="opr_content" type="text" class="form-control" ngbAutofocus placeholder="operator home content"
+                                 formControlName="operator_home_content"/> -->
+                                 <textarea id="opr_content" class="form-control" ngbAutofocus placeholder="Home Page Content" formControlName="operator_home_content"></textarea>
+                            </div>
+                          </div>
 
                         </div>
 
@@ -310,7 +319,7 @@
                             <label for="mob_3" class="col-sm-5 col-form-label"><strong> Mobile no:3</strong></label>
                             <div class="col-sm-7">
                               <input id="mob_3" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:3"
-                                formControlName="mobile_no_3" />
+                                formControlName="mobile_no_3"  required/>
                             </div>
                           </div>
 
@@ -342,7 +351,7 @@
                                 <div class="row">
                                   <div class="col-md-6" *ngIf="settingRecord.logo_image">
                                     <span><b>Existing Image</b></span> <br>                       
-                                    <img    class="sliderImage" src="../../../assets/uploads/logo/{{settingRecord.logo_image}}" height="70"/>
+                                    <img    class="sliderImage" src="{{path}}logo/{{settingRecord.logo_image}}" height="70"/>
     
                                   </div>
                                   <div class="col-md-6" *ngIf="imgURL">
@@ -380,7 +389,7 @@
                                   <div class="row">
                                     <div class="col-md-6" *ngIf="settingRecord.favicon_image">
                                       <span><b>Existing Image</b></span> <br>                       
-                                      <img  src="../../../assets/uploads/favIcon/{{settingRecord.favicon_image}}" height="70"/>
+                                      <img  src="{{path}}favIcon/{{settingRecord.favicon_image}}" height="70"/>
       
                                     </div>
                                     <div class="col-md-6" *ngIf="favURL">
@@ -394,14 +403,7 @@
                             </div>
                           </div>
 
-                          <div class="form-group row">
-                            <label for="opr_content" class="col-sm-5 col-form-label"><strong>Home Content</strong> </label>
-                            <div class="col-sm-7">
-                              <!-- <input id="opr_content" type="text" class="form-control" ngbAutofocus placeholder="operator home content"
-                                 formControlName="operator_home_content"/> -->
-                                 <textarea id="opr_content" class="form-control" ngbAutofocus placeholder="Home Page Content" formControlName="operator_home_content"></textarea>
-                            </div>
-                          </div>
+                        
 
 
                         </div>
