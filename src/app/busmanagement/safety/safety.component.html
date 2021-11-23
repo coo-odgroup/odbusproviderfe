@@ -85,7 +85,7 @@
               
               <td class="text-center">
                 <div *ngIf="safety.safety_image!='' && safety.safety_image!=null" >             
-                  <img   class="sliderImage" src="../../../assets/uploads/safety/{{safety.safety_image}}"  height="100px"/>
+                  <img   class="sliderImage" src="{{path}}safety/{{safety.safety_image}}"  height="100px"/>
                 </div>
 
                 <div *ngIf="safety.safety_image=='' || safety.safety_image==null" >             

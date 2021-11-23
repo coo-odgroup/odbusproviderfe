@@ -34,7 +34,7 @@ export class SafetyComponent implements OnInit {
   base64result: any;
   iconSrc: any;
   imageError: string;
-
+  path = Constants.PATHURL;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   Safetys: Safety[];
@@ -82,7 +82,7 @@ export class SafetyComponent implements OnInit {
       name: [null],  
       rows_number: Constants.RecordLimit,
     });
-
+    // console.log(Constants.PATHURL);
     this.search(); 
   }
   public picked(event: any, fileSrc: any) {
