@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -91,11 +92,12 @@ export class CancellationslabComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
   pagination: any;
+  busoperators: any;
   // returns all form groups under Cancellation Slab
   get slabFormGroup() {
     return this.form.get('slabs') as FormArray;
   }
-  constructor(private http: HttpClient, private cSlabService:CancellationslabService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
+  constructor(private http: HttpClient,private busOperatorService: BusOperatorService, private cSlabService:CancellationslabService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
     this.isSubmit = false;
     this.cancellationSlabRecord= {} as Cancellationslab;
     config.backdrop = 'static';
@@ -107,140 +109,51 @@ export class CancellationslabComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
   }
  
-  // loadcSlab()
-  // {
-  //   this.dtOptioncSlab = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     dom: 'lBfrtip',
-  //     order:["0","desc"],
-  //     aLengthMenu:[10, 25, 50, 100, "All"], 
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //           columns: "thead th:not(.noExport)"
-  //          } 
-  //       },
-  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       { 
-  //         extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //         columns: "thead th:not(.noExport)"
-  //         } 
-  //       },
-  //       {
-  //         text:"Add",
-  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         action:() => {
-  //          this.addnew.nativeElement.click();
-  //         }
-  //       }
-  //     ],
-  //   language: {
-  //     searchPlaceholder: "Find CancellationSlab",
-  //     processing: "<img src='assets/images/loading.gif' width='30'>"
-  //   },
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL+'/cancellationslabsDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-  //           this.cancellationSlabs = resp.data.aaData;
-  //           console.log(this.cancellationSlabs);
-  //           for(let items of this.cancellationSlabs)
-  //           {
-  //             this.cancellationSlabRecord=items;
-  //             this.cancellationSlabRecord.duration="";
-  //             this.cancellationSlabRecord.deduction="";
-  //           }
-            
-  //           //this.cancellationSlabs.duration;
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             data: resp.data.aaData
-  //           });
-  //         });
-  //     },
-  //     columns: [{ data: 'id' }, { data: 'api_id' }, { data: 'rule_name' },{ 
-  //       title:'Duration (Hour)',
-  //       data: 'duration',
-  //       render:function(data){
-  //         let bdata="";
-  //         for(let ditems of data)
-  //         {
-  //           bdata+=(bdata=="")?ditems:", <br />"+ditems;
-  //         }
-  //         return bdata;
-  //       }
-  //     },
-  //       { 
-  //         title:"Deduction (%)",data: 'deduction',
-  //       render:function(data){
-  //       let bdata="";
-  //       for(let ditems of data)
-  //       {
-  //         bdata+=(bdata=="")?ditems:", <br />"+ditems;
-  //       }
-  //       return bdata;
-  //     }
-  //       }, 
-  //       {
-  //          data: 'status',
-  //          render:function(data)
-  //       {
-  //         return (data=="1")?"Active":"Pending"
-  //       } 
-  //          },{ title:'Action',data: null, orderable:false,className: "noExport" }]      
-      
-  //   }; 
-    
-  // }
+ 
   ngOnInit(){
     // this.loadcSlab();
     this.form = this.fb.group({
       id:[null],
-      api_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
+      bus_operator_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
       rule_name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       slabs: this.fb.array([this.createSlab()]),
     });
      // set CancellationSlablist to this field
-  this.CancelationSlabList = this.form.get('slabs') as FormArray;
-  this.formConfirm=this.fb.group({
-    id:[null]
-  });
+    this.CancelationSlabList = this.form.get('slabs') as FormArray;
+    this.formConfirm=this.fb.group({
+      id:[null]
+    });
 
-  this.searchForm = this.fb.group({  
-    name: [null],  
-    rows_number: Constants.RecordLimit,
-  });
+    this.searchForm = this.fb.group({  
+      name: [null],  
+      rows_number: Constants.RecordLimit,
+    });
 
-  this.search();
+    this.search();
+    this.loadServices();
+  }
+  loadServices() {
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.busoperators=record.data;
+        }
+      );
+    }
+    else
+    {
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+        record=>{
+        this.busoperators=record.data;
+        }
+      );
+    }
 
   }
-
   page(label:any){
     return label;
    }
@@ -251,6 +164,7 @@ export class CancellationslabComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
 
@@ -347,7 +261,7 @@ export class CancellationslabComponent implements OnInit {
 
     this.form = this.fb.group({
       id:[null],
-      api_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
+      bus_operator_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
       cancellation_policy_desc:[null],
       rule_name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       slabs: this.fb.array([this.createSlab()]),
@@ -362,13 +276,14 @@ export class CancellationslabComponent implements OnInit {
     this.allDeductions="";
     let id:any=this.cancellationSlabRecord.id; 
     const data ={
-      api_id:this.form.value.api_id,
+      bus_operator_id:this.form.value.bus_operator_id,
       rule_name:this.form.value.rule_name,
       cancellation_policy_desc:this.form.value.cancellation_policy_desc,
       slabs:this.form.value.slabs,
       created_by:localStorage.getItem('USERNAME') 
     };
-
+    // console.log(data);
+    // return false;
     if(id==null)
     {
       this.cSlabService.create(data).subscribe(
@@ -411,7 +326,7 @@ export class CancellationslabComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.cancellationSlabRecord.id],
       cancellation_policy_desc:[this.cancellationSlabRecord.cancellation_policy_desc],
-      api_id: [this.cancellationSlabRecord.api_id, Validators.compose([Validators.required,Validators.minLength(2)])],
+      bus_operator_id: [this.cancellationSlabRecord.bus_operator_id, Validators.compose([Validators.required,Validators.minLength(2)])],
       rule_name: [this.cancellationSlabRecord.rule_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       slabs: this.fb.array([this.createSlab()]),
     });

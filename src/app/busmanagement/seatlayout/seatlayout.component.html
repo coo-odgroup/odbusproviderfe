@@ -2,7 +2,6 @@
   <div class="col-sm-12">
       <app-card [hidHeader]="false" cardTitle="SEAT LAYOUT" cardClass="card-datatable" [options]="true"
       cardClass=" table-border-style user-profile-list " [isCardFooter]="true"> 
-
       <div class="row">
         <div class="col-2">
           <div class="from-group ">
@@ -14,7 +13,6 @@
         <div class="col-10">
           <form [formGroup]="searchForm">
             <div class="row">  
-
               <div class="col-5">
                 <div class="form-group row">
                   
@@ -24,7 +22,6 @@
                     </div>
                 </div>
             </div>                
-        
             <div class="col-5">
               <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                 <i class="fas fa-search"> </i> Search
@@ -40,22 +37,18 @@
                 <i class="fas fa-print"> </i> Print
               </button>
             </div>
-
-                
-               
-        
-                <div class="col-2">                 
-                   <div class="dropdown float-right">
-                        <select class="form-control sml_input" formControlName="rows_number"
-                            (change)=search()>
-                            <option value=10>10</option>
-                            <option value=25>25</option>
-                            <option value=50>50</option>
-                            <option value=100>100</option>
-                            <option value='all'>All</option>
-                        </select>
-                    </div>
-                </div>               
+            <div class="col-2">                 
+                <div class="dropdown float-right">
+                    <select class="form-control sml_input" formControlName="rows_number"
+                        (change)=search()>
+                        <option value=10>10</option>
+                        <option value=25>25</option>
+                        <option value=50>50</option>
+                        <option value=100>100</option>
+                        <option value='all'>All</option>
+                    </select>
+                </div>
+            </div>               
         
             </div>
         </form>
@@ -71,7 +64,8 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
+              <th>Operator Name</th>
+              <th>Layout Name</th>
               <th>Created By</th>
               <th>Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
@@ -80,7 +74,7 @@
           </thead>
           <tbody *ngIf="SeatLayouts?.length != 0">
               <tr *ngFor="let sLayout of SeatLayouts; let i=index; ">
-                  <td>{{ sLayout.id }}</td><td>{{ sLayout.name }}</td><td>{{ sLayout.created_by }}</td>
+                  <td>{{ sLayout.id }}</td><td>{{ sLayout.bus_operator.operator_name }}</td><td>{{ sLayout.name }}</td><td>{{ sLayout.created_by }}</td>
                   <td>
                     <label *ngIf="sLayout.status==1" class="badge badge-light-primary pointer text-dark" (click)="changeStatus($event, sLayout.id);" >Active</label>
                     <label *ngIf="sLayout.status==0" class="badge badge-light-danger pointer text-dark" (click)="changeStatus($event, sLayout.id);">Pending</label>
@@ -158,46 +152,58 @@
             <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
             <button type="button" class="close" aria-label="Close"   (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="min-height: 400px;">
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-material">
                   <div class="right-icon-control">
-                    <form [formGroup]="SeatLayoutForm" class="editForm" novalidate>                        
+                    <form [formGroup]="SeatLayoutForm" class="editForm" novalidate>  
                       <div class="form-group row">
                         
-                          <label for="seatLayout" class="col-sm-2 col-form-label">Berth Type<span class="text-danger">*</span></label>
-                          <div class="col-sm-3 ">                        
-                            <input type="hidden" formControlName="id" [value]="SeatLayoutRecord.id">
+                      </div>                     
+                      <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label for="">Choose Operator <span class="text-danger">*</span></label>
+                            <ng-select [items]="busoperators" bindLabel="operator_name"
+                                bindValue="id" placeholder="Select Operator"
+                                formControlName="bus_operator_id" [clearable]="false">
+                            </ng-select>
+                            <span class="text-danger"
+                                *ngIf="SeatLayoutForm.controls['bus_operator_id'].touched && SeatLayoutForm.controls['bus_operator_id'].hasError('required')">
+                                Operator Name is required! </span>
+                        </div>
+                          <div class="col-sm-2 ">    
+                            <label for="">Seat Type <span class="text-danger">*</span></label>                    
                             <select class="form-control" formControlName="seatType">
+                              <option value="" selected>Choose Berth Type</option>
                               <option value="Seater">Lower Berth</option>
                               <option value="Sleeper">Upper Berth</option>
                             </select>
                             <span class="text-danger" *ngIf="SeatLayoutForm.controls['seatType'].touched && SeatLayoutForm.controls['seatType'].hasError('required')">
-                              Please Choose Berth Type </span>
+                              Choose Berth Type </span>
                           </div>
                        
-                          <label for="rowNumber" class="col-sm-2 col-form-label">No of Rows<span class="text-danger">*</span></label>
-                          <div class="col-sm-3 ">   
-                            <input type="number" min="1" max="5" class="form-control" formControlName="rowNumber">
+                          <div class="col-sm-2 ">   
+                            <label for="">No of Rows <span class="text-danger">*</span></label>
+                            <input type="number" placeholder="Rows" min="1" max="5" class="form-control" formControlName="rowNumber">
                             <span class="text-danger" *ngIf="SeatLayoutForm.controls['rowNumber'].touched && SeatLayoutForm.controls['rowNumber'].hasError('required')">
-                              Choose Number of Rows </span>
+                              Rows Required </span>
+                          </div>
+                          <div class="col-3">
+                            <label for="">Layout Name <span class="text-danger">*</span></label>
+                            <input type="text" formControlName="SeatLayoutName" class="form-control" placeholder="Enter Seat Layout Name">
+                            <span class="text-danger" *ngIf="SeatLayoutForm.controls['SeatLayoutName'].touched && SeatLayoutForm.controls['SeatLayoutName'].hasError('required')">
+                              Layout Name is Required </span>
                           </div>
                           <div class="col-sm-2"> 
+                            <label for="">&nbsp;</label>
                             <button type="button" class="btn btn-success form-control" [disabled]="!SeatLayoutForm.valid" (click)="generateRow()">Generate</button>
                           </div>
                         
                       </div>  
                     </form>
                     <form class="editForm" #myform="ngForm">  
-                      <div class="col-8 row form-group ">
-                        <label for="bus" class="col-sm-3 col-form-label  m-0 p-0">Seat Layout Name <span class="text-danger">*</span> </label> 
-                        <div class="col-sm-9"> 
-                          <!-- [value]="busRecord.bus_number1" alt+z-->
-                          <input type="text" name="SeatLayoutName" class="form-control" ngModel value="this.SeatLayoutRecord.name" required placeholder="Enter Seat Layout Name">
-                          
-                        </div>
-                      </div>
+                      
                       <div class="form-group row" *ngIf="seatLayoutrows?.length != 0">
                         <div class="col-1" >
                           <div class='container' dragula="COPYABLE" id="left" [(dragulaModel)]="left">

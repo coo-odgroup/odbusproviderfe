@@ -6,13 +6,14 @@ import {FormsModule} from '@angular/forms';
 import { BustypeComponent } from './bustype.component';
 import { NotificationService } from '../../services/notification.service';
 import {NgxPrintModule} from 'ngx-print';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   imports: [
     CommonModule,
     BusTypeRoutingModule,
     SharedModule,
     FormsModule,
+    NgSelectModule,
     NgxPrintModule
     ],
   declarations: [ BustypeComponent],

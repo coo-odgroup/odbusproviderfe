@@ -13,7 +13,7 @@
         <div class="col-10">
           <form [formGroup]="searchForm">
             <div class="row">
-
+              
               <div class="col-3">
                 <div class="form-group row">
                   <div class="col-sm-12">
@@ -82,7 +82,7 @@
               <th>TYPE</th>
               <th>Name</th>
               <th>CREATED BY</th>
-              <th>CREATED AT</th>
+              <th>Operator Name</th>
               <th>STATUS</th>
               <th width="100" class="hide_print" >&nbsp; </th>
             </tr>
@@ -93,7 +93,7 @@
               <td>{{ busType.bus_class.class_name }}</td>
               <td>{{ busType.name }}</td>
               <td>{{ busType.created_by }}</td>
-              <td>{{ busType.created_at| date: 'dd/MM/yyyy' }}</td>
+              <td>{{ busType.bus_operator.operator_name }}</td>
               <td>
                 <label *ngIf="busType.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, busType.id);">Active</label>
@@ -176,18 +176,33 @@
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
                 aria-hidden="true">&times;</span></button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="min-height: 350px;">
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-material">
                   <div class="right-icon-control">
                     <form [formGroup]="form" class="editForm" novalidate>
                       <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                           <div class="form-group row">
-                            <label for="Type" class="col-sm-3 col-form-label">Type<span
+                            <label for="Type" class="col-sm-12 col-form-label">Bus Operator<span class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                              <ng-select [items]="busoperators" bindLabel="operator_name"
+                              bindValue="id" placeholder="Select Operator"
+                              formControlName="bus_operator_id" [clearable]="false">
+                              </ng-select>
+                              <span class="text-danger"
+                                  *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
+                                  Operator Name is required! </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label for="Type" class="col-sm-12 col-form-label">Type<span
                                 class="text-danger">*</span></label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-12">
                               <!-- <input type="hidden" class="form-control"  formControlName="id" [value]="busTypeRecord.id"  />  -->
 
                               <select class="form-control" formControlName="type" type="text">
@@ -200,11 +215,11 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-4">
                           <div class="form-group row">
-                            <label for="Name" class="col-sm-3 col-form-label">Name<span
+                            <label for="Name" class="col-sm-12 col-form-label">Name<span
                                 class="text-danger">*</span></label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-12">
                               <input type="text" class="form-control" placeholder="Enter Bus Type Name" required
                                 formControlName="name" [value]="busTypeRecord.name" />
                               <span class="text-danger"

@@ -7,4 +7,5 @@ export interface Bustype {
   created_by: any;
   status: 1;
   bus_class_id:any;
+  bus_operator_id:any;
 }

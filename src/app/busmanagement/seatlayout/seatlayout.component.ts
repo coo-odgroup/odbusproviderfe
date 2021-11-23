@@ -12,6 +12,7 @@ import { DragulaService, DragulaDirective  } from 'ng2-dragula';
 import * as dragula from 'dragula';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
 
 interface SeatBlock{
@@ -41,7 +42,7 @@ export class SeatlayoutComponent implements OnInit {
   public searchForm: FormGroup;
 
 
-
+  busoperators: any;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   SeatLayouts: SeatLayout[];
@@ -64,7 +65,7 @@ export class SeatlayoutComponent implements OnInit {
   pagination: any;
 
  
-  constructor(private http: HttpClient, private notificationService: NotificationService, private sLayout: SeatlayoutService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private dragulaService: DragulaService) {
+  constructor(private http: HttpClient, private notificationService: NotificationService, private sLayout: SeatlayoutService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private busOperatorService: BusOperatorService,private dragulaService: DragulaService) {
     dragulaService.createGroup('COPYABLE', {
       copy: (el, source) => {
         return source.id === 'left';
@@ -195,10 +196,9 @@ export class SeatlayoutComponent implements OnInit {
   updateLayout(form:NgForm)
   {
     
-
+   // console.log(form.value);
     const layoutName=form.value.SeatLayoutName;
     const lowerBerth=form.value.lowerBerth;
-    const upperBerth=form.value.upperBerth;
     var counter=0;
     if(Object.keys(lowerBerth).length > 0)
     {
@@ -253,14 +253,16 @@ export class SeatlayoutComponent implements OnInit {
       }
     }
     let seatContext=form.value;
-    delete seatContext.SeatLayoutName;
-    const data={
-      name:layoutName,
-      layout_data:JSON.stringify(this.seatBlocks),
-      created_by:localStorage.getItem('USERNAME')   
-    }
-
+   // delete seatContext.SeatLayoutName;
    
+   
+    const data={
+      name:form.value.SeatLayoutName,
+      layout_data:JSON.stringify(this.seatBlocks),
+      created_by:localStorage.getItem('USERNAME'),
+      bus_operator_id:this.SeatLayoutRecord.bus_operator_id  
+    }
+ 
    
     this.sLayout.update(this.SeatLayoutRecord.id, data).subscribe(
       resp => {
@@ -381,8 +383,10 @@ export class SeatlayoutComponent implements OnInit {
     this.SeatLayoutForm = this.fb.group({
       id:[null],
       name: [null],
-      seatType: [null, Validators.compose([Validators.required])],
-      rowNumber:[null, Validators.compose([Validators.required])]
+      seatType: ["", Validators.compose([Validators.required])],
+      rowNumber:[null, Validators.compose([Validators.required])],
+      bus_operator_id:[null, Validators.compose([Validators.required])],
+      SeatLayoutName:[null, Validators.compose([Validators.required])]
     });
     this.formConfirm=this.fb.group({
       id:[null]
@@ -394,9 +398,31 @@ export class SeatlayoutComponent implements OnInit {
     });
 
     this.search();
+    this.loadServices();
     // this.loadSeatLayout();
   }
+  loadServices() {
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.busoperators=record.data;
+        }
+      );
+    }
+    else
+    {
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+        record=>{
+        this.busoperators=record.data;
+        }
+      );
+    }
 
+  }
 
 
 
@@ -410,6 +436,7 @@ export class SeatlayoutComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);
@@ -429,7 +456,7 @@ export class SeatlayoutComponent implements OnInit {
         res => {
           this.SeatLayouts= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( res.data);
+          console.log( res.data);
         }
       );
     }
@@ -508,7 +535,7 @@ export class SeatlayoutComponent implements OnInit {
         }
       }
     }
-    const layoutName=form.value.SeatLayoutName;
+    const layoutName=this.SeatLayoutForm.value.SeatLayoutName;
     let seatContext=form.value;
     delete seatContext.SeatLayoutName;
     var counter=0;
@@ -571,8 +598,8 @@ export class SeatlayoutComponent implements OnInit {
     const data ={
       name:layoutName,
       layout_data:JSON.stringify(this.seatBlocks),
-      created_by:localStorage.getItem('USERNAME')   
-      //layout_data:this.seatBlocks
+      created_by:localStorage.getItem('USERNAME'),
+      bus_operator_id:this.SeatLayoutForm.value.bus_operator_id
     }
   //  console.log(data);
   //  return false;
@@ -614,8 +641,10 @@ export class SeatlayoutComponent implements OnInit {
     this.SeatLayoutForm = this.fb.group({
       id:[null],
       name: [null],
-      seatType: [null, Validators.compose([Validators.required])],
-      rowNumber:[null, Validators.compose([Validators.required])]
+      seatType: ["", Validators.compose([Validators.required])],
+      rowNumber:[null, Validators.compose([Validators.required])],
+      bus_operator_id:[null, Validators.compose([Validators.required])],
+      SeatLayoutName:[null, Validators.compose([Validators.required])]
     });
     this.ModalHeading = "Add Seat Layout";
     this.ModalBtn = "Save";

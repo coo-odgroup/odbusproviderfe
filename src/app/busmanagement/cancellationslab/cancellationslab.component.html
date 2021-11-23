@@ -7,7 +7,7 @@
         <div class="col-2">
           <div class="from-group ">
             <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Cancellation Slab
+              Add Slab
             </button>
           </div>
         </div>
@@ -59,7 +59,7 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>API ID</th>
+              <th>Operator Name</th>
               <th>Rule Name</th>
               <th>Duration</th>
               <th>Deduction %</th>
@@ -71,16 +71,16 @@
           <tbody *ngIf="cancellationSlabs?.length != 0">
             <tr *ngFor="let cSlab of cancellationSlabs; let i=index; ">
               <td>{{ cSlab.id }}</td>
-              <td>{{ cSlab.api_id }}</td>
+              <td>{{ cSlab.bus_operator.operator_name }}</td>
               <td>{{ cSlab.rule_name }}</td>
               <td>
                 <div *ngFor="let cSlabduration of cSlab.slab_info; let durationIndex=index;">
-                  <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}
+                  {{ cSlabduration.duration}}
                 </div>
               </td>
               <td>
                 <div *ngFor="let cSlabdeduction of cSlab.slab_info; let deductionIndex=index;">
-                  <strong>{{deductionIndex+1}}</strong>. {{ cSlabdeduction.deduction}}</div>
+                  {{ cSlabdeduction.deduction}}</div>
               </td>
 
               <td>
@@ -173,15 +173,15 @@
                       <div class="row">
                         <div class="col-md-5">
                           <div class="form-group row">
-                            <label for="API" class="col-sm-3 col-form-label">API</label>
+                            <label for="operator_name" class="col-sm-3 col-form-label">Bus Operator</label>
                             <div class="col-sm-9">
-                              <select class="form-control" required formControlName="api_id" type="text"
-                                [value]="cancellationSlabRecord.api_id">
-                                <option [value]="1">ODBUS</option>
-                              </select>
+                              <ng-select [items]="busoperators" bindLabel="operator_name"
+                                  bindValue="id" placeholder="Select Operator"
+                                  formControlName="bus_operator_id" [clearable]="false">
+                              </ng-select>
                               <span class="text-danger"
-                                *ngIf="form.controls['api_id'].touched && form.controls['api_id'].hasError('required')">
-                                API is required! </span>
+                                  *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
+                                  Operator Name is required! </span>
                             </div>
                           </div>
                         </div>
@@ -220,8 +220,9 @@
                         <div class="col-5">
                           <label for="deduction" class="col-form-label">Deduction (%)</label>
                         </div>
-                        <div class="form-group col-md-2 mt-2 " style="display: flex;justify-content: flex-end;">
-                          <button (click)="addSlabs()" class="btn btn-info btn-sm addbtn">+</button>
+                        <div class="form-group col-md-2 mt-2 " style="display: flex;justify-content: flex-start;">
+                          <button (click)="addSlabs()" class="btn btn-info btn-sm addbtn"><i class="fa fa-plus" aria-hidden="true"></i>
+                          </button>
                         </div>
                       </div>
                       <div class="form-group row" formArrayName="slabs">

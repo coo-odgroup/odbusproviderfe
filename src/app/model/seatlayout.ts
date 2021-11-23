@@ -5,6 +5,7 @@ export interface SeatLayout {
     created_at: any;
     created_by: any;
     status: any;
+    bus_operator_id:any;
     layoutControl:sLayoutData
 }
 export interface sLayoutData {  

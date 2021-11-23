@@ -1,6 +1,6 @@
 export interface Cancellationslab {
     id:string;
-    api_id:any;
+    bus_operator_id:any;
     rule_name:any;
     duration:any;
     deduction:any;
