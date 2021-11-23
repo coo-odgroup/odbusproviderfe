@@ -76,7 +76,7 @@
                     <td>{{ amenity.created_by }}</td>
                     <td>
                       <img *ngIf="amenity.amenities_image || amenity.amenities_image!==null" class="sliderImage"
-                        src="../../../assets/uploads/amenities/{{amenity.amenities_image}}" height="100">
+                        src="{{path}}amenities/{{amenity.amenities_image}}" height="100">
                       <img *ngIf="amenity.amenities_image=='' || amenity.amenities_image==null" class="sliderImage"
                         src="../../../assets/images/noImage.png" height="100">
                     </td>
@@ -213,8 +213,9 @@
                                 <div class="col-12">
                                   <div class="row">
                                     <div class="col-md-6" *ngIf="AmenitiesRecord && AmenitiesRecord.amenities_image">
-                                      <span><b>Existing Image</b></span> <br>                       
-                                      <img    class="sliderImage" src="../../../assets/uploads/amenities/{{AmenitiesRecord.amenities_image}}" height="50"/>
+                                      <span><b>Existing Image</b></span> <br>    
+                                      <img class="sliderImage" src="{{path}}amenities/{{AmenitiesRecord.amenities_image}}" height="50"/>                  
+                                      <!-- <img class="sliderImage" src="../../../assets/uploads/amenities/{{AmenitiesRecord.amenities_image}}" height="50"/> -->
                                     </div>
                                     <div class="col-md-6" *ngIf="imgURL">
                                       <span ><b>New image</b></span><br>

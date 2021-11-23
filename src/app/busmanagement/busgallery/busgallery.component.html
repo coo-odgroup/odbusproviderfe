@@ -72,7 +72,7 @@
               <td>{{ gallery.created_at | date: 'dd/MM/yyyy'}}</td>
               <td>
                 <img *ngIf="gallery.bus_image || gallery.bus_image!==null" class="sliderImage"
-                src="../../../assets/uploads/bus_photos/{{gallery.bus_image}}" height="100">
+                src="{{path}}bus_photos/{{gallery.bus_image}}" height="100">
                 <img *ngIf="gallery.bus_image=='' || gallery.bus_image==null" class="sliderImage"
                   src="../../../assets/images/noImage.png" height="100">
               </td>
@@ -168,7 +168,7 @@
                                 <div class="row">
                                   <div class="col-md-6" *ngIf="busGalleryRecord && busGalleryRecord.bus_image">
                                     <span><b>Existing Image</b></span> <br>                       
-                                    <img    class="sliderImage" src="../../../assets/uploads/bus_photos/{{busGalleryRecord.bus_image}}" height="50"/>
+                                    <img    class="sliderImage" src="{{path}}/bus_photos/{{busGalleryRecord.bus_image}}" height="50"/>
     
                                   </div>
                                   <div class="col-md-6" *ngIf="imgURL">

@@ -34,6 +34,7 @@ export class SpecialsliderComponent implements OnInit {
   iconSrc:any;
   imageError:any;
   imgURL: any;
+  path = Constants.PATHURL;
   base64result:any;
   finalJson = {};
   fileName= 'Special-Slider.xlsx';

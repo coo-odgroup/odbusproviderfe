@@ -33,6 +33,7 @@ export class BusgalleryComponent implements OnInit {
   public busGalleryRecord: Busgallery;
   public isSubmit: boolean;
   imgURL: any;
+  path = Constants.PATHURL;
   imageSrc: string;
   File: any;
   finalJson = {};

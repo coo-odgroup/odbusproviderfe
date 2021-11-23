@@ -25,31 +25,22 @@ export class AmenitiesComponent implements OnInit {
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
 
-
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   statusDialogReference: NgbModalRef;
-
   Amenities: Amenities[];
   AmenitiesRecord: Amenities;
   imgURL: any;
-
-  
-
+  path = Constants.PATHURL;
   //Image upload
-
   File: any;
-
   //base64s
   imageSrc: string;
-
   //json
   finalJson = {};
   base64result: any;
   iconSrc: any;
-
   imageError: string;
-
   public isSubmit: boolean;
   public mesgdata: any;
   public ModalHeading: any;
