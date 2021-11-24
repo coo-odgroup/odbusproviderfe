@@ -23,7 +23,12 @@ export class CancellationslabService {
       catchError(this.errorHandler)
     )
   }
-
+  readAllOperator(post): Observable<any> {
+    return this.httpClient.post<any>(this.endPoint+ '/cancellationslabsOperator', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.endPoint+ '/cancellationslabData', JSON.stringify(post), this.httpOptions)

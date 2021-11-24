@@ -22,7 +22,12 @@ export class SeatlayoutService {
       catchError(this.errorHandler)
     )
   }
-
+  readAllOperator(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/BusSeatLayoutOperator', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/BusSeatLayoutData', JSON.stringify(post), this.httpOptions)
     .pipe(

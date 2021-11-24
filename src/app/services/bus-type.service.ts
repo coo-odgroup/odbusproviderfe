@@ -21,7 +21,12 @@ export class BusTypeService {
       catchError(this.errorHandler)
     )
   }
-
+  readOperator(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/BusTypeOperator', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/BusTypeData', JSON.stringify(post), this.httpOptions)
     .pipe(

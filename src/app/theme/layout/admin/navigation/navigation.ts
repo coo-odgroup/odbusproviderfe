@@ -46,72 +46,83 @@ const OperatorItems =[{
       title: 'Bus Management',
       //translate: 'NAV.BUSMANAGEMENT',
       type: 'collapse',
-      icon: 'all_out',
+      icon: 'feather icon-tv',
       children: [
         {
           id: 'managelocation',
           title: 'Location',
           type: 'item',
+          icon: 'feather icon-map-pin',
           url: 'busmanagement/managelocation'
         },
         {
           id: 'BoardingDropping',
           title: 'Boarding/Dropping',
           type: 'item',
+          icon:'feather icon-minimize-2',
           url: 'busmanagement/BoardingDropping'
         },
         {
           id: 'manageus',
           title: 'Bus',
           type: 'item',
+          icon:'feather icon-gitlab',
           url: 'busmanagement/managebus'
         },
         {
           id: 'coupon',
           title: 'Coupon',
           type: 'item',
+          icon:'feather icon-tag',
           url: 'busmanagement/coupon'
         },
         {
           id: 'gallery',
           title: 'Gallery',
           type: 'item',
+          icon:'feather icon-image',
           url: 'busmanagement/busgallery'
         },
         {
           id: 'seatfare',
           title: 'Seat Fare',
           type: 'item',
+          icon:'feather icon-hash',
           url: 'busmanagement/seatfare'
         },
         {
           id: 'bustype',
           title: 'Bus Type',
           type: 'item',
+          icon:'feather icon-share-2',
           url: 'busmanagement/bustype'
         },
         {
           id: 'SeatLayout ',
           title: 'Seat Layout',
           type: 'item',
+          icon:'feather icon-server',
           url: 'busmanagement/SeatLayout'
         },
         {
           id: 'CancellationSlab',
           title: 'Cancellation Slab',
           type: 'item',
+          icon:'feather icon-sidebar',
           url: 'busmanagement/cancellationslab'
         },
         {
           id: 'BusSchedule',
           title: 'Bus Schedule',
           type: 'item',
+          icon:'feather icon-twitter',
           url: 'busmanagement/busschedule'
         },
         {
           id: 'Offers',
           title: 'Offers',
           type: 'item',
+          icon:'feather icon-watch',
           url: 'busmanagement/offers'
         }
 
@@ -122,24 +133,27 @@ const OperatorItems =[{
       id: 'bookingmanagement',
       title: 'Booking Management',
       type: 'collapse',
-      icon: 'add_shopping_cart',
+      icon: 'feather icon-gitlab',
       children: [
         {
           id: 'BusCancellation',
           title: 'Bus Cancellation',
           type: 'item',
+          icon:'feather icon-wifi-off',
           url: 'bookingmanagement/buscancellation'
         },
         {
           id: 'seatBlock',
           title: 'seat  Block',
           type: 'item',
+          icon:'feather icon-slash',
           url: 'bookingmanagement/seatblock'
         },
         {
           id: 'seatopen',
           title: 'Seat Open',
           type: 'item',
+          icon:'feather icon-shield',
           url: 'bookingmanagement/seatopen'
         }
       ]
@@ -148,36 +162,41 @@ const OperatorItems =[{
       id: 'reports',
       title: 'Reports',
       type: 'collapse',
-      icon: 'add_shopping_cart',
+      icon: 'feather icon-file-text',
       children: [   
         {
           id: 'seatopenreport',
           title: 'Seat Open Report',
           type: 'item',
+          icon:'feather icon-pie-chart',
           url: 'reports/seatopenReport'
         },
         {
           id: 'extraseatopenreport',
           title: 'Extra Seat Open Report',
           type: 'item',
+          icon:'feather icon-pie-chart',
           url: 'reports/extraseatopenReport'
         },
         {
           id: 'seatblockreport',
           title: 'Seat Block Report',
           type: 'item',
+          icon:'feather icon-pie-chart',
           url: 'reports/seatblockReport'
         },
         {
           id: 'cancleticketsReport',
           title: 'Cancel Tickets Report',
           type: 'item',
+          icon:'feather icon-pie-chart',
           url: 'reports/cancleticketsReport'
         },
         {
           id: 'buscancellationreport',
           title: 'Bus Cancellation Report',
           type: 'item',
+          icon:'feather icon-pie-chart',
           url: 'reports/buscancellationreport'
         }
       ]

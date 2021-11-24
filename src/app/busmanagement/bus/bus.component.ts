@@ -503,6 +503,21 @@ export class BusComponent implements OnInit {
         this.operators=record.data;
         }
       );
+      this.busTypeService.readAll().subscribe(
+        rec=>{
+        this.busTypes=rec.data;
+        }
+      );
+      this.cancellationslabService.readAll().subscribe(
+        resp=>{
+        this.cancellationslabs=resp.data;
+        }
+      );
+      this.seatlayoutService.readAll().subscribe(
+        resp=>{
+        this.seatLayouts=resp.data;
+        }
+      );
     }
     else
     {
@@ -511,13 +526,25 @@ export class BusComponent implements OnInit {
         this.operators=record.data;
         }
       );
+      this.busTypeService.readOperator(BusOperator).subscribe(
+        rec=>{
+        this.busTypes=rec.data;
+        
+        }
+      );
+      this.cancellationslabService.readAllOperator(BusOperator).subscribe(
+        resp=>{
+        this.cancellationslabs=resp.data;
+        }
+      );
+      this.seatlayoutService.readAllOperator(BusOperator).subscribe(
+        resp=>{
+        this.seatLayouts=resp.data;
+        }
+      );
     }
     
-    this.busTypeService.readAll().subscribe(
-      rec=>{
-      this.busTypes=rec.data;
-      }
-    );
+    
     this.seatingtypeService.readAll().subscribe(
       records=>{
       this.busSeatingTypes=records.data;
@@ -529,24 +556,17 @@ export class BusComponent implements OnInit {
         this.amenities=res.data;
       }
     );
+
     this.safetyService.readAll().subscribe(res=>{
       this.safetyies=res.data;
     });
-    this.cancellationslabService.readAll().subscribe(
-      resp=>{
-      this.cancellationslabs=resp.data;
-      }
-    );
+    
     this.busContactService.readAll().subscribe(
       resp=>{
       this.busContacts=resp.data;
       }
     );
-    this.seatlayoutService.readAll().subscribe(
-      resp=>{
-      this.seatLayouts=resp.data;
-      }
-    );
+    
     // this.locationService.readAll().subscribe(
     //   records=>{
     //     this.locations=records.data;
@@ -2024,6 +2044,16 @@ export class BusComponent implements OnInit {
         this.operators=record.data;
         }
       );
+      this.busTypeService.readAll().subscribe(
+        rec=>{
+        this.busTypes=rec.data;
+        }
+      );
+      this.cancellationslabService.readAll().subscribe(
+        resp=>{
+        this.cancellationslabs=resp.data;
+        }
+      );
     }
     else
     {
@@ -2032,13 +2062,19 @@ export class BusComponent implements OnInit {
               this.operators=record.data;
               }
             );
+      this.busTypeService.readOperator(BusOperator).subscribe(
+              rec=>{
+              this.busTypes=rec.data;
+              }
+            );    
+      this.cancellationslabService.readAllOperator(BusOperator).subscribe(
+              resp=>{
+              this.cancellationslabs=resp.data;
+              }
+            );  
     }
     
-    this.busTypeService.readAll().subscribe(
-      rec=>{
-      this.busTypes=rec.data;
-      }
-    );
+    
     this.seatingtypeService.readAll().subscribe(
       records=>{
       this.busSeatingTypes=records.data;
@@ -2053,11 +2089,7 @@ export class BusComponent implements OnInit {
     this.safetyService.readAll().subscribe(res=>{
       this.safetyies=res.data;
     });
-    this.cancellationslabService.readAll().subscribe(
-      resp=>{
-      this.cancellationslabs=resp.data;
-      }
-    );
+   
     
     this.ModalHeading = "Update Bus";
     this.ModalBtn = "Update";
