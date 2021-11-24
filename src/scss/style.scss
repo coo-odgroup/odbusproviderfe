@@ -10,7 +10,7 @@ File: style.css
 		-	Margin, Padding, Font class, text align, position, floating, overflow, background class, text color, display class, boarder class
 	- Theme Elements
 		-	Accordion, Button, tabs, typography, buttons, box shadow, Lable & Badges, Alert, Pagination, Breadcumb, Cards, Collapse,
-        -   Carousel, Grid, Progress, Model, tooltip, popover, Datepicker, Gridstack, lightbox, notification, Nestable, pnotify, rating,
+        -   Carousel, Grid, Progress, Model, tooltip, popover, Datepicker, Gridstack,  notification, Nestable, pnotify, rating,
         -   Rangeslider, Slider, Syntax Highlighter, Tour, Treeview, Toolbar, Session Timeout, Session idle Timeout, offline, Animation
     - Forms
         -   Forms Elements, Advance Form Control, Validation, Masking, Wizard, Picker, Select
@@ -69,7 +69,7 @@ File: style.css
 
 // custom plugin
 @import "themes/plugin/sweatalert";
-@import "themes/plugin/lightbox";
+
 @import "themes/plugin/notification";
 @import "themes/plugin/pnotify";
 @import "themes/plugin/bar-rating";

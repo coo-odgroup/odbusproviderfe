@@ -14,7 +14,7 @@ import {ApexChartService} from './components/chart/apex-chart/apex-chart.service
 import { ToastComponent } from './components/toast/toast.component';
 import {ToastService} from './components/toast/toast.service';
 import { GalleryComponent } from './components/gallery/gallery.component';
-import {LightboxModule} from 'ngx-lightbox';
+
 
 /*import 'hammerjs';
 import 'mousetrap';
@@ -34,7 +34,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardModule,
     BreadcrumbModule,
     ModalModule,
-    LightboxModule
+
   ],
   exports: [
     CommonModule,
