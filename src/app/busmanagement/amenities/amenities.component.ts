@@ -210,8 +210,7 @@ export class AmenitiesComponent implements OnInit {
     this.ModalHeading = "Edit Amenities";
     this.ModalBtn = "Update";
     this.AmenitiesRecord = this.Amenities[id];
-
-    this.imgURL = this.getBannerImagepath(this.AmenitiesRecord.icon);
+    //this.imgURL = this.AmenitiesRecord.icon;
     this.form = this.fb.group({
       id: [this.AmenitiesRecord.id],
       name: [this.AmenitiesRecord.name, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
@@ -386,8 +385,4 @@ export class AmenitiesComponent implements OnInit {
     }
   }
 
-  getBannerImagepath(slider_img: any) {
-    let objectURL = 'data:image/*;base64,' + slider_img;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-  }
 }

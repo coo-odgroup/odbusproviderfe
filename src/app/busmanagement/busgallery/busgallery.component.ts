@@ -153,8 +153,7 @@ export class BusgalleryComponent implements OnInit {
       this.ModalHeading = "Edit Bus Photos";
       this.ModalBtn = "Update";
       this.busGalleryRecord = this.busGallerries[id];
-  
-      this.imgURL = this.getBannerImagepath(this.busGalleryRecord.icon);
+      //this.imgURL = this.getBannerImagepath(this.busGalleryRecord.icon);
       this.busForm = this.fb.group({
         id: [this.busGalleryRecord.id],
         bus_id: [this.busGalleryRecord.bus_id, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],

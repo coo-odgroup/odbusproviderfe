@@ -63,7 +63,7 @@
               <td>{{ i+1 }}</td>
               <td>{{sliderdata.occassion}} </td>
                 <td>
-                  <img *ngIf="sliderdata.slider_photo || sliderdata.slider_photo!==null" class="sliderImage"
+                  <img *ngIf="sliderdata.slider_photo!='' && sliderdata.slider_photo!=null" class="sliderImage"
                   src="{{path}}slider_photos/{{sliderdata.slider_photo}}" height="100">
                   <img *ngIf="sliderdata.slider_photo=='' || sliderdata.slider_photo==null" class="sliderImage"
                     src="../../../assets/images/noImage.png" height="100">

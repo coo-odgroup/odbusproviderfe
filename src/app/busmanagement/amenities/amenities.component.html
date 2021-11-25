@@ -75,7 +75,7 @@
                     <td>{{ amenity.created_at | date: 'dd/MM/yyyy'}}</td>
                     <td>{{ amenity.created_by }}</td>
                     <td>
-                      <img *ngIf="amenity.amenities_image || amenity.amenities_image!==null" class="sliderImage"
+                      <img *ngIf="amenity.amenities_image!='' && amenity.amenities_image!=null" class="sliderImage"
                         src="{{path}}amenities/{{amenity.amenities_image}}" height="100">
                       <img *ngIf="amenity.amenities_image=='' || amenity.amenities_image==null" class="sliderImage"
                         src="../../../assets/images/noImage.png" height="100">
@@ -225,11 +225,10 @@
                                 </div>                      
                               </div>
                             </div>
-
-
                             </div>
                             </div> 
                             <div class="form-group row">
+                              {{AmenitiesRecord.iconSrc}}
                               <input type="hidden" class="form-control" formControlName="iconSrc" [value]="AmenitiesRecord.iconSrc" />
                             </div>
                         </form>

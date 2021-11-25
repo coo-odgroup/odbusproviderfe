@@ -71,7 +71,7 @@
               <td>{{ gallery.bus.bus_number }}</td>
               <td>{{ gallery.created_at | date: 'dd/MM/yyyy'}}</td>
               <td>
-                <img *ngIf="gallery.bus_image || gallery.bus_image!==null" class="sliderImage"
+                <img *ngIf="gallery.bus_image!='' && gallery.bus_image!=null" class="sliderImage"
                 src="{{path}}bus_photos/{{gallery.bus_image}}" height="100">
                 <img *ngIf="gallery.bus_image=='' || gallery.bus_image==null" class="sliderImage"
                   src="../../../assets/images/noImage.png" height="100">

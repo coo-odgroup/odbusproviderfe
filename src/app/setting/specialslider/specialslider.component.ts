@@ -211,7 +211,7 @@ export class SpecialsliderComponent implements OnInit {
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
       this.imgURL = reader.result; 
-      this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
+      //this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
     }
 
   }
@@ -321,13 +321,10 @@ export class SpecialsliderComponent implements OnInit {
   }
   editSlider(id)
   { 
-    //console.log(this.sliders);
-    this.sliderRecord = this.sliders[id]; 
-    //console.log(this.sliderRecord);
-    
-    this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.sliderRecord.slider_img); 
+    this.sliderRecord = this.sliders[id];   
+    //this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.sliderRecord.slider_img); 
     //sliderImgPreview
-    let objectURL = 'data:image/*;base64,'+ this.imgURL.changingThisBreaksApplicationSecurity;
+   // let objectURL = 'data:image/*;base64,'+ this.imgURL.changingThisBreaksApplicationSecurity;
    // $('#sliderImgPreview').attr('src', objectURL);
 
     this.sliderForm=this.fb.group({
