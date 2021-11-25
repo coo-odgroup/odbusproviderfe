@@ -290,7 +290,8 @@ export class SafetyComponent implements OnInit {
           }
           else
           {
-            this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+            let errObj=JSON.parse(resp.message);
+            this.notificationService.addToast({ title: 'Error', msg: errObj.name, type: 'error' });
           }
         }
       );    
