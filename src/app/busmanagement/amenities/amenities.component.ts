@@ -175,6 +175,8 @@ export class AmenitiesComponent implements OnInit {
     if (id == null) { 
       this.AmenitiesService.create(fd).subscribe(
         resp => {
+          // console.log(resp);
+          // return;
           if (resp.status == 1) {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: 'success' });
@@ -183,7 +185,8 @@ export class AmenitiesComponent implements OnInit {
             this.refresh();
           }
           else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            let errObj=JSON.parse(resp.message);
+            this.notificationService.addToast({ title: 'Error', msg: errObj.name, type: 'error' });
           }
         }
       );
