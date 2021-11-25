@@ -200,7 +200,14 @@ const OperatorItems =[{
           url: 'reports/buscancellationreport'
         }
       ]
-    }
+    },
+    {
+      id: 'howtouse',
+      title: 'How to Use',
+      type: 'item',
+      icon: 'feather icon-droplet',
+      url: 'howtouse'
+    },
 
   ]
 }];

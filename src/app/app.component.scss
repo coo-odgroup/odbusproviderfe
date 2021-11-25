@@ -33,3 +33,7 @@
 ::ng-deep .pcoded-navbar .pcoded-inner-navbar app-nav-group:first-child > .pcoded-menu-caption {
    margin-top: -26px !important;
 }
+::ng-deep .page-link
+{
+    cursor: pointer;
+}

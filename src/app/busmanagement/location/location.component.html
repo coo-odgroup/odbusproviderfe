@@ -58,8 +58,9 @@
               <th>ID</th>
               <th>Name</th>
               <th>Synonym</th>
+              <th>Created By</th>
               <th>Status</th>
-              <th width="100" class="hide_print">&nbsp;</th>
+              <th width="100" class="hide_print" *ngIf="userType==1">&nbsp;</th>
             </tr>
           </thead>
           <tbody *ngIf="locations?.length != 0">
@@ -67,13 +68,23 @@
               <td>{{ location.id }}</td>
               <td>{{ location.name }}</td>
               <td>{{ location.synonym }}</td>
+              <td>{{ location.created_by }}</td>
               <td>
-                <label *ngIf="location.status==1" class="badge badge-light-primary pointer text-dark"
+                <div  *ngIf="userType==1">
+                  <label *ngIf="location.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, location.id);">Active</label>
-                <label *ngIf="location.status==0" class="badge badge-light-danger pointer text-dark"
+                  <label *ngIf="location.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, location.id);">Pending</label>
+                </div>
+                <div  *ngIf="userType==4">
+                  <label *ngIf="location.status==1" class="badge badge-light-primary pointer text-dark"
+                  >Active</label>
+                  <label *ngIf="location.status==0" class="badge badge-light-danger pointer text-dark" title="Pending for Approval"
+                  >Pending <i class="fa fa-info-circle"></i></label>
+                </div>
+                
               </td>
-              <td class="hide_print">
+              <td class="hide_print" *ngIf="userType==1">
                 <div class="overlay-edit ">
                   <button type="button" (click)="editLocation($event, i); OpenModal(content);"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>

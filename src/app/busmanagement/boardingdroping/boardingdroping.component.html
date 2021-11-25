@@ -66,11 +66,12 @@
             <tr>
               <th>ID</th>
               <th>Location</th>
-              <th>boarding_point</th>
-              <!-- <th>Created At</th>
+              <th>Sub Locations</th>
               <th>Created By</th>
+              <!-- <th>Created At</th>
+              
               <th>Status</th> -->
-              <th width="100" class="hide_print">&nbsp; </th>
+              <th width="100" class="hide_print" *ngIf="userType==1">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="BoardingDroppings?.length != 0">
@@ -81,8 +82,8 @@
                 <div *ngFor="let bp of BoardDrop.boarding_dropping; let dura=index;"><strong>{{dura+1}}</strong>. {{
                   bp.boarding_point }}</div>
               </td>
-
-              <td class="hide_print">
+              <td>{{ BoardDrop.created_by }}</td>
+              <td class="hide_print" *ngIf="userType==1">
                 <div class="overlay-edit">
                   <button type="button" (click)="editBoardingDropping($event, i);OpenModal(content);"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>

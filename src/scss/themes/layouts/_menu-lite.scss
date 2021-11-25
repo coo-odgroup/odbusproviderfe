@@ -206,7 +206,7 @@
         > li {
             line-height: $header-height;
             display: inline-block;
-            padding: 0 12px;
+            padding: 0 3px;
 
             .nav-link {
                 padding: 0;
@@ -271,7 +271,7 @@
 
         .dropdown-menu {
             position: absolute;
-            min-width: 220px;
+            min-width: 320px;
             margin: 0;
 
             li {
@@ -425,7 +425,7 @@
         .profile-notification {
             padding: 0;
             line-height: 1.4;
-            overflow: hidden;
+            
 
             .pro-head {
                 color: #fff;
@@ -3339,4 +3339,71 @@ body.box-layout {
 
 .pagination-sm {
     @include pagination-size($pagination-padding-y-sm, $pagination-padding-x-sm, $font-size-sm, $line-height-sm, 60px);
+}
+
+.os-padding {
+    box-sizing: inherit;
+    direction: inherit;
+    position: absolute;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    top: 60px;
+    bottom: 0;
+    right: 0;
+    width: auto!important;
+    height: auto!important;
+    z-index: 0;
+}
+.os-viewport {
+    direction: inherit!important;
+    box-sizing: inherit!important;
+    resize: none!important;
+    outline: 0!important;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    -webkit-overflow-scrolling: touch;
+}
+.os-content {
+    direction: inherit;
+    box-sizing: border-box!important;
+    position: relative;
+    display: block;
+    height: 100%;
+    width: 100%;
+    height: 100%;
+    width: 100%;
+    visibility: visible;
+}
+.list-group {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    border-radius: 0.25rem;
+}
+.notificationbox
+{
+    .card .card-footer:not([class*="bg-"]) {
+        background: transparent;
+        position: absolute;
+        bottom: -41px;
+        width: 100%;
+    }
+    .card
+    {
+        border-top: 0px !important;
+    }
 }

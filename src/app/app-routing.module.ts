@@ -49,6 +49,11 @@ const routes: Routes = [
         canActivate: [Routeguard]
       },
       {
+        path: 'howtouse',
+        loadChildren: () => import('./howtouse/howtouse.module').then(module => module.HowtouseModule),
+        canActivate: [Routeguard]
+      },
+      {
         path: 'busmanagement',
         loadChildren: () => import('./busmanagement/busmanagement.module').then(module => module.BusmanagementModule),
         canActivate: [Routeguard]

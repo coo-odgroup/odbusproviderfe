@@ -23,6 +23,7 @@ export class LocationComponent implements OnInit {
   public searchForm: FormGroup;
   pagination: any;
 
+  userType:any;
 
   //@ViewChild('closebutton') closebutton;
   @ViewChild("addnew") addnew;
@@ -45,6 +46,7 @@ export class LocationComponent implements OnInit {
     config.keyboard = false;
     this.ModalHeading = "Add New Location";
     this.ModalBtn = "Save"; 
+    this.userType=localStorage.getItem('ROLE_ID');
   }
   OpenModal(content) {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
@@ -183,7 +185,7 @@ export class LocationComponent implements OnInit {
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( res.data);
+          console.log( this.locations);
         }
       );
     }

@@ -8,4 +8,9 @@ export interface BoardingDropping {
     created_at:any;
     created_by:any;
     status:1;
+    boarding_created:any;
+}
+export interface boarding_dropping_info
+{
+    created_by:any;
 }

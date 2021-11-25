@@ -1,6 +1,6 @@
 <div class="text-center btn btn-info form-control">{{adminType}}</div>
 <perfect-scrollbar *ngIf="this.flatConfig['layout'] === 'vertical'" (clickOutside)="navMob()" [excludeBeforeClick]="true" [exclude]="'#mobile-collapse'" id="nav-ps-flat-able" ngClass="flat-able-scroll" [style.max-width]="'300px'" [usePSClass]="'flat-able'" [disabled]="null">
-  <div class="navbar-content">
+  <div class="navbar-content ">
   
     <ul class="nav pcoded-inner-navbar" (clickOutside)="fireOutClick()">
       <ng-container *ngFor="let item of navigation">
@@ -11,6 +11,14 @@
     </ul>
     
   </div>
+
+  <div *ngIf="roleId!=1 && roleId!=2" class="border-top">
+    <img src="/assets/images/calling_woman_vector.png" style="width: 94%;" class="pt-2 pb-2">
+    <div class="col-12 text-center pt-2 pb-2 lead"><a href="mailto:support@odbus.in"><i class="fa fa-envelope"></i> support@odbus.in</a></div>
+    <div class="col-12 text-center pt-2 pb-2 lead  border-bottom"><a href="tel:9124419800"><i class="fa fa-phone"></i> 9124419800</a></div>
+  </div>
+  
+  
 </perfect-scrollbar>
 
 <div *ngIf="this.flatConfig['layout'] === 'horizontal'" #navbarWrapper class="navbar-content sidenav-horizontal" id="layout-sidenav">

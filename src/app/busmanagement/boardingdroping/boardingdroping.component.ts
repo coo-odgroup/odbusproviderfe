@@ -27,7 +27,7 @@ export class BoardingdropingComponent implements OnInit {
 
 
 
-
+  userType:any;
   public boardingList: FormArray;
   public droppingList: FormArray;
   @ViewChild("addnew") addnew;
@@ -69,6 +69,7 @@ export class BoardingdropingComponent implements OnInit {
     config.keyboard = false;
     this.ModalHeading = "Add Boarding Dropping";
     this.ModalBtn = "Save";
+    this.userType=localStorage.getItem('ROLE_ID');
     
    }
    OpenModal(content) {
@@ -225,7 +226,7 @@ export class BoardingdropingComponent implements OnInit {
         res => {
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( res.data);
+          console.log( this.BoardingDroppings);
         }
       );
     }
@@ -381,6 +382,7 @@ export class BoardingdropingComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.BoardingDroppingRecord.id],
       location_id: [this.BoardingDroppingRecord.id, Validators.compose([Validators.required])],
+      created_by:localStorage.getItem('USERNAME'),
       boards: this.fb.array([this.createBoard()])
     });
     this.boardingList = this.form.get('boards') as FormArray;
