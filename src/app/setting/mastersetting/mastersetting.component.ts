@@ -332,6 +332,9 @@ export class MastersettingComponent implements OnInit {
     ResetAttributes()
   {
     this.settingRecord = {} as SettingsRecords;
+
+    this.finalLogo =[null];
+    this.finalFavIcon =[null];
     this.settingForm = this.fb.group({
       id:[null],
       bus_operator_id: [null, Validators.compose([Validators.required])],
@@ -407,9 +410,9 @@ export class MastersettingComponent implements OnInit {
             this.getAll();
           }
           else {
-            // this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            let errObj=JSON.parse(resp.message);
-            this.notificationService.addToast({ title: 'Error', msg: errObj.bus_operator_id, type: 'error' });
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            // let errObj=JSON.parse(resp.message);
+            // this.notificationService.addToast({ title: 'Error', msg: resp, type: 'error' });
           }
         }
       );
