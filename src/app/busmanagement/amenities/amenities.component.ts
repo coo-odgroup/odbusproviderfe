@@ -185,8 +185,10 @@ export class AmenitiesComponent implements OnInit {
             this.refresh();
           }
           else {
-            let errObj=JSON.parse(resp.message);
-            this.notificationService.addToast({ title: 'Error', msg: errObj.name, type: 'error' });
+            // let errObj=JSON.parse(resp.message);
+            // this.notificationService.addToast({ title: 'Error', msg: errObj.name, type: 'error' });
+
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
           }
         }
       );

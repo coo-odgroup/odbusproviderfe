@@ -411,8 +411,7 @@ export class MastersettingComponent implements OnInit {
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            // let errObj=JSON.parse(resp.message);
-            // this.notificationService.addToast({ title: 'Error', msg: resp, type: 'error' });
+            
           }
         }
       );
@@ -429,8 +428,7 @@ export class MastersettingComponent implements OnInit {
           }
           else {
 
-            let errObj=JSON.parse(resp.message);
-            this.notificationService.addToast({ title: 'Error', msg: errObj.bus_operator_id, type: 'error' });
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
           }
         }
       );
