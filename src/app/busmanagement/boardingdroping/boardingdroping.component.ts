@@ -226,7 +226,7 @@ export class BoardingdropingComponent implements OnInit {
         res => {
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
-          console.log( this.BoardingDroppings);
+          // console.log( this.BoardingDroppings);
         }
       );
     }

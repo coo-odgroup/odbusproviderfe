@@ -244,6 +244,10 @@
                             <div class="col-sm-7">
                               <input id="r_eml" type="text" class="form-control" ngbAutofocus placeholder="Request Email"
                                 formControlName="request_email" />
+                                <span class="text-danger"
+                                *ngIf="settingForm.controls['request_email'].touched && settingForm.controls['request_email'].hasError('required')">
+                                Request Email Required
+                              </span>
                             </div>
                           </div>
 
@@ -320,7 +324,11 @@
                             <div class="col-sm-7">
                               <input id="mob_3" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:3"
                                 formControlName="mobile_no_3"  required/>
-                            </div>
+                                <span class="text-danger"
+                                *ngIf="settingForm.controls['mobile_no_3'].touched && settingForm.controls['mobile_no_3'].hasError('required')">
+                                Mobile No:3 required
+                              </span>
+                            </div>                            
                           </div>
 
                           <div class="form-group row">

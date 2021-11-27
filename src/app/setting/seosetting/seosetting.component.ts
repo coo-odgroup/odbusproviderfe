@@ -97,15 +97,14 @@ export class SeosettingComponent implements OnInit {
       seo_type: [null],     
       source_id: [null],
       destination_id: [null],
+      page_url: [null, Validators.compose([Validators.required])],
+      bus_operator_id: [null, Validators.compose([Validators.required])],
       url_description: [null],
-      bus_operator_id: [null],
-      page_url: [null],
       meta_title: [null],
       meta_keyword: [null],
       meta_description: [null],
       extra_meta: [null],
       canonical_url: [null]
-
     });
     this.form.reset();
     this.ModalHeading = "Add URL";
