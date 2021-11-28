@@ -48,6 +48,7 @@ public selectedCar: number;
 
 FormOne: FormGroup;
   pagination: any;
+  all: any;
   constructor(private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
    // this.selectedCar = 1;
@@ -104,6 +105,7 @@ FormOne: FormGroup;
         res => {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data.data;
           // console.log( this.busSchedules);
         }
       );
@@ -114,6 +116,7 @@ FormOne: FormGroup;
         res => {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data.data;
           // console.log( res.data);
         }
       );

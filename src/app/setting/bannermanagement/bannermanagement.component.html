@@ -123,7 +123,7 @@
                   <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
                     (click)="(b.url) ? getAll(b.url,statusLabel) : ''" [innerHTML]="page(b.label)"></a>
                 </li>
-                <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
                   (click)="getAll(pagination.last_page_url,statusLabel)">
                   <a class="page-link">Last</a>
                 </li>

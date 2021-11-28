@@ -24,6 +24,7 @@ export class BussequenceComponent implements OnInit {
   public mesgdata:any;
   public searchForm: FormGroup;
   pagination: any;
+  all: any;
 
   constructor(private http: HttpClient, private BusSequenceService:BusSequenceService, private fb: FormBuilder,  private notificationService: NotificationService, config: NgbModalConfig, private modalService: NgbModal) { 
     this.isSubmit = false;
@@ -86,6 +87,7 @@ export class BussequenceComponent implements OnInit {
         res => {
           this.busSequences= res.data.data.data;
           this.pagination= res.data.data;
+       
           // console.log( this.BusOperators);
         }
       );
@@ -96,6 +98,7 @@ export class BussequenceComponent implements OnInit {
         res => {
           this.busSequences= res.data.data.data;
           this.pagination= res.data.data;
+         
           // console.log( res.data);
         }
       );

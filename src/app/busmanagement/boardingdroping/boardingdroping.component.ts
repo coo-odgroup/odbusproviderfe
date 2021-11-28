@@ -53,6 +53,7 @@ export class BoardingdropingComponent implements OnInit {
 
   public ModalHeading:any;
   public ModalBtn:any;
+  all: any;
 
   // returns all form groups under BoardingDroppings
   get boardingFormGroup() {
@@ -216,6 +217,7 @@ export class BoardingdropingComponent implements OnInit {
         res => {
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data.data;
           // console.log( this.BusOperators);
         }
       );
@@ -226,7 +228,8 @@ export class BoardingdropingComponent implements OnInit {
         res => {
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
-          console.log( this.BoardingDroppings);
+          this.all =res.data.data;
+          // console.log( this.BoardingDroppings);
         }
       );
     }

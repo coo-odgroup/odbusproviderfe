@@ -352,6 +352,7 @@ export class BusgalleryComponent implements OnInit {
         res => {
           this.busGallerries = res.data.data;
           this.pagination = res.data.links;
+          
           // console.log( this.busGallerries);
         }
       );
@@ -361,7 +362,7 @@ export class BusgalleryComponent implements OnInit {
         res => {
           this.busGallerries = res.data.data;
           this.pagination = res.data;
-          // console.log(this.busGallerries);
+          // console.log(this.pagination);
         }
       );
     }

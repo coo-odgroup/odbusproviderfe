@@ -18,10 +18,11 @@
                 <div class="form-group row">
 
                   <div class="col-sm-12">
-                    <input type="text" class="form-control sml_input" placeholder="Search Here" required
+                    <input type="text" class="form-control sml_input" placeholder="Search by Bus name/Bus number/via " required
                       formControlName="name" />
                   </div>
                 </div>
+              
               </div>
               <div class="col-5">
                 <button type="button" class="btn btn-success  sml_input" (click)="search()"
@@ -68,11 +69,15 @@
         <table class="table table-striped ">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Via</th>
-              <th>Bus number</th>
-              <th>Status</th>
+              <th>#</th>
+              <th style="width: 150px;">Bus Operator</th>
+              <th style="width: 150px;">Bus Name</th>
+              <th>Bus Number</th>
+              <!-- <th>Via</th>    -->
+              <th>Source >> Destination</th>     
+              <th>Created On</th>
+              <th>Created By</th>       
+              <th>Status</th>             
               <th class="hide_print" width='150'>Actions</th>
               <th width="50" class="hide_print" >&nbsp; </th>
             </tr>
@@ -80,10 +85,14 @@
           <tbody *ngIf="buses?.length != 0">
             <tr *ngFor="let bus of buses; let i=index; ">
 
-              <td>{{ bus.id }}</td>
+              <td>{{i+1}}</td>
+              <td>{{ bus.bus_operator.operator_name }}</td>
               <td>{{ bus.name }}</td>
-              <td>{{ bus.via}}</td>
-              <td>{{ bus.bus_number }}</td>
+              <td class="text-uppercase">{{ bus.bus_number }}</td>
+              <!-- <td>{{ bus.via}}</td> -->
+              <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td>
+              <td>{{ bus.created_at | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ bus.created_by }}</td>
               <td>
                 <label *ngIf="bus.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, bus.id);">Active</label>
@@ -148,7 +157,7 @@
           <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
               <nav class="my-1 pt-1 ">
                   <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(pagination.links.first_page_url,statusLabel)"
+                      <li (click)="search(all.first_page_url,statusLabel)"
                           class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
                           <a class="page-link">First</a>
                       </li>
@@ -157,8 +166,8 @@
                               (click)="(b.url) ? search(b.url) : ''"
                               [innerHTML]="page(b.label)"></a>
                       </li>
-                      <li class="page-item {{ pagination.links.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
-                          (click)="search(pagination.links.last_page_url,statusLabel)">
+                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
+                          (click)="search(all.last_page_url,statusLabel)">
                           <a class="page-link">Last</a>
                       </li>
                   </ul>
@@ -265,11 +274,15 @@
                             <div class="col-6">
 
                               <div class="form-group row">
-                                <label for="bus" class="col-sm-4 col-form-label">Bus Safety</label>
+                                <label for="bus" class="col-sm-4 col-form-label">Bus Safety <span
+                                  class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                   <ng-select [items]="safetyies" [multiple]="true" bindLabel="name" bindValue="id"
                                     placeholder="Choose Safety" formControlName="safety" [clearable]="false">
                                   </ng-select>
+                                  <span class="text-danger"
+                                    *ngIf="busForm.controls['safety'].touched && busForm.controls['safety'].hasError('required')">
+                                    Safety is required! </span>
 
                                 </div>
                               </div>
@@ -479,7 +492,7 @@
                               <div class="form-group row">
                                 <label for="bus" class="col-sm-3 col-form-label">Bus Number<span
                                     class="text-danger">*</span></label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-4">
                                   <!-- [value]="busRecord.bus_number1" alt+z-->
                                   <input type="text" class="form-control" placeholder="Enter Bus Number"
                                     formControlName="bus_number" />
@@ -1099,12 +1112,25 @@
                             </div>
 
                             <div class="col-6">
-                              <div class="form-group row">
+                              <!-- <div class="form-group row">
                                 <label for="bus" class="col-sm-4 col-form-label">Bus Safety</label>
                                 <div class="col-sm-8">
                                   <ng-select [items]="safetyies" [multiple]="true" bindLabel="name" bindValue="id"
                                     placeholder="Choose Safety" formControlName="safety" [clearable]="false">
                                   </ng-select>
+
+                                </div>
+                              </div> -->
+                              <div class="form-group row">
+                                <label for="bus" class="col-sm-4 col-form-label">Bus Safety <span
+                                  class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <ng-select [items]="safetyies" [multiple]="true" bindLabel="name" bindValue="id"
+                                    placeholder="Choose Safety" formControlName="safety" [clearable]="false">
+                                  </ng-select>
+                                  <span class="text-danger"
+                                    *ngIf="busForm.controls['safety'].touched && busForm.controls['safety'].hasError('required')">
+                                    Safety is required! </span>
 
                                 </div>
                               </div>
@@ -1305,7 +1331,7 @@
                               <div class="form-group row">
                                 <label for="bus" class="col-sm-3 col-form-label">Bus Number<span
                                     class="text-danger">*</span></label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-4">
                                   <!-- [value]="busRecord.bus_number1" alt+z-->
                                   <input type="text" class="form-control" placeholder="Enter Bus Number"
                                     formControlName="bus_number" />
@@ -1589,11 +1615,12 @@
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
                                     <label for="bus">Seize Time</label>
                                     <input type="text" class="form-control" required formControlName="booking_seized"
-                                      [value]="busRecord.booking_seized" placeholder="Booking Seized" placement="top"
-                                      ngbTooltip="Booking Seized" />
+                                      [value]="busRecord.booking_seized" placeholder="Enter minute" placement="top"
+                                      ngbTooltip="Enter minute here" />
+                                     
                                     <span class="text-danger"
                                       *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
-                                      Sleeper Fare is required! </span>
+                                      Seize Time is required! </span>
                                   </div>
                                   <!-- (click)="removeRoute(i)"  -->
                                   <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
@@ -1732,12 +1759,25 @@
                         </div>
                         <div class="col-6">
 
-                          <div class="form-group row">
+                          <!-- <div class="form-group row">
                             <label for="bus" class="col-sm-4 col-form-label">Bus Safety</label>
                             <div class="col-sm-8">
                               <ng-select [items]="safetyies" [multiple]="true" bindLabel="name" bindValue="id"
                                 placeholder="Choose Safety" formControlName="safety" [clearable]="false">
                               </ng-select>
+
+                            </div>
+                          </div> -->
+                          <div class="form-group row">
+                            <label for="bus" class="col-sm-4 col-form-label">Bus Safety <span
+                              class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <ng-select [items]="safetyies" [multiple]="true" bindLabel="name" bindValue="id"
+                                placeholder="Choose Safety" formControlName="safety" [clearable]="false">
+                              </ng-select>
+                              <span class="text-danger"
+                                *ngIf="busForm.controls['safety'].touched && busForm.controls['safety'].hasError('required')">
+                                Safety is required! </span>
 
                             </div>
                           </div>
@@ -1873,7 +1913,7 @@
                         <div class="form-group row">
                           <label for="bus" class="col-sm-3 col-form-label">Bus Number <span class="text-danger">*</span>
                           </label>
-                          <div class="col-sm-9">
+                          <div class="col-sm-4">
                             <!-- [value]="busRecord.bus_number1" alt+z-->
                             <input type="text" class="form-control" placeholder="Enter Bus Number"
                               formControlName="bus_number" />

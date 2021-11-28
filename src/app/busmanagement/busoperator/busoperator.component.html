@@ -68,11 +68,14 @@
         <table class="table table-striped ">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Email</th>
+              <th>#</th>
               <th>Operator Name</th>
-              <th>Contact Number</th>
-              <th>Created At</th>
+              <th>Org Name</th>
+              <th>Email</th>              
+              <th>Phone</th>
+              <th>City</th>
+              <th style="width: 120px;">Created On</th>
+              <th>Created By</th>
               <th>Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
@@ -80,11 +83,13 @@
           <tbody *ngIf="BusOperators?.length != 0">
             <tr *ngFor="let operator of BusOperators; let i=index; ">
               <td>{{ i+1 }}</td>
-              <td>{{ operator.email_id }}</td>
               <td>{{ operator.operator_name }}</td>
+              <td>{{ operator.organisation_name }}</td>
+              <td>{{ operator.email_id }}</td>              
               <td>{{ operator.contact_number }}</td>
+              <td>{{ operator.location_name }}</td>
               <td>{{ operator.updated_at | date: 'dd/MM/yyyy' }}</td>
-
+              <td>{{ operator.created_by }}</td>
               <td>
                 <label *ngIf="operator.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, operator.id);">Active</label>
@@ -115,7 +120,7 @@
           <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
               <nav class="my-1 pt-1 ">
                   <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(pagination.links.first_page_url,statusLabel)"
+                      <li (click)="search(all.first_page_url,statusLabel)"
                           class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
                           <a class="page-link">First</a>
                       </li>
@@ -124,14 +129,14 @@
                               (click)="(b.url) ? search(b.url) : ''"
                               [innerHTML]="page(b.label)"></a>
                       </li>
-                      <li class="page-item {{ pagination.links.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
-                          (click)="search(pagination.links.last_page_url,statusLabel)">
+                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
+                          (click)="search(all.last_page_url,statusLabel)">
                           <a class="page-link">Last</a>
                       </li>
                   </ul>
               </nav>
           </div>
-        </div>
+      </div>
       </div>
       <div class="app-card-footer">
 

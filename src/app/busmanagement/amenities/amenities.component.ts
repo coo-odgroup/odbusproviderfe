@@ -46,6 +46,7 @@ export class AmenitiesComponent implements OnInit {
   public ModalHeading: any;
   public ModalBtn: any;
   pagination: any;
+  all: any;
  
   constructor(private http: HttpClient, private AmenitiesService: AmenitiesService, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) {
     this.isSubmit = false;
@@ -97,6 +98,7 @@ export class AmenitiesComponent implements OnInit {
         res => {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
+          this.all =res.data.data;
         }
       );
     }
@@ -105,6 +107,7 @@ export class AmenitiesComponent implements OnInit {
         res => {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
+          this.all =res.data.data;
         }
       );
     }

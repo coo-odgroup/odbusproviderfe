@@ -113,7 +113,7 @@
           <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
               <nav class="my-1 pt-1 ">
                   <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(pagination.links.first_page_url,statusLabel)"
+                      <li (click)="search(pagination.first_page_url,statusLabel)"
                           class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
                           <a class="page-link">First</a>
                       </li>
@@ -122,8 +122,8 @@
                               (click)="(b.url) ? search(b.url) : ''"
                               [innerHTML]="page(b.label)"></a>
                       </li>
-                      <li class="page-item {{ pagination.links.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
-                          (click)="search(pagination.links.last_page_url,statusLabel)">
+                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : ''}} clearfix d-none d-md-block"
+                          (click)="search(pagination.last_page_url,statusLabel)">
                           <a class="page-link">Last</a>
                       </li>
                   </ul>

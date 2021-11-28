@@ -96,6 +96,7 @@ export class BusComponent implements OnInit {
   public seatLayoutData:any;  
   public seatLayoutCol:any;
   pagination: any;
+  all: any;
   getSeatLayout($event:any)
   {
     this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
@@ -286,7 +287,7 @@ export class BusComponent implements OnInit {
       bus_type_id: [null, Validators.compose([Validators.required])],
       bus_sitting_id: [null, Validators.compose([Validators.required])],
       amenities:[null, Validators.compose([Validators.required])],
-      safety:[null],
+      safety:[null, Validators.compose([Validators.required])],
       max_seat_book:[6],
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
@@ -366,6 +367,7 @@ export class BusComponent implements OnInit {
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data.data;
         }
       );
     }
@@ -375,6 +377,8 @@ export class BusComponent implements OnInit {
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data.data;
+          //  console.log(this.all);
         }
       );
     }
@@ -606,7 +610,7 @@ export class BusComponent implements OnInit {
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
       amenities:[null, Validators.compose([Validators.required])],
-      safety:[null],
+      safety:[null, Validators.compose([Validators.required])],
       bus_seat_layout_id: [null, Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
 

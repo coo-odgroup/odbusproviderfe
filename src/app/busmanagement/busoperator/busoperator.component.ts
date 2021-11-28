@@ -43,6 +43,7 @@ export class BusoperatorComponent implements OnInit {
   public validEmail:any;
   public validPhone:any;
   pagination: any;
+  all: any;
   constructor(private http: HttpClient, private busOperatorService:BusOperatorService, private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
     this.isSubmit = false;
     this.BusOperatorRecord= {} as Busoperator;
@@ -111,6 +112,7 @@ export class BusoperatorComponent implements OnInit {
         res => {
           this.BusOperators= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data.data;
           // console.log( this.BusOperators);
         }
       );
@@ -121,7 +123,8 @@ export class BusoperatorComponent implements OnInit {
         res => {
           this.BusOperators= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( res.data);
+          this.all =res.data.data;
+          // console.log(   this.BusOperators);
         }
       );
     }

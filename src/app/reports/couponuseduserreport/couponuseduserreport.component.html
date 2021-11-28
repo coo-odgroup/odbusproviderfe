@@ -361,7 +361,7 @@
                     <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="couponused?.data.links">
                         <nav class="my-1 pt-1 ">
                             <ul class="pagination pagination-circle pg-blue mb-0 hide_print">
-                                <li (click)="search(couponused.data.links.first_page_url,statusLabel)"
+                                <li (click)="search(couponused.data.first_page_url,statusLabel)"
                                     class="page-item {{ couponused.data.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
                                     <a class="page-link">First</a>
                                 </li>
@@ -370,8 +370,8 @@
                                         (click)="(b.url) ? search(b.url) : ''"
                                         [innerHTML]="page(b.label)"></a>
                                 </li>
-                                <li class="page-item {{ couponused.data.links.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
-                                    (click)="search(couponused.data.links.last_page_url,statusLabel)">
+                                <li class="page-item {{ couponused.data.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
+                                    (click)="search(couponused.data.last_page_url,statusLabel)">
                                     <a class="page-link">Last</a>
                                 </li>
                             </ul>

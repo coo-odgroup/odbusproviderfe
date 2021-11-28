@@ -37,6 +37,7 @@ export class LocationComponent implements OnInit {
   public isSubmit: boolean;
   public ModalHeading:any;
   public ModalBtn:any;
+  all: any;
  
   constructor(private http: HttpClient, private notificationService: NotificationService, private LocationService: LocationService,  private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
@@ -175,6 +176,7 @@ export class LocationComponent implements OnInit {
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data.data;
           // console.log( this.BusOperators);
         }
       );
@@ -185,7 +187,8 @@ export class LocationComponent implements OnInit {
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
-          console.log( this.locations);
+          this.all =res.data.data;
+          // console.log( this.locations);
         }
       );
     }

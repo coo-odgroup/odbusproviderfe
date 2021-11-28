@@ -38,6 +38,7 @@ export class BustypeComponent implements OnInit {
   public ModalBtn:any;
   pagination: any;
   busoperators: any;
+  all: any;
   constructor(private busTypeService: BusTypeService,private busOperatorService: BusOperatorService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
     this.busTypeRecord= {} as Bustype;
@@ -115,6 +116,7 @@ export class BustypeComponent implements OnInit {
         res => {
           this.busTypes= res.data.data.data;
           this.pagination= res.data.data;
+        
           // console.log( this.busTypes);
         }
       );
@@ -125,7 +127,8 @@ export class BustypeComponent implements OnInit {
         res => {
           this.busTypes= res.data.data.data;
           this.pagination= res.data.data;
-          console.log( res.data);
+        
+          // console.log( res.data);
         }
       );
     }
