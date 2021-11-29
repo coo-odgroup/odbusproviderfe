@@ -31,6 +31,7 @@ export class PagecontentComponent implements OnInit {
   pagecontent: Pagecontent[];
   pagecontentRecord: Pagecontent;
   busoperators: any;
+  all: any;
 
   constructor(
     private http: HttpClient, 
@@ -100,6 +101,7 @@ export class PagecontentComponent implements OnInit {
           res => {
             this.pagecontent= res.data.data.data;
             this.pagination= res.data.data;
+            this.all= res.data;
             // console.log( this.BusOperators);
           }
         );
@@ -110,6 +112,7 @@ export class PagecontentComponent implements OnInit {
           res => {
             this.pagecontent= res.data.data.data;
             this.pagination= res.data.data;
+            this.all= res.data;
             // console.log( res.data);
           }
         );

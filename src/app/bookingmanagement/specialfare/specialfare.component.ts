@@ -56,6 +56,7 @@ export class SpecialfareComponent implements OnInit {
   selectedOperator: Array<string>;
   pricePattern = "^-?[0-9]*$";
   pagination: any;
+  all: any;
   constructor(private specialfareService: SpecialfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService,private busstoppageService:BusstoppageService) { 
     this.isSubmit = false;
     this.specialFareRecord= {} as Specialfare;
@@ -118,7 +119,7 @@ export class SpecialfareComponent implements OnInit {
       this.specialfareService.getAllaginationData(pageurl,data).subscribe(
         res => {
           this.specialFares= res.data.data.data;
-          this.pagination= res.data.data;
+          this.pagination= res.data.data;  this.all= res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -128,7 +129,7 @@ export class SpecialfareComponent implements OnInit {
       this.specialfareService.getAllData(data).subscribe(
         res => {
           this.specialFares= res.data.data.data;
-          this.pagination= res.data.data;
+          this.pagination= res.data.data;  this.all= res.data;
           // console.log( res.data);
         }
       );

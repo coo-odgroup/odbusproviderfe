@@ -34,6 +34,7 @@ export class PushnotificationComponent implements OnInit {
 
   user:any; 
   userAll: any;
+  all: any;
 
   constructor(
     private http: HttpClient,
@@ -108,6 +109,7 @@ export class PushnotificationComponent implements OnInit {
         res => {
           this.push = res.data.data.data;
           this.pagination = res.data.data;
+          this.all = res.data;
         }
       );
     }
@@ -115,7 +117,9 @@ export class PushnotificationComponent implements OnInit {
       this.pns.getAllData(data).subscribe(
         res => {
           this.push = res.data.data.data;
-          this.pagination = res.data.data;         
+          this.pagination = res.data.data; 
+          this.all = res.data; 
+               
         }
       );
     }

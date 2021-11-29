@@ -46,6 +46,7 @@ export class BuscancellationComponent implements OnInit{
   public years:any;
   public reasons:any;
   public showdates:any;
+  all: any;
   //getter for form array buses
   get busesFormGroup() {
     return this.busCancellationForm.get('buses') as FormArray;
@@ -110,6 +111,7 @@ export class BuscancellationComponent implements OnInit{
         res => {
           this.busCancellations= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -120,7 +122,7 @@ export class BuscancellationComponent implements OnInit{
         res => {
           this.busCancellations= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( res.data);
+          this.all= res.data;
         }
       );
     }

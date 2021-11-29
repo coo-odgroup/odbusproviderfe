@@ -116,6 +116,7 @@ export class ContactreportComponent implements OnInit {
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
+        
         }
       );
     }

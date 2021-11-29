@@ -367,7 +367,7 @@ export class BusComponent implements OnInit {
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
         }
       );
     }
@@ -377,7 +377,7 @@ export class BusComponent implements OnInit {
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           //  console.log(this.all);
         }
       );

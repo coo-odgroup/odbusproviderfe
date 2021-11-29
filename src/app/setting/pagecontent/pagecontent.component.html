@@ -62,6 +62,8 @@
                           <th scope="col">Operator</th>
                           <th scope="col">Page Name</th>
                           <th scope="col">Page URL</th>
+                          <th scope="col">Created/Updated On</th>
+                          <th scope="col">Created By</th>
                           <th width="100" class="hide_print">&nbsp; </th>                       
                       </tr>
                   </thead>
@@ -71,6 +73,8 @@
                       <td><strong>{{page.bus_operator.operator_name}}</strong></td>
                       <td>{{page.page_name}}</td>
                       <td>{{page.page_url}}</td>
+                      <td>{{page.updated_at | date: 'dd/MM/yyyy'}}</td>
+                      <td>{{page.created_by}}</td>
                     
                       <td class="hide_print">
                         <div class="overlay-edit">
@@ -84,26 +88,40 @@
                   </tbody>
               </table>
 
-              <div *ngIf="pagination?.length!= 0" class="hide_print">
-                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-                  <nav class="my-1 pt-1 ">
-                    <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(pagination.first_page_url,statusLabel)"
-                        class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                        <a class="page-link">First</a>
-                      </li>
-                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                        <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                          (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
-                      </li>
-                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
-                        (click)="search(pagination.last_page_url,statusLabel)">
-                        <a class="page-link">Last</a>
-                      </li>
-                    </ul>
-                  </nav>
+              <div *ngIf="pagination?.length!= 0" class="hide_print container">
+                <div class="row">
+                  <div class="col-6">
+                   
+                      <div class="col-12">
+                        <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                      </div> 
+                  </div>
+                  <div class="col-6">
+                    <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                      <nav class="my-1 pt-1 ">
+                        <ul class="pagination pagination-circle pg-blue mb-0 hide_print">
+                          <li (click)="getAll(pagination.first_page_url,statusLabel)"
+                            class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                            <a class="page-link">First</a>
+                          </li>
+                          <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                            <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                              (click)="(b.url) ? getAll(b.url,statusLabel) : ''" [innerHTML]="page(b.label)"></a>
+                          </li>
+                          <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
+                            (click)="getAll(pagination.last_page_url,statusLabel)">
+                            <a class="page-link">Last</a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+        
+                  </div>
+        
                 </div>
-              </div>
+              </div> 
+
+           
           </div>
 
 

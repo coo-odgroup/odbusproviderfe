@@ -75,10 +75,10 @@
               <th>Bus Number</th>
               <!-- <th>Via</th>    -->
               <!-- <th>Source >> Destination</th>      -->
-              <th>Created On</th>
+              <th>Created/Updated On</th> 
               <th>Created By</th>       
               <th>Status</th>             
-              <th class="hide_print" width='150'>Actions</th>
+              <th class="hide_print" width='150'>&nbsp;</th>
               <th width="50" class="hide_print" >&nbsp; </th>
             </tr>
           </thead>
@@ -91,7 +91,7 @@
               <td class="text-uppercase">{{ bus.bus_number }}</td>
               <!-- <td>{{ bus.via}}</td> -->
               <!-- <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td> -->
-              <td>{{ bus.created_at | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ bus.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ bus.created_by }}</td>
               <td>
                 <label *ngIf="bus.status==1" class="badge badge-light-primary pointer text-dark"
@@ -153,27 +153,39 @@
             </tr>
           <tbody>
         </table> 
-        <div *ngIf="pagination?.length!= 0" class="hide_print">
-          <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-              <nav class="my-1 pt-1 ">
-                  <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(all.first_page_url,statusLabel)"
-                          class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                          <a class="page-link">First</a>
-                      </li>
-                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                          <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                              (click)="(b.url) ? search(b.url) : ''"
-                              [innerHTML]="page(b.label)"></a>
-                      </li>
-                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
-                          (click)="search(all.last_page_url,statusLabel)">
-                          <a class="page-link">Last</a>
-                      </li>
-                  </ul>
-              </nav>
+        <div *ngIf="pagination?.length!= 0" class="hide_print container">
+          <div class="row">
+            <div class="col-6">
+             
+                <div class="col-12">
+                  <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                </div> 
+            </div>
+            <div class="col-6">
+              <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                <nav class="my-1 pt-1 ">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                        <li (click)="search(pagination.first_page_url,statusLabel)"
+                            class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                            <a class="page-link">First</a>
+                        </li>
+                        <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                            <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                                (click)="(b.url) ? search(b.url) : ''"
+                                [innerHTML]="page(b.label)"></a>
+                        </li>
+                        <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                            (click)="search(pagination.last_page_url,statusLabel)">
+                            <a class="page-link">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+  
+            </div>
+  
           </div>
-      </div>      
+        </div>      
       </div>
       <div class="app-card-footer">
         <ng-template #copyBus let-modal>

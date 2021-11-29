@@ -150,7 +150,7 @@ export class LocationComponent implements OnInit {
     
     this.searchForm = this.fb.group({  
       name: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: 50,
     });
 
     this.search();
@@ -176,7 +176,7 @@ export class LocationComponent implements OnInit {
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -187,7 +187,7 @@ export class LocationComponent implements OnInit {
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log( this.locations);
         }
       );

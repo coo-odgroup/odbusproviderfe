@@ -58,7 +58,8 @@
               <th>Operator</th>
               <th>Bus Name</th>
               <th>Bus Number</th>
-              <th>Add Date</th>
+              <th>Created/Updated On</th>
+              <th>Created By</th>
               <th>Preview</th>
               <th width="50" class="hide_print">&nbsp; </th>
             </tr>
@@ -69,7 +70,8 @@
               <td class="text-capitalize">{{ gallery.bus_operator.operator_name }}</td>
               <td>{{ gallery.bus.name }}</td>
               <td>{{ gallery.bus.bus_number }}</td>
-              <td>{{ gallery.created_at | date: 'dd/MM/yyyy'}}</td>
+              <td>{{ gallery.updated_at | date: 'dd/MM/yyyy'}}</td>
+              <td>{{gallery.created_by}}</td>
               <td>
                 <img *ngIf="gallery.bus_image!='' && gallery.bus_image!=null" class="sliderImage"
                 src="{{path}}bus_photos/{{gallery.bus_image}}" height="100">

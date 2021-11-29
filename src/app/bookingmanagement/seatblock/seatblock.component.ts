@@ -54,6 +54,7 @@ export class SeatblockComponent implements OnInit {
   busopenform: any;
   dtOptionsSeatblock: { pagingType: string; pageLength: number; serverSide: boolean; processing: boolean; dom: string; order: string[]; aLengthMenu: (string | number)[]; buttons: ({ extend: string; className: string; init: (api: any, node: any, config: any) => void; exportOptions: { columns: string; }; text?: undefined; action?: undefined; } | { text: string; className: string; init: (api: any, node: any, config: any) => void; action: () => void; extend?: undefined; exportOptions?: undefined; })[]; language: { searchPlaceholder: string; processing: string; }; ajax: (dataTablesParameters: any, callback: any) => void; columns: ({ data: string; title?: undefined; render?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: string; render?: undefined; orderable?: undefined; className?: undefined; } | { data: string; render: (data: any) => "Active" | "Pending"; title?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: any; orderable: boolean; className: string; render?: undefined; })[]; };
   pagination: any;
+  all: any;
   constructor(
     private seatblockService: SeatblockService,
     private seatlayoutService: SeatlayoutService,
@@ -130,6 +131,7 @@ export class SeatblockComponent implements OnInit {
         res => {
           this.seatBlock= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -140,6 +142,7 @@ export class SeatblockComponent implements OnInit {
         res => {
           this.seatBlock= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
           // console.log( res.data);
         }
       );

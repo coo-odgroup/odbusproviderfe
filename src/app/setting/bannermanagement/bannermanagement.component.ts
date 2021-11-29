@@ -48,6 +48,7 @@ export class BannermanagementComponent implements OnInit {
   public message: string;
   public pagination: any;
   public imageSizeFlag = true;
+  all: any;
 
   constructor(private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer, private busOperartorService:BusOperatorService)
      { 
@@ -68,6 +69,7 @@ export class BannermanagementComponent implements OnInit {
             res=>{    
               this.banners= res.data.data.data; 
               this.pagination = res.data.data;
+              this.all = res.data;
               // console.log(res.data.data.data);
             },
     );

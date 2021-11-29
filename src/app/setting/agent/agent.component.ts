@@ -34,6 +34,7 @@ export class AgentComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
   pagination: any;
+  all: any;
   
   constructor(private AgentserviceService: AgentserviceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig,  private busOperatorService:BusOperatorService) {
     this.isSubmit = false;
@@ -134,6 +135,7 @@ export class AgentComponent implements OnInit {
         res => {
           this.agents= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
         }
       );
     }
@@ -143,6 +145,7 @@ export class AgentComponent implements OnInit {
         res => {
           this.agents= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
         }
       );
     }

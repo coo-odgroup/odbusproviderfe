@@ -112,7 +112,7 @@ export class BusoperatorComponent implements OnInit {
         res => {
           this.BusOperators= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -123,7 +123,7 @@ export class BusoperatorComponent implements OnInit {
         res => {
           this.BusOperators= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log(   this.BusOperators);
         }
       );

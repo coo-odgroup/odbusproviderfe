@@ -50,6 +50,7 @@ export class OwnerpaymentComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
   public searchBy:any;
+  all: any;
 
   constructor(private ownerpaymentservice: OwnerpaymentService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService) { 
     this.isSubmit = false;
@@ -104,6 +105,7 @@ export class OwnerpaymentComponent implements OnInit {
         res => {
           this.ownerpayments= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -114,6 +116,7 @@ export class OwnerpaymentComponent implements OnInit {
         res => {
           this.ownerpayments= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
           // console.log( res.data);
         }
       );

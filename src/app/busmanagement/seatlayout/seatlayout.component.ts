@@ -63,6 +63,7 @@ export class SeatlayoutComponent implements OnInit {
   upperBerthArray=[];
   seatText=[];
   pagination: any;
+  all: any;
 
  
   constructor(private http: HttpClient, private notificationService: NotificationService, private sLayout: SeatlayoutService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private busOperatorService: BusOperatorService,private dragulaService: DragulaService) {
@@ -446,6 +447,7 @@ export class SeatlayoutComponent implements OnInit {
         res => {
           this.SeatLayouts= res.data.data.data;
           this.pagination= res.data.data;
+          this.all=res.data;
           // console.log( this.SeatLayouts);
         }
       );
@@ -456,6 +458,7 @@ export class SeatlayoutComponent implements OnInit {
         res => {
           this.SeatLayouts= res.data.data.data;
           this.pagination= res.data.data;
+          this.all=res.data;
           // console.log( res.data);
         }
       );

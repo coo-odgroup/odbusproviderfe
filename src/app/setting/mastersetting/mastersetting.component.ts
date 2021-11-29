@@ -49,6 +49,7 @@ export class MastersettingComponent implements OnInit {
   finalLogo: any;
   finalFavIcon: any;
   favSrc: any[];
+  all: any;
 
 
   constructor( private fb: FormBuilder,private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer,config: NgbModalConfig,private modalService: NgbModal,private busOperartorService:BusOperatorService)
@@ -70,6 +71,7 @@ export class MastersettingComponent implements OnInit {
             res=>{    
               this.settings= res.data.data.data; 
               this.pagination = res.data.data;
+              this.all = res.data;
               // console.log(res.data.data.data);
             },
     );

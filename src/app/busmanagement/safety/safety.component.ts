@@ -45,6 +45,7 @@ export class SafetyComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
   pagination: any;
+  all: any;
 
 
   constructor(
@@ -217,6 +218,7 @@ export class SafetyComponent implements OnInit {
         res => {
           this.Safetys= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data;
         }
       );
     }
@@ -226,6 +228,7 @@ export class SafetyComponent implements OnInit {
         res => {
           this.Safetys= res.data.data.data;
           this.pagination= res.data.data;  
+          this.all = res.data;
         }
       );
     }

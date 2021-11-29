@@ -33,6 +33,7 @@ export class CouponComponent implements OnInit {
   couponRecord: Coupon;
   pagination: any;
   busoperators: any;
+  all: any;
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
@@ -135,6 +136,7 @@ export class CouponComponent implements OnInit {
           
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data;
           // console.log( this.contactcontent);
         }
       );
@@ -145,6 +147,7 @@ export class CouponComponent implements OnInit {
         res => {
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data;
           // console.log(  this.pagination);
         }
       );

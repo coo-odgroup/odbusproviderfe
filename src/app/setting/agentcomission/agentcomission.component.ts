@@ -34,6 +34,7 @@ export class AgentcomissionComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
   pagination: any;
+  all: any;
   
   constructor(private AgentCommissionServiceService: AgentCommissionServiceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
@@ -87,6 +88,7 @@ export class AgentcomissionComponent implements OnInit {
         res => {
           this.agentCommissionSlabs= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
         }
       );
     }
@@ -96,6 +98,7 @@ export class AgentcomissionComponent implements OnInit {
         res => {
           this.agentCommissionSlabs= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
         }
       );
     }

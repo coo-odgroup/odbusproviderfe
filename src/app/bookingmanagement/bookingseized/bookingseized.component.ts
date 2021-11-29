@@ -35,6 +35,7 @@ export class BookingseizedComponent implements OnInit {
   buss_name: any;
   buss_number: any;
   pagination: any;
+  all: any;
 
   constructor(
     private http: HttpClient,
@@ -91,6 +92,7 @@ export class BookingseizedComponent implements OnInit {
     {
       this.bookingseizedService.getAllaginationData(pageurl,data).subscribe(
         res => {
+          this.all= res.data;
           this.bookingSeized= res.data.data.data;
           this.pagination= res.data.data;
           // console.log( this.BusOperators);
@@ -101,6 +103,7 @@ export class BookingseizedComponent implements OnInit {
     {
       this.bookingseizedService.getAllData(data).subscribe(
         res => {
+          this.all= res.data;
           this.bookingSeized= res.data.data.data;
           this.pagination= res.data.data;
           // console.log( res.data);

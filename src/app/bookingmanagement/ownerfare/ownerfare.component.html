@@ -72,7 +72,8 @@
               <th>Date</th>
               <th>Seater Price</th>
               <th>Sleeper Price</th>
-              <!-- <th>Created At</th> -->
+              <th>Created/Updated On</th>
+              <th>Created By</th>
               <th>Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
@@ -95,7 +96,9 @@
               <td>{{ ownerFare.date | date: 'dd/MM/yyyy' }}</td>
               <td>{{ ownerFare.seater_price }}</td>
               <td>{{ ownerFare.sleeper_price }}</td>
-              <!-- <td>{{ ownerFare.created_at }}</td> -->
+              <td>{{ ownerFare.updated_at | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ ownerFare.created_by }}</td>
+
               <td>
                 <label *ngIf="ownerFare.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, ownerFare.id);">Active</label>
@@ -115,32 +118,46 @@
           </tbody>
           <tbody *ngIf="ownerFares?.length == 0">
             <tr>
-              <td colspan="8" class="no-data-available">No data!</td>
+              <td colspan="10" class="no-data-available">No data!</td>
             </tr>
           <tbody>
-        </table>
-        <div *ngIf="pagination?.length!= 0" class="hide_print">
-          <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-              <nav class="my-1 pt-1 ">
-                  <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(pagination.first_page_url,statusLabel)"
-                          class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                          <a class="page-link">First</a>
-                      </li>
-                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                          <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                              (click)="(b.url) ? search(b.url) : ''"
-                              [innerHTML]="page(b.label)"></a>
-                      </li>
-                      <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
-                          (click)="search(pagination.last_page_url,statusLabel)">
-                          <a class="page-link">Last</a>
-                      </li>
-                  </ul>
-              </nav>
+          </table>
+          <div *ngIf="pagination?.length!= 0" class="hide_print container">
+            <div class="row">
+              <div class="col-6">
+               
+                  <div class="col-12">
+                    <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                  </div> 
+              </div>
+              <div class="col-6">
+                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                  <nav class="my-1 pt-1 ">
+                      <ul class="pagination pagination-circle pg-blue mb-0">
+                          <li (click)="search(pagination.first_page_url,statusLabel)"
+                              class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                              <a class="page-link">First</a>
+                          </li>
+                          <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                              <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                                  (click)="(b.url) ? search(b.url) : ''"
+                                  [innerHTML]="page(b.label)"></a>
+                          </li>
+                          <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                              (click)="search(pagination.last_page_url,statusLabel)">
+                              <a class="page-link">Last</a>
+                          </li>
+                      </ul>
+                  </nav>
+              </div>
+    
+              </div>
+    
+            </div>
           </div>
-        </div>
       </div>
+      
+      
       <div class="app-card-footer">
         <ng-template #confirmDialog let-modal>
           <div class="modal-header">

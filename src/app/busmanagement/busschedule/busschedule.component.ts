@@ -105,7 +105,7 @@ FormOne: FormGroup;
         res => {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log( this.busSchedules);
         }
       );
@@ -116,7 +116,7 @@ FormOne: FormGroup;
         res => {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log( res.data);
         }
       );

@@ -217,7 +217,7 @@ export class BoardingdropingComponent implements OnInit {
         res => {
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -228,7 +228,7 @@ export class BoardingdropingComponent implements OnInit {
         res => {
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
           // console.log( this.BoardingDroppings);
         }
       );

@@ -93,6 +93,7 @@ export class CancellationslabComponent implements OnInit {
   public ModalBtn:any;
   pagination: any;
   busoperators: any;
+  all: any;
   // returns all form groups under Cancellation Slab
   get slabFormGroup() {
     return this.form.get('slabs') as FormArray;
@@ -174,6 +175,7 @@ export class CancellationslabComponent implements OnInit {
         res => {
           this.cancellationSlabs= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data;
           // console.log( this.cancellationSlabs);
         }
       );
@@ -184,6 +186,7 @@ export class CancellationslabComponent implements OnInit {
         res => {
           this.cancellationSlabs= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data;
           // console.log( res.data);
         }
       );

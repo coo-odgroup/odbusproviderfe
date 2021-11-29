@@ -87,6 +87,7 @@ export class BussequenceComponent implements OnInit {
         res => {
           this.busSequences= res.data.data.data;
           this.pagination= res.data.data;
+          this.all=res.data;
        
           // console.log( this.BusOperators);
         }
@@ -98,7 +99,7 @@ export class BussequenceComponent implements OnInit {
         res => {
           this.busSequences= res.data.data.data;
           this.pagination= res.data.data;
-         
+          this.all= res.data;  
           // console.log( res.data);
         }
       );

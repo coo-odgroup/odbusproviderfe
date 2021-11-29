@@ -42,6 +42,7 @@ export class SeatfareComponent implements OnInit {
 
   public fareRecord: any;
   @ViewChild("addnew") addnew;
+  all: any;
 
   constructor(private http: HttpClient, private busService: BusService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, dpconfig: NgbDropdownConfig, private busSeatsService: BusSeatsService, private locationService: LocationService, private notificationService: NotificationService) {
     config.backdrop = 'static';
@@ -188,6 +189,7 @@ export class SeatfareComponent implements OnInit {
         res => {
           this.buses = res.data.data.data;
           this.pagination = res.data.data;
+          this.all =res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -197,6 +199,7 @@ export class SeatfareComponent implements OnInit {
         res => {
           this.buses = res.data.data.data;
           this.pagination = res.data.data;
+          this.all=res.data;
           // console.log( res.data);
         }
       );

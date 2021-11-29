@@ -35,6 +35,7 @@ export class AgentfeeComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
   pagination: any;
+  all: any;
   
   constructor(private AgentFeeServiceService: AgentFeeServiceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
@@ -87,6 +88,7 @@ export class AgentfeeComponent implements OnInit {
         res => {
           this.agentFeeSlabs= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
         }
       );
     }
@@ -96,6 +98,7 @@ export class AgentfeeComponent implements OnInit {
         res => {
           this.agentFeeSlabs= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
         }
       );
     }

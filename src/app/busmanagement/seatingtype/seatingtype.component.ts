@@ -36,6 +36,7 @@ export class SeatingtypeComponent implements OnInit {
   public ModalHeading:any;
   public ModalBtn:any;
   pagination: any;
+  all: any;
   constructor(private seatingTypeService: SeatingtypeService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal)
    {
     this.isSubmit = false;
@@ -86,6 +87,7 @@ export class SeatingtypeComponent implements OnInit {
         res => {
           this.seatingTypes= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data;
           // console.log( this.seatingTypes);
         }
       );
@@ -96,6 +98,7 @@ export class SeatingtypeComponent implements OnInit {
         res => {
           this.seatingTypes= res.data.data.data;
           this.pagination= res.data.data;
+          this.all =res.data;
           // console.log( res.data);
         }
       );

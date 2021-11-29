@@ -98,7 +98,7 @@ export class AmenitiesComponent implements OnInit {
         res => {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
         }
       );
     }
@@ -107,7 +107,7 @@ export class AmenitiesComponent implements OnInit {
         res => {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
-          this.all =res.data.data;
+          this.all =res.data;
         }
       );
     }

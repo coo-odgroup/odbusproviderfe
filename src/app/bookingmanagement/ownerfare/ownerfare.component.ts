@@ -51,6 +51,7 @@ export class OwnerfareComponent implements OnInit {
 
   public searchForm: FormGroup;
   pagination: any;
+  all: any;
 
 
   constructor(private ownerfareService: OwnerfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService) { 
@@ -114,6 +115,8 @@ export class OwnerfareComponent implements OnInit {
         res => {
           this.ownerFares= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
+
           // console.log( this.BusOperators);
         }
       );
@@ -124,6 +127,8 @@ export class OwnerfareComponent implements OnInit {
         res => {
           this.ownerFares= res.data.data.data;
           this.pagination= res.data.data;
+          this.all= res.data;
+
           // console.log( res.data);
         }
       );

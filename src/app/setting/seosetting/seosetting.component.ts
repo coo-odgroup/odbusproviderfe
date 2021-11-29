@@ -36,6 +36,7 @@ export class SeosettingComponent implements OnInit {
   urlcontentRecord: Urlcontent;
   busoperators: any;
   locations: any;
+  all: any;
 
   constructor(
     
@@ -139,6 +140,7 @@ export class SeosettingComponent implements OnInit {
         res => {
           this.urlcontent = res.data.data.data;
           this.pagination = res.data.data;
+          this.all = res.data;
           // console.log( this.BusOperators);
         }
       );
@@ -148,6 +150,7 @@ export class SeosettingComponent implements OnInit {
         res => {
           this.urlcontent = res.data.data.data;
           this.pagination = res.data.data;
+          this.all = res.data;
           // console.log( res.data);
         }
       );

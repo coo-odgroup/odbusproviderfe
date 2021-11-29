@@ -68,9 +68,7 @@
               <th>Location Name</th>
               <th>Sub Locations</th>
               <th>Created By</th>
-               <th>Created On</th>
-              
-     
+               <th>Created/Updated On</th>             
               <th width="100" class="hide_print" *ngIf="userType==1">&nbsp; </th>
             </tr>
           </thead>
@@ -83,7 +81,7 @@
                   bp.boarding_point }}</div>
               </td>
               <td>{{ BoardDrop.created_by }}</td>
-              <td>{{ BoardDrop.created_at }}</td>
+              <td>{{ BoardDrop.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td class="hide_print" *ngIf="userType==1">
                 <div class="overlay-edit">
                   <button type="button" (click)="editBoardingDropping($event, i);OpenModal(content);"
@@ -100,29 +98,41 @@
             </tr>
           <tbody>
         </table>
-
-        <div *ngIf="pagination?.length!= 0" class="hide_print">
-          <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-              <nav class="my-1 pt-1 ">
-                  <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(all.first_page_url,statusLabel)"
-                          class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                          <a class="page-link">First</a>
-                      </li>
-                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                          <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                              (click)="(b.url) ? search(b.url) : ''"
-                              [innerHTML]="page(b.label)"></a>
-                      </li>
-                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
-                          (click)="search(all.last_page_url,statusLabel)">
-                          <a class="page-link">Last</a>
-                      </li>
-                  </ul>
-              </nav>
+        <div *ngIf="pagination?.length!= 0" class="hide_print container">
+          <div class="row">
+            <div class="col-6">
+             
+                <div class="col-12">
+                  <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                </div> 
+            </div>
+            <div class="col-6">
+              <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                <nav class="my-1 pt-1 ">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                        <li (click)="search(pagination.first_page_url,statusLabel)"
+                            class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                            <a class="page-link">First</a>
+                        </li>
+                        <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                            <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                                (click)="(b.url) ? search(b.url) : ''"
+                                [innerHTML]="page(b.label)"></a>
+                        </li>
+                        <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                            (click)="search(pagination.last_page_url,statusLabel)">
+                            <a class="page-link">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+  
+            </div>
+  
           </div>
-      </div> 
+        </div>      
       </div>
+     
       <div class="app-card-footer">
         <ng-template #confirmDialog let-modal>
           <div class="modal-header">
