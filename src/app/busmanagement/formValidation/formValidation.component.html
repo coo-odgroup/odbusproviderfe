@@ -79,18 +79,7 @@
             <button type="button" uiSref="work" class="btn btn-primary btn-raised"  (click)="save(validationForm)"> Next <span style="margin-left:10px;"><i class="feather icon-chevron-right"></i></span></button>
           </div>
       </form>
-
-      <div class="row">
-        <div class="col-sm-12 col-xl-6">
-          <h5 class="sub-title">Multiple Select With Icon</h5><hr/>
-          <ng-select [ngClass]="'ng-select'" [options]="countries" [multiple]="true" [allowClear]="true" [(ngModel)]="selectedCountries">
-            <ng-template #optionTemplate let-option="option">
-              <div class="famfamfam-flags {{option?.value.toLowerCase()}}"></div>
-              {{option?.label}}
-            </ng-template>
-          </ng-select>
-        </div>
-      </div>
+      
 
     </app-card>
   </div>

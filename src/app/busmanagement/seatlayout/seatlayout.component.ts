@@ -456,7 +456,7 @@ export class SeatlayoutComponent implements OnInit {
         res => {
           this.SeatLayouts= res.data.data.data;
           this.pagination= res.data.data;
-          console.log( res.data);
+          // console.log( res.data);
         }
       );
     }

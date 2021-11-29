@@ -74,7 +74,7 @@
               <th style="width: 150px;">Bus Name</th>
               <th>Bus Number</th>
               <!-- <th>Via</th>    -->
-              <th>Source >> Destination</th>     
+              <!-- <th>Source >> Destination</th>      -->
               <th>Created On</th>
               <th>Created By</th>       
               <th>Status</th>             
@@ -90,7 +90,7 @@
               <td>{{ bus.name }}</td>
               <td class="text-uppercase">{{ bus.bus_number }}</td>
               <!-- <td>{{ bus.via}}</td> -->
-              <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td>
+              <!-- <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td> -->
               <td>{{ bus.created_at | date: 'dd/MM/yyyy' }}</td>
               <td>{{ bus.created_by }}</td>
               <td>
