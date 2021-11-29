@@ -127,10 +127,7 @@ export class BustypeComponent implements OnInit {
         res => {
           this.busTypes= res.data.data.data;
           this.pagination= res.data.data;
-<<<<<<< HEAD
         
-=======
->>>>>>> e16052d0dce86f8ed2dc4136dcbcf0c8e813dce5
           // console.log( res.data);
         }
       );

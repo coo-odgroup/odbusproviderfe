@@ -187,10 +187,7 @@ export class LocationComponent implements OnInit {
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
-<<<<<<< HEAD
           this.all =res.data.data;
-=======
->>>>>>> e16052d0dce86f8ed2dc4136dcbcf0c8e813dce5
           // console.log( this.locations);
         }
       );
