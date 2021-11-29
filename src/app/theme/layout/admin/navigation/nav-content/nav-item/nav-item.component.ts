@@ -22,7 +22,9 @@ export class NavItemComponent implements OnInit {
   }
 
   closeOtherMenu(event) {
+    
     if (this.flatConfig['layout'] === 'vertical') {
+      console.log(event.target);
       const ele = event.target;
       if (ele !== null && ele !== undefined) {
         const parent = ele.parentElement;
