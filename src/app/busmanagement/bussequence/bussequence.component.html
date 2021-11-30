@@ -64,6 +64,7 @@
               <tr>
                 <th>#</th>
                 <th>Bus Name</th>
+                <th>Source >> Destination</th> 
                 <th>Via</th>
                 <th>Bus Number</th>
                 <th>Sequence</th>
@@ -73,6 +74,7 @@
                 <tr *ngFor="let bus of busSequences; let i=index; ">
                     <td>{{ i+1}}</td>
                     <td>{{ bus.name }}</td>
+                    <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td> 
                     <td>{{ bus.via }}</td>
                     <td>{{ bus.bus_number }}</td>
                     <td class="text-center">

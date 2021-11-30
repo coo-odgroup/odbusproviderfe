@@ -47,6 +47,10 @@ export class AmenitiesComponent implements OnInit {
   public ModalBtn: any;
   pagination: any;
   all: any;
+  androidURL: string | ArrayBuffer;
+  finalAndroidImage: any;
+  android_img_Error: string;
+  finalImage: any;
  
   constructor(private http: HttpClient, private AmenitiesService: AmenitiesService, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) {
     this.isSubmit = false;
@@ -72,7 +76,9 @@ export class AmenitiesComponent implements OnInit {
       id: [null],
       name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
       icon: [null, Validators.compose([Validators.required])],
-      iconSrc: [null]
+      iconSrc: [null],
+      android_image: [null, Validators.compose([Validators.required])],
+      androidSrc: [null]
     });
 
     this.searchForm = this.fb.group({
@@ -138,6 +144,8 @@ export class AmenitiesComponent implements OnInit {
 
   }
   ResetAttributes() {
+    this.finalAndroidImage=[];
+    this.finalImage=[];
     this.AmenitiesRecord = {
       name: ''
     } as Amenities;
@@ -145,36 +153,36 @@ export class AmenitiesComponent implements OnInit {
     this.ModalBtn = "Save";
     this.AmenitiesRecord.icon = "";
     this.imgURL = "";
+    this.androidURL = "";
     this.imageSrc = "";
+    this.iconSrc = "";
     this.form = this.fb.group({
       id: [null],
       name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
-      icon: ['', Validators.compose([Validators.required])],
-      iconSrc: [null]
+      icon: [null, Validators.compose([Validators.required])],
+      iconSrc: [null],
+      android_image: [null, Validators.compose([Validators.required])],
+      androidSrc: [null]
     });
 
   }
-  // getBannerImagepath(slider_img: any) {
-  //   let objectURL = 'data:image/*;base64,' + slider_img;
-  //   return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-  // }
+
 
   addAmenities() {
 
     let id: any = this.form.value.id;
     let fd: any = new FormData();
     fd.append("id",this.form.value.id);
-    fd.append("icon", this.form.get('icon').value);
+    fd.append("android_image", this.finalAndroidImage);
+    fd.append("icon", this.finalImage);
     fd.append("name",this.form.value.name);
     fd.append("created_by",localStorage.getItem('USERNAME'));
-   
-    // const data = {
-    //   //id:this.AmenitiesRecord.id,
-    //   name: this.form.value.name,
-    //   //icon:this.base64result,
-    //   icon: this.form.value.iconSrc,
-    //   created_by:localStorage.getItem('USERNAME'),
-    //};
+
+    
+  //   for (var pair of fd.entries()) {
+  //     console.log(pair[0]+ ', ' + pair[1]); 
+  // }
+  // return false;
     if (id == null) { 
       this.AmenitiesService.create(fd).subscribe(
         resp => {
@@ -223,7 +231,8 @@ export class AmenitiesComponent implements OnInit {
       id: [this.AmenitiesRecord.id],
       name: [this.AmenitiesRecord.name, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
       icon: [],
-      iconSrc: [this.AmenitiesRecord.icon]
+      iconSrc: [this.AmenitiesRecord.icon],
+      androidSrc: [this.AmenitiesRecord.android_image],
     });
 
   }
@@ -391,6 +400,122 @@ export class AmenitiesComponent implements OnInit {
     reader.onload = (_event) => {
       this.imgURL = reader.result;
     }
+    this.finalImage= files[0];
   }
 
+
+
+  public pickedAndroidIcon(event: any) {
+    let androidfileSrc=event.target.files[0];
+     //////image validation////////
+     this.android_img_Error = null;
+     const max_size = 102400;
+     const allowed_types = ['image/png', 'image/jpeg', 'image/jpg'];
+     const max_height = 100;
+     const max_width = 200;
+     let fileList: FileList = event.target.files;
+ 
+     if (event.target.files[0].size > max_size) {
+       this.android_img_Error =
+         'Maximum size allowed is ' + max_size / 1024 + 'Kb';
+       this.form.value.androidIconPath = '';
+       this.androidURL = '';
+       return false;
+     }
+ 
+     if (!_.includes(allowed_types, event.target.files[0].type)) {
+       this.android_img_Error = 'Only Images are allowed ( JPG | PNG |JPEG)';
+       this.form.value.androidIconPath = '';
+       this.androidURL = '';
+       return false;
+     }
+     const reader = new FileReader();
+     reader.onload = (e: any) => {
+       const image = new Image();
+       image.src = e.target.result;
+       image.onload = rs => {
+         const img_height = rs.currentTarget['height'];
+         const img_width = rs.currentTarget['width'];
+ 
+         if (img_height > max_height && img_width > max_width) {
+           this.android_img_Error =
+             'Maximum dimentions allowed ' +
+             max_height +
+             '*' +
+             max_width +
+             'px';
+           this.form.value.androidIconPath = '';
+           this.androidURL = '';
+           return false;
+         }
+       };
+     };
+ 
+     if (fileList.length > 0) {
+       const file: File = fileList[0];
+ 
+       this.form.value.File = file;
+       
+       
+       this.androidIconhandleInputChange(file); //turn into base64   
+     }
+     else {
+       //alert("No file selected");
+     }
+ 
+     this.androidpreview(androidfileSrc);
+ 
+   }
+ 
+   androidIconhandleInputChange(files) {
+     let file = files;
+     let pattern = /image-*/;
+     let reader = new FileReader();
+     if (!file.type.match(pattern)) {
+       //alert('invalid format');
+       return;
+     }
+     reader.onloadend = this._handleAndroidIconReaderLoaded.bind(this);
+     reader.readAsDataURL(file);
+ 
+   }
+   _handleAndroidIconReaderLoaded(e) {
+     let reader = e.target;
+     this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+     //this.imageSrc = base64result;
+ 
+     this.androidURL = this.base64result;
+     this.form.value.android_image = this.base64result;
+     this.form.value.androidSrc = this.base64result;
+ 
+   }
+   public androidIconPath;
+   public AndroidIconmessage: string;
+ 
+   androidpreview(files) {
+   
+     if (files.length === 0)
+       return;
+ 
+         
+     let mimeType = files.type;
+     if (mimeType.match(/image\/*/) == null) {
+       this.AndroidIconmessage = "Only images are supported.";
+       return;
+     }
+ 
+     let reader = new FileReader();
+     this.form.value.androidIconPath = files;
+     reader.readAsDataURL(files);
+     reader.onload = (_event) => {
+     this.androidURL = reader.result;
+    
+       this.finalAndroidImage= this.form.value.androidIconPath;
+     //  console.log(this.finalAndroidImage);
+     
+       
+     }
+   }
+
+   
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Safety } from '../../model/safety';
 import { NotificationService } from '../../services/notification.service';
@@ -27,6 +26,9 @@ export class SafetyComponent implements OnInit {
   public searchForm: FormGroup;
 
   finalImage:any;
+  finalAndroidImage:any;
+  androidURL: any;
+  androidSrc: string;
   imgURL: any;
   imageSrc: string;
   File: any;
@@ -34,6 +36,7 @@ export class SafetyComponent implements OnInit {
   base64result: any;
   iconSrc: any;
   imageError: string;
+  android_img_Error: string;
   path = Constants.PATHURL;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
@@ -69,10 +72,14 @@ export class SafetyComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.finalAndroidImage=[];
+    this.finalImage=[];
     this.form = this.fb.group({
       id:[null],
-      icon:[null],
+      icon:[null, Validators.compose([Validators.required])],
       safety_image:[null],
+      androidIcon: [null] ,
+      android_image: [null, Validators.compose([Validators.required])],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
     });
     this.formConfirm=this.fb.group({
@@ -194,6 +201,122 @@ export class SafetyComponent implements OnInit {
     }
   }
 
+
+  // androidURL: any;
+  // androidSrc: string;
+
+  public pickedAndroidIcon(event: any) {
+   let androidfileSrc=event.target.files[0];
+    //////image validation////////
+    this.android_img_Error = null;
+    const max_size = 102400;
+    const allowed_types = ['image/png', 'image/jpeg', 'image/jpg'];
+    const max_height = 100;
+    const max_width = 200;
+    let fileList: FileList = event.target.files;
+
+    if (event.target.files[0].size > max_size) {
+      this.android_img_Error =
+        'Maximum size allowed is ' + max_size / 1024 + 'Kb';
+      this.form.value.androidIconPath = '';
+      this.androidURL = '';
+      return false;
+    }
+
+    if (!_.includes(allowed_types, event.target.files[0].type)) {
+      this.android_img_Error = 'Only Images are allowed ( JPG | PNG |JPEG)';
+      this.form.value.androidIconPath = '';
+      this.androidURL = '';
+      return false;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const image = new Image();
+      image.src = e.target.result;
+      image.onload = rs => {
+        const img_height = rs.currentTarget['height'];
+        const img_width = rs.currentTarget['width'];
+
+        if (img_height > max_height && img_width > max_width) {
+          this.android_img_Error =
+            'Maximum dimentions allowed ' +
+            max_height +
+            '*' +
+            max_width +
+            'px';
+          this.form.value.androidIconPath = '';
+          this.androidURL = '';
+          return false;
+        }
+      };
+    };
+
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+
+      this.form.value.File = file;
+      
+      
+      this.androidIconhandleInputChange(file); //turn into base64   
+    }
+    else {
+      //alert("No file selected");
+    }
+
+    this.androidpreview(androidfileSrc);
+
+  }
+
+  androidIconhandleInputChange(files) {
+    let file = files;
+    let pattern = /image-*/;
+    let reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      //alert('invalid format');
+      return;
+    }
+    reader.onloadend = this._handleAndroidIconReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+
+  }
+  _handleAndroidIconReaderLoaded(e) {
+    let reader = e.target;
+    this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+    //this.imageSrc = base64result;
+
+    this.androidSrc = this.base64result;
+    this.form.value.icon = this.base64result;
+    this.form.value.iconSrc = this.base64result;
+
+  }
+  public androidIconPath;
+  public AndroidIconmessage: string;
+
+  androidpreview(files) {
+  
+    if (files.length === 0)
+      return;
+
+        
+    let mimeType = files.type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.AndroidIconmessage = "Only images are supported.";
+      return;
+    }
+
+    let reader = new FileReader();
+    this.form.value.androidIconPath = files;
+    reader.readAsDataURL(files);
+    reader.onload = (_event) => {
+    this.androidURL = reader.result;
+   
+      this.finalAndroidImage= this.form.value.androidIconPath;
+    //  console.log(this.finalAndroidImage);
+    
+      
+    }
+  }
+
   getBannerImagepath(slider_img: any) {
     let objectURL = 'data:image/*;base64,' + slider_img;
     return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
@@ -249,18 +372,22 @@ export class SafetyComponent implements OnInit {
 
   ResetAttriutes()
   {
+    this.finalAndroidImage=[];
+    this.finalImage=[];
     
     this.SafetyRecord = {} as Safety;
     this.form = this.fb.group({
       id:[null],
-      name: ['',Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
-      icon: ['',Validators.compose([Validators.required])],
+      icon:[null, Validators.compose([Validators.required])],
       safety_image:[null],
-      iconSrc:[null]
+      androidIcon:[null, Validators.compose([Validators.required])],
+      android_image:[null],
+      name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
     });
     this.ModalHeading = "Add Safety Line";
     this.ModalBtn = "Save";
     this.imgURL="";
+    this.androidURL='';
     this.imageSrc="";
     this.SafetyRecord.icon="";
     
@@ -271,6 +398,7 @@ export class SafetyComponent implements OnInit {
     let id=this.SafetyRecord.id;
   
     let fd: any = new FormData();
+    fd.append("android_image", this.finalAndroidImage);
     fd.append("icon", this.finalImage);
     fd.append("name",this.form.value.name);
     fd.append("created_by",localStorage.getItem('USERNAME'));
@@ -324,7 +452,9 @@ export class SafetyComponent implements OnInit {
     this.form = this.fb.group({
       name: [this.SafetyRecord.name, Validators.compose([Validators.required,Validators.minLength(2)])],
       icon: [],
-      iconSrc:[this.SafetyRecord.icon]
+      iconSrc:[this.SafetyRecord.icon],      
+      androidIcon:[],
+      android_image:[this.SafetyRecord.androidIcon],
     });
     this.ModalHeading = "Edit Safety Line";
     this.ModalBtn = "Update";   

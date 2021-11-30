@@ -173,7 +173,8 @@
                                     {{frlocation.name}}
                                 </span> -
                                 ( <b>{{complete.boarding_point}} </b> )<br>
-                                Boarding Time : <b>{{complete.boarding_time}}</b>
+                                Boarding Time : <b>{{complete.boarding_time}}</b><br>
+                                Book Dt : <b>{{complete.created_at | date: 'dd/MM/yyyy'}}</b>
                                 <br>
                                 {{complete.customer_payment?.order_id}}
                                 <br>
@@ -281,7 +282,7 @@
                                                 </tr>
                                             </table>
                                         </ng-template>
-                                        <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}}</strong>
+                                        <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}} <b class="text-danger">- {{passanger.passenger_gender}} </b></strong>
                                     </p>
                                 </div>
                             </td>

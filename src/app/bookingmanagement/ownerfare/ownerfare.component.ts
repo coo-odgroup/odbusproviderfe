@@ -17,6 +17,7 @@ import { LocationService } from '../../services/location.service';
 import { Location } from '../../model/location';
 import {IOption} from 'ng-select';
 import * as XLSX from 'xlsx';
+import { debounceTime, map } from 'rxjs/operators';
 
 
 @Component({
@@ -116,7 +117,6 @@ export class OwnerfareComponent implements OnInit {
           this.ownerFares= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-
           // console.log( this.BusOperators);
         }
       );
@@ -192,6 +192,7 @@ export class OwnerfareComponent implements OnInit {
     this.busService.all().subscribe(
       res=>{
         this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'  ('+i.from_location[0].name +' >> '+i.to_location[0].name+')' ; return i; });
       }
     );
     this.busOperatorService.readAll().subscribe(

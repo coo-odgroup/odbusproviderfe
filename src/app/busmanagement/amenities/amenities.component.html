@@ -1,271 +1,304 @@
-<div class="row">  
-    <div class="col-sm-12">
-        <app-card [hidHeader]="false" cardTitle="All Amenities" cardClass="card-datatable" [options]="true"
-        cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
-        <div class="row">
-          <div class="col-2">
-            <div class="from-group ">
-              <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)" >
-                  Add Amenities
-              </button>
-            </div>
-          </div>
-          <div class="col-10">
-            <form [formGroup]="searchForm">
-              <div class="row">    
-                <div class="col-5">
-                  <div class="form-group row">                    
-                      <div class="col-sm-12">
-                          <input type="text" class="form-control sml_input" placeholder="Search Amenities Name" required
-                          formControlName="name" /> 
-                      </div>
-                  </div>
-              </div>                    
-              <div class="col-5">
-                <button type="button" class="btn btn-success  sml_input" (click)="search()"
-                    title="search">
-                    <i class="fas fa-search"> </i> Search
-                </button>
-                <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
-                    title="refresh">
-                    <i class="fas fa-sync-alt"> </i> Refresh
-                </button>
-                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
-                    title="Export">
-                    <i class="fas fa-file-export"> </i> Export
-                </button>
-                <button type="button" printSectionId="print-section" ngxPrint
-                    class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
-                    <i class="fas fa-print"> </i> Print
-                </button>
-            </div>
-                  <div class="col-2">                 
-                     <div class="dropdown float-right">
-                          <select class="form-control sml_input" formControlName="rows_number"
-                              (change)=search()>
-                              <option value=10>10</option>
-                              <option value=25>25</option>
-                              <option value=50>50</option>
-                              <option value=100>100</option>
-                              <option value='all'>All</option>
-                          </select>
-                      </div>
-                  </div>               
-              </div>
-          </form> 
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [hidHeader]="false" cardTitle="All Amenities" cardClass="card-datatable" [options]="true"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
+      <div class="row">
+        <div class="col-2">
+          <div class="from-group ">
+            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+              Add Amenities
+            </button>
           </div>
         </div>
-        <div class="table-responsive"  id="print-section">
-          <table class="table table-striped ">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Preview</th>
-                <th scope="col">Created/Updated On</th>
-                <th scope="col">Created By</th>
-                <th>Status</th>
-                <th width="100" class="hide_print">&nbsp; </th>
-              </tr>
-            </thead>
-            <tbody *ngIf="Amenities?.length != 0">
-                <tr *ngFor="let amenity of Amenities; let i=index; ">
-                    <td>{{i+1}}</td>
-                    <td>{{ amenity.name }}</td>
-                    <td>
-                      <img *ngIf="amenity.amenities_image!='' && amenity.amenities_image!=null" class="sliderImage"
-                        src="{{path}}amenities/{{amenity.amenities_image}}" height="100">
-                      <img *ngIf="amenity.amenities_image=='' || amenity.amenities_image==null" class="sliderImage"
-                        src="../../../assets/images/noImage.png" height="100">
-                    </td>
-                    <td>{{ amenity.updated_at| date: 'dd/MM/yyyy' }}</td>
-                    <td>{{ amenity.created_by }}</td>
-                    <td>
-                      <label *ngIf="amenity.status==1" class="badge badge-light-primary pointer text-dark"
-                        (click)="cs(amenity.id);">Active</label>
-                      <label *ngIf="amenity.status==0" class="badge badge-light-danger pointer text-dark"
-                        (click)="cs(amenity.id);">Pending</label>
-                    </td>
-                      <td class="hide_print">
-                        <div class="overlay-edit">
-                          <button type="button" (click)="editAmenities($event, i); OpenModal(content);"
-                            class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
-                          <button type="button" (click)="deleteAmenities(confirmDialog, amenity.id);" class="btn btn-icon btn-danger"><i
-                              class="feather icon-trash-2"></i></button>
-                        </div>
-                      </td>
-                </tr>
-            </tbody>
-            <tbody *ngIf="Amenities?.length == 0">
-              <tr>
-                <td colspan="7" class="no-data-available">No data!</td>
-              </tr>
-            <tbody>
-          </table> 
-          <div *ngIf="pagination?.length!= 0" class="hide_print container">
+        <div class="col-10">
+          <form [formGroup]="searchForm">
             <div class="row">
-              <div class="col-6">
-               
-                  <div class="col-12">
-                    <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
-                  </div> 
+              <div class="col-5">
+                <div class="form-group row">
+                  <div class="col-sm-12">
+                    <input type="text" class="form-control sml_input" placeholder="Search Amenities Name" required
+                      formControlName="name" />
+                  </div>
+                </div>
               </div>
-              <div class="col-6">
-                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-                  <nav class="my-1 pt-1 ">
-                      <ul class="pagination pagination-circle pg-blue mb-0">
-                          <li (click)="search(pagination.first_page_url,statusLabel)"
-                              class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                              <a class="page-link">First</a>
-                          </li>
-                          <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                              <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                                  (click)="(b.url) ? search(b.url) : ''"
-                                  [innerHTML]="page(b.label)"></a>
-                          </li>
-                          <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
-                              (click)="search(pagination.last_page_url,statusLabel)">
-                              <a class="page-link">Last</a>
-                          </li>
-                      </ul>
-                  </nav>
+              <div class="col-5">
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
+                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                  <i class="fas fa-file-export"> </i> Export
+                </button>
+                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                  [useExistingCss]="true" title="Print">
+                  <i class="fas fa-print"> </i> Print
+                </button>
               </div>
-    
+              <div class="col-2">
+                <div class="dropdown float-right">
+                  <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                    <option value='all'>All</option>
+                  </select>
+                </div>
               </div>
-    
             </div>
-          </div>
+          </form>
+        </div>
+      </div>
+      <div class="table-responsive" id="print-section">
+        <table class="table table-striped ">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Web Image</th>
+              <th>Android Image</th>
+              <th scope="col">Created/Updated On</th>
+              <th scope="col">Created By</th>
+              <th>Status</th>
+              <th width="100" class="hide_print">&nbsp; </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="Amenities?.length != 0">
+            <tr *ngFor="let amenity of Amenities; let i=index; ">
+              <td>{{i+1}}</td>
+              <td>{{ amenity.name }}</td>
+              <td>
+                <img *ngIf="amenity.amenities_image!='' && amenity.amenities_image!=null" class=" bg-info sliderImage"
+                  src="{{path}}amenities/{{amenity.amenities_image}}" height="100">
+                <img *ngIf="amenity.amenities_image=='' || amenity.amenities_image==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="100">
+              </td>
+              <td>
+                <img *ngIf="amenity.android_image!='' && amenity.android_image!=null" class=" bg-info sliderImage"
+                  src="{{path}}amenities/{{amenity.android_image}}" height="100">
+                <img *ngIf="amenity.android_image=='' || amenity.android_image==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="100">
+              </td>
+              <td>{{ amenity.updated_at| date: 'dd/MM/yyyy' }}</td>
+              <td>{{ amenity.created_by }}</td>
+              <td>
+                <label *ngIf="amenity.status==1" class="badge badge-light-primary pointer text-dark"
+                  (click)="cs(amenity.id);">Active</label>
+                <label *ngIf="amenity.status==0" class="badge badge-light-danger pointer text-dark"
+                  (click)="cs(amenity.id);">Pending</label>
+              </td>
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button type="button" (click)="ResetAttributes();editAmenities($event, i); OpenModal(content);"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="deleteAmenities(confirmDialog, amenity.id);"
+                    class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="Amenities?.length == 0">
+            <tr>
+              <td colspan="7" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+        <div *ngIf="pagination?.length!= 0" class="hide_print container">
+          <div class="row">
+            <div class="col-6">
 
+              <div class="col-12">
+                <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                <nav class="my-1 pt-1 ">
+                  <ul class="pagination pagination-circle pg-blue mb-0">
+                    <li (click)="search(pagination.first_page_url,statusLabel)"
+                      class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                      <a class="page-link">First</a>
+                    </li>
+                    <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                      <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                        (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                    </li>
+                    <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                      (click)="search(pagination.last_page_url,statusLabel)">
+                      <a class="page-link">Last</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+
+            </div>
+
+          </div>
         </div>
 
-        <div class="app-card-footer">
+      </div>
 
-          <ng-template #confirmDialog let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
-              <button type="button" class="close" aria-label="Close"   (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      Would you Like to Delete the Record
-                      <form [formGroup]="formConfirm" class="editForm" novalidate>
-                        <input type="hidden" formControlName="id">
-                      </form>
-                      
-                    </div>
+      <div class="app-card-footer">
+
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                      <input type="hidden" formControlName="id">
+                    </form>
+
                   </div>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button"  (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
-              <button type="button" class="btn btn-default"  data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Cancel</button>
-            </div>
-          </ng-template>
-          <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal" (click)="ResetAttributes();OpenModal(content);">Add </button>    
-            <ng-template #content let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
-              <button type="button" class="close" aria-label="Close"   (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      <form [formGroup]="form" class="editForm" novalidate>  
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label for="name" class="col-sm-5 col-form-label">Amenity Name<span class="text-danger">*</span></label>
-                              <div class="col-sm-7">                        
-                                <input type="hidden" class="form-control"  formControlNam="id" [value]="AmenitiesRecord.id">
-                                <input type="text" class="form-control" formControlName="name" placeholder=" Amenity Name" [value]="AmenitiesRecord.name"/> 
-                                <span class="text-danger" *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
-                                  Amenities Name is required! </span>
-                                  <span class="text-danger" *ngIf="form.controls['name'].touched && form.controls['name'].hasError('minlength')">
-                                    Minimum 2 Characters Required 
-                                  </span>
-                                  <span class="text-danger" *ngIf="form.controls['name'].touched && form.controls['name'].hasError('maxlength')">
-                                    Maximum 15 Characters Allowed
-                                  </span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes();OpenModal(content);">Add </button>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form [formGroup]="form" class="editForm" novalidate>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="name" class="col-sm-5 col-form-label">Amenity Name<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <input type="hidden" class="form-control" formControlNam="id"
+                                [value]="AmenitiesRecord.id">
+                              <input type="text" class="form-control" formControlName="name" placeholder=" Amenity Name"
+                                [value]="AmenitiesRecord.name" />
+                              <span class="text-danger"
+                                *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
+                                Amenities Name is required! </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['name'].touched && form.controls['name'].hasError('minlength')">
+                                Minimum 2 Characters Required
+                              </span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['name'].touched && form.controls['name'].hasError('maxlength')">
+                                Maximum 15 Characters Allowed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="safety" class="col-sm-4 col-form-label">Image</label>
+                            <div class="col-sm-8">
+                              <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
+                                accept='image/*' accept=".png, .jpg, .jpeg" class="form-control" id="icon"
+                                placeholder="Safety Icon" formControlName="icon" />
+                              <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
+                              <span class="text-danger">{{imageError}}</span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
+                                Icon file is required! </span>
+                              <div class="col-12">
+                                <div class="row">
+                                  <div class="col-md-6" *ngIf="AmenitiesRecord && AmenitiesRecord.amenities_image">
+                                    <span><b>Existing Image</b></span> <br>
+                                    <img class="sliderImage" src="{{path}}amenities/{{AmenitiesRecord.amenities_image}}"
+                                      height="50" />
+                                    
+                                  </div>
+                                  <div class="col-md-6" *ngIf="imgURL">
+                                    <span><b>New image</b></span><br>
+                                    <img class="sliderImage" [src]="imgURL" height="50">
+                                  </div>
+
+                                  <div class="form-group row">
+                                    {{AmenitiesRecord.iconSrc}}
+                                    <input type="hidden" class="form-control" formControlName="iconSrc"
+                                      [value]="AmenitiesRecord.iconSrc" />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <!-- <div class="form-group row">
-                              <label for="icon" class="col-sm-3 col-form-label">Icon<span class="text-danger">*</span></label>
-                              <div class="col-sm-9">  
-                                  <input type="file" #file accept='image/*' (change)="picked($event,file.files);"  class="form-control" id="icon" placeholder="Amenities Icon" formControlName="icon" />
-                                  <span class="text-danger">Max file size 100Kb </span>
-                                  <span class="text-danger" >{{imageError}}</span>
-                                  <span class="text-danger" *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
-                                    Icon file is required! </span>
-                                    <div *ngIf="imgURL" style="background-color:rgb(97, 238, 248)">
-                                      <img [src]="imgURL" height="50" style="color:#000">
-                                    </div>
-                                  
-                              </div>
-                            </div> -->
+                        </div>
 
-                            <div class="form-group row">
-                              <label for="safety" class="col-sm-4 col-form-label">Image</label>
-                              <div class="col-sm-8">
-                                <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
-                                  accept='image/*' accept=".png, .jpg, .jpeg" class="form-control" id="icon"
-                                  placeholder="Safety Icon" formControlName="icon" />
-                                <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
-                                <span class="text-danger">{{imageError}}</span>
-                                <span class="text-danger"
-                                  *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
-                                  Icon file is required! </span> 
-                                <div class="col-12">
-                                  <div class="row">
-                                    <div class="col-md-6" *ngIf="AmenitiesRecord && AmenitiesRecord.amenities_image">
-                                      <span><b>Existing Image</b></span> <br>    
-                                      <img class="sliderImage" src="{{path}}amenities/{{AmenitiesRecord.amenities_image}}" height="50"/>                  
-                                      <!-- <img class="sliderImage" src="../../../assets/uploads/amenities/{{AmenitiesRecord.amenities_image}}" height="50"/> -->
-                                    </div>
-                                    <div class="col-md-6" *ngIf="imgURL">
-                                      <span ><b>New image</b></span><br>
-                                        <img class="sliderImage" [src]="imgURL" height="50" >
-                                    </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="safety" class="col-sm-4 col-form-label">Android Image</label>
+                            <div class="col-sm-8">
+                              <input type="file" #file accept='image/*' (change)="pickedAndroidIcon($event);"
+                                accept='image/*' accept=".png, .jpg, .jpeg" class="form-control" id="icon"
+                                placeholder="Safety Icon" formControlName="icon" />
+                              <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
+                              <span class="text-danger">{{imageError}}</span>
+                              <span class="text-danger"
+                                *ngIf="form.controls['icon'].touched && form.controls['icon'].hasError('required')">
+                                Icon file is required! </span>
+                              <div class="col-12">
+                                <div class="row">
+                                  <div class="col-md-6" *ngIf="AmenitiesRecord && AmenitiesRecord.android_image">
+                                    <span><b>Existing Image</b></span> <br>
+                                    <img class="sliderImage" src="{{path}}amenities/{{AmenitiesRecord.android_image}}"
+                                      height="50" />
+                                    
                                   </div>
-                                </div>                      
+                                  <div class="col-md-6" *ngIf="androidURL">
+                                    <span><b>New image</b></span><br>
+                                    <img class="sliderImage" [src]="androidURL" height="50">
+                                  </div>
+
+                                  <div class="form-group row">
+                                    {{AmenitiesRecord.androidSrc}}
+                                    <input type="hidden" class="form-control" formControlName="androidSrc"
+                                      [value]="AmenitiesRecord.androidSrc" />
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            </div>
-                            </div> 
-                            <div class="form-group row">
-                              {{AmenitiesRecord.iconSrc}}
-                              <input type="hidden" class="form-control" formControlName="iconSrc" [value]="AmenitiesRecord.iconSrc" />
-                            </div>
-                        </form>
+                          </div>
                         </div>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" [disabled]="!form.valid" (click)="addAmenities()" class="btn btn-primary"
-                            ngbAutofocus>{{ModalBtn}}</button>
-                          <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-                            (click)="modal.dismiss('Cross click')">Close</button>
-                        </div>
+
+                      </div>
+                    
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" [disabled]="!form.valid" (click)="addAmenities()" class="btn btn-primary"
+              ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
 
         </ng-template>
-          <!-- <app-ui-modal #modalReason> -->
-           
+        <!-- <app-ui-modal #modalReason> -->
 
-        </div>  
-          </app-card>  
-    </div>  
-    </div>
- 
-    
-    
-     
-     
+
+      </div>
+    </app-card>
+  </div>
+</div>

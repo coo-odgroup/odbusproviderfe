@@ -186,6 +186,8 @@
                                 ( <b>{{complete.boarding_point}} </b> )<br>
                                 Boarding Time : <b>{{complete.boarding_time}}</b>
                                 <br>
+                                Book Dt : <b>{{complete.created_at | date: 'dd/MM/yyyy'}}</b>
+                                <br>
                                 <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
                                 <br>
                                 <strong style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
@@ -288,7 +290,7 @@
                                             </tr>
                                         </table>
                                     </ng-template>
-                                    <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}}</strong>
+                                    <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}} - <en class="text-danger">{{passanger.passenger_gender}}</en></strong>
                                 </p>
                             </td>
 
