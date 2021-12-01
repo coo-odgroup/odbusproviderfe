@@ -19,7 +19,7 @@
                 <div class="form-group row">
                   
                     <div class="col-sm-12">
-                        <input type="text" class="form-control sml_input" placeholder="Search Safety Name" required
+                        <input type="text" class="form-control sml_input" placeholder="Search here" required
                         formControlName="name" /> 
                     </div>
                 </div>
@@ -41,9 +41,6 @@
                 <i class="fas fa-print"> </i> Print
               </button>
             </div>
-                
-               
-        
                 <div class="col-2">                 
                    <div class="dropdown float-right">
                         <select class="form-control sml_input" formControlName="rows_number"
@@ -56,15 +53,10 @@
                         </select>
                     </div>
                 </div>               
-        
             </div>
-        </form>
-
-        
+        </form> 
         </div>
-
       </div>
-
       <div class="table-responsive"  id="print-section">
         <table class="table table-striped">
           <thead>
@@ -83,11 +75,9 @@
             <tr *ngFor="let busSchedule of busSchedules; let i=index; ">
               <td>{{ i+1 }}</td>
               <td (click)="showEntryDates($event,i)">{{ busSchedule.bus.bus_operator.operator_name }}</td>
-           
               <td (click)="showEntryDates($event,i)">{{ busSchedule.bus.name }} <br> {{ busSchedule.bus.bus_number }}</td>
               <td>{{ busSchedule.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ busSchedule.created_by }}</td>
-
               <td>
                 <label *ngIf="busSchedule.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, busSchedule.id);">Active</label>
@@ -96,6 +86,8 @@
               </td>
               <td class="hide_print">
                     <div class="overlay-edit ">
+                      <button type="button" (click)="editBusSchedule($event, i); OpenModal(content);"
+                        class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                       <button type="button" (click)="deleteBusSchdule(confirmDialog,busSchedule.id)"
                         class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                     </div>
@@ -111,7 +103,6 @@
         <div *ngIf="pagination?.length!= 0" class="hide_print container">
           <div class="row">
             <div class="col-6">
-             
                 <div class="col-12">
                   <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
                 </div> 
@@ -203,20 +194,13 @@
           <div class="col-sm-12">
             <div class="form-material">
               <div class="right-icon-control">
-
-
-
-
-
                 <form [formGroup]="busScheduleForm" class="editForm" novalidate>
-
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label for="busSchedule" class="col-sm-4 col-form-label">Operator<span
                             class="text-danger">*</span></label>
                         <div class="col-sm-8">
-
                           <ng-select [items]="operators" bindLabel="operator_name" bindValue="id"
                             placeholder="Select Operator" [clearable]="false" required formControlName="bus_operator_id"
                             #operator (change)="getBusbyOperator($event)">

@@ -26,8 +26,6 @@ export class BusscheduleComponent implements OnInit {
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
 
-
-
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
   viewEntryDates: NgbModalRef;
@@ -43,16 +41,14 @@ export class BusscheduleComponent implements OnInit {
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
-public showdates:any;
-public selectedCar: number;
+  public showdates:any;
+  public selectedCar: number;
 
-FormOne: FormGroup;
+  FormOne: FormGroup;
   pagination: any;
   all: any;
   constructor(private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
-   // this.selectedCar = 1;
-   
     this.isSubmit = false;
     this.busScheduleRecord= {} as Busschedule;
     config.backdrop = 'static';
@@ -83,13 +79,9 @@ FormOne: FormGroup;
     this.search();
     this.loadServices();
   }
-
-
   page(label:any){
     return label;
-   }
-
-   
+   } 
   search(pageurl="")
   {      
     const data = { 
@@ -97,8 +89,6 @@ FormOne: FormGroup;
       rows_number:this.searchForm.value.rows_number, 
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
-   
-    // console.log(data);
     if(pageurl!="")
     {
       this.busscheduleService.getAllaginationData(pageurl,data).subscribe(
@@ -106,7 +96,6 @@ FormOne: FormGroup;
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
-          // console.log( this.busSchedules);
         }
       );
     }
@@ -117,31 +106,23 @@ FormOne: FormGroup;
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
-          // console.log( res.data);
         }
       );
     }
   }
-
-
   refresh()
    {
     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
     });
-
-     this.search();
-    
+     this.search(); 
    }
-
-
    title = 'angular-app';
   fileName= 'Bus-Schedule.xlsx';
 
   exportexcel(): void
-  {
-    
+  {  
     /* pass here the table id */
     let element = document.getElementById('print-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
@@ -152,7 +133,6 @@ FormOne: FormGroup;
  
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
- 
   }
   ResetAttributes()
   {
@@ -167,21 +147,8 @@ FormOne: FormGroup;
     this.ModalHeading = "Add BusSchedule";
     this.ModalBtn = "Save"; 
   }
-  // getBusbyOperator(event)
-  // { 
-  //   if(event.value!="")
-  //   {
-  //   this.busOperatorService.getBusbyOperator(event.value).subscribe(
-  //     resp=>{
-  //     this.buses=resp.data;
-  //     console.log(resp.data);
-  //     });  
-  //   }
-  // }
   getBusbyOperator()
   {   
-    //alert("getBusbyOperator: "+event.value);
-
     if(this.busScheduleForm.get('bus_operator_id').value!="")
     {
     this.busOperatorService.getBusbyOperator(this.busScheduleForm.get('bus_operator_id').value).subscribe(
@@ -200,11 +167,7 @@ FormOne: FormGroup;
       }); 
     }
   }
-
   loadServices(){
-
-
-
     const BusOperator={
       USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
     };
@@ -270,17 +233,14 @@ FormOne: FormGroup;
             }
       });         
     }    
-  }
-  
-  
+  } 
   editBusSchedule(event : Event, id : any)
   {
     this.showdates='0';
     this.loadServices();
-
     this.busScheduleRecord=this.busSchedules[id];
     this.scheduleRecord=this.busScheduleRecord;
-    console.log(this.scheduleRecord);
+    //console.log(this.scheduleRecord);
     // this.busScheduleForm.patchValue({
     //   //bus_id:this.busScheduleRecord.bus_id,
     //   bus_operator_id:this.busScheduleRecord.bus_operator_id,
@@ -290,7 +250,8 @@ FormOne: FormGroup;
 
     this.busScheduleForm = this.fb.group({
       id:this.busScheduleRecord.id,
-      bus_id: [this.scheduleRecord.bus_id, Validators.compose([Validators.required])],
+      bus_id: [this.scheduleRecord.bus_id],
+      //bus_id: [this.scheduleRecord.bus_id, Validators.compose([Validators.required])],
       bus_operator_id:this.scheduleRecord.bus.bus_operator_id,
       entry_date:this.scheduleRecord.bus_schedule_date[0].entry_date,
       cancelled_by:'Admin', 
