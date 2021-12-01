@@ -66,7 +66,7 @@
               </td> -->
               <td >
                 <div *ngIf="settingdata.logo_image!='' && settingdata.logo_image!=null" >             
-                  <img  src="{{path}}logo/{{settingdata.logo_image}}"  height="100px"/>
+                  <img class="bg-info" src="{{path}}logo/{{settingdata.logo_image}}"  height="100px"/>
                 </div>
 
                 <div *ngIf="settingdata.logo_image=='' || settingdata.logo_image==null" >             
@@ -376,12 +376,12 @@
                                 <div class="row">
                                   <div class="col-md-6" *ngIf="settingRecord.logo_image">
                                     <span><b>Existing Image</b></span> <br>                       
-                                    <img    class="sliderImage" src="{{path}}logo/{{settingRecord.logo_image}}" height="70"/>
+                                    <img    class="sliderImage bg-info" src="{{path}}logo/{{settingRecord.logo_image}}" height="70"/>
     
                                   </div>
                                   <div class="col-md-6" *ngIf="imgURL">
                                     <span ><b>New image</b></span><br>
-                                    <img id="sliderImgPreview" class="sliderImage-edit"
+                                    <img id="sliderImgPreview " class="sliderImage-edit bg-info"
                                     [attr.src]="getImagepath(settingForm.value['iconSrc'])" height="70">
     
                                   </div>
@@ -414,12 +414,12 @@
                                   <div class="row">
                                     <div class="col-md-6" *ngIf="settingRecord.favicon_image">
                                       <span><b>Existing Image</b></span> <br>                       
-                                      <img  src="{{path}}favIcon/{{settingRecord.favicon_image}}" height="70"/>
+                                      <img class="bg-info sliderImage"  src="{{path}}favIcon/{{settingRecord.favicon_image}}" height="70"/>
       
                                     </div>
                                     <div class="col-md-6" *ngIf="favURL">
                                       <span ><b>New image</b></span><br>
-                                      <img  class="sliderImage-edit"
+                                      <img  class="sliderImage-edit bg-info"
                                        [attr.src]="getImagepath(settingForm.value['favSrc'])" height="70">
       
                                     </div>
@@ -427,6 +427,45 @@
                                 </div>                             
                             </div>
                           </div>
+
+
+                          
+                          <div class="form-group row">
+                            <label for="ft_logo" class="col-sm-5 col-form-label"><strong>Footer Logo</strong> <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <div>
+                             
+
+                                  <input  type="file" accept='image/*' (change)="pickedFooterImage($event);"
+                                  class="form-control" id="ft_logo" placeholder="Drop favIcon image here"
+                                  formControlName="footer_logo" />
+
+                              </div>
+                              <span class="text-info">Max file size 100Kb</span><br>
+                              <span class="text-danger">{{favError}}</span>
+                              <span class="text-danger"
+                                *ngIf="settingForm.controls['footer_logo'].touched && settingForm.controls['footer_logo'].hasError('required')">
+                                Image file is required! </span>
+
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-md-6" *ngIf="settingRecord.footer_logo">
+                                      <span><b>Existing Image</b></span> <br>                       
+                                      <img class="bg-info sliderImage"  src="{{path}}logo/{{settingRecord.footer_logo}}" height="70"/>
+      
+                                    </div>
+                                    <div class="col-md-6" *ngIf="footerImgURL">
+                                      <span ><b>New image</b></span><br>
+                                      <img  class="sliderImage-edit bg-info"
+                                       [attr.src]=footerImgURL height="70">
+      
+                                    </div>
+                                  </div>
+                                </div>                             
+                            </div>
+                          </div>
+
 
                         
 
