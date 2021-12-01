@@ -50,10 +50,6 @@ export class PushnotificationComponent implements OnInit {
     this.ModalBtn = "Save";
   }
 
-
-
-
-
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [null],
@@ -70,13 +66,10 @@ export class PushnotificationComponent implements OnInit {
       name: [null],
       rows_number: Constants.RecordLimit,
     });
-
     this.search();
     this.load_user();
 
   }
-
-
   OpenModal(content) {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
@@ -124,8 +117,6 @@ export class PushnotificationComponent implements OnInit {
       );
     }
   }
-
-
   refresh() {
     this.searchForm = this.fb.group({
       name: [null],
@@ -133,12 +124,9 @@ export class PushnotificationComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
     this.search();
-
   }
-
   title = 'angular-app';
   fileName = 'Push-Notification.xlsx';
-
   exportexcel(): void {
 
     /* pass here the table id */
@@ -153,8 +141,6 @@ export class PushnotificationComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
 
   }
-
-
   load_user()
   {
     this.pns.allUser().subscribe(
@@ -163,17 +149,19 @@ export class PushnotificationComponent implements OnInit {
       }
     );
   }
-
-
+  onSelectAll() {
+    const selected = this.user.map(item => item.id);
+    this.form.get('user').patchValue(selected);
+  }
+  onClearAll() {
+    this.form.get('user').patchValue([]);
+  }
   addData() {
     const data = {
       subject: this.form.value.subject,
       notification:this.form.value.notification,
       user_id: this.form.value.user,
-    
     };
-    // console.log(data);
-
       this.pns.create(data).subscribe(
         resp => {
           if (resp.status == 1) {
@@ -188,26 +176,19 @@ export class PushnotificationComponent implements OnInit {
         }
       );
   }
-
-
   editData(id) {
     this.pushRecord = this.push[id];
-    
     this.form.controls.id.setValue(this.pushRecord.id);
     this.form.controls.bus_operator_id.setValue(this.pushRecord.subject);
     this.form.controls.page_url.setValue(this.pushRecord.notification);
     this.form.controls.url_description.setValue(this.pushRecord.user);
     this.ModalHeading = "Edit Notification";
     this.ModalBtn = "Update";
-
-
   }
-
   openConfirmDialog(content, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.pushRecord = this.push[id];
   }
-
   deleteRecord() {
     let delitem = this.pushRecord.id;
     this.pns.delete(delitem).subscribe(
@@ -223,8 +204,6 @@ export class PushnotificationComponent implements OnInit {
         }
       });
   }
-
-
   changeStatus(event: Event, stsitem: any) {
     this.pns.chngsts(stsitem).subscribe(
       resp => {

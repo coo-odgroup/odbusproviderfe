@@ -176,8 +176,6 @@
                       <form [formGroup]="form" class="editForm" novalidate>
                         <div class="row">
                           <div class="col-md-12">
-  
-                           
                             <div class="from-group">
                               <label for="name" class="col-sm-3 col-form-label"> Subject: :<span
                                   class="text-danger">*</span></label>
@@ -190,7 +188,6 @@
                                 </span>
                               </div>
                             </div>
-
                             <div class="from-group">
                                 <label for="name" class="col-sm-3 col-form-label"> Notification :<span
                                     class="text-danger">*</span></label>
@@ -202,25 +199,26 @@
                                     Notification is Required
                                   </span>
                                 </div>
-                            </div>
-                            
+                            </div>  
                             <div class="from-group">
-                                <label for="name" class="col-sm-3 col-form-label"> Select Agent :<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-12">
-                                    <ng-select [items]="user" bindLabel="name" bindValue="id"
-                                    placeholder="Select Operator" formControlName="user" [multiple]="true"
-                                    [clearable]="false">
+                              <label for="name" class="col-sm-3 col-form-label"> Select Agent :<span class="text-danger">*</span></label>
+                              <div class="col-sm-12">
+                                <ng-select [items]="user" bindLabel="name" bindValue="id" placeholder="Select Agent" formControlName="user"
+                                  [multiple]="true" [clearable]="false">
+                                  <ng-template ng-header-tmp>
+                                    <div>
+                                      <button class="btn btn-link"
+                                              (click)="onSelectAll()">Select All</button>
+                                      <button class="btn btn-link"
+                                              (click)="onClearAll()">Clear All</button>
+                                    </div>
+                                  </ng-template>
                                 </ng-select>
-                                  <span class="text-danger"
-                                    *ngIf="form.controls['user'].touched && form.controls['user'].hasError('required')">
-                                    User is Required
-                                  </span>
-                                </div>
-
-                             
+                                <span class="text-danger" *ngIf="form.controls['user'].touched && form.controls['user'].hasError('required')">
+                                  User is Required
+                                </span>
+                              </div>  
                             </div>
-                          
                           </div>
                         </div>
                       </form>
