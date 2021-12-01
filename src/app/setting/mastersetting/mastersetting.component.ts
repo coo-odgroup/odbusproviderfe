@@ -32,6 +32,7 @@ export class MastersettingComponent implements OnInit {
   favError:any;
   imgURL: any;
   favURL: any;
+  footerImgURL: any;
 
   path = Constants.PATHURL;
   base64result:any;
@@ -48,7 +49,9 @@ export class MastersettingComponent implements OnInit {
   public imageSizeFlag = true;
   finalLogo: any;
   finalFavIcon: any;
+  finalFootericon: any;
   favSrc: any[];
+  footerIcoSrc: any[];
   all: any;
 
 
@@ -99,6 +102,8 @@ export class MastersettingComponent implements OnInit {
     })
     this.finalLogo =[null];
     this.finalFavIcon =[null];
+    this.finalFootericon =[null];
+
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
       email_sms_charges:[null,Validators.compose([Validators.required])],
@@ -120,7 +125,8 @@ export class MastersettingComponent implements OnInit {
       logo_image:[null],
       favicon_image:[null],
       operator_slogan:[null],
-      operator_home_content:[null]
+      operator_home_content:[null],
+      footer_logo:[null],
     });
 
     this.formConfirm=this.fb.group({
@@ -321,6 +327,101 @@ export class MastersettingComponent implements OnInit {
       }
     }
 
+    public pickedFooterImage(event:any) {
+      this.favError = null;
+              const max_size = 102400;
+              const allowed_types = ['image/png','image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+              const max_height = 100;
+              const max_width = 200;
+      let fileList: FileList = event.target.files;
+      this.imageSizeFlag = true;
+      if (event.target.files[0].size > max_size) {
+        this.favError =
+            'Maximum size allowed is ' + max_size/1024  + 'Kb';
+            this.settingForm.value.imagePath = '';
+            this.footerImgURL='';
+            this.imageSizeFlag = false;
+        return false;
+    }
+    if (!_.includes(allowed_types, event.target.files[0].type)) {
+        this.favError = 'Only Images are allowed';
+        this.settingForm.value.imagePath = '';
+        this.settingForm.controls.slider_img.setValue('');
+        this.footerImgURL='';
+        return false;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+  
+        image.onload = rs => {
+            const img_height = rs.currentTarget['height'];
+            const img_width = rs.currentTarget['width'];
+  
+            if (img_height > max_height && img_width > max_width) {
+              this.favError =
+                  'Maximum dimentions allowed ' +
+                  max_height +
+                  '*' +
+                  max_width +
+                  'px';
+                  this.settingForm.value.imagePath = '';
+                  this.footerImgURL='';
+              return false;
+          } 
+        };
+    };
+      if (fileList.length > 0) {
+ 
+         const file: File = fileList[0];        
+          this.settingForm.value.footer_logo = file[0];  
+          this.handleInputChangeFooterImage(file); //turn into base64 
+          this.previewFooterImage(fileList); 
+      }
+      else {
+        //alert("No file selected");
+      }
+
+    }
+    handleInputChangeFooterImage(files) {
+      let file = files;
+      let pattern = /image-*/;
+      let reader = new FileReader();
+      reader.onloadend = this._handleReaderLoadedFooterImage.bind(this);
+      reader.readAsDataURL(file);
+      
+    }
+    _handleReaderLoadedFooterImage(e) {
+      let reader = e.target;
+      // this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+      // this.imageSrc = this.base64result;
+      // this.settingForm.value.favSrc=this.base64result;
+      // this.settingForm.controls.favSrc.setValue(this.base64result); 
+    }
+    previewFooterImage(files) {   
+      if (files.length === 0)
+      
+        return;
+      let mimeType = files[0].type;
+      
+      if (mimeType.match(/image\/*/) == null) {
+        this.message = "Only images are supported.";
+        return;
+      }
+      let reader = new FileReader();
+      this.settingForm.value.footer_logo = files;
+      reader.readAsDataURL(files[0]); 
+      reader.onload = (_event) => { 
+       
+        this.footerImgURL = reader.result;
+        // console.log(this.footerImgURL) ;
+               
+        this.finalFootericon=  files[0];
+      }
+    }
+
+
 
 
     LoadAllService()
@@ -337,21 +438,22 @@ export class MastersettingComponent implements OnInit {
 
     this.finalLogo =[null];
     this.finalFavIcon =[null];
-    this.settingForm = this.fb.group({
-      id:[null],
+    this.finalFootericon =[null];
+
+    this.settingForm=this.fb.group({
+      payment_gateway_charges:[null, Validators.compose([Validators.required])],
       bus_operator_id: [null, Validators.compose([Validators.required])],
-      payment_gateway_charges: [null, Validators.compose([Validators.required])],
-      email_sms_charges: [null, Validators.compose([Validators.required])],
-      odbus_gst_charges:[null, Validators.compose([Validators.required])],
+      email_sms_charges:[null,Validators.compose([Validators.required])],
+      odbus_gst_charges:[null,Validators.compose([Validators.required])],
       advance_days_show:[null, Validators.compose([Validators.required])],
-      support_email: [null, Validators.compose([Validators.required])],
-      booking_email: [null, Validators.compose([Validators.required])],
-      request_email: [null, Validators.compose([Validators.required])],
-      other_email: [],
-      mobile_no_1: [null, Validators.compose([Validators.required])],
-      mobile_no_2: [null, Validators.compose([Validators.required])],
-      mobile_no_3: [null,Validators.compose([Validators.required])],
-      mobile_no_4: [],
+      support_email:[null,Validators.compose([Validators.required])],
+      booking_email:[null,Validators.compose([Validators.required])],
+      request_email:[null,Validators.compose([Validators.required])],
+      other_email:[],
+      mobile_no_1:[null,Validators.compose([Validators.required])],
+      mobile_no_2:[null,Validators.compose([Validators.required])],
+      mobile_no_3:[null,Validators.compose([Validators.required])],
+      mobile_no_4:[],
       logo:[null],
       iconSrc:[null],
       favIcon:[null],
@@ -360,7 +462,8 @@ export class MastersettingComponent implements OnInit {
       logo_image:[null],
       favicon_image:[null],
       operator_slogan:[null],
-      operator_home_content:[null]
+      operator_home_content:[null],
+      footer_logo:[null],
     });
     this.LoadAllService();
     this.ModalHeading = "Add Master Settings";
@@ -378,6 +481,7 @@ export class MastersettingComponent implements OnInit {
     let fd: any = new FormData();
     fd.append("favicon_image", this.finalFavIcon);
     fd.append("logo_image", this.finalLogo);
+    fd.append("footer_logo", this.finalFootericon);
     fd.append("bus_operator_id",this.settingForm.value.bus_operator_id);
     fd.append("payment_gateway_charges",this.settingForm.value.payment_gateway_charges);
     fd.append("email_sms_charges",this.settingForm.value.email_sms_charges);
@@ -447,6 +551,7 @@ export class MastersettingComponent implements OnInit {
     this.settingRecord = this.settings[id]; 
     this.imgURL =''; 
     this.favURL =''; 
+    this.footerImgURL ='';
     this.settingForm=this.fb.group({
       id:[this.settingRecord.id],
       bus_operator_id:[this.settingRecord.bus_operator_id],
@@ -462,11 +567,13 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[this.settingRecord.mobile_no_2],
       mobile_no_3:[this.settingRecord.mobile_no_3],
       mobile_no_4:[this.settingRecord.mobile_no_4],
-      logo: [],favIcon:[],
+      logo: [],
+      favIcon:[],
       iconSrc:[this.settingRecord.logo],
       favSrc:[this.settingRecord.favIcon],
       operator_slogan:[this.settingRecord.operator_slogan],
       operator_home_content:[this.settingRecord.operator_home_content],
+      footer_logo:[null],
 
     });
     this.LoadAllService();

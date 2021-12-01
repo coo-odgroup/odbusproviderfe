@@ -19,6 +19,7 @@ export interface SettingsRecords{
     favicon_image:any;
     operator_slogan:any;
     operator_home_content:any;
+    footer_logo:any;
 
   } 
   

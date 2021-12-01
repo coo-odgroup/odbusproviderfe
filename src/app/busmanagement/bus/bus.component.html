@@ -74,7 +74,7 @@
               <th style="width: 150px;">Bus Name</th>
               <th>Bus Number</th>
               <!-- <th>Via</th>    -->
-              <!-- <th>Source >> Destination</th>      -->
+              <th>Source >> Destination</th>     
               <th>Created/Updated On</th> 
               <th>Created By</th>       
               <th>Status</th>             
@@ -90,7 +90,7 @@
               <td>{{ bus.name }}</td>
               <td class="text-uppercase">{{ bus.bus_number }}</td>
               <!-- <td>{{ bus.via}}</td> -->
-              <!-- <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td> -->
+              <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td>
               <td>{{ bus.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ bus.created_by }}</td>
               <td>
@@ -125,8 +125,8 @@
                     <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"
                       (click)="ResetAttributes();editContact($event, i); OpenModal(contactinfo)"><i
                         class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit Contact</button>
-                    <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"><i
-                        class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit Seat Fare</button>
+                    <!-- <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"><i
+                        class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit Seat Fare</button> -->
                     <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"
                       (click)="ResetAttributes();editExtraSeat($event, i); OpenModal(editExtraSeatLayout);"><i
                         class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit More Seats</button>
