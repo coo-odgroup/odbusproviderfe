@@ -17,6 +17,7 @@ import { LocationService } from '../../services/location.service';
 import { Location } from '../../model/location';
 import {IOption} from 'ng-select';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-ownerpayment',
@@ -52,7 +53,7 @@ export class OwnerpaymentComponent implements OnInit {
   public searchBy:any;
   all: any;
 
-  constructor(private ownerpaymentservice: OwnerpaymentService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService) { 
+  constructor(private ownerpaymentservice: OwnerpaymentService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService, private spinner: NgxSpinnerService,) { 
     this.isSubmit = false;
     this.ownerpaymentRecord= {} as Ownerpayment;
     //this.busstoppageRecord= {} as Busstoppage;
@@ -66,6 +67,7 @@ export class OwnerpaymentComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.ownerpaymentForm = this.fb.group({     
       bus_operator_id: [null],
       transaction_id:[null],      
@@ -107,6 +109,7 @@ export class OwnerpaymentComponent implements OnInit {
           this.pagination= res.data.data;
           this.all= res.data;
           // console.log( this.BusOperators);
+          this.spinner.hide();
         }
       );
     }
@@ -118,6 +121,7 @@ export class OwnerpaymentComponent implements OnInit {
           this.pagination= res.data.data;
           this.all= res.data;
           // console.log( res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -131,7 +135,7 @@ export class OwnerpaymentComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
-    
+     this.spinner.hide();
    }
 
 
@@ -218,6 +222,7 @@ findSource()
 
   addOwnerFare()
   {
+    this.spinner.show();
     const data ={
       bus_operator_id: this.ownerpaymentForm.value.bus_operator_id,      
       date: this.ownerpaymentForm.value.date,
@@ -251,10 +256,13 @@ findSource()
 
   deleteOwnerFare(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
     });
+
+    this.refresh();
     
   }
 

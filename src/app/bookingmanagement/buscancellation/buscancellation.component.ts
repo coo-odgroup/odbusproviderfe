@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -51,7 +52,7 @@ export class BuscancellationComponent implements OnInit{
   get busesFormGroup() {
     return this.busCancellationForm.get('buses') as FormArray;
   }
-  constructor(private buscanCellationService: BuscancellationService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService,) {
+  constructor(private buscanCellationService: BuscancellationService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService,private spinner: NgxSpinnerService,) {
     this.isSubmit = false;
     this.busCancellationRecord= {} as Buscancellation;
     config.backdrop = 'static';
@@ -77,6 +78,7 @@ export class BuscancellationComponent implements OnInit{
   }
 
   ngOnInit(): void {    
+    this.spinner.show();
     // this.loadBusCancellationData();
     this.createBusCancellationForm();
     this.loadServices();
@@ -87,6 +89,7 @@ export class BuscancellationComponent implements OnInit{
     });
 
     this.search();
+    
 
   }
 
@@ -112,6 +115,7 @@ export class BuscancellationComponent implements OnInit{
           this.busCancellations= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
           // console.log( this.BusOperators);
         }
       );
@@ -123,6 +127,7 @@ export class BuscancellationComponent implements OnInit{
           this.busCancellations= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -137,8 +142,10 @@ export class BuscancellationComponent implements OnInit{
     });
     
      this.search();
+     this.spinner.hide();
     
    }
+
 
 
   title = 'angular-app';
@@ -250,7 +257,7 @@ export class BuscancellationComponent implements OnInit{
       //console.log(this.busCancellationForm.value);
       this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
       response=>{
-        console.log(response);
+        // console.log(response);
       this.busDatas=response.data.busDatas;
       let counter = 0;
       for(let bData of this.busDatas)
@@ -313,6 +320,7 @@ export class BuscancellationComponent implements OnInit{
   }
   addBusCancellation()
   {
+    this.spinner.show();
     let id:any=this.busCancellationRecord.id;
     const data ={
       bus_operator_id:this.busCancellationForm.value.bus_operator_id,
@@ -405,6 +413,7 @@ export class BuscancellationComponent implements OnInit{
   }
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.buscanCellationService.delete(delitem).subscribe(
       resp => {
@@ -429,6 +438,7 @@ export class BuscancellationComponent implements OnInit{
   }
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.buscanCellationService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

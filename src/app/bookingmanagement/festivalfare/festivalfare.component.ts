@@ -19,6 +19,7 @@ import { Location } from '../../model/location';
 import {IOption} from 'ng-select';
 import * as XLSX from 'xlsx';
 import { debounceTime, map } from 'rxjs/operators';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 
@@ -59,7 +60,7 @@ export class FestivalfareComponent implements OnInit {
   all: any;
   
 
-  constructor(private festivalfareService: FestivalfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService) { 
+  constructor(private festivalfareService: FestivalfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService , private spinner: NgxSpinnerService,) { 
     this.isSubmit = false;
     this.festivalFareRecord= {} as Festivalfare;
     //this.busstoppageRecord= {} as Busstoppage;
@@ -74,6 +75,7 @@ export class FestivalfareComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.festivalFareForm = this.fb.group({
       searchBy: ['operator'],
       bus_operator_id: [null],
@@ -121,6 +123,7 @@ export class FestivalfareComponent implements OnInit {
           this.pagination= res.data.data;
           this.all= res.data;
           // console.log( this.BusOperators);
+          this.spinner.hide();
         }
       );
     }
@@ -132,6 +135,7 @@ export class FestivalfareComponent implements OnInit {
           this.pagination= res.data.data;
           this.all= res.data;
           // console.log( res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -146,6 +150,7 @@ export class FestivalfareComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
+     this.spinner.hide();
     
    }
 
@@ -216,7 +221,8 @@ findOperator(event:any)
   {
     this.busService.getByOperaor(operatorId).subscribe(
       res=>{
-        this.buses=res.data;
+        this.buses=res.data;        
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
       }
     );
   }
@@ -234,6 +240,7 @@ findSource()
     this.busService.findSource(source_id,destination_id).subscribe(
       res=>{
         this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
       }
     );
   }
@@ -242,6 +249,8 @@ findSource()
     this.busService.all().subscribe(
       res=>{
         this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+
       }
     );
   }
@@ -249,6 +258,7 @@ findSource()
 
 addfestivalFare()
   {
+    this.spinner.show();
     let id:any=this.festivalFareForm.value.id;
     const data ={
      
@@ -382,6 +392,7 @@ addfestivalFare()
   }
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.festivalfareService.delete(delitem).subscribe(
       resp => {
@@ -400,6 +411,7 @@ addfestivalFare()
   }
   deletefestivalFare(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -409,6 +421,7 @@ addfestivalFare()
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.festivalfareService.chngsts(stsitem).subscribe(
       resp => {
         

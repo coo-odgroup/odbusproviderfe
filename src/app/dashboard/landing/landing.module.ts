@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LandigRoutingModule } from './landing-routing.module';
@@ -7,7 +7,7 @@ import {SharedModule} from '../../theme/shared/shared.module';
 import {AngularHighchartsChartModule} from 'angular-highcharts-chart';
 import {NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import {NgbCollapseModule, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 import {ChartModule} from 'angular2-chartjs';
 
 @NgModule({
@@ -20,7 +20,9 @@ import {ChartModule} from 'angular2-chartjs';
     NgbNavModule,
     NgbCollapseModule,
     NgbDropdownModule,
-    ChartModule
-  ]
+    ChartModule,
+    NgxSpinnerModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LandingModule { }

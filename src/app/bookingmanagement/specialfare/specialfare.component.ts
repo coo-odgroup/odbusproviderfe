@@ -18,6 +18,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../model/location';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 //import {IOption} from 'ng-select';
 @Component({
@@ -57,7 +58,7 @@ export class SpecialfareComponent implements OnInit {
   pricePattern = "^-?[0-9]*$";
   pagination: any;
   all: any;
-  constructor(private specialfareService: SpecialfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService,private busstoppageService:BusstoppageService) { 
+  constructor(private specialfareService: SpecialfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService,private busstoppageService:BusstoppageService,private spinner: NgxSpinnerService) { 
     this.isSubmit = false;
     this.specialFareRecord= {} as Specialfare;
     this.busstoppageRecord= {} as Busstoppage;
@@ -70,6 +71,7 @@ export class SpecialfareComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.specialFareForm = this.fb.group({
       searchBy: ["operator"],
       id:[null],
@@ -121,6 +123,7 @@ export class SpecialfareComponent implements OnInit {
           this.specialFares= res.data.data.data;
           this.pagination= res.data.data;  this.all= res.data;
           // console.log( this.BusOperators);
+          this.spinner.hide();
         }
       );
     }
@@ -131,6 +134,7 @@ export class SpecialfareComponent implements OnInit {
           this.specialFares= res.data.data.data;
           this.pagination= res.data.data;  this.all= res.data;
           // console.log( res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -144,6 +148,7 @@ export class SpecialfareComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
+     this.spinner.hide();
     
    }
 
@@ -240,6 +245,7 @@ findOperator(event:any)
     this.busService.getByOperaor(operatorId).subscribe(
       res=>{
         this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
       }
     );
   }
@@ -247,7 +253,7 @@ findOperator(event:any)
 }
   addSpecialFare()
   {
-    
+    this.spinner.show();
     let id:any=this.specialFareForm.value.id;
     const data ={
      
@@ -333,6 +339,7 @@ findOperator(event:any)
       this.busService.findSource(this.specialFareRecord.source_id,this.specialFareRecord.destination_id).subscribe(
         res=>{
           this.buses=res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
         }
       );
     }
@@ -341,6 +348,7 @@ findOperator(event:any)
       this.busService.all().subscribe(
         res=>{
           this.buses=res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
         }
       );
     }
@@ -386,6 +394,7 @@ findOperator(event:any)
   }
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.specialfareService.delete(delitem).subscribe(
       resp => {
@@ -404,6 +413,7 @@ findOperator(event:any)
   }
   deleteSpecialFare(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -413,6 +423,7 @@ findOperator(event:any)
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.specialfareService.chngsts(stsitem).subscribe(
       resp => {
         

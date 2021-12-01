@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 import { OwnerPaymentRoutingModule } from './ownerpayment-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
@@ -16,10 +17,10 @@ import {NgxPrintModule} from 'ngx-print';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgxPrintModule
+    NgxPrintModule,NgxSpinnerModule
   ],
   declarations: [ OwnerpaymentComponent],
-  providers: [NotificationService]
+  providers: [NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 
 export class OwnerPaymentModule { }

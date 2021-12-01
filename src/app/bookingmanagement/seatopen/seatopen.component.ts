@@ -12,6 +12,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { LocationService } from '../../services/location.service';
 import { SeatlayoutService } from '../../services/seatlayout.service';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -67,7 +68,7 @@ export class SeatopenComponent implements OnInit {
     private modalService: NgbModal,
     private busService: BusService,
     private busOperatorService: BusOperatorService,
-    private locationService: LocationService
+    private locationService: LocationService,private spinner: NgxSpinnerService,
   ) {
     this.isSubmit = false;
     this.seatOpenRecord = {} as Seatopen;
@@ -82,6 +83,7 @@ export class SeatopenComponent implements OnInit {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.seatOpenForm = this.fb.group({
       bus_operator_id: [null],
       id: [null],
@@ -134,7 +136,7 @@ export class SeatopenComponent implements OnInit {
           this.seatOpen= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-
+          this.spinner.hide();
           // console.log( this.BusOperators);
         }
       );
@@ -146,7 +148,7 @@ export class SeatopenComponent implements OnInit {
           this.seatOpen= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -161,6 +163,7 @@ export class SeatopenComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
+     this.spinner.hide();
     
    }
 
@@ -407,6 +410,7 @@ export class SeatopenComponent implements OnInit {
     this.busService.all().subscribe(
       res => {
         this.buses = res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
       }
     );
     const BusOperator={
@@ -441,6 +445,7 @@ export class SeatopenComponent implements OnInit {
       this.busService.getByOperaor(operatorId).subscribe(
         res => {
           this.buses = res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
         }
       );
     }
@@ -455,6 +460,7 @@ export class SeatopenComponent implements OnInit {
       this.busService.findSource(source_id, destination_id).subscribe(
         res => {
           this.buses = res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
         }
       );
     }
@@ -462,13 +468,14 @@ export class SeatopenComponent implements OnInit {
       this.busService.all().subscribe(
         res => {
           this.buses = res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
         }
       );
     }
   }
 
   addOpenseat() {
-
+    this.spinner.show();
     const data = {
       bus_operator_id: this.seatOpenForm.value.bus_operator_id,
       bus_id: this.seatOpenForm.value.bus_id,
@@ -514,6 +521,7 @@ export class SeatopenComponent implements OnInit {
   }
 
   changeStatus(event: Event, stsitem: any) {
+    this.spinner.show();
     this.seatopenService.chngsts(stsitem).subscribe(
       resp => {
 
@@ -533,6 +541,7 @@ export class SeatopenComponent implements OnInit {
     this.seatOpenRecord = this.seatOpen[id];
   }
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.seatOpenRecord.id;
     this.seatopenService.delete(delitem).subscribe(
       resp => {

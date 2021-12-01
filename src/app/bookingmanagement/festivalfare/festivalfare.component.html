@@ -1,3 +1,5 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
 <div class="row">
   <div class="col-sm-12">
     <app-card [hidHeader]="false" cardTitle="FESTIVAL FARES" cardClass="card-datatable" [options]="true"
@@ -115,7 +117,7 @@
           </tbody>
           <tbody *ngIf="festivalFares?.length == 0">
             <tr>
-              <td colspan="8" class="no-data-available">No data!</td>
+              <td colspan="10" class="no-data-available">No data!</td>
             </tr>
           <tbody>
         </table> 

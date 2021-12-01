@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../theme/shared/shared.module';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import { BookingSeizedRoutingModule } from './bookingseized-routing.module';
 import { NgxPrintModule } from 'ngx-print';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   imports: [
@@ -17,10 +18,11 @@ import { NgxPrintModule } from 'ngx-print';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgxPrintModule
+    NgxPrintModule,NgxSpinnerModule
   ],
   declarations: [BookingseizedComponent],
-  providers: [NotificationService]
+  providers: [NotificationService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 
 export class BookingseizedModule { }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation,ElementRef,ViewChild} from '@angular/core';
-
+import { NgxSpinnerService } from "ngx-spinner";
 import {DashboardService} from '../../services/dashboard.service';
 import ApexCharts from 'apexcharts/dist/apexcharts.common.js';
 import * as Highcharts from 'highcharts';
@@ -49,7 +49,7 @@ export class LandingComponent implements OnInit {
     pnr_label: any;
 
 
-    constructor(private http: HttpClient , private ds:DashboardService) {
+    constructor(private http: HttpClient , private ds:DashboardService,private spinner: NgxSpinnerService) {
 
       
       this.RoleType=localStorage.getItem("ROLE_ID");
@@ -182,6 +182,9 @@ export class LandingComponent implements OnInit {
     }
   
     ngOnInit() {
+
+      this.spinner.show();
+
       const data={
         rangeFor:"",
         rangeFrom:"",
@@ -190,10 +193,15 @@ export class LandingComponent implements OnInit {
       this.getall("All");
       this.toproute();
       this.operatordata();
-      this.pnrstaticsdata("All");
+      this.pnrstaticsdata("All"); 
+    }
 
-
-     
+    hideSpinner()
+    {
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 1000);
       
     }
 
@@ -216,7 +224,7 @@ export class LandingComponent implements OnInit {
           // var chart = new ApexCharts(document.querySelector("#pie-chart-2-cac"),this.pie2CAC);
          // this.pie2CAC.render();
          
-          
+         this.hideSpinner();
           
         }
       );
@@ -254,6 +262,7 @@ export class LandingComponent implements OnInit {
         res => {
           this.bookingdata= res.data;
           // console.log(res.data);
+         
         }
       );
     }
@@ -284,6 +293,7 @@ export class LandingComponent implements OnInit {
         );
         
           
-      });  
+      }); 
+     
     }
 }

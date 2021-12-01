@@ -7,6 +7,7 @@ import { Bookingseized } from "../../model/bookingseized";
 import { NotificationService } from '../../services/notification.service';
 import {Constants} from '../../constant/constant';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 
@@ -42,7 +43,7 @@ export class BookingseizedComponent implements OnInit {
     private bookingseizedService: BookingseizedService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    config: NgbModalConfig,
+    config: NgbModalConfig,private spinner: NgxSpinnerService,
     private modalService: NgbModal)
     {
       config.backdrop = 'static';
@@ -57,7 +58,7 @@ export class BookingseizedComponent implements OnInit {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
-
+    this.spinner.show();
     this.bookingseizedForm = this.fb.group({
 
       bookingseized:this.fb.array([ ])
@@ -96,6 +97,8 @@ export class BookingseizedComponent implements OnInit {
           this.bookingSeized= res.data.data.data;
           this.pagination= res.data.data;
           // console.log( this.BusOperators);
+         
+          this.spinner.hide();
         }
       );
     }
@@ -107,6 +110,7 @@ export class BookingseizedComponent implements OnInit {
           this.bookingSeized= res.data.data.data;
           this.pagination= res.data.data;
           // console.log( res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -120,6 +124,8 @@ export class BookingseizedComponent implements OnInit {
         rows_number: Constants.RecordLimit,
       });
      this.search();
+     this.spinner.hide();
+       
     
    }
 
@@ -157,6 +163,7 @@ export class BookingseizedComponent implements OnInit {
 
   editbookingseized(id)
   { 
+    
     this.bookingSeizedRecord = this.bookingSeized[id];
     // console.log(this.bookingSeizedRecord );
     
@@ -189,7 +196,7 @@ export class BookingseizedComponent implements OnInit {
 
   updatebookingseized()
   {
-  
+    this.spinner.show();
 
     const data = {
       busSeized: this.bookingseizedForm.controls.bookingseized.value,

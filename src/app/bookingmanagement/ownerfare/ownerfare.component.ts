@@ -18,6 +18,7 @@ import { Location } from '../../model/location';
 import {IOption} from 'ng-select';
 import * as XLSX from 'xlsx';
 import { debounceTime, map } from 'rxjs/operators';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -55,7 +56,7 @@ export class OwnerfareComponent implements OnInit {
   all: any;
 
 
-  constructor(private ownerfareService: OwnerfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService) { 
+  constructor(private ownerfareService: OwnerfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService,private spinner: NgxSpinnerService) { 
     this.isSubmit = false;
     this.ownerFareRecord= {} as Ownerfare;
     //this.busstoppageRecord= {} as Busstoppage;
@@ -69,6 +70,7 @@ export class OwnerfareComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.ownerFareForm = this.fb.group({
       searchBy: ['operator'],
       bus_operator_id: [null],
@@ -118,6 +120,7 @@ export class OwnerfareComponent implements OnInit {
           this.pagination= res.data.data;
           this.all= res.data;
           // console.log( this.BusOperators);
+          this.spinner.hide();
         }
       );
     }
@@ -128,7 +131,7 @@ export class OwnerfareComponent implements OnInit {
           this.ownerFares= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -143,6 +146,8 @@ export class OwnerfareComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
+
+     this.spinner.hide();
     
    }
 
@@ -215,6 +220,7 @@ export class OwnerfareComponent implements OnInit {
     this.busService.getByOperaor(operatorId).subscribe(
       res=>{
         this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
       }
     );
   }
@@ -255,6 +261,7 @@ findSource()
     this.busService.findSource(source_id,destination_id).subscribe(
       res=>{
         this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
       }
     );
   }
@@ -263,13 +270,15 @@ findSource()
     this.busService.all().subscribe(
       res=>{
         this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
       }
     );
   }
 }
 
   addOwnerFare()
-  {
+  {   
+    this.spinner.show();
     let id:any=this.ownerFareForm.value.id;
     const data ={
      
@@ -409,6 +418,7 @@ findSource()
   }
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.ownerfareService.delete(delitem).subscribe(
       resp => {
@@ -427,6 +437,7 @@ findSource()
   }
   deleteOwnerFare(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -436,6 +447,7 @@ findSource()
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.ownerfareService.chngsts(stsitem).subscribe(
       resp => {
         
