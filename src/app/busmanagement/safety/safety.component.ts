@@ -76,10 +76,10 @@ export class SafetyComponent implements OnInit {
     this.finalImage=[];
     this.form = this.fb.group({
       id:[null],
-      icon:[null, Validators.compose([Validators.required])],
+      icon:[null],
       safety_image:[null],
       androidIcon: [null] ,
-      android_image: [null, Validators.compose([Validators.required])],
+      android_image: [null],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
     });
     this.formConfirm=this.fb.group({
@@ -378,10 +378,10 @@ export class SafetyComponent implements OnInit {
     this.SafetyRecord = {} as Safety;
     this.form = this.fb.group({
       id:[null],
-      icon:[null, Validators.compose([Validators.required])],
+      icon:[null],
       safety_image:[null],
-      androidIcon:[null, Validators.compose([Validators.required])],
-      android_image:[null],
+      androidIcon: [null] ,
+      android_image: [null],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
     });
     this.ModalHeading = "Add Safety Line";
