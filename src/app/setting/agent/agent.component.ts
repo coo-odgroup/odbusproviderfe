@@ -149,6 +149,7 @@ export class AgentComponent implements OnInit {
           this.agents= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          // console.log(this.agents);
           this.spinner.hide();
         }
       );
@@ -308,7 +309,23 @@ export class AgentComponent implements OnInit {
   {
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
   }
-
+  changeStatus(event : Event, stsitem:any)
+  { 
+    this.spinner.show();
+    this.AgentserviceService.chngsts(stsitem).subscribe(
+      resp => {
+        if(resp.status==1)
+        {
+            //this.closebutton.nativeElement.click();
+            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+            this.refresh();
+        }
+        else{
+            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+      }
+    );
+  }
   
 
   title = 'angular-app';
@@ -328,5 +345,7 @@ export class AgentComponent implements OnInit {
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
   }
+
+  
 
 }
