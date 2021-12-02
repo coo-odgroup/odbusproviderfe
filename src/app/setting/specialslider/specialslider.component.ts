@@ -10,6 +10,7 @@ import { Busoperator } from '../../model/busoperator';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-specialslider',
@@ -52,7 +53,7 @@ export class SpecialsliderComponent implements OnInit {
   public imageSizeFlag = true;
   all: any;
 
-  constructor(private specialsliderService: SpecialsliderService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer,private busOperartorService:BusOperatorService)
+  constructor(private spinner: NgxSpinnerService,private specialsliderService: SpecialsliderService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer,private busOperartorService:BusOperatorService)
      { 
         this.isSubmit = false;
         this.sliderRecord= {} as SpecialSlider;
@@ -62,6 +63,7 @@ export class SpecialsliderComponent implements OnInit {
         this.ModalBtn = "Save";
    }
    getAll(url:any=''){
+    this.spinner.show();
     //let slider_img='data:image/svg+xml;charset=utf-8;base64,'+this.sliderRecord.slider_img;
             const data= {
               status:this.searchForm.value.status,
@@ -74,11 +76,13 @@ export class SpecialsliderComponent implements OnInit {
               this.pagination = res.data.data;
               this.all = res.data;
               //console.log(res.data.data);
+              this.spinner.hide();
             },
     );
    }
    refresh()
     {
+      this.spinner.show();
       this.searchForm.reset();
       this.getAll();
     }
@@ -89,6 +93,7 @@ export class SpecialsliderComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.searchForm =this.fb.group({
       searchBy:[null],
       status:[null],
@@ -251,7 +256,7 @@ export class SpecialsliderComponent implements OnInit {
   }
   addSlider()
   {
-
+    this.spinner.show();
     this.finalJson = {
       "File": this.imageSrc,
     }
@@ -359,6 +364,7 @@ export class SpecialsliderComponent implements OnInit {
     this.sliderRecord = this.sliders[id];  
   }
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.sliderRecord.id;
     this.specialsliderService.delete(delitem).subscribe(
       resp => {
@@ -375,6 +381,7 @@ export class SpecialsliderComponent implements OnInit {
   }
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.specialsliderService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

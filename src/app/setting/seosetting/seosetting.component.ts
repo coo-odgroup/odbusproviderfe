@@ -11,6 +11,7 @@ import { Constants } from '../../constant/constant';
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../model/location';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-seosetting',
@@ -39,7 +40,7 @@ export class SeosettingComponent implements OnInit {
   all: any;
 
   constructor(
-    
+    private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, private busOperatorService: BusOperatorService,
@@ -59,6 +60,7 @@ export class SeosettingComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.spinner.show();
     this.form = this.fb.group({
       id: [null],
       seo_type: [null],     
@@ -128,6 +130,7 @@ export class SeosettingComponent implements OnInit {
 
 
   search(pageurl = "") {
+    this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
@@ -141,7 +144,7 @@ export class SeosettingComponent implements OnInit {
           this.urlcontent = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          // console.log( this.BusOperators);
+          this.spinner.hide();
         }
       );
     }
@@ -151,7 +154,7 @@ export class SeosettingComponent implements OnInit {
           this.urlcontent = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          // console.log( res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -159,6 +162,7 @@ export class SeosettingComponent implements OnInit {
 
 
   refresh() {
+    this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
       bus_operator_id: [null],
@@ -203,6 +207,7 @@ export class SeosettingComponent implements OnInit {
   }
 
   addData() {
+    this.spinner.show();
     const data = {
       page_url: this.form.value.page_url,
       bus_operator_id:this.form.value.bus_operator_id,
@@ -306,6 +311,7 @@ export class SeosettingComponent implements OnInit {
   }
 
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.urlcontentRecord.id;
     this.ss.delete(delitem).subscribe(
       resp => {
@@ -323,6 +329,7 @@ export class SeosettingComponent implements OnInit {
 
 
   changeStatus(event: Event, stsitem: any) {
+    this.spinner.show();
     this.ss.chngsts(stsitem).subscribe(
       resp => {
 

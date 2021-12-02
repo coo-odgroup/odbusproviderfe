@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 import { SeatLayoutRoutingModule } from './seatlayout-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
@@ -16,9 +17,10 @@ import {NgxPrintModule} from 'ngx-print';
     SharedModule,
     FormsModule,
     NgxPrintModule,
-    NgSelectModule,
+    NgSelectModule,NgxSpinnerModule,
     DragulaModule.forRoot()
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [ SeatlayoutComponent],
   providers:[NotificationService]
 })

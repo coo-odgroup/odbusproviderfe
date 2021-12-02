@@ -8,6 +8,7 @@ import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-buscancellationreport',
@@ -30,6 +31,7 @@ export class BuscancellationreportComponent implements OnInit {
   toDate: NgbDate | null;
 
   constructor(
+      private spinner: NgxSpinnerService,
       private http: HttpClient, 
       private rs: ReportsService,
       private fb: FormBuilder,
@@ -46,7 +48,7 @@ export class BuscancellationreportComponent implements OnInit {
       fileName= 'Bus-Cancellation-Report.xlsx';
 
   ngOnInit(): void {
-  
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],   
@@ -82,6 +84,7 @@ export class BuscancellationreportComponent implements OnInit {
    }
    search(pageurl="")
   {
+    this.spinner.show();
     this.BusCancellationReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -99,7 +102,8 @@ export class BuscancellationreportComponent implements OnInit {
       this.rs.buscancellationpaginationReport(pageurl,data).subscribe(
         res => {
           this.buscancellationdata= res.data;
-          // console.log( this.buscancellationdata);
+          // console.log( this.buscancellationdata); 
+           this.spinner.hide();
         }
       );
     }
@@ -109,6 +113,7 @@ export class BuscancellationreportComponent implements OnInit {
         res => {
           this.buscancellationdata= res.data;
           // console.log( this.buscancellationdata);
+          this.spinner.hide();
         }
       );
     }
@@ -118,6 +123,7 @@ export class BuscancellationreportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],   
@@ -127,6 +133,7 @@ export class BuscancellationreportComponent implements OnInit {
     })  
    this.loadServices();
     this.search();
+ 
   }
   formatDate(date) {
     var d = new Date(date),

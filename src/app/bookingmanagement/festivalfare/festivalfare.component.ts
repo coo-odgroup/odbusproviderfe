@@ -108,7 +108,8 @@ export class FestivalfareComponent implements OnInit {
 
    
   search(pageurl="")
-  {      
+  {     
+      this.spinner.show(); 
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -144,13 +145,13 @@ export class FestivalfareComponent implements OnInit {
 
   refresh()
    {
-     
+    this.spinner.show();
     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
     });
      this.search();
-     this.spinner.hide();
+
     
    }
 
@@ -392,6 +393,7 @@ addfestivalFare()
   }
   deleteRecord()
   {
+    
     this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.festivalfareService.delete(delitem).subscribe(

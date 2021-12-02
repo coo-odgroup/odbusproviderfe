@@ -10,6 +10,7 @@ import { Constants } from '../../constant/constant';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as _ from 'lodash';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-amenities',
@@ -52,7 +53,7 @@ export class AmenitiesComponent implements OnInit {
   android_img_Error: string;
   finalImage: any;
  
-  constructor(private http: HttpClient, private AmenitiesService: AmenitiesService, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer) {
+  constructor(private http: HttpClient, private AmenitiesService: AmenitiesService, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer , private spinner: NgxSpinnerService,) {
     this.isSubmit = false;
     this.AmenitiesRecord = {} as Amenities;
     config.backdrop = 'static';
@@ -67,6 +68,8 @@ export class AmenitiesComponent implements OnInit {
     this.statusDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
   }
   ngOnInit(): void {
+
+    this.spinner.show();
     this.form1 = this.fb.group({
       id: [null],
       reason: [null, Validators.compose([Validators.required])]
@@ -93,7 +96,7 @@ export class AmenitiesComponent implements OnInit {
   }
 
   search(pageurl = "") {
-
+    this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
@@ -104,7 +107,8 @@ export class AmenitiesComponent implements OnInit {
         res => {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
-          this.all =res.data;
+          this.all =res.data;  
+          this.spinner.hide();
         }
       );
     }
@@ -114,6 +118,7 @@ export class AmenitiesComponent implements OnInit {
           this.Amenities = res.data.data.data;
           this.pagination = res.data.data;
           this.all =res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -123,7 +128,8 @@ export class AmenitiesComponent implements OnInit {
       name: [null],
       rows_number: Constants.RecordLimit,
     });
-    this.search();
+    this.search(); 
+     this.spinner.hide();
 
   }
   title = 'angular-app';
@@ -169,7 +175,7 @@ export class AmenitiesComponent implements OnInit {
 
 
   addAmenities() {
-
+    this.spinner.show();
     let id: any = this.form.value.id;
     let fd: any = new FormData();
     fd.append("id",this.form.value.id);
@@ -240,6 +246,7 @@ export class AmenitiesComponent implements OnInit {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.formConfirm.value.id;
     this.AmenitiesService.delete(delitem).subscribe(
       resp => {
@@ -255,6 +262,7 @@ export class AmenitiesComponent implements OnInit {
       });
   }
   changeStatus() {
+    this.spinner.show();
     const data = {
       reason: this.form1.value.reason,
       id: this.form1.value.id
@@ -295,6 +303,7 @@ export class AmenitiesComponent implements OnInit {
   }
 
   deleteAmenities(content, delitem: any) {
+    this.spinner.show();
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.formConfirm = this.fb.group({
       id: [delitem]

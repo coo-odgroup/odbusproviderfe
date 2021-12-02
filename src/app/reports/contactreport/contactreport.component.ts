@@ -9,6 +9,7 @@ import {ContactreportService } from '../../services/contactreport.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import {Constants} from '../../constant/constant' ;
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -40,6 +41,7 @@ export class ContactreportComponent implements OnInit {
   busoperators: any;
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
@@ -63,6 +65,7 @@ export class ContactreportComponent implements OnInit {
     
 
   ngOnInit(): void {
+    this.spinner.show();
     this.formConfirm=this.fb.group({
       id:[null]
     });
@@ -92,7 +95,7 @@ export class ContactreportComponent implements OnInit {
    }
    search(pageurl="")
   {
-
+    this.spinner.show();
       
     const data = {
       bus_operator_id:this.searchFrom.value.bus_operator_id,
@@ -107,6 +110,7 @@ export class ContactreportComponent implements OnInit {
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -116,7 +120,7 @@ export class ContactreportComponent implements OnInit {
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
-        
+          this.spinner.hide();
         }
       );
     }
@@ -126,6 +130,7 @@ export class ContactreportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id:[null],
       rows_number: Constants.RecordLimit,
@@ -177,6 +182,7 @@ export class ContactreportComponent implements OnInit {
  
 
   deleteRecord(){
+    this.spinner.show();
     let delitem = this.contactcontentRecord.id;
     // console.log(delitem);
     this.cs.delete(delitem).subscribe(

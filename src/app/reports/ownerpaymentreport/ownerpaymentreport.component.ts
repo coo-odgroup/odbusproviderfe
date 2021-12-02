@@ -7,6 +7,7 @@ import { OwnerpaymentReport } from '../../model/ownerpaymentreport';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 
@@ -28,6 +29,7 @@ export class OwnerpaymentreportComponent implements OnInit {
 
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient , 
     private rs:ReportsService ,  
     private fb: FormBuilder, 
@@ -41,7 +43,7 @@ export class OwnerpaymentreportComponent implements OnInit {
     }
   busoperators: any;
   ngOnInit(): void {
-
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       date_range: [null],
@@ -65,6 +67,7 @@ export class OwnerpaymentreportComponent implements OnInit {
 
   search(pageurl="")
   {
+    this.spinner.show();
      this.ownerpaymentReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -84,6 +87,7 @@ export class OwnerpaymentreportComponent implements OnInit {
         res => {
           this.completedata= res.data;
           // console.log( this.completedata);
+          this.spinner.hide();
         }
       );
     }
@@ -93,6 +97,7 @@ export class OwnerpaymentreportComponent implements OnInit {
         res => {
           this.completedata= res.data;
           // console.log( this.completedata);
+          this.spinner.hide();
         }
       );
     }
@@ -103,6 +108,7 @@ export class OwnerpaymentreportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       date_range: [null],

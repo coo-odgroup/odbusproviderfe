@@ -8,6 +8,7 @@ import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 
@@ -33,6 +34,7 @@ export class SeatblockreportComponent implements OnInit {
   
    
     constructor( 
+      private spinner: NgxSpinnerService,
       private http: HttpClient, 
       private rs: ReportsService,
       private fb: FormBuilder,
@@ -49,7 +51,7 @@ export class SeatblockreportComponent implements OnInit {
       fileName= 'Seat-Block-Report.xlsx';
  
   ngOnInit(): void {
-
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],   
@@ -87,6 +89,7 @@ export class SeatblockreportComponent implements OnInit {
    }
    search(pageurl="")
   {
+    this.spinner.show();
     this.seatBlockReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -105,6 +108,7 @@ export class SeatblockreportComponent implements OnInit {
         res => {
           this.seatblockdata= res.data;
           // console.log( this.seatblockdata);
+          this.spinner.hide();
         }
       );
     }
@@ -114,6 +118,7 @@ export class SeatblockreportComponent implements OnInit {
         res => {
           this.seatblockdata= res.data;
           // console.log( this.seatblockdata);
+          this.spinner.hide();
         }
       );
     }
@@ -123,6 +128,7 @@ export class SeatblockreportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],   

@@ -9,6 +9,7 @@ import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { BusOperatorService } from '../../services/bus-operator.service';
 
@@ -39,7 +40,8 @@ export class BustypeComponent implements OnInit {
   pagination: any;
   busoperators: any;
   all: any;
-  constructor(private busTypeService: BusTypeService,private busOperatorService: BusOperatorService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor( private spinner: NgxSpinnerService,
+    private busTypeService: BusTypeService,private busOperatorService: BusOperatorService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
     this.busTypeRecord= {} as Bustype;
     config.backdrop = 'static';
@@ -53,6 +55,7 @@ export class BustypeComponent implements OnInit {
   
  
    ngOnInit() { 
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -101,6 +104,7 @@ export class BustypeComponent implements OnInit {
 
   search(pageurl="")
   {
+    this.spinner.show();
       
     const data = { 
       name: this.searchForm.value.name,
@@ -117,6 +121,7 @@ export class BustypeComponent implements OnInit {
           this.busTypes= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
         
           // console.log( this.busTypes);
         }
@@ -129,6 +134,7 @@ export class BustypeComponent implements OnInit {
           this.busTypes= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -146,6 +152,7 @@ export class BustypeComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
+     this.spinner.hide();
    }
 
 
@@ -166,6 +173,8 @@ export class BustypeComponent implements OnInit {
   }
   
   addBusTypes(){  
+
+    this.spinner.show();
     let id:any=this.busTypeRecord.id;  
     const data = {
       type:this.form.value.type,
@@ -232,6 +241,7 @@ export class BustypeComponent implements OnInit {
 
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.busTypeService.delete(delitem).subscribe(
       resp => {
@@ -250,6 +260,7 @@ export class BustypeComponent implements OnInit {
   }
   deleteBusType(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -258,6 +269,7 @@ export class BustypeComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.busTypeService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

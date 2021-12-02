@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 import { CommonModule } from '@angular/common';
 import { BusRoutingModule } from './bus-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
@@ -20,9 +22,9 @@ import {NgxPrintModule} from 'ngx-print';
     NgSelectModule,
     ReactiveFormsModule,
     ArchwizardModule,
-    NgxPrintModule
+    NgxPrintModule,NgxSpinnerModule
     ],
   declarations: [ BusComponent],
-  providers:[NotificationService]
+  providers:[NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class BusModule { }

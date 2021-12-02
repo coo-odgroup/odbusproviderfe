@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
+ import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -37,7 +38,7 @@ export class SeatingtypeComponent implements OnInit {
   public ModalBtn:any;
   pagination: any;
   all: any;
-  constructor(private seatingTypeService: SeatingtypeService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal)
+  constructor( private spinner: NgxSpinnerService,private seatingTypeService: SeatingtypeService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal)
    {
     this.isSubmit = false;
     this.seatingTypeRecord= {} as Seatingtype;
@@ -51,6 +52,7 @@ export class SeatingtypeComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -73,8 +75,8 @@ export class SeatingtypeComponent implements OnInit {
    }
 
   search(pageurl="")
-  {
-      
+  { 
+    this.spinner.show();  
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -88,6 +90,7 @@ export class SeatingtypeComponent implements OnInit {
           this.seatingTypes= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           // console.log( this.seatingTypes);
         }
       );
@@ -99,6 +102,7 @@ export class SeatingtypeComponent implements OnInit {
           this.seatingTypes= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -113,6 +117,7 @@ export class SeatingtypeComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
+     this.spinner.hide();
     
    }
 
@@ -142,7 +147,7 @@ export class SeatingtypeComponent implements OnInit {
   }
   addSeatingType()
   {
-
+    this.spinner.show();
     let id:any=this.form.value.id;
     const data ={
       name:this.form.value.name,
@@ -205,6 +210,7 @@ export class SeatingtypeComponent implements OnInit {
   }
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.seatingTypeService.delete(delitem).subscribe(
       resp => {
@@ -223,6 +229,7 @@ export class SeatingtypeComponent implements OnInit {
   }
   deleteSeatingType(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -232,6 +239,7 @@ export class SeatingtypeComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.seatingTypeService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 import { CommonModule } from '@angular/common';
 import {SharedModule} from '../../theme/shared/shared.module';
 import {FormsModule} from '@angular/forms';
@@ -16,8 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule
-  ],
+    NgbModule,NgxSpinnerModule
+  ],  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [ CleartransactionreportComponent],
   providers: [NotificationService]
 })

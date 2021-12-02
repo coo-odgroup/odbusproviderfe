@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 import {SharedModule} from '../../theme/shared/shared.module';
 import {FormsModule} from '@angular/forms';
@@ -17,10 +18,10 @@ import {NgxPrintModule} from 'ngx-print';
     SharedModule,
     FormsModule,
     NgSelectModule,NgxPrintModule,
-    NgbModule,AngularEditorModule
+    NgbModule,AngularEditorModule,NgxSpinnerModule
   ],
   declarations: [ AgentComponent],
-  providers: [NotificationService]
+  providers: [NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 
 export class AgentModule { }

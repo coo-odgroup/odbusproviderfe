@@ -11,6 +11,10 @@ import {ContactreportService } from '../../services/contactreport.service';
 import {Constants} from '../../constant/constant' ;
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {UserreviewService} from '../../services/userreview.service';
+
+import { NgxSpinnerService } from "ngx-spinner";
+
+
 @Component({
   selector: 'app-userreview',
   templateUrl: './userreview.component.html',
@@ -40,6 +44,7 @@ export class UserreviewComponent implements OnInit {
   busoperators: any;
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
@@ -63,6 +68,7 @@ export class UserreviewComponent implements OnInit {
     
 
   ngOnInit(): void {
+    this.spinner.show();
     this.formConfirm=this.fb.group({
       id:[null]
     });
@@ -90,7 +96,7 @@ export class UserreviewComponent implements OnInit {
    }
    search(pageurl="")
   {
-
+    this.spinner.show();
       
     const data = {
       bus_operator_id:this.searchFrom.value.bus_operator_id,
@@ -106,7 +112,7 @@ export class UserreviewComponent implements OnInit {
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
-          // console.log( this.contactcontent);
+          this.spinner.hide();
         }
       );
     }
@@ -116,7 +122,7 @@ export class UserreviewComponent implements OnInit {
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
-          // console.log(  res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -126,6 +132,7 @@ export class UserreviewComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id:[null],
       rows_number: Constants.RecordLimit,
@@ -166,6 +173,7 @@ export class UserreviewComponent implements OnInit {
  
 
   deleteRecord(){
+    this.spinner.show();
     let delitem = this.contactcontentRecord.id;
     // console.log(delitem);
     this.us.delete(delitem).subscribe(
@@ -227,6 +235,7 @@ export class UserreviewComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.us.chngsts(stsitem).subscribe(
       resp => {
         

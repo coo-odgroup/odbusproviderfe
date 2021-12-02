@@ -9,6 +9,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {TestimonialService } from '../../services/testimonial.service';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import{Constants} from '../../constant/constant';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -42,7 +43,7 @@ export class TestimonialComponent implements OnInit {
     private notificationService: NotificationService, 
     private fb: FormBuilder,
     private ts: TestimonialService, private busOperatorService: BusOperatorService ,
-    private modalService: NgbModal,
+    private modalService: NgbModal,private spinner: NgxSpinnerService,
     config: NgbModalConfig
     )
     { 
@@ -55,6 +56,7 @@ export class TestimonialComponent implements OnInit {
 
     ngOnInit(): void {
       
+      this.spinner.show();
       this.form = this.fb.group({
         id:[null],
         posted_by: [null, Validators.compose([Validators.required])],
@@ -109,7 +111,7 @@ export class TestimonialComponent implements OnInit {
   
      
     search(pageurl="")
-    {      
+    {     this.spinner.show(); 
       const data = { 
         name: this.searchForm.value.name,
         bus_operator_id:  this.searchForm.value.bus_operator_id,
@@ -124,7 +126,7 @@ export class TestimonialComponent implements OnInit {
             this.testimonial= res.data.data.data;
             this.pagination= res.data.data;
             this.all= res.data;
-            // console.log( this.BusOperators);
+            this.spinner.hide();
           }
         );
       }
@@ -135,7 +137,7 @@ export class TestimonialComponent implements OnInit {
             this.testimonial= res.data.data.data;
             this.pagination= res.data.data;
             this.all= res.data;
-            // console.log( res.data);
+            this.spinner.hide();
           }
         );
       }
@@ -144,6 +146,7 @@ export class TestimonialComponent implements OnInit {
   
     refresh()
      {  
+      this.spinner.show();
       this.searchForm = this.fb.group({  
         name: [null],
         bus_operator_id:[null],
@@ -154,6 +157,8 @@ export class TestimonialComponent implements OnInit {
      }
   
     addData() { 
+
+      this.spinner.show();
       // console.log(this.form.value);return false; 
       const data = {
         posted_by:this.form.value.posted_by,
@@ -228,7 +233,7 @@ export class TestimonialComponent implements OnInit {
     }
   
     deleteRecord() {
-
+      this.spinner.show();
       let delitem = this.testimonialRecord.id;
       this.ts.delete(delitem).subscribe(
         resp => {
@@ -247,6 +252,7 @@ export class TestimonialComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.ts.changestatus(stsitem).subscribe(
       resp => {
         

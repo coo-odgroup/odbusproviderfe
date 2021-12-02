@@ -10,6 +10,7 @@ import { Constants } from '../../constant/constant';
 import { LocationService } from '../../services/location.service';
 import { NotificationService } from '../../services/notification.service';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 interface AllLocation {
   [index: number]: { name: any };
 }
@@ -44,7 +45,7 @@ export class SeatfareComponent implements OnInit {
   @ViewChild("addnew") addnew;
   all: any;
 
-  constructor(private http: HttpClient, private busService: BusService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, dpconfig: NgbDropdownConfig, private busSeatsService: BusSeatsService, private locationService: LocationService, private notificationService: NotificationService) {
+  constructor( private spinner: NgxSpinnerService,private http: HttpClient, private busService: BusService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, dpconfig: NgbDropdownConfig, private busSeatsService: BusSeatsService, private locationService: LocationService, private notificationService: NotificationService) {
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add New Bus";
@@ -131,6 +132,7 @@ export class SeatfareComponent implements OnInit {
   }
   updatePrice() {
     // console.log(this.fareGroup);
+    this.spinner.show();
     const data = {
       fare_info: this.fareGroup.value.fareArray
     };
@@ -151,6 +153,7 @@ export class SeatfareComponent implements OnInit {
 
   dropfg: any;
   ngOnInit(): void {
+    this.spinner.show();
     this.fareGroup = this.fb.group({
       fareArray: this.fb.array([
         this.fb.group({
@@ -177,6 +180,7 @@ export class SeatfareComponent implements OnInit {
 
 
   search(pageurl = "") {
+    this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
@@ -190,6 +194,7 @@ export class SeatfareComponent implements OnInit {
           this.buses = res.data.data.data;
           this.pagination = res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           // console.log( this.BusOperators);
         }
       );
@@ -200,6 +205,7 @@ export class SeatfareComponent implements OnInit {
           this.buses = res.data.data.data;
           this.pagination = res.data.data;
           this.all=res.data;
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -213,6 +219,7 @@ export class SeatfareComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
     this.search();
+    this.spinner.hide();
 
   }
 

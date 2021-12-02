@@ -1,3 +1,5 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
 <div class="row">
     <div class="col-sm-12">
         <app-card [hidHeader]="false" cardTitle="Coupon Listing" cardClass="card-datatable" [options]="true"
@@ -18,7 +20,7 @@
 
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control sml_input"
-                                            placeholder="Search Operator - Coupon" required formControlName="name" />
+                                            placeholder="Search Operator name - Coupon name" required formControlName="name" />
                                     </div>
                                 </div>
                             </div>
@@ -99,6 +101,11 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tbody *ngIf="coupons?.length == 0">
+                        <tr>
+                          <td colspan="10" class="no-data-available">No data!</td>
+                        </tr>
+                      <tbody>
                 </table>
             </div>
             <div *ngIf="pagination?.length!= 0" class="hide_print container">

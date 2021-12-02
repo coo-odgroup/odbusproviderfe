@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 import {SharedModule} from '../../theme/shared/shared.module';
 import {FormsModule} from '@angular/forms';
@@ -17,8 +18,9 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule,AngularEditorModule
+    NgbModule,AngularEditorModule,NgxSpinnerModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [ TestimonialComponent],
   providers: [NotificationService]
 })

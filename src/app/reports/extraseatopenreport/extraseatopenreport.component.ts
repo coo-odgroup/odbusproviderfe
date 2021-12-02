@@ -9,6 +9,7 @@ import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -32,6 +33,7 @@ export class ExtraseatopenreportComponent implements OnInit {
   
    
     constructor( 
+      private spinner: NgxSpinnerService,
       private http: HttpClient, 
       private rs: ReportsService,
       private fb: FormBuilder,
@@ -46,7 +48,7 @@ export class ExtraseatopenreportComponent implements OnInit {
       title = 'angular-app';
       fileName= 'Seat-Open-Report.xlsx';
   ngOnInit(): void {
-
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],  
@@ -67,6 +69,7 @@ export class ExtraseatopenreportComponent implements OnInit {
    }
    search(pageurl="")
   {
+    this.spinner.show();
     this.seatOpenReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -83,6 +86,7 @@ export class ExtraseatopenreportComponent implements OnInit {
         res => {
           this.seatopendata= res.data;
           // console.log( this.seatopendata);
+          this.spinner.hide();
         }
       );
     }
@@ -91,7 +95,8 @@ export class ExtraseatopenreportComponent implements OnInit {
       this.rs.extraseatopenReport(data).subscribe(
         res => {
           this.seatopendata= res.data;
-          console.log( this.seatopendata);
+          // console.log( this.seatopendata);
+          this.spinner.hide();
         }
       );
     }
@@ -119,6 +124,7 @@ export class ExtraseatopenreportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],  

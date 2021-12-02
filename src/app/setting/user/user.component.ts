@@ -10,6 +10,8 @@ import { UserService } from '../../services/user.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { constant } from 'lodash';
 
+import { NgxSpinnerService } from "ngx-spinner";
+
 
 @Component({
   selector: 'app-user',
@@ -22,10 +24,10 @@ export class UserComponent implements OnInit {
   public editform: FormGroup;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
-  public pwdform:FormGroup;
+  public pwdform: FormGroup;
 
   pagination: any;
-  
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
@@ -38,6 +40,7 @@ export class UserComponent implements OnInit {
   busoperators: any;
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder,
@@ -54,27 +57,29 @@ export class UserComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.spinner.show();
     this.form = this.fb.group({
       id: [null],
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
-      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
-      password: [null,Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])]
+      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      password: [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.required, Validators.maxLength(10)])]
     });
 
     this.editform = this.fb.group({
       id: [null],
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
-      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
+      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
     });
 
     this.pwdform = this.fb.group({
       id: [null],
-      password: [null, Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])],
-      conf_password: [null, Validators.compose([Validators.required])]      
-    }, 
-    {validator: this.checkPasswords});
+      password: [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.required, Validators.maxLength(10)])],
+      conf_password: [null, Validators.compose([Validators.required])]
+    },
+      { validator: this.checkPasswords });
 
 
     this.formConfirm = this.fb.group({
@@ -94,12 +99,12 @@ export class UserComponent implements OnInit {
 
 
 
-    checkPasswords(group: FormGroup) { // here we have the 'passwords' group
-      const password = group.get('password').value;
-      const confirmPassword = group.get('conf_password').value;
-    
-      return password === confirmPassword ? null : { notSame: true }     
-    }
+  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+    const password = group.get('password').value;
+    const confirmPassword = group.get('conf_password').value;
+
+    return password === confirmPassword ? null : { notSame: true }
+  }
 
 
 
@@ -111,6 +116,8 @@ export class UserComponent implements OnInit {
 
 
   search(pageurl = "") {
+
+    this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
@@ -124,6 +131,7 @@ export class UserComponent implements OnInit {
           this.user = res.data.data.data;
           this.pagination = res.data.data;
           // console.log( this.BusOperators);
+          this.spinner.hide();
         }
       );
     }
@@ -133,6 +141,7 @@ export class UserComponent implements OnInit {
           this.user = res.data.data.data;
           this.pagination = res.data.data;
           // console.log( res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -140,6 +149,8 @@ export class UserComponent implements OnInit {
 
 
   refresh() {
+
+    this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
       bus_operator_id: [null],
@@ -170,7 +181,7 @@ export class UserComponent implements OnInit {
       bus_operator_id: [null],
       name: [null],
       email: [null],
-      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
+      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       password: [null]
     });
 
@@ -179,15 +190,15 @@ export class UserComponent implements OnInit {
       bus_operator_id: [null],
       name: [null],
       email: [null],
-      phone: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
+      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
     });
-    
+
     this.pwdform = this.fb.group({
       id: [null],
-      password: [null, Validators.compose([Validators.required,Validators.minLength(6),Validators.required,Validators.maxLength(10)])],
-      conf_password: [null, Validators.compose([Validators.required])]      
-    }, 
-    {validator: this.checkPasswords});
+      password: [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.required, Validators.maxLength(10)])],
+      conf_password: [null, Validators.compose([Validators.required])]
+    },
+      { validator: this.checkPasswords });
 
     this.form.reset();
     this.ModalHeading = "Add Operator";
@@ -207,6 +218,8 @@ export class UserComponent implements OnInit {
 
   addData() {
 
+    this.spinner.show();
+
     const data = {
       bus_operator_id: this.form.value.bus_operator_id,
       name: this.form.value.name,
@@ -215,8 +228,8 @@ export class UserComponent implements OnInit {
       password: this.form.value.password
     };
 
-  
-    const updateDate={
+
+    const updateDate = {
       name: this.editform.value.name,
       email: this.editform.value.email,
       phone: this.editform.value.phone,
@@ -266,12 +279,12 @@ export class UserComponent implements OnInit {
 
   editData(id) {
     this.userRecord = this.user[id];
-  
+
     this.editform.controls.id.setValue(this.userRecord.id);
     this.editform.controls.name.setValue(this.userRecord.name);
     this.editform.controls.email.setValue(this.userRecord.email);
     this.editform.controls.phone.setValue(this.userRecord.phone);
-   
+
 
     this.ModalHeading = "Edit Operator";
     this.ModalBtn = "Update";
@@ -283,6 +296,8 @@ export class UserComponent implements OnInit {
   }
 
   deleteRecord() {
+
+    this.spinner.show();
     let delitem = this.userRecord.id;
     this.userService.delete(delitem).subscribe(
       resp => {
@@ -297,18 +312,19 @@ export class UserComponent implements OnInit {
         }
       });
   }
-  
+
 
   changePassword(id) {
-    this.userRecord = this.user[id];   
-   
+
+    this.spinner.show();
+    this.userRecord = this.user[id];
+
     this.ModalHeading = "Edit Password";
     this.ModalBtn = "Update Password";
   }
-  updatePassword()
-  {  
-    let id = this.userRecord?.id;  
-    const updateDate={
+  updatePassword() {
+    let id = this.userRecord?.id;
+    const updateDate = {
       password: this.pwdform.value.password
     }
 
@@ -329,25 +345,25 @@ export class UserComponent implements OnInit {
 
   }
 
-  changeStatus(event : Event, stsitem:any)
-  {
+  changeStatus(event: Event, stsitem: any) {
+
+    this.spinner.show();
     this.userService.changestatus(stsitem).subscribe(
       resp => {
-        
-        if(resp.status==1)
-        {
-            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.ResetAttributes();
-            this.refresh(); 
+
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.ResetAttributes();
+          this.refresh();
         }
-        else{
-            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
         }
       }
     );
   }
 
-  
+
 
 
 }

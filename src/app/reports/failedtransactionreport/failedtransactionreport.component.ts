@@ -9,6 +9,7 @@ import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -35,6 +36,7 @@ export class FailedtransactionreportComponent implements OnInit {
 
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient , 
     private rs:ReportsService, 
     private busOperatorService: BusOperatorService, 
@@ -52,6 +54,7 @@ export class FailedtransactionreportComponent implements OnInit {
      fileName= 'Failled-Transaction-Report.xlsx';
 
   ngOnInit(): void {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],
@@ -75,6 +78,7 @@ export class FailedtransactionreportComponent implements OnInit {
    }
   search(pageurl="")
   {
+    this.spinner.show();
      this.failedtransactionReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -85,19 +89,16 @@ export class FailedtransactionreportComponent implements OnInit {
       source_id:this.failedtransactionReportRecord.source_id,
       destination_id:this.failedtransactionReportRecord.destination_id,
       rangeFromDate:this.failedtransactionReportRecord.rangeFromDate,
-      rangeToDate :this.failedtransactionReportRecord.rangeToDate
-            
-            
-    };
-   
+      rangeToDate :this.failedtransactionReportRecord.rangeToDate       
+    }; 
     
-
     if(pageurl!="")
     {
       this.rs.failledtransactionpaginationReport(pageurl,data).subscribe(
         res => {
           this.completedata= res.data;
           // console.log( this.completedata);
+          this.spinner.hide();
         }
       );
     }
@@ -107,6 +108,7 @@ export class FailedtransactionreportComponent implements OnInit {
         res => {
           this.completedata= res.data;
           // console.log( this.completedata);
+          this.spinner.hide();
         }
       );
     }
@@ -154,6 +156,7 @@ export class FailedtransactionreportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],

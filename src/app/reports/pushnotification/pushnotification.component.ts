@@ -8,6 +8,7 @@ import { BusOperatorService } from './../../services/bus-operator.service';
 import { PushnotificationService } from '../../services/pushnotification.service';
 import { Constants } from '../../constant/constant';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-pushnotification',
@@ -37,6 +38,7 @@ export class PushnotificationComponent implements OnInit {
   all: any;
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, private busOperatorService: BusOperatorService,
@@ -51,6 +53,7 @@ export class PushnotificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.form = this.fb.group({
       id: [null],
       subject: [null, Validators.compose([Validators.required])],
@@ -92,6 +95,7 @@ export class PushnotificationComponent implements OnInit {
 
 
   search(pageurl = "") {
+    this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
@@ -103,6 +107,7 @@ export class PushnotificationComponent implements OnInit {
           this.push = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -112,12 +117,14 @@ export class PushnotificationComponent implements OnInit {
           this.push = res.data.data.data;
           this.pagination = res.data.data; 
           this.all = res.data; 
+          this.spinner.hide();
                
         }
       );
     }
   }
   refresh() {
+    this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
       bus_operator_id: [null],
@@ -157,6 +164,7 @@ export class PushnotificationComponent implements OnInit {
     this.form.get('user').patchValue([]);
   }
   addData() {
+    this.spinner.show();
     const data = {
       subject: this.form.value.subject,
       notification:this.form.value.notification,
@@ -190,6 +198,7 @@ export class PushnotificationComponent implements OnInit {
     this.pushRecord = this.push[id];
   }
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.pushRecord.id;
     this.pns.delete(delitem).subscribe(
       resp => {

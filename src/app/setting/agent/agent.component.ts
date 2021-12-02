@@ -8,6 +8,7 @@ import { BusOperatorService} from '../../services/bus-operator.service';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
 import { Agent } from 'src/app/model/agent';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-agent',
@@ -36,7 +37,7 @@ export class AgentComponent implements OnInit {
   pagination: any;
   all: any;
   
-  constructor(private AgentserviceService: AgentserviceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig,  private busOperatorService:BusOperatorService) {
+  constructor(private spinner: NgxSpinnerService,private AgentserviceService: AgentserviceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig,  private busOperatorService:BusOperatorService) {
     this.isSubmit = false;
     this.agentRecord= {} as Agent;
     config.backdrop = 'static';
@@ -49,6 +50,7 @@ export class AgentComponent implements OnInit {
   }
 
    ngOnInit() { 
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       name: [null, Validators.compose([Validators.required])],
@@ -108,7 +110,7 @@ export class AgentComponent implements OnInit {
    }
   search(pageurl="")
   {
-      
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       email: this.searchForm.value.email,
@@ -136,6 +138,7 @@ export class AgentComponent implements OnInit {
           this.agents= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -146,6 +149,7 @@ export class AgentComponent implements OnInit {
           this.agents= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -156,6 +160,7 @@ export class AgentComponent implements OnInit {
 
   refresh()
    {
+     this.spinner.show();
     this.searchForm = this.fb.group({  
       price_from: [null], 
       price_to: [null],  
@@ -212,6 +217,7 @@ export class AgentComponent implements OnInit {
   
   addAgent(){  
 
+    this.spinner.show();
     let id:any=this.agentRecord.id;  
     const data = {
       name:this.form.value.name,

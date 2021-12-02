@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 import { SeatingTypeRoutingModule } from './seatingtype-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
@@ -17,8 +18,9 @@ import {NgxPrintModule} from 'ngx-print';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgxPrintModule
+    NgxPrintModule,NgxSpinnerModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [ SeatingtypeComponent],
   providers: [NotificationService]
 })

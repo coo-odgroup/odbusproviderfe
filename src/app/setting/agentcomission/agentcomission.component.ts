@@ -9,6 +9,7 @@ import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-agentcomission',
@@ -36,7 +37,7 @@ export class AgentcomissionComponent implements OnInit {
   pagination: any;
   all: any;
   
-  constructor(private AgentCommissionServiceService: AgentCommissionServiceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor(private spinner: NgxSpinnerService,private AgentCommissionServiceService: AgentCommissionServiceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
     this.agentCommissionSlabRecord= {} as AgentCommissionSlab;
     config.backdrop = 'static';
@@ -49,6 +50,7 @@ export class AgentcomissionComponent implements OnInit {
   }
 
    ngOnInit() { 
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       range_from: [null, Validators.compose([Validators.required])],
@@ -74,6 +76,7 @@ export class AgentcomissionComponent implements OnInit {
 
   search(pageurl="")
   {
+    this.spinner.show();
       
     const data = { 
       range_from: this.searchForm.value.range_from,
@@ -89,6 +92,7 @@ export class AgentcomissionComponent implements OnInit {
           this.agentCommissionSlabs= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -99,6 +103,7 @@ export class AgentcomissionComponent implements OnInit {
           this.agentCommissionSlabs= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -109,6 +114,8 @@ export class AgentcomissionComponent implements OnInit {
 
   refresh()
    {
+    this.spinner.show();
+
     this.searchForm = this.fb.group({  
       range_from: [null], 
       range_to: [null],  
@@ -138,6 +145,8 @@ export class AgentcomissionComponent implements OnInit {
   }
   
   addCommissionSlab(){  
+
+    this.spinner.show();
 
     let id:any=this.agentCommissionSlabRecord.id;  
     const data = {
