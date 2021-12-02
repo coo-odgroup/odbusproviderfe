@@ -56,8 +56,8 @@ export class BoardingdropingService {
       catchError(this.errorHandler)
     )
   }
-  chngsts(id){
-    return this.httpClient.put<any>(this.apiURL + '/changeStatusBoardingDroping/' + id, this.httpOptions)
+  chngsts(locationId){
+    return this.httpClient.put<any>(this.apiURL + '/changeStatusBoardingDroping/' + locationId, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

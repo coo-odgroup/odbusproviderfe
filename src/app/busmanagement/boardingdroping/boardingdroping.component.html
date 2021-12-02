@@ -68,12 +68,14 @@
               <th>Location Name</th>
               <th>Sub Locations</th>
               <th>Created By</th>
-               <th>Created/Updated On</th>             
+               <th>Created/Updated On</th>   
+               <th>STATUS</th>          
               <th width="100" class="hide_print" *ngIf="userType==1">&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="BoardingDroppings?.length != 0">
             <tr *ngFor="let BoardDrop of BoardingDroppings; let i=index; ">
+         
               <td>{{ i+1}}</td>
               <td>{{ BoardDrop.name }}</td>
               <td>
@@ -82,6 +84,12 @@
               </td>
               <td>{{ BoardDrop.created_by }}</td>
               <td>{{ BoardDrop.updated_at| date: 'dd/MM/yyyy' }}</td>
+              <td>
+                <label *ngIf="BoardDrop.boarding_dropping[0].status==1" class="badge badge-light-primary pointer text-dark"
+                  (click)="changeStatus($event, BoardDrop.id);">Active</label>
+                <label *ngIf="BoardDrop.boarding_dropping[0].status==0" class="badge badge-light-danger pointer text-dark"
+                  (click)="changeStatus($event, BoardDrop.id);">Pending</label>
+              </td>
               <td class="hide_print" *ngIf="userType==1">
                 <div class="overlay-edit">
                   <button type="button" (click)="editBoardingDropping($event, i);OpenModal(content);"

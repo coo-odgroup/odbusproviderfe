@@ -209,8 +209,6 @@ export class BoardingdropingComponent implements OnInit {
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
     };
-   
-    // console.log(data);
     if(pageurl!="")
     {
       this.BoardDropService.getAllaginationData(pageurl,data).subscribe(
@@ -226,10 +224,11 @@ export class BoardingdropingComponent implements OnInit {
     {
       this.BoardDropService.getAllData(data).subscribe(
         res => {
+          
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
-          // console.log( this.BoardingDroppings);
+           //console.log( this.BoardingDroppings);
         }
       );
     }
@@ -269,15 +268,7 @@ export class BoardingdropingComponent implements OnInit {
  
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
- 
   }
-
-
-
-
-
-
-
   // boardingDropping formgroup
   createBoard(): FormGroup {
     return this.fb.group({ 
@@ -304,35 +295,24 @@ export class BoardingdropingComponent implements OnInit {
   removeDrop(index) {   
     this.droppingList.removeAt(index);
   }
-
-
   // get the formgroup under form array
   getBoardsFormGroup(index1): FormGroup {
     const formGroup1 = this.boardingList.controls[index1] as FormGroup;
     return formGroup1;
   }
-
-
   ResetAttributes()
   {
     this.BoardingDroppingRecord= {} as BoardingDropping;
-
     this.form = this.fb.group({
       id:[null],
       location_id: [null, Validators.compose([Validators.required])],
       boards: this.fb.array([this.createBoard()])
     });
-
     this.boardingList = this.form.get('boards') as FormArray;
-
     this.ModalHeading = "Add Boarding Dropping";
     this.ModalBtn = "Save";
   }
 
-  
-
-  
-  
   addBoardingDropping()
   {
     const data ={
@@ -403,7 +383,6 @@ export class BoardingdropingComponent implements OnInit {
 
     
     this.form.value.boards=editBoarding;
-
     this.ModalHeading = "Edit Boarding Dropping";
     this.ModalBtn = "Update";
   }
@@ -439,6 +418,7 @@ export class BoardingdropingComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    //console.log(stsitem);
     this.BoardDropService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)
