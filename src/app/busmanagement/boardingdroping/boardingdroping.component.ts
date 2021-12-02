@@ -133,12 +133,9 @@ export class BoardingdropingComponent implements OnInit {
           this.BoardingDroppings= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
-<<<<<<< HEAD
            //console.log( this.BoardingDroppings);
-=======
           this.spinner.hide();
           // console.log( this.BoardingDroppings);
->>>>>>> 44229fa8a8b8affe3c663a7ff6dd7d4fe4c81d37
         }
       );
     }
