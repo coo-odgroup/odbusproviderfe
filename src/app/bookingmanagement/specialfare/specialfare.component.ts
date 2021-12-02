@@ -110,6 +110,7 @@ export class SpecialfareComponent implements OnInit {
    
   search(pageurl="")
   {      
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -143,12 +144,13 @@ export class SpecialfareComponent implements OnInit {
 
   refresh()
    { 
+    this.spinner.show();
     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
     });
      this.search();
-     this.spinner.hide();
+
     
    }
 

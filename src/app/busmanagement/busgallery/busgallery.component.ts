@@ -14,6 +14,7 @@ import { count } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-busgallery',
@@ -55,7 +56,7 @@ export class BusgalleryComponent implements OnInit {
     private busService: BusService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    config: NgbModalConfig,
+    config: NgbModalConfig,  private spinner: NgxSpinnerService,
     private modalService: NgbModal) 
     {
     this.busRecord = {} as Bus;
@@ -99,6 +100,7 @@ export class BusgalleryComponent implements OnInit {
   // }
 
   saveGallery() {
+    this.spinner.show();
     this.finalJson = {
       "File": this.imageSrc,
     }
@@ -179,6 +181,7 @@ export class BusgalleryComponent implements OnInit {
     this.busGalleryRecord.icon="";  
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.loadServices();
 
     this.busForm = this.fb.group({
@@ -313,6 +316,7 @@ export class BusgalleryComponent implements OnInit {
   }
 
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.busGalleryRecord.id;
     this.busgalleryService.delete(delitem).subscribe(
       resp => {
@@ -338,7 +342,7 @@ export class BusgalleryComponent implements OnInit {
     return label;
   }
   search(pageurl = "") {
-
+    this.spinner.show();
     const data = {
       bus_id: this.searchForm.value.bus_id,
       bus_operator_id: this.searchForm.value.bus_operator_id,
@@ -352,6 +356,7 @@ export class BusgalleryComponent implements OnInit {
         res => {
           this.busGallerries = res.data.data;
           this.pagination = res.data.links;
+          this.spinner.hide();
           
           // console.log( this.busGallerries);
         }
@@ -362,6 +367,7 @@ export class BusgalleryComponent implements OnInit {
         res => {
           this.busGallerries = res.data.data;
           this.pagination = res.data;
+          this.spinner.hide();
           // console.log(this.pagination);
         }
       );
@@ -377,6 +383,7 @@ export class BusgalleryComponent implements OnInit {
     });
     this.loadServices();
     this.search();
+    this.spinner.hide();
    
   }
 

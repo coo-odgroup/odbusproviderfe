@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
 import { BusScheuleRoutingModule } from './busschedule-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
@@ -10,6 +11,7 @@ import {NgxPrintModule} from 'ngx-print';
 
 
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,9 +20,9 @@ import {NgxPrintModule} from 'ngx-print';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    NgxPrintModule
+    NgxPrintModule,NgxSpinnerModule
     ],
   declarations: [ BusscheduleComponent],
-  providers:[NotificationService]
+  providers:[NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class BusScheduleModule { }

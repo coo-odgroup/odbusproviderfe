@@ -14,6 +14,7 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 interface SeatBlock{
   rowNumber?:any;
@@ -66,7 +67,7 @@ export class SeatlayoutComponent implements OnInit {
   all: any;
 
  
-  constructor(private http: HttpClient, private notificationService: NotificationService, private sLayout: SeatlayoutService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private busOperatorService: BusOperatorService,private dragulaService: DragulaService) {
+  constructor(private spinner: NgxSpinnerService,private http: HttpClient, private notificationService: NotificationService, private sLayout: SeatlayoutService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal, private busOperatorService: BusOperatorService,private dragulaService: DragulaService) {
     dragulaService.createGroup('COPYABLE', {
       copy: (el, source) => {
         return source.id === 'left';
@@ -289,6 +290,7 @@ export class SeatlayoutComponent implements OnInit {
   seatType:{};
   
   ngOnInit(){
+    this.spinner.show();
     this.editLayout = this.fb.group({
       seatRows: this.fb.array([])
     });
@@ -434,6 +436,7 @@ export class SeatlayoutComponent implements OnInit {
    
   search(pageurl="")
   {      
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 

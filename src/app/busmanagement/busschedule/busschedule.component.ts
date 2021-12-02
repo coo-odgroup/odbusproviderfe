@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
+
 
 @Component({
   selector: 'app-busschedule',
@@ -47,7 +49,7 @@ export class BusscheduleComponent implements OnInit {
   FormOne: FormGroup;
   pagination: any;
   all: any;
-  constructor(private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
+  constructor(private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
     this.isSubmit = false;
     this.busScheduleRecord= {} as Busschedule;
@@ -60,6 +62,7 @@ export class BusscheduleComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit() {
+    this.spinner.show();
     this.busScheduleForm = this.fb.group({
       bus_id: '',
       bus_operator_id: '',
@@ -84,6 +87,7 @@ export class BusscheduleComponent implements OnInit {
    } 
   search(pageurl="")
   {      
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -96,6 +100,7 @@ export class BusscheduleComponent implements OnInit {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -106,6 +111,7 @@ export class BusscheduleComponent implements OnInit {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -117,6 +123,7 @@ export class BusscheduleComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search(); 
+     this.spinner.hide();
    }
    title = 'angular-app';
   fileName= 'Bus-Schedule.xlsx';
@@ -189,7 +196,7 @@ export class BusscheduleComponent implements OnInit {
     }
   }
   addBusSchedule()
-  {
+  {  this.spinner.show();
     let id:any=this.busScheduleRecord.id
   
     const data ={
@@ -240,7 +247,7 @@ export class BusscheduleComponent implements OnInit {
     this.loadServices();
     this.busScheduleRecord=this.busSchedules[id];
     this.scheduleRecord=this.busScheduleRecord;
-    //console.log(this.scheduleRecord);
+    console.log(this.scheduleRecord);
     // this.busScheduleForm.patchValue({
     //   //bus_id:this.busScheduleRecord.bus_id,
     //   bus_operator_id:this.busScheduleRecord.bus_operator_id,
@@ -270,7 +277,7 @@ export class BusscheduleComponent implements OnInit {
   //   this.viewEntryDates=this.modalService.open(content,{ scrollable: true, size: 'md' });
   // }
   showEntryDates(event : Event, id : any)
-  {
+  { 
     this.showdates='1';
     this.busScheduleRecord=this.busSchedules[id];
     // console.log(this.busScheduleRecord);
@@ -282,6 +289,7 @@ export class BusscheduleComponent implements OnInit {
 
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.busscheduleService.delete(delitem).subscribe(
       resp => {
@@ -300,6 +308,7 @@ export class BusscheduleComponent implements OnInit {
   }
   deleteBusSchdule(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -309,6 +318,7 @@ export class BusscheduleComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.busscheduleService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

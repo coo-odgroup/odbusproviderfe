@@ -9,6 +9,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {Constants} from '../../constant/constant';
 import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-coupon',
@@ -39,7 +40,7 @@ export class CouponComponent implements OnInit {
     private notificationService: NotificationService, 
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private couponService:CouponService,
+    private couponService:CouponService,private spinner: NgxSpinnerService,
     private busOperatorService: BusOperatorService,
     config: NgbModalConfig
     )
@@ -55,6 +56,8 @@ export class CouponComponent implements OnInit {
     
 
   ngOnInit(): void {
+
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       coupon_title: [null, Validators.compose([Validators.required])],
@@ -121,7 +124,7 @@ export class CouponComponent implements OnInit {
 
 
   search(pageurl="")
-  {      
+  {      this.spinner.show();
     const data = {
       name:this.searchForm.value.name,  
       rows_number:this.searchForm.value.rows_number,
@@ -137,6 +140,8 @@ export class CouponComponent implements OnInit {
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
+
           // console.log( this.contactcontent);
         }
       );
@@ -148,6 +153,8 @@ export class CouponComponent implements OnInit {
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
+
           // console.log(  this.pagination);
         }
       );
@@ -164,6 +171,8 @@ export class CouponComponent implements OnInit {
     });
 
      this.search();
+     this.spinner.hide();
+
    }
 
 
@@ -200,6 +209,7 @@ export class CouponComponent implements OnInit {
 
   addData()
   {
+    this.spinner.show();
     let id=this.couponRecord.id;
     const data={
       coupon_code:this.form.value.coupon_code,
@@ -382,6 +392,7 @@ openConfirmDialog(content, id: any)
 }
 deleteRecord()
 {
+  this.spinner.show();
   // let delitem=this.formConfirm.value.id;
   let delitem = this.couponRecord.id;
    this.couponService.delete(delitem).subscribe(

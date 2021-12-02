@@ -1,12 +1,14 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 import { CommonModule } from '@angular/common';
-import {SharedModule} from '../../theme/shared/shared.module';
-import {FormsModule} from '@angular/forms';
-import {SocialmediaComponent} from './socialmedia.component';
+import { SharedModule } from '../../theme/shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { SocialmediaComponent } from './socialmedia.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
-import {SocialMediaRoutingModule} from './socialmedia-routing.module';
-import {NgxPrintModule} from 'ngx-print';
+import { SocialMediaRoutingModule } from './socialmedia-routing.module';
+import { NgxPrintModule } from 'ngx-print';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -17,9 +19,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgbModule,NgxPrintModule
-  ],
-  declarations: [ SocialmediaComponent],
+    NgbModule, NgxPrintModule, NgxSpinnerModule
+  ], 
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  declarations: [SocialmediaComponent],
   providers: [NotificationService]
 })
 

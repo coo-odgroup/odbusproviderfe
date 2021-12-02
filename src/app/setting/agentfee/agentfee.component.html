@@ -1,3 +1,7 @@
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
+
 <div class="row">
     <div class="col-sm-12">
       <app-card [hidHeader]="false" cardTitle="Agent Fee Slab" cardClass="card-datatable" [options]="true"
@@ -12,14 +16,7 @@
           </div>
           <div class="col-10">
             <form [formGroup]="searchForm">
-              <div class="row">
-  
-               
-                
-                
-  
-  
-  
+              <div class="row">              
                 <div class="col-12">
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>

@@ -32,6 +32,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { NgbModalConfig, NgbModal, NgbModalRef, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { count } from 'rxjs/operators';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 interface SeatBlock{
@@ -258,7 +259,7 @@ export class BusComponent implements OnInit {
   public data_o_sms_ticket="";
   public data_o_sms_cancel="";
 
-  constructor(private safetyService: SafetyService,private http: HttpClient, private busService:BusService, private notificationService: NotificationService,private busOperartorService:BusOperatorService, private busTypeService:BusTypeService, private seatingtypeService:SeatingtypeService, private amenitiesService:AmenitiesService, private cancellationslabService:CancellationslabService, private busContactService:BusContactService, private seatlayoutService:SeatlayoutService, private locationService:LocationService, private boardingdropingService:BoardingdropingService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal,dpconfig: NgbDropdownConfig ) {
+  constructor(private spinner: NgxSpinnerService,private safetyService: SafetyService,private http: HttpClient, private busService:BusService, private notificationService: NotificationService,private busOperartorService:BusOperatorService, private busTypeService:BusTypeService, private seatingtypeService:SeatingtypeService, private amenitiesService:AmenitiesService, private cancellationslabService:CancellationslabService, private busContactService:BusContactService, private seatlayoutService:SeatlayoutService, private locationService:LocationService, private boardingdropingService:BoardingdropingService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal,dpconfig: NgbDropdownConfig ) {
     this.isSubmit = false;
     this.busRecord={} as Bus; 
     this.busContactsRecord={} as Buscontact; 
@@ -279,6 +280,7 @@ export class BusComponent implements OnInit {
   allDestinationDroppings:FormArray;
   ngOnInit() {
     
+    this.spinner.show();
     this.busForm = this.fb.group({
       id:[null],
       bus_operator_id: [null, Validators.compose([Validators.required])],
@@ -355,6 +357,8 @@ export class BusComponent implements OnInit {
    }
   search(pageurl="")
   {
+    
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -368,6 +372,7 @@ export class BusComponent implements OnInit {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -378,6 +383,7 @@ export class BusComponent implements OnInit {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           //  console.log(this.all);
         }
       );
@@ -385,6 +391,10 @@ export class BusComponent implements OnInit {
   }
   refresh()
    {
+     
+   this.spinner.show();
+
+    this.spinner.show();
     this.searchForm = this.fb.group({  
       name: [null], 
       rows_number: Constants.RecordLimit,
@@ -774,6 +784,7 @@ export class BusComponent implements OnInit {
   addBus()
   {
    
+    this.spinner.show();
     const data ={
       id:this.busForm.value.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
@@ -807,6 +818,7 @@ export class BusComponent implements OnInit {
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
+    // console.log(data);
     if(data.id==null)
     {
       this.busService.create(data).subscribe(
@@ -843,6 +855,7 @@ export class BusComponent implements OnInit {
   }
   deleteBus(content, delitem:any)
   {
+  this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -851,9 +864,12 @@ export class BusComponent implements OnInit {
 
   editContact(event : Event, id : any)
   {
+    
+    this.spinner.show();
     this.busContactService.readAll().subscribe(
       resp=>{
       this.busContacts=resp.data;
+      this.spinner.hide();
       }
     );
     this.ModalHeading = "Update Contact info";
@@ -900,10 +916,11 @@ export class BusComponent implements OnInit {
   public busRouteInfo:any;
   editRoutes(event:Event,id:any)
   {
+    this.spinner.show();
     this.locationService.readAll().subscribe(
       records=>{
       this.locations=records.data;
-      
+      this.spinner.hide();
       }
     );
     this.ModalHeading = "Update Routes";
@@ -1032,6 +1049,7 @@ export class BusComponent implements OnInit {
 
   UpdateRoutes()
   {
+    this.spinner.show();
     const data ={
       id:this.busForm.value.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
@@ -1061,6 +1079,7 @@ export class BusComponent implements OnInit {
   }
   BusCopy(event : Event, id : any)
   {
+    this.spinner.show();
     this.ModalHeading = "Bus Copied";
     this.ModalBtn = "Add New";
     this.busRecord=this.buses[id] ;
@@ -1106,6 +1125,7 @@ export class BusComponent implements OnInit {
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
         this.selectedSeats=seatData.data;
+        this.spinner.hide();
       }
     );
    
@@ -1352,6 +1372,7 @@ export class BusComponent implements OnInit {
   }
   BusClone(event : Event, id : any)
   {
+    this.spinner.show();
     this.ModalHeading = "Bus Cloned";
     this.ModalBtn = "Add New";
     this.busRecord=this.buses[id] ;
@@ -1395,6 +1416,7 @@ export class BusComponent implements OnInit {
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
         this.selectedSeats=seatData.data;
+        this.spinner.hide();
       }
     );
    
@@ -1626,7 +1648,7 @@ export class BusComponent implements OnInit {
   }
   updateExtraSeatLayout()
   {
-
+    this.spinner.show();
     const data ={
       id:this.busRecord.id,
       user_id :'1',
@@ -1655,6 +1677,7 @@ export class BusComponent implements OnInit {
   }
   updateSeatLayout()
   {
+    this.spinner.show();
     const data ={
       user_id :'1',
       bus_id:this.busRecord.id,
@@ -1684,6 +1707,7 @@ export class BusComponent implements OnInit {
   public selectedSeats:any;
   editSeatLayout(event : Event, id : any)
   {
+    this.spinner.show();
     this.busRecord=this.buses[id] ;
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
@@ -1718,7 +1742,8 @@ export class BusComponent implements OnInit {
     );
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
-        this.selectedSeats=seatData.data;
+        this.selectedSeats=seatData.data;        
+        this.spinner.hide();
       }
     );
    
@@ -1817,6 +1842,7 @@ export class BusComponent implements OnInit {
 
   editExtraSeat(event : Event, id : any)
   {
+    this.spinner.show();
     this.busRecord=this.buses[id] ;
     // console.log(this.busRecord);
     this.busForm = this.fb.group({
@@ -1849,6 +1875,7 @@ export class BusComponent implements OnInit {
     this.seatlayoutService.readAll().subscribe(
       resp=>{
       this.seatLayouts=resp.data;
+      this.spinner.hide();
       }
     );
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
@@ -2038,6 +2065,7 @@ export class BusComponent implements OnInit {
   }
   editBus(event : Event, id : any)
   {
+    this.spinner.show();
     const BusOperator={
       USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
     };
@@ -2056,6 +2084,7 @@ export class BusComponent implements OnInit {
       this.cancellationslabService.readAll().subscribe(
         resp=>{
         this.cancellationslabs=resp.data;
+        this.spinner.hide();
         }
       );
     }
@@ -2074,6 +2103,7 @@ export class BusComponent implements OnInit {
       this.cancellationslabService.readAllOperator(BusOperator).subscribe(
               resp=>{
               this.cancellationslabs=resp.data;
+              this.spinner.hide();
               }
             );  
     }
@@ -2169,6 +2199,7 @@ export class BusComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     // console.log(stsitem);
     this.busService.chngsts(stsitem).subscribe(
       resp => {

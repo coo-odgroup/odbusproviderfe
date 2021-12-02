@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-bussequence',
@@ -26,7 +27,7 @@ export class BussequenceComponent implements OnInit {
   pagination: any;
   all: any;
 
-  constructor(private http: HttpClient, private BusSequenceService:BusSequenceService, private fb: FormBuilder,  private notificationService: NotificationService, config: NgbModalConfig, private modalService: NgbModal) { 
+  constructor(private http: HttpClient, private BusSequenceService:BusSequenceService, private fb: FormBuilder,  private notificationService: NotificationService, config: NgbModalConfig, private modalService: NgbModal ,private spinner: NgxSpinnerService,) { 
     this.isSubmit = false;
     config.backdrop = 'static';
     config.keyboard = false;
@@ -34,7 +35,8 @@ export class BussequenceComponent implements OnInit {
   }
 
   updateSequence(busId,sequence)
-  {
+  { 
+    this.spinner.show();
     const data ={
       id:busId,
       sequence:sequence
@@ -58,6 +60,7 @@ export class BussequenceComponent implements OnInit {
   
   ngOnInit() {
   
+    this.spinner.show();
     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
@@ -74,7 +77,8 @@ export class BussequenceComponent implements OnInit {
 
    
   search(pageurl="")
-  {      
+  {     
+    this.spinner.show(); 
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -88,6 +92,7 @@ export class BussequenceComponent implements OnInit {
           this.busSequences= res.data.data.data;
           this.pagination= res.data.data;
           this.all=res.data;
+          this.spinner.hide();
        
           // console.log( this.BusOperators);
         }
@@ -100,6 +105,7 @@ export class BussequenceComponent implements OnInit {
           this.busSequences= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;  
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -113,7 +119,8 @@ export class BussequenceComponent implements OnInit {
       name: [null],  
       rows_number: Constants.RecordLimit,
     });
-     this.search();
+     this.search(); 
+     this.spinner.hide();
     
    }
 

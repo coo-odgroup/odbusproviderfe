@@ -7,6 +7,7 @@ import { WalletService } from '../../services/wallet.service'
 import { AgentWallet } from '../../model/agentwallet';
 import { Constants } from '../../constant/constant';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -35,6 +36,7 @@ export class AgentwalletrequestComponent implements OnInit {
   all: any;
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, 
@@ -54,6 +56,7 @@ export class AgentwalletrequestComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.spinner.show();
     this.form = this.fb.group({
       id: [null],
       otp: [null, Validators.compose([Validators.required])]
@@ -96,6 +99,7 @@ export class AgentwalletrequestComponent implements OnInit {
 
 
   search(pageurl = "") {
+    this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
@@ -108,6 +112,7 @@ export class AgentwalletrequestComponent implements OnInit {
           this.wallet = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
+          this.spinner.hide();
           // console.log( this.BusOperators);
         }
       );
@@ -118,6 +123,7 @@ export class AgentwalletrequestComponent implements OnInit {
           this.wallet = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -126,6 +132,7 @@ export class AgentwalletrequestComponent implements OnInit {
 
   changeStatus()
   {
+    this.spinner.show();
     let id:any=this.walletRecord.id;
     
     const data ={
@@ -158,6 +165,7 @@ export class AgentwalletrequestComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
     this.search();
+    this.spinner.hide();
 
   }
 

@@ -9,6 +9,7 @@ import {CouponUsedUserReport } from '../../model/couponuseduserreport';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-couponuseduserreport',
@@ -34,6 +35,7 @@ export class CouponuseduserreportComponent implements OnInit {
 
 
   constructor(
+     private spinner: NgxSpinnerService,
      private http: HttpClient ,
      private fb: FormBuilder,
      private locationService:LocationService,
@@ -49,7 +51,8 @@ export class CouponuseduserreportComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    
+  this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],
@@ -71,6 +74,8 @@ export class CouponuseduserreportComponent implements OnInit {
    }
   search(pageurl="")
   {
+    
+     this.spinner.show();
      this.couponUseUserReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -93,6 +98,7 @@ export class CouponuseduserreportComponent implements OnInit {
         res => {
           this.couponused= res.data;
           // console.log( this.couponused);
+          this.spinner.hide();
         }
       );
     }
@@ -101,7 +107,8 @@ export class CouponuseduserreportComponent implements OnInit {
       this.rs.couponUsedUserReport(data).subscribe(
         res => {
           this.couponused= res.data;
-          console.log( this.couponused);
+          // console.log( this.couponused);
+          this.spinner.hide();
         }
       );
     }
@@ -113,6 +120,8 @@ export class CouponuseduserreportComponent implements OnInit {
 
   refresh()
   {
+    
+  this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],

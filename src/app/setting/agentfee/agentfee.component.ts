@@ -9,6 +9,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
 import { AgentFeeSlab } from 'src/app/model/agent-fee-slab';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -37,7 +38,7 @@ export class AgentfeeComponent implements OnInit {
   pagination: any;
   all: any;
   
-  constructor(private AgentFeeServiceService: AgentFeeServiceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor(private spinner: NgxSpinnerService,private AgentFeeServiceService: AgentFeeServiceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
     this.agentFeeSlabRecord= {} as AgentFeeSlab;
     config.backdrop = 'static';
@@ -50,6 +51,7 @@ export class AgentfeeComponent implements OnInit {
   }
 
    ngOnInit() { 
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       price_from: [null, Validators.compose([Validators.required])],
@@ -74,7 +76,7 @@ export class AgentfeeComponent implements OnInit {
 
   search(pageurl="")
   {
-      
+    this.spinner.show();
     const data = { 
       price_from: this.searchForm.value.price_from,
       price_to: this.searchForm.value.price_to,
@@ -89,6 +91,7 @@ export class AgentfeeComponent implements OnInit {
           this.agentFeeSlabs= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -99,6 +102,7 @@ export class AgentfeeComponent implements OnInit {
           this.agentFeeSlabs= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -109,6 +113,7 @@ export class AgentfeeComponent implements OnInit {
 
   refresh()
    {
+     this.spinner.show();
     this.searchForm = this.fb.group({  
       price_from: [null], 
       price_to: [null],  
@@ -137,7 +142,7 @@ export class AgentfeeComponent implements OnInit {
   }
   
   addFeeSlab(){  
-
+    this.spinner.show();
     let id:any=this.agentFeeSlabRecord.id;  
     const data = {
       price_from:this.form.value.price_from,

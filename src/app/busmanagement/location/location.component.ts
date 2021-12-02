@@ -1,5 +1,4 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Location, LocationCode } from '../../model/location';
 import { NotificationService } from '../../services/notification.service';
@@ -9,6 +8,7 @@ import { Subject } from 'rxjs';
 import {Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-location',
@@ -39,7 +39,7 @@ export class LocationComponent implements OnInit {
   public ModalBtn:any;
   all: any;
  
-  constructor(private http: HttpClient, private notificationService: NotificationService, private LocationService: LocationService,  private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor(private spinner: NgxSpinnerService,private http: HttpClient, private notificationService: NotificationService, private LocationService: LocationService,  private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
     this.locationRecord= {} as Location;
     this.locationcodeRecord= {} as LocationCode;
@@ -52,91 +52,10 @@ export class LocationComponent implements OnInit {
   OpenModal(content) {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
   }
-  // loadLocationData(){
-  //   this.dtOptionsLocation = {
-  //     pagingType: 'full_numbers',
-  //     pageLength: 10,
-  //     serverSide: true,
-  //     processing: true,
-  //     deferRender: true,
-  //     dom: 'lBfrtip', 
-  //     order:["0","desc"],  
-  //     aLengthMenu:[10, 25, 50, 100, "All"], 
-      
-  //     buttons: [
-  //       { extend: 'copy', className: 'btn btn-sm btn-primary',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         exportOptions: {
-  //           columns: "thead th:not(.noExport)"
-  //          } 
-  //       },
-  //       { extend: 'print', className: 'btn btn-sm btn-danger',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //      },
-  //      exportOptions: {
-  //        columns: "thead th:not(.noExport)"
-  //       } 
-  //     },
-  //       { extend: 'excel', className: 'btn btn-sm btn-info',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //      },
-  //      exportOptions: {
-  //        columns: "thead th:not(.noExport)"
-  //       }
-  //      },
-  //       { extend: 'csv', className: 'btn btn-sm btn-success',init: function(api, node, config) {
-  //         $(node).removeClass('dt-button')
-  //      },
-  //      exportOptions: {
-  //        columns: "thead th:not(.noExport)"
-  //       } 
-  //     },
-  //       {
-  //         text:"Add",
-  //         className: 'btn btn-sm btn-warning',init: function(api, node, config) {
-  //           $(node).removeClass('dt-button')
-  //         },
-  //         action:() => {
-  //          this.addnew.nativeElement.click();
-  //         }
-  //       }
-  //     ],
-  //     language: {
-  //       searchPlaceholder: "Find Location",
-  //       processing: "<img src='assets/images/loading.gif' width='30'>"
-  //     },
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       this.http
-  //         .post<DataTablesResponse>(
-  //           Constants.BASE_URL+'/locationsDT',
-  //           dataTablesParameters, {}
-  //         ).subscribe(resp => {
-  //           this.locations = resp.data.aaData;
-            
-  //           callback({
-  //             recordsTotal: resp.data.iTotalRecords,
-  //             recordsFiltered: resp.data.iTotalDisplayRecords,
-  //             //data: resp.data.aaData
-  //             data: resp.data.aaData
-  //           });
-  //         });
-          
-  //     },
-  //     columns: [ {data: 'id'},{ data: 'name'}, { data: 'synonym' },{ data: 'created_at' },{ data: 'updated_at' }, { 
-  //       data: 'status',
-  //       render:function(data)
-  //       {
-  //         return (data=="1")?"Active":"Pending"
-  //       }
-  //      }, 
-  //     {
-  //       title:'Action',data:null, orderable:false, className: "noExport" 
-  //     }]      
-      
-  //   };
-  // }
+
   ngOnInit() {
+
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -164,6 +83,7 @@ export class LocationComponent implements OnInit {
    
   search(pageurl="")
   {      
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -177,6 +97,8 @@ export class LocationComponent implements OnInit {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
+        
           // console.log( this.BusOperators);
         }
       );
@@ -188,6 +110,8 @@ export class LocationComponent implements OnInit {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
+        
           // console.log( this.locations);
         }
       );
@@ -199,9 +123,12 @@ export class LocationComponent implements OnInit {
    {  
     this.searchForm = this.fb.group({  
       name: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: 50,
     });
      this.search();
+     
+  this.spinner.hide();
+
     
    }
 
@@ -241,6 +168,7 @@ export class LocationComponent implements OnInit {
   }
   addLocation()
   {
+    this.spinner.show();
     let id:any=this.form.value.id; 
     const data ={
       id:this.form.value.id,
@@ -304,6 +232,7 @@ export class LocationComponent implements OnInit {
 
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.LocationService.delete(delitem).subscribe(
       resp => {
@@ -322,6 +251,7 @@ export class LocationComponent implements OnInit {
   }
   deleteLocation(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -330,6 +260,7 @@ export class LocationComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.LocationService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

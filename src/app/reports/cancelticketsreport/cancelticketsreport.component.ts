@@ -9,10 +9,7 @@ import {CancelTicketsReport } from '../../model/cancelticketsreports';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
-
-
-
-
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-cancelticketsreport',
@@ -38,6 +35,7 @@ export class CancelticketsreportComponent implements OnInit {
 
 
   constructor(
+     private spinner: NgxSpinnerService,
      private http: HttpClient ,
      private fb: FormBuilder,
      private locationService:LocationService,
@@ -55,7 +53,7 @@ export class CancelticketsreportComponent implements OnInit {
      fileName= 'Cancel-Ticket-Report.xlsx';
 
   ngOnInit(): void {
-
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],
@@ -76,6 +74,7 @@ export class CancelticketsreportComponent implements OnInit {
    }
   search(pageurl="")
   {
+    this.spinner.show();
      this.cancelTicketsReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -98,6 +97,7 @@ export class CancelticketsreportComponent implements OnInit {
         res => {
           this.cancelticketdata= res.data;
           // console.log( this.cancelticketdata);
+          this.spinner.hide();
         }
       );
     }
@@ -107,6 +107,7 @@ export class CancelticketsreportComponent implements OnInit {
         res => {
           this.cancelticketdata= res.data;
           // console.log( this.cancelticketdata);
+          this.spinner.hide();
         }
       );
     }
@@ -134,6 +135,7 @@ export class CancelticketsreportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],

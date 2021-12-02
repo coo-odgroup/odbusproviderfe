@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportsService } from '../../services/reports.service' ;
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-cleartransactionreport',
@@ -9,10 +10,10 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 })
 export class CleartransactionreportComponent implements OnInit {
   transactiondata: any;
-  constructor(private http: HttpClient , private rs:ReportsService) { }
+  constructor(  private spinner: NgxSpinnerService,private http: HttpClient , private rs:ReportsService) { }
 
   ngOnInit(): void {
-  
+    this.spinner.show();
     this.getall();
   }
 
@@ -22,6 +23,7 @@ export class CleartransactionreportComponent implements OnInit {
       res => {
         this.transactiondata = res.data;
         // console.log(this.transactiondata);
+        this.spinner.hide();
       }
     );
   }

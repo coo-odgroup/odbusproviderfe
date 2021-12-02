@@ -68,7 +68,7 @@ export class SeatopenComponent implements OnInit {
     private modalService: NgbModal,
     private busService: BusService,
     private busOperatorService: BusOperatorService,
-    private locationService: LocationService,private spinner: NgxSpinnerService,
+    private locationService: LocationService, private spinner: NgxSpinnerService,
   ) {
     this.isSubmit = false;
     this.seatOpenRecord = {} as Seatopen;
@@ -103,10 +103,10 @@ export class SeatopenComponent implements OnInit {
     this.formConfirm = this.fb.group({
       id: [null]
     });
-     
 
-    this.searchForm = this.fb.group({  
-      name: [null],  
+
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -115,39 +115,37 @@ export class SeatopenComponent implements OnInit {
 
   }
 
-  page(label:any){
+  page(label: any) {
     return label;
-   }
+  }
 
-   
-  search(pageurl="")
-  {      
-    const data = { 
+
+  search(pageurl = "") {
+    this.spinner.show();
+    const data = {
       name: this.searchForm.value.name,
-      rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      rows_number: this.searchForm.value.rows_number,
+      USER_BUS_OPERATOR_ID: localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
-   
+
     // console.log(data);
-    if(pageurl!="")
-    {
-      this.seatopenService.getAllaginationData(pageurl,data).subscribe(
+    if (pageurl != "") {
+      this.seatopenService.getAllaginationData(pageurl, data).subscribe(
         res => {
-          this.seatOpen= res.data.data.data;
-          this.pagination= res.data.data;
-          this.all= res.data;
+          this.seatOpen = res.data.data.data;
+          this.pagination = res.data.data;
+          this.all = res.data;
           this.spinner.hide();
           // console.log( this.BusOperators);
         }
       );
     }
-    else
-    {
+    else {
       this.seatopenService.getAllData(data).subscribe(
         res => {
-          this.seatOpen= res.data.data.data;
-          this.pagination= res.data.data;
-          this.all= res.data;
+          this.seatOpen = res.data.data.data;
+          this.pagination = res.data.data;
+          this.all = res.data;
           this.spinner.hide();
           // console.log( res.data);
         }
@@ -156,35 +154,34 @@ export class SeatopenComponent implements OnInit {
   }
 
 
-  refresh()
-   { 
-    this.searchForm = this.fb.group({  
-      name: [null],  
+  refresh() {
+    this.spinner.show();
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
     });
-     this.search();
-     this.spinner.hide();
-    
-   }
+    this.search();
+  
+
+  }
 
 
   title = 'angular-app';
-  fileName= 'Seat-Open.xlsx';
+  fileName = 'Seat-Open.xlsx';
 
-  exportexcel(): void
-  {
-    
+  exportexcel(): void {
+
     /* pass here the table id */
     let element = document.getElementById('print-section');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
+
+    /* save to file */
     XLSX.writeFile(wb, this.fileName);
- 
+
   }
 
   checkEvent(event: any) {
@@ -192,7 +189,7 @@ export class SeatopenComponent implements OnInit {
       bus_id: this.seatOpenForm.value.bus_id
     };
 
-   
+
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
         this.selectedSeats = seatData.data;
@@ -255,8 +252,8 @@ export class SeatopenComponent implements OnInit {
                   this.seatLayoutCol.insert(collen, columnData);
                 }
                 else {
-                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) { 
-                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
+                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) {
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id);
                   });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
@@ -341,8 +338,8 @@ export class SeatopenComponent implements OnInit {
                 }
                 else {
                   var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) {
-                     return JSON.parse(el.seats_id) === JSON.parse(seatData.id);
-                     });
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id);
+                  });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
                       seatText: [seatData.seatText],
@@ -410,25 +407,23 @@ export class SeatopenComponent implements OnInit {
     this.busService.all().subscribe(
       res => {
         this.buses = res.data;
-        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
       }
     );
-    const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    const BusOperator = {
+      USER_BUS_OPERATOR_ID: localStorage.getItem("USER_BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID=="")
-    {
+    if (BusOperator.USER_BUS_OPERATOR_ID == "") {
       this.busOperatorService.readAll().subscribe(
-        record=>{
-        this.busoperators=record.data;
+        record => {
+          this.busoperators = record.data;
         }
       );
     }
-    else
-    {
+    else {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
-        record=>{
-        this.busoperators=record.data;
+        record => {
+          this.busoperators = record.data;
         }
       );
     }
@@ -445,7 +440,7 @@ export class SeatopenComponent implements OnInit {
       this.busService.getByOperaor(operatorId).subscribe(
         res => {
           this.buses = res.data;
-          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
         }
       );
     }
@@ -460,7 +455,7 @@ export class SeatopenComponent implements OnInit {
       this.busService.findSource(source_id, destination_id).subscribe(
         res => {
           this.buses = res.data;
-          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
         }
       );
     }
@@ -468,7 +463,7 @@ export class SeatopenComponent implements OnInit {
       this.busService.all().subscribe(
         res => {
           this.buses = res.data;
-          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
         }
       );
     }
@@ -486,10 +481,9 @@ export class SeatopenComponent implements OnInit {
     };
 
     let id = this.seatOpenRecord.id;
-    if(id !=null)
-    {
-      this.seatopenService.update(id,data).subscribe(
-        resp=>{
+    if (id != null) {
+      this.seatopenService.update(id, data).subscribe(
+        resp => {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
@@ -501,10 +495,10 @@ export class SeatopenComponent implements OnInit {
         }
       );
     }
-    else{
+    else {
       this.seatopenService.create(data).subscribe(
         resp => {
-  
+
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
@@ -517,7 +511,7 @@ export class SeatopenComponent implements OnInit {
       );
 
     }
-  
+
   }
 
   changeStatus(event: Event, stsitem: any) {

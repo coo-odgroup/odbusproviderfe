@@ -8,6 +8,7 @@ import { NotificationService } from '../../services/notification.service';
 import { Subject } from 'rxjs';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -44,7 +45,7 @@ export class BusoperatorComponent implements OnInit {
   public validPhone:any;
   pagination: any;
   all: any;
-  constructor(private http: HttpClient, private busOperatorService:BusOperatorService, private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
+  constructor(private http: HttpClient, private busOperatorService:BusOperatorService, private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal  , private spinner: NgxSpinnerService,) {
     this.isSubmit = false;
     this.BusOperatorRecord= {} as Busoperator;
     config.backdrop = 'static';
@@ -57,6 +58,7 @@ export class BusoperatorComponent implements OnInit {
   }
  
   ngOnInit(){
+    this.spinner.show();
     this.form = this.fb.group({
       id:[null],
       email_id: [null],
@@ -100,6 +102,7 @@ export class BusoperatorComponent implements OnInit {
    
   search(pageurl="")
   {      
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -113,6 +116,7 @@ export class BusoperatorComponent implements OnInit {
           this.BusOperators= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           // console.log( this.BusOperators);
         }
       );
@@ -124,6 +128,7 @@ export class BusoperatorComponent implements OnInit {
           this.BusOperators= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           // console.log(   this.BusOperators);
         }
       );
@@ -138,6 +143,7 @@ export class BusoperatorComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search();
+     this.spinner.hide();
     
    }
 
@@ -286,7 +292,7 @@ export class BusoperatorComponent implements OnInit {
   }
   
   addBusOperator()
-  {
+  {  this.spinner.show();
     let gst_need=this.form.value.need_gst_bill;
     if(gst_need=="")
     {
@@ -382,6 +388,7 @@ export class BusoperatorComponent implements OnInit {
   }
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.busOperatorService.delete(delitem).subscribe(
       resp => {
@@ -400,6 +407,7 @@ export class BusoperatorComponent implements OnInit {
   }
   deleteBusOperator(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -408,6 +416,7 @@ export class BusoperatorComponent implements OnInit {
   }
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.busOperatorService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

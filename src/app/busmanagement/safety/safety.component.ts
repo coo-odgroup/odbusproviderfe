@@ -9,7 +9,8 @@ import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx'; 
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -52,6 +53,7 @@ export class SafetyComponent implements OnInit {
 
 
   constructor(
+    private spinner: NgxSpinnerService,
           private safetyService: SafetyService,
           private http: HttpClient,
           private notificationService: NotificationService, 
@@ -72,6 +74,7 @@ export class SafetyComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.spinner.show();
     this.finalAndroidImage=[];
     this.finalImage=[];
     this.form = this.fb.group({
@@ -328,7 +331,7 @@ export class SafetyComponent implements OnInit {
 
   search(pageurl="")
   {
-      
+    this.spinner.show();   
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -342,6 +345,7 @@ export class SafetyComponent implements OnInit {
           this.Safetys= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -352,6 +356,7 @@ export class SafetyComponent implements OnInit {
           this.Safetys= res.data.data.data;
           this.pagination= res.data.data;  
           this.all = res.data;
+          this.spinner.hide();
         }
       );
     }
@@ -366,6 +371,7 @@ export class SafetyComponent implements OnInit {
     });
 
      this.search();
+     this.spinner.hide();
    }
 
 
@@ -395,6 +401,7 @@ export class SafetyComponent implements OnInit {
  
   addsafety()
   {
+    this.spinner.show();
     let id=this.SafetyRecord.id;
   
     let fd: any = new FormData();
@@ -467,6 +474,7 @@ export class SafetyComponent implements OnInit {
   }
   deleteRecord()
   {
+    this.spinner.show();
     // let delitem=this.formConfirm.value.id;
     let delitem = this.SafetyRecord.id;
      this.safetyService.delete(delitem).subscribe(
@@ -486,6 +494,7 @@ export class SafetyComponent implements OnInit {
   }
   deleteSeatingType(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -497,6 +506,7 @@ export class SafetyComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.safetyService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

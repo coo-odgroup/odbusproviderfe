@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 import { CommonModule } from '@angular/common';
 import { CancellationSlabRoutingModule } from './cancellationslab-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
@@ -17,9 +19,9 @@ import {NgxPrintModule} from 'ngx-print';
     FormsModule,
     NgSelectModule,
     NgbModule,NgxPrintModule,
-    AngularEditorModule
+    AngularEditorModule,NgxSpinnerModule
   ],
   declarations: [ CancellationslabComponent],
-  providers: [NotificationService]
+  providers: [NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CancellationSlabedModule { }

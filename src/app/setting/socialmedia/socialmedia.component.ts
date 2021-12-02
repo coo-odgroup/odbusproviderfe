@@ -9,6 +9,7 @@ import { BusOperatorService } from './../../services/bus-operator.service';
 import { SocialmediaService } from '../../services/socialmedia.service';
 import { Constants } from '../../constant/constant';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-socialmedia',
@@ -36,6 +37,7 @@ export class SocialmediaComponent implements OnInit {
   all: any;
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, private busOperatorService: BusOperatorService,
@@ -54,6 +56,7 @@ export class SocialmediaComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.spinner.show();
     this.socialFrom = this.fb.group({
       id: [null],
       bus_operator_id: [null, Validators.compose([Validators.required])],
@@ -104,6 +107,7 @@ export class SocialmediaComponent implements OnInit {
 
 
   search(pageurl = "") {
+    this.spinner.show();
     const data = {
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
@@ -116,7 +120,7 @@ export class SocialmediaComponent implements OnInit {
           this.social = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          // console.log( this.BusOperators);
+          this.spinner.hide();
         }
       );
     }
@@ -126,7 +130,7 @@ export class SocialmediaComponent implements OnInit {
           this.social = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          // console.log( res.data);
+          this.spinner.hide();
         }
       );
     }
@@ -134,6 +138,7 @@ export class SocialmediaComponent implements OnInit {
 
 
   refresh() {
+    this.spinner.show();
     this.searchForm = this.fb.group({
       bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
@@ -172,6 +177,7 @@ export class SocialmediaComponent implements OnInit {
 
 
   addData() {
+    this.spinner.show();
     const data = {
       bus_operator_id: this.socialFrom.value.bus_operator_id,
       facebook_link:this.socialFrom.value.facebook_link,
@@ -249,6 +255,7 @@ export class SocialmediaComponent implements OnInit {
   }
 
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.socialRecord.id;
     this.ss.delete(delitem).subscribe(
       resp => {
@@ -266,6 +273,7 @@ export class SocialmediaComponent implements OnInit {
 
 
   changeStatus(event: Event, stsitem: any) {
+    this.spinner.show();
     this.ss.chngsts(stsitem).subscribe(
       resp => {
 

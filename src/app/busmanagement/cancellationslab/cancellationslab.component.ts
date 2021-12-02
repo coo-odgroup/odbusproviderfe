@@ -10,6 +10,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-cancellationslab',
@@ -98,7 +99,7 @@ export class CancellationslabComponent implements OnInit {
   get slabFormGroup() {
     return this.form.get('slabs') as FormArray;
   }
-  constructor(private http: HttpClient,private busOperatorService: BusOperatorService, private cSlabService:CancellationslabService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
+  constructor( private spinner: NgxSpinnerService,private http: HttpClient,private busOperatorService: BusOperatorService, private cSlabService:CancellationslabService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
     this.isSubmit = false;
     this.cancellationSlabRecord= {} as Cancellationslab;
     config.backdrop = 'static';
@@ -112,6 +113,7 @@ export class CancellationslabComponent implements OnInit {
  
  
   ngOnInit(){
+    this.spinner.show();
     // this.loadcSlab();
     this.form = this.fb.group({
       id:[null],
@@ -162,6 +164,7 @@ export class CancellationslabComponent implements OnInit {
    
   search(pageurl="")
   {      
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -177,6 +180,8 @@ export class CancellationslabComponent implements OnInit {
           this.pagination= res.data.data;
           this.all =res.data;
           // console.log( this.cancellationSlabs);
+           this.spinner.hide();
+
         }
       );
     }
@@ -187,6 +192,7 @@ export class CancellationslabComponent implements OnInit {
           this.cancellationSlabs= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -202,7 +208,8 @@ export class CancellationslabComponent implements OnInit {
     });
   
      this.search();
-    
+     this.spinner.hide();
+
    }
 
 
@@ -275,6 +282,7 @@ export class CancellationslabComponent implements OnInit {
   }
   addCancellationSlab()
   {
+    this.spinner.show();
     this.allDurations="";
     this.allDeductions="";
     let id:any=this.cancellationSlabRecord.id; 
@@ -360,6 +368,7 @@ export class CancellationslabComponent implements OnInit {
   }
   deleteRecord()
   {
+    this.spinner.show();
     let delitem=this.formConfirm.value.id;
      this.cSlabService.delete(delitem).subscribe(
       resp => {
@@ -378,6 +387,7 @@ export class CancellationslabComponent implements OnInit {
   }
   deleteSlab(content, delitem:any)
   {
+    this.spinner.show();
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -386,6 +396,7 @@ export class CancellationslabComponent implements OnInit {
 
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.cSlabService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

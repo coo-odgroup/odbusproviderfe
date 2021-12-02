@@ -9,6 +9,7 @@ import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 
@@ -37,6 +38,7 @@ export class CompletereportComponent implements OnInit {
   toDate: NgbDate | null;
 
   constructor(
+    private spinner: NgxSpinnerService,
     private http: HttpClient , 
     private rs:ReportsService, 
     private busOperatorService: BusOperatorService, 
@@ -52,6 +54,7 @@ export class CompletereportComponent implements OnInit {
     title = 'angular-app';
     fileName= 'Complete-Report.xlsx';
   ngOnInit(): void {
+    this.spinner.show();
 
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
@@ -91,6 +94,7 @@ export class CompletereportComponent implements OnInit {
    }
   search(pageurl="")
   {
+    this.spinner.show();
      this.completeReportRecord = this.searchFrom.value ; 
      
     const data = {
@@ -112,6 +116,7 @@ export class CompletereportComponent implements OnInit {
         res => {
           this.completedata= res.data;
           // console.log( this.completedata);
+          this.spinner.hide();
         }
       );
     }
@@ -120,7 +125,8 @@ export class CompletereportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata= res.data;
-          console.log( this.completedata);
+          // console.log( this.completedata);
+          this.spinner.hide();
         }
       );
     }
@@ -150,6 +156,7 @@ export class CompletereportComponent implements OnInit {
 
   refresh()
   {
+    this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       rangeFromDate:[null],

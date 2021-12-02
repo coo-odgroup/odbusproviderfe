@@ -9,6 +9,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import { NotificationService } from '../../services/notification.service';
 import * as _ from 'lodash';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-mastersetting',
@@ -55,7 +56,7 @@ export class MastersettingComponent implements OnInit {
   all: any;
 
 
-  constructor( private fb: FormBuilder,private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer,config: NgbModalConfig,private modalService: NgbModal,private busOperartorService:BusOperatorService)
+  constructor( private spinner: NgxSpinnerService,private fb: FormBuilder,private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer,config: NgbModalConfig,private modalService: NgbModal,private busOperartorService:BusOperatorService)
    {
     this.isSubmit = false;
     this.settingRecord= {} as SettingsRecords;
@@ -65,7 +66,8 @@ export class MastersettingComponent implements OnInit {
     this.ModalBtn = "Save";
    }
   
-  getAll(url:any=''){
+  getAll(url:any=''){    
+    this.spinner.show();
      const data= {
           name:this.searchForm.value.name,
           per_page:this.searchForm.value.per_page
@@ -76,6 +78,7 @@ export class MastersettingComponent implements OnInit {
               this.pagination = res.data.data;
               this.all = res.data;
               // console.log(res.data.data.data);
+              this.spinner.hide();
             },
     );
    }
@@ -95,7 +98,8 @@ export class MastersettingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+      
+      this.spinner.show();
     this.searchForm =this.fb.group({
       name:[null],
       per_page:Constants.RecordLimit,
@@ -475,6 +479,7 @@ export class MastersettingComponent implements OnInit {
   }
   addSettings()
   {
+    this.spinner.show();
 
     let id = this.settingRecord?.id;
 
@@ -590,6 +595,9 @@ export class MastersettingComponent implements OnInit {
     this.settingRecord = this.settings[id];  
   }
   deleteRecord() {
+
+    
+this.spinner.show();
     let delitem = this.settingRecord.id;
     this.settingsService.delete(delitem).subscribe(
       resp => {
@@ -606,6 +614,8 @@ export class MastersettingComponent implements OnInit {
   }
   changeStatus(event : Event, stsitem:any)
   {
+    
+  this.spinner.show();
     this.settingsService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)

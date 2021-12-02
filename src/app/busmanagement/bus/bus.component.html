@@ -1,3 +1,6 @@
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
 <div class="row">
   <div class="col-sm-12">
       <app-card [hidHeader]="false" cardTitle="BUS" cardClass="card-datatable" [options]="true"
@@ -90,7 +93,14 @@
               <td>{{ bus.name }}</td>
               <td class="text-uppercase">{{ bus.bus_number }}</td>
               <!-- <td>{{ bus.via}}</td> -->
-              <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td>
+              <td>
+                <span *ngIf="bus.from_location && bus.to_location && bus.from_location?.length != 0 && bus.to_location?.length != 0 ">
+                    {{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}
+                </span>
+                <span *ngIf="bus.from_location?.length == 0">
+                          no route.
+                </span>
+              </td>
               <td>{{ bus.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ bus.created_by }}</td>
               <td>

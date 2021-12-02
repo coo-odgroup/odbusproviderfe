@@ -10,6 +10,8 @@ import { BusOperatorService } from '../../services/bus-operator.service';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import { NgxSpinnerService } from "ngx-spinner";
+
 
 @Component({
   selector: 'app-bannermanagement',
@@ -50,7 +52,7 @@ export class BannermanagementComponent implements OnInit {
   public imageSizeFlag = true;
   all: any;
 
-  constructor(private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer, private busOperartorService:BusOperatorService)
+  constructor(private spinner: NgxSpinnerService,private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer, private busOperartorService:BusOperatorService)
      { 
         this.isSubmit = false;
         this.bannerRecord= {} as Banner;
@@ -60,6 +62,7 @@ export class BannermanagementComponent implements OnInit {
         this.ModalBtn = "Save";
    }
    getAll(url:any=''){
+            this.spinner.show();
             const data= {
               status:this.searchForm.value.status,
               searchBy:this.searchForm.value.searchBy,
@@ -70,6 +73,7 @@ export class BannermanagementComponent implements OnInit {
               this.banners= res.data.data.data; 
               this.pagination = res.data.data;
               this.all = res.data;
+              this.spinner.hide();
               // console.log(res.data.data.data);
             },
     );
@@ -86,6 +90,7 @@ export class BannermanagementComponent implements OnInit {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
   ngOnInit(): void {
+    this.spinner.show();
     this.searchForm =this.fb.group({
       searchBy:[null],
       status:[null],
@@ -246,6 +251,7 @@ export class BannermanagementComponent implements OnInit {
   }
   addBanner()
   {
+    this.spinner.show();
 
     // this.finalJson = {
     //   "File": this.imageSrc,
@@ -370,6 +376,7 @@ export class BannermanagementComponent implements OnInit {
     this.bannerRecord = this.banners[id];  
   }
   deleteRecord() {
+    this.spinner.show();
     let delitem = this.bannerRecord.id;
     this.bannerService.delete(delitem).subscribe(
       resp => {
@@ -386,6 +393,7 @@ export class BannermanagementComponent implements OnInit {
   }
   changeStatus(event : Event, stsitem:any)
   {
+    this.spinner.show();
     this.bannerService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)
