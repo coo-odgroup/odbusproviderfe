@@ -290,7 +290,7 @@ export class SeatlayoutComponent implements OnInit {
   seatType:{};
   
   ngOnInit(){
-    this.spinner.show();
+    //this.spinner.show();
     this.editLayout = this.fb.group({
       seatRows: this.fb.array([])
     });
@@ -436,7 +436,7 @@ export class SeatlayoutComponent implements OnInit {
    
   search(pageurl="")
   {      
-    this.spinner.show();
+    //this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
