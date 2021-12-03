@@ -298,6 +298,8 @@ export class CouponComponent implements OnInit {
       this.busOperatorService.readAll().subscribe(
         record=>{
         this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
         }
       );
     }
@@ -306,6 +308,8 @@ export class CouponComponent implements OnInit {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
         this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
         }
       );
     }

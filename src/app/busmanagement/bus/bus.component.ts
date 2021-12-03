@@ -515,11 +515,15 @@ export class BusComponent implements OnInit {
       this.busOperartorService.readAll().subscribe(
         record=>{
         this.operators=record.data;
+        // console.log(this.operators);
+        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
         }
       );
       this.busTypeService.readAll().subscribe(
         rec=>{
         this.busTypes=rec.data;
+
         }
       );
       this.cancellationslabService.readAll().subscribe(
@@ -538,6 +542,8 @@ export class BusComponent implements OnInit {
       this.busOperartorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
         this.operators=record.data;
+        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
         }
       );
       this.busTypeService.readOperator(BusOperator).subscribe(

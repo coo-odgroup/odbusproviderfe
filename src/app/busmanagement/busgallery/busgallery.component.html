@@ -15,14 +15,14 @@
           <form [formGroup]="searchForm">
             <div class="row">
               <div class="col-3">
-                <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id" placeholder="Select Operator"
+                <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id" placeholder="Select Operator"
                   formControlName="bus_operator_id" [clearable]="false" (change)="findOperator($event)">
                 </ng-select>
               </div>
               <div class="col-3">
                 <div class="form-group row">
                   <div class="col-sm-12">
-                    <ng-select [items]="buses" bindLabel="name" bindValue="id" placeholder="Select Bus"
+                    <ng-select [items]="buses" bindLabel="testing" bindValue="id" placeholder="Select Bus"
                       formControlName="bus_id" [clearable]="false">
                     </ng-select>
                   </div>
@@ -137,7 +137,7 @@
                             Select Operator
                           </div>
                           <div class="col-md-9">
-                            <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                            <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                               placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false"
                               (change)="findOperator($event)">
                             </ng-select>
@@ -151,7 +151,7 @@
                             Select Bus
                           </div>
                           <div class="col-md-9">
-                            <ng-select [items]="buses" bindLabel="name" bindValue="id" placeholder="Select Bus"
+                            <ng-select [items]="buses" bindLabel="testing" bindValue="id" placeholder="Select Bus"
                               formControlName="bus_id" [clearable]="false">
                             </ng-select>
                           </div>

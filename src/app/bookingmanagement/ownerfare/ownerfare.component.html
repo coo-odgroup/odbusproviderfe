@@ -230,7 +230,7 @@
                             <div class="col-sm-8">
                               <input type="hidden" class="form-control" formControlName="id"
                                 [value]="ownerFareRecord.id" />
-                              <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                              <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                 placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false"
                                 (change)="findOperator($event)">
                               </ng-select>

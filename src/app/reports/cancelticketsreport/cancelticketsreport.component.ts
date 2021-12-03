@@ -158,6 +158,8 @@ export class CancelticketsreportComponent implements OnInit {
     this.busOperatorService.readAll().subscribe(
       res => {
         this.busoperators = res.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
       }
     );
     this.locationService.readAll().subscribe(

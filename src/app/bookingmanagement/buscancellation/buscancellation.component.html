@@ -199,7 +199,7 @@
                         <label for="busCancel" class="col-sm-4 col-form-label">Operator<span
                             class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                          <ng-select [items]="operators" bindLabel="operator_name" bindValue="id"
+                          <ng-select [items]="operators" bindLabel="operatorData" bindValue="id"
                             placeholder="Select Operator" formControlName="bus_operator_id" #operator
                             (ngModelChange)="getBusbyOperator()" (change)="getBusbyOperator($event)"
                             [clearable]="false">

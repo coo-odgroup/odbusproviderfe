@@ -144,16 +144,17 @@ export class ExtraseatopenreportComponent implements OnInit {
     this.busService.all().subscribe(
       res => {
         this.buses = res.data;
+        this.buses.map((i: any) => { i.busData = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+
       }
     );
     
     this.busOperatorService.readAll().subscribe(
       res => {
         this.busoperators = res.data;
-
+      this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
       }
     );
-
   }
 
   findOperator(event: any) {

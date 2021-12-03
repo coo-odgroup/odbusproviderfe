@@ -208,8 +208,8 @@
                         <label for="busSchedule" class="col-sm-4 col-form-label">Operator<span
                             class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                          <ng-select [items]="operators" bindLabel="operator_name" bindValue="id"
-                            placeholder="Select Operator" [clearable]="false" required formControlName="bus_operator_id"
+                          <ng-select [items]="operators" bindLabel="operatorData" bindValue="id"
+                          placeholder="Select Operator" [clearable]="false" required formControlName="bus_operator_id"
                             #operator (change)="getBusbyOperator($event)">
                           </ng-select>
                           <span class="text-danger"
