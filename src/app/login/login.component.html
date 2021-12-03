@@ -25,7 +25,7 @@
                       </ng-select>
                         <span class="text-danger"
                                 *ngIf="form.controls['user_type'].touched && form.controls['user_type'].hasError('required')">
-                                Role of Agent is required! </span>
+                                Role  is required! </span>
                       </div>
                       <div class="form-group text-left mt-2">
                         <label>
@@ -39,7 +39,7 @@
                               id="checkbox-fill-a1"> Save credentials</label>
                       </div>
                       </div> -->
-                      <button class="btn btn-block btn-primary mb-4" type="button" (click)="check_credentials()">Login</button>
+                      <button class="btn btn-block btn-primary mb-4" [disabled]="!form.valid" type="button" (click)="check_credentials()">Login</button>
                       <p class="text-center">Don't have an account? <a class="formlink" routerLink="/signup">Signup</a> </p>  
                   </form>
             </div>

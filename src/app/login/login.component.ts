@@ -22,11 +22,14 @@ export class LoginComponent implements OnInit {
       this.saveUsername = value;
   }
 
+  
+
   constructor(public router: Router,protected fb:FormBuilder, private loginService: LoginService, private notificationService: NotificationService,private notify: NotificationService,private roleService: RoleService) {
 
     this.roleService.getRoles().subscribe(
       res=>{
         this.usertypes=res.data;
+        // console.log(this.usertypes);
       }
     );
   }
