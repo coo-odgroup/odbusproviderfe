@@ -370,7 +370,7 @@ export class CancellationslabComponent implements OnInit {
   }
   deleteRecord()
   {
-    this.spinner.show();
+
     let delitem=this.formConfirm.value.id;
      this.cSlabService.delete(delitem).subscribe(
       resp => {
@@ -390,7 +390,7 @@ export class CancellationslabComponent implements OnInit {
   }
   deleteSlab(content, delitem:any)
   {
-    this.spinner.show();
+
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]

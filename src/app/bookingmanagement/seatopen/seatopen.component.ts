@@ -538,7 +538,7 @@ export class SeatopenComponent implements OnInit {
     this.seatOpenRecord = this.seatOpen[id];
   }
   deleteRecord() {
-    this.spinner.show();
+  
     let delitem = this.seatOpenRecord.id;
     this.seatopenService.delete(delitem).subscribe(
       resp => {

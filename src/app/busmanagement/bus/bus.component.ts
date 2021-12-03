@@ -182,10 +182,9 @@ export class BusComponent implements OnInit {
 
                 this.refresh();
             }
-            else{
-               
+            else{               
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-              this.spinner.hide();
+              
             }
       }); 
   }
@@ -860,7 +859,7 @@ export class BusComponent implements OnInit {
   }
   deleteBus(content, delitem:any)
   {
-  this.spinner.show();
+  
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]
@@ -2200,7 +2199,7 @@ export class BusComponent implements OnInit {
         }
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-            this.spinner.hide();
+            
         }
       }
     );    

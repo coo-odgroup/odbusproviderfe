@@ -173,7 +173,7 @@ export class UserreviewComponent implements OnInit {
  
 
   deleteRecord(){
-    this.spinner.show();
+  
     let delitem = this.contactcontentRecord.id;
     // console.log(delitem);
     this.us.delete(delitem).subscribe(

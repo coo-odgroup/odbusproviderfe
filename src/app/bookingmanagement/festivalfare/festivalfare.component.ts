@@ -396,7 +396,7 @@ addfestivalFare()
   deleteRecord()
   {
     
-    this.spinner.show();
+
     let delitem=this.formConfirm.value.id;
      this.festivalfareService.delete(delitem).subscribe(
       resp => {
@@ -416,7 +416,7 @@ addfestivalFare()
   }
   deletefestivalFare(content, delitem:any)
   {
-    this.spinner.show();
+ 
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]

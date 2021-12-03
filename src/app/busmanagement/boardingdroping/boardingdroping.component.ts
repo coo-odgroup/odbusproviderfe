@@ -305,7 +305,7 @@ export class BoardingdropingComponent implements OnInit {
   }
   deleteRecord()
   {
-    this.spinner.show();
+
     let delitem=this.BoardingDroppingRecord.id;
      this.BoardDropService.delete(delitem).subscribe(
       resp => {
@@ -319,7 +319,7 @@ export class BoardingdropingComponent implements OnInit {
             else{
                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-              this.spinner.hide();
+              
             }
       }); 
   }
@@ -334,7 +334,7 @@ export class BoardingdropingComponent implements OnInit {
   changeStatus(event : Event, stsitem:any)
   {
     //console.log(stsitem);
-    this.spinner.show();
+
     this.BoardDropService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)
@@ -345,7 +345,7 @@ export class BoardingdropingComponent implements OnInit {
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
-            this.spinner.hide();
+       
         }
       }
     );

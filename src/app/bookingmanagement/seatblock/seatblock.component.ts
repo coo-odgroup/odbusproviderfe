@@ -553,7 +553,7 @@ export class SeatblockComponent implements OnInit {
     this.seatBlockRecord = this.seatBlock[id];
   }
   deleteRecord() {
-    this.spinner.show();
+    
     let delitem = this.seatBlockRecord.id;
     this.seatblockService.delete(delitem).subscribe(
       resp => {

@@ -366,7 +366,7 @@ export class SpecialsliderComponent implements OnInit {
     this.sliderRecord = this.sliders[id];  
   }
   deleteRecord() {
-    this.spinner.show();
+  
     let delitem = this.sliderRecord.id;
     this.specialsliderService.delete(delitem).subscribe(
       resp => {

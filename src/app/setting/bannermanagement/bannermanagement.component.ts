@@ -378,7 +378,7 @@ export class BannermanagementComponent implements OnInit {
     this.bannerRecord = this.banners[id];  
   }
   deleteRecord() {
-    this.spinner.show();
+    
     let delitem = this.bannerRecord.id;
     this.bannerService.delete(delitem).subscribe(
       resp => {

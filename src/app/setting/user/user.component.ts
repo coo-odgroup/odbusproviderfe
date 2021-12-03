@@ -299,7 +299,7 @@ export class UserComponent implements OnInit {
 
   deleteRecord() {
 
-    this.spinner.show();
+    
     let delitem = this.userRecord.id;
     this.userService.delete(delitem).subscribe(
       resp => {

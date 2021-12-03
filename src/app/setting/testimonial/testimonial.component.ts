@@ -235,7 +235,7 @@ export class TestimonialComponent implements OnInit {
     }
   
     deleteRecord() {
-      this.spinner.show();
+   
       let delitem = this.testimonialRecord.id;
       this.ts.delete(delitem).subscribe(
         resp => {

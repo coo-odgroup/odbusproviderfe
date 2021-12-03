@@ -257,7 +257,7 @@ export class SocialmediaComponent implements OnInit {
   }
 
   deleteRecord() {
-    this.spinner.show();
+
     let delitem = this.socialRecord.id;
     this.ss.delete(delitem).subscribe(
       resp => {

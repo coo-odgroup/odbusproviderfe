@@ -422,7 +422,7 @@ findSource()
   }
   deleteRecord()
   {
-    this.spinner.show();
+
     let delitem=this.formConfirm.value.id;
      this.ownerfareService.delete(delitem).subscribe(
       resp => {
@@ -442,7 +442,7 @@ findSource()
   }
   deleteOwnerFare(content, delitem:any)
   {
-    this.spinner.show();
+
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]

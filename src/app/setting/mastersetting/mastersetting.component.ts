@@ -598,8 +598,6 @@ export class MastersettingComponent implements OnInit {
   }
   deleteRecord() {
 
-    
-this.spinner.show();
     let delitem = this.settingRecord.id;
     this.settingsService.delete(delitem).subscribe(
       resp => {

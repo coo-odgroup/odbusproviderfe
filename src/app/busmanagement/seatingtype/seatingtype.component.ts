@@ -212,7 +212,7 @@ export class SeatingtypeComponent implements OnInit {
   }
   deleteRecord()
   {
-    this.spinner.show();
+
     let delitem=this.formConfirm.value.id;
      this.seatingTypeService.delete(delitem).subscribe(
       resp => {
@@ -232,7 +232,7 @@ export class SeatingtypeComponent implements OnInit {
   }
   deleteSeatingType(content, delitem:any)
   {
-    this.spinner.show();
+
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]

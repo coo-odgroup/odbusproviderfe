@@ -318,7 +318,7 @@ export class BusgalleryComponent implements OnInit {
   }
 
   deleteRecord() {
-    this.spinner.show();
+  
     let delitem = this.busGalleryRecord.id;
     this.busgalleryService.delete(delitem).subscribe(
       resp => {

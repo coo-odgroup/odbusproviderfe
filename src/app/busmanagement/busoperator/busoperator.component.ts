@@ -390,7 +390,7 @@ export class BusoperatorComponent implements OnInit {
   }
   deleteRecord()
   {
-    this.spinner.show();
+
     let delitem=this.formConfirm.value.id;
      this.busOperatorService.delete(delitem).subscribe(
       resp => {
@@ -410,7 +410,7 @@ export class BusoperatorComponent implements OnInit {
   }
   deleteBusOperator(content, delitem:any)
   {
-    this.spinner.show();
+   
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]

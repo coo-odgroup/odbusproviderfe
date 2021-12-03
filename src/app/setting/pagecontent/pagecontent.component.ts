@@ -277,7 +277,7 @@ export class PagecontentComponent implements OnInit {
   }
 
   deleteRecord() {
-    this.spinner.show();
+
 
     let delitem = this.pagecontentRecord.id;
     this.pc.delete(delitem).subscribe(

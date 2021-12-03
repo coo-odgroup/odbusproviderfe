@@ -248,7 +248,7 @@ export class AmenitiesComponent implements OnInit {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
   deleteRecord() {
-    this.spinner.show();
+    
     let delitem = this.formConfirm.value.id;
     this.AmenitiesService.delete(delitem).subscribe(
       resp => {
@@ -260,7 +260,7 @@ export class AmenitiesComponent implements OnInit {
         else {
 
           this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
-          this.spinner.hide();
+         
         }
       });
   }

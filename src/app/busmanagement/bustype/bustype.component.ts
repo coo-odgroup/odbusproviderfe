@@ -243,7 +243,7 @@ export class BustypeComponent implements OnInit {
 
   deleteRecord()
   {
-    this.spinner.show();
+
     let delitem=this.formConfirm.value.id;
      this.busTypeService.delete(delitem).subscribe(
       resp => {
@@ -263,7 +263,7 @@ export class BustypeComponent implements OnInit {
   }
   deleteBusType(content, delitem:any)
   {
-    this.spinner.show();
+
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]

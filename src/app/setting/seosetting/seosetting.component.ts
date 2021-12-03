@@ -313,7 +313,7 @@ export class SeosettingComponent implements OnInit {
   }
 
   deleteRecord() {
-    this.spinner.show();
+   
     let delitem = this.urlcontentRecord.id;
     this.ss.delete(delitem).subscribe(
       resp => {

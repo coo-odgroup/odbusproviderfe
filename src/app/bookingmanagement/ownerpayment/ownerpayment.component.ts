@@ -258,7 +258,7 @@ findSource()
 
   deleteOwnerFare(content, delitem:any)
   {
-    this.spinner.show();
+  
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
     this.formConfirm=this.fb.group({
       id:[delitem]

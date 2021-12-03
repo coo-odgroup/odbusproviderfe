@@ -394,7 +394,7 @@ openConfirmDialog(content, id: any)
 }
 deleteRecord()
 {
-  this.spinner.show();
+
   // let delitem=this.formConfirm.value.id;
   let delitem = this.couponRecord.id;
    this.couponService.delete(delitem).subscribe(
