@@ -308,6 +308,7 @@ export class BannermanagementComponent implements OnInit {
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            this.spinner.hide();
           }
         }
       );
@@ -326,6 +327,7 @@ export class BannermanagementComponent implements OnInit {
           else {
 
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            this.spinner.hide();
           }
         }
       );
@@ -388,6 +390,7 @@ export class BannermanagementComponent implements OnInit {
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          this.spinner.hide();
         }
       });
   }

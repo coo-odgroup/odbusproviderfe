@@ -300,6 +300,7 @@ export class SpecialsliderComponent implements OnInit {
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            this.spinner.hide();
           }
         }
       );  
@@ -315,6 +316,7 @@ export class SpecialsliderComponent implements OnInit {
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            this.spinner.hide();
           }
         }
       );
@@ -376,6 +378,7 @@ export class SpecialsliderComponent implements OnInit {
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          this.spinner.hide();
         }
       });
   }
@@ -392,6 +395,7 @@ export class SpecialsliderComponent implements OnInit {
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+            this.spinner.hide();
         }
       }
     );

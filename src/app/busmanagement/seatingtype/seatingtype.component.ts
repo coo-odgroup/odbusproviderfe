@@ -170,6 +170,7 @@ export class SeatingtypeComponent implements OnInit {
        {
           
         this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+        this.spinner.hide();
        }
       });    
     }
@@ -187,6 +188,7 @@ export class SeatingtypeComponent implements OnInit {
             else
             {                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       });         
     }    
@@ -224,6 +226,7 @@ export class SeatingtypeComponent implements OnInit {
             else{
                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       }); 
   }

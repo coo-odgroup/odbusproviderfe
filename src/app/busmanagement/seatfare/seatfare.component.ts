@@ -146,6 +146,7 @@ export class SeatfareComponent implements OnInit {
         }
         else {
           this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
+          this.spinner.hide();
         }
       }
     );

@@ -78,9 +78,9 @@ export class AmenitiesComponent implements OnInit {
     this.form = this.fb.group({
       id: [null],
       name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
-      icon: [null, Validators.compose([Validators.required])],
+      icon: [null],
       iconSrc: [null],
-      android_image: [null, Validators.compose([Validators.required])],
+      android_image: [null],
       androidSrc: [null]
     });
 
@@ -165,9 +165,9 @@ export class AmenitiesComponent implements OnInit {
     this.form = this.fb.group({
       id: [null],
       name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
-      icon: [null, Validators.compose([Validators.required])],
+      icon: [null],
       iconSrc: [null],
-      android_image: [null, Validators.compose([Validators.required])],
+      android_image: [null],
       androidSrc: [null]
     });
 
@@ -206,6 +206,7 @@ export class AmenitiesComponent implements OnInit {
             // this.notificationService.addToast({ title: 'Error', msg: errObj.name, type: 'error' });
 
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            this.spinner.hide();
           }
         }
       );
@@ -222,6 +223,7 @@ export class AmenitiesComponent implements OnInit {
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            this.spinner.hide();
           }
         }
       );
@@ -258,6 +260,7 @@ export class AmenitiesComponent implements OnInit {
         else {
 
           this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
+          this.spinner.hide();
         }
       });
   }
@@ -278,6 +281,7 @@ export class AmenitiesComponent implements OnInit {
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          this.spinner.hide();
         }
       }
     );
@@ -297,6 +301,7 @@ export class AmenitiesComponent implements OnInit {
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          this.spinner.hide();
         }
       }
     );

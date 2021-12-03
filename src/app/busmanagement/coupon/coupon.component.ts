@@ -244,6 +244,7 @@ export class CouponComponent implements OnInit {
         }
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+            this.spinner.hide();
         }
       }
     );  }
@@ -261,6 +262,7 @@ export class CouponComponent implements OnInit {
             else
             {                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       });         
     }    
@@ -406,6 +408,7 @@ deleteRecord()
           else{
              
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+            this.spinner.hide();
           }
     }); 
 }

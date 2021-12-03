@@ -24,9 +24,7 @@ export class BookingseizedComponent implements OnInit {
   modalReference: NgbModalRef;
   bookingSeized : Bookingseized[];
   bookingSeizedRecord : Bookingseized;
-
   public searchForm: FormGroup;
-
   ModalHeading:any;
   
   public ModalBtn :any;

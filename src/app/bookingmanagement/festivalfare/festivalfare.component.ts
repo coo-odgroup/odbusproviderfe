@@ -293,6 +293,7 @@ addfestivalFare()
        {
           
         this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+        this.spinner.hide();
        }
       });    
     }
@@ -310,6 +311,7 @@ addfestivalFare()
             else
             {                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       });         
     }    
@@ -408,6 +410,7 @@ addfestivalFare()
             else{
                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       }); 
   }

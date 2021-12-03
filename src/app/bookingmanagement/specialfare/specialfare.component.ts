@@ -286,6 +286,7 @@ findOperator(event:any)
        else
        {
         this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+        this.spinner.hide();
        }
       });    
     }
@@ -303,6 +304,7 @@ findOperator(event:any)
             else
             {                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       });         
     }    
@@ -410,6 +412,7 @@ findOperator(event:any)
             else{
                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       }); 
   }

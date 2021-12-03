@@ -191,6 +191,7 @@ export class LocationComponent implements OnInit {
           }
           else{
               this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+              this.spinner.hide();
           }
         }
       );
@@ -208,6 +209,7 @@ export class LocationComponent implements OnInit {
           }
           else{
               this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+              this.spinner.hide();
           }
         }
       );
@@ -246,6 +248,7 @@ export class LocationComponent implements OnInit {
             else{
                
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
             }
       }); 
   }
@@ -271,6 +274,7 @@ export class LocationComponent implements OnInit {
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+            this.spinner.hide();
         }
       }
     );
