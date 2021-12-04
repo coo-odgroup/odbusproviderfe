@@ -176,6 +176,14 @@ export class BusscheduleComponent implements OnInit {
     }
   }
   loadServices(){
+
+    this.busService.all().subscribe(
+      res => {
+        this.buses = res.data;
+        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+      }
+    );
+    
     const BusOperator={
       USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
     };
@@ -199,6 +207,8 @@ export class BusscheduleComponent implements OnInit {
         }
       );
     }
+
+    
   }
   addBusSchedule()
   {  this.spinner.show();
@@ -254,18 +264,12 @@ export class BusscheduleComponent implements OnInit {
     this.loadServices();
     this.busScheduleRecord=this.busSchedules[id];
     this.scheduleRecord=this.busScheduleRecord;
-    console.log(this.scheduleRecord);
-    // this.busScheduleForm.patchValue({
-    //   //bus_id:this.busScheduleRecord.bus_id,
-    //   bus_operator_id:this.busScheduleRecord.bus_operator_id,
-    //   entry_date:this.busScheduleRecord.entry_date,
-    //   running_cycle:this.busScheduleRecord.running_cycle,
-    // });
+    // console.log(this.scheduleRecord.bus.id);
+    
 
     this.busScheduleForm = this.fb.group({
       id:this.busScheduleRecord.id,
-      bus_id: [this.scheduleRecord.bus_id],
-      //bus_id: [this.scheduleRecord.bus_id, Validators.compose([Validators.required])],
+      bus_id: this.scheduleRecord.bus.id,
       bus_operator_id:this.scheduleRecord.bus.bus_operator_id,
       entry_date:this.scheduleRecord.bus_schedule_date[0].entry_date,
       cancelled_by:'Admin', 

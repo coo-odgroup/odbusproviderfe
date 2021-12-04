@@ -74,7 +74,12 @@
                 <tr *ngFor="let bus of busSequences; let i=index; ">
                     <td>{{ i+1}}</td>
                     <td>{{ bus.name }}</td>
-                    <td>{{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}</td> 
+                    <td *ngIf="bus.from_location!='' && bus.from_location!=null">
+                      {{bus.from_location[0].name}}  >> {{bus.to_location[0].name}}
+                  </td>
+                  <td *ngIf="bus.from_location=='' || bus.from_location==null">
+                      ----no data-----
+                  </td>
                     <td>{{ bus.via }}</td>
                     <td>{{ bus.bus_number }}</td>
                     <td class="text-center">

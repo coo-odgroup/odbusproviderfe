@@ -193,6 +193,7 @@ export class TicketfareslabComponent implements OnInit {
           this.cancellationSlabs = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
+          // console.log( this.cancellationSlabs);
           this.spinner.hide();
 
         }
