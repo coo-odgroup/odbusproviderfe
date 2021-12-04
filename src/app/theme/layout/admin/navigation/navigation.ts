@@ -450,6 +450,13 @@ const NavigationItems = [
         icon: 'feather icon-gitlab',
         children: [
           {
+            id: 'ticketfareslab',
+            title: 'Ticket Fare Slab',
+            type: 'item',
+            icon:'feather icon-wifi-off',
+            url: 'bookingmanagement/ticketfareslab'
+          },
+          {
             id: 'BusCancellation',
             title: 'Bus Cancellation',
             type: 'item',

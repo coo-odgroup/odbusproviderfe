@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { BoardingDropping} from '../../model/boardingdropping';
-import { Location} from '../../model/location';
-import {Constants} from '../../constant/constant';
+import { BoardingDropping } from '../../model/boardingdropping';
+import { Location } from '../../model/location';
+import { Constants } from '../../constant/constant';
 
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../services/notification.service';
-import {BoardingdropingService} from '../../services/boardingdroping.service';
+import { BoardingdropingService } from '../../services/boardingdroping.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {LocationService} from '../../services/location.service';
+import { LocationService } from '../../services/location.service';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -21,19 +21,19 @@ import { NgxSpinnerService } from "ngx-spinner";
 })
 export class BoardingdropingComponent implements OnInit {
   public form: FormGroup;
-  public formConfirm: FormGroup;  
+  public formConfirm: FormGroup;
   public searchForm: FormGroup;
   pagination: any;
 
 
 
 
-  userType:any;
+  userType: any;
   public boardingList: FormArray;
   public droppingList: FormArray;
   @ViewChild("addnew") addnew;
   //@ViewChild("closebutton") closebutton;
- 
+
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
@@ -45,15 +45,15 @@ export class BoardingdropingComponent implements OnInit {
   droppings: any = {};
   boards: any;
   drops: any;
-  
+
   locations: Location[];
   public isSubmit: boolean;
-  public mesgdata:any;
-  public allBoarding:string;
-  public allDropping:string;
+  public mesgdata: any;
+  public allBoarding: string;
+  public allDropping: string;
 
-  public ModalHeading:any;
-  public ModalBtn:any;
+  public ModalHeading: any;
+  public ModalBtn: any;
   all: any;
 
   // returns all form groups under BoardingDroppings
@@ -63,37 +63,37 @@ export class BoardingdropingComponent implements OnInit {
   get droppingFormGroup() {
     return this.form.get('drops') as FormArray;
   }
-  constructor(private http: HttpClient, private BoardDropService:BoardingdropingService,  private notificationService: NotificationService,private locationService:LocationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal , private spinner: NgxSpinnerService,) {
+  constructor(private http: HttpClient, private BoardDropService: BoardingdropingService, private notificationService: NotificationService, private locationService: LocationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private spinner: NgxSpinnerService,) {
 
     this.isSubmit = false;
-    this.BoardingDroppingRecord= {} as BoardingDropping;
+    this.BoardingDroppingRecord = {} as BoardingDropping;
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add Boarding Dropping";
     this.ModalBtn = "Save";
-    this.userType=localStorage.getItem('ROLE_ID');
-    
-   }
-   OpenModal(content) {
-    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
+    this.userType = localStorage.getItem('ROLE_ID');
+
+  }
+  OpenModal(content) {
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
 
   ngOnInit() {
     this.spinner.show();
     this.form = this.fb.group({
-      id:[null],
-      location_id: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      id: [null],
+      location_id: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
       boards: this.fb.array([this.createBoard()])
     });
-    
+
     this.boardingList = this.form.get('boards') as FormArray;
 
-    this.formConfirm=this.fb.group({
-      id:[null]
+    this.formConfirm = this.fb.group({
+      id: [null]
     });
 
-    this.searchForm = this.fb.group({  
-      name: [null],  
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -102,38 +102,36 @@ export class BoardingdropingComponent implements OnInit {
     // this.loadBoardDrop();
   }
 
-  page(label:any){
+  page(label: any) {
     return label;
-   }
+  }
 
-   
-  search(pageurl="")
-  {    this.spinner.show();  
-    const data = { 
+
+  search(pageurl = "") {
+    this.spinner.show();
+    const data = {
       name: this.searchForm.value.name,
-      rows_number:this.searchForm.value.rows_number, 
+      rows_number: this.searchForm.value.rows_number,
     };
-    if(pageurl!="")
-    {
-      this.BoardDropService.getAllaginationData(pageurl,data).subscribe(
+    if (pageurl != "") {
+      this.BoardDropService.getAllaginationData(pageurl, data).subscribe(
         res => {
-          this.BoardingDroppings= res.data.data.data;
-          this.pagination= res.data.data;
-          this.all =res.data;
+          this.BoardingDroppings = res.data.data.data;
+          this.pagination = res.data.data;
+          this.all = res.data;
           this.spinner.hide();
           // console.log( this.BusOperators);
         }
       );
     }
-    else
-    {
+    else {
       this.BoardDropService.getAllData(data).subscribe(
         res => {
-          
-          this.BoardingDroppings= res.data.data.data;
-          this.pagination= res.data.data;
-          this.all =res.data;
-           //console.log( this.BoardingDroppings);
+
+          this.BoardingDroppings = res.data.data.data;
+          this.pagination = res.data.data;
+          this.all = res.data;
+          //console.log( this.BoardingDroppings);
           this.spinner.hide();
           // console.log( this.BoardingDroppings);
         }
@@ -141,52 +139,50 @@ export class BoardingdropingComponent implements OnInit {
     }
 
     this.locationService.readAll().subscribe(
-          res=>{
-            this.locations=res.data;
-          }
-        );
+      res => {
+        this.locations = res.data;
+      }
+    );
   }
 
 
-  refresh()
-   {  
-    this.searchForm = this.fb.group({  
-      name: [null],  
+  refresh() {
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
     });
-     this.search();
-     this.spinner.hide();
-    
-   }
+    this.search();
+    this.spinner.hide();
+
+  }
 
 
   title = 'angular-app';
-  fileName= 'Boarding-Droping.xlsx';
+  fileName = 'Boarding-Droping.xlsx';
 
-  exportexcel(): void
-  {
-    
+  exportexcel(): void {
+
     /* pass here the table id */
     let element = document.getElementById('print-section');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
+
+    /* save to file */
     XLSX.writeFile(wb, this.fileName);
   }
   // boardingDropping formgroup
   createBoard(): FormGroup {
-    return this.fb.group({ 
-      boarding_point: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])]
+    return this.fb.group({
+      boarding_point: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])]
     });
   }
   createDrop(): FormGroup {
-    
-    return this.fb.group({ 
-      dropping_point: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])]
+
+    return this.fb.group({
+      dropping_point: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])]
     });
   }
   // add a boardingDroping form group
@@ -196,12 +192,12 @@ export class BoardingdropingComponent implements OnInit {
   addDrop() {
     this.droppingList.push(this.createDrop());
   }
-  
+
   // remove boardingDropping from group
-  removeBoard(index1) {  
+  removeBoard(index1) {
     this.boardingList.removeAt(index1);
   }
-  removeDrop(index) {   
+  removeDrop(index) {
     this.droppingList.removeAt(index);
   }
   // get the formgroup under form array
@@ -209,11 +205,10 @@ export class BoardingdropingComponent implements OnInit {
     const formGroup1 = this.boardingList.controls[index1] as FormGroup;
     return formGroup1;
   }
-  ResetAttributes()
-  {
-    this.BoardingDroppingRecord= {} as BoardingDropping;
+  ResetAttributes() {
+    this.BoardingDroppingRecord = {} as BoardingDropping;
     this.form = this.fb.group({
-      id:[null],
+      id: [null],
       location_id: [null, Validators.compose([Validators.required])],
       boards: this.fb.array([this.createBoard()])
     });
@@ -222,130 +217,118 @@ export class BoardingdropingComponent implements OnInit {
     this.ModalBtn = "Save";
   }
 
-  addBoardingDropping()
-  {
+  addBoardingDropping() {
     this.spinner.show();
-    const data ={
-      id:this.BoardingDroppingRecord.id,
-      location_id :this.form.value.location_id,
-      created_by:localStorage.getItem('USERNAME'),
-      boarding_point:this.form.value.boards
+    const data = {
+      id: this.BoardingDroppingRecord.id,
+      location_id: this.form.value.location_id,
+      created_by: localStorage.getItem('USERNAME'),
+      boarding_point: this.form.value.boards
     };
 
-    if(data.id==null)
-    {
+    if (data.id == null) {
       this.BoardDropService.create(data).subscribe(
         resp => {
-          if(resp.status==1)
-          {   
-              //this.closebutton.nativeElement.click();
-              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-              this.modalReference.close();
-              this.ResetAttributes();
-              this.refresh();
+          if (resp.status == 1) {
+            //this.closebutton.nativeElement.click();
+            this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.refresh();
           }
-          else{
-              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-              this.spinner.hide();
+          else {
+            this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
+            this.spinner.hide();
           }
         }
       );
     }
-    else{
-      this.BoardDropService.update(data.id,data).subscribe(
+    else {
+      this.BoardDropService.update(data.id, data).subscribe(
         resp => {
-          if(resp.status==1)
-          {
-              //this.closebutton.nativeElement.click();
-              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-              this.modalReference.close();
-              this.ResetAttributes();
-              this.refresh();
+          if (resp.status == 1) {
+            //this.closebutton.nativeElement.click();
+            this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
+            this.modalReference.close();
+            this.ResetAttributes();
+            this.refresh();
           }
-          else{
-            this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+          else {
+            this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
             this.spinner.hide();
           }
         }
       );
     }
   }
-  editBoardingDropping(event : Event, id : any)
-  {
-    this.BoardingDroppingRecord=this.BoardingDroppings[id];
+  editBoardingDropping(event: Event, id: any) {
+    this.BoardingDroppingRecord = this.BoardingDroppings[id];
 
     this.form = this.fb.group({
-      id:[this.BoardingDroppingRecord.id],
+      id: [this.BoardingDroppingRecord.id],
       location_id: [this.BoardingDroppingRecord.id, Validators.compose([Validators.required])],
-      created_by:localStorage.getItem('USERNAME'),
+      created_by: localStorage.getItem('USERNAME'),
       boards: this.fb.array([this.createBoard()])
     });
     this.boardingList = this.form.get('boards') as FormArray;
 
-    let editBoarding=[];
+    let editBoarding = [];
     this.boardingList.removeAt(0);
-    
-    for(let items of this.BoardingDroppingRecord.boarding_dropping)
-    {
-      this.boardingList.push(this.fb.group({ 
-        boarding_point: [items.boarding_point, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])]
+
+    for (let items of this.BoardingDroppingRecord.boarding_dropping) {
+      this.boardingList.push(this.fb.group({
+        boarding_point: [items.boarding_point, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])]
       }));
-     // editBoarding.push({value:''+items+''});
+      // editBoarding.push({value:''+items+''});
     }
 
-    
-    this.form.value.boards=editBoarding;
+
+    this.form.value.boards = editBoarding;
     this.ModalHeading = "Edit Boarding Dropping";
     this.ModalBtn = "Update";
   }
 
-  openConfirmDialog(content)
-  {
-    this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'lgx' });
+  openConfirmDialog(content) {
+    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'lgx' });
   }
-  deleteRecord()
-  {
+  deleteRecord() {
 
-    let delitem=this.BoardingDroppingRecord.id;
-     this.BoardDropService.delete(delitem).subscribe(
+    let delitem = this.BoardingDroppingRecord.id;
+    this.BoardDropService.delete(delitem).subscribe(
       resp => {
-        if(resp.status==1)
-            {
-                this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-                this.confirmDialogReference.close();
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
+          this.confirmDialogReference.close();
 
-                this.refresh();
-            }
-            else{
-               
-              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-              
-            }
-      }); 
+          this.refresh();
+        }
+        else {
+
+          this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
+
+        }
+      });
   }
-  deleteBoardingDropping(content, delitem:any)
-  {
+  deleteBoardingDropping(content, delitem: any) {
     this.spinner.show();
-    this.BoardingDroppingRecord=this.BoardingDroppings[delitem];
-    this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
-    
+    this.BoardingDroppingRecord = this.BoardingDroppings[delitem];
+    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+
   }
 
-  changeStatus(event : Event, stsitem:any)
-  {
+  changeStatus(event: Event, stsitem: any) {
     //console.log(stsitem);
 
     this.BoardDropService.chngsts(stsitem).subscribe(
       resp => {
-        if(resp.status==1)
-        {
-            //this.closebutton.nativeElement.click();
-            this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.refresh();
+        if (resp.status == 1) {
+          //this.closebutton.nativeElement.click();
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.refresh();
         }
-        else{
-            this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
-       
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+
         }
       }
     );

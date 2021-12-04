@@ -248,7 +248,7 @@ export class AmenitiesComponent implements OnInit {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'lg' });
   }
   deleteRecord() {
-    
+    this.spinner.show();
     let delitem = this.formConfirm.value.id;
     this.AmenitiesService.delete(delitem).subscribe(
       resp => {
@@ -308,7 +308,7 @@ export class AmenitiesComponent implements OnInit {
   }
 
   deleteAmenities(content, delitem: any) {
-    this.spinner.show();
+  
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.formConfirm = this.fb.group({
       id: [delitem]

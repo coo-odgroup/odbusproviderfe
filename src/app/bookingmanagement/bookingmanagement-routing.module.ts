@@ -36,7 +36,11 @@ const routes: Routes = [
       {
         path: 'ownerpayment',
         loadChildren: () => import('./ownerpayment/ownerpayment.module').then(module => module.OwnerPaymentModule)
-      }      
+      }, 
+      {
+        path: 'ticketfareslab',
+        loadChildren: () => import('./ticketfareslab/ticketfareslab.module').then(module => module.TicketFareSlabModule)
+      }    
     ]
   }
 ];
