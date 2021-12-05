@@ -330,13 +330,13 @@ export class BusComponent implements OnInit {
         })
       ]),
       bus_number: [null, Validators.compose([Validators.required])], 
-      conductor_no: [null, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])], 
+      conductor_no: [null, Validators.compose([Validators.minLength(10),Validators.maxLength(10)])], 
       c_sms_ticket: ["true"], 
       c_sms_cancel: ["true"], 
-      manager_no: [null, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])], 
+      manager_no: [null, Validators.compose([Validators.minLength(10),Validators.maxLength(10)])], 
       m_sms_ticket: ["true"], 
       m_sms_cancel: ["true"],
-      owner_no: [null, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])], 
+      owner_no: [null, Validators.compose([Validators.minLength(10),Validators.maxLength(10)])], 
       o_sms_ticket: ["true"], 
       o_sms_cancel: ["true"],
     });
@@ -650,13 +650,13 @@ export class BusComponent implements OnInit {
         })
       ]),
       bus_number: [null,Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(15)])], 
-      conductor_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required,Validators.minLength(10),Validators.maxLength(10)])], 
+      conductor_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10),Validators.maxLength(10)])], 
       c_sms_ticket: ["true"], 
       c_sms_cancel: ["true"], 
-      manager_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required,Validators.minLength(10),Validators.maxLength(10)])], 
+      manager_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10),Validators.maxLength(10)])], 
       m_sms_ticket: ["true"], 
       m_sms_cancel: ["true"],
-      owner_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required,Validators.minLength(10),Validators.maxLength(10)])], 
+      owner_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10),Validators.maxLength(10)])], 
       o_sms_ticket: ["true"], 
       o_sms_cancel: ["true"]
     });
@@ -842,6 +842,8 @@ export class BusComponent implements OnInit {
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
               this.spinner.hide();
           }
+
+          this.ResetAttributes();
         }
       );
     }
@@ -891,26 +893,32 @@ export class BusComponent implements OnInit {
         if(resp.status==1)
         {
             this.busContacts=resp.data;
-            this.data_conductor_no=this.busContacts[0]['phone'];
-            this.data_c_sms_ticket=this.busContacts[0]['booking_sms_send'];
-            this.data_c_sms_cancel=this.busContacts[0]['cancel_sms_send'];         
-            this.data_manager_no=this.busContacts[1]['phone'];
-            this.data_m_sms_ticket=this.busContacts[1]['booking_sms_send'];
-            this.data_m_sms_cancel=this.busContacts[1]['cancel_sms_send'];
-            this.data_owner_no=this.busContacts[2]['phone'];
-            this.data_o_sms_ticket=this.busContacts[2]['booking_sms_send'];
-            this.data_o_sms_cancel=this.busContacts[2]['cancel_sms_send'];
+
+            if(this.busContacts.length>0){
+
+              this.data_conductor_no=this.busContacts[0]['phone'];
+              this.data_c_sms_ticket=this.busContacts[0]['booking_sms_send'];
+              this.data_c_sms_cancel=this.busContacts[0]['cancel_sms_send'];         
+              this.data_manager_no=this.busContacts[1]['phone'];
+              this.data_m_sms_ticket=this.busContacts[1]['booking_sms_send'];
+              this.data_m_sms_cancel=this.busContacts[1]['cancel_sms_send'];
+              this.data_owner_no=this.busContacts[2]['phone'];
+              this.data_o_sms_ticket=this.busContacts[2]['booking_sms_send'];
+              this.data_o_sms_cancel=this.busContacts[2]['cancel_sms_send'];
+
+            }
+           
             
             this.busForm = this.fb.group({
               id:[this.busRecord.id],
               bus_number: [this.busRecord.bus_number, Validators.compose([Validators.required])], 
-              conductor_no: [this.data_conductor_no, Validators.compose([Validators.required])], 
+              conductor_no: [this.data_conductor_no, Validators.compose([Validators.pattern("^[0-9]*$")])], 
               c_sms_ticket: [this.data_c_sms_ticket], 
               c_sms_cancel: [this.data_c_sms_cancel], 
-              manager_no: [this.data_manager_no, Validators.compose([Validators.required])], 
+              manager_no: [this.data_manager_no, Validators.compose([Validators.pattern("^[0-9]*$")])], 
               m_sms_ticket: [this.data_m_sms_ticket], 
               m_sms_cancel: [this.data_m_sms_cancel],
-              owner_no: [this.data_owner_no, Validators.compose([Validators.required])], 
+              owner_no: [this.data_owner_no,Validators.compose([Validators.pattern("^[0-9]*$")])], 
               o_sms_ticket: [this.data_o_sms_ticket], 
               o_sms_cancel: [this.data_o_sms_cancel]
             });
@@ -1121,13 +1129,13 @@ export class BusComponent implements OnInit {
       busRoutes: this.fb.array([]),
       busRoutesInfo:this.fb.array([]),
       bus_number: [this.busRecord.bus_number,Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(15)])], 
-      conductor_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required])], 
+      conductor_no: [null, Validators.compose([Validators.pattern("^[0-9]*$")])], 
       c_sms_ticket: [null], 
       c_sms_cancel: [null], 
-      manager_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required])], 
+      manager_no: [null, Validators.compose([Validators.pattern("^[0-9]*$")])], 
       m_sms_ticket: [null], 
       m_sms_cancel: [null],
-      owner_no: [null, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required])], 
+      owner_no: [null, Validators.compose([Validators.pattern("^[0-9]*$")])], 
       o_sms_ticket: [null], 
       o_sms_cancel: [null]
     });
@@ -1411,13 +1419,13 @@ export class BusComponent implements OnInit {
       busRoutes: this.fb.array([]),
       busRoutesInfo:this.fb.array([]),
       bus_number: [this.busRecord.bus_number,Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(15)])], 
-      conductor_no: [this.data_conductor_no, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required])], 
+      conductor_no: [this.data_conductor_no, Validators.compose([Validators.pattern("^[0-9]*$")])], 
       c_sms_ticket: [this.data_c_sms_ticket], 
       c_sms_cancel: [this.data_c_sms_cancel], 
-      manager_no: [this.data_manager_no, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required])], 
+      manager_no: [this.data_manager_no, Validators.compose([Validators.pattern("^[0-9]*$")])], 
       m_sms_ticket: [this.data_m_sms_ticket], 
       m_sms_cancel: [this.data_m_sms_cancel],
-      owner_no: [this.data_owner_no, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.required])], 
+      owner_no: [this.data_owner_no, Validators.compose([Validators.pattern("^[0-9]*$")])], 
       o_sms_ticket: [this.data_o_sms_ticket], 
       o_sms_cancel: [this.data_o_sms_cancel]
     });

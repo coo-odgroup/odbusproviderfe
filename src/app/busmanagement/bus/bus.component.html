@@ -537,10 +537,10 @@
                                 <div class="col-sm-4 ">
                                   <input type="text" class="form-control" placeholder="Enter Mobile No"
                                     formControlName="conductor_no" />
-                                  <span class="text-danger"
+                                  <!-- <span class="text-danger"
                                     *ngIf="busForm.controls.conductor_no.touched && busForm.controls.conductor_no.hasError('required')">
                                     Contact Number is Required
-                                  </span>
+                                  </span> -->
                                   <span class="text-danger"
                                     *ngIf="busForm.controls.conductor_no.touched && busForm.controls['conductor_no'].errors?.minlength">
                                     Min 10 Digit Number is Required
@@ -574,10 +574,10 @@
                                 <div class="col-sm-4 ">
                                   <input type="text" class="form-control" placeholder="Enter Mobile No"
                                     formControlName="manager_no" />
-                                  <span class="text-danger"
+                                  <!-- <span class="text-danger"
                                     *ngIf="busForm.controls.manager_no.touched && busForm.controls.manager_no.hasError('required')">
                                     Contact Number is Required
-                                  </span>
+                                  </span> -->
                                   <span class="text-danger"
                                     *ngIf="busForm.controls.manager_no.touched && busForm.controls.manager_no.hasError('minlength')">
                                     10 Digit Number is Required
@@ -612,10 +612,10 @@
                                   <input type="text" class="form-control" placeholder="Enter Mobile No"
                                     formControlName="owner_no" />
 
-                                  <span class="text-danger"
+                                  <!-- <span class="text-danger"
                                     *ngIf="busForm.controls.owner_no.touched && busForm.controls.owner_no.hasError('required')">
                                     Contact Number is Required
-                                  </span>
+                                  </span> -->
                                   <span class="text-danger"
                                     *ngIf="busForm.controls.owner_no.touched && busForm.controls.owner_no.hasError('minlength')">
                                     10 Digit Number is Required
@@ -1956,7 +1956,7 @@
                         <div class="form-group row">
                           <label for="bus" class="col-sm-3 ">Conductor</label>
                           <div class="col-sm-4 ">
-                            <input type="text" class="form-control" placeholder="Enter Mobile No" required
+                            <input type="text" class="form-control" placeholder="Enter Mobile No" 
                               formControlName="conductor_no" />
                           </div>
                           <div class="col-sm-2 ">
@@ -1978,7 +1978,7 @@
                         <div class="form-group row">
                           <label for="bus" class="col-sm-3 ">Manager</label>
                           <div class="col-sm-4 ">
-                            <input type="text" class="form-control" placeholder="Enter Mobile No" required
+                            <input type="text" class="form-control" placeholder="Enter Mobile No" 
                               formControlName="manager_no" />
                           </div>
                           <div class="col-sm-2 ">
@@ -2000,7 +2000,7 @@
                         <div class="form-group row">
                           <label for="bus" class="col-sm-3 ">Owner</label>
                           <div class="col-sm-4 ">
-                            <input type="text" class="form-control" placeholder="Enter Mobile No" required
+                            <input type="text" class="form-control" placeholder="Enter Mobile No" 
                               formControlName="owner_no" />
                           </div>
                           <div class="col-sm-2 ">
@@ -2139,7 +2139,7 @@
                                   <div class="form-group col-2" style="padding:0px 5px;">
                                     <label>From <span class="text-danger">*</span></label>
                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                      placeholder="From Location" formControlName="from_location" [clearable]="false">
+                                      placeholder="From Location" formControlName="from_location" [clearable]="true">
                                     </ng-select>
                                   </div>
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
@@ -2157,7 +2157,7 @@
                                     <label>To <span class="text-danger">*</span></label>
 
                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                      placeholder="To Location" formControlName="to_location" [clearable]="false">
+                                      placeholder="To Location" formControlName="to_location" [clearable]="true">
                                     </ng-select>
 
 
