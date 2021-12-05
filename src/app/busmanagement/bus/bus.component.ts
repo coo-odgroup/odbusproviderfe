@@ -1345,7 +1345,8 @@ export class BusComponent implements OnInit {
               arr_days:[JSON.parse(singleRoute.start_j_days)],
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
-              sleeper_fare:[singleRoute.base_sleeper_fare]
+              sleeper_fare:[singleRoute.base_sleeper_fare],
+               booking_seized:[singleRoute.base_booking_seized] 
             });
             this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
@@ -1627,7 +1628,8 @@ export class BusComponent implements OnInit {
               arr_days:[JSON.parse(singleRoute.j_day)],
               dep_days:[JSON.parse(singleRoute.start_j_days)],
               seater_fare:[singleRoute.base_seat_fare],
-              sleeper_fare:[singleRoute.base_sleeper_fare]
+              sleeper_fare:[singleRoute.base_sleeper_fare],
+              booking_seized:[singleRoute.base_booking_seized] 
             });
             this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
