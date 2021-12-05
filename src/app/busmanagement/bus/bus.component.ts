@@ -1244,6 +1244,9 @@ export class BusComponent implements OnInit {
         if(resp.status==1)
         {
             this.busContacts=resp.data;
+
+            if(this.busContacts.length>0){
+
             this.data_conductor_no=this.busContacts[0]['phone'];
             this.data_c_sms_ticket=this.busContacts[0]['booking_sms_send'];
             this.data_c_sms_cancel=this.busContacts[0]['cancel_sms_send'];         
@@ -1253,6 +1256,7 @@ export class BusComponent implements OnInit {
             this.data_owner_no=this.busContacts[2]['phone'];
             this.data_o_sms_ticket=this.busContacts[2]['booking_sms_send'];
             this.data_o_sms_cancel=this.busContacts[2]['cancel_sms_send'];
+          }
             
             this.busForm.controls.conductor_no.setValue(this.data_conductor_no);
             this.busForm.controls.c_sms_ticket.setValue(this.data_c_sms_ticket);
@@ -1303,8 +1307,10 @@ export class BusComponent implements OnInit {
                   if(stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point))
                   {
                     var foundValue = stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point).stoppage_time;
+                                    
                     let newSourcegroup: FormGroup = this.fb.group({
                       sourceLocation: [SourceLoop.boarding_point],
+                      boarding_droping_id: [SourceLoop.id],
                       sourcechecked:["true"],
                       sourceTime:[foundValue]
                     });
@@ -1537,6 +1543,9 @@ export class BusComponent implements OnInit {
         if(resp.status==1)
         {
             this.busContacts=resp.data;
+
+            if(this.busContacts.length>0){
+
             this.data_conductor_no=this.busContacts[0]['phone'];
             this.data_c_sms_ticket=this.busContacts[0]['booking_sms_send'];
             this.data_c_sms_cancel=this.busContacts[0]['cancel_sms_send'];         
@@ -1546,18 +1555,19 @@ export class BusComponent implements OnInit {
             this.data_owner_no=this.busContacts[2]['phone'];
             this.data_o_sms_ticket=this.busContacts[2]['booking_sms_send'];
             this.data_o_sms_cancel=this.busContacts[2]['cancel_sms_send'];
+          }
             
-            this.busForm.controls.conductor_no.setValue([this.data_conductor_no]);
-            this.busForm.controls.c_sms_ticket.setValue([this.data_c_sms_ticket]);
-            this.busForm.controls.c_sms_cancel.setValue([this.data_c_sms_cancel]);
+            this.busForm.controls.conductor_no.setValue(this.data_conductor_no);
+            this.busForm.controls.c_sms_ticket.setValue(this.data_c_sms_ticket);
+            this.busForm.controls.c_sms_cancel.setValue(this.data_c_sms_cancel);
             
-            this.busForm.controls.manager_no.setValue([this.data_manager_no]);
-            this.busForm.controls.m_sms_ticket.setValue([this.data_m_sms_ticket]);
-            this.busForm.controls.m_sms_cancel.setValue([this.data_m_sms_cancel]);
+            this.busForm.controls.manager_no.setValue(this.data_manager_no);
+            this.busForm.controls.m_sms_ticket.setValue(this.data_m_sms_ticket);
+            this.busForm.controls.m_sms_cancel.setValue(this.data_m_sms_cancel);
 
-            this.busForm.controls.owner_no.setValue([this.data_owner_no]);
-            this.busForm.controls.o_sms_ticket.setValue([this.data_o_sms_ticket]);
-            this.busForm.controls.o_sms_cancel.setValue([this.data_o_sms_cancel]);
+            this.busForm.controls.owner_no.setValue(this.data_owner_no);
+            this.busForm.controls.o_sms_ticket.setValue(this.data_o_sms_ticket);
+            this.busForm.controls.o_sms_cancel.setValue(this.data_o_sms_cancel);
         }
       }
     );
@@ -1597,6 +1607,7 @@ export class BusComponent implements OnInit {
                   
                     let newSourcegroup: FormGroup = this.fb.group({
                       sourceLocation: [SourceLoop.boarding_point],
+                      boarding_droping_id: [SourceLoop.id],
                       sourcechecked:[null],
                       sourceTime:[null]
                     });
