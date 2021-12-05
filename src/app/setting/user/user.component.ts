@@ -319,13 +319,14 @@ export class UserComponent implements OnInit {
 
   changePassword(id) {
 
-    this.spinner.show();
+
     this.userRecord = this.user[id];
 
     this.ModalHeading = "Edit Password";
     this.ModalBtn = "Update Password";
   }
   updatePassword() {
+    this.spinner.show();
     let id = this.userRecord?.id;
     const updateDate = {
       password: this.pwdform.value.password

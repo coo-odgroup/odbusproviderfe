@@ -48,6 +48,8 @@ export class BuscancellationComponent implements OnInit{
   public reasons:any;
   public showdates:any;
   all: any;
+  public busesRecord:any;
+  public DatesRecord:any;
   //getter for form array buses
   get busesFormGroup() {
     return this.busCancellationForm.get('buses') as FormArray;
@@ -202,6 +204,7 @@ export class BuscancellationComponent implements OnInit{
   
   ResetAttributes()
   {
+
     this.showdates='0';
     this.busCancellationRecord = {} as Buscancellation;
     this.busCancellationForm = this.fb.group({
@@ -248,8 +251,7 @@ export class BuscancellationComponent implements OnInit{
     }
   }
 
-  public busesRecord:any;
-  public DatesRecord:any;
+  
   getBusScheduleEntryDatesFilter()
   {  
       if(this.busCancellationForm.value.month == null|| this.busCancellationForm.value.year==null)
