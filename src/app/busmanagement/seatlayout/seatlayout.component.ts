@@ -578,32 +578,40 @@ export class SeatlayoutComponent implements OnInit {
     }
     if(form.value.upperBerthArray)
     {
-      counter=0;
+      var counter=0;
       for (var [key,items] of Object.entries(form.value.upperBerthArray)) {
         key=key.replace("upper_",'');
         this.formSleeper[key]=[];
         for(const [subkey,subItems] of Object.entries(items))
         {
+          
+          
           this.formSleeper[key][subkey]=subItems.seatText;
         }
       }
-      for(var rowBlocks of this.seatBlocks)
+      
+      for(var rowBlocksupper of this.seatBlocks)
       { 
-        let rowNum=rowBlocks.rowNumber;
-        let colNum=rowBlocks.colNumber;
-        if(this.seatBlocks[counter])
-        {
+        let rowNum=rowBlocksupper.rowNumber;
+        let colNum=rowBlocksupper.colNumber;
+        
+       // if(this.seatBlocks[counter])
+       // {
           if(rowNum in this.formSleeper)
           {
-            if(this.formSleeper[rowNum] && this.seatBlocks[counter].berthType=="2")
+           
+            if(this.formSleeper[rowNum][colNum])
             {
+              if(this.seatBlocks[counter].berthType=="2")
+              {
                 this.seatBlocks[counter].seatText=this.formSleeper[rowNum][colNum];
-               
+              }
             }
-            counter++;
+            
           }
           
-        }
+       // }
+        counter++;
       }
     }
     const data ={
@@ -612,8 +620,7 @@ export class SeatlayoutComponent implements OnInit {
       created_by:localStorage.getItem('USERNAME'),
       bus_operator_id:this.SeatLayoutForm.value.bus_operator_id
     }
-  //  console.log(data);
-  //  return false;
+
     this.sLayout.create(data).subscribe(
       resp => {
         if(resp.status==1)
