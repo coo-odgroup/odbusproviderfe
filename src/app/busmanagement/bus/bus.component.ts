@@ -78,6 +78,7 @@ export class BusComponent implements OnInit {
   selectedLocation:SelectedLocation;
   selectedLocations:SelectedLocation[]=[];
 
+    
 
   public selectedAmenities:SelectedAmenities[];
   public selectedSafety:SelectedSafety[];
@@ -384,7 +385,7 @@ export class BusComponent implements OnInit {
           this.pagination= res.data.data;
           this.all =res.data;
           this.spinner.hide();
-          //  console.log(this.all);
+          //  console.log(this.buses);
         }
       );
     }
@@ -417,6 +418,14 @@ export class BusComponent implements OnInit {
      /* save to file */  
      XLSX.writeFile(wb, this.fileName);
   
+   }
+
+   busData(index)
+   {
+     this.ModalHeading = "BUS DETAILS"
+    // console.log(index);
+      this.busRecord = this.buses[index];
+       console.log(this.busRecord);
    }
 
   // route formgroup

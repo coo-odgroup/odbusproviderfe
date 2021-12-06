@@ -82,7 +82,7 @@
               <th>Created By</th>       
               <th>Status</th>             
               <th class="hide_print" width='150'>&nbsp;</th>
-              <th width="50" class="hide_print" >&nbsp; </th>
+              <th width="100" class="hide_print" >&nbsp; </th>
             </tr>
           </thead>
           <tbody *ngIf="buses?.length != 0">
@@ -95,7 +95,8 @@
               <!-- <td>{{ bus.via}}</td> -->
               <td>
                 <span *ngIf="bus.from_location && bus.to_location && bus.from_location?.length != 0 && bus.to_location?.length != 0 ">
-                    {{ bus.from_location[0].name}} >> {{ bus.to_location[0].name}}
+               
+                    {{ bus.from_location[0][0].name}} >> {{ bus.to_location[0][0].name}}
                 </span>
                 <span *ngIf="bus.from_location?.length == 0">
                           no route.
@@ -153,6 +154,8 @@
                 <div class="overlay-edit">
                     <button type="button" (click)="deleteBus(confirmDialog, bus.id)"
                         class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
+                    <button type="button" (click)="ResetAttributes();busData(i); OpenModal(busDetails);"
+                        class="btn btn-icon btn-warning"><i class="feather icon-eye"></i></button>
                 </div>
             </td>
             </tr>
@@ -2255,6 +2258,150 @@
             <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
               (click)="modal.dismiss('Cross click')">Close</button>
           </div>
+        </ng-template>
+
+
+        <!-- <ng-template #busDetails let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Bus Details</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                      <input type="hidden" formControlName="id">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template> -->
+
+        <ng-template #busDetails let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5" id="boxheading">{{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <table  class="table table-striped ">
+                      <h5>Bus Basic Details</h5>
+                        <tr>
+                          <th>Bus Name </th>
+                          <th>Bus Number</th> 
+                          <th>Operator </th> 
+                        </tr>
+                        <tr>
+                          <td> {{busRecord.name}} </td>
+                          <td><span class="text-danger"> {{busRecord.bus_number}}</span></td>
+                          <td><span> {{busRecord.bus_operator.organisation_name}} [{{busRecord.bus_operator.operator_name}}]</span></td>
+                        </tr>
+                     
+
+                    </table>
+                  <table  class="table table-striped ">
+                    <h5>Contact Details</h5>
+                    <tr>                      
+                      <th>Person</th>
+                      <th>Phone</th>
+                      <td>Booking SMS</td> 
+                      <td>Cancle SMS</td>
+                    </tr>
+                    <tr *ngFor="let contact of busRecord.bus_contacts">
+                      <td>
+                        <span *ngIf="contact.type==1">
+                          Manager
+                          </span>
+                            <span *ngIf="contact.type==0">
+                            Operator
+                            </span>
+                          <span *ngIf="contact.type==2">
+                          Conductor
+                        </span>
+                      </td>
+                      <td>
+                       {{contact.phone}}
+                      </td>
+                      <td>
+                        <span *ngIf="contact.booking_sms_send==1">
+                          <i class="fa fa-check text-success" aria-hidden="true"></i>
+                          </span>
+                          <span *ngIf="contact.booking_sms_send !=1">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            </span>
+                       </td>
+                       <td>
+                        <span *ngIf="contact.cancel_sms_send==1">
+                          <i class="fa fa-check text-success" aria-hidden="true"></i>
+                          </span>
+                          <span *ngIf="contact.cancel_sms_send !=1">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            </span>
+                       </td>
+ 
+
+                      
+                    </tr>
+                    
+                </table>
+                  <!-- {{busRecord|json}} -->
+                    <table  class="table table-striped ">
+                        <h5>Route Details</h5>
+                        <tr>
+                          <th>Source</th>
+                          <th>Destination</th> 
+                          <th>Seat Fare</th>
+                          <th>Sleeper Fare</th>                      
+                        </tr>
+                        <tr >
+                          <td>
+                            <span *ngFor="let frlocation of busRecord.from_location">
+                              {{frlocation[0].name}}<br />
+                          </span>
+                          </td>
+                          <td>
+                            <span *ngFor="let tolocation of busRecord.to_location">
+                              {{tolocation[0].name}}<br/></span>
+                          </td>
+
+                          <td>
+                            <span *ngFor="let fare of busRecord.ticket_price">
+                              {{fare.base_seat_fare}}<br/></span>
+                          </td>
+                          <td>
+                            <span *ngFor="let fare of busRecord.ticket_price">
+                              {{fare.base_sleeper_fare}}<br/></span>
+                          </td>
+                        </tr>
+                        
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- [disabled]="!busForm.valid" -->
+            <!-- <button type="button" (click)="UpdateRoutes()" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button> -->
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        
         </ng-template>
 
 
