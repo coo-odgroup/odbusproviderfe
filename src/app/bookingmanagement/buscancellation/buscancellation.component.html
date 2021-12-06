@@ -81,7 +81,7 @@
           <tbody *ngIf="busCancellations?.length != 0">
             <tr *ngFor="let busCancellation of busCancellations; let i=index; ">
               <td>{{ i+1}}</td>
-              <td>{{ busCancellation.bus.bus_operator.operator_name }}</td>
+              <td>{{ busCancellation.bus.bus_operator.organisation_name }}  [{{ busCancellation.bus.bus_operator.operator_name }}]</td>
               <td (click)="showCancelledDates($event,i)"><b>{{ busCancellation.bus.name }}  <br> {{ busCancellation.bus.bus_number }} </b></td>
               <!-- <td>{{ busCancellation.routes }}</td> -->
               <td>{{ busCancellation.reason }}</td>

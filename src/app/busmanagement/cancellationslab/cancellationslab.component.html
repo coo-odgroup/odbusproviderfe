@@ -75,7 +75,7 @@
           <tbody *ngIf="cancellationSlabs?.length != 0">
             <tr *ngFor="let cSlab of cancellationSlabs; let i=index; ">
               <td>{{ cSlab.id }}</td>
-              <td>{{ cSlab.bus_operator.operator_name }}</td>
+              <td>{{ cSlab.bus_operator.organisation_name }}  [{{ cSlab.bus_operator.operator_name }}]</td>
               <td>{{ cSlab.rule_name }}</td>
               <td>
                 <div *ngFor="let cSlabduration of cSlab.slab_info; let durationIndex=index;">

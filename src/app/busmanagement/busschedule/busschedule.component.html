@@ -75,7 +75,8 @@
           <tbody *ngIf="busSchedules?.length != 0">
             <tr *ngFor="let busSchedule of busSchedules; let i=index; ">
               <td>{{ i+1 }}</td>
-              <td (click)="showEntryDates($event,i)">{{ busSchedule.bus.bus_operator.operator_name }}</td>
+              <td (click)="showEntryDates($event,i)">{{ busSchedule.bus.bus_operator.organisation_name }}  [{{ busSchedule.bus.bus_operator.operator_name }}]</td>
+
               <td *ngIf="busSchedule.from_location!='' && busSchedule.from_location!=null">
                   {{busSchedule.from_location[0].name}} - {{busSchedule.to_location[0].name}}
               </td>

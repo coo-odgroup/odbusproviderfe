@@ -78,6 +78,7 @@
                         <tr *ngFor="let couponData of coupons; let i=index;">
                             <td>{{i+1}}</td>
                             <td>{{couponData.bus_operator.operator_name}}</td>
+                            <td>{{ couponData.bus_operator.organisation_name }}  [{{ couponData.bus_operator.operator_name }}]</td>
                             <td>{{couponData.from_date | date: 'MMM d, y'}}</td>
                             <td>{{couponData.to_date | date: 'MMM d, y'}}</td>
                             <td>{{couponData.coupon_title}}</td>

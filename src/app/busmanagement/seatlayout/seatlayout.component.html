@@ -78,8 +78,8 @@
           </thead>
           <tbody *ngIf="SeatLayouts?.length != 0">
               <tr *ngFor="let sLayout of SeatLayouts; let i=index; ">
-                  <td>{{ sLayout.id }}</td>
-                  <td>{{ sLayout.bus_operator.operator_name }}</td>
+                  <td>{{ sLayout.id }}</td>                 
+                  <td>{{ sLayout.bus_operator.organisation_name }}  [{{ sLayout.bus_operator.operator_name }}]</td>
                   <td>{{ sLayout.name }}</td>
                   <td>{{ sLayout.created_by }}</td>
                   <td>{{ sLayout.updated_at }}</td>
