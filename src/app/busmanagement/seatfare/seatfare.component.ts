@@ -84,6 +84,7 @@ export class SeatfareComponent implements OnInit {
     this.locationService.readAll().subscribe(
       records => {
         //CHANDRA TO BE CHANGED
+       
         this.locations = records.data;
         let locs = {};
         for (let loc of this.locations) {
@@ -99,6 +100,7 @@ export class SeatfareComponent implements OnInit {
     this.busSeatsService.readAll(this.busRecord.id).subscribe(records => {
 
       // console.log(records);
+      console.log(records);
       this.ticketPrice = records.result;
       let baseSeaterFare = "";
       let baseSleeperFare = "";
@@ -112,7 +114,7 @@ export class SeatfareComponent implements OnInit {
         destinationId = journey.destination_id;
         let seatFare = "";
         for (let singleSeats of journey.get_bus_seats) {
-          seatFare = (singleSeats.seat_type == "1") ? baseSeaterFare : baseSleeperFare;
+          seatFare = (singleSeats.seats.berthType == "1") ? baseSeaterFare : baseSleeperFare;
           let totalLength = this.fareRecord.length;
           let seatRow: FormGroup = this.fb.group({
             id: [singleSeats.id],
