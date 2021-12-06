@@ -1010,6 +1010,7 @@ export class BusComponent implements OnInit {
                   {
                     let newSourcegroup: FormGroup = this.fb.group({
                       sourceLocation: [SourceLoop.boarding_point],
+                      boarding_droping_id: [SourceLoop.id],
                       sourcechecked:[null],
                       sourceTime:[null]
                     });
@@ -1322,6 +1323,7 @@ export class BusComponent implements OnInit {
                   {
                     let newSourcegroup: FormGroup = this.fb.group({
                       sourceLocation: [SourceLoop.boarding_point],
+                      boarding_droping_id: [SourceLoop.id],
                       sourcechecked:[null],
                       sourceTime:[null]
                     });
