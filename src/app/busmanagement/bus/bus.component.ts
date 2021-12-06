@@ -826,7 +826,8 @@ export class BusComponent implements OnInit {
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
-    // console.log(data);
+
+ 
     if(data.id==null)
     {
       this.busService.create(data).subscribe(
@@ -999,6 +1000,7 @@ export class BusComponent implements OnInit {
                     var foundValue = stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point).stoppage_time;
                     let newSourcegroup: FormGroup = this.fb.group({
                       sourceLocation: [SourceLoop.boarding_point],
+                      boarding_droping_id: [SourceLoop.id],
                       sourcechecked:["true"],
                       sourceTime:[foundValue]
                     });
@@ -1044,8 +1046,8 @@ export class BusComponent implements OnInit {
               arr_days:[JSON.parse(singleRoute.start_j_days)],
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
-              sleeper_fare:[singleRoute.base_sleeper_fare]
-              
+              sleeper_fare:[singleRoute.base_sleeper_fare],              
+              booking_seized:[singleRoute.base_booking_seized] 
             });
             this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
@@ -2198,7 +2200,7 @@ export class BusComponent implements OnInit {
         {
           this.selAmenities.push(JSON.parse(Amentiesrec.amenities_id));
         }
-        
+
         this.busForm.controls.amenities.setValue(this.selAmenities);
       }
     );

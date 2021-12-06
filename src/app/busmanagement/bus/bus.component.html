@@ -2204,8 +2204,20 @@
                                       *ngIf="singleRoute.controls.sleeper_fare.touched && singleRoute.controls.sleeper_fare.hasError('required')">
                                       Sleeper Fare is required! </span>
                                   </div>
+
+                                  <div class="form-group col-md-1" style="padding:0px 5px;">
+                                    <label for="bus">Seize Time</label>
+                                    <input type="text" class="form-control" required formControlName="booking_seized"
+                                      [value]="busRecord.booking_seized" placeholder="Enter minute" placement="top"
+                                      ngbTooltip="Enter minute here" />
+                                     
+                                    <span class="text-danger"
+                                      *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
+                                      Seize Time is required! </span>
+                                  </div>
+
                                   <!-- (click)="removeRoute(i)"  -->
-                                  <div class="form-group col-md-2 text-right" style="padding:0px 5px;">
+                                  <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
                                     <label>&nbsp;</label>
                                     <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)"
                                       style="margin-top: 32px;"> X </button>
