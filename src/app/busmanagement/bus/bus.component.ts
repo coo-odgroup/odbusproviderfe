@@ -460,6 +460,7 @@ export class BusComponent implements OnInit {
     this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
     let arraylen = this.busRoutesRecords.length;
     this.busRoutesRecords.insert(arraylen, this.createRoute());
+    //console.log();
   }
   addRouteInfo(){
     this.busRouteInfo=this.busForm.get('busRoutesInfo') as FormArray;
@@ -951,12 +952,14 @@ export class BusComponent implements OnInit {
       this.spinner.hide();
       }
     );
-    this.ModalHeading = "Update Routes";
+    this.ModalHeading = "Update Seat Layout & Routes";
     this.ModalBtn = "Update";
     this.busRecord=this.buses[id] ;
+
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
-      bus_operator_id:[this.busRecord.bus_operator_id],
+      bus_description:[this.busRecord.bus_description],
+      bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       busRoutes: this.fb.array([]),
       busRoutesInfo:this.fb.array([
         this.fb.group({
@@ -968,8 +971,123 @@ export class BusComponent implements OnInit {
           sleeper_fare:[null],
           booking_seized:[null]
         })
-      ])
+      ]),    
+      bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
+      bus_seat_layout_data:this.fb.array([
+        this.fb.group({
+          upperBerth:this.fb.array([
+          ]),//Upper Berth Items Will be Added Here
+          lowerBerth:this.fb.array([
+          ])//Lower Berth Items will be added Here
+        })
+      ]),
+      // destinationDroppings: this.fb.array([]) 
     });
+
+    this.seatlayoutService.readAll().subscribe(
+      resp=>{
+      this.seatLayouts=resp.data;
+      }
+    );
+    this.busService.getSelectedSeat(this.busRecord.id).subscribe(
+      seatData=>{
+        this.selectedSeats=seatData.data;        
+        this.spinner.hide();
+      }
+    );
+   
+    this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
+      resp=>{
+        let counter=0;
+        this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
+        
+        if(resp.data.lowerBerth!=undefined)
+        {
+          for(let lowerData of resp.data.lowerBerth)
+          {
+            
+            let arraylen=this.seatLayoutData.length;
+            let berthData: FormGroup = this.fb.group({ 
+              lowerBerth: this.fb.array([
+              ]),
+              upperBerth: this.fb.array([
+              ])
+            });
+            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
+            for(let seatData of lowerData)
+            {
+              let checkedval="";
+              let seatId="";
+              for(let selectedSeat of this.selectedSeats)
+              {
+                if(selectedSeat.seats_id==seatData.id)
+                {
+                  checkedval="true";
+                  seatId=selectedSeat.id;
+                }
+              }
+
+              let collen=this.seatLayoutCol.length;
+              let columnData: FormGroup = this.fb.group({ 
+                seatText:[seatData.seatText],
+                seatType:[seatData.seat_class_id],
+                berthType:[seatData.berthType],
+                seatChecked:[checkedval],
+                category:['0'],
+                seatId:[seatData.id],
+                busId:[this.busRecord.id]
+              });
+              this.seatLayoutCol.insert(collen, columnData);
+              
+            }
+            counter++;
+          }
+          
+        }
+        if(resp.data.upperBerth!=undefined)
+        {
+          for(let upperData of resp.data.upperBerth)
+          {
+            let arraylen=this.seatLayoutData.length;
+            let berthData: FormGroup = this.fb.group({ 
+              lowerBerth: this.fb.array([
+              ]),
+              upperBerth: this.fb.array([
+              ])
+            });
+            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
+            for(let seatData of upperData)
+            {
+              let checkedval="";
+              let seatId="";
+              for(let selectedSeat of this.selectedSeats)
+              {
+                if(selectedSeat.seats_id==seatData.id)
+                {
+                  checkedval="true";
+                  seatId=selectedSeat.id;
+                }
+              }
+              let collen=this.seatLayoutCol.length;
+              let columnData: FormGroup = this.fb.group({ 
+                seatText:[seatData.seatText],
+                seatType:[seatData.seat_class_id],
+                berthType:[seatData.berthType],
+                seatChecked:[checkedval],
+                category:['0'],
+                seatId:[seatData.id],
+                busId:[this.busRecord.id]
+              });
+              this.seatLayoutCol.insert(collen, columnData);
+            }
+            counter++;
+          }
+        }
+      }
+    ); 
+
     this.busService.fetchBusTime(this.busRecord.id).subscribe(
       timing=>{
         
@@ -1073,8 +1191,6 @@ export class BusComponent implements OnInit {
       }
     );
     
-
-    
   }
 
   UpdateRoutes()
@@ -1086,7 +1202,11 @@ export class BusComponent implements OnInit {
       user_id :'1',
       created_by:'Admin',
       busRoutes:this.busForm.value.busRoutes,
-      busRoutesInfo:this.busForm.value.busRoutesInfo
+      busRoutesInfo:this.busForm.value.busRoutesInfo,
+      bus_id:this.busRecord.id,
+      bus_seat_layout_id:this.busForm.value.bus_seat_layout_id,
+      bus_seat_layout_data:this.busForm.value.bus_seat_layout_data
+
     };
 
     if(data.id!=null)

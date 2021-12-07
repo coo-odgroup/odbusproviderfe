@@ -123,12 +123,12 @@
                         class="icon feather icon-copy f-w-600 f-16 m-r-15 text-c-green"></i> Clone</button>
                     <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"
                       (click)="ResetAttributes();editRoutes($event,i); OpenModal(BusRoutes)"><i
-                        class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit BusRoutes</button>
+                        class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit Seats & Routes</button>
 
 
-                    <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"
+                    <!-- <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"
                       (click)="ResetAttributes();editSeatLayout($event, i); OpenModal(editSeat);"><i
-                        class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit Seat</button>
+                        class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green"></i> Edit Seat</button> -->
 
                     <button ngbDropdownItem class="dropdown-item btn btn-sm" style="width: 100%;"
                       (click)="ResetAttributes();editBus($event, i); OpenModal(editcontent);"><i
@@ -2066,10 +2066,89 @@
 
 
                       <aw-wizard #wizard class="arc-wizard arc-custom" navBarLayout="large-filled-symbols">
+                       
+                        <aw-wizard-step stepTitle="Seat Layout"
+                          [navigationSymbol]="{ symbol: '&#xe840;', fontFamily: 'feather' }" [style.font-weight]="900">
+
+                          <div class="row">
+
+                            <div class="row form-group col-sm-12">
+                              <div class="col-md-3">
+                        
+                                <ng-select [items]="seatLayouts" bindLabel="name" bindValue="id" placeholder="Choose Seat Layout"
+                                  formControlName="bus_seat_layout_id" [clearable]="false" (change)="getSeatLayout($event)">
+                                </ng-select>
+                                <span class="text-danger"
+                                  *ngIf="busForm.controls['bus_seat_layout_id'].touched && busForm.controls['bus_seat_layout_id'].hasError('required')">
+                                  Seat Layout is required! </span>
+                        
+                              </div>
+                              <div class="col-md-9">
+                                <div formArrayName="bus_seat_layout_data" class="col-12">
+                        
+                                  <div class="row"
+                                    *ngFor="let layoutRow of busForm.controls.bus_seat_layout_data.controls; let layout_row=index;"
+                                    [formGroupName]="layout_row">
+                                    <div formArrayName="lowerBerth" class="col-12" style="display: flex;justify-content: center;">
+                                      <div
+                                        *ngFor="let layoutCol of layoutRow['controls'].lowerBerth['controls']; let layout_row=index;"
+                                        [formGroupName]="layout_row" style="width: 50px; float: left;  text-align: center;">
+                                        <!-- (change)="chooseSeat($event.target.checked,layoutCol.controls.seatType.value,layoutCol.controls.seatText.value,1)" -->
+                                        <label class="seatHolder">
+                                          <input type="checkbox" formControlName="seatChecked"
+                                            *ngIf="layoutCol.controls.seatType.value!=4">
+                                          <span class="seaterImage" *ngIf="layoutCol.controls.seatType.value==1"></span>
+                                          <span class="sleeperImage" *ngIf="layoutCol.controls.seatType.value==2"></span>
+                                          <span class="verticalImage" *ngIf="layoutCol.controls.seatType.value==3"></span>
+                                          <span class="blankImage" *ngIf="layoutCol.controls.seatType.value==4"></span>
+                                          <span
+                                            *ngIf="layoutCol.controls.seatType.value!=4">{{layoutCol.controls.seatText.value}}</span>
+                        
+                                        </label>
+                                      </div>
+                                    </div>
+                        
+                                    <div formArrayName="upperBerth" class="col-12" style="display: flex;justify-content: center;">
+                                      <div
+                                        *ngFor="let layoutCol of layoutRow['controls'].upperBerth['controls']; let layout_row=index;"
+                                        [formGroupName]="layout_row" style="width: 50px; float: left;  text-align: center;">
+                        
+                                        <label class="seatHolder">
+                                          <input type="checkbox" formControlName="seatChecked"
+                                            *ngIf="layoutCol.controls.seatType.value!=4">
+                                          <span class="seaterImage" *ngIf="layoutCol.controls.seatType.value==1"></span>
+                                          <span class="sleeperImage" *ngIf="layoutCol.controls.seatType.value==2"></span>
+                                          <span class="verticalImage" *ngIf="layoutCol.controls.seatType.value==3"></span>
+                                          <span class="blankImage" *ngIf="layoutCol.controls.seatType.value==4"></span>
+                                          <span
+                                            *ngIf="layoutCol.controls.seatType.value!=4">{{layoutCol.controls.seatText.value}}</span>
+                        
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                        
+                                </div>
+                        
+                              </div>
+                        
+                            </div>
+                        
+                          </div>
+
+                          <div class="col-sm-12 centered-content">
+                            <div class="btn-group mt-10">
+                              <button type="button" class="btn btn-primary btn-sm" awNextStep>Continue</button>
+                            </div>
+                          </div>
+
+                        </aw-wizard-step>
+                       
                         <aw-wizard-step stepTitle="Config Location"
                           [navigationSymbol]="{ symbol: '&#xe861;', fontFamily: 'feather' }"
                           navigationSymbolFontFamily="Font Awesome\ 5 Free" [style.font-weight]="900">
 
+                          
                           <div formArrayName="busRoutes">
                             <div class="row">
                               <div class="col-6" *ngFor="let singleRoute of routeFormGroup.controls; let i = index;">
