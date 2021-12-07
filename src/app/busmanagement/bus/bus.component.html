@@ -2364,16 +2364,16 @@
                         </tr>
                         <tr>
                           <td >
-                              <span *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
+                              <span class="text-info" *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
                                   <span *ngIf="allSeats.seats.seat_class_id==1">
-                                    {{allSeats.seats.seatText}}, 
+                                    <b>{{allSeats.seats.seatText}}</b>, 
                                   </span>
                               </span>
                           </td>
                           <td>
-                            <span *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
+                            <span class="text-success text-uppercase"  *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
                               <span *ngIf="allSeats.seats.seat_class_id==2 || allSeats.seats.seat_class_id==3">
-                                {{allSeats.seats.seatText}}, 
+                                <b>{{allSeats.seats.seatText}}</b>,  
                               </span>
                           </span>
                           </td>

@@ -425,7 +425,7 @@ export class BusComponent implements OnInit {
      this.ModalHeading = "BUS DETAILS"
     // console.log(index);
       this.busRecord = this.buses[index];
-       console.log(this.busRecord);
+      //  console.log(this.busRecord);
    }
 
   // route formgroup
@@ -972,7 +972,7 @@ export class BusComponent implements OnInit {
     });
     this.busService.fetchBusTime(this.busRecord.id).subscribe(
       timing=>{
-        //console.log(timing);
+        
         if(timing.status==1)
         {
           
@@ -981,6 +981,9 @@ export class BusComponent implements OnInit {
           //this.busRoutesRecords.clear();
           let counter=0;
           this.sequenceItem=timing.data.sequence;
+
+          // console.log(timing.data.routes);
+
           for(let items of timing.data.routes)
           {
             let arraylen = this.busRoutesRecords.length;
@@ -992,7 +995,7 @@ export class BusComponent implements OnInit {
             this.busRoutesRecords.insert(arraylen, new_BusRoute_group);
 
            
-           
+          //  console.log(this.busRoutesRecords);
            
             this.boardingdropingService.get(items['location_id']).subscribe(
               records=>{
@@ -1037,17 +1040,14 @@ export class BusComponent implements OnInit {
     this.busService.fetchBusRoutes(this.busRecord.id).subscribe(
       resp => {
         if(resp.status==1)
-        {
-          
-          
+        {        
 
           this.busRoutesInfoRecords=this.busForm.get('busRoutesInfo') as FormArray;
           this.busRoutesInfoRecords.clear();
           
           for(let singleRoute of resp.data)
           {
-            
-            
+            // console.log(singleRoute);
             let arrayroutelen = this.busRoutesInfoRecords.length;
 
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
@@ -1057,7 +1057,7 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],              
-              booking_seized:[singleRoute.base_booking_seized] 
+              booking_seized:[singleRoute.seize_booking_minute] 
             });
             this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
@@ -1365,7 +1365,7 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],
-               booking_seized:[singleRoute.base_booking_seized] 
+               booking_seized:[null] 
             });
             this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
@@ -1653,7 +1653,7 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.start_j_days)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],
-              booking_seized:[singleRoute.base_booking_seized] 
+              booking_seized:[null] 
             });
             this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
