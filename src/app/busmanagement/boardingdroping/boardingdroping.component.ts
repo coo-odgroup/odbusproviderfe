@@ -94,12 +94,10 @@ export class BoardingdropingComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       name: [null],
-      rows_number: Constants.RecordLimit,
+      rows_number: 50,
     });
-
     this.search();
-
-    // this.loadBoardDrop();
+  
   }
 
   page(label: any) {
@@ -127,13 +125,10 @@ export class BoardingdropingComponent implements OnInit {
     else {
       this.BoardDropService.getAllData(data).subscribe(
         res => {
-
           this.BoardingDroppings = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          //console.log( this.BoardingDroppings);
           this.spinner.hide();
-          // console.log( this.BoardingDroppings);
         }
       );
     }

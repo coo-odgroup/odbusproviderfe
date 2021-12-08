@@ -291,7 +291,7 @@ export class BusscheduleComponent implements OnInit {
   { 
     this.showdates='1';
     this.busScheduleRecord=this.busSchedules[id];
-    // console.log(this.busScheduleRecord);
+    console.log(this.busScheduleRecord);
     // this.busScheduleForm = this.fb.group({
     //   entryDates:this.busScheduleForm.value.entryDates,
     // });

@@ -47,6 +47,13 @@ export class CouponService {
       catchError(this.errorHandler)
     )
   }
+
+  chngsts(id){
+    return this.httpClient.put<any>(Constants.BASE_URL + '/changeStatusCoupon/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   errorHandler(error:any) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

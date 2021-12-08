@@ -327,11 +327,14 @@ addfestivalFare()
     this.busOperatorService.readAll().subscribe(
       res=>{
         this.busoperators=res.data;
+      this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
       }
       );
     this.locationService.readAll().subscribe(
       records=>{
         this.locations=records.data;
+        
       }
     );
     // return false;
@@ -341,6 +344,8 @@ addfestivalFare()
       this.busService.getByOperaor(this.festivalFareRecord.bus_operator_id).subscribe(
         res=>{
           this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+
         }
       );
     }
@@ -351,6 +356,8 @@ addfestivalFare()
       this.busService.findSource(this.festivalFareRecord.source_id,this.festivalFareRecord.destination_id).subscribe(
         res=>{
           this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+
         }
       );
     }
@@ -359,6 +366,8 @@ addfestivalFare()
       this.busService.all().subscribe(
         res=>{
           this.buses=res.data;
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+
         }
       );
     }

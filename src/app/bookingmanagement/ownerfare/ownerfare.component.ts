@@ -348,6 +348,8 @@ export class OwnerfareComponent implements OnInit {
       this.busService.getByOperaor(this.ownerFareRecord.bus_operator_id).subscribe(
         res => {
           this.buses = res.data;
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+
         }
       );
     }
@@ -360,6 +362,8 @@ export class OwnerfareComponent implements OnInit {
       this.busService.findSource(this.ownerFareRecord.source_id, this.ownerFareRecord.destination_id).subscribe(
         res => {
           this.buses = res.data;
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+
         }
       );
       // console.log(this.buses);
@@ -368,6 +372,8 @@ export class OwnerfareComponent implements OnInit {
       this.busService.all().subscribe(
         res => {
           this.buses = res.data;
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+
         }
       );
     }

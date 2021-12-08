@@ -337,6 +337,8 @@ findOperator(event:any)
       this.busService.getByOperaor(this.specialFareRecord.bus_operator_id).subscribe(
         res=>{
           this.buses=res.data;
+        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '  (' + i.from_location[0].name + ' >> ' + i.to_location[0].name + ')'; return i; });
+
         }
       );
     }

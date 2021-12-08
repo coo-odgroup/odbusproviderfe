@@ -82,17 +82,28 @@
           <tbody *ngIf="festivalFares?.length != 0">
             <tr *ngFor="let festivalFare of festivalFares; let i=index; ">
               <td>{{ festivalFare.id }}</td>
+              <!--  -->
+
               <td>
-                {{festivalFare.bus[0].bus_operator.operator_name}}
-                <!-- <div *ngFor="let busName of festivalFare.bus; let nameIndex=index;">
-                  {{busName.bus_operator.operator_name}}
-                </div> -->
+                <span *ngIf="festivalFare.bus?.length != 0">
+                  {{festivalFare.bus[0].bus_operator.operator_name}}
+                </span>
+                <span *ngIf="festivalFare.bus?.length == 0">
+                 --No Operator--
+                </span>
               </td>
               <td>
-                <div *ngFor="let busName of festivalFare.bus; let nameIndex=index;">
-                  {{busName.name}}
+                <div *ngIf="festivalFare.bus?.length != 0">
+                  <span *ngFor="let busName of festivalFare.bus; let nameIndex=index;"> 
+                    {{busName.name}}
+                  </span>
+                </div>
+
+                <div *ngIf="festivalFare.bus?.length == 0">
+                  -- No Bus --
                 </div>
               </td>
+
               <td>{{ festivalFare.date | date: 'dd/MM/yyyy' }}</td>
               <td>{{ festivalFare.seater_price }}</td>
               <td>{{ festivalFare.sleeper_price }}</td>

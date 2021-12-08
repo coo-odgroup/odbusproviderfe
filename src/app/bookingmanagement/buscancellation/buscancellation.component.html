@@ -258,10 +258,10 @@
 
                   <div class="" formArrayName="buses">
                     <div class="form-group row" style="border-bottom:1px solid #eee;"
-                      *ngFor="let buses of busesFormGroup.controls; let j = index" [formGroupName]="j">
-                      <strong>{{buses.controls.busName.value}}</strong>
+                      *ngFor="let busesitem of busesFormGroup.controls; let j = index" [formGroupName]="j">
+                      <strong>{{busesitem.controls.busName.value}}</strong>
                       <div class="col-md-12" formArrayName="dateLists">
-                        <label *ngFor="let busesFormGroup of buses['controls'].dateLists['controls']; let i=index"
+                        <label *ngFor="let busesFormGroup of busesitem['controls'].dateLists['controls']; let i=index"
                           class="col-2" [formGroupName]="i">
                           <input type="checkbox" formControlName="datechecked" />
                           {{busesFormGroup.controls.entryDates.value}}

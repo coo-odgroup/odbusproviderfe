@@ -83,15 +83,25 @@
             <tr *ngFor="let ownerFare of ownerFares; let i=index; ">
               <td>{{ ownerFare.id }}</td>
               <td>
-
-                {{ownerFare.bus[0].bus_operator.operator_name}}
+                <span *ngIf="ownerFare.bus?.length != 0">
+                  {{ownerFare.bus[0].bus_operator.operator_name}}
+                </span>
+                <span *ngIf="ownerFare.bus?.length == 0">
+                 --No Operator--
+                </span>
                 <!-- <div *ngFor="let busName of ownerFare.bus; let nameIndex=index;">
                   {{busName.bus_operator.operator_name}}
                 </div> -->
               </td>
               <td>
-                <div *ngFor="let busName of ownerFare.bus; let nameIndex=index;">
-                  {{busName.name}}
+                <div *ngIf="ownerFare.bus?.length != 0">
+                  <span *ngFor="let busName of ownerFare.bus; let nameIndex=index;"> 
+                    {{busName.name}}
+                  </span>
+                </div>
+
+                <div *ngIf="ownerFare.bus?.length == 0">
+                  -- No Bus --
                 </div>
               </td>
               <td>{{ ownerFare.date | date: 'dd/MM/yyyy' }}</td>

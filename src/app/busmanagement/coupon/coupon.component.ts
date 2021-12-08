@@ -417,4 +417,21 @@ deleteRecord()
     }); 
 }
 
+
+changeStatus(event: Event, stsitem: any) {
+  this.spinner.show();
+  this.couponService.chngsts(stsitem).subscribe(
+    resp => {
+      if (resp.status == 1) {
+        this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+        this.refresh();
+      }
+      else {
+        this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+        this.spinner.hide();
+      }
+    }
+  );
+}
+
 }
