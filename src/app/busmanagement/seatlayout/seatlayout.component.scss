@@ -18,6 +18,10 @@
     display: none;
     
 }
+::ng-deep .Row_LOWER
+{
+   text-align: center;
+}
 ::ng-deep .layoutBundlesml
 {
     margin-bottom:10px; 

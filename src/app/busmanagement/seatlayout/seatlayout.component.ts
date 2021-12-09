@@ -15,6 +15,7 @@ import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 
 interface SeatBlock{
   rowNumber?:any;
@@ -50,6 +51,8 @@ export class SeatlayoutComponent implements OnInit {
   SeatLayoutRecord: SeatLayout;
 
   public seatLayoutrows=Array();
+  public seatLayoutrowsTrash=Array();
+  public sleeperLayoutrowsTrash=Array();
   public sleeperLayoutrows=Array();
 
   public isSubmit: boolean;
@@ -61,7 +64,9 @@ export class SeatlayoutComponent implements OnInit {
   left = ['seater','sleeper','blank'];
   left_1 = ['sleeper','vertical','blank'];
   lowerBerthArray=[];
+  lowerBerthTrashArray=[];
   upperBerthArray=[];
+  upperBerthTrashArray=[];
   seatText=[];
   pagination: any;
   all: any;
@@ -323,6 +328,7 @@ export class SeatlayoutComponent implements OnInit {
             {
               this.lowerBerthBasketText[rowCounter]=new Array();
             }
+           
         }
         let counterItem=0;
         let rowArray=new Array();
@@ -640,8 +646,12 @@ export class SeatlayoutComponent implements OnInit {
   ResetAttributes()
   {
     this.lowerBerthArray=[];
+    this.lowerBerthTrashArray=[];
+    this.upperBerthTrashArray=[];
     this.upperBerthArray=[];
     this.seatLayoutrows=Array();
+    this.seatLayoutrowsTrash=Array();
+    this.sleeperLayoutrowsTrash=Array();
     this.sleeperLayoutrows=Array();
     this.SeatLayoutRecord= {} as SeatLayout;
 
@@ -724,6 +734,8 @@ export class SeatlayoutComponent implements OnInit {
     if(seatType=="Seater")
     {
       this.seatLayoutrows=Array();
+      this.seatLayoutrowsTrash=Array();
+     
       if(rowNumberChoosen>0)
       {
         for(let startCounter=0; startCounter<rowNumberChoosen; startCounter++)
@@ -731,11 +743,17 @@ export class SeatlayoutComponent implements OnInit {
           this.seatLayoutrows.push(startCounter);//THIS IS USED TO CHECK IF THERE IS ANY ROW CREATED
           this.lowerBerthArray.push(Array());
         }
+        this.seatLayoutrowsTrash.push(0);//THIS IS USED TO CHECK IF THERE IS ANY ROW CREATED
+        this.lowerBerthTrashArray.push(Array());
       }
+      
+
+      
     }
     else
     {
       this.sleeperLayoutrows=Array();
+      this.sleeperLayoutrowsTrash=Array();
       if(rowNumberChoosen>0)
       {
         for(let startCounter=0; startCounter<rowNumberChoosen; startCounter++)
@@ -743,6 +761,8 @@ export class SeatlayoutComponent implements OnInit {
           this.sleeperLayoutrows.push(startCounter);//THIS IS USED TO CHECK IF THERE IS ANY ROW CREATED
           this.upperBerthArray.push(Array());
         }
+        this.sleeperLayoutrowsTrash.push(0);//THIS IS USED TO CHECK IF THERE IS ANY ROW CREATED
+        this.upperBerthTrashArray.push(Array());
       }
     }
   }
