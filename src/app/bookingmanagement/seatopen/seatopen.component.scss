@@ -71,12 +71,14 @@ margin-left: 2px;
     background: url('../../../assets/images/vertical.png') no-repeat center center;
     display:flex;
 }
+
+
 ::ng-deep .seatHolder input[type="checkbox"]:checked + .verticalImage {
-    background: url('../../../assets/images/vertical-available.png') no-repeat center center;
+    background: url('../../../assets/images/vertical-available.jpg') no-repeat center center;
     cursor:pointer;
 }
 ::ng-deep .seatHolder input[type="checkbox"]:disabled + .verticalImage {
-    background: url('../../../assets/images/vertical.png') no-repeat center center;
+    background: url('../../../assets/images/vertical_none.png') no-repeat center center;
     cursor: not-allowed;
 }
 

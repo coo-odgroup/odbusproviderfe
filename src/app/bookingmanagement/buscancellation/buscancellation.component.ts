@@ -273,10 +273,14 @@ export class BuscancellationComponent implements OnInit {
 
           for (let eDate of bData.entryDates) {
             let dateformate = this.pipe.transform(eDate.entry_date, 'y-M-d');
-
-            var isPresent = this.busCancellationRecord.bus_cancelled_date.some(function (el) {
-              return el.cancelled_date === dateformate;
-            });
+            let isPresent=false;
+            if(this.busCancellationRecord.bus_cancelled_date)
+            {
+              isPresent = this.busCancellationRecord.bus_cancelled_date.some(function (el) {
+                return el.cancelled_date === dateformate;
+              });
+            }
+           
             if (isPresent) {
 
               let newDatesgroup: FormGroup = this.fb.group({

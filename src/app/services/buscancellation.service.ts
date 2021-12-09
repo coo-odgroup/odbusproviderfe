@@ -62,6 +62,17 @@ export class BuscancellationService {
       catchError(this.errorHandler)
     )
   }
+
+  getById(id){
+    return this.httpClient.get<any>(this.apiURL + '/busCancelled/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

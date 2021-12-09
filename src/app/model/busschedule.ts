@@ -9,4 +9,5 @@ export interface Busschedule {
     entryDates: [];
     bus:any;
     bus_schedule_date:any;
+    select:any;
 }

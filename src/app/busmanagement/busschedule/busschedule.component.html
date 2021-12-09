@@ -154,25 +154,27 @@
                 </span>               
               </div>
             </div>               
-            <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date; "
-              class="col-2">{{entryDate.entry_date}}</label>
+            <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date;"
+              class="col-2" >  
+               <!-- <span *ngIf="entryDate.select == 'selected'">
+                  <span class="text-danger">
+                    {{entryDate.entry_date}} 
+                  </span>
+               </span>           
+               <span  *ngIf="entryDate.select == ''">
+                  <span class="text-dark">
+                  {{entryDate.entry_date}} 
+                  </span>
+               </span>      -->
+               {{entryDate.entry_date}}       
+               
+              <!-- <div [innerHtml]=”myHtmlProperty”></div>                 -->
+            </label>
           </div>
         </div>
       </div>
     </app-card>
-    <!-- <ng-template #viewEntryDates let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5"> Entry Dates</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <label  *ngFor="let entryDate of busScheduleRecord.entryDates; " class = "col-3">{{entryDate.entryDates}}</label>
-                </div>
-              </div>
-            </div>
-          </ng-template> -->
+   
     <ng-template #confirmDialog let-modal>
       <div class="modal-header">
         <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>

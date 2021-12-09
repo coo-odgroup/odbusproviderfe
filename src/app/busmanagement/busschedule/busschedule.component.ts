@@ -7,12 +7,14 @@ import { NotificationService } from '../../services/notification.service';
 import { BusscheduleService } from '../../services/busschedule.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { BusService } from './../../services/bus.service';
+import { BuscancellationService } from '../../services/buscancellation.service';
 import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+
 
 
 @Component({
@@ -49,7 +51,8 @@ export class BusscheduleComponent implements OnInit {
   FormOne: FormGroup;
   pagination: any;
   all: any;
-  constructor(private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
+  cancelDates: any;
+  constructor(private buscanCellationService: BuscancellationService,private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
     this.isSubmit = false;
     this.busScheduleRecord= {} as Busschedule;
@@ -289,9 +292,39 @@ export class BusscheduleComponent implements OnInit {
   // }
   showEntryDates(event : Event, id : any)
   { 
+
     this.showdates='1';
     this.busScheduleRecord=this.busSchedules[id];
-    console.log(this.busScheduleRecord);
+    this.buscanCellationService.getById(this.busScheduleRecord.bus_id).subscribe(
+      resp => {
+        if(resp.status==1)
+        {
+          if(resp.data.length!=0)
+          {
+            this.cancelDates = resp.data[0].bus_cancelled_date;
+            let counter=0;
+            for(let scheduledDate of this.busScheduleRecord.bus_schedule_date)
+            {
+              var isPresent = this.cancelDates.some(function (el) {
+                return el.cancelled_date === scheduledDate.entry_date;
+              });
+              if(isPresent)
+              {
+                this.busScheduleRecord.bus_schedule_date[counter].entry_date="**"+scheduledDate.entry_date+"**";
+                // this.busScheduleRecord.bus_schedule_date[counter].select="selected";
+              }
+              // else
+              // {
+              //   this.busScheduleRecord.bus_schedule_date[counter].entry_date= scheduledDate.entry_date;
+              //   this.busScheduleRecord.bus_schedule_date[counter].select="";
+              // }
+              counter++;
+            }
+          }
+        }
+      });
+      console.log(this.busScheduleRecord);
+      
     // this.busScheduleForm = this.fb.group({
     //   entryDates:this.busScheduleForm.value.entryDates,
     // });
