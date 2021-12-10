@@ -19,13 +19,21 @@
           <form [formGroup]="searchForm" class="editForm" novalidate>
             <div class="row">
               <div class="from-group col-6">
-                <input type="text" class="form-control sml_input" formControlName="name" placeholder="Search Here">
+                <div class="input-group">
+                  <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                    formControlName="name" (keyup.enter)="getAll()">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
+                      <i class="fas fa-search"> </i>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="from-group col-4">
 
-                <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
+                <!-- <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
                   <i class="fas fa-search"> </i> Search
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                   <i class="fas fa-sync-alt"> </i> Refresh
                 </button>

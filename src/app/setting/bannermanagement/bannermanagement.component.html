@@ -16,10 +16,6 @@
             <form [formGroup]="searchForm" class="editForm" novalidate>
               <div class="row">
 
-                
-                <div class="from-group col-3">
-                  <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By">
-                </div>
                 <div class="from-group col-3">
                   <select class="form-control sml_input" formControlName="status">
                     <option [value]="" [selected]="true">-Status-</option>
@@ -27,8 +23,21 @@
                     <option value=0>Pending</option>
                   </select>
                 </div>
+                <div class="from-group col-3">
+                  <!-- <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By"> -->
+                  <div class="input-group">
+                    <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                      formControlName="searchBy" (keyup.enter)="getAll()">
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
+                        <i class="fas fa-search"> </i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
                 <div class="from-group col-4">
-                  <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i> Search</button>
+                  <!-- <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i> Search</button> -->
                   <button class="btn sml_input btn-danger " (click)="refresh()"> <i
                       class="fas fa-sync-alt"></i> Refresh</button>
                 </div>

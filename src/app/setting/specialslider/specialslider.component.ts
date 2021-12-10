@@ -83,7 +83,11 @@ export class SpecialsliderComponent implements OnInit {
    refresh()
     {
       this.spinner.show();
-      this.searchForm.reset();
+      this.searchForm =this.fb.group({
+        searchBy:[null],
+        status:[null],
+        per_page:Constants.RecordLimit,
+      })
       this.getAll();
     }
     page(label:any){

@@ -16,9 +16,7 @@
         <div class="col-10">
           <form [formGroup]="searchForm" class="editForm" novalidate>
             <div class="row">
-              <div class="from-group col-3">
-                <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By">
-              </div>
+             
               <div class="from-group col-3">
                 <select class="form-control sml_input" formControlName="status">
                   <option [value]="" [selected]="true">-Status-</option>
@@ -26,8 +24,20 @@
                   <option value=0>Block</option>
                 </select>
               </div>
+              <div class="from-group col-3">
+                <!-- <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By"> -->
+                <div class="input-group">
+                  <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                    formControlName="Search By" (keyup.enter)="getAll()">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
+                      <i class="fas fa-search"> </i>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="from-group col-4">
-                <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i>Search</button>
+                <!-- <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i>Search</button> -->
                 <button class="btn sml_input btn-danger ml-2" (click)="refresh()"> <i
                     class="fas fa-sync-alt"></i>Refresh</button>
               </div>
@@ -73,8 +83,8 @@
                   <img *ngIf="sliderdata.slider_photo=='' || sliderdata.slider_photo==null" class="sliderImage"
                     src="../../../assets/images/noImage.png" height="100">
                 </td>
-              <td>{{sliderdata.start_date}} {{sliderdata.start_time}} </td>
-              <td>{{sliderdata.end_date}} {{sliderdata.end_time}}</td>
+              <td>{{sliderdata.start_date}} <br>{{sliderdata.start_time}} </td>
+              <td>{{sliderdata.end_date}}<br> {{sliderdata.end_time}}</td>
               <td>{{ sliderdata.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ sliderdata.created_by }}</td>
               <td>

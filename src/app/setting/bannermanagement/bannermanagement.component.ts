@@ -80,7 +80,12 @@ export class BannermanagementComponent implements OnInit {
    }
    refresh()
     {
-      this.searchForm.reset();
+      this.searchForm =this.fb.group({
+        searchBy:[null],
+        status:[null],
+        banner_image:[null],
+        per_page:Constants.RecordLimit,
+      })
       this.getAll();
     }
     page(label:any){
