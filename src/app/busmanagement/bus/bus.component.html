@@ -17,21 +17,28 @@
           <form [formGroup]="searchForm">
             <div class="row">
 
-              <div class="col-5">
+              <div class="col-4">
                 <div class="form-group row">
 
                   <div class="col-sm-12">
-                    <input type="text" class="form-control sml_input" placeholder="Search by Bus name/Bus number/via " required
-                      formControlName="name" />
+                      <div class="input-group">
+                        <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                        formControlName="name" (keyup.enter)="search()">
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                            <i class="fas fa-search"> </i> 
+                          </button>                        
+                        </div>
+                      </div>  
                   </div>
                 </div>
               
               </div>
-              <div class="col-5">
-                <button type="button" class="btn btn-success  sml_input" (click)="search()"
+              <div class="col-6">
+                <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()"
                     title="search">
                     <i class="fas fa-search"> </i> Search
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
                     title="refresh">
                     <i class="fas fa-sync-alt"> </i> Refresh
@@ -2381,7 +2388,7 @@
                     <!-- Basic  Details -->
                     <table  class="table table-striped ">
                       <h5 >Bus Basic Details</h5>
-                        <tr class="bg-info text-white">
+                        <tr class="bg-success text-white">
                           <th>Bus Name </th>
                           <th>Bus Number</th> 
                           <th>Operator </th> 
@@ -2395,7 +2402,7 @@
                   <!-- Contact Details -->
                     <table  class="table table-striped ">
                       <h5>Contact Details</h5>
-                      <tr class="bg-info text-white">                      
+                      <tr class="bg-success text-white">                      
                         <th>Person</th>
                         <th>Phone</th>
                         <td>Booking SMS</td> 
@@ -2418,7 +2425,7 @@
                         </td>
                         <td>
                           <span *ngIf="contact.booking_sms_send==1">
-                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                            <i class="fa fa-check text-info" aria-hidden="true"></i>
                             </span>
                             <span *ngIf="contact.booking_sms_send !=1">
                               <i class="fa fa-times text-danger" aria-hidden="true"></i>
@@ -2426,7 +2433,7 @@
                         </td>
                         <td>
                           <span *ngIf="contact.cancel_sms_send==1">
-                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                            <i class="fa fa-check text-info" aria-hidden="true"></i>
                             </span>
                             <span *ngIf="contact.cancel_sms_send !=1">
                               <i class="fa fa-times text-danger" aria-hidden="true"></i>
@@ -2437,7 +2444,7 @@
                     <!-- Seat and Sleeper -->
                       <table class="table table-striped">
                         <h5>Bus Seat and Sleeper Details</h5>
-                        <tr class="bg-info text-white">
+                        <tr class="bg-success text-white">
                           <th>Seats</th>
                           <th>Sleeper</th>
                         </tr>
@@ -2450,7 +2457,7 @@
                               </span>
                           </td>
                           <td>
-                            <span class="text-success text-uppercase"  *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
+                            <span class="text-info text-uppercase"  *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
                               <span *ngIf="allSeats.seats.seat_class_id==2 || allSeats.seats.seat_class_id==3">
                                 <b>{{allSeats.seats.seatText}}</b>,  
                               </span>
@@ -2461,7 +2468,7 @@
                   <!-- Route Details -->
                     <table  class="table table-striped ">
                         <h5>Route Details</h5>
-                        <tr class="bg-info text-white">
+                        <tr class="bg-success text-white">
                           <th>Source</th>
                           <th>Departure Time</th>
                           <th>Journey Day</th>

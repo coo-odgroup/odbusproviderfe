@@ -723,7 +723,7 @@ export class BusComponent implements OnInit {
       via:this.busForm.value.via,
       ticket_cancelation_id:'1', 
       bus_description:this.busForm.value.bus_description,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
     };
     if(data.id!=null)
     {
@@ -750,7 +750,7 @@ export class BusComponent implements OnInit {
     //here
     const data={
       id:this.busForm.value.id,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
       bus_number:this.busForm.value.bus_number,
       conductor_no:this.busForm.value.conductor_no,
       c_sms_ticket:this.busForm.value.c_sms_ticket,
@@ -819,7 +819,7 @@ export class BusComponent implements OnInit {
       name:this.busForm.value.name,
       via:this.busForm.value.via,
       ticket_cancelation_id:'1', 
-      created_by:'Admin',
+      created_by: localStorage.getItem('USERNAME'),
       bus_number:this.busForm.value.bus_number,
       conductor_no:this.busForm.value.conductor_no,
       c_sms_ticket:this.busForm.value.c_sms_ticket,
@@ -1200,7 +1200,7 @@ export class BusComponent implements OnInit {
       id:this.busForm.value.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
       user_id :'1',
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
       busRoutes:this.busForm.value.busRoutes,
       busRoutesInfo:this.busForm.value.busRoutesInfo,
       bus_id:this.busRecord.id,
@@ -1820,7 +1820,7 @@ export class BusComponent implements OnInit {
       bus_id:this.busRecord.id,
       duration:this.busForm.value.duration_minuties,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
     };
 
     if(data.id!=null)
@@ -1849,7 +1849,7 @@ export class BusComponent implements OnInit {
       bus_id:this.busRecord.id,
       id:this.busForm.value.bus_seat_layout_id,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
-      created_by:'Admin',
+      created_by:localStorage.getItem('USERNAME'),
     };
     
     if(data.id!=null)

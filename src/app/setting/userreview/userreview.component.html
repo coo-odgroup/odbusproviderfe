@@ -3,8 +3,8 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <app-card [hidHeader]="false" cardTitle="User Review Details" cardClass="card-datatable" [options]="true"
-      cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
+    <app-card [hidHeader]="false" cardTitle="User Review Details" cardClass="card-datatable" [options]="false"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
       <div class=" mb-3">
         <div class="row ">
           <div class="col-12">
@@ -20,8 +20,7 @@
                     </div>
                   </div>
                 </div>
-
-
+                
                 <div class="col-4">
                   <div class="row">
                     <input class="form-control hidden" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'"

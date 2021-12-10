@@ -86,7 +86,7 @@ export class BusoperatorComponent implements OnInit {
 
     this.searchForm = this.fb.group({  
       name: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: 25,
     });
 
     this.search();
@@ -140,7 +140,7 @@ export class BusoperatorComponent implements OnInit {
    {
     this.searchForm = this.fb.group({  
       name: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: 25,
     });
      this.search();
      this.spinner.hide();
