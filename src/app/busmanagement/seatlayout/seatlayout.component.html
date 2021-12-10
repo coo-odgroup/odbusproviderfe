@@ -339,24 +339,24 @@
                     <div class="col-12" ngModelGroup="lowerBerth">
                       <div class="col-12 row form-group   layoutBundlesml" *ngFor="let lbData of lowerBerthSeats; let rowCount=index" ngModelGroup="lower_{{rowCount}}">
                           <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of lbData; let colCount=index" ngModelGroup="{{colCount}}">
-                            <img src="assets/images/seat-blue.svg" *ngIf="colData.seatType==1">
-                            <img src="assets/images/sleeper.svg" *ngIf="colData.seatType==2">
-                            <img src="assets/images/vertical.png" *ngIf="colData.seatType==3">
-                            <img src="assets/images/blank.svg" *ngIf="colData.seatType==4">
+                            <img src="assets/images/seat-blue.svg" *ngIf="colData.seat_class_id==1">
+                            <img src="assets/images/sleeper.svg" *ngIf="colData.seat_class_id==2">
+                            <img src="assets/images/vertical.png" *ngIf="colData.seat_class_id==3">
+                            <img src="assets/images/blank.svg" *ngIf="colData.seat_class_id==4">
                             <br />
-                            <input type="text" name="seatText" *ngIf="colData.seatType!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  />
+                            <input type="text" name="seatText" *ngIf="colData.seat_class_id!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  />
                           </div>
                       </div>
                     </div>
                     <div class="col-12" ngModelGroup="upperBerth">
                       <div class="col-12 row form-group   layoutBundlesml" *ngFor="let ubData of upperBerthSeats; let rowCount=index" ngModelGroup="upper_{{rowCount}}">
                         <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of ubData; let colCount=index" ngModelGroup="{{colCount}}">
-                          <img src="assets/images/seat-blue.svg" *ngIf="colData.seatType==1">
-                          <img src="assets/images/sleeper.png" *ngIf="colData.seatType==2">
-                          <img src="assets/images/vertical.png" *ngIf="colData.seatType==3">
-                          <img src="assets/images/blank.png" *ngIf="colData.seatType==4">
+                          <img src="assets/images/seat-blue.svg" *ngIf="colData.seat_class_id==1">
+                          <img src="assets/images/sleeper.png" *ngIf="colData.seat_class_id==2">
+                          <img src="assets/images/vertical.png" *ngIf="colData.seat_class_id==3">
+                          <img src="assets/images/blank.png" *ngIf="colData.seat_class_id==4">
                           <br />
-                          <input type="text" name="seatText" *ngIf="colData.seatType!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  />
+                          <input type="text" name="seatText" *ngIf="colData.seat_class_id!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  />
                         </div>
                       </div>
                     </div>

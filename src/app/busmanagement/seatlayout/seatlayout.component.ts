@@ -21,6 +21,7 @@ interface SeatBlock{
   rowNumber?:any;
   colNumber?:any;
   seatType?:any;
+  seat_class_id?:any;
   berthType?:any;
   seatText?:any;
 }
@@ -159,7 +160,7 @@ export class SeatlayoutComponent implements OnInit {
               cellData[coldata.rowNumber]=[coldata.rowNumber,coldata.colNumber,coldata.seatType,1];
               rowArray.push(cellData);
               counterItem++;
-              var seatData: SeatBlock = {rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:1, seatText:''};
+              var seatData: SeatBlock = {rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:1, seatText:'', seat_class_id:coldata.seat_class_id};
               this.seatBlocks.push(seatData); //Value Pushed to Interface
             }
             this.lowerBerthBasketText[rowCounter]=rowArray; //Value Pushed to Array
@@ -184,7 +185,7 @@ export class SeatlayoutComponent implements OnInit {
               upperrowArray.push(cellData);
               counterItem++;
 
-              var seatData: SeatBlock = {rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:2, seatText:''};
+              var seatData: SeatBlock = {rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:2, seatText:'',seat_class_id:coldata.seat_class_id};
               this.seatBlocks.push(seatData); //Value Pushed to Interface
             }
             this.upperBerthBasketText[rowCounter]=upperrowArray; //Value Pushed to Array
@@ -192,13 +193,7 @@ export class SeatlayoutComponent implements OnInit {
           }
         }
       }
-    )
-    
-
-    
-    
-
-  
+    )  
   }
   updateLayout(form:NgForm)
   {
@@ -269,8 +264,8 @@ export class SeatlayoutComponent implements OnInit {
       created_by:localStorage.getItem('USERNAME'),
       bus_operator_id:this.SeatLayoutRecord.bus_operator_id  
     }
- 
-   
+    
+    
     this.sLayout.update(this.SeatLayoutRecord.id, data).subscribe(
       resp => {
         if(resp.status==1)
