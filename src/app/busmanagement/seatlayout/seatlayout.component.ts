@@ -82,6 +82,9 @@ export class SeatlayoutComponent implements OnInit {
         return item;
       },
       accepts: (el, target, source, sibling) => {
+        if (!target || !source || (target === source)) {
+          return false;
+        }
         return target.id !== 'left';
       }
     });
@@ -94,6 +97,9 @@ export class SeatlayoutComponent implements OnInit {
         return item;
       },
       accepts: (el, target, source, sibling) => {
+        if (!target || !source || (target === source)) {
+          return false;
+        }
         return target.id !== 'left_1';
       }
     });
@@ -305,8 +311,11 @@ export class SeatlayoutComponent implements OnInit {
 
     this.dragulaService.dropModel('COPYABLE').subscribe(({el,source,name,target, sibling,sourceModel, targetModel}) => {
 
+      
+
       if(target!=null)
       {
+       
         let sTypeId=el.id;
         let totalChild=target.childElementCount;
         let targetid=target.className;
@@ -330,8 +339,10 @@ export class SeatlayoutComponent implements OnInit {
         
         for(var items of targetModel)
         {
+
           let cellData=new Array();
           this.seatType=seatTypeId[items];
+          console.log(this.seatType);
           if(this.seatType!="")
           {
             cellData[rowCounter]=[rowCounter,counterItem,this.seatType,1];
@@ -621,7 +632,7 @@ export class SeatlayoutComponent implements OnInit {
       created_by:localStorage.getItem('USERNAME'),
       bus_operator_id:this.SeatLayoutForm.value.bus_operator_id
     }
-
+    
     this.sLayout.create(data).subscribe(
       resp => {
         if(resp.status==1)
