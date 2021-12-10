@@ -342,7 +342,7 @@ export class SeatlayoutComponent implements OnInit {
 
           let cellData=new Array();
           this.seatType=seatTypeId[items];
-          console.log(this.seatType);
+          
           if(this.seatType!="")
           {
             cellData[rowCounter]=[rowCounter,counterItem,this.seatType,1];
