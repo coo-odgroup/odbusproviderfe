@@ -453,7 +453,7 @@ export class SeatlayoutComponent implements OnInit {
    
   search(pageurl="")
   {      
-    //this.spinner.show();
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -468,6 +468,7 @@ export class SeatlayoutComponent implements OnInit {
           this.SeatLayouts= res.data.data.data;
           this.pagination= res.data.data;
           this.all=res.data;
+          this.spinner.hide();
           // console.log( this.SeatLayouts);
         }
       );
@@ -479,6 +480,7 @@ export class SeatlayoutComponent implements OnInit {
           this.SeatLayouts= res.data.data.data;
           this.pagination= res.data.data;
           this.all=res.data;
+          this.spinner.hide();
           // console.log( res.data);
         }
       );
@@ -524,6 +526,7 @@ export class SeatlayoutComponent implements OnInit {
   formSleeper=[];
   saveLayout(form: NgForm)
   {
+    this.spinner.show();
     this.seatBlocks=[];
     
     for(let LBRow of this.lowerBerthBasketText)
