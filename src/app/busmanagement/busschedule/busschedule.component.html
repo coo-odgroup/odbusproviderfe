@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card [hidHeader]="false" cardTitle="BUS SCHEDULE" cardClass="card-datatable"  [options]="false"
-            cardClass=" table-border-style user-profile-list ">
+            cardClass=" table-border-style user-profile-list " [isCardFooter]="true">
     
       <div class="row">
         <div class="col-2">
@@ -161,20 +161,8 @@
               </div>
             </div>               
             <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date;"
-              class="col-2" >  
-               <!-- <span *ngIf="entryDate.select == 'selected'">
-                  <span class="text-danger">
-                    {{entryDate.entry_date}} 
-                  </span>
-               </span>           
-               <span  *ngIf="entryDate.select == ''">
-                  <span class="text-dark">
-                  {{entryDate.entry_date}} 
-                  </span>
-               </span>      -->
-               {{entryDate.entry_date}}       
-               
-              <!-- <div [innerHtml]=”myHtmlProperty”></div>                 -->
+              class="col-2" >               
+               {{entryDate.entry_date}}      
             </label>
           </div>
         </div>

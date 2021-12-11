@@ -323,7 +323,7 @@ export class BusscheduleComponent implements OnInit {
           }
         }
       });
-      console.log(this.busScheduleRecord);
+      // console.log(this.busScheduleRecord);
       
     // this.busScheduleForm = this.fb.group({
     //   entryDates:this.busScheduleForm.value.entryDates,

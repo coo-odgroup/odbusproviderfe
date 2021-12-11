@@ -96,7 +96,7 @@
             <tr *ngFor="let bus of buses; let i=index; ">
 
               <td>{{i+1}}</td>
-              <td>{{ bus.bus_operator.operator_name }}</td>
+              <td>{{bus.bus_operator.organisation_name }}<br>[{{ bus.bus_operator.operator_name }}]</td>
               <td>{{ bus.name }}</td>
               <td class="text-uppercase">{{ bus.bus_number }}</td>
               <!-- <td>{{ bus.via}}</td> -->
