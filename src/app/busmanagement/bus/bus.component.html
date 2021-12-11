@@ -101,13 +101,12 @@
               <td class="text-uppercase">{{ bus.bus_number }}</td>
               <!-- <td>{{ bus.via}}</td> -->
               <td>
-                <span *ngIf="bus.from_location && bus.to_location && bus.from_location?.length != 0 && bus.to_location?.length != 0 ">
-               
-                    {{ bus.from_location[0][0].name}} >> {{ bus.to_location[0][0].name}}
-                </span>
-                <span *ngIf="bus.from_location?.length == 0">
-                          no route.
-                </span>
+                <span *ngIf="bus.ticket_price[0].from_location?.length != 0 && bus.ticket_price[0].to_location?.length != 0 ">
+                  {{bus.ticket_price[0].from_location[0].name}} >>  {{bus.ticket_price[0].to_location[0].name}} 
+              </span>
+              <span *ngIf="bus.ticket_price[0].from_location?.length == 0">
+                        no route.
+              </span>
               </td>
               <td>{{ bus.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ bus.created_by }}</td>
@@ -2472,58 +2471,58 @@
                         </tr>
                       </table>
                   <!-- Route Details -->
-                    <table  class="table table-striped ">
-                        <h5>Route Details</h5>
-                        <tr class="bg-success text-white">
-                          <th>Source</th>
-                          <th>Departure Time</th>
-                          <th>Journey Day</th>
-                          <th>Destination</th> 
-                          <th>Arrival Time</th>
-                          <th>Arrival Day</th>
-                          <th>Seat Fare</th>
-                          <th>Sleeper Fare</th>                      
-                        </tr>
-                        <tr >
-                          <td>
-                            <span *ngFor="let frlocation of busRecord.from_location">
-                              {{frlocation[0].name}}<br/>
-                          </span>                         
-                          </td>
-                          <td>
-                            <span  *ngFor="let tktPrc of busRecord.ticket_price">
-                             {{tktPrc.dep_time  | date:"h:mm a"}} <br/></span>
-                          </td>
-                          <td>
-                            <span *ngFor="let tktPrc of busRecord.ticket_price">                             
-                              {{tktPrc.start_j_days}}  <br/>                          
-                            </span>
-                          </td>
-                          <td>
-                            <span *ngFor="let tolocation of busRecord.to_location">
-                              {{tolocation[0].name}}<br/></span>
-                          </td>
-                          <td>
-                            <span  *ngFor="let tktPrc of busRecord.ticket_price">
-                             {{tktPrc.arr_time | date:"h:mm a"}} <br/></span>
-                          </td>
-                          <td>
-                            <span *ngFor="let tktPrc of busRecord.ticket_price">                             
-                              {{tktPrc.j_days}}  <br/>                          
-                            </span>
-                          </td>
+                  <table  class="table table-striped ">
+                    <h5>Route Details</h5>
+                    <tr class="bg-success text-white">
+                      <th>Source</th>
+                      <th>Departure Time</th>
+                      <th>Journey Day</th>
+                      <th>Destination</th> 
+                      <th>Arrival Time</th>
+                      <th>Arrival Day</th>
+                      <th>Seat Fare</th>
+                      <th>Sleeper Fare</th>               
+                    </tr>
+                    <tr *ngFor="let tktPrc of busRecord.ticket_price">
+                      <td>
+                        <span>
+                          {{tktPrc.from_location[0].name}}<br/>
+                      </span>                         
+                      </td>
+                      <td>
+                        <span >
+                         {{tktPrc.dep_time  | date:"h:mm a"}} <br/></span>
+                      </td>
+                      <td>
+                        <span>                             
+                          {{tktPrc.start_j_days}}  <br/>                          
+                        </span>
+                      </td>
+                      <td>
+                        <span>
+                          {{tktPrc.to_location[0].name}}<br/></span>
+                      </td>
+                      <td>
+                        <span >
+                         {{tktPrc.arr_time | date:"h:mm a"}} <br/></span>
+                      </td>
+                      <td>
+                        <span>                             
+                          {{tktPrc.j_day}}                            
+                        </span>
+                      </td>
 
-                          <td>
-                            <span *ngFor="let fare of busRecord.ticket_price">
-                              <i _ngcontent-wvl-c176="" class="fas fa-rupee-sign"></i>  {{fare.base_seat_fare}}<br/></span>
-                          </td>
-                          <td>
-                            <span *ngFor="let fare of busRecord.ticket_price">
-                              <i _ngcontent-wvl-c176="" class="fas fa-rupee-sign"></i>  {{fare.base_sleeper_fare}}<br/></span>
-                          </td>
-                        </tr>
-                        
-                    </table>
+                      <td>
+                        <span>
+                          <i _ngcontent-wvl-c176="" class="fas fa-rupee-sign"></i>  {{tktPrc.base_seat_fare}}<br/></span>
+                      </td>
+                      <td>
+                        <span>
+                          <i _ngcontent-wvl-c176="" class="fas fa-rupee-sign"></i>  {{tktPrc.base_sleeper_fare}}<br/></span>
+                      </td>
+                    </tr>
+                    
+                </table>
 
                   </div>
                 </div>
