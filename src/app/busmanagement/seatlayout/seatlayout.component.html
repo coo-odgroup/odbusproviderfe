@@ -99,8 +99,8 @@
                     <div class="overlay-edit">
                       <button type="button"  (click)="ResetAttributes();viewSeatLayout($event, i); OpenModal(viewPanel);"
                         class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
-                      <button type="button" (click)="deleteSeatLayout(confirmDialog,sLayout.id)" class="btn btn-icon btn-danger"><i
-                          class="feather icon-trash-2"></i></button>
+                          <button type="button" (click)="ResetAttributes();viewSeatLayout($event, i); OpenModal(viewDetails);"
+                        class="btn btn-icon btn-warning"><i class="feather icon-eye"></i></button>
                     </div>
                   </td>
               </tr>
@@ -369,6 +369,59 @@
           </div>
           <div class="modal-footer">
             <button type="button"  (click)="updateLayout(editForm)" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" ngbAutofocus data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+
+        <ng-template #viewDetails let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> View Layout</h5>
+            <button type="button" class="close" aria-label="Close"   (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <form class="editForm" #editForm="ngForm">  
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <div class="col-4">
+                     
+                    <input type="text" readonly name="SeatLayoutName" class="form-control" required placeholder="Enter Seat Layout Name" ngModel="{{SeatLayoutRecord.name}}">
+                    </div>
+                    <br />  
+                    <div class="col-12" ngModelGroup="lowerBerth">
+                      <div class="col-12 row form-group   layoutBundlesml" *ngFor="let lbData of lowerBerthSeats; let rowCount=index" ngModelGroup="lower_{{rowCount}}">
+                          <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of lbData; let colCount=index" ngModelGroup="{{colCount}}">
+                            <img src="assets/images/seat-blue.svg" *ngIf="colData.seat_class_id==1">
+                            <img src="assets/images/sleeper.svg" *ngIf="colData.seat_class_id==2">
+                            <img src="assets/images/vertical.png" *ngIf="colData.seat_class_id==3">
+                            <img src="assets/images/blank.svg" *ngIf="colData.seat_class_id==4">
+                            <br />
+                            <!-- <input type="text" name="seatText" *ngIf="colData.seat_class_id!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  /> -->
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-12" ngModelGroup="upperBerth">
+                      <div class="col-12 row form-group   layoutBundlesml" *ngFor="let ubData of upperBerthSeats; let rowCount=index" ngModelGroup="upper_{{rowCount}}">
+                        <div style="width: 50px; float: left; " class="selectSeater" *ngFor="let colData of ubData; let colCount=index" ngModelGroup="{{colCount}}">
+                          <img src="assets/images/seat-blue.svg" *ngIf="colData.seat_class_id==1">
+                          <img src="assets/images/sleeper.png" *ngIf="colData.seat_class_id==2">
+                          <img src="assets/images/vertical.png" *ngIf="colData.seat_class_id==3">
+                          <img src="assets/images/blank.png" *ngIf="colData.seat_class_id==4">
+                          <br />
+                          <!-- <input type="text" name="seatText" *ngIf="colData.seat_class_id!=4" class="sml_textbox" value="{{colData.seatText}}" ngModel="{{colData.seatText}}"  /> -->
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <!-- <button type="button"  (click)="updateLayout(editForm)" class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button> -->
             <button type="button" class="btn btn-default" ngbAutofocus data-dismiss="modal" #defaultClick (click)="modal.dismiss('Cross click')">Close</button>
           </div>
         </ng-template>
