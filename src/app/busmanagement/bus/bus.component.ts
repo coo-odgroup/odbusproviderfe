@@ -1176,8 +1176,14 @@ export class BusComponent implements OnInit {
 
           this.busRoutesInfoRecords=this.busForm.get('busRoutesInfo') as FormArray;
           this.busRoutesInfoRecords.clear();
+          let counter=0;
+          for(let singleLocation of resp.data.locations)
+          {
+            this.selectedLocations[counter]=[{id:singleLocation.location_id,location_name:singleLocation.location_name[0].name}];
+            counter++;
+          }
           
-          for(let singleRoute of resp.data)
+          for(let singleRoute of resp.data.result)
           {
             // console.log(singleRoute);
             let arrayroutelen = this.busRoutesInfoRecords.length;
@@ -1191,7 +1197,7 @@ export class BusComponent implements OnInit {
               sleeper_fare:[singleRoute.base_sleeper_fare],              
               booking_seized:[singleRoute.seize_booking_minute] 
             });
-            this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
+           
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
 
            
@@ -1440,7 +1446,7 @@ export class BusComponent implements OnInit {
       timing=>{
         if(timing.status==1)
         {
-          
+          //code here
           this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
           let stoppages=timing.data.stoppage_timing;
           //this.busRoutesRecords.clear();
@@ -1506,7 +1512,14 @@ export class BusComponent implements OnInit {
         {
           this.busRoutesInfoRecords=this.busForm.get('busRoutesInfo') as FormArray;
           this.busRoutesInfoRecords.clear();
-          for(let singleRoute of resp.data)
+          console.log(resp.data);
+          let counter=0;
+          for(let singleLocation of resp.data.locations)
+          {
+            this.selectedLocations[counter]=[{id:singleLocation.location_id,location_name:singleLocation.location_name[0].name}];
+            counter++;
+          }
+          for(let singleRoute of resp.data.result)
           {
             
             
@@ -1521,9 +1534,10 @@ export class BusComponent implements OnInit {
               sleeper_fare:[singleRoute.base_sleeper_fare],
                booking_seized:[null] 
             });
-            this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
+            
+           
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
-
+            console.log(this.busRoutesInfoRecords.controls.from_location);
            
             let stoppages=singleRoute['stoppage'];
 
@@ -1811,7 +1825,13 @@ export class BusComponent implements OnInit {
         {
           this.busRoutesInfoRecords=this.busForm.get('busRoutesInfo') as FormArray;
           this.busRoutesInfoRecords.clear();
-          for(let singleRoute of resp.data)
+          let counter=0;
+          for(let singleLocation of resp.data.locations)
+          {
+            this.selectedLocations[counter]=[{id:singleLocation.location_id,location_name:singleLocation.location_name[0].name}];
+            counter++;
+          }
+          for(let singleRoute of resp.data.result)
           {
             
             
@@ -1826,7 +1846,7 @@ export class BusComponent implements OnInit {
               sleeper_fare:[singleRoute.base_sleeper_fare],
               booking_seized:[null] 
             });
-            this.selectedLocations[arrayroutelen]=[{id:singleRoute.source_id,location_name:singleRoute.source_id}];
+            
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
 
            

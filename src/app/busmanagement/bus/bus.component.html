@@ -218,6 +218,7 @@
               <div class="col-sm-12">
                 <div class="form-material">
                   <div class="right-icon-control">
+                    
                     <form [formGroup]="busForm" class="editForm" novalidate>
 
                       <aw-wizard #wizard class="arc-wizard arc-custom" navBarLayout="large-filled-symbols">
@@ -753,9 +754,13 @@
                                 <div [formGroupName]="i" class="row">
                                   <div class="form-group col-2" style="padding:0px 5px;">
                                     <label>From <span class="text-danger">*</span></label>
-                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                      placeholder="From Location" formControlName="from_location" [clearable]="false">
-                                    </ng-select>
+                                    
+                                    <select class="form-control" required formControlName="from_location" type="text">
+                                      <option *ngFor="let fromLocation of selectedLocations; let from_lc=index;"
+                                        [value]="fromLocation[0].id">{{fromLocation[0].location_name}}</option>
+                                    </select>
+
+
                                   </div>
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
                                     <label for="bus">On Day</label>
@@ -770,9 +775,15 @@
                                   </div>
                                   <div class="form-group col-2" style="padding:0px 5px;">
                                     <label>To <span class="text-danger">*</span></label>
-                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                      placeholder="To Location" formControlName="to_location" [clearable]="false">
-                                    </ng-select>
+
+                                    <select class="form-control" required formControlName="to_location" type="text">
+                                      <option value="" selected>Choose Location</option>
+                                      <option *ngFor="let toLocation of selectedLocations; let to_lc=index;"
+                                        [value]="toLocation[0].id">{{toLocation[0].location_name}}</option>
+                                    </select>
+
+
+                                    
 
                                   </div>
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
@@ -2244,9 +2255,11 @@
                                 <div [formGroupName]="i" class="row">
                                   <div class="form-group col-2" style="padding:0px 5px;">
                                     <label>From <span class="text-danger">*</span></label>
-                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                      placeholder="From Location" formControlName="from_location" [clearable]="true">
-                                    </ng-select>
+                                    <select class="form-control" required formControlName="from_location" type="text">
+                                      <option value="" selected>Choose Location</option>
+                                      <option *ngFor="let fromLocation of selectedLocations; let from_lc=index;"
+                                        [value]="fromLocation[0].id">{{fromLocation[0].location_name}}</option>
+                                    </select>
                                   </div>
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
                                     <label for="bus">On Day</label>
@@ -2262,9 +2275,11 @@
                                   <div class="form-group col-2" style="padding:0px 5px;">
                                     <label>To <span class="text-danger">*</span></label>
 
-                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                      placeholder="To Location" formControlName="to_location" [clearable]="true">
-                                    </ng-select>
+                                    <select class="form-control" required formControlName="to_location" type="text">
+                                      <option value="" selected>Choose Location</option>
+                                      <option *ngFor="let toLocation of selectedLocations; let to_lc=index;"
+                                        [value]="toLocation[0].id">{{toLocation[0].location_name}}</option>
+                                    </select>
 
 
 
@@ -2471,7 +2486,7 @@
                         </tr>
                       </table>
                   <!-- Route Details -->
-                  <table  class="table table-striped ">
+                    <table  class="table table-striped ">
                     <h5>Route Details</h5>
                     <tr class="bg-success text-white">
                       <th>Source</th>
