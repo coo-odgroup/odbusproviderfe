@@ -1605,6 +1605,7 @@
                                   <div class="form-group col-2" style="padding:0px 5px;">
                                     <label>From <span class="text-danger">*</span></label>
                                     <select class="form-control" required formControlName="from_location" type="text">
+                                      <option value="" selected>Choose Location</option>
                                       <option *ngFor="let fromLocation of selectedLocations; let from_lc=index;"
                                         [value]="fromLocation[0].id">{{fromLocation[0].location_name}}</option>
                                     </select>
@@ -1623,6 +1624,7 @@
                                   <div class="form-group col-2" style="padding:0px 5px;">
                                     <label>To <span class="text-danger">*</span></label>
                                     <select class="form-control" required formControlName="to_location" type="text">
+                                      <option value="" selected>Choose Location</option>
                                       <option *ngFor="let toLocation of selectedLocations; let to_lc=index;"
                                         [value]="toLocation[0].id">{{toLocation[0].location_name}}</option>
                                     </select>

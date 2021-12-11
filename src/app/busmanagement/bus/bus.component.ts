@@ -903,19 +903,34 @@ export class BusComponent implements OnInit {
       resp => {
         if(resp.status==1)
         {
+           
             this.busContacts=resp.data;
 
             if(this.busContacts.length>0){
-
-              this.data_conductor_no=this.busContacts[0]['phone'];
-              this.data_c_sms_ticket=this.busContacts[0]['booking_sms_send'];
-              this.data_c_sms_cancel=this.busContacts[0]['cancel_sms_send'];         
-              this.data_manager_no=this.busContacts[1]['phone'];
-              this.data_m_sms_ticket=this.busContacts[1]['booking_sms_send'];
-              this.data_m_sms_cancel=this.busContacts[1]['cancel_sms_send'];
-              this.data_owner_no=this.busContacts[2]['phone'];
-              this.data_o_sms_ticket=this.busContacts[2]['booking_sms_send'];
-              this.data_o_sms_cancel=this.busContacts[2]['cancel_sms_send'];
+              let count=0;
+              for(let contacts of this.busContacts)
+              {
+                if(contacts.type=="0")
+                {
+                  this.data_owner_no=contacts.phone;
+                  this.data_o_sms_ticket=contacts.booking_sms_send;
+                  this.data_o_sms_cancel=contacts.cancel_sms_send;
+                }
+                if(contacts.type=="1")
+                {
+                  this.data_manager_no=contacts.phone;
+                  this.data_m_sms_ticket=contacts.booking_sms_send;
+                  this.data_m_sms_cancel=contacts.cancel_sms_send;
+                }
+                if(contacts.type=="2")
+                {
+                  this.data_conductor_no=contacts.phone;
+                  this.data_c_sms_ticket=contacts.booking_sms_send;
+                  this.data_c_sms_cancel=contacts.cancel_sms_send;
+                }
+                
+              }
+              
 
             }
            
