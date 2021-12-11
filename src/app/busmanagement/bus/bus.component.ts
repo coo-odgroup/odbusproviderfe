@@ -1444,11 +1444,13 @@ export class BusComponent implements OnInit {
           this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
           let stoppages=timing.data.stoppage_timing;
           //this.busRoutesRecords.clear();
+          let counter=0;
+          this.sequenceItem=timing.data.sequence;
           for(let items of timing.data.routes)
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
-              sequence:[null,Validators.compose([Validators.required])],
+              sequence:[this.sequenceItem[counter][0].sequence,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -1492,6 +1494,7 @@ export class BusComponent implements OnInit {
                 }
               }
             ); 
+            counter++;
           }
 
         }
@@ -1758,12 +1761,14 @@ export class BusComponent implements OnInit {
           
           this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
           let stoppages=timing.data.stoppage_timing;
+
+          
           //this.busRoutesRecords.clear();
           for(let items of timing.data.routes)
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
-              sequence:[null,Validators.compose([Validators.required])],
+              sequence:['',Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
