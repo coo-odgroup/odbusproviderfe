@@ -61,23 +61,23 @@ export class BusoperatorComponent implements OnInit {
     this.spinner.show();
     this.form = this.fb.group({
       id:[null],
-      email_id: [null],
-      password: [null],
-      operator_name: [null],
-      contact_number: [null],
-      organisation_name: [null],
-      address: [null],
-      operator_info:[null],
-      additional_email: [null],
-      additional_contact: [null],
-      location_name: [null],
-      bank_account_name: [null],
-      bank_name: [null],
-      bank_ifsc: [null],
-      bank_account_number: [null],
+      email_id: ['', Validators.compose([Validators.required, Validators.pattern(this.emailPattern), Validators.minLength(5),Validators.maxLength(50)])],
+      password: ['', Validators.compose([Validators.required,Validators.maxLength(15)])],
+      operator_name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
+      contact_number: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+      organisation_name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
+      address: ['', Validators.compose([Validators.required,Validators.minLength(3),Validators.maxLength(200)])],
+      operator_info: [''],
+      additional_email: ['', Validators.compose([ Validators.pattern(this.emailPattern), Validators.minLength(5),Validators.maxLength(50)])],
+      additional_contact: ['', Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
+      location_name:['', Validators.compose([Validators.required,Validators.maxLength(200)])],
+      bank_account_name: ['', Validators.compose([Validators.maxLength(100)])],
+      bank_name: ['', Validators.compose([Validators.maxLength(100)])],
+      bank_ifsc: ['', Validators.compose([Validators.pattern("^[a-zA-Z0-9]*$"),Validators.maxLength(20)])],
+      bank_account_number: ['', Validators.compose([Validators.pattern("^[0-9]*$"),Validators.maxLength(20)])],
       need_gst_bill: [''],
-      gst_number: [null],
-      gst_amount: [null]
+      gst_number: [''],
+      gst_amount: ['']
     });
     this.formConfirm=this.fb.group({
       id:[null]
@@ -167,19 +167,13 @@ export class BusoperatorComponent implements OnInit {
  
   }
 
-
-
-
-
-
-
   ResetAttributes()
   {
     
     this.form = this.fb.group({
       id:[null],
       email_id: ['', Validators.compose([Validators.required, Validators.pattern(this.emailPattern), Validators.minLength(5),Validators.maxLength(50)])],
-      password: ['', Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(15)])],
+      password: ['', Validators.compose([Validators.required,Validators.maxLength(15)])],
       operator_name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
       contact_number: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
       organisation_name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
@@ -365,7 +359,7 @@ export class BusoperatorComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.BusOperatorRecord.id],
       email_id: [this.BusOperatorRecord.email_id, Validators.compose([Validators.required,Validators.pattern(this.emailPattern), Validators.minLength(5),Validators.maxLength(50)])],
-      password: [this.BusOperatorRecord.password, Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(15)])],
+      password: [this.BusOperatorRecord.password, Validators.compose([Validators.required,Validators.maxLength(15)])],
       operator_name: [this.BusOperatorRecord.operator_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],
       contact_number: [this.BusOperatorRecord.contact_number, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
       organisation_name: [this.BusOperatorRecord.organisation_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.maxLength(50)])],

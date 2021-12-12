@@ -279,8 +279,8 @@ export class BusComponent implements OnInit {
   }
   dropfg:any;
   allDestinationDroppings:FormArray;
-  ngOnInit() {
-    
+
+  ngOnInit() {    
     this.spinner.show();
     this.busForm = this.fb.group({
       id:[null],
@@ -624,6 +624,8 @@ export class BusComponent implements OnInit {
     this.busContacts=Array();
     this.seatLayouts=Array();
     this.locations=Array();
+    this.selAmenities = Array();
+    this.selSafety = Array();
     this.busForm = this.fb.group({
       id:[null],
       bus_operator_id: [null, Validators.compose([Validators.required])],
@@ -1254,10 +1256,8 @@ export class BusComponent implements OnInit {
     this.ModalHeading = "Bus Copied";
     this.ModalBtn = "Add New";
     this.busRecord=this.buses[id] ;
-    ///this.selAmenities="";
-    
    
-    //console.log(this.busRecord);
+    
     this.busForm = this.fb.group({
       id:[null],
       bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
@@ -1560,6 +1560,7 @@ export class BusComponent implements OnInit {
         this.busForm.controls.amenities.setValue(this.selAmenities);
       }
     );
+
     this.busService.fetchBusSafety(this.busRecord.id).subscribe(
       response=>{
         this.selectedSafety=response.data;
