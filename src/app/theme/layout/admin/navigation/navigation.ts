@@ -737,6 +737,13 @@ const NavigationItems = [
             url: 'setting/agent'
           },
           {
+            id: 'association',
+            title: 'Association',
+            type: 'item',
+            icon:'feather icon-user-plus',
+            url: 'setting/association'
+          },
+          {
             id: 'agentcomission',
             title: 'Agent Comission Slab',
             type: 'item',

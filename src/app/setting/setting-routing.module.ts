@@ -14,6 +14,10 @@ const routes: Routes = [
         loadChildren: () => import('./socialmedia/socialmedia.module').then(module => module.SocialMediaModule)
       },
       {
+        path: 'association',
+        loadChildren: () => import('./association/association.module').then(module => module.AssociationModule)
+      },
+      {
         path: 'testimonial',
         loadChildren: () => import('./testimonial/testimonial.module').then(module => module.TestimonialModule)
       },

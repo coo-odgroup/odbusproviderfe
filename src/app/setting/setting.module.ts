@@ -17,11 +17,7 @@ import { AgentfeeComponent } from './agentfee/agentfee.component';
 
 
 @NgModule({
-  declarations: [
-  
-  
-   
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     SharedModule,
