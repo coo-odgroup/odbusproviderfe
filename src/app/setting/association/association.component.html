@@ -153,12 +153,12 @@
                                             <div class="row">
                                                  
 
-                                                <div class="from-group col-md-6">
+                                                <div class="from-group col-md-4">
                                                     <label for="name" class="col-sm-12 col-form-label">Association Name :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
                                                         <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Page name" required
+                                                            placeholder="Enter Association name" required
                                                             formControlName="name" />
                                                         <span class="text-danger"
                                                             *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
@@ -166,12 +166,12 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="from-group col-md-6">
+                                                <div class="from-group col-md-4">
                                                     <label for="name" class="col-sm-12 col-form-label">Phone :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
                                                         <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Page name" required
+                                                            placeholder="Enter Phone Number" required
                                                             formControlName="phone" />
                                                             <span class="text-danger"
                                                             *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
@@ -181,6 +181,60 @@
                                                           </span>
                                                     </div>
                                                 </div>
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Location :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Location name" required
+                                                            formControlName="location" />
+                                                            <span class="text-danger"
+                                                            *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
+                                                            Location is required! </span>
+                                                          
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-12">
+                                                    <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Contact Information</label>
+                                                </div>
+                                                <div class="from-group col-md-3">
+                                                    <label for="president_name" class="col-sm-12 col-form-label">President Name :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter President Name" required
+                                                            formControlName="president_name" />
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-3">
+                                                    <label for="president_phone" class="col-sm-12 col-form-label">President Phone :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter President Phone" required
+                                                            formControlName="president_phone" />
+                                                        
+                                                    </div>
+                                                </div>
+
+                                                <div class="from-group col-md-3">
+                                                    <label for="general_secretary_name" class="col-sm-12 col-form-label">Secretary Name :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter General Secretary Name" required
+                                                            formControlName="general_secretary_name" />
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-3">
+                                                    <label for="general_secretary_phone" class="col-sm-12 col-form-label">Secretary Phone :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter General Secretary Phone" required
+                                                            formControlName="general_secretary_phone" />
+                                                        
+                                                    </div>
+                                                </div>
+
                                                 <div class="from-group col-md-12">
                                                     <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Login Credentials</label>
                                                 </div>
@@ -249,52 +303,87 @@
                                         <form [formGroup]="editform" class="editForm" novalidate>
                                             <div class="row">
                                                 
-                                                    <!-- <h5>USER</h5> -->
-                                                   
-
-                                                    <div class="from-group col-md-4">
-                                                        <label for="name" class="col-sm-12 col-form-label">Association Name :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Page name" required
-                                                                formControlName="name" />
-                                                            <span class="text-danger"
-                                                                *ngIf="editform.controls['name'].touched && editform.controls['name'].hasError('required')">
-                                                                Name is Required
-                                                            </span>
-                                                        </div>
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Association Name :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Association name" required
+                                                            formControlName="name" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
+                                                            Name is Required
+                                                        </span>
                                                     </div>
-                                                    <div class="from-group col-md-4">
-                                                        <label for="name" class="col-sm-12 col-form-label">Email :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Page name" required
-                                                                formControlName="email" />
+                                                </div>
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Phone :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Phone Number" required
+                                                            formControlName="phone" />
                                                             <span class="text-danger"
-                                                                *ngIf="editform.controls['email'].touched && editform.controls['email'].hasError('required')">
-                                                                Email is Required
-                                                            </span>
-                                                        </div>
+                                                            *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
+                                                            Phone is required! </span>
+                                                          <span class="text-danger row col-12" *ngIf="form.controls['phone'].errors?.pattern">
+                                                            Enter 10 digit Mobile Number
+                                                          </span>
                                                     </div>
-
-                                                   
-
-                                                    <div class="from-group col-md-4">
-                                                        <label for="name" class="col-sm-12 col-form-label">Phone :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Page name" required
-                                                                formControlName="phone" />
+                                                </div>
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Location :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Location name" required
+                                                            formControlName="location" />
                                                             <span class="text-danger"
-                                                                *ngIf="editform.controls['phone'].touched && editform.controls['phone'].hasError('required')">
-                                                                Phone is Required
-                                                            </span>
-                                                            
-                                                        </div>
+                                                            *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
+                                                            Location is required! </span>
+                                                          
                                                     </div>
+                                                </div>
+                                                <div class="from-group col-md-12">
+                                                    <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Contact Information</label>
+                                                </div>
+                                                <div class="from-group col-md-3">
+                                                    <label for="president_name" class="col-sm-12 col-form-label">President Name :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter President Name" required
+                                                            formControlName="president_name" />
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-3">
+                                                    <label for="president_phone" class="col-sm-12 col-form-label">President Phone :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter President Phone" required
+                                                            formControlName="president_phone" />
+                                                        
+                                                    </div>
+                                                </div>
+
+                                                <div class="from-group col-md-3">
+                                                    <label for="general_secretary_name" class="col-sm-12 col-form-label">Secretary Name :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter General Secretary Name" required
+                                                            formControlName="general_secretary_name" />
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-3">
+                                                    <label for="general_secretary_phone" class="col-sm-12 col-form-label">Secretary Phone :</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter General Secretary Phone" required
+                                                            formControlName="general_secretary_phone" />
+                                                        
+                                                    </div>
+                                                </div>
                                                 
                                             </div>
                                         </form>

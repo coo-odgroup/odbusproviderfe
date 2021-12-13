@@ -677,6 +677,8 @@ export class BusComponent implements OnInit {
     this.ModalHeading = "Add New Bus";
     this.ModalBtn = "Save";
     this.selectedLocation=[];
+    this.selectedLocations=[];
+    this.selectedLocation=null;
     
   }
  
