@@ -9,6 +9,7 @@ export interface BoardingDropping {
     created_by:any;
     status:1;
     boarding_created:any;
+    landmark:any;
 }
 export interface boarding_dropping_info
 {

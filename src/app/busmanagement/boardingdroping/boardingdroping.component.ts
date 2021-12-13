@@ -171,7 +171,8 @@ export class BoardingdropingComponent implements OnInit {
   // boardingDropping formgroup
   createBoard(): FormGroup {
     return this.fb.group({
-      boarding_point: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])]
+      boarding_point: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])],
+      landmark: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(50)])]
     });
   }
   createDrop(): FormGroup {
@@ -206,6 +207,7 @@ export class BoardingdropingComponent implements OnInit {
       id: [null],
       location_id: [null, Validators.compose([Validators.required])],
       boards: this.fb.array([this.createBoard()])
+     
     });
     this.boardingList = this.form.get('boards') as FormArray;
     this.ModalHeading = "Add Boarding Dropping";
@@ -220,7 +222,8 @@ export class BoardingdropingComponent implements OnInit {
       created_by: localStorage.getItem('USERNAME'),
       boarding_point: this.form.value.boards
     };
-
+    // console.log(data);
+    // return
     if (data.id == null) {
       this.BoardDropService.create(data).subscribe(
         resp => {
@@ -272,7 +275,8 @@ export class BoardingdropingComponent implements OnInit {
 
     for (let items of this.BoardingDroppingRecord.boarding_dropping) {
       this.boardingList.push(this.fb.group({
-        boarding_point: [items.boarding_point, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])]
+        boarding_point: [items.boarding_point, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])],
+        landmark: [items.landmark, Validators.compose([Validators.minLength(2), Validators.maxLength(50)])]
       }));
       // editBoarding.push({value:''+items+''});
     }

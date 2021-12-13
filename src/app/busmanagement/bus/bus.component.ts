@@ -1532,7 +1532,7 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],
-               booking_seized:[null] 
+               booking_seized:[singleRoute.seize_booking_minute] 
             });
             
            
