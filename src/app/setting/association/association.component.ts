@@ -49,7 +49,7 @@ export class AssociationComponent implements OnInit {
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Add New Location";
+    this.ModalHeading = "Add New Association";
     this.ModalBtn = "Save";
   }
 
@@ -62,6 +62,11 @@ export class AssociationComponent implements OnInit {
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
       phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      location:['', Validators.compose([Validators.required])],
+      president_name:[null],
+      president_phone:[null],
+      general_secretary_name:[null],
+      general_secretary_phone:[null],
       password: [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.required, Validators.maxLength(10)])]
     });
 
@@ -70,6 +75,11 @@ export class AssociationComponent implements OnInit {
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
       phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      location:['', Validators.compose([Validators.required])],
+      president_name:[null],
+      president_phone:[null],
+      general_secretary_name:[null],
+      general_secretary_phone:[null],
     });
 
     this.pwdform = this.fb.group({
@@ -176,6 +186,11 @@ export class AssociationComponent implements OnInit {
       name: [null],
       email: [null],
       phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      location:['', Validators.compose([Validators.required])],
+      president_name:[null],
+      president_phone:[null],
+      general_secretary_name:[null],
+      general_secretary_phone:[null],
       password: [null]
     });
 
@@ -184,6 +199,11 @@ export class AssociationComponent implements OnInit {
       name: [null],
       email: [null],
       phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      location:['', Validators.compose([Validators.required])],
+      president_name:[null],
+      president_phone:[null],
+      general_secretary_name:[null],
+      general_secretary_phone:[null],
     });
 
     this.pwdform = this.fb.group({
@@ -194,7 +214,7 @@ export class AssociationComponent implements OnInit {
       { validator: this.checkPasswords });
 
     this.form.reset();
-    this.ModalHeading = "Add Operator";
+    this.ModalHeading = "Add Association";
     this.ModalBtn = "Save";
   }
 
@@ -217,7 +237,12 @@ export class AssociationComponent implements OnInit {
       name: this.form.value.name,
       email: this.form.value.email,
       phone: this.form.value.phone,
-      password: this.form.value.password
+      password: this.form.value.password,
+      location: this.form.value.location,
+      president_name:this.form.value.president_name,
+      president_phone:this.form.value.president_phone,
+      general_secretary_name:this.form.value.general_secretary_name,
+      general_secretary_phone:this.form.value.general_secretary_phone
     };
 
 
@@ -225,6 +250,11 @@ export class AssociationComponent implements OnInit {
       name: this.editform.value.name,
       email: this.editform.value.email,
       phone: this.editform.value.phone,
+      location: this.form.value.location,
+      president_name:this.form.value.president_name,
+      president_phone:this.form.value.president_phone,
+      general_secretary_name:this.form.value.general_secretary_name,
+      general_secretary_phone:this.form.value.general_secretary_phone
     }
 
 
@@ -272,15 +302,22 @@ export class AssociationComponent implements OnInit {
 
 
   editData(id) {
+
     this.userRecord = this.user[id];
 
     this.editform.controls.id.setValue(this.userRecord.id);
     this.editform.controls.name.setValue(this.userRecord.name);
     this.editform.controls.email.setValue(this.userRecord.email);
     this.editform.controls.phone.setValue(this.userRecord.phone);
+    this.editform.controls.location.setValue(this.userRecord.location);
+    this.editform.controls.president_name.setValue(this.userRecord.president_name);
+    this.editform.controls.president_phone.setValue(this.userRecord.president_phone);
+    this.editform.controls.general_secretary_name.setValue(this.userRecord.general_secretary_name);
+    this.editform.controls.general_secretary_phone.setValue(this.userRecord.general_secretary_phone);
 
 
-    this.ModalHeading = "Edit Operator";
+
+    this.ModalHeading = "Edit Association";
     this.ModalBtn = "Update";
   }
 
