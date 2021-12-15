@@ -805,6 +805,40 @@ export class BusComponent implements OnInit {
   }
   addBus()
   {
+
+  
+    let FinalRoute=[];
+    
+
+    let BusRoutes= this.busForm.value.busRoutes;
+
+    BusRoutes.forEach(element => {
+
+      let boardingPointArr={
+        "source_id": element.source_id,
+        "sequence": element.sequence,
+        "sourceBoarding":[]
+      };
+     
+
+      let srcbordArr = element.sourceBoarding;
+
+      srcbordArr.forEach(e => {
+
+        if(e.sourcechecked!= null && e.sourceTime != null){
+          boardingPointArr.sourceBoarding.push(e);
+        }
+      });
+
+      if(boardingPointArr.sourceBoarding.length>0){
+        FinalRoute.push(boardingPointArr);
+      }
+
+     
+      
+    });
+
+    //console.log(FinalRoute);
    
     this.spinner.show();
     const data ={
@@ -836,10 +870,12 @@ export class BusComponent implements OnInit {
       o_sms_cancel:this.busForm.value.o_sms_cancel,
       bus_description:this.busForm.value.bus_description,
       businfo:this.busForm.value.businfo,
-      busRoutes:this.busForm.value.busRoutes,
+      busRoutes:FinalRoute,
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
+
+    console.log(data);
  
     if(data.id==null)
     {
@@ -851,13 +887,17 @@ export class BusComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.refresh();
+              this.ResetAttributes();
           }
           else{
+
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-              this.spinner.hide();
+             
           }
 
-          this.ResetAttributes();
+          this.spinner.hide();
+
+          
         }
       );
     }
