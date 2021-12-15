@@ -332,14 +332,14 @@ export class BusComponent implements OnInit {
       ]),
       bus_number: [null, Validators.compose([Validators.required])], 
       conductor_no: [null], 
-      c_sms_ticket: ["true"], 
-      c_sms_cancel: ["true"], 
+      c_sms_ticket: ["false"], 
+      c_sms_cancel: ["false"], 
       manager_no: [null], 
-      m_sms_ticket: ["true"], 
-      m_sms_cancel: ["true"],
+      m_sms_ticket: ["false"], 
+      m_sms_cancel: ["false"],
       owner_no: [null], 
-      o_sms_ticket: ["true"], 
-      o_sms_cancel: ["true"],
+      o_sms_ticket: ["false"], 
+      o_sms_cancel: ["false"],
     });
     this.routeList = this.busForm.get('busRoutes') as FormArray;
     this.seatlayoutList = this.busForm.get('bus_seat_layout_data') as FormArray;
