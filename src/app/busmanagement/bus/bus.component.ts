@@ -840,10 +840,6 @@ export class BusComponent implements OnInit {
       busRoutesInfo:this.busForm.value.busRoutesInfo
       
     };
-
-    console.log(data);
-    return;
-
  
     if(data.id==null)
     {
