@@ -200,10 +200,10 @@ export class AssociationComponent implements OnInit {
       email: [null],
       phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       location:['', Validators.compose([Validators.required])],
-      president_name:[null],
-      president_phone:[null],
-      general_secretary_name:[null],
-      general_secretary_phone:[null],
+      president_name:[''],
+      president_phone:[''],
+      general_secretary_name:[''],
+      general_secretary_phone:[''],
     });
 
     this.pwdform = this.fb.group({
@@ -250,15 +250,16 @@ export class AssociationComponent implements OnInit {
       name: this.editform.value.name,
       email: this.editform.value.email,
       phone: this.editform.value.phone,
-      location: this.form.value.location,
-      president_name:this.form.value.president_name,
-      president_phone:this.form.value.president_phone,
-      general_secretary_name:this.form.value.general_secretary_name,
-      general_secretary_phone:this.form.value.general_secretary_phone
+      location: this.editform.value.location,
+      president_name:this.editform.value.president_name,
+      president_phone:this.editform.value.president_phone,
+      general_secretary_name:this.editform.value.general_secretary_name,
+      general_secretary_phone:this.editform.value.general_secretary_phone
     }
 
 
-    // console.log(data);
+    // console.log(this.editform);
+    // return false;
     let id = this.userRecord?.id;
     if (id != null) {
       this.AssociationService.update(id, updateDate).subscribe(

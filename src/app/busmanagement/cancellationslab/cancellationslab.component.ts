@@ -137,11 +137,13 @@ export class CancellationslabComponent implements OnInit {
   }
   loadServices() {
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
     if(BusOperator.USER_BUS_OPERATOR_ID=="")
     {
-      this.busOperatorService.readAll().subscribe(
+      this.busOperatorService.userOperators(BusOperator).subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
@@ -172,7 +174,9 @@ export class CancellationslabComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
    
 
@@ -214,10 +218,8 @@ export class CancellationslabComponent implements OnInit {
      this.search();
      this.spinner.hide();
 
-   }
-
-
-   title = 'angular-app';
+  }
+  title = 'angular-app';
   fileName= 'Cancellation-Slab.xlsx';
 
   exportexcel(): void
@@ -235,17 +237,6 @@ export class CancellationslabComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
  
   }
-
-
-
-
-
-
-
-
-
-
-
 
   // CanclationSlab formgroup
   createSlab(): FormGroup {
@@ -295,7 +286,8 @@ export class CancellationslabComponent implements OnInit {
       rule_name:this.form.value.rule_name,
       cancellation_policy_desc:this.form.value.cancellation_policy_desc,
       slabs:this.form.value.slabs,
-      created_by:localStorage.getItem('USERNAME') 
+      created_by:localStorage.getItem('USERNAME'),
+      user_id:localStorage.getItem('USERID') 
     };
     // console.log(data);
     // return false;

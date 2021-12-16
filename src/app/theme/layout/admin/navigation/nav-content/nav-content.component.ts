@@ -53,7 +53,10 @@ export class NavContentComponent implements OnInit, AfterViewInit {
         break;
       case "4":
         this.adminType="Operator";
-        break;    
+        break;   
+      case "5":
+        this.adminType="Association";
+        break;  
     }
     if (this.windowWidth < 992) {
       this.flatConfig['layout'] = 'vertical';

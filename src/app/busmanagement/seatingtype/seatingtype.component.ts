@@ -80,6 +80,9 @@ export class SeatingtypeComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -151,7 +154,8 @@ export class SeatingtypeComponent implements OnInit {
     let id:any=this.form.value.id;
     const data ={
       name:this.form.value.name,
-      created_by:localStorage.getItem('USERNAME')      
+      created_by:localStorage.getItem('USERNAME'),
+      user_id:localStorage.getItem('USERID')      
     };
     if(id==null)
     {
