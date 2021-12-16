@@ -319,8 +319,40 @@
                                 placeholder="Select Bus"
                                 formControlName="bus_id"
                                 [clearable]="false"
-                                (change)="checkEvent($event)"
+                                (change)="checkroute();checkEvent($event);"
                               >
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="form-group row">
+                            <label for="busname" class="col-sm-3 col-form-label"
+                              >Bus Route<span class="text-danger"
+                                >*</span
+                              ></label
+                            >
+                            <div class="col-sm-9">
+                              <ng-select
+                                [items]="route"
+                                bindLabel="routes"
+                                bindValue="id"
+                                placeholder="Select Bus"
+                                formControlName="busRoute"
+                                [clearable]="false" 
+                                [multiple]="true"                               
+                              >
+                              <ng-template ng-header-tmp *ngIf="route?.length > 0"> 
+                                <div>
+                                  <button class="btn btn-link"
+                                          (click)="onSelectAll()">Select All</button>
+                                  <button class="btn btn-link"
+                                          (click)="onClearAll()">Clear All</button>
+                                </div>
+                              </ng-template>
                               </ng-select>
                             </div>
                           </div>

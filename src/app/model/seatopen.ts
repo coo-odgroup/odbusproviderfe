@@ -5,6 +5,7 @@ export interface Seatopen{
     id: any;
     bus_operator_id: any;    
     bus_id: any;
+    busRoute: any;
     date: any;
     reason: any;
     created_at: any;

@@ -58,6 +58,7 @@ export class SeatopenComponent implements OnInit {
   dtOptionsSeatopen: { pagingType: string; pageLength: number; serverSide: boolean; processing: boolean; dom: string; order: string[]; aLengthMenu: (string | number)[]; buttons: ({ extend: string; className: string; init: (api: any, node: any, config: any) => void; exportOptions: { columns: string; }; text?: undefined; action?: undefined; } | { text: string; className: string; init: (api: any, node: any, config: any) => void; action: () => void; extend?: undefined; exportOptions?: undefined; })[]; language: { searchPlaceholder: string; processing: string; }; ajax: (dataTablesParameters: any, callback: any) => void; columns: ({ data: string; title?: undefined; render?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: string; render?: undefined; orderable?: undefined; className?: undefined; } | { data: string; render: (data: any) => "Active" | "Pending"; title?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: any; orderable: boolean; className: string; render?: undefined; })[]; };
   pagination: any;
   all: any;
+  route: any;
   constructor(
     private seatopenService: SeatopenService,
     private seatlayoutService: SeatlayoutService,
@@ -88,6 +89,7 @@ export class SeatopenComponent implements OnInit {
       bus_operator_id: [null],
       id: [null],
       bus_id: [null],
+      busRoute: [null],
       date: [null],
       reason: [null],
       bus_seat_layout_id: [null],
@@ -377,12 +379,35 @@ export class SeatopenComponent implements OnInit {
     );
   }
 
+  checkroute(event: any) {
+    const data = {
+      bus_id: this.seatOpenForm.value.bus_id
+    };
+
+    this.busService.fetchBusRoutesById(data.bus_id).subscribe(
+      resp => {
+        this.route = resp.data;
+        this.route.map((i: any) => { i.routes =  i.source[0].name + '>>' + i.destination[0].name ; return i; });
+
+      }
+    );
+    // console.log(data);
+  }
+  onSelectAll() {
+    const selected = this.route.map(item => item.id);
+    this.seatOpenForm.get('busRoute').patchValue(selected);
+  }
+  onClearAll() {
+    this.seatOpenForm.get('busRoute').patchValue([]);
+  }
+
   ResetAttributes() {
     this.seatOpenRecord = {} as Seatopen;
     this.seatOpenForm = this.fb.group({
       bus_operator_id: [null],
       id: [null],
       bus_id: [null],
+      busRoute: [null],
       date: [null],
       reason: [null],
 
@@ -478,6 +503,7 @@ export class SeatopenComponent implements OnInit {
     const data = {
       bus_operator_id: this.seatOpenForm.value.bus_operator_id,
       bus_id: this.seatOpenForm.value.bus_id,
+      busRoute: this.seatOpenForm.value.busRoute,
       reason: this.seatOpenForm.value.reason,
       date: this.seatOpenForm.value.date,
       bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
@@ -571,6 +597,7 @@ export class SeatopenComponent implements OnInit {
       bus_operator_id: [JSON.parse(this.seatOpenRecord.bus.bus_operator_id)],
       id: [this.seatOpenRecord.id],
       bus_id: [JSON.parse(this.seatOpenRecord.bus_id)],
+      busRoute: [JSON.parse(this.seatOpenRecord.busRoute)],      
       date: date,
       reason: [this.seatOpenRecord.reason],
 

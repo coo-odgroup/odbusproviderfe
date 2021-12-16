@@ -87,6 +87,13 @@ export class BusService {
       catchError(this.errorHandler)
     )
   }
+
+  fetchBusRoutesById(id):Observable<any>{
+    return this.httpClient.get<any>(this.apiURL+'/getbusRoutebyBusId/'+id,this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
   fetchBusContact(id):Observable<any>{
     return this.httpClient.get<any>(this.apiURL+ '/busContactsByBusId/'+id, this.httpOptions)
     .pipe(
