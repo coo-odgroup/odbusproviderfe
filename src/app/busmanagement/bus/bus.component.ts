@@ -1439,7 +1439,15 @@ export class BusComponent implements OnInit {
         {
             this.busContacts=resp.data;
 
-            
+            this.data_owner_no="";
+            this.data_o_sms_ticket="";
+            this.data_o_sms_cancel="";
+            this.data_manager_no="";
+            this.data_m_sms_ticket="";
+            this.data_m_sms_cancel="";
+            this.data_conductor_no="";
+            this.data_c_sms_ticket="";
+            this.data_c_sms_cancel="";
 
             if(this.busContacts.length>0){
 
@@ -1767,6 +1775,15 @@ export class BusComponent implements OnInit {
         if(resp.status==1)
         {
             this.busContacts=resp.data;
+            this.data_owner_no="";
+            this.data_o_sms_ticket="";
+            this.data_o_sms_cancel="";
+            this.data_manager_no="";
+            this.data_m_sms_ticket="";
+            this.data_m_sms_cancel="";
+            this.data_conductor_no="";
+            this.data_c_sms_ticket="";
+            this.data_c_sms_cancel="";
 
             if(this.busContacts.length>0){
 

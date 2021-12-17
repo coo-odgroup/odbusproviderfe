@@ -335,6 +335,9 @@ export class SafetyComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -409,6 +412,7 @@ export class SafetyComponent implements OnInit {
     fd.append("icon", this.finalImage);
     fd.append("name",this.form.value.name);
     fd.append("created_by",localStorage.getItem('USERNAME'));
+    fd.append("user_id",localStorage.getItem('USERID'));
 
   //   for (var pair of fd.entries()) {
   //     console.log(pair[0]+ ', ' + pair[1]); 
