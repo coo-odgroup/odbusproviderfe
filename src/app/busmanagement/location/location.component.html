@@ -88,7 +88,7 @@
                   <label *ngIf="location.status==0" class="badge badge-light-danger pointer text-dark"
                     (click)="changeStatus($event, location.id);">Pending</label>
                 </div>
-                <div *ngIf="userType==4">
+                <div *ngIf="userType==4 || userType==5">
                   <label *ngIf="location.status==1" class="badge badge-light-primary pointer text-dark">Active</label>
                   <label *ngIf="location.status==0" class="badge badge-light-danger pointer text-dark"
                     title="Pending for Approval">Pending <i class="fa fa-info-circle"></i></label>

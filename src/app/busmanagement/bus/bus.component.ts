@@ -766,6 +766,7 @@ export class BusComponent implements OnInit {
       o_sms_ticket:this.busForm.value.o_sms_ticket,
       o_sms_cancel:this.busForm.value.o_sms_cancel,
     };
+    
     if(data.id!=null)
     {
       this.busService.updateContactinfo(data.id,data).subscribe(
@@ -948,7 +949,7 @@ export class BusComponent implements OnInit {
         {
            
             this.busContacts=resp.data;
-
+            console.log(this.busContacts);
             if(this.busContacts.length>0){
               for(let contacts of this.busContacts)
               {

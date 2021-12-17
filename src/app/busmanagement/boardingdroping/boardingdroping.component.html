@@ -202,9 +202,9 @@
                             Location Name is required! </span>
                         </div>
                       </div>
-                      <div class="form-group row col-md-12">
+                      <div class="row col-md-12">
                         <div class="col-md-12" formArrayName="boards">
-                          <div class="form-group row">
+                          <div class="row">
                             <label for="boardingname" class="col-10 nopad">Stoppage Name<span
                                 class="text-danger">*</span></label>
                             <div class="form-group col-2 text-right">
@@ -212,14 +212,19 @@
                             </div>
                           </div>
                           <div class=" row">
-                            <div class="form-group col-12" *ngFor="let boarding of boardingFormGroup.controls; let j = index"
+                            <div class="form-group col-12 p-0 m-0" *ngFor="let boarding of boardingFormGroup.controls; let j = index"
                             [formGroupName]="j">
-                              <div class="row">
-                              <input type="text" class="form-control col-5 " placeholder="Boarding Point"
-                                formControlName="boarding_point" />
-                                <input type="text" class="form-control col-5" placeholder="Land Mark"
-                                formControlName="landmark" />
-                              <div class="form-group col-2 text-right" style="float: right;">
+                              <div class="row p-0 m-0">
+                                <div class=" col-4 p-0">
+                                  <input type="text" class="form-control" placeholder="Boarding Point"
+                                  formControlName="boarding_point" />
+                                </div>
+                                <div class="col-6 pt-0">
+                                  <input type="text" class="form-control " placeholder="Land Mark"
+                                  formControlName="landmark" />
+                                </div>
+                                <div class="col-1"></div>
+                              <div class="form-group col-1">
                                 <button class="btn btn-danger btn-sm removebtn" type="button"
                                   (click)="removeBoard(j)"><i class="fa fa-times" aria-hidden="true"></i>
                                 </button>
