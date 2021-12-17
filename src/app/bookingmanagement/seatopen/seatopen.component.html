@@ -363,8 +363,7 @@
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label for="date" class="col-sm-4 col-form-label"
-                              >Date<span class="text-danger">*</span></label
-                            >
+                              >Date<span class="text-danger">*</span></label>
                             <div class="col-sm-8">
                               <input
                                 type="date"
@@ -419,6 +418,10 @@
                                 "
                               >
                                 Reason is required!
+                              </span>
+                              <span  *ngIf="seatOpenForm.controls.reason.value=='Others'">
+                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" required
+                                formControlName="otherReson" />
                               </span>
                             </div>
                           </div>

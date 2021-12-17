@@ -92,6 +92,7 @@ export class SeatopenComponent implements OnInit {
       busRoute: [null],
       date: [null],
       reason: [null],
+      otherReson: [null],
       bus_seat_layout_id: [null],
       bus_seat_layout_data: this.fb.array([
         this.fb.group({
@@ -402,6 +403,7 @@ export class SeatopenComponent implements OnInit {
   }
 
   ResetAttributes() {
+    this.route = "";
     this.seatOpenRecord = {} as Seatopen;
     this.seatOpenForm = this.fb.group({
       bus_operator_id: [null],
@@ -410,7 +412,7 @@ export class SeatopenComponent implements OnInit {
       busRoute: [null],
       date: [null],
       reason: [null],
-
+      otherReson: [null],
       bus_seat_layout_data: this.fb.array([
         this.fb.group({
           upperBerth: this.fb.array([
@@ -505,11 +507,15 @@ export class SeatopenComponent implements OnInit {
       bus_id: this.seatOpenForm.value.bus_id,
       busRoute: this.seatOpenForm.value.busRoute,
       reason: this.seatOpenForm.value.reason,
+      other_reson: this.seatOpenForm.value.otherReson,
       date: this.seatOpenForm.value.date,
       bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
-      created_by: localStorage.getItem('USERNAME')
+      created_by: localStorage.getItem('USERNAME'),
+      type: "1"
+      
     };
-
+    // console.log(data);
+    // return;
     let id = this.seatOpenRecord.id;
     if (id != null) {
       this.seatopenService.update(id, data).subscribe(
