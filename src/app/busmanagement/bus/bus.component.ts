@@ -948,8 +948,16 @@ export class BusComponent implements OnInit {
         if(resp.status==1)
         {
            
+            this.data_owner_no="";
+            this.data_o_sms_ticket="";
+            this.data_o_sms_cancel="";
+            this.data_manager_no="";
+            this.data_m_sms_ticket="";
+            this.data_m_sms_cancel="";
+            this.data_conductor_no="";
+            this.data_c_sms_ticket="";
+            this.data_c_sms_cancel="";
             this.busContacts=resp.data;
-            console.log(this.busContacts);
             if(this.busContacts.length>0){
               for(let contacts of this.busContacts)
               {
@@ -987,7 +995,7 @@ export class BusComponent implements OnInit {
               manager_no: [this.data_manager_no], 
               m_sms_ticket: [this.data_m_sms_ticket], 
               m_sms_cancel: [this.data_m_sms_cancel],
-              owner_no: [this.data_owner_no,Validators.compose([Validators.pattern("^[0-9]*$")])], 
+              owner_no: [this.data_owner_no], 
               o_sms_ticket: [this.data_o_sms_ticket], 
               o_sms_cancel: [this.data_o_sms_cancel]
             });
