@@ -2,6 +2,7 @@ import { BusOperatorService } from './../../services/bus-operator.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Seatopen } from '../../model/seatopen';
+import { Seatopenclose } from '../../model/seatopenclose';
 import { NotificationService } from '../../services/notification.service';
 import { SeatopenService } from '../../services/seatopen.service';
 import { BusService } from '../../services/bus.service';
@@ -34,6 +35,8 @@ export class SeatopenComponent implements OnInit {
   seatOpen: Seatopen[];
   seatOpenRecord: Seatopen;
 
+  seatOpenClose:Seatopenclose[];
+
   buses: any;
   busoperators: any;
   locations: any;
@@ -59,6 +62,8 @@ export class SeatopenComponent implements OnInit {
   pagination: any;
   all: any;
   route: any;
+  deletedata: any;
+
   constructor(
     private seatopenService: SeatopenService,
     private seatlayoutService: SeatlayoutService,
@@ -146,15 +151,31 @@ export class SeatopenComponent implements OnInit {
     else {
       this.seatopenService.getAllData(data).subscribe(
         res => {
-          this.seatOpen = res.data.data.data;
-          this.pagination = res.data.data;
+          this.seatOpen = res.data.data;
+          this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log( res.data);
-        }
-      );
+          for (var bus_id in this.seatOpen) {
+            console.log('bus'+bus_id);
+            // this.seatOpenClose['bus_id'] = bus_id;
+            //   console.log( this.seatOpenClose['bus_id']);       
+              for(var dates in this.seatOpen[bus_id])
+              {
+                console.log('date'+dates);
+                for(var route in this.seatOpen[bus_id][dates])
+                {
+                  console.log('route-'+route);
+                  for(var data in this.seatOpen[bus_id][dates][route])
+                  {
+                    console.log('data-'+data);
+                  }
+                }
+              }            
+            }        
+          }
+        );
+      }
     }
-  }
 
 
   refresh() {
@@ -569,19 +590,31 @@ export class SeatopenComponent implements OnInit {
     );
   }
 
-  openConfirmDialog(content, id: any) {
+  openConfirmDialog(content, id: any,tkt_id: any,date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
-    this.seatOpenRecord = this.seatOpen[id];
+    // this.seatOpenRecord = this.seatOpen[id];
+
+    this.deletedata = {     
+      bus_id: id ,
+      ticketPriceId: tkt_id,   
+      operationDate: date,
+      type: "1"      
+    };
+    // console.log(this.deletedata);
+    return
+
   }
+
   deleteRecord() {
   
-    let delitem = this.seatOpenRecord.id;
+    let delitem = this.deletedata;
+    // console.log(delitem);
+    // return;
     this.seatopenService.delete(delitem).subscribe(
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
           this.confirmDialogReference.close();
-
           this.refresh();
         }
         else {

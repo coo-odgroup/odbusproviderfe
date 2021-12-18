@@ -56,6 +56,9 @@ export class SeatblockComponent implements OnInit {
   dtOptionsSeatblock: { pagingType: string; pageLength: number; serverSide: boolean; processing: boolean; dom: string; order: string[]; aLengthMenu: (string | number)[]; buttons: ({ extend: string; className: string; init: (api: any, node: any, config: any) => void; exportOptions: { columns: string; }; text?: undefined; action?: undefined; } | { text: string; className: string; init: (api: any, node: any, config: any) => void; action: () => void; extend?: undefined; exportOptions?: undefined; })[]; language: { searchPlaceholder: string; processing: string; }; ajax: (dataTablesParameters: any, callback: any) => void; columns: ({ data: string; title?: undefined; render?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: string; render?: undefined; orderable?: undefined; className?: undefined; } | { data: string; render: (data: any) => "Active" | "Pending"; title?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: any; orderable: boolean; className: string; render?: undefined; })[]; };
   pagination: any;
   all: any;
+  route: any;
+  deletedata: any;
+
   constructor(
     private seatblockService: SeatblockService,
     private seatlayoutService: SeatlayoutService,
@@ -86,9 +89,11 @@ export class SeatblockComponent implements OnInit {
     this.seatBlockForm = this.fb.group({
       bus_operator_id: [null],
       id: [null],
-      bus_id: [null],
+      bus_id: [null],  
+      busRoute: [null],
       date: [null],
       reason: [null],
+      otherReson: [null],
       bus_seat_layout_id: [null],
       bus_seat_layout_data: this.fb.array([
         this.fb.group({
@@ -148,7 +153,7 @@ export class SeatblockComponent implements OnInit {
           this.pagination= res.data.data;
           this.all= res.data;
           this.spinner.hide();
-          // console.log( res.data);
+          // console.log( this.seatBlock);
         }
       );
     }
@@ -390,15 +395,40 @@ export class SeatblockComponent implements OnInit {
     
   }
 
+  checkroute(event: any) {
+    const data = {
+      bus_id: this.seatBlockForm.value.bus_id
+    };
+
+    this.busService.fetchBusRoutesById(data.bus_id).subscribe(
+      resp => {
+        this.route = resp.data;
+        this.route.map((i: any) => { i.routes =  i.source[0].name + '>>' + i.destination[0].name ; return i; });
+
+      }
+    );
+    // console.log(data);
+  }
+
+  onSelectAll() {
+    const selected = this.route.map(item => item.id);
+    this.seatBlockForm.get('busRoute').patchValue(selected);
+  }
+  onClearAll() {
+    this.seatBlockForm.get('busRoute').patchValue([]);
+  }
+
+
   ResetAttributes() {
     this.seatBlockRecord = {} as Seatblock;
     this.seatBlockForm = this.fb.group({
       bus_operator_id: [null],
       id: [null],
       bus_id: [null],
+      busRoute: [null],
       date: [null],
       reason: [null],
-
+      otherReson: [null],
       bus_seat_layout_data: this.fb.array([
         this.fb.group({
           upperBerth: this.fb.array([
@@ -494,10 +524,13 @@ export class SeatblockComponent implements OnInit {
     const data = {
       bus_operator_id: this.seatBlockForm.value.bus_operator_id,
       bus_id: this.seatBlockForm.value.bus_id,
+      busRoute: this.seatBlockForm.value.busRoute,
       reason: this.seatBlockForm.value.reason,
+      other_reson: this.seatBlockForm.value.otherReson,
       date: this.seatBlockForm.value.date,
       bus_seat_layout_data: this.seatBlockForm.value.bus_seat_layout_data,
-      created_by: localStorage.getItem('USERNAME')
+      created_by: localStorage.getItem('USERNAME'),
+      type: "2"
     };
     let id = this.seatBlockRecord.id;
     if (id != null) {
@@ -552,13 +585,21 @@ export class SeatblockComponent implements OnInit {
     );
   }
 
-  openConfirmDialog(content, id: any) {
+  openConfirmDialog(content, id: any,tkt_id: any,date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.seatBlockRecord = this.seatBlock[id];
+    this.deletedata = {     
+      bus_id: id ,
+      ticketPriceId: tkt_id,   
+      operationDate: date,
+      type: "2"      
+    };
   }
   deleteRecord() {
     
-    let delitem = this.seatBlockRecord.id;
+    let delitem = this.deletedata;
+    // console.log(delitem);
+    // return;
     this.seatblockService.delete(delitem).subscribe(
       resp => {
         if (resp.status == 1) {

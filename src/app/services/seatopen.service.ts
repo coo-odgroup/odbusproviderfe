@@ -57,8 +57,8 @@ export class SeatopenService {
       catchError(this.errorHandler)
     )
   }
-  delete(id){
-    return this.httpClient.delete<any>(this.apiURL + '/seatopen/' + id, this.httpOptions)
+  delete(post){
+    return this.httpClient.post<any>(this.apiURL + '/deleteSeatopen', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
