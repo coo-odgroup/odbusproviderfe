@@ -2,7 +2,7 @@ import { BusOperatorService } from './../../services/bus-operator.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Seatopen } from '../../model/seatopen';
-import { Seatopenclose } from '../../model/seatopenclose';
+
 import { NotificationService } from '../../services/notification.service';
 import { SeatopenService } from '../../services/seatopen.service';
 import { BusService } from '../../services/bus.service';
@@ -35,7 +35,7 @@ export class SeatopenComponent implements OnInit {
   seatOpen: Seatopen[];
   seatOpenRecord: Seatopen;
 
-  seatOpenClose:Seatopenclose[];
+ 
 
   buses: any;
   busoperators: any;
@@ -157,8 +157,7 @@ export class SeatopenComponent implements OnInit {
           this.spinner.hide();
           for (var bus_id in this.seatOpen) {
             console.log('bus'+bus_id);
-            // this.seatOpenClose['bus_id'] = bus_id;
-            //   console.log( this.seatOpenClose['bus_id']);       
+                
               for(var dates in this.seatOpen[bus_id])
               {
                 console.log('date'+dates);
