@@ -32,10 +32,10 @@ export class SeatopenComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
-  seatOpen: Seatopen[];
+  seatOpen: any=[];
   seatOpenRecord: Seatopen;
 
- 
+
 
   buses: any;
   busoperators: any;
@@ -128,6 +128,7 @@ export class SeatopenComponent implements OnInit {
   }
 
 
+
   search(pageurl = "") {
     this.spinner.show();
     const data = {
@@ -135,7 +136,7 @@ export class SeatopenComponent implements OnInit {
       rows_number: this.searchForm.value.rows_number,
       USER_BUS_OPERATOR_ID: localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
-
+    let mainArray
     // console.log(data);
     if (pageurl != "") {
       this.seatopenService.getAllaginationData(pageurl, data).subscribe(
@@ -151,30 +152,52 @@ export class SeatopenComponent implements OnInit {
     else {
       this.seatopenService.getAllData(data).subscribe(
         res => {
-          this.seatOpen = res.data.data;
+          let mainArray = res.data.data;
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          for (var bus_id in this.seatOpen) {
-            console.log('bus'+bus_id);
-                
-              for(var dates in this.seatOpen[bus_id])
-              {
-                console.log('date'+dates);
-                for(var route in this.seatOpen[bus_id][dates])
-                {
-                  console.log('route-'+route);
-                  for(var data in this.seatOpen[bus_id][dates][route])
-                  {
-                    console.log('data-'+data);
-                  }
-                }
-              }            
-            }        
+
+          mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
+          // console.log(mainArray);
+          if(mainArray.length >0)
+          {
+            for (var bus of mainArray) {
+              bus = Object.keys(bus.value).map(k2 => ({ value: bus.value[k2] })); 
+             //  console.log(bus);               
+              
+              let allbus=[];
+             for (var date of bus) {
+               date = Object.keys(date.value).map(k3 => ({ value: date.value[k3] }));
+               let allDate=[];
+               // console.log(date);               
+ 
+               for (var route of date) {
+                 route = Object.keys(route.value).map(k4 => ({ value: route.value[k4] }));              
+                 let allroute = [];
+                //  console.log(route);               
+ 
+                 for (var seat of route) {
+                   seat = Object.keys(seat.value).map(k5 => ({ value: seat.value[k5] }));  
+                   allroute.push(seat);
+                   // console.log(seat);               
+                 }
+                 allDate.push(route);
+               }
+               allbus.push(date);
+              //  console.log(allbus);
+             }
+             this.seatOpen.push(allbus);
+           }
           }
-        );
-      }
+            // console.log(this.seatOpen.length);
+            // console.log(this.seatOpen[0].length);
+            // console.log(this.seatOpen[0][0].length);
+            // console.log(this.seatOpen[0][0][0].length);
+            // console.log(this.seatOpen[0][0][0].value);   
+        }
+      );
     }
+  }
 
 
   refresh() {
@@ -184,7 +207,7 @@ export class SeatopenComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
     this.search();
-  
+
 
   }
 
@@ -408,7 +431,7 @@ export class SeatopenComponent implements OnInit {
     this.busService.fetchBusRoutesById(data.bus_id).subscribe(
       resp => {
         this.route = resp.data;
-        this.route.map((i: any) => { i.routes =  i.source[0].name + '>>' + i.destination[0].name ; return i; });
+        this.route.map((i: any) => { i.routes = i.source[0].name + '>>' + i.destination[0].name; return i; });
 
       }
     );
@@ -464,7 +487,7 @@ export class SeatopenComponent implements OnInit {
       this.busOperatorService.readAll().subscribe(
         record => {
           this.busoperators = record.data;
-          this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+          this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
 
         }
       );
@@ -473,7 +496,7 @@ export class SeatopenComponent implements OnInit {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record => {
           this.busoperators = record.data;
-          this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+          this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
 
         }
       );
@@ -532,7 +555,7 @@ export class SeatopenComponent implements OnInit {
       bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
       created_by: localStorage.getItem('USERNAME'),
       type: "1"
-      
+
     };
     // console.log(data);
     // return;
@@ -589,15 +612,15 @@ export class SeatopenComponent implements OnInit {
     );
   }
 
-  openConfirmDialog(content, id: any,tkt_id: any,date: any) {
+  openConfirmDialog(content, id: any, tkt_id: any, date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     // this.seatOpenRecord = this.seatOpen[id];
 
-    this.deletedata = {     
-      bus_id: id ,
-      ticketPriceId: tkt_id,   
+    this.deletedata = {
+      bus_id: id,
+      ticketPriceId: tkt_id,
       operationDate: date,
-      type: "1"      
+      type: "1"
     };
     // console.log(this.deletedata);
     return
@@ -605,7 +628,7 @@ export class SeatopenComponent implements OnInit {
   }
 
   deleteRecord() {
-  
+
     let delitem = this.deletedata;
     // console.log(delitem);
     // return;
@@ -635,7 +658,7 @@ export class SeatopenComponent implements OnInit {
       bus_operator_id: [JSON.parse(this.seatOpenRecord.bus.bus_operator_id)],
       id: [this.seatOpenRecord.id],
       bus_id: [JSON.parse(this.seatOpenRecord.bus_id)],
-      busRoute: [JSON.parse(this.seatOpenRecord.busRoute)],      
+      busRoute: [JSON.parse(this.seatOpenRecord.busRoute)],
       date: date,
       reason: [this.seatOpenRecord.reason],
 

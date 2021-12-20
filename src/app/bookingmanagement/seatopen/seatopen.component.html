@@ -78,102 +78,82 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Bus Name</th>
-              <th>operator</th>
+              <th>Bus</th>
+              <th>Operator</th>
+              
               <th>&nbsp;</th>        
-             <!-- <th>Open Seats</th>
-              <th>Reason</th>
-              <th style="width: 180px;">Created/Updated On</th>
-              <th>Created By</th>
-              <th>Status</th> -->
-              <!-- <th width="100" class="hide_print" *ngFor="let sopen of seatOpen; let i = index">&nbsp; </th> -->
+            
             </tr>
           </thead>
           <tbody *ngIf="seatOpen?.length != 0">
-            <tr >
-              <td>{{seatOpen|json}}</td>
+            <tr *ngFor="let sopen of seatOpen; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{ sopen[0][0].value[0].bus.name }} <br>{{ sopen[0][0].value[0].bus.bus_number }}</td>
               <td>
-                hello
-                
+                  {{ sopen[0][0].value[0].bus.bus_operator.organisation_name }} <br>
+                  [ {{ sopen[0][0].value[0].bus.bus_operator.operator_name }} ]     
               </td>
-              <td></td>
-              <td></td>
-              <!-- <td>{{ sopen.bus_operator.operator_name }}</td>
               <td>
-                <table>
-                    <tr>
-                        <th>Route</th>
-                        <th>Date</th>
-                        <th>Open Seats</th>
-                        <th>Reason</th>
-                        <th>Created On</th>
-                        <th>Created By</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr *ngFor="let tktprc of sopen.ticket_price;let openSeatIndex = index">
-                      <td >
-                        {{ tktprc.source[0].name }} >>  {{ tktprc.destination[0].name }} 
-                      
-                      </td>
-                      <td >
-                        {{ tktprc.get_bus_seats[openSeatIndex].operation_date | date: 'dd/MM/yyyy'}}
-                      
-                      </td>
+                <table>                 
+                  <tr *ngFor="let opendate of sopen;let dateIndex= index ">
+                    <!-- <td>
+                       {{opendate[i].value[0].operation_date}} 
+                    </td>  -->
+                    <td>
+                      <table>
+                        <tr>
+                          <th>Date</th>
+                          <th>Route</th>                     
+                          <th>Open Seats</th> 
+                           <th>Reason</th>
+                          <th>Created On</th>
+                          <th>Created By</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let routdate of opendate;let routIndex= index ">
+                          <td>
+                            {{routdate.value[routIndex].operation_date}}
+                          </td>
+                          <td>
+                            {{routdate.value[routIndex].source[0].name}} >> {{routdate.value[routIndex].destination[0].name}}
+                          </td>
+                          <td>
+                            <span *ngFor="let seat of routdate.value; let seatIndex= index ">
+                              {{seat.seats.seatText}}, 
+                            </span>                           
+                          </td>
+                          <td>
+                            {{routdate.value[routIndex].reason}} <br> {{routdate.value[routIndex].other_reason}}
+                          </td>
 
-                      <td>
-                        <span *ngFor="let busSeat of tktprc.get_bus_seats;">
-                        {{ busSeat.seats.seatText }},
-                      </span>
-                      </td>
-                      
-                      <td >
-                        {{ tktprc.get_bus_seats[openSeatIndex].reason }}<br>
-                        {{ tktprc.get_bus_seats[openSeatIndex].other_reason }}
-                      </td>
-                      <td>            
-                        {{ tktprc.get_bus_seats[openSeatIndex].created_at | date: 'dd/MM/yyyy'}}
-                      </td>
-                      <td>            
-                        {{ tktprc.get_bus_seats[openSeatIndex].created_by }}
-                      </td>
+                          <td>
+                            {{routdate.value[routIndex].created_at  | date: 'dd/MM/yyyy'}} 
+                          </td>
+                          <td>
+                            {{routdate.value[routIndex].created_by}} 
+                          </td>
 
-                      <td class="hide_print">
-                        <div class="overlay-edit">
-                          <button type="button" (click)="openConfirmDialog(confirmDialog,sopen.id,tktprc.id,tktprc.get_bus_seats[openSeatIndex].operation_date)" class="btn btn-icon btn-danger"><i
-                              class="feather icon-trash-2"></i></button>
-                        </div>
-                      </td>
+                          <td>
+                            <div class="overlay-edit">
+                              <button type="button" 
+                                      (click)="openConfirmDialog (confirmDialog,
+                                               sopen[0][0].value[0].bus.id ,
+                                              routdate.value[routIndex].ticket_price_id,
+                                              routdate.value[routIndex].operation_date)" class="btn btn-icon btn-danger">
+                                              <i  class="feather icon-trash-2"></i>
+                                </button>
+                            </div>
+                          </td>
+                          
+                        </tr>
+                      </table>
 
-
-                    </tr>
-                </table>
+                    </td>                              
+                  </tr>
+                  </table>
               </td>
-               -->
-              <!-- <td>{{ sopen.updated_at| date: 'dd/MM/yyyy' }}</td> -->
-              <!-- <td>{{ sopen.created_by }}</td> -->
-              <!-- <td>
-                <label
-                  *ngIf="sopen.status == 1"
-                  class="badge badge-light-primary pointer text-dark"
-                  (click)="changeStatus($event, sopen.id)"
-                  >Active</label
-                >
-                <label
-                  *ngIf="sopen.status == 0"
-                  class="badge badge-light-danger pointer text-dark"
-                  (click)="changeStatus($event, sopen.id)"
-                  >Pending</label
-                >
-              </td> -->
+              
             
-              <!-- <td class="hide_print">
-                <div class="overlay-edit">
-                  <button type="button" (click)="editsopen(i); OpenModal(content)"
-                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
-                  <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
-                      class="feather icon-trash-2"></i></button>
-                </div>
-              </td> -->
             </tr>
           </tbody>
           <tbody *ngIf="seatOpen?.length == 0">
