@@ -13,6 +13,7 @@ import { LocationService } from '../../services/location.service';;
 import { SeatlayoutService } from '../../services/seatlayout.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { replace } from 'lodash';
 
 @Component({
   selector: 'app-seatblock',
@@ -29,7 +30,8 @@ export class SeatblockComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
-  seatBlock: Seatblock[];
+  seatBlock: any=[];
+  // seatBlock: Seatblock[];
   seatBlockRecord: Seatblock;
 
   buses: any;
@@ -58,7 +60,7 @@ export class SeatblockComponent implements OnInit {
   all: any;
   route: any;
   deletedata: any;
-
+  page_no=1;
   constructor(
     private seatblockService: SeatblockService,
     private seatlayoutService: SeatlayoutService,
@@ -111,12 +113,21 @@ export class SeatblockComponent implements OnInit {
     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
+      page_no: this.page_no
     });
 
     this.search();
     this.loadServices();
 
    
+  }
+
+  set_page(url:any)
+  {
+    // console.log(url);
+    this.page_no = url.replace('/api/seatblockData?page=','');
+   this.search();
+  
   }
  
   page(label:any){
@@ -125,10 +136,13 @@ export class SeatblockComponent implements OnInit {
 
    
   search(pageurl="")
-  {        this.spinner.show();
+  {        
+    this.spinner.show();
+    this.seatBlock = [];
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number,
+      page_no:this.page_no,
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID') 
     };
    
@@ -137,11 +151,44 @@ export class SeatblockComponent implements OnInit {
     {
       this.seatblockService.getAllaginationData(pageurl,data).subscribe(
         res => {
-          this.seatBlock= res.data.data.data;
-          this.pagination= res.data.data;
-          this.all= res.data;
+          let mainArray = res.data.data;
+          this.pagination = res.data;
+          this.all = res.data;
           this.spinner.hide();
-          // console.log( this.BusOperators);
+          // console.log(this.all);
+          mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
+          // console.log(mainArray);
+          if(mainArray.length >0)
+          {
+            for (var bus of mainArray) {
+              bus = Object.keys(bus.value).map(k2 => ({ value: bus.value[k2] })); 
+             //  console.log(bus);               
+              
+              let allbus=[];
+             for (var date of bus) {
+               date = Object.keys(date.value).map(k3 => ({ value: date.value[k3] }));
+               let allDate=[];
+               // console.log(date);               
+ 
+               for (var route of date) {
+                 route = Object.keys(route.value).map(k4 => ({ value: route.value[k4] }));              
+                 let allroute = [];
+                //  console.log(route);               
+ 
+                 for (var seat of route) {
+                   seat = Object.keys(seat.value).map(k5 => ({ value: seat.value[k5] }));  
+                   allroute.push(seat);
+                   // console.log(seat);               
+                 }
+                 allDate.push(route);
+               }
+               allbus.push(date);
+              //  console.log(allbus);
+             }
+             this.seatBlock.push(allbus);
+            //  console.log(this.seatBlock);
+           }
+          }
         }
       );
     }
@@ -149,11 +196,44 @@ export class SeatblockComponent implements OnInit {
     {
       this.seatblockService.getAllData(data).subscribe(
         res => {
-          this.seatBlock= res.data.data.data;
-          this.pagination= res.data.data;
-          this.all= res.data;
+          let mainArray = res.data.data;
+          this.pagination = res.data;
+          this.all = res.data;
           this.spinner.hide();
-          // console.log( this.seatBlock);
+          // console.log(this.all);
+          mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
+          // console.log(mainArray);
+          if(mainArray.length >0)
+          {
+            for (var bus of mainArray) {
+              bus = Object.keys(bus.value).map(k2 => ({ value: bus.value[k2] })); 
+             //  console.log(bus);               
+              
+              let allbus=[];
+             for (var date of bus) {
+               date = Object.keys(date.value).map(k3 => ({ value: date.value[k3] }));
+               let allDate=[];
+               // console.log(date);               
+ 
+               for (var route of date) {
+                 route = Object.keys(route.value).map(k4 => ({ value: route.value[k4] }));              
+                 let allroute = [];
+                //  console.log(route);               
+ 
+                 for (var seat of route) {
+                   seat = Object.keys(seat.value).map(k5 => ({ value: seat.value[k5] }));  
+                   allroute.push(seat);
+                   // console.log(seat);               
+                 }
+                 allDate.push(route);
+               }
+               allbus.push(date);
+              //  console.log(allbus);
+             }
+             this.seatBlock.push(allbus);
+            //  console.log(this.seatBlock);
+           }
+          }
         }
       );
     }
