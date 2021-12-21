@@ -418,12 +418,14 @@ export class SeatlayoutComponent implements OnInit {
     // this.loadSeatLayout();
   }
   loadServices() {
-    const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    const UserInfo={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    if(UserInfo.USER_BUS_OPERATOR_ID=="")
     {
-      this.busOperatorService.readAll().subscribe(
+      this.busOperatorService.userOperators(UserInfo).subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
@@ -433,7 +435,7 @@ export class SeatlayoutComponent implements OnInit {
     }
     else
     {
-      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+      this.busOperatorService.readOne(UserInfo).subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
@@ -457,7 +459,9 @@ export class SeatlayoutComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -633,6 +637,7 @@ export class SeatlayoutComponent implements OnInit {
       name:layoutName,
       layout_data:JSON.stringify(this.seatBlocks),
       created_by:localStorage.getItem('USERNAME'),
+      user_id:localStorage.getItem('USERID'),
       bus_operator_id:this.SeatLayoutForm.value.bus_operator_id
     }
     

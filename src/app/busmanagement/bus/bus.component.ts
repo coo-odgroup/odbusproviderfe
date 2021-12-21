@@ -363,7 +363,9 @@ export class BusComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
     //console.log(pageurl);
     if(pageurl!="")
@@ -517,12 +519,14 @@ export class BusComponent implements OnInit {
   
   LoadAllService()
   {
-    const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    const UserInfo={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    if(UserInfo.USER_BUS_OPERATOR_ID=="")
     {
-      this.busOperartorService.readAll().subscribe(
+      this.busOperartorService.userOperators(UserInfo).subscribe(
         record=>{
         this.operators=record.data;
         // console.log(this.operators);
@@ -549,25 +553,25 @@ export class BusComponent implements OnInit {
     }
     else
     {
-      this.busOperartorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+      this.busOperartorService.readOne(UserInfo).subscribe(
         record=>{
         this.operators=record.data;
         this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
 
         }
       );
-      this.busTypeService.readOperator(BusOperator).subscribe(
+      this.busTypeService.readOperator(UserInfo).subscribe(
         rec=>{
         this.busTypes=rec.data;
         
         }
       );
-      this.cancellationslabService.readAllOperator(BusOperator).subscribe(
+      this.cancellationslabService.readAllOperator(UserInfo).subscribe(
         resp=>{
         this.cancellationslabs=resp.data;
         }
       );
-      this.seatlayoutService.readAllOperator(BusOperator).subscribe(
+      this.seatlayoutService.readAllOperator(UserInfo).subscribe(
         resp=>{
         this.seatLayouts=resp.data;
         }
