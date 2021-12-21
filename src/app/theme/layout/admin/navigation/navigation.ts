@@ -800,34 +800,7 @@ const AssociationNavItems = [
           },
 
 
-          {
-            id: 'bustype',
-            title: 'Bus Type',
-            type: 'item',
-            icon:'feather icon-share-2',
-            url: 'busmanagement/bustype'
-          },
-          {
-            id: 'safety',
-            title: 'Safety',
-            type: 'item',
-            icon:'feather icon-sunrise',
-            url: 'busmanagement/safety'
-          },
-          {
-            id: 'seatingtype',
-            title: 'Seating Type',
-            type: 'item',
-            icon:'feather icon-cloud',
-            url: 'busmanagement/seatingtype'
-          },
-          {
-            id: 'Amenities',
-            title: 'Amenities',
-            type: 'item',
-            icon:'feather icon-heart-on',
-            url: 'busmanagement/amenities'
-          },
+         
 
           {
             id: 'SeatLayout ',

@@ -31,6 +31,13 @@ export class AmenitiesService {
       catchError(this.errorHandler)
     )
   }
+  readByUserinfo(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/AmenitiesbyUser', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  
 
   getAllaginationData(url,post): Observable<any> {
     return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)

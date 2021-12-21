@@ -23,7 +23,7 @@ export class SafetyService {
       catchError(this.errorHandler)
     )
   }
-
+ 
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/getAllData', JSON.stringify(post), this.httpOptions)
     .pipe(

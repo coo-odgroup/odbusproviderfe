@@ -540,16 +540,28 @@ export class BusComponent implements OnInit {
 
         }
       );
-      this.cancellationslabService.readAll().subscribe(
+      this.amenitiesService.all().subscribe(
+        res=>{
+          this.amenities=res.data;
+        }
+      );
+      this.safetyService.readAll().subscribe(res=>{
+        this.safetyies=res.data;
+        console.log(this.safetyies);
+      });
+      this.cancellationslabService.readAllUserData(UserInfo).subscribe(
         resp=>{
         this.cancellationslabs=resp.data;
         }
       );
-      this.seatlayoutService.readAll().subscribe(
+      this.seatlayoutService.readAllUserData(UserInfo).subscribe(
         resp=>{
         this.seatLayouts=resp.data;
         }
       );
+      this.safetyService.readAll().subscribe(res=>{
+      this.safetyies=res.data;
+    });
     }
     else
     {
@@ -576,6 +588,14 @@ export class BusComponent implements OnInit {
         this.seatLayouts=resp.data;
         }
       );
+      this.amenitiesService.all().subscribe(
+        res=>{
+          this.amenities=res.data;
+        }
+      );
+      this.safetyService.readAll().subscribe(res=>{
+        this.safetyies=res.data;
+      });
     }
     
     
@@ -585,15 +605,9 @@ export class BusComponent implements OnInit {
       }
     );
     // Amenities Commented as Work Ongoing by PD Sir
-    this.amenitiesService.all().subscribe(
-      res=>{
-        this.amenities=res.data;
-      }
-    );
+    
 
-    this.safetyService.readAll().subscribe(res=>{
-      this.safetyies=res.data;
-    });
+    
     
     this.busContactService.readAll().subscribe(
       resp=>{
