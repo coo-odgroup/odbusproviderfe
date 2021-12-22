@@ -113,7 +113,10 @@ export class SeatblockComponent implements OnInit {
     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
-      page_no: this.page_no
+      page_no: this.page_no,
+      date:[null],
+      source_id:[null],
+      destination_id:[null],
     });
 
     this.search();
@@ -143,10 +146,12 @@ export class SeatblockComponent implements OnInit {
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number,
       page_no:this.page_no,
+      date:this.searchForm.value.date,
+      source_id:this.searchForm.value.source_id,
+      destination_id:this.searchForm.value.destination_id,
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID') 
-    };
-   
-    // console.log(data);
+    };   
+    console.log(data);
     if(pageurl!="")
     {
       this.seatblockService.getAllaginationData(pageurl,data).subscribe(
@@ -241,10 +246,15 @@ export class SeatblockComponent implements OnInit {
 
 
   refresh()
-   {     this.spinner.show();
-    this.searchForm = this.fb.group({  
+   {     
+     this.spinner.show();
+     this.searchForm = this.fb.group({  
       name: [null],  
       rows_number: Constants.RecordLimit,
+      page_no: this.page_no,
+      date:[null],
+      source_id:[null],
+      destination_id:[null],
     });
      this.search();
   

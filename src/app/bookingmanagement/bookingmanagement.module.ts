@@ -10,10 +10,10 @@ import { OwnerfareComponent } from './ownerfare/ownerfare.component';
 import { FestivalfareComponent } from './festivalfare/festivalfare.component';
 import { OwnerpaymentComponent } from './ownerpayment/ownerpayment.component';
 import { TicketfareslabComponent } from './ticketfareslab/ticketfareslab.component';
+import { ExtraseablockComponent } from './extraseablock/extraseablock.component';
 
 @NgModule({
   declarations: [
-    
   ],
   imports: [
     CommonModule,
