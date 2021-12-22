@@ -165,8 +165,23 @@ export class BusscheduleComponent implements OnInit {
     this.busOperatorService.getBusbyOperator(this.busScheduleForm.get('bus_operator_id').value).subscribe(
       resp=>{
       this.buses=resp.data;
+      // console.log(this.buses);
+      this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
       }); 
     }
+  }
+
+  findOperator(event: any) {
+    let operatorId = event.id;
+    if (operatorId) {
+      this.busService.getByOperaor(operatorId).subscribe(
+        res => {
+          this.buses = res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+        }
+      );
+    }
+
   }
   getBusScheduleEntryDatesByBusId(event)
   { 
@@ -183,6 +198,7 @@ export class BusscheduleComponent implements OnInit {
     this.busService.all().subscribe(
       res => {
         this.buses = res.data;
+        // console.log(this.buses);
         this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
       }
     );
@@ -267,7 +283,8 @@ export class BusscheduleComponent implements OnInit {
     this.loadServices();
     this.busScheduleRecord=this.busSchedules[id];
     this.scheduleRecord=this.busScheduleRecord;
-    // console.log(this.scheduleRecord.bus.id);
+    console.log(this.scheduleRecord);
+
     
 
     this.busScheduleForm = this.fb.group({
@@ -276,7 +293,7 @@ export class BusscheduleComponent implements OnInit {
       bus_operator_id:this.scheduleRecord.bus.bus_operator_id,
       entry_date:this.scheduleRecord.bus_schedule_date[0].entry_date,
       cancelled_by:'Admin', 
-      running_cycle:this.busScheduleForm.value.running_cycle,
+      running_cycle:this.scheduleRecord.running_cycle,
     });
     this.ModalHeading = "Edit Bus Schedule";
     this.ModalBtn = "Update";
@@ -292,7 +309,7 @@ export class BusscheduleComponent implements OnInit {
   // }
   showEntryDates(event : Event, id : any)
   { 
-
+    // console.log(id);
     this.showdates='1';
     this.busScheduleRecord=this.busSchedules[id];
     this.buscanCellationService.getById(this.busScheduleRecord.bus_id).subscribe(
@@ -311,23 +328,12 @@ export class BusscheduleComponent implements OnInit {
               if(isPresent)
               {
                 this.busScheduleRecord.bus_schedule_date[counter].entry_date="**"+scheduledDate.entry_date+"**";
-                // this.busScheduleRecord.bus_schedule_date[counter].select="selected";
               }
-              // else
-              // {
-              //   this.busScheduleRecord.bus_schedule_date[counter].entry_date= scheduledDate.entry_date;
-              //   this.busScheduleRecord.bus_schedule_date[counter].select="";
-              // }
               counter++;
             }
           }
         }
       });
-      // console.log(this.busScheduleRecord);
-      
-    // this.busScheduleForm = this.fb.group({
-    //   entryDates:this.busScheduleForm.value.entryDates,
-    // });
     this.ModalHeading = "Entry Dates";
   }
 

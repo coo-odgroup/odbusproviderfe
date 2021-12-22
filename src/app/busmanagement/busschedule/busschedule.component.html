@@ -100,7 +100,7 @@
               </td>
               <td class="hide_print">
                     <div class="overlay-edit ">
-                      <button type="button" (click)="editBusSchedule($event, i); OpenModal(content);"
+                      <button type="button" (click)="showEntryDates($event,i);editBusSchedule($event, i); OpenModal(content);"
                         class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                       <button type="button" (click)="deleteBusSchdule(confirmDialog,busSchedule.id)"
                         class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
@@ -217,7 +217,7 @@
                         <div class="col-sm-8">
                           <ng-select [items]="operators" bindLabel="operatorData" bindValue="id"
                           placeholder="Select Operator" [clearable]="false" required formControlName="bus_operator_id"
-                            #operator (change)="getBusbyOperator($event)">
+                            #operator (change)="findOperator($event)">
                           </ng-select>
                           <span class="text-danger"
                             *ngIf="busScheduleForm.controls['bus_operator_id'].touched && busScheduleForm.controls['bus_operator_id'].hasError('required')">
@@ -230,9 +230,13 @@
                         <label for="busname" class="col-sm-3 col-form-label">Bus Name<span
                             class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                          <ng-select [items]="buses" bindLabel="name" bindValue="id" placeholder="Select Bus"
-                            [clearable]="false" required formControlName="bus_id" #bus
-                            (change)="getBusScheduleEntryDatesByBusId($event)">
+                          <ng-select [items]="buses"
+                                     bindLabel="testing" 
+                                     bindValue="id"
+                                     placeholder="Select Bus"
+                                     [clearable]="false"
+                                     required formControlName="bus_id" #bus
+                                     (change)="getBusScheduleEntryDatesByBusId($event)">
                           </ng-select>
                           <span class="text-danger"
                             *ngIf="busScheduleForm.controls['bus_id'].touched && busScheduleForm.controls['bus_id'].hasError('required')">
@@ -258,7 +262,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6" style="height: 250px;">
+                    <div class="col-md-6" >
                       <div class="form-group row">
                         <label for="busSchedule" class="col-sm-3 col-form-label">Running Cycle<span
                             class="text-danger">*</span></label>
@@ -276,16 +280,21 @@
                     </div>
                   </div>
 
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date;"
+                        class="col-2" >               
+                         {{entryDate.entry_date}}      
+                      </label>
+                    </div>
+                  </div>
+
                 </form>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <label *ngFor="let eDate of eDates; " class="col-2">{{eDate.entry_date}}</label>
-          </div>
-        </div>
+        
 
       </div>
       <div class="modal-footer">

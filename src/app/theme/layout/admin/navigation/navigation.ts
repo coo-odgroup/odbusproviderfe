@@ -155,6 +155,13 @@ const OperatorItems =[{
           type: 'item',
           icon:'feather icon-shield',
           url: 'bookingmanagement/seatopen'
+        },
+        {
+          id: 'extraseatblock',
+          title: 'Extra Seat Block',
+          type: 'item',
+          icon:'feather icon-shield',
+          url: 'bookingmanagement/extraseatblock'
         }
       ]
     },
@@ -164,13 +171,13 @@ const OperatorItems =[{
       type: 'collapse',
       icon: 'feather icon-file-text',
       children: [   
-        {
-          id: 'seatopenreport',
-          title: 'Seat Open Report',
-          type: 'item',
-          icon:'feather icon-pie-chart',
-          url: 'reports/seatopenReport'
-        },
+        // {
+        //   id: 'seatopenreport',
+        //   title: 'Seat Open Report',
+        //   type: 'item',
+        //   icon:'feather icon-pie-chart',
+        //   url: 'reports/seatopenReport'
+        // },
         {
           id: 'extraseatopenreport',
           title: 'Extra Seat Open Report',
@@ -178,13 +185,13 @@ const OperatorItems =[{
           icon:'feather icon-pie-chart',
           url: 'reports/extraseatopenReport'
         },
-        {
-          id: 'seatblockreport',
-          title: 'Seat Block Report',
-          type: 'item',
-          icon:'feather icon-pie-chart',
-          url: 'reports/seatblockReport'
-        },
+        // {
+        //   id: 'seatblockreport',
+        //   title: 'Seat Block Report',
+        //   type: 'item',
+        //   icon:'feather icon-pie-chart',
+        //   url: 'reports/seatblockReport'
+        // },
         {
           id: 'cancleticketsReport',
           title: 'Cancel Tickets Report',
@@ -472,6 +479,13 @@ const NavigationItems = [
             url: 'bookingmanagement/seatblock'
           },
           {
+            id: 'extraseatblock',
+            title: 'Extra Seat Block',
+            type: 'item',
+            icon:'feather icon-shield',
+            url: 'bookingmanagement/extraseatblock'
+          },
+          {
             id: 'seatopen',
             title: 'Seat Open',
             type: 'item',
@@ -542,13 +556,13 @@ const NavigationItems = [
             icon:'feather icon-pie-chart',
             url: 'reports/pushnotification'
           },
-          {
-            id: 'seatopenreport',
-            title: 'Seat Open Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/seatopenReport'
-          },
+          // {
+          //   id: 'seatopenreport',
+          //   title: 'Seat Open Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/seatopenReport'
+          // },
           {
             id: 'extraseatopenreport',
             title: 'Extra Seat Open Report',
@@ -563,13 +577,13 @@ const NavigationItems = [
             icon:'feather icon-pie-chart',
             url: 'reports/completeReport'
           },
-          {
-            id: 'seatblockreport',
-            title: 'Seat Block Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/seatblockReport'
-          },
+          // {
+          //   id: 'seatblockreport',
+          //   title: 'Seat Block Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/seatblockReport'
+          // },
           {
             id: 'cancleticketsReport',
             title: 'Cancel Tickets Report',

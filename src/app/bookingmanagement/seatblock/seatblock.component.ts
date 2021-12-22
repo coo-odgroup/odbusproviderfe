@@ -151,7 +151,8 @@ export class SeatblockComponent implements OnInit {
       destination_id:this.searchForm.value.destination_id,
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID') 
     };   
-    console.log(data);
+    // console.log(data);
+    // return
     if(pageurl!="")
     {
       this.seatblockService.getAllaginationData(pageurl,data).subscribe(

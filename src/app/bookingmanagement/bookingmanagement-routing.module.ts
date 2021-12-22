@@ -40,6 +40,10 @@ const routes: Routes = [
       {
         path: 'ticketfareslab',
         loadChildren: () => import('./ticketfareslab/ticketfareslab.module').then(module => module.TicketFareSlabModule)
+      }, 
+      {
+        path: 'extraseatblock',
+        loadChildren: () => import('./extraseablock/extraseatblock.module').then(module => module.ExtraSeatBlockModule)
       }    
     ]
   }
