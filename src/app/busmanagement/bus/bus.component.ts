@@ -565,14 +565,14 @@ export class BusComponent implements OnInit {
     }
     else
     {
-      this.busOperartorService.readOne(UserInfo).subscribe(
+      this.busOperartorService.readOne(UserInfo.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
         this.operators=record.data;
         this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
 
         }
       );
-      this.busTypeService.readOperator(UserInfo).subscribe(
+      this.busTypeService.readAll().subscribe(
         rec=>{
         this.busTypes=rec.data;
         

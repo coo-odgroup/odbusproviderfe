@@ -435,7 +435,7 @@ export class SeatlayoutComponent implements OnInit {
     }
     else
     {
-      this.busOperatorService.readOne(UserInfo).subscribe(
+      this.busOperatorService.readOne(UserInfo.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
