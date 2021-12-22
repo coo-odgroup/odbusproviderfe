@@ -70,7 +70,6 @@ export class BusComponent implements OnInit {
 
   public searchForm: FormGroup;
 
-
   seatBlock:SeatBlock;
   sequenceItem:sequenceItem[];
   sequenceItemRecord:sequenceItem;
@@ -367,6 +366,7 @@ export class BusComponent implements OnInit {
       user_role:localStorage.getItem('ROLE_ID'),
       user_id:localStorage.getItem('USERID')
     };
+
     //console.log(pageurl);
     if(pageurl!="")
     {
@@ -731,7 +731,7 @@ export class BusComponent implements OnInit {
     const data ={
       id:this.busRecord.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
-      user_id :'1',
+      user_id :localStorage.getItem('USERID'),
       amenities:this.busForm.value.amenities,
       safety:this.busForm.value.safety,
       bus_sitting_id:this.busForm.value.bus_sitting_id,
@@ -863,7 +863,7 @@ export class BusComponent implements OnInit {
     const data ={
       id:this.busForm.value.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
-      user_id :'1',
+      user_id :localStorage.getItem('USERID'),
       amenities:this.busForm.value.amenities,
       safety:this.busForm.value.safety,
       bus_seat_layout_id:this.busForm.value.bus_seat_layout_id,
@@ -1289,7 +1289,7 @@ export class BusComponent implements OnInit {
     const data ={
       id:this.busForm.value.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
-      user_id :'1',
+      user_id :localStorage.getItem('USERID'),
       created_by:localStorage.getItem('USERNAME'),
       busRoutes:this.busForm.value.busRoutes,
       busRoutesInfo:this.busForm.value.busRoutesInfo,
@@ -1973,7 +1973,7 @@ export class BusComponent implements OnInit {
     this.spinner.show();
     const data ={
       id:this.busRecord.id,
-      user_id :'1',
+      user_id :localStorage.getItem('USERID'),
       bus_id:this.busRecord.id,
       duration:this.busForm.value.duration_minuties,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
@@ -2002,7 +2002,7 @@ export class BusComponent implements OnInit {
   {
     this.spinner.show();
     const data ={
-      user_id :'1',
+      user_id :localStorage.getItem('USERID'),
       bus_id:this.busRecord.id,
       id:this.busForm.value.bus_seat_layout_id,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
