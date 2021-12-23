@@ -136,12 +136,12 @@
                     <td>
                       <table>
                         <tr>
-                          <th>Date</th>
-                          <th>Route</th>                     
-                          <th>Extra Seats Block</th> 
-                           <th>Reason</th>
-                          <th>Created On</th>
-                          <th>Created By</th>
+                          <th><small> Date</small> </th>
+                          <th> <small>Route </small> </th>                     
+                          <th> <small> Extra Seats Block</small> </th> 
+                           <th> <small> Reason</small> </th>
+                          <th> <small> Created On</small> </th>
+                          <th><small>  Created By</small></th>
                           <th class="hide_print">Action</th>
                         </tr>
                         <tr *ngFor="let routdate of opendate;let routIndex= index ">
@@ -317,8 +317,20 @@
                                 formControlName="bus_operator_id"
                                 [clearable]="false"
                                 (change)="findOperator($event)"
+                                required
                               >
                               </ng-select>
+                              <span
+                              class="text-danger"
+                              *ngIf="
+                                seatOpenForm.controls['bus_operator_id'].touched &&
+                                seatOpenForm.controls['bus_operator_id'].hasError(
+                                  'required'
+                                )
+                              "
+                            >
+                              Bus Operator is required!
+                            </span>
                             </div>
                           </div>
                         </div>
@@ -334,6 +346,7 @@
                             <div class="col-sm-9">
                               <ng-select
                                 [items]="buses"
+                                required
                                 bindLabel="testing"
                                 bindValue="id"
                                 placeholder="Select Bus"
@@ -342,6 +355,17 @@
                                 (change)="getSchedule();checkroute();checkEvent($event);"
                               >
                               </ng-select>
+                              <span
+                              class="text-danger"
+                              *ngIf="
+                                seatOpenForm.controls['bus_id'].touched &&
+                                seatOpenForm.controls['bus_id'].hasError(
+                                  'required'
+                                )
+                              "
+                            >
+                              Bus is required!
+                            </span>
                             </div>
                           </div>
                         </div>
@@ -363,7 +387,8 @@
                                 placeholder="Select Bus"
                                 formControlName="busRoute"
                                 [clearable]="false" 
-                                [multiple]="true"                               
+                                [multiple]="true" 
+                                required                              
                               >
                               <ng-template ng-header-tmp *ngIf="route?.length > 0"> 
                                 <div>
@@ -374,6 +399,17 @@
                                 </div>
                               </ng-template>
                               </ng-select>
+                              <span
+                              class="text-danger"
+                              *ngIf="
+                                seatOpenForm.controls['busRoute'].touched &&
+                                seatOpenForm.controls['busRoute'].hasError(
+                                  'required'
+                                )
+                              "
+                            >
+                              Bus Route is required!
+                            </span>
                             </div>
                           </div>
                         </div>
@@ -412,7 +448,7 @@
                               >Reason<span class="text-danger">*</span></label
                             >
                             <div class="col-sm-10">
-                              <select
+                              <select required
                                 class="form-control"
                                 formControlName="reason"
                               >
@@ -436,7 +472,7 @@
                                 Reason is required!
                               </span>
                               <span  *ngIf="seatOpenForm.controls.reason.value=='Others'">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" required
+                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" 
                                 formControlName="otherReson" />
                               </span>
                             </div>
