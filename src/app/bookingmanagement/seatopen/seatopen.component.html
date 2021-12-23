@@ -137,13 +137,13 @@
                     <td>
                       <table>
                         <tr>
-                          <th>Date</th>
-                          <th>Route</th>                     
-                          <th>Open Seats</th> 
-                           <th>Reason</th>
-                          <th>Created On</th>
-                          <th>Created By</th>
-                          <th class="hide_print">Action</th>
+                          <th><small> Date</small> </th>
+                            <th> <small>Route </small> </th>                     
+                            <th> <small>Open Seats</small> </th> 
+                             <th> <small> Reason</small> </th>
+                            <th> <small> Created On</small> </th>
+                            <th><small>  Created By</small></th>
+                            <th class="hide_print">Action</th>
                         </tr>
                         <tr *ngFor="let routdate of opendate;let routIndex= index ">
                           <td>
@@ -316,6 +316,7 @@
                             <div class="col-sm-8">
                               <ng-select
                                 [items]="busoperators"
+                                required
                                 bindLabel="operatorData"
                                 bindValue="id"
                                 placeholder="Select Operator"
@@ -324,6 +325,17 @@
                                 (change)="findOperator($event)"
                               >
                               </ng-select>
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                                  seatOpenForm.controls['bus_operator_id'].touched &&
+                                  seatOpenForm.controls['bus_operator_id'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                              Bus  required!
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -369,6 +381,7 @@
                             <div class="col-sm-9">
                               <ng-select
                                 [items]="buses"
+                                required
                                 bindLabel="testing"
                                 bindValue="id"
                                 placeholder="Select Bus"
@@ -377,6 +390,18 @@
                                 (change)="checkroute();checkEvent($event);"
                               >
                               </ng-select>
+                              
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                                  seatOpenForm.controls['bus_id'].touched &&
+                                  seatOpenForm.controls['bus_id'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                              Bus  required!
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -393,6 +418,7 @@
                             <div class="col-sm-9">
                               <ng-select
                                 [items]="route"
+                                required
                                 bindLabel="routes"
                                 bindValue="id"
                                 placeholder="Select Bus"
@@ -409,6 +435,18 @@
                                 </div>
                               </ng-template>
                               </ng-select>
+
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                                  seatOpenForm.controls['busRoute'].touched &&
+                                  seatOpenForm.controls['busRoute'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                              Bus Route required!
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -444,7 +482,7 @@
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label for="reason" class="col-sm-2 col-form-label"
-                              >Reason<span class="text-danger">*</span></label
+                              >Reason</label
                             >
                             <div class="col-sm-10">
                               <!-- <input type="text" class="form-control"
@@ -453,7 +491,7 @@
                                                                 [value]="sopenRecord.reason" /> -->
                               <select
                                 class="form-control"
-                                formControlName="reason"
+                                formControlName="reason" required
                               >
                                 <option>Select</option>
                                 <option>Request From Owner</option>
@@ -475,7 +513,7 @@
                                 Reason is required!
                               </span>
                               <span  *ngIf="seatOpenForm.controls.reason.value=='Others'">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" required
+                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" 
                                 formControlName="otherReson" />
                               </span>
                             </div>

@@ -138,12 +138,12 @@
                         <!-- {{opendate |json}} -->
                         <table>
                           <tr>
-                            <th>Date</th>
-                            <th>Route</th>                     
-                            <th>Block Seats</th> 
-                            <th>Reason</th>
-                            <th>Created On</th>
-                            <th>Created By</th>
+                            <th><small> Date</small> </th>
+                            <th> <small>Route </small> </th>                     
+                            <th> <small>Block Seats</small> </th> 
+                             <th> <small> Reason</small> </th>
+                            <th> <small> Created On</small> </th>
+                            <th><small>  Created By</small></th>
                             <th class="hide_print">Action</th>
                           </tr>
                           <tr *ngFor="let routdate of opendate;let routIndex= index ">
@@ -322,8 +322,17 @@
                                 formControlName="bus_operator_id"
                                 [clearable]="false"
                                 (change)="findOperator($event)"
+                                required
                               >
                               </ng-select>
+                              <span
+                              class="text-danger"
+                              *ngIf="
+                                seatBlockForm.controls['bus_operator_id'].touched &&
+                                seatBlockForm.controls['bus_operator_id'].hasError(
+                                  'required' )">
+                            Bus Operator required!
+                            </span>
                             </div>
                           </div>
                         </div>
@@ -346,8 +355,21 @@
                                 formControlName="bus_id"
                                 [clearable]="false"
                                 (change)="checkroute();checkEvent($event);"
+                                required
                               >
                               </ng-select>
+
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                                  seatBlockForm.controls['bus_id'].touched &&
+                                  seatBlockForm.controls['bus_id'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                              Bus required!
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -369,7 +391,8 @@
                                 placeholder="Select Bus"
                                 formControlName="busRoute"
                                 [clearable]="false" 
-                                [multiple]="true"                               
+                                [multiple]="true" 
+                                required                              
                               >
                               <ng-template ng-header-tmp *ngIf="route?.length > 0"> 
                                 <div>
@@ -380,6 +403,18 @@
                                 </div>
                               </ng-template>
                               </ng-select>
+
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                                  seatBlockForm.controls['busRoute'].touched &&
+                                  seatBlockForm.controls['busRoute'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                              Bus Route required!
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -419,7 +454,7 @@
                               >Reason<span class="text-danger">*</span></label
                             >
                             <div class="col-sm-10">
-                              <select
+                              <select required
                                 class="form-control"
                                 formControlName="reason"
                               >
@@ -443,7 +478,7 @@
                                 Reason is required!
                               </span> 
                               <span  *ngIf="seatBlockForm.controls.reason.value=='Others'">
-                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" required
+                                <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" 
                                 formControlName="otherReson" />
                               </span>                           
                             </div>
