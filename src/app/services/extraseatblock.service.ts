@@ -18,7 +18,7 @@ export class ExtraseatblockService {
 
   
   getAllData(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/seatopenData', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/extraSeatBlockData', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -32,7 +32,7 @@ export class ExtraseatblockService {
   }
 
   create(data): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/extrasetablock', JSON.stringify(data), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/extraSeatBlock', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -45,17 +45,12 @@ export class ExtraseatblockService {
     )
   }
   delete(post){
-    return this.httpClient.post<any>(this.apiURL + '/deleteSeatopen', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/deleteExtraSeat', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  chngsts(id){
-    return this.httpClient.put<any>(this.apiURL + '/changeseatopenStatus/' + id, this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
+
   
   errorHandler(error) {
     let errorMessage = '';
