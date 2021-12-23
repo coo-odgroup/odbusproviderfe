@@ -326,7 +326,8 @@ export class BusComponent implements OnInit {
           dep_days:[null],
           seater_fare:[null],
           sleeper_fare:[null],
-          booking_seized:[null]
+          booking_seized:[null],
+          route_status:[null]
         })
       ]),
       bus_number: [null, Validators.compose([Validators.required])], 
@@ -447,6 +448,7 @@ export class BusComponent implements OnInit {
       seater_fare:[null, Validators.compose([Validators.required])],
       sleeper_fare:[null, Validators.compose([Validators.required])],
       booking_seized:[null, Validators.compose([Validators.required])],
+      route_status:[null]
     });
 
 }
@@ -676,7 +678,8 @@ export class BusComponent implements OnInit {
           dep_days:[null],
           seater_fare:[null],
           sleeper_fare:[null],
-          booking_seized:[null]
+          booking_seized:[null],
+          route_status:[null]
         })
       ]),
       bus_number: [null,Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(15)])], 
@@ -1053,7 +1056,8 @@ export class BusComponent implements OnInit {
           dep_days:[null],
           seater_fare:[null],
           sleeper_fare:[null],
-          booking_seized:[null]
+          booking_seized:[null],
+          route_status:[null]
         })
       ]),    
       bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
@@ -1252,12 +1256,18 @@ export class BusComponent implements OnInit {
             this.selectedLocations[counter]=[{id:singleLocation.location_id,location_name:singleLocation.location_name[0].name}];
             counter++;
           }
-          
+          let checked:any;
           for(let singleRoute of resp.data.result)
           {
             
             let arrayroutelen = this.busRoutesInfoRecords.length;
-
+            if(singleRoute.status=="1")
+            {
+              checked="true";
+            }
+            else{
+              checked="";
+            }
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
               from_location:[JSON.parse(singleRoute.source_id)],
               to_location:[JSON.parse(singleRoute.destination_id)],
@@ -1265,7 +1275,8 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],              
-              booking_seized:[singleRoute.seize_booking_minute] 
+              booking_seized:[singleRoute.seize_booking_minute],
+              route_status:[checked]
             });
            
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
@@ -1595,10 +1606,17 @@ export class BusComponent implements OnInit {
             this.selectedLocations[counter]=[{id:singleLocation.location_id,location_name:singleLocation.location_name[0].name}];
             counter++;
           }
+          let checked:any;
           for(let singleRoute of resp.data.result)
           {
             
-            
+            if(singleRoute.status=="1")
+            {
+              checked="true";
+            }
+            else{
+              checked="";
+            }
             let arrayroutelen = this.busRoutesInfoRecords.length;
 
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
@@ -1608,7 +1626,8 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],
-               booking_seized:[singleRoute.seize_booking_minute] 
+              booking_seized:[singleRoute.seize_booking_minute],
+              route_status:[checked]
             });
             
            
@@ -1933,7 +1952,8 @@ export class BusComponent implements OnInit {
               dep_days:[JSON.parse(singleRoute.start_j_days)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],
-              booking_seized:[null] 
+              booking_seized:[null],
+              route_status:[singleRoute.route_status]
             });
             
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);

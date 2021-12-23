@@ -797,8 +797,8 @@
                                       <option value="5">5</option>
                                     </select>
                                   </div>
-                                  <div class="form-group col-md-2 " style="padding:0px 5px;">
-                                    <label for="bus">Seater Fare<span class="text-danger">*</span></label>
+                                  <div class="form-group col-md-1 " style="padding:0px 5px;">
+                                    <label for="bus">Seat Fare<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" required formControlName="seater_fare"
                                       [value]="busRecord.seater_fare" placeholder="Seater Fare" placement="top"
                                       ngbTooltip="Seater Fare" />
@@ -824,6 +824,13 @@
                                     <span class="text-danger"
                                       *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
                                       Seize Time is required! </span>
+                                  </div>
+                                  <div class="form-group col-md-1" style="padding:0px 5px;">
+                                    <label for="route_status">Status</label>
+                                    <div class="custom-control custom-switch">
+                                      <input type="checkbox" class="custom-control-input" id="route_status{{i}}" formControlName="route_status">
+                                      <label class="custom-control-label" for="route_status{{i}}"></label>
+                                    </div>
                                   </div>
                                  
                                   <!-- (click)="removeRoute(i)"  -->
@@ -1654,8 +1661,8 @@
                                       <option value="5">5</option>
                                     </select>
                                   </div>
-                                  <div class="form-group col-md-2 " style="padding:0px 5px;">
-                                    <label for="bus">Seater Fare<span class="text-danger">*</span></label>
+                                  <div class="form-group col-md-1 " style="padding:0px 5px;">
+                                    <label for="bus">Seat Fare<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" required formControlName="seater_fare"
                                       [value]="busRecord.seater_fare" placeholder="Seater Fare" placement="top"
                                       ngbTooltip="Seater Fare" />
@@ -1681,6 +1688,13 @@
                                     <span class="text-danger"
                                       *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
                                       Seize Time is required! </span>
+                                  </div>
+                                  <div class="form-group col-md-1" style="padding:0px 5px;">
+                                    <label for="route_status">Status</label>
+                                    <div class="custom-control custom-switch">
+                                      <input type="checkbox" class="custom-control-input" id="route_status{{i}}" formControlName="route_status">
+                                      <label class="custom-control-label" for="route_status{{i}}"></label>
+                                    </div>
                                   </div>
                                   <!-- (click)="removeRoute(i)"  -->
                                   <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
@@ -2295,8 +2309,8 @@
                                       <option value="5">5</option>
                                     </select>
                                   </div>
-                                  <div class="form-group col-md-2 " style="padding:0px 5px;">
-                                    <label for="bus">Seater Fare<span class="text-danger">*</span></label>
+                                  <div class="form-group col-md-1 " style="padding:0px 5px;">
+                                    <label for="bus">Seat Fare<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" required formControlName="seater_fare"
                                       [value]="busRecord.seater_fare" placeholder="Seater Fare" placement="top"
                                       ngbTooltip="Seater Fare" />
@@ -2323,6 +2337,13 @@
                                     <span class="text-danger"
                                       *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
                                       Seize Time is required! </span>
+                                  </div>
+                                  <div class="form-group col-md-1" style="padding:0px 5px;">
+                                    <label for="route_status">Status</label>
+                                    <div class="custom-control custom-switch">
+                                      <input type="checkbox" class="custom-control-input" id="route_status{{i}}" formControlName="route_status">
+                                      <label class="custom-control-label" for="route_status{{i}}"></label>
+                                    </div>
                                   </div>
 
                                   <!-- (click)="removeRoute(i)"  -->
