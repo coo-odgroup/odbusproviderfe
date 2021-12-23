@@ -1854,7 +1854,7 @@ export class BusComponent implements OnInit {
       }
     );
 
-    this.busService.fetchBusTime(this.busRecord.id).subscribe(
+    this.busService.fetchBusTimeClone(this.busRecord.id).subscribe(
       timing=>{
         if(timing.status==1)
         {
@@ -1862,13 +1862,15 @@ export class BusComponent implements OnInit {
           this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
           let stoppages=timing.data.stoppage_timing;
 
+          let counter=1;
+          this.sequenceItem=timing.data.sequence;
           
           //this.busRoutesRecords.clear();
           for(let items of timing.data.routes)
           {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
-              sequence:['',Validators.compose([Validators.required])],
+              sequence:[counter,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -1900,6 +1902,7 @@ export class BusComponent implements OnInit {
                 }
               }
             ); 
+            counter++;
           }
 
         }

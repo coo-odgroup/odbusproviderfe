@@ -115,6 +115,11 @@ export class BusService {
       catchError(this.errorHandler)
     );
   }
+  fetchBusTimeClone(id):Observable<any>{
+    return this.httpClient.get<any>(this.apiURL+'/busStoppageTimingbyBusIdClone/'+id,this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    );
+  }
   fetchBusAmenities(id):Observable<any>{
     return this.httpClient.get<any>(this.apiURL+'/busAmenities/'+id,this.httpOptions).pipe(
       catchError(this.errorHandler)
