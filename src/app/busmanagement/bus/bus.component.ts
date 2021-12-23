@@ -826,41 +826,89 @@ export class BusComponent implements OnInit {
     );
   }
   addBus()
-  {
+  {  
 
-  
+    ////////// check for boarding dropping point checkbox at least 1 item 
     let FinalRoute=[];
-    
 
     let BusRoutes= this.busForm.value.busRoutes;
 
-    BusRoutes.forEach(element => {
+    for (const element of BusRoutes) {
 
       let boardingPointArr={
         "source_id": element.source_id,
         "sequence": element.sequence,
         "sourceBoarding":[]
-      };
-     
+      };     
 
       let srcbordArr = element.sourceBoarding;
 
-      srcbordArr.forEach(e => {
+      for (const e of srcbordArr) {
 
-        if(e.sourcechecked!= null && e.sourceTime != null){
-          boardingPointArr.sourceBoarding.push(e);
+        if(e.sourceTime != null && e.sourceTime != ''  && (e.sourcechecked == true || e.sourcechecked == 'true')){         
+          boardingPointArr.sourceBoarding.push(e);      
         }
-      });
+        
+        else if(e.sourceTime != null && e.sourceTime != '' && (e.sourcechecked == false || e.sourcechecked == null)){
+          this.notificationService.addToast({title:Constants.ErrorTitle,msg:'Checkbox is not checked in boarding droping point under '+e.sourceLocation, type:Constants.ErrorType});
+          return ;
+
+        }
+        else if((e.sourceTime == null || e.sourceTime == '' ) && (e.sourcechecked == true || e.sourcechecked == 'true' )){
+          this.notificationService.addToast({title:Constants.ErrorTitle,msg:'Time is missing in boarding droping point under '+e.sourceLocation, type:Constants.ErrorType});
+          return ;
+
+        } 
+
+
+      }
 
       if(boardingPointArr.sourceBoarding.length>0){
         FinalRoute.push(boardingPointArr);
+      }else{ 
+        this.notificationService.addToast({title:Constants.ErrorTitle,msg:'No boarding droping points selected', type:Constants.ErrorType});
+        return ;
+
+      }
+    }
+
+
+  /////////////////// seat layout at least 1 seat selected
+
+  let countSeat=0;
+
+  let seatArr= this.busForm.value.bus_seat_layout_data;
+
+
+ seatArr.forEach(st => {
+   if(st.upperBerth.length>0){
+
+    st.upperBerth.forEach(u => {
+
+      if(u.seatChecked!='' && u.seatChecked!=false){
+        countSeat++;
       }
 
-     
-      
     });
 
-    
+   }
+
+   if(st.lowerBerth.length>0){
+
+    st.lowerBerth.forEach(l => {
+      if(l.seatChecked!='' && l.seatChecked!=false){
+        countSeat++;
+      }
+    });
+     
+  }
+
+ });
+
+ if(countSeat==0){
+  this.notificationService.addToast({title:Constants.ErrorTitle,msg:'Select at least 1 seat in seat layout', type:Constants.ErrorType});
+  return;
+ }
    
     this.spinner.show();
     const data ={
@@ -903,6 +951,7 @@ export class BusComponent implements OnInit {
     {
       this.busService.create(data).subscribe(
         resp => {
+          console.log(resp);
           if(resp.status==1)
           {   
               
