@@ -86,7 +86,7 @@ export class ExtraseablockComponent implements OnInit {
     //this.busstoppageRecord= {} as Busstoppage;
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Add Seat Open";
+    this.ModalHeading = "Block Extra Seats";
     this.ModalBtn = "Save";
   }
 
@@ -327,14 +327,13 @@ export class ExtraseablockComponent implements OnInit {
     };
 
 
-    this.busService.getSelectedSeat(data.bus_id).subscribe(
+    this.busService.getSelectedextraSeat(data.bus_id).subscribe(
       seatData => {
         this.selectedSeats = seatData.data;
-      }
-    );
-
-    this.seatlayoutService.seatsBus(data).subscribe(
+        //console.log(this.selectedSeats);
+        this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
+        // console.log(resp);
         let counter = 0;
         this.seatLayoutData = (<FormArray>this.seatOpenForm.controls['bus_seat_layout_data']) as FormArray;
         this.seatLayoutData.clear();
@@ -353,35 +352,24 @@ export class ExtraseablockComponent implements OnInit {
             for (let seatData of lowerData) {
               let checkedval = "";
               let seatId = "";
+              let desiabled_seats = "";
               for (let selectedSeat of this.selectedSeats) {
                 if (selectedSeat.seats_id == seatData.id) {
                   checkedval = "true";
                   seatId = selectedSeat.id;
+                  desiabled_seats = "true";
                 }
-
               }
-
               let collen = this.seatLayoutCol.length;
 
               if (checkedval == "true") {
-                let columnData: FormGroup = this.fb.group({
-                  seatText: [seatData.seatText],
-                  seatType: [seatData.seat_class_id],
-                  berthType: [seatData.berthType],
-                  seatChecked: [{ value: true, disabled: true }],
-                  category: ['0'],
-                  seatId: [seatData.id],
-                  busId: [data.bus_id]
-                });
-                this.seatLayoutCol.insert(collen, columnData);
-              }
-              else {
+                //console.log(this.seatOpenRecord.seat_open_seats);
                 if (!this.seatOpenRecord.seat_open_seats) {
                   let columnData: FormGroup = this.fb.group({
                     seatText: [seatData.seatText],
                     seatType: [seatData.seat_class_id],
                     berthType: [seatData.berthType],
-                    seatChecked: [false],
+                    seatChecked: [],
                     category: ['0'],
                     seatId: [seatData.id],
                     busId: [data.bus_id]
@@ -389,8 +377,9 @@ export class ExtraseablockComponent implements OnInit {
                   this.seatLayoutCol.insert(collen, columnData);
                 }
                 else {
-                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) {
-                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id);
+                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) { 
+                    
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
                   });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
@@ -409,15 +398,28 @@ export class ExtraseablockComponent implements OnInit {
                       seatText: [seatData.seatText],
                       seatType: [seatData.seat_class_id],
                       berthType: [seatData.berthType],
-                      seatChecked: [false],
+                      seatChecked: [],
                       category: ['0'],
                       seatId: [seatData.id],
                       busId: [data.bus_id]
                     });
                     this.seatLayoutCol.insert(collen, columnData);
-
                   }
                 }
+              }
+              else {
+                // console.log(this.seatOpenRecord.seat_open_seats);            
+
+                let columnData: FormGroup = this.fb.group({
+                  seatText: [seatData.seatText],
+                  seatType: [seatData.seat_class_id],
+                  berthType: [seatData.berthType],
+                  seatChecked: [{ value: false, disabled: true }],
+                  category: ['0'],
+                  seatId: [seatData.id],
+                  busId: [data.bus_id]
+                });
+                this.seatLayoutCol.insert(collen, columnData);
               }
             }
             counter++;
@@ -442,31 +444,18 @@ export class ExtraseablockComponent implements OnInit {
                 if (selectedSeat.seats_id == seatData.id) {
                   checkedval = "true";
                   seatId = selectedSeat.id;
-                  desiabled_seats = "true";
+                  // desiabled_seats = "true";
                 }
               }
               let collen = this.seatLayoutCol.length;
 
               if (checkedval == "true") {
-
-                let columnData: FormGroup = this.fb.group({
-                  seatText: [seatData.seatText],
-                  seatType: [seatData.seat_class_id],
-                  berthType: [seatData.berthType],
-                  seatChecked: [{ value: true, disabled: true }],
-                  category: ['0'],
-                  seatId: [seatData.id],
-                  busId: [data.bus_id]
-                });
-                this.seatLayoutCol.insert(collen, columnData);
-              }
-              else {
                 if (!this.seatOpenRecord.seat_open_seats) {
                   let columnData: FormGroup = this.fb.group({
                     seatText: [seatData.seatText],
                     seatType: [seatData.seat_class_id],
                     berthType: [seatData.berthType],
-                    seatChecked: [false],
+                    seatChecked: [],
                     category: ['0'],
                     seatId: [seatData.id],
                     busId: [data.bus_id]
@@ -474,8 +463,9 @@ export class ExtraseablockComponent implements OnInit {
                   this.seatLayoutCol.insert(collen, columnData);
                 }
                 else {
-                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) {
-                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id);
+                  
+                  var isPresent = this.seatOpenRecord.seat_open_seats.some(function (el) { 
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
                   });
                   if (isPresent) {
                     let columnData: FormGroup = this.fb.group({
@@ -494,16 +484,30 @@ export class ExtraseablockComponent implements OnInit {
                       seatText: [seatData.seatText],
                       seatType: [seatData.seat_class_id],
                       berthType: [seatData.berthType],
-                      seatChecked: [false],
+                      seatChecked: [],
                       category: ['0'],
                       seatId: [seatData.id],
                       busId: [data.bus_id]
                     });
                     this.seatLayoutCol.insert(collen, columnData);
-
                   }
                 }
 
+
+              }
+              else {
+                // console.log(this.seatOpenRecord.seat_open_seats);            
+
+                let columnData: FormGroup = this.fb.group({
+                  seatText: [seatData.seatText],
+                  seatType: [seatData.seat_class_id],
+                  berthType: [seatData.berthType],
+                  seatChecked: [{ value: false, disabled: true }],
+                  category: ['0'],
+                  seatId: [seatData.id],
+                  busId: [data.bus_id]
+                });
+                this.seatLayoutCol.insert(collen, columnData);
               }
             }
             counter++;
@@ -512,7 +516,12 @@ export class ExtraseablockComponent implements OnInit {
 
       }
     );
+      }
+    );
+
+    
   }
+
 
   checkroute(event: any) {
     const data = {
@@ -537,6 +546,7 @@ export class ExtraseablockComponent implements OnInit {
   }
 
   ResetAttributes() {
+    this.busSchedule = [];
     this.route = "";
     this.seatOpenRecord = {} as Seatopen;
     this.seatOpenForm = this.fb.group({
@@ -560,7 +570,7 @@ export class ExtraseablockComponent implements OnInit {
       ])
     });
 
-    this.ModalHeading = "Add Seat Open";
+    this.ModalHeading = "Block Extra Seats";
     this.ModalBtn = "Save";
   }
 

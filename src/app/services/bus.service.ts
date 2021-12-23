@@ -52,6 +52,11 @@ export class BusService {
       catchError(this.errorHandler)
     ) 
   }
+  getSelectedextraSeat(busId):Observable<any>{
+    return this.httpClient.get(this.apiURL+'/busextraSeatsByBus/' +busId,this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    ) 
+  }
   updateSelectedData(busId,post):Observable<any>{
 
     return this.httpClient.put<any>(this.apiURL+ '/busSeats/'+busId, JSON.stringify(post), this.httpOptions)
