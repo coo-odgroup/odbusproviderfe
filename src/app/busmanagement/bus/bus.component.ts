@@ -367,7 +367,7 @@ export class BusComponent implements OnInit {
       user_id:localStorage.getItem('USERID')
     };
 
-    //console.log(pageurl);
+    
     if(pageurl!="")
     {
       this.busService.getAllaginationData(pageurl,data).subscribe(
@@ -387,7 +387,7 @@ export class BusComponent implements OnInit {
           this.pagination= res.data.data;
           this.all =res.data;
           this.spinner.hide();
-          //  console.log(this.buses);
+          
         }
       );
     }
@@ -425,9 +425,9 @@ export class BusComponent implements OnInit {
    busData(index)
    {
      this.ModalHeading = "BUS DETAILS"
-    // console.log(index);
+    
       this.busRecord = this.buses[index];
-      //  console.log(this.busRecord);
+    
    }
 
   // route formgroup
@@ -462,7 +462,7 @@ export class BusComponent implements OnInit {
     this.busRoutesRecords=this.busForm.get('busRoutes') as FormArray;
     let arraylen = this.busRoutesRecords.length;
     this.busRoutesRecords.insert(arraylen, this.createRoute());
-    //console.log();
+    
   }
   addRouteInfo(){
     this.busRouteInfo=this.busForm.get('busRoutesInfo') as FormArray;
@@ -529,7 +529,7 @@ export class BusComponent implements OnInit {
       this.busOperartorService.userOperators(UserInfo).subscribe(
         record=>{
         this.operators=record.data;
-        // console.log(this.operators);
+        
         this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
 
         }
@@ -547,7 +547,7 @@ export class BusComponent implements OnInit {
       );
       this.safetyService.readAll().subscribe(res=>{
         this.safetyies=res.data;
-        console.log(this.safetyies);
+        
       });
       this.cancellationslabService.readAllUserData(UserInfo).subscribe(
         resp=>{
@@ -749,7 +749,7 @@ export class BusComponent implements OnInit {
     };
     if(data.id!=null)
     {
-      //console.log(data);
+      
       this.busService.update(data.id,data).subscribe(
         resp => {
           if(resp.status==1)
@@ -857,7 +857,7 @@ export class BusComponent implements OnInit {
       
     });
 
-    //console.log(FinalRoute);
+    
    
     this.spinner.show();
     const data ={
@@ -894,7 +894,7 @@ export class BusComponent implements OnInit {
       
     };
 
-    console.log(data);
+    
  
     if(data.id==null)
     {
@@ -1184,7 +1184,7 @@ export class BusComponent implements OnInit {
           let counter=0;
           this.sequenceItem=timing.data.sequence;
 
-          // console.log(timing.data.routes);
+          
 
           for(let items of timing.data.routes)
           {
@@ -1197,7 +1197,7 @@ export class BusComponent implements OnInit {
             this.busRoutesRecords.insert(arraylen, new_BusRoute_group);
 
            
-          //  console.log(this.busRoutesRecords);
+          
            
             this.boardingdropingService.get(items['location_id']).subscribe(
               records=>{
@@ -1255,7 +1255,7 @@ export class BusComponent implements OnInit {
           
           for(let singleRoute of resp.data.result)
           {
-            // console.log(singleRoute);
+            
             let arrayroutelen = this.busRoutesInfoRecords.length;
 
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
@@ -1588,7 +1588,7 @@ export class BusComponent implements OnInit {
         {
           this.busRoutesInfoRecords=this.busForm.get('busRoutesInfo') as FormArray;
           this.busRoutesInfoRecords.clear();
-          console.log(resp.data);
+          
           let counter=0;
           for(let singleLocation of resp.data.locations)
           {
@@ -1613,7 +1613,7 @@ export class BusComponent implements OnInit {
             
            
             this.busRoutesInfoRecords.insert(arrayroutelen, new_busRoutesInfo_group);
-            console.log(this.busRoutesInfoRecords.controls.from_location);
+            
            
             let stoppages=singleRoute['stoppage'];
 
@@ -2171,7 +2171,7 @@ export class BusComponent implements OnInit {
   {
     this.spinner.show();
     this.busRecord=this.buses[id] ;
-    // console.log(this.busRecord);
+    
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
       bus_description:[this.busRecord.bus_description],
@@ -2217,7 +2217,7 @@ export class BusComponent implements OnInit {
    
     this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
       resp=>{
-        // console.log(resp);
+        
         let counter=0;
         
         this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
@@ -2253,7 +2253,7 @@ export class BusComponent implements OnInit {
               
               if(checkedval=="1")
               {
-                //console.log("hello");
+                
                 if(durationCheck==0)
                 {
                   let columnData: FormGroup = this.fb.group({ 
@@ -2530,7 +2530,7 @@ export class BusComponent implements OnInit {
   changeStatus(event : Event, stsitem:any)
   {
     this.spinner.show();
-    // console.log(stsitem);
+    
     this.busService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)
