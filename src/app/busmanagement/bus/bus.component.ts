@@ -1309,7 +1309,8 @@ export class BusComponent implements OnInit {
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data
 
     };
-
+    console.log(data);
+    return false;
     if(data.id!=null)
     {
       this.busService.updateRoutes(data.id,data).subscribe(
