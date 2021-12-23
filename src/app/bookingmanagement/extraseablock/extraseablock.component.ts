@@ -654,8 +654,7 @@ export class ExtraseablockComponent implements OnInit {
       other_reson: this.seatOpenForm.value.otherReson,
       date: this.seatOpenForm.value.date,
       bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
-      created_by: localStorage.getItem('USERNAME'),
-      type: "1"
+      created_by: localStorage.getItem('USERNAME')
 
     };
     // console.log(data);
@@ -696,22 +695,7 @@ export class ExtraseablockComponent implements OnInit {
 
   }
 
-  changeStatus(event: Event, stsitem: any) {
-    this.spinner.show();
-    this.seatopenService.chngsts(stsitem).subscribe(
-      resp => {
-
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.refresh();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          this.spinner.hide();
-        }
-      }
-    );
-  }
+ 
 
   openConfirmDialog(content, id: any, tkt_id: any, date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
@@ -720,8 +704,7 @@ export class ExtraseablockComponent implements OnInit {
     this.deletedata = {
       bus_id: id,
       ticketPriceId: tkt_id,
-      operationDate: date,
-      type: "1"
+      operationDate: date
     };
     // console.log(this.deletedata);
     return
