@@ -267,6 +267,7 @@ export class SeatlayoutComponent implements OnInit {
     const data={
       name:form.value.SeatLayoutName,
       layout_data:JSON.stringify(this.seatBlocks),
+      user_id:localStorage.getItem('USERID'),
       created_by:localStorage.getItem('USERNAME'),
       bus_operator_id:this.SeatLayoutRecord.bus_operator_id  
     }
