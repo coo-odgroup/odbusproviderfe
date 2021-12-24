@@ -1128,7 +1128,7 @@ export class BusComponent implements OnInit {
     );
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
-        this.selectedSeats=seatData.data;        
+        this.selectedSeats=seatData.data['seat'];        
         this.spinner.hide();
       }
     );
@@ -1506,7 +1506,7 @@ export class BusComponent implements OnInit {
 
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
-        this.selectedSeats=seatData.data;
+        this.selectedSeats=seatData.data['seat'];
         this.spinner.hide();
       }
     );
@@ -1850,7 +1850,7 @@ export class BusComponent implements OnInit {
 
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
-        this.selectedSeats=seatData.data;
+        this.selectedSeats=seatData.data['seat'];
         this.spinner.hide();
       }
     );
@@ -2221,7 +2221,7 @@ export class BusComponent implements OnInit {
     );
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
-        this.selectedSeats=seatData.data;        
+        this.selectedSeats=seatData.data['seat'];        
         this.spinner.hide();
       }
     );

@@ -288,7 +288,7 @@ export class SeatopenComponent implements OnInit {
 
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
-        this.selectedSeats = seatData.data;
+        this.selectedSeats = seatData.data['seat'];
       }
     );
 
