@@ -2359,9 +2359,10 @@ export class BusComponent implements OnInit {
     );
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
-        this.selectedSeats=seatData.data;
+        this.selectedSeats=seatData.data['seat'];
+        // console.log(this.selectedSeats);
      
-        this.busForm.controls.duration_minuties.setValue(this.selectedSeats[0]['duration']);
+        this.busForm.controls.duration_minuties.setValue(seatData.data['duration'][0].duration);
       
         
       }
