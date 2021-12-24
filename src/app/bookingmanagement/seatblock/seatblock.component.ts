@@ -5,6 +5,7 @@ import { Seatblock } from '../../model/seatblock';
 import { NotificationService } from '../../services/notification.service';
 import { SeatblockService } from '../../services/seatblock.service';
 import { BusService } from '../../services/bus.service';
+import { BusscheduleService } from '../../services/busschedule.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
@@ -61,9 +62,11 @@ export class SeatblockComponent implements OnInit {
   route: any;
   deletedata: any;
   page_no=1;
+  busSchedule: any;
   constructor(
     private seatblockService: SeatblockService,
     private seatlayoutService: SeatlayoutService,
+    private bss: BusscheduleService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder,
@@ -501,6 +504,19 @@ export class SeatblockComponent implements OnInit {
     // console.log(data);
   }
 
+  getSchedule()
+  {
+    const data = {
+      bus_id: this.seatBlockForm.value.bus_id
+    };
+    this.bss.getScheduleById(data.bus_id).subscribe(
+      seatData => {
+        this.busSchedule = seatData ;
+      }
+    );
+  }
+
+
   onSelectAll() {
     const selected = this.route.map(item => item.id);
     this.seatBlockForm.get('busRoute').patchValue(selected);
@@ -511,6 +527,7 @@ export class SeatblockComponent implements OnInit {
 
 
   ResetAttributes() {
+    this.busSchedule = [] ;
     this.seatBlockRecord = {} as Seatblock;
     this.seatBlockForm = this.fb.group({
       bus_operator_id: [null],
@@ -675,6 +692,7 @@ export class SeatblockComponent implements OnInit {
       }
     );
   }
+
 
   openConfirmDialog(content, id: any,tkt_id: any,date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });

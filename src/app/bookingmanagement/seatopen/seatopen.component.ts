@@ -2,9 +2,9 @@ import { BusOperatorService } from './../../services/bus-operator.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Seatopen } from '../../model/seatopen';
-
 import { NotificationService } from '../../services/notification.service';
 import { SeatopenService } from '../../services/seatopen.service';
+import { BusscheduleService } from '../../services/busschedule.service';
 import { BusService } from '../../services/bus.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -14,7 +14,6 @@ import { LocationService } from '../../services/location.service';
 import { SeatlayoutService } from '../../services/seatlayout.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
-
 
 @Component({
   selector: 'app-seatopen',
@@ -65,9 +64,11 @@ export class SeatopenComponent implements OnInit {
   route: any;
   deletedata: any;
   page_no=1;
+  busSchedule: any;
   constructor(
     private seatopenService: SeatopenService,
     private seatlayoutService: SeatlayoutService,
+    private bss: BusscheduleService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder,
@@ -486,6 +487,19 @@ export class SeatopenComponent implements OnInit {
     );
     // console.log(data);
   }
+
+  getSchedule()
+  {
+    const data = {
+      bus_id: this.seatOpenForm.value.bus_id
+    };
+    this.bss.getScheduleById(data.bus_id).subscribe(
+      seatData => {
+        this.busSchedule = seatData ;
+      }
+    );
+  }
+  
   onSelectAll() {
     const selected = this.route.map(item => item.id);
     this.seatOpenForm.get('busRoute').patchValue(selected);
@@ -495,6 +509,7 @@ export class SeatopenComponent implements OnInit {
   }
 
   ResetAttributes() {
+    this.busSchedule =[] ;
     this.route = "";
     this.seatOpenRecord = {} as Seatopen;
     this.seatOpenForm = this.fb.group({

@@ -289,36 +289,11 @@ export class ExtraseablockComponent implements OnInit {
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
-    // console.log(data. bus_id);
-    // return
     this.bss.getScheduleById(data.bus_id).subscribe(
       seatData => {
         this.busSchedule = seatData ;
-        // console.log(this.busSchedule[0].bus_schedule_date );
       }
     );
-    // this.buscanCellationService.getById(this.busSchedule[0].bus_id).subscribe(
-    //   resp => {
-    //     if(resp.status==1)
-    //     {
-    //       if(resp.data.length!=0)
-    //       {
-    //         this.cancelDates = resp.data[0].bus_cancelled_date;
-    //         let counter=0;
-    //         for(let scheduledDate of this.busSchedule[0].bus_schedule_date)
-    //         {
-    //           var isPresent = this.cancelDates.some(function (el) {
-    //             return el.cancelled_date === scheduledDate.entry_date;
-    //           });
-    //           if(isPresent)
-    //           {
-    //             this.busSchedule[0].bus_schedule_date[counter].entry_date="**"+scheduledDate.entry_date+"**";
-    //           }
-    //           counter++;
-    //         }
-    //       }
-    //     }
-    //   });
   }
 
   checkEvent(event: any) {

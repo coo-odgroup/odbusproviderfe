@@ -354,7 +354,7 @@
                                 placeholder="Select Bus"
                                 formControlName="bus_id"
                                 [clearable]="false"
-                                (change)="checkroute();checkEvent($event);"
+                                (change)="getSchedule();checkroute();checkEvent($event);"
                                 required
                               >
                               </ng-select>
@@ -483,6 +483,17 @@
                               </span>                           
                             </div>
                           </div>                          
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <label *ngFor="let eDate of busSchedule ;" >
+                              <span class="col-2" *ngFor="let  date of eDate.bus_schedule_date ;">
+                                  {{date.entry_date}}
+                              </span>
+                            
+                            </label>
                         </div>
                       </div>
 

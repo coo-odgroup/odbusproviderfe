@@ -340,36 +340,6 @@
                           </div>
                         </div>
                       </div>
-
-                      <!-- <div class="row" *ngIf="seatOpenForm.controls.searchBy.value=='routes'">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="routes" class="col-sm-4 col-form-label">Routes<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-8">
-                                                            <ng-select [items]="locations" bindLabel="name"
-                                                                bindValue="id" placeholder="Select Source"
-                                                                formControlName="source_id" [clearable]="false"
-                                                                (change)="findSource()">
-                                                            </ng-select>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-8">
-                                                            <ng-select [items]="locations" bindLabel="name"
-                                                                bindValue="id" placeholder="Select Destination"
-                                                                formControlName="destination_id" [clearable]="false"
-                                                                (change)="findSource($event)">
-                                                            </ng-select>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
                       <div class="row">
                         <div class="col-md-8">
                           <div class="form-group row">
@@ -387,7 +357,7 @@
                                 placeholder="Select Bus"
                                 formControlName="bus_id"
                                 [clearable]="false"
-                                (change)="checkroute();checkEvent($event);"
+                                (change)="getSchedule();checkroute();checkEvent($event);"
                               >
                               </ng-select>
                               
@@ -520,6 +490,17 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <label *ngFor="let eDate of busSchedule ;" >
+                              <span class="col-2" *ngFor="let  date of eDate.bus_schedule_date ;">
+                                  {{date.entry_date}}
+                              </span>                            
+                          </label>
+                        </div>
+                      </div>
+
 
                       <div class="row">
                         <div class="row form-group col-sm-12">
