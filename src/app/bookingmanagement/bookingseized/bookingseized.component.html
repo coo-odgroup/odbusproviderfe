@@ -1,13 +1,22 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <div class="row">
   <div class="col-sm-12">
-    <app-card [hidHeader]="false" cardTitle="Booking Seized "
+    <app-card [hidHeader]="false" cardTitle="Datewise Booking Seized "
       cardClass="card-datatable" [options]="false" cardClass=" table-border-style user-profile-list ">
       <div class="row">
+        <div class="col-3">
+          <div class="from-group ">
+            <button class="btn sml_input btn-success mb-2 " 
+            (click)="ResetAttributes();OpenModal(content)"  >
+            Bus Seized Here
+            </button>
+          </div>
+        </div>
 
-        <div class="col-12">
+        <div class="col-9">
           <form [formGroup]="searchForm">
             <div class="row">
+             
 
               <div class="col-4">
                 <div class="form-group row">
@@ -67,17 +76,12 @@
               <th scope="col">#</th>
               <th scope="col">Operator Name</th>
               <th scope="col">Bus Name/Number</th>
-              <th scope="col">
-                <div class="row">
-                  <div class="col-6">
-                    Location Name 
-                  </div>
-                  <div class="col-6">
-                   Time in  minute
-                  </div>
-
-                </div>
-              </th>
+              <th scope="col">Location Name </th>
+              <th scope="col">Time in  minute </th>
+              <th scope="col">Reason</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Created/Updated on</th>
+             
       
 
               <th width="100" class="hide_print">&nbsp; </th>
@@ -86,22 +90,33 @@
           <tbody>
             <tr *ngFor="let seized of bookingSeized; let i = index">
               <td>{{i+1}}</td>
-              <td>{{seized.bus_operator.operator_name}}</td>
-              <td>{{seized.name}} <br> {{seized.bus_number}}</td>
+              <td>{{seized.bus.bus_operator.operator_name}}</td>
+              <td>{{seized.bus.name}} <br> {{seized.bus.bus_number}}</td>
               <td>
-                <table class="table-borderless">
-                  <tr *ngFor="let location of seized.bookingseized">
-                    <td>{{location.location.name}}</td>
-                    <td>{{location.seize_booking_minute}}</td>
-                  </tr>
-                </table>
+                {{seized.from_location[0].name}} >> {{seized.to_location[0].name}}               
+              </td>
+              <td>
+                {{seized.seize_booking_minute}}              
+              </td>
+              <td>
+                {{seized.reason}}<br>{{seized.other_reason}}              
+              </td>
+              <td>
+                {{seized.created_by}}              
+              </td>
+              <td>
+                {{seized.updated_at | date: 'dd/MM/yyyy'}}              
               </td>
              
 
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button type="button" (click)="editbookingseized(i); OpenModal(content)"
-                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <!-- <button type="button" (click)="editbookingseized(i); OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button> -->
+                    <button type="button" 
+                    (click)="openConfirmDialog (confirmDialog,i)" class="btn btn-icon btn-danger">
+                            <i  class="feather icon-trash-2"></i>
+              </button>
 
                 </div>
               </td>
@@ -146,6 +161,51 @@
 
     </app-card>
 
+
+    <ng-template #confirmDialog let-modal>
+      <div class="modal-header">
+        <h5 class="ng-tns-c116-5">Would you Like to Delete the Record??</h5>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-material">
+              <div class="right-icon-control">
+                Would you Like to Delete the Record
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="deleteRecord()"
+          class="btn btn-primary"
+          ngbAutofocus
+        >
+          Confirm Delete
+        </button>
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          #defaultClick
+          (click)="modal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </ng-template>
+
     <ng-template #content let-modal>
       <div class="modal-header">
         <h5 class="ng-tns-c116-5">{{ ModalHeading }}</h5>
@@ -158,16 +218,193 @@
           <div class="col-sm-12">
             <div class="form-material">
               <div class="right-icon-control">
+                <form
+                [formGroup]="bookingseizedForm"
+                class="editForm"
+                novalidate
+              >
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label for="bus" class="col-sm-2 col-form-label"
+                        >Operator<span class="text-danger">*</span></label
+                      >
+                      <div class="col-sm-10">
+                        <ng-select
+                          [items]="busoperators"
+                          required
+                          bindLabel="operatorData"
+                          bindValue="id"
+                          placeholder="Select Operator"
+                          formControlName="bus_operator_id"
+                          [clearable]="false"
+                          (change)="findOperator($event)"
+                        >
+                        </ng-select>
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            bookingseizedForm.controls['bus_operator_id'].touched &&
+                            bookingseizedForm.controls['bus_operator_id'].hasError(
+                              'required'
+                            )
+                          "
+                        >
+                        Bus  required!
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label for="busname" class="col-sm-2 col-form-label"
+                        >Bus<span class="text-danger"
+                          >*</span
+                        ></label
+                      >
+                      <div class="col-sm-10">
+                        <ng-select
+                          [items]="buses"
+                          required
+                          bindLabel="testing"
+                          bindValue="id"
+                          placeholder="Select Bus"
+                          formControlName="bus_id"
+                          [clearable]="false"
+                          (change)="editbookingseized(event);"
+                        >
+                        </ng-select>
+                        
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            bookingseizedForm.controls['bus_id'].touched &&
+                            bookingseizedForm.controls['bus_id'].hasError(
+                              'required' )">
+                             Bus  required!
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+            
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label for="date" class="col-sm-2 col-form-label"
+                        >Date<span class="text-danger">*</span></label>
+                      <div class="col-sm-10">
+                        <input
+                          type="date"
+                          class="form-control"
+                          placeholder="Enter Date"
+                          required
+                          formControlName="date"
+                        />
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            bookingseizedForm.controls['date'].touched &&
+                            bookingseizedForm.controls['date'].hasError(
+                              'required'
+                            )
+                          "
+                        >
+                          Date required!
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label for="reason" class="col-sm-2 col-form-label"
+                        >Reason</label
+                      >
+                      <div class="col-sm-10">
+                        <select
+                          class="form-control"
+                          formControlName="reason" required
+                        >
+                          <option>Select</option>
+                          <option>Request From Owner</option>
+                          <option>Request From Manager</option>
+                          <option>Request From Conductor</option>
+                          <option>Bus Breakdown</option>
+                          <option>Request From Association</option>
+                          <option>Others</option>
+                        </select>
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            bookingseizedForm.controls['reason'].touched &&
+                            bookingseizedForm.controls['reason'].hasError(
+                              'required'
+                            )
+                          "
+                        >
+                          Reason is required!
+                        </span>
+                        <span  *ngIf="bookingseizedForm.controls.reason.value=='Others'">
+                          <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson" 
+                          formControlName="otherReson" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="row">
+                  <div class="col-sm-12">
+                    <label *ngFor="let eDate of busSchedule ;" >
+                        <span class="col-2" *ngFor="let  date of eDate.bus_schedule_date ;">
+                            {{date.entry_date}}
+                        </span>                            
+                    </label>
+                  </div>
+                </div> -->
 
 
+                <div class="row">
+                  <div class="row form-group col-sm-12">
+                    <div formArrayName="bookingseized" class="col-12">
+                      <table>
+                        <tr
+                          *ngFor=" let singleseized of bookingseizedForm.controls.bookingseized.controls; let layout_row = index "
+                          [formGroupName]="layout_row">
+                          <td style="min-width: 200px;;">
+                            {{singleseized.controls.location.value}}
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" formControlName="time" required />
+                            <span class="text-danger"
+                              *ngIf="singleseized.controls['time'].touched && singleseized.controls['time'].hasError('required')">
+                              Time is required! </span>
+
+                            <span class="text-danger row col-12"
+                              *ngIf="singleseized.controls['time'].errors?.pattern">
+                              Time Should be Numbers.
+                            </span>
+                          </td>
+
+                        </tr>
+                      </table>
+
+                    </div>
+                  
+                
+                  </div>
+                </div>
+              </form>
+
+<!-- 
                 <div class="row">
                   <div class="col-4 bg-light">
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label for="bus" class="col-sm-5 col-form-label">Operator :</label>
-                          <div class="col-sm-7 mt-2">
-                            <!-- <input type="text " formControlName="bus_operator_name" readonly> -->
+                          <div class="col-sm-7 mt-2">                
                             <strong>{{opertaors_name}}</strong>
                           </div>
                         </div>
@@ -179,7 +416,6 @@
                         <div class="form-group row">
                           <label for="busname" class="col-sm-5 col-form-label">Bus Name :</label>
                           <div class="col-sm-7 mt-2">
-                            <!-- <input type="text " formControlName="bus_name"  readonly> -->
                             <strong>{{buss_name}}</strong>
                           </div>
                         </div>
@@ -192,7 +428,6 @@
                         <div class="form-group row">
                           <label for="busname" class="col-sm-5 col-form-label">Bus Number :</label>
                           <div class="col-sm-7 mt-2">
-                            <!-- <input type="text " formControlName="bus_number" readonly> -->
                             <strong> {{buss_number}}</strong>
                           </div>
                         </div>
@@ -228,7 +463,10 @@
                       </div>
                     </form>
                   </div>
-                </div>
+                </div> -->
+
+
+                
               </div>
             </div>
           </div>

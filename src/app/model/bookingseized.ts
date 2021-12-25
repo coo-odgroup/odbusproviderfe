@@ -22,6 +22,7 @@ export interface Bookingseized {
     "status": any,
     "sequence": any,
     "bookingseized": any,
-    "bus_operator":any
+    "bus_operator":any,
+    "ticket_price":any,
   
 }

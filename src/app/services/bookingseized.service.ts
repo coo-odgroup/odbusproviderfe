@@ -24,6 +24,13 @@ export class BookingseizedService {
     )
   }
 
+  getById(id){
+    return this.httpClient.get<any>(this.apiURL + '/bookingseizedById/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL+ '/bookingseizedData', JSON.stringify(post), this.httpOptions)
     .pipe(
@@ -39,12 +46,20 @@ export class BookingseizedService {
   }
 
 
-  update(post): Observable<any> {
+  save(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/bookingseized' , JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+  delete(id): Observable<any> {
+    return this.httpClient.delete<any>(this.apiURL + '/deletebookingseized/'+id,  this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
 
   errorHandler(error) {
     let errorMessage = '';

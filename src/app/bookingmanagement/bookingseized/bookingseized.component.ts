@@ -8,10 +8,8 @@ import { NotificationService } from '../../services/notification.service';
 import {Constants} from '../../constant/constant';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
-
-
-
-
+import { BusService } from '../../services/bus.service';
+import { BusOperatorService } from './../../services/bus-operator.service';
 
 
 
@@ -22,8 +20,12 @@ import { NgxSpinnerService } from "ngx-spinner";
 })
 export class BookingseizedComponent implements OnInit {
   modalReference: NgbModalRef;
+  confirmDialogReference: NgbModalRef;
   bookingSeized : Bookingseized[];
   bookingSeizedRecord : Bookingseized;
+
+  public formConfirm: FormGroup;
+
   public searchForm: FormGroup;
   ModalHeading:any;
   
@@ -35,9 +37,12 @@ export class BookingseizedComponent implements OnInit {
   buss_number: any;
   pagination: any;
   all: any;
+  buses: any;
+  busoperators: any;
 
   constructor(
-    private http: HttpClient,
+    private http: HttpClient,  private busService: BusService,
+    private busOperatorService: BusOperatorService,
     private bookingseizedService: BookingseizedService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
@@ -46,7 +51,7 @@ export class BookingseizedComponent implements OnInit {
     {
       config.backdrop = 'static';
       config.keyboard = false;
-      this.ModalBtn = "Update";
+      this.ModalBtn = "Save";
     }
 
     
@@ -58,12 +63,28 @@ export class BookingseizedComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     this.bookingseizedForm = this.fb.group({
-
-      bookingseized:this.fb.array([ ])
-      
+      bus_operator_id: [null],
+      id: [null],
+      bus_id: [null],
+      busRoute: [null],
+      date: [null],
+      reason: [null],
+      otherReson: [null],
+      bookingseized:this.fb.array([ ]),
     });
 
-    // this.getAll();
+    this.loadServices();
+
+
+
+
+    // this.bookingseizedForm = this.fb.group({
+
+    //   bookingseized:this.fb.array([ ])
+      
+    // });
+
+   
 
     this.searchForm = this.fb.group({  
       name: [null],  
@@ -94,8 +115,7 @@ export class BookingseizedComponent implements OnInit {
           this.all= res.data;
           this.bookingSeized= res.data.data.data;
           this.pagination= res.data.data;
-          // console.log( this.BusOperators);
-         
+          // console.log( this.bookingSeized);         
           this.spinner.hide();
         }
       );
@@ -149,38 +169,54 @@ export class BookingseizedComponent implements OnInit {
   }
 
 
+  ResetAttributes()
+  {
+    this.bookingseizedForm = this.fb.group({
+      bus_operator_id: [null],
+      id: [null],
+      bus_id: [null],
+      busRoute: [null],
+      date: [null],
+      reason: [null],
+      otherReson: [null],
+      bookingseized:this.fb.array([ ]),
+    });
+
+  }
+
 
   getAll()
   {
     this.bookingseizedService.readAll().subscribe(
       resp => {
         this.bookingSeized = resp.data;
-        // console.log( this.bookingSeized );
+       
       }
     );
   }
 
   editbookingseized(id)
   { 
+    const data = {
+      bus_id: this.bookingseizedForm.value.bus_id
+    };
+
+    this.bookingseizedService.getById(data.bus_id).subscribe(
+      resp => {
+        this.bookingSeizedRecord= resp.data;  
     
-    this.bookingSeizedRecord = this.bookingSeized[id];
-    // console.log(this.bookingSeizedRecord );
+      this.bookingseizedData = (<FormArray>this.bookingseizedForm.controls['bookingseized']) as FormArray;
+      this.bookingseizedData.clear();
+    // console.log(this.bookingSeizedRecord);
+    // let resdata:any=this.bookingSeizedRecord[0].ticket_price;
+
     
-    this.opertaors_name = this.bookingSeizedRecord.bus_operator.operator_name;
-    this.buss_name = this.bookingSeizedRecord.name;
-    this.buss_number = this.bookingSeizedRecord.bus_number;
-
-
-
-
-    this.bookingseizedData = (<FormArray>this.bookingseizedForm.controls['bookingseized']) as FormArray;
-    this.bookingseizedData.clear();
-    if (this.bookingSeizedRecord.bookingseized.length> 0)
+    if (this.bookingSeizedRecord[0].ticket_price.length != 0)
     {
-      for (let seized of this.bookingSeizedRecord.bookingseized) {
+      for (let seized of this.bookingSeizedRecord[0].ticket_price) {
            let arraylen = this.bookingseizedData.length;
            let seizeddata: FormGroup = this.fb.group({
-            location: this.fb.control( seized.location.name ),
+            location: this.fb.control( seized.from_location[0].name +">>"+ seized.to_location[0].name ),
             time: [seized.seize_booking_minute,Validators.compose([Validators.required ,Validators.pattern("^[0-9]*$")])] ,
             id: this.fb.control( seized.id)
           });
@@ -188,6 +224,10 @@ export class BookingseizedComponent implements OnInit {
       } 
 
     }
+
+      }
+    );
+   
 
     this.ModalHeading = 'Edit Booking Seized';
   }
@@ -200,19 +240,116 @@ export class BookingseizedComponent implements OnInit {
 
     const data = {
       busSeized: this.bookingseizedForm.controls.bookingseized.value,
-      created_by: localStorage.getItem('USERNAME')
-    }
+      created_by: localStorage.getItem('USERNAME'),
+      reason: this.bookingseizedForm.controls.reason.value,
+      date: this.bookingseizedForm.controls.date.value,
+      bus_id: this.bookingseizedForm.controls.bus_id.value,
+      otherReson: this.bookingseizedForm.controls.otherReson.value      
+    }   
 
-    this.bookingseizedService.update(data).subscribe(
+    // this.bookingseizedService.save(data).subscribe(
+    //   resp => {
+    //     this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+    //     this.modalReference.close();
+    //     this.search();
+    
+    // });
+
+    this.bookingseizedService.save(data).subscribe(
       resp => {
 
-    this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-    this.modalReference.close();
-    this.search();
-    
-    });
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.modalReference.close();
+          this.refresh();
+        }
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          this.spinner.hide();
+        }
+      }
+    );
 
 }
+
+
+loadServices() {
+  this.busService.all().subscribe(
+    res => {
+      this.buses = res.data;
+      this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+    }
+  );
+  const BusOperator = {
+    USER_BUS_OPERATOR_ID: localStorage.getItem("USER_BUS_OPERATOR_ID")
+  };
+  if (BusOperator.USER_BUS_OPERATOR_ID == "") {
+    this.busOperatorService.readAll().subscribe(
+      record => {
+        this.busoperators = record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
+
+      }
+    );
+  }
+  else {
+    this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+      record => {
+        this.busoperators = record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
+
+      }
+    );
+  }
+}
+
+findOperator(event: any) {
+  let operatorId = event.id;
+  if (operatorId) {
+    this.busService.getByOperaor(operatorId).subscribe(
+      res => {
+        this.buses = res.data;
+        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+      }
+    );
+  }
+
+}
+
+
+openConfirmDialog(content,i)
+{
+
+  this.bookingSeizedRecord = this.bookingSeized[i];
+  
+  this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'lg' });
+}
+
+deleteRecord()
+{
+  // console.log(this.bookingSeizedRecord);
+
+  let delitem=this.bookingSeizedRecord.id;
+  // console.log(delitem);return
+   this.bookingseizedService.delete(delitem).subscribe(
+     resp => {
+       if(resp.status==1)
+         {
+             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+             this.confirmDialogReference.close();
+
+              this.refresh();
+          }
+          else{
+             
+            this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+             this.spinner.hide();
+           }
+    }); 
+}
+
+
+
 
 }
 
