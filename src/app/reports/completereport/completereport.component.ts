@@ -77,7 +77,7 @@ export class CompletereportComponent implements OnInit {
   {
     
     /* pass here the table id */
-    let element = document.getElementById('print-section');
+    let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
  
     /* generate workbook and add the worksheet */
@@ -125,7 +125,7 @@ export class CompletereportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata= res.data;
-          // console.log( this.completedata);
+          console.log( this.completedata);
           this.spinner.hide();
         }
       );
