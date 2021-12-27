@@ -101,7 +101,7 @@
               <td>
                 <div *ngIf="specialFare.bus?.length != 0">
                   <span *ngFor="let busName of specialFare.bus; let nameIndex=index;"> 
-                    {{busName.name}}
+                    {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  ,<br>
                   </span>
                 </div>
 
@@ -303,45 +303,20 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="seaterprice" class="col-sm-4 col-form-label">Seater Price<span
-                                class="text-danger">*</span></label>
+                            <label for="seaterprice" class="col-sm-4 col-form-label">Seater Price</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" placeholder="Enter Seater Price" required
-                                formControlName="seater_price" [pattern]="pricePattern"
-                                [value]="specialFareRecord.seater_price" />
-                              <span class="text-danger"
-                                *ngIf="specialFareForm.controls['seater_price'].touched && specialFareForm.controls['seater_price'].hasError('required')">
-                                Seater Price is required! </span>
-                              <span class="text-danger"
-                                *ngIf="specialFareForm.controls['seater_price'].errors?.pattern">
-                                Enter only numeric(positive or negative)
-                              </span>
-                              <span class="text-danger"
-                                *ngIf="specialFareForm.controls['seater_price'].touched && specialFareForm.controls['seater_price'].hasError('maxlength')">
-                                Maximum 10 Characters Allowed
-                              </span>
+                              <input type="text" class="form-control" placeholder="Enter Seater Price" 
+                                formControlName="seater_price" [value]="specialFareRecord.seater_price" />
                             </div>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="sleeperprice" class="col-sm-4 col-form-label">sleeper Price<span
-                                class="text-danger">*</span></label>
+                            <label for="sleeperprice" class="col-sm-4 col-form-label">sleeper Price</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" placeholder="Enter Sleeper Price" required
-                                formControlName="sleeper_price" [pattern]="pricePattern"
-                                [value]="specialFareRecord.sleeper_price" />
-                              <span class="text-danger"
-                                *ngIf="specialFareForm.controls['sleeper_price'].touched && specialFareForm.controls['sleeper_price'].hasError('required')">
-                                Sleeper Price is required! </span>
-                              <span class="text-danger"
-                                *ngIf="specialFareForm.controls['sleeper_price'].errors?.pattern">
-                                Enter only numeric(positive or negative)
-                              </span>
-                              <span class="text-danger"
-                                *ngIf="specialFareForm.controls['sleeper_price'].touched && specialFareForm.controls['sleeper_price'].hasError('maxlength')">
-                                Maximum 10 Characters Allowed
-                              </span>
+                              <input type="text" class="form-control" placeholder="Enter Sleeper Price" 
+                                formControlName="sleeper_price" [value]="specialFareRecord.sleeper_price" />
+                           
                             </div>
                           </div>
                         </div>

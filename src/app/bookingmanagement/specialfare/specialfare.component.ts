@@ -190,9 +190,9 @@ export class SpecialfareComponent implements OnInit {
       source_id: [null],
       destination_id: [null],
       date:[null],
-      seater_price:['', Validators.compose([Validators.required, Validators.pattern(this.pricePattern),Validators.maxLength(10)])],
-      sleeper_price:['', Validators.compose([Validators.required,Validators.pattern(this.pricePattern), Validators.maxLength(10)])],
-      reason:['', Validators.compose([Validators.required,Validators.minLength(5),Validators.required,Validators.maxLength(50)])],
+      seater_price:[''],
+      sleeper_price:[''],
+      reason:[''],
       
     });
     this.ModalHeading = "Add Special Fare";
@@ -208,6 +208,8 @@ export class SpecialfareComponent implements OnInit {
       this.busService.findSource(source_id,destination_id).subscribe(
         res=>{
           this.buses=res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'  ('+i.from_location[0].name +' >> '+i.to_location[0].name+')' ; return i; });
+
         }
       );
     }
@@ -216,6 +218,8 @@ export class SpecialfareComponent implements OnInit {
       this.busService.all().subscribe(
         res=>{
           this.buses=res.data;
+          this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'  ('+i.from_location[0].name +' >> '+i.to_location[0].name+')' ; return i; });
+
         }
       );
     }

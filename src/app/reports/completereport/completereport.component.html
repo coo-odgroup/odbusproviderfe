@@ -212,6 +212,7 @@
                                         </tr>
                                         <tr>
                                             <td style="text-align: left;">
+                                                
                                                 <span *ngFor="let frlocation of complete.source">
                                                     {{frlocation[0].name}}<br />
                                                 </span>
@@ -382,90 +383,117 @@
             <table class="table table-striped ">
                 <thead>
                     <tr>
-                        <th>Sl.no</th>
+                        <!-- <th>Sl.no</th> -->
                         <th>Pnr No</th>
-                        <th>Transaction Id</th>
-                        <th>Order Id</th>
-                        <th>Booking Date</th>
-                        <th>Journey Date</th>
-                        <th>Boarding From</th>
-                        <th>Boarding Time</th>
                         <th>Bus Name</th>
                         <th>Bus Number</th>
+                        <th>From- To</th>
                         <th>Source- Destination</th>
                         <th>Seat No</th>
-                        <th>User Details</th>                    
-                        <th>Passenger Details</th>
+                        <th>Journey Date</th>                       
+                        <!-- <th>Booking Date</th> -->
+                        
+                        <th>Passenger Details</th> 
                         <th>Seater Fare</th>
                         <th>Sleeper Fare</th>
                         <th>Owner Fare</th>
                         <th>Total Fare</th>
                         <th>Odbus GST</th>
                         <th>Owner GST</th>
-                        <th>Odbus Received</th>
+                        <th>Odbus Received</th>  
+                        <th>Transaction Id</th>
+                        <th>Order Id</th>   
+                        <th>User Name</th>  
+                        <th>User Phone</th>  
+                        <th>User Email</th>                    
+                        <!-- <th>Boarding From</th>
+                        <th>Boarding Time</th>                     -->
+                        
+                                          
+                        
+                        
+                        
                     </tr>
                 </thead>
                 
                 <tbody *ngIf="completedata?.length != 0">
                     <tr *ngFor="let complete of completedata?.data.data; let i = index">
-                        <td>{{ i+1 }}</td>
+                        <!-- <td>{{ i+1 }}</td> -->
                         <td>{{complete.pnr}}</td>
+                        <td>{{ complete.bus.name }}</td>
+                        <td>{{ complete.bus.bus_number }}</td>
+                        <td>
+                            <span *ngFor="let boarding of complete.from_location;">
+                                {{boarding.name}}
+                            </span> -
+                            <span *ngFor="let dropping of complete.to_location;">
+                                {{dropping.name}}
+                            </span>
+                        </td>
+                        <td>
+                            {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
+                        </td>
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
+    
+                                {{seat.bus_seats.seats.seatText}} ,
+                            </span>
+                        </td>
+                        <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
+                        
+                        <td>
+                            <p *ngFor="let passanger of complete.booking_detail;">
+                                {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}},  seat no - {{passanger.bus_seats.seats.seatText}}]  ,
+                            </p>
+                            <!-- age - {{passanger.passenger_age}}, -->
+                        </td>
+                        <td>
+                            {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
+                         </td>
+                         <td>
+                             {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
+                         </td>
+                         <td>
+                                 {{complete.owner_fare}}
+                          </td>
+                          <td>
+                                 {{complete.total_fare}}
+                          </td>
+                          <td>
+                                 {{complete.odbus_gst_amount}}
+                          </td>
+                          <td>
+                                 {{complete.owner_gst_amount}}
+                          </td>
+                          <td>
+                                     {{complete.odbus_charges}}
+                          </td>
                         <td>{{complete.customer_payment.razorpay_id}} </td>
                         <td>{{complete.customer_payment.order_id}}</td>
                         <td>{{complete.created_at | date: 'dd/MM/yyyy  HH:mm:ss'}}</td>
-                        <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
-                        <td> <span *ngFor="let frlocation of complete.from_location">
+                        <td>
+                            {{complete.users.name}} 
+                        </td>
+                        <td>
+                           {{complete.users.phone}}
+                        </td>
+                        <td>
+                            {{complete.users.email}}
+                        </td>
+                        <!-- <td> <span *ngFor="let frlocation of complete.from_location">
                             {{frlocation.name}}
                         </span> -
                         ( {{complete.boarding_point}} )
                     </td>
-                    <td>{{complete.boarding_time}}</td>
-                    <td>{{ complete.bus.name }}</td>
-                    <td>{{ complete.bus.bus_number }}</td>
-                    <td>
-                        <span *ngFor="let boarding of complete.from_location;">
-                            {{boarding.name}}
-                        </span> -
-                        <span *ngFor="let dropping of complete.to_location;">
-                            {{dropping.name}}
-                        </span>
-                    </td>
-                    <td>
-                        <span *ngFor="let seat of complete.booking_detail;">
+                    <td>{{complete.boarding_time}}</td> -->
+                   
+                   
+                   
+                   
+                   
+                 
 
-                            {{seat.bus_seats.seats.seatText}} ,
-                        </span>
-                    </td>
-                    <td>
-                        {{complete.users.name}} ,{{complete.users.phone}}, {{complete.users.email}}
-                    </td>
-                    <td>
-                        <p *ngFor="let passanger of complete.booking_detail;">
-                            {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, age - {{passanger.passenger_age}}, seat no - {{passanger.bus_seats.seats.seatText}}]  ,
-                        </p>
-                    </td>
-                    <td>
-                       rs. {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
-                    </td>
-                    <td>
-                       rs. {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
-                    </td>
-
-                    <td>
-                      rs. {{complete.owner_fare}}
-                    </td>
-                    <td>
-                      rs. {{complete.total_fare}}
-                    </td>
-                    <td>
-                      rs. {{complete.odbus_gst_amount}}
-                    </td>
-                    <td>
-                      rs. {{complete.owner_gst_amount}}
-                    </td>
-                    <td>
-                        rs. {{complete.odbus_charges}}
-                    </td>
+                    
                     </tr>
                 </tbody>
             </table>
