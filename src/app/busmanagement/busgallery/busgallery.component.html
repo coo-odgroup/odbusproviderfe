@@ -57,11 +57,15 @@
             <tr>
               <th>ID</th>
               <th>Operator</th>
-              <th>Bus Name</th>
-              <th>Bus Number</th>
+              <th>Bus Name/Number</th>
+              <!-- <th>Bus Number</th> -->
               <th>Created/Updated On</th>
               <th>Created By</th>
-              <th>Preview</th>
+              <th>Image:1</th>
+              <th>Image:2</th>
+              <th>Image:3</th>
+              <th>Image:4</th>
+              <th>Image:5</th>
               <th width="50" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
@@ -69,15 +73,39 @@
             <tr *ngFor="let gallery of busGallerries; let i=index; ">
               <td>{{ i+1 }}</td>
               <td>{{ gallery.bus_operator.organisation_name }} [{{ gallery.bus_operator.operator_name }}]</td>
-              <td>{{ gallery.bus.name }}</td>
-              <td>{{ gallery.bus.bus_number }}</td>
+              <td>{{ gallery.bus.name }}<br>{{ gallery.bus.bus_number }}</td>
+              <!-- <td>{{ gallery.bus.bus_number }}</td> -->
               <td>{{ gallery.updated_at | date: 'dd/MM/yyyy'}}</td>
               <td>{{gallery.created_by}}</td>
               <td>
-                <img *ngIf="gallery.bus_image!='' && gallery.bus_image!=null" class="sliderImage"
-                src="{{path}}bus_photos/{{gallery.bus_image}}" height="100">
-                <img *ngIf="gallery.bus_image=='' || gallery.bus_image==null" class="sliderImage"
-                  src="../../../assets/images/noImage.png" height="100">
+                <img *ngIf="gallery.bus_image_1!='' && gallery.bus_image_1!=null" class="sliderImage"
+                src="{{path}}bus_photos/{{gallery.bus_image_1}}" height="50">
+                <img *ngIf="gallery.bus_image_1=='' || gallery.bus_image_1==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="50">
+              </td>
+              <td>
+                <img *ngIf="gallery.bus_image_2!='' && gallery.bus_image_2!=null" class="sliderImage"
+                src="{{path}}bus_photos/{{gallery.bus_image_2}}" height="50">
+                <img *ngIf="gallery.bus_image_2=='' || gallery.bus_image_2==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="50">
+              </td>
+              <td>
+                <img *ngIf="gallery.bus_image_3!='' && gallery.bus_image_3!=null" class="sliderImage"
+                src="{{path}}bus_photos/{{gallery.bus_image_3}}" height="50">
+                <img *ngIf="gallery.bus_image_3=='' || gallery.bus_image_3==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="50">
+              </td>
+              <td>
+                <img *ngIf="gallery.bus_image_4!='' && gallery.bus_image_4!=null" class="sliderImage"
+                src="{{path}}bus_photos/{{gallery.bus_image_4}}" height="50">
+                <img *ngIf="gallery.bus_image_4=='' || gallery.bus_image_4==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="50">
+              </td>
+              <td>
+                <img *ngIf="gallery.bus_image_5!='' && gallery.bus_image_5!=null" class="sliderImage"
+                src="{{path}}bus_photos/{{gallery.bus_image_5}}" height="50">
+                <img *ngIf="gallery.bus_image_5=='' || gallery.bus_image_5==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="50">
               </td>
               <td class="hide_print">
                 <div class="overlay-edit">
@@ -157,30 +185,81 @@
                           </div>
                         </div>
                         <div class="row form-group col-sm-12">
-                          <div class="col-md-3">
-                            Choose Image
+                          <div class="col-md-12 text-center">
+                            <span class="text-info"><strong>Support Format jpg/jpeg/png</strong></span>
                           </div>
-                          <div class="col-md-9">
-                            <input type="file" (change)="picked($event,file.files);" #file accept='image/*' accept=".png, .jpg, .jpeg"
-                              class="form-control" id="icon" placeholder="Gallery Icon" formControlName="icon" />
-                            <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
-                            <span class="text-danger">{{imageError}}</span>
-                            <span class="text-danger" *ngIf="busForm.controls['icon'].touched && busForm.controls['icon'].hasError('required')">
-                              Icon file is required! </span><br />
-                              <div class="col-12">
-                                <div class="row">
-                                  <div class="col-md-6" *ngIf="busGalleryRecord && busGalleryRecord.bus_image">
-                                    <span><b>Existing Image</b></span> <br>                       
-                                    <img    class="sliderImage" src="{{path}}/bus_photos/{{busGalleryRecord.bus_image}}" height="50"/>
-    
-                                  </div>
-                                  <div class="col-md-6" *ngIf="imgURL">
-                                    <span ><b>New image</b></span><br>
-                                      <img class="sliderImage" [src]="imgURL" height="50" >
-    
-                                  </div>
-                                </div>
-                              </div>  
+                        </div>
+                        <div class="row form-group col-sm-12">
+                          <div class="col-md-3">
+                           Image 1
+                          </div>
+                          <div class="col-md-7">
+                            <input type="file"  #file accept='image/*' accept=".png, .jpg, .jpeg"
+                              class="form-control" id="icon" placeholder="Gallery Icon" formControlName="icon_1"  (change)="imageBusImage1($event,file.files);" />                               
+                           
+                          </div>
+                          <div class="col-md-2">
+                            <img *ngIf="img_1!='' && img_1!=null" class="sliderImage"
+                            src="{{path}}bus_photos/{{img_1}}" height="50">
+                                                 
+                        </div>
+                        </div>
+                        <div class="row form-group col-sm-12">
+                          <div class="col-md-3">
+                            Image 2
+                          </div>
+                          <div class="col-md-7">
+                            <input type="file"  #file accept='image/*' accept=".png, .jpg, .jpeg"
+                              class="form-control" id="icon" placeholder="Gallery Icon" formControlName="icon_2"  (change)="imageBusImage2($event,file.files);" />                          
+                           
+                        </div>
+                        <div class="col-md-2">
+                          <img *ngIf="img_2!='' && img_2!=null" class="sliderImage"
+                          src="{{path}}bus_photos/{{img_2}}" height="50">
+                                            
+                      </div>
+                        </div>
+                        <div class="row form-group col-sm-12">
+                          <div class="col-md-3">
+                            Image 3
+                          </div>
+                          <div class="col-md-7">
+                            <input type="file"  #file accept='image/*' accept=".png, .jpg, .jpeg"
+                              class="form-control" id="icon" placeholder="Gallery Icon" formControlName="icon_3" (change)="imageBusImage3($event,file.files);" />                             
+                        </div>
+                        <div class="col-md-2">
+                          <img *ngIf="img_3!='' && img_3!=null" class="sliderImage"
+                          src="{{path}}bus_photos/{{img_3}}" height="50">
+                                               
+                      </div>
+                        </div>
+                        <div class="row form-group col-sm-12">
+                          <div class="col-md-3">
+                            Image 4
+                          </div>
+                          <div class="col-md-7">
+                            <input type="file"  #file accept='image/*' accept=".png, .jpg, .jpeg"
+                              class="form-control" id="icon" placeholder="Gallery Icon" formControlName="icon_4" (change)="imageBusImage4($event,file.files);" />                                                           
+                        </div>
+                        <div class="col-md-2">
+                          <img *ngIf="img_4!='' && img_4!=null" class="sliderImage"
+                          src="{{path}}bus_photos/{{img_4}}" height="50">
+                                               
+                      </div>
+                        </div>
+
+                        <div class="row form-group col-sm-12">
+                          <div class="col-md-3">
+                            Image 5
+                          </div>
+                          <div class="col-md-7">
+                            <input type="file"  #file accept='image/*' accept=".png, .jpg, .jpeg"
+                              class="form-control" id="icon" placeholder="Gallery Icon" formControlName="icon_5"  (change)="imageBusImage5($event,file.files);"/>                           
+                        </div>
+                          <div class="col-md-2">
+                            <img *ngIf="img_5!='' && img_5!=null" class="sliderImage"
+                            src="{{path}}bus_photos/{{img_5}}" height="50">
+                                                 
                         </div>
                         </div>
                       </div>
