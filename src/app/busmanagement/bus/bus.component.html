@@ -2433,13 +2433,40 @@
                           <th>Bus Name </th>
                           <th>Bus Number</th> 
                           <th>Operator </th> 
+                          <th>Via </th> 
+                          <th>Bus Type </th> 
                         </tr>
                         <tr>
                           <td> {{busRecord.name}} </td>
                           <td><span class="text-danger"> <b>{{busRecord.bus_number}}</b></span></td>
-                          <td><span> {{busRecord.bus_operator.organisation_name}} [{{busRecord.bus_operator.operator_name}}]</span></td>
+                          <td><span> {{busRecord.bus_operator.organisation_name}}<br> [{{busRecord.bus_operator.operator_name}}]</span></td>
+                          <td>{{busRecord.via}} </td>
+                          <td>{{busRecord.bus_type.name}} </td>
                         </tr>                   
-                    </table>                    
+                    </table>  
+                    
+                    <table  class="table table-striped ">
+                  
+                        <tr class="bg-success text-white">
+                          <th>Bus Safety </th>
+                          <th>Bus Amenities</th>                          
+                        </tr>
+                        <tr>
+                          <td> 
+                            <span *ngFor="let safety of busRecord.bus_safety; let i=index; ">
+                                {{safety.safety.name}},
+                            </span>
+                          </td>
+                          <!-- <td><span class="text-danger"> <b>{{busRecord.bus_number}}</b></span></td> -->
+                          <td> 
+                            <span *ngFor="let amenities of busRecord.bus_amenities; let i=index; ">
+                                {{amenities.amenities.name}} &nbsp;&nbsp;,
+                            </span>
+                          </td>
+                         
+                        
+                        </tr>                   
+                    </table> 
                   <!-- Contact Details -->
                     <table  class="table table-striped ">
                       <h5>Contact Details</h5>

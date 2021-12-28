@@ -73,7 +73,7 @@
                                 <div class="col-2">
                                     <div class="col-sm-12">
                                         <div class="dropdown float-right">
-                                            <input type="text" class="form-control sml_input" placeholder="Payment Id"
+                                            <input type="text" class="form-control sml_input" placeholder="Payment/Order Id"
                                                 required formControlName="payment_id" />
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
 
                             </div>
                             <div class="row ">
-                                <div class="col-8 p-0">
+                                <div class="col-5 p-0">
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group ">
@@ -122,7 +122,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4 p-0">
+                                <div class="col-2">
+                                    <div class="col-sm-12">
+                                        <div class="dropdown float-right">
+                                            <input type="text" class="form-control sml_input" placeholder="Enter pnr"
+                                                required formControlName="pnr" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5 p-0">
                                     <button type="button" class="btn btn-success  sml_input" (click)="search()"
                                         title="search">
                                         <i class="fas fa-search"> </i> Search
@@ -148,181 +156,204 @@
             </div>
 
             <div class="table-responsive" id="print-section">
-                <table class="table table-striped ">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Ticket Details</th>
-                            <th scope="col">Cancel Date/Time</th>
-                            <th scope="col">Bus Details </th>
-                            <th scope="col">Seat No</th>
-                            <th scope="col">User Details</th>
-                            <th scope="col">Passenger Details</th>
-                            <th scope="col">Seater / Sleeper </th>
-                            <th scope="col">ODBUS Fare</th>
-                            <th scope="col">Refund Price</th>
-                            <th scope="col">Cancel By</th>
-                        </tr>
-                    </thead>
-                    <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
-                        <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
-                            <td>{{ i+1 }}</td>
-                            <td>
-                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )
-                                <br>
-                                <span *ngFor="let frlocation of complete.from_location">
-                                    {{frlocation.name}}
-                                </span> -
-                                ( <b>{{complete.boarding_point}} </b> )<br>
-                                Boarding Time : <b>{{complete.boarding_time}}</b><br>
-                                Book Dt : <b>{{complete.created_at | date: 'dd/MM/yyyy'}}</b>
-                                <br>
-                                {{complete.customer_payment?.order_id}}
-                                <br>
-                                {{complete.customer_payment?.razorpay_id}}
-                            </td>
-                            <td>
-                                {{ complete.updated_at | date }}
-                            </td>
-
-
-                            <td>
-                                <strong>{{ complete.bus.name }}</strong><br>
-                                {{ complete.bus.bus_number }}<br>
-                                <ng-template #tipContent1>
-                                    <table style="width: 350px;">
-                                        <tr>
-                                            <th style="text-align: left;">
-                                                Start
-                                            </th>
-                                            <th style="text-align: left;">
-                                                End
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <td style="text-align: left;">
-                                                <span *ngFor="let frlocation of complete.source">
-                                                    {{frlocation[0].name}}<br />
-                                                </span>
-                                            </td>
-                                            <td style="text-align: left;">
-                                                <span *ngFor="let tolocation of complete.destination">
-                                                    {{tolocation[0].name}} <br />
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </ng-template>
-
-                                <span [ngbTooltip]="tipContent1">
-                                    <!-- {{ complete.source_id }} - {{ complete.destination_id }} -->
-                                    <span *ngFor="let boarding of complete.from_location;">
-                                        {{boarding.name}}
-                                    </span> -
-                                    <span *ngFor="let dropping of complete.to_location;">
-                                        {{dropping.name}}
+                <div class=" tableFixHead">
+                    <table class="table table-striped ">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Ticket Details</th>
+                                <th scope="col">Cancel Date</th>
+                                <th scope="col">Bus Details </th>
+                                <th scope="col">Seat No</th>
+                                <th scope="col">User Details</th>
+                                <th scope="col">Seater / Sleeper </th>
+                                <th scope="col">ODBUS Fare</th>
+                                <th scope="col">Refund Price</th>
+                                <th scope="col">Cancel By</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
+                            <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
+                                <td>{{ i+1 }}</td>
+                                <td>
+                                    <span *ngIf="complete.app_type == 'WEB'">
+                                        <strong>(W)&nbsp;</strong>
                                     </span>
-                                </span>
-                            </td>
+                                    <strong>{{complete.pnr}}</strong> (DOB - {{complete.created_at | date:
+                                    'dd-MM-yyyy'}} )
 
-                            <td>
-                                <div *ngIf="complete.booking_detail?.length != 0">
-                                    <p *ngFor="let seat of complete.booking_detail;">
+                                    <br>
+                                    <span *ngFor="let frlocation of complete.from_location">
+                                        {{frlocation.name}}
+                                    </span> -
+                                    ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
+                                    <br>
+                                    <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
+                                    <br>
+                                    <strong
+                                        style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
 
-                                        {{seat.bus_seats.seats.seatText}}
+
+                                </td>
+                                <td>
+                                    {{ complete.updated_at | date: 'dd-MM-yyyy' }}
+                                </td>
+    
+    
+                                <td>
+                                    <strong>{{ complete.bus.name }}</strong><br>
+                                    {{ complete.bus.bus_number }}<br>
+                                    <ng-template #tipContent1>
+                                        <table style="width: 350px;">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    Start
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    End
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left;">
+
+                                                    <span *ngFor="let frlocation of complete.source">
+                                                        {{frlocation[0].name}}<br />
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    <span *ngFor="let tolocation of complete.destination">
+                                                        {{tolocation[0].name}} <br />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </ng-template>
+
+                                    <span [ngbTooltip]="tipContent1">
+
+                                        <span *ngFor="let boarding of complete.from_location;">
+                                            {{boarding.name}}
+                                        </span> -
+                                        <span *ngFor="let dropping of complete.to_location;">
+                                            {{dropping.name}}
+                                        </span>
+                                    </span> <br>
+                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
+                                </td>
+    
+                                <td>
+                                    <div *ngIf="complete.booking_detail?.length != 0">
+                                        <span *ngFor="let seat of complete.booking_detail;">    
+                                            {{seat.bus_seats.seats.seatText}},
+                                        </span>
+                                    </div>
+    
+                                </td>
+                                <!-- <td class="text-capitalize">
+                                    <ng-template #tipContent>
+    
+                                        <table>
+                                            <tr>
+                                                <td>Phone-</td>
+                                                <td><b>{{complete.users.phone}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email-</td>
+                                                <td>{{complete.users.email}}</td>
+                                            </tr>
+                                        </table>
+                                    </ng-template>
+    
+                                    <strong [ngbTooltip]="tipContent">
+                                        {{complete.users.name}}
+                                    </strong> <br>
+    
+                                    <button class="btn btn-sm btn-info text-light  mr-1 ml-1 mt-2" placement="bottom"
+                                        ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </button>
+    
+                                    <button class="btn btn-sm btn-danger text-light mt-2" placement="bottom"
+                                        ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
+                                        <i class="far fa-envelope"></i>
+                                    </button>
+    
+                                </td> -->
+                                <td class="text-capitalize">
+                                    <ng-template #tipContent>
+                                        <table>
+                                            <tr class="text-center">
+                                                <h5 class="text-danger">Passanger Details</h5>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>Gender</td>
+                                                <td>Seat No</td>
+                                                <td>Age</td>
+                                            </tr>
+                                            <tr *ngFor="let passanger of complete.booking_detail;">
+                                                <td><b>{{passanger.passenger_name}}</b></td>
+                                                <td><b>{{passanger.passenger_gender}}</b></td>
+                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
+                                                <td><b>{{passanger.passenger_age}}</b></td>
+                                            </tr>
+                                        </table>
+                                    </ng-template>
+                                    <strong [ngbTooltip]="tipContent">
+                                        {{complete.users.name}}
+                                    </strong> <br>
+
+                                    <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
+                                        placement="bottom" ngbTooltip="Click to Copy Phone Number"
+                                        (click)="copyMessage(complete.users.phone)">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger text-light mt-2 hide_print" placement="bottom"
+                                        ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
+                                        <i class="far fa-envelope"></i>
+                                    </button>
+
+                                </td>
+                              
+    
+                                <td>
+                                    <div *ngIf="complete.booking_detail?.length != 0">
+                                        <strong placement="top"
+                                            ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
+                                        /
+                                        <strong placement="top"
+                                            ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
+                                    </div>
+                                </td>
+                                <td>
+    
+                                    <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
+                                </td>
+                                <td>
+    
+                                    <p>
+                                        <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->
+    
                                     </p>
-                                </div>
-
-                            </td>
-                            <td class="text-capitalize">
-                                <ng-template #tipContent>
-
-                                    <table>
-                                        <tr>
-                                            <td>Phone-</td>
-                                            <td><b>{{complete.users.phone}}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Email-</td>
-                                            <td>{{complete.users.email}}</td>
-                                        </tr>
-                                    </table>
-                                </ng-template>
-
-                                <strong [ngbTooltip]="tipContent">
-                                    {{complete.users.name}}
-                                </strong> <br>
-
-                                <button class="btn btn-sm btn-info text-light  mr-1 ml-1 mt-2" placement="bottom"
-                                    ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </button>
-
-                                <button class="btn btn-sm btn-danger text-light mt-2" placement="bottom"
-                                    ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
-                                    <i class="far fa-envelope"></i>
-                                </button>
-
-                            </td>
-                            <td>
-                                <div *ngIf="complete.booking_detail?.length != 0">
-                                    <p *ngFor="let passanger of complete.booking_detail;">
-                                        <ng-template #tipContent1>
-                                            <table>
-                                                <tr>
-                                                    <td>Gender-</td>
-                                                    <td><b>{{passanger.passenger_gender}}</b></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Age-</td>
-                                                    <td><b>{{passanger.passenger_age}}</b></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Seat No-</td>
-                                                    <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
-                                                </tr>
-                                            </table>
-                                        </ng-template>
-                                        <strong [ngbTooltip]="tipContent1">{{passanger.passenger_name}} <b class="text-danger">- {{passanger.passenger_gender}} </b></strong>
-                                    </p>
-                                </div>
-                            </td>
-
-                            <td>
-                                <div *ngIf="complete.booking_detail?.length != 0">
-                                    <strong placement="top"
-                                        ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
-                                    /
-                                    <strong placement="top"
-                                        ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
-                                </div>
-                            </td>
-                            <td>
-
-                                <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
-                            </td>
-                            <td>
-
-                                <p>
-                                    <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->
-
-                                </p>
-                                <h5>Coming<br> Soon</h5>
-
-                            </td>
-                            <td>
-                                -----
-                            </td>
-                        </tr>
-                    </tbody>
-
-                    <tbody *ngIf="cancelticketdata?.data.data?.length == 0">
-                        <tr>
-                          <td colspan="11" class="no-data-available">No data!</td>
-                        </tr>
-                    <tbody>
-
-                </table>
+                                    <h5>Coming<br> Soon</h5>
+    
+                                </td>
+                                <td>
+                                    <b>{{complete.created_by}}</b>
+                                </td>
+                            </tr>
+                        </tbody>
+    
+                        <tbody *ngIf="cancelticketdata?.data.data?.length == 0">
+                            <tr>
+                              <td colspan="11" class="no-data-available">No data!</td>
+                            </tr>
+                        <tbody>
+    
+                    </table>
+                </div>
+              
 
                 <div *ngIf="cancelticketdata?.data.data?.length != 0" class="hide_print container">
                     <div class="row">
@@ -360,5 +391,111 @@
               
             </div>
         </app-card>
+        <div style="display: none;" id="export-section">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <!-- <th>Sl.no</th> -->
+                        <th>Pnr No</th>
+                        <th>App Type</th>
+                        <th>Bus Name</th>
+                        <th>Bus Number</th>
+                        <th>From- To</th>
+                        <th>Source- Destination</th>
+                        <th>Seat No</th>
+                        <th>Journey Date</th>
+                        <th>Cancel Date</th>
+                        <th>Passenger Details</th>
+                        <th>Seater Fare</th>
+                        <th>Sleeper Fare</th>
+                        <th>Owner Fare</th>
+                        <th>Total Fare</th>
+                        <th>Odbus GST</th>
+                        <th>Owner GST</th>
+                        <th>Odbus Received</th>
+                        <th>Transaction Id</th>
+                        <th>Order Id</th>
+                        <th>User Name</th>
+                        <th>User Phone</th>
+                        <th>User Email</th>
+                       
+
+                    </tr>
+                </thead>
+
+                <tbody *ngIf="cancelticketdata?.length != 0">
+                    <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
+                        <!-- <td>{{ i+1 }}</td> -->
+                        <td>{{complete.pnr}}</td>
+                        <td>{{complete.app_type}}</td>
+                        <td>{{ complete.bus.name }}</td>
+                        <td>{{ complete.bus.bus_number }}</td>
+
+                        <td>
+                            {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
+                        </td>
+                        <td>
+                            <span *ngFor="let boarding of complete.from_location;">
+                                {{boarding.name}}
+                            </span> -
+                            <span *ngFor="let dropping of complete.to_location;">
+                                {{dropping.name}}
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
+
+                                {{seat.bus_seats.seats.seatText}} ,
+                            </span>
+                        </td>
+                        <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
+                        <td>
+                            {{ complete.updated_at | date: 'dd/MM/yyyy' }}
+                        </td>
+                        <td>
+                            <p *ngFor="let passanger of complete.booking_detail;">
+                                {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                {{passanger.bus_seats.seats.seatText}}] ,
+                            </p>
+                            <!-- age - {{passanger.passenger_age}}, -->
+                        </td>
+                        <td>
+                            {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
+                        </td>
+                        <td>
+                            {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
+                        </td>
+                        <td>
+                            {{complete.owner_fare}}
+                        </td>
+                        <td>
+                            {{complete.total_fare}}
+                        </td>
+                        <td>
+                            {{complete.odbus_gst_amount}}
+                        </td>
+                        <td>
+                            {{complete.owner_gst_amount}}
+                        </td>
+                        <td>
+                            {{complete.odbus_charges}}
+                        </td>
+                        <td>{{complete.customer_payment.razorpay_id}} </td>
+                        <td>{{complete.customer_payment.order_id}}</td>
+                        <!-- <td>{{complete.created_at | date: 'dd/MM/yyyy  HH:mm:ss'}}</td> -->
+                        <td>
+                            {{complete.users.name}}
+                        </td>
+                        <td>
+                            {{complete.users.phone}}
+                        </td>
+                        <td>
+                            {{complete.users.email}}
+                        </td>
+                       
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
-export interface FailedtransactionReport {   
+export interface FailedtransactionReport {
+    pnr: any;   
     bus_operator_id: any;   
     rangeFromDate:any ;
     rangeToDate:any ;

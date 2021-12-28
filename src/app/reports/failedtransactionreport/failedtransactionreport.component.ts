@@ -57,7 +57,7 @@ export class FailedtransactionreportComponent implements OnInit {
     this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
-      payment_id : [null],
+      payment_id : [null],pnr:[null],
       date_type:['booking'],
       rows_number: Constants.RecordLimit,
       source_id:[null],
@@ -84,6 +84,7 @@ export class FailedtransactionreportComponent implements OnInit {
     const data = {
       bus_operator_id: this.failedtransactionReportRecord.bus_operator_id,
       payment_id:this.failedtransactionReportRecord.payment_id,
+      pnr:this.failedtransactionReportRecord.pnr,
       date_type :this.failedtransactionReportRecord.date_type,
       rows_number:this.failedtransactionReportRecord.rows_number,
       source_id:this.failedtransactionReportRecord.source_id,
@@ -124,7 +125,7 @@ export class FailedtransactionreportComponent implements OnInit {
   {
     
     /* pass here the table id */
-    let element = document.getElementById('print-section');
+    let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
  
     /* generate workbook and add the worksheet */
@@ -159,7 +160,7 @@ export class FailedtransactionreportComponent implements OnInit {
     this.spinner.show();
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
-      payment_id : [null],
+      payment_id : [null],pnr:[null],
       date_type:['booking'],
       rows_number: Constants.RecordLimit,
       source_id:[null],

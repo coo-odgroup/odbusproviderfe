@@ -209,7 +209,7 @@ export class SeatfareComponent implements OnInit {
           this.pagination = res.data.data;
           this.all=res.data;
           this.spinner.hide();
-          // console.log( res.data);
+          console.log( res.data);
         }
       );
     }

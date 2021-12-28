@@ -61,7 +61,8 @@ export class CompletereportComponent implements OnInit {
       rangeFromDate:[null],
       rangeToDate:[null],
       payment_id : [null],
-      date_type:['booking'],
+      date_type:['journey'],
+      pnr:[null],
       rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null]
@@ -101,6 +102,7 @@ export class CompletereportComponent implements OnInit {
       bus_operator_id: this.completeReportRecord.bus_operator_id,
       payment_id:this.completeReportRecord.payment_id,
       date_type :this.completeReportRecord.date_type,
+      pnr :this.completeReportRecord.pnr,
       rows_number:this.completeReportRecord.rows_number,
       source_id:this.completeReportRecord.source_id,
       destination_id:this.completeReportRecord.destination_id,
@@ -162,7 +164,8 @@ export class CompletereportComponent implements OnInit {
       rangeFromDate:[null],
       rangeToDate:[null],
       payment_id : [null],
-      date_type:['booking'],
+      pnr:[null],
+      date_type:['journey'],
       rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null]
