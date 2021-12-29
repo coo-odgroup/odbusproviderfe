@@ -499,6 +499,7 @@ export class ExtraseablockComponent implements OnInit {
 
 
   checkroute(event: any) {
+    this.seatOpenForm.controls.busRoute.setValue('');
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
@@ -521,8 +522,9 @@ export class ExtraseablockComponent implements OnInit {
   }
 
   ResetAttributes() {
+    this.route = [];
+    this.loadServices();
     this.busSchedule = [];
-    this.route = "";
     this.seatOpenRecord = {} as Seatopen;
     this.seatOpenForm = this.fb.group({
       bus_operator_id: [null],

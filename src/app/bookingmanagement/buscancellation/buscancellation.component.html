@@ -194,7 +194,7 @@
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
             aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" >
         <div class="row">
           <div class="col-sm-12">
             <div class="form-material">
@@ -208,7 +208,7 @@
                         <div class="col-sm-8">
                           <ng-select [items]="operators" bindLabel="operatorData" bindValue="id"
                             placeholder="Select Operator" formControlName="bus_operator_id" #operator
-                            (ngModelChange)="getBusbyOperator()" (change)="getBusbyOperator($event)"
+                             (change)="getBusbyOperator($event)"
                             [clearable]="false">
                           </ng-select>
                         </div>
@@ -254,7 +254,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group row">
+                  <div class="form-group row" style="height: 200px;">
                     <label for="reason" class="col-sm-4 col-form-label">Reason<span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                       <ng-select [items]="reasons" bindLabel="reason" bindValue="reason" placeholder="Select reason"

@@ -209,7 +209,7 @@ export class SeatblockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log(this.all);
+          console.log(this.all);
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
           // console.log(mainArray);
           if(mainArray.length >0)
@@ -490,6 +490,8 @@ export class SeatblockComponent implements OnInit {
   }
 
   checkroute(event: any) {
+    
+    this.seatBlockForm.controls.busRoute.setValue('');
     const data = {
       bus_id: this.seatBlockForm.value.bus_id
     };
@@ -527,6 +529,8 @@ export class SeatblockComponent implements OnInit {
 
 
   ResetAttributes() {
+    this.route = [];
+    this.loadServices();
     this.busSchedule = [] ;
     this.seatBlockRecord = {} as Seatblock;
     this.seatBlockForm = this.fb.group({
@@ -640,6 +644,8 @@ export class SeatblockComponent implements OnInit {
       created_by: localStorage.getItem('USERNAME'),
       type: "2"
     };
+    // console.log(data);
+    // return;
     let id = this.seatBlockRecord.id;
     if (id != null) {
       this.seatblockService.update(id, data).subscribe(

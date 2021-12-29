@@ -165,7 +165,7 @@
                   <tbody>
                   <tr *ngFor="let Operator of oprdata; let i = index">
                     <td>{{i+1}}</td>
-                    <td> {{Operator.operatorName}} </td>
+                    <td> {{Operator.operatorName[0].bus_operator.organisation_name}} <strong>[  {{Operator.operatorName[0].bus_operator.operator_name}} ]</strong></td>
                     <td> {{Operator.count}} PNR</td>
                     <td><i class="fas fa-rupee-sign"></i> {{Operator.amount}}</td>                   
                   </tr>

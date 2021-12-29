@@ -474,6 +474,8 @@ export class SeatopenComponent implements OnInit {
   }
 
   checkroute(event: any) {
+    this.seatOpenForm.controls.busRoute.setValue('');
+
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
@@ -509,6 +511,8 @@ export class SeatopenComponent implements OnInit {
   }
 
   ResetAttributes() {
+    this.route = [];
+    this.loadServices();
     this.busSchedule =[] ;
     this.route = "";
     this.seatOpenRecord = {} as Seatopen;

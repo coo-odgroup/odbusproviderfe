@@ -200,7 +200,8 @@ export class BuscancellationComponent implements OnInit {
 
 
   ResetAttributes() {
-
+    this.loadServices();
+    this.buses=[];
     this.showdates = '0';
     this.busCancellationRecord = {} as Buscancellation;
     this.busCancellationForm = this.fb.group({
@@ -235,6 +236,8 @@ export class BuscancellationComponent implements OnInit {
     this.busCancellationRecord = this.busCancellations[id];
   }
   getBusbyOperator() {
+
+    // this.busCancellationForm.controls.busLists.setValue('');
     //alert("getBusbyOperator: "+event.value);
     if (this.busCancellationForm.get('bus_operator_id').value != "") {
       this.busOperatorService.getBusbyOperator(this.busCancellationForm.get('bus_operator_id').value).subscribe(
@@ -253,7 +256,7 @@ export class BuscancellationComponent implements OnInit {
     //console.log(this.busCancellationForm.value);
     this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
       response => {
-        // console.log(response);
+        console.log(response);
         this.busDatas = response.data.busDatas;
         let counter = 0;
         for (let bData of this.busDatas) {

@@ -229,14 +229,13 @@ export class CouponComponent implements OnInit {
       created_by:localStorage.getItem('USERNAME') 
     };
 
-    // console.log(data);
+    
     if(id==null)
     {
     this.couponService.create(data).subscribe(
       resp => {
         if(resp.status==1)
         {
-            //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
             this.modalReference.close();
             this.ResetAttributes();
