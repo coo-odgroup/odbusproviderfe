@@ -45,7 +45,7 @@ export class SeatblockComponent implements OnInit {
   public searchBy: any;
   seatLayouts: any;
   busRecord: any;
-  seatLayoutData: any;
+  seatLayoutData: any =[];
   busForm: any;
   seatLayoutCol: any;
   upperberthcol: any;
@@ -209,7 +209,7 @@ export class SeatblockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          console.log(this.all);
+          // console.log(this.all);
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
           // console.log(mainArray);
           if(mainArray.length >0)
@@ -292,15 +292,14 @@ export class SeatblockComponent implements OnInit {
     const data = {
       bus_id: this.seatBlockForm.value.bus_id
     };
-
-
+    console.log(data);
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
         this.selectedSeats = seatData.data['seat'];
-        //console.log(this.selectedSeats);
+        // console.log(this.selectedSeats);
         this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
-        // console.log(resp);
+        console.log(resp);
         let counter = 0;
         this.seatLayoutData = (<FormArray>this.seatBlockForm.controls['bus_seat_layout_data']) as FormArray;
         this.seatLayoutData.clear();
@@ -597,6 +596,8 @@ export class SeatblockComponent implements OnInit {
   }
 
   findOperator(event: any) {
+    this.seatBlockForm.controls.bus_id.setValue('');
+    this.seatBlockForm.controls.busRoute.setValue('');
     let operatorId = event.id;
     if (operatorId) {
       this.busService.getByOperaor(operatorId).subscribe(

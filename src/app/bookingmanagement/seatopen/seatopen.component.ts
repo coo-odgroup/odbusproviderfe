@@ -52,7 +52,7 @@ export class SeatopenComponent implements OnInit {
   seatLayoutCol: any;
   upperberthcol: any;
   lowerberthcol: any;
-  selectedSeats: any;
+  selectedSeats: any=[];
   busArray: FormArray;
   busesData: FormArray;
   lowerData: FormArray;
@@ -286,11 +286,13 @@ export class SeatopenComponent implements OnInit {
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
-
+    console.log(data);
 
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
+        console.log('get seat layout');
         this.selectedSeats = seatData.data['seat'];
+        console.log(this.selectedSeats);
       }
     );
 
@@ -579,6 +581,8 @@ export class SeatopenComponent implements OnInit {
   }
 
   findOperator(event: any) {
+    this.seatOpenForm.controls.bus_id.setValue('');
+    this.seatOpenForm.controls.busRoute.setValue('');
     let operatorId = event.id;
     if (operatorId) {
       this.busService.getByOperaor(operatorId).subscribe(

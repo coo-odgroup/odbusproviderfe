@@ -300,7 +300,7 @@ export class ExtraseablockComponent implements OnInit {
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
-
+console.log(data);
 
     this.busService.getSelectedextraSeat(data.bus_id).subscribe(
       seatData => {
@@ -308,7 +308,7 @@ export class ExtraseablockComponent implements OnInit {
         //console.log(this.selectedSeats);
         this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
-        // console.log(resp);
+        console.log(resp);
         let counter = 0;
         this.seatLayoutData = (<FormArray>this.seatOpenForm.controls['bus_seat_layout_data']) as FormArray;
         this.seatLayoutData.clear();
@@ -500,6 +500,7 @@ export class ExtraseablockComponent implements OnInit {
 
   checkroute(event: any) {
     this.seatOpenForm.controls.busRoute.setValue('');
+    this.seatOpenForm.controls.busRoute.setValue('');
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
@@ -587,6 +588,8 @@ export class ExtraseablockComponent implements OnInit {
   }
 
   findOperator(event: any) {
+    this.seatOpenForm.controls.bus_id.setValue('');
+    this.seatOpenForm.controls.busRoute.setValue('');
     let operatorId = event.id;
     if (operatorId) {
       this.busService.getByOperaor(operatorId).subscribe(
