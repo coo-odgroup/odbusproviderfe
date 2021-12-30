@@ -130,7 +130,7 @@
               </td>
               <td>
                 <table>                 
-                  <tr *ngFor="let opendate of sopen;let dateIndex= index ">
+                  <tr *ngFor="let opendate of sopen; ">
                     <!-- <td>
                        {{opendate[i].value[0].operation_date}} 
                     </td>  -->
@@ -147,10 +147,10 @@
                         </tr>
                         <tr *ngFor="let routdate of opendate;let routIndex= index ">
                           <td>
-                            {{routdate.value[routIndex].operation_date}}
+                            {{routdate.value[0].operation_date}}
                           </td>
                           <td>
-                            {{routdate.value[routIndex].source[0].name}} >> {{routdate.value[routIndex].destination[0].name}}
+                            {{routdate.value[0].source[0].name}} >> {{routdate.value[0].destination[0].name}}
                           </td>
                           <td>
                             <span *ngFor="let seat of routdate.value; let seatIndex= index ">
@@ -158,14 +158,14 @@
                             </span>                           
                           </td>
                           <td>
-                            {{routdate.value[routIndex].reason}} <br> {{routdate.value[routIndex].other_reason}}
+                            {{routdate.value[0].reason}} <br> {{routdate.value[0].other_reason}}
                           </td>
 
                           <td>
-                            {{routdate.value[routIndex].created_at  | date: 'dd/MM/yyyy'}} 
+                            {{routdate.value[0].created_at  | date: 'dd/MM/yyyy'}} 
                           </td>
                           <td>
-                            {{routdate.value[routIndex].created_by}} 
+                            {{routdate.value[0].created_by}} 
                           </td>
 
                           <td class="hide_print">

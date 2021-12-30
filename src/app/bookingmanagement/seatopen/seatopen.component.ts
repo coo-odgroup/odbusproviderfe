@@ -237,7 +237,9 @@ export class SeatopenComponent implements OnInit {
               //  console.log(allbus);
              }
              this.seatOpen.push(allbus);
+            
            }
+          //  console.log(this.seatOpen);
           }  
         }
       );
