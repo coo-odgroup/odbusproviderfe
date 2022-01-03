@@ -19,10 +19,10 @@
                                     </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-4">
                                     <div class="form-group row">
 
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-12">
                                             <ng-select [items]="buses" bindLabel="busData" bindValue="id"
                                                 placeholder="Select Bus" formControlName="bus_id" [clearable]="false">
                                             </ng-select>
@@ -47,7 +47,7 @@
                                 </div>
                                
 
-                                <div class="col-2">
+                                <div class="col-1">
                                     <div class="dropdown float-right">
                                         <select class="form-control sml_input" formControlName="rows_number"
                                             (change)=search()>
@@ -96,13 +96,17 @@
                             <td>{{ sopen.bus_number }}</td>
 
                             
-                            <td>{{ sopen.bus_operator.operator_name }}</td>
+                            <td><strong>{{ sopen.bus_operator.organisation_name }}</strong><br>[ {{ sopen.bus_operator.operator_name }} ]</td>
                             <td>
-                                <span *ngFor="let seat of sopen.bus_seats;let seatIndex = index">
+                                <!-- <span *ngFor="let seat of sopen.bus_seats;let seatIndex = index">
                                    <span  *ngIf="seat.duration != 0">
                                        {{ seat.seats.seatText }},
                                     </span> 
-                                </span>
+                                </span> -->
+                                <span *ngFor="let seat of sopen.ticket_price[0].get_bus_seats;let seatIndex = index">
+                                     {{seat.seats.seatText}} ,                                                                
+                                 </span>
+
                             </td>
                             <!-- <td>{{ sopen.reason }}</td> -->
                             <!-- <td>

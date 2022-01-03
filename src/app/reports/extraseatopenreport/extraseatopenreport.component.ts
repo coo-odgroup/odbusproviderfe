@@ -95,7 +95,7 @@ export class ExtraseatopenreportComponent implements OnInit {
       this.rs.extraseatopenReport(data).subscribe(
         res => {
           this.seatopendata= res.data;
-          // console.log( this.seatopendata);
+          console.log( this.seatopendata);
           this.spinner.hide();
         }
       );
@@ -163,6 +163,8 @@ export class ExtraseatopenreportComponent implements OnInit {
       this.busService.getByOperaor(operatorId).subscribe(
         res => {
           this.buses = res.data;
+        this.buses.map((i: any) => { i.busData = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+
         }
       );
     }

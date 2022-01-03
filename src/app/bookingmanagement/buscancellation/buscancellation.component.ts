@@ -256,7 +256,7 @@ export class BuscancellationComponent implements OnInit {
     //console.log(this.busCancellationForm.value);
     this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
       response => {
-        console.log(response);
+        // console.log(response);
         this.busDatas = response.data.busDatas;
         let counter = 0;
         for (let bData of this.busDatas) {
@@ -275,20 +275,21 @@ export class BuscancellationComponent implements OnInit {
           let data = this.busCancellationRecord.bus_cancelled_date;
 
           for (let eDate of bData.entryDates) {
-            let dateformate = this.pipe.transform(eDate.entry_date, 'y-M-d');
+            let dateformate = this.pipe.transform(eDate.entry_date, 'y-MM-dd');
+      
             let isPresent=false;
             if(this.busCancellationRecord.bus_cancelled_date)
             {
-              isPresent = this.busCancellationRecord.bus_cancelled_date.some(function (el) {
-                return el.cancelled_date === dateformate;
+              isPresent = this.busCancellationRecord.bus_cancelled_date.some(function (el) {   
+                      
+                return  el.cancelled_date === dateformate;               
               });
+           
             }
            
             if (isPresent) {
-
               let newDatesgroup: FormGroup = this.fb.group({
                 entryDates: [eDate.entry_date],
-
                 datechecked: [true],
               })
               this.DatesRecord.insert(arraylen, newDatesgroup);
