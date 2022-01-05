@@ -68,6 +68,7 @@
               <th>#</th>
               <th>Location Name</th>
               <th>Alt.Name</th>
+              <th>URL</th>
               <th>Created By</th>
               <th>Created/Updated On</th>
               <th>Status</th>
@@ -77,8 +78,9 @@
           <tbody *ngIf="locations?.length != 0">
             <tr *ngFor="let location of locations; let i=index;">
               <td>{{ i+1}}</td>
-              <td>{{ location.name }}</td>
+              <td>{{ location.name }}</td>              
               <td>{{ location.synonym }}</td>
+              <td>{{ location.url }}</td>
               <td>{{ location.created_by }}</td>
               <td>{{ location.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>

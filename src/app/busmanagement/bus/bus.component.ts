@@ -743,7 +743,8 @@ export class BusComponent implements OnInit {
       max_seat_book:this.busForm.value.max_seat_book,
       cancellationslabs_id:this.busForm.value.cancellationslabs_id,
       name:this.busForm.value.name,
-      bus_number:this.busRecord.bus_number,
+      // bus_number:this.busRecord.bus_number,
+      bus_number:this.busForm.value.bus_number,
       bus_seat_layout_id:this.busRecord.bus_seat_layout_id,
       via:this.busForm.value.via,
       ticket_cancelation_id:'1', 
@@ -776,7 +777,7 @@ export class BusComponent implements OnInit {
     const data={
       id:this.busForm.value.id,
       created_by:localStorage.getItem('USERNAME'),
-      bus_number:this.busForm.value.bus_number,
+      // bus_number:this.busForm.value.bus_number,
       conductor_no:this.busForm.value.conductor_no,
       c_sms_ticket:this.busForm.value.c_sms_ticket,
       c_sms_cancel:this.busForm.value.c_sms_cancel,
@@ -1141,8 +1142,7 @@ export class BusComponent implements OnInit {
         if(resp.data.lowerBerth!=undefined)
         {
           for(let lowerData of resp.data.lowerBerth)
-          {
-            
+          {            
             let arraylen=this.seatLayoutData.length;
             let berthData: FormGroup = this.fb.group({ 
               lowerBerth: this.fb.array([
@@ -2630,6 +2630,7 @@ export class BusComponent implements OnInit {
       bus_description:[this.busRecord.bus_description],
       bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
+      bus_number: [this.busRecord.bus_number, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
       bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
       bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],

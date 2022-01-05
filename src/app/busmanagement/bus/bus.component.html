@@ -272,20 +272,23 @@
                                 </div>
                               </div>
                             </div>
+                            
                             <div class="col-md-6">
+
                               <div class="form-group row">
-                                <label for="bus" class="col-sm-4 col-form-label">Bus Type <span
+                                <label for="bus" class="col-sm-4 col-form-label">Bus Number<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <ng-select [items]="busTypes" bindLabel="name" bindValue="id"
-                                    placeholder="Select Bus Type" formControlName="bus_type_id" [clearable]="false">
-                                  </ng-select>
-
+                                  <!-- [value]="busRecord.bus_number1" alt+z-->
+                                  <input type="text" class="form-control text-uppercase" placeholder="Enter Bus Number"
+                                    formControlName="bus_number" />
                                   <span class="text-danger"
-                                    *ngIf="busForm.controls['bus_type_id'].touched && busForm.controls['bus_type_id'].hasError('required')">
-                                    Bus Type is required! </span>
+                                    *ngIf="busForm.controls.bus_number.touched && busForm.controls.bus_number.hasError('required')">
+                                    Bus Number is required! </span>
                                 </div>
+
                               </div>
+                              
                             </div>
                           </div>
                           <div class="row">
@@ -395,6 +398,23 @@
 
                             </div>
                             <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="bus" class="col-sm-4 col-form-label">Bus Type <span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <ng-select [items]="busTypes" bindLabel="name" bindValue="id"
+                                    placeholder="Select Bus Type" formControlName="bus_type_id" [clearable]="false">
+                                  </ng-select>
+
+                                  <span class="text-danger"
+                                    *ngIf="busForm.controls['bus_type_id'].touched && busForm.controls['bus_type_id'].hasError('required')">
+                                    Bus Type is required! </span>
+                                </div>
+                              </div>                             
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
                               <div class="row form-group">
                                 <div class="col-6" *ngIf="allDurations?.length > 0"
                                   style="margin-top: 20px; font-size: 12px;">
@@ -414,12 +434,8 @@
 
                               </div>
                             </div>
-
                           </div>
                           <div class="row">
-
-
-
                             <div class="col-sm-12 centered-content">
                               <div class="btn-group mt-10">
                                 <button type="button" class="btn btn-primary btn-sm" awNextStep>Continue</button>
@@ -519,21 +535,7 @@
 
                           <div class="form-group" style="font-weight:bold">Contact Information For Bus</div>
                           <div class="col-12">
-                            <div class="col-12">
-
-                              <div class="form-group row">
-                                <label for="bus" class="col-sm-3 col-form-label">Bus Number<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-4">
-                                  <!-- [value]="busRecord.bus_number1" alt+z-->
-                                  <input type="text" class="form-control" placeholder="Enter Bus Number"
-                                    formControlName="bus_number" />
-                                  <span class="text-danger"
-                                    *ngIf="busForm.controls.bus_number.touched && busForm.controls.bus_number.hasError('required')">
-                                    Bus Number is required! </span>
-                                </div>
-
-                              </div>
+                            <div class="col-12">                              
                               <!-- start -->
                               <div class="form-group row">
                                 <label for="bus" class="col-sm-3 col-form-label">Lable </label>
@@ -1146,19 +1148,24 @@
                               </div>
                             </div>
                             <div class="col-md-6">
+
+                           
                               <div class="form-group row">
-                                <label for="bus" class="col-sm-4 col-form-label">Bus Type <span
+                                <label for="bus" class="col-sm-4 col-form-label">Bus Number<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <ng-select [items]="busTypes" bindLabel="name" bindValue="id"
-                                    placeholder="Choose Bus Type" formControlName="bus_type_id" [clearable]="false">
-                                  </ng-select>
+                                  <!-- [value]="busRecord.bus_number1" alt+z-->
+                                  <input type="text" class="form-control text-uppercase" placeholder="Enter Bus Number"
+                                    formControlName="bus_number" />
                                   <span class="text-danger"
-                                    *ngIf="busForm.controls['bus_type_id'].touched && busForm.controls['bus_type_id'].hasError('required')">
-                                    Bus Type is required! </span>
+                                    *ngIf="busForm.controls.bus_number.touched && busForm.controls.bus_number.hasError('required')">
+                                    Bus Number is required! </span>
                                 </div>
+
                               </div>
+                              
                             </div>
+                            
                           </div>
                           <div class="row">
                             <div class="col-6">
@@ -1275,23 +1282,41 @@
 
                             </div>
                             <div class="col-md-6">
-                              <div class="row form-group">
-                                <div class="col-6" *ngIf="allDurations?.length > 0" style="font-size: 12px;">
-                                  <strong>Hours before Dep:</strong>
-                                  <div *ngFor="let cSlabduration of allDurations; let durationIndex=index;"
-                                    style="border-bottom: 1px solid #000;">
-                                    <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}
+                              <div class="form-group row">
+                                <label for="bus" class="col-sm-4 col-form-label">Bus Type <span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <ng-select [items]="busTypes" bindLabel="name" bindValue="id"
+                                    placeholder="Choose Bus Type" formControlName="bus_type_id" [clearable]="false">
+                                  </ng-select>
+                                  <span class="text-danger"
+                                    *ngIf="busForm.controls['bus_type_id'].touched && busForm.controls['bus_type_id'].hasError('required')">
+                                    Bus Type is required! </span>
+                                </div>
+                              </div>
+                            </div>                           
+                          </div>
+                          <div class="row">
+                       
+                                <div class="col-md-6">
+                                  <div class="row form-group">
+                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="font-size: 12px;">
+                                      <strong>Hours before Dep:</strong>
+                                      <div *ngFor="let cSlabduration of allDurations; let durationIndex=index;"
+                                        style="border-bottom: 1px solid #000;">
+                                        <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}
+                                      </div>
+                                    </div>
+                                    <div class="col-6" *ngIf="allDurations?.length > 0" style="font-size: 12px;">
+                                      <strong>Cancellation Charges:</strong>
+                                      <div *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;"
+                                        style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{
+                                        cSlabdeduction.deduction}} %</div>
+                                    </div>
+    
                                   </div>
                                 </div>
-                                <div class="col-6" *ngIf="allDurations?.length > 0" style="font-size: 12px;">
-                                  <strong>Cancellation Charges:</strong>
-                                  <div *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;"
-                                    style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{
-                                    cSlabdeduction.deduction}} %</div>
-                                </div>
-
-                              </div>
-                            </div>
+                              
                           </div>
                           <div class="row">
 
@@ -1391,21 +1416,7 @@
 
                           <div class="form-group" style="font-weight:bold">Contact Information For Bus</div>
                           <div class="col-12">
-                            <div class="col-12">
-
-                              <div class="form-group row">
-                                <label for="bus" class="col-sm-3 col-form-label">Bus Number<span
-                                    class="text-danger">*</span></label>
-                                <div class="col-sm-4">
-                                  <!-- [value]="busRecord.bus_number1" alt+z-->
-                                  <input type="text" class="form-control" placeholder="Enter Bus Number"
-                                    formControlName="bus_number" />
-                                  <span class="text-danger"
-                                    *ngIf="busForm.controls.bus_number.touched && busForm.controls.bus_number.hasError('required')">
-                                    Bus Number is required! </span>
-                                </div>
-
-                              </div>
+                            <div class="col-12">                            
                               <!-- start -->
                               <div class="form-group row">
                                 <label for="bus" class="col-sm-3 col-form-label">Lable </label>
@@ -1801,19 +1812,17 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="bus" class="col-sm-4 col-form-label">Bus Type <span
-                                class="text-danger">*</span></label>
+                            <label for="bus" class="col-sm-4 col-form-label">Bus Number <span class="text-danger">*</span>
+                            </label>
                             <div class="col-sm-8">
-                              <ng-select [items]="busTypes" bindLabel="name" bindValue="id"
-                                placeholder="Choose Bus Type" formControlName="bus_type_id" [clearable]="false">
-                              </ng-select>
-
-
+                              <!-- [value]="busRecord.bus_number1" alt+z-->
+                              <input type="text" class="form-control text-uppercase" placeholder="Enter Bus Number"
+                                formControlName="bus_number" />
                               <span class="text-danger"
-                                *ngIf="busForm.controls['bus_type_id'].touched && busForm.controls['bus_type_id'].hasError('required')">
-                                Bus Type is required! </span>
+                                *ngIf="busForm.controls.bus_number.touched && busForm.controls.bus_number.hasError('required')">
+                                Bus Number is required! </span>
                             </div>
-                          </div>
+                          </div>                       
                         </div>
                       </div>
                       <div class="row">
@@ -1935,25 +1944,43 @@
 
                         </div>
                         <div class="col-md-6">
-                          <div class="row form-group">
-                            <div class="col-6" *ngIf="allDurations?.length > 0"
-                              style="margin-top: 20px; font-size: 12px;">
-                              <strong>Hours before Dep:</strong>
-                              <div *ngFor="let cSlabduration of allDurations; let durationIndex=index;"
-                                style="border-bottom: 1px solid #000;">
-                                <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}
-                              </div>
-                            </div>
-                            <div class="col-6" *ngIf="allDurations?.length > 0"
-                              style="margin-top: 20px; font-size: 12px;">
-                              <strong>Cancellation Charges:</strong>
-                              <div *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;"
-                                style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{
-                                cSlabdeduction.deduction}} %</div>
-                            </div>
+                          <div class="form-group row">
+                            <label for="bus" class="col-sm-4 col-form-label">Bus Type <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <ng-select [items]="busTypes" bindLabel="name" bindValue="id"
+                                placeholder="Choose Bus Type" formControlName="bus_type_id" [clearable]="false">
+                              </ng-select>
 
-                          </div>
+
+                              <span class="text-danger"
+                                *ngIf="busForm.controls['bus_type_id'].touched && busForm.controls['bus_type_id'].hasError('required')">
+                                Bus Type is required! </span>
+                            </div>
+                          </div>                        
                         </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-6">
+                            <div class="row form-group">
+                              <div class="col-6" *ngIf="allDurations?.length > 0"
+                                style="margin-top: 20px; font-size: 12px;">
+                                <strong>Hours before Dep:</strong>
+                                <div *ngFor="let cSlabduration of allDurations; let durationIndex=index;"
+                                  style="border-bottom: 1px solid #000;">
+                                  <strong>{{durationIndex+1}}</strong>. {{ cSlabduration.duration}}
+                                </div>
+                              </div>
+                              <div class="col-6" *ngIf="allDurations?.length > 0"
+                                style="margin-top: 20px; font-size: 12px;">
+                                <strong>Cancellation Charges:</strong>
+                                <div *ngFor="let cSlabdeduction of allDurations; let deductionIndex=index;"
+                                  style="border-bottom: 1px solid #000;"><strong>{{deductionIndex+1}}</strong>. {{
+                                  cSlabdeduction.deduction}} %</div>
+                              </div>
+  
+                            </div>
+                          </div>
                       </div>
                     </form>
                   </div>
@@ -1983,19 +2010,17 @@
                     <form [formGroup]="busForm" class="editForm" novalidate>
                       <input type="hidden" formControlName="id">
                       <div class="col-12">
-
                         <div class="form-group row">
                           <label for="bus" class="col-sm-3 col-form-label">Bus Number <span class="text-danger">*</span>
                           </label>
                           <div class="col-sm-4">
                             <!-- [value]="busRecord.bus_number1" alt+z-->
-                            <input type="text" class="form-control" placeholder="Enter Bus Number"
-                              formControlName="bus_number" />
+                            <input type="text" class="form-control text-uppercase" placeholder="Enter Bus Number"
+                              formControlName="bus_number" readonly/>
                             <span class="text-danger"
                               *ngIf="busForm.controls.bus_number.touched && busForm.controls.bus_number.hasError('required')">
                               Bus Number is required! </span>
                           </div>
-
                         </div>
                         <!-- start -->
                         <div class="form-group row">
@@ -2070,8 +2095,6 @@
                             </div>
                           </div>
                         </div>
-
-
                       </div>
                     </form>
                   </div>

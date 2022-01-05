@@ -48,7 +48,7 @@ export class LocationComponent implements OnInit {
     this.ModalHeading = "Add New Location";
     this.ModalBtn = "Save"; 
     this.userType=localStorage.getItem('ROLE_ID');
-    console.log(this.userType);
+    // console.log(this.userType);
   }
   OpenModal(content) {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'md' });

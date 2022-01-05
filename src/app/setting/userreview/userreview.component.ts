@@ -122,6 +122,7 @@ export class UserreviewComponent implements OnInit {
         res => {
           this.contactcontent= res.data.data;
           this.pagination= res.data;
+          // console.log(this.contactcontent);
           this.spinner.hide();
         }
       );
@@ -148,6 +149,7 @@ export class UserreviewComponent implements OnInit {
     this.busOperatorService.readAll().subscribe(
       res => {
         this.busoperators = res.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
       }
     );
   }

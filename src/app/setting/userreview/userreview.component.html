@@ -14,7 +14,7 @@
                 <div class="col-3">
                   <div class="form-group row">
                     <div class="col-sm-12">
-                      <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                      <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                         placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
                       </ng-select>
                     </div>
@@ -116,9 +116,8 @@
           <tbody *ngIf="contactcontent?.length != 0">
             <tr *ngFor="let contact of contactcontent; let i=index;">
               <td>{{i+1}}</td>
-
               <td>{{contact.created_at | date: 'dd/MM/yyyy'}}</td>
-              <td>{{contact.bus_operator.operator_name}}</td>
+              <td>{{contact.bus.bus_operator.organisation_name}}<br>{{contact.bus.bus_operator.operator_name}}</td>
               <td>{{contact.bus.name}}<br>{{contact.bus.bus_number}}</td>
               <td>{{contact.pnr}}</td>
               <td>{{ contact.updated_at| date: 'dd/MM/yyyy' }}</td>

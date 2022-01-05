@@ -21,7 +21,7 @@
               <div class="col-5">
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                             placeholder="Select Operator" formControlName="bus_operator_id"
                             [clearable]="false">
                         </ng-select>
@@ -297,7 +297,7 @@
                       <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label ">Operator <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                            <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                            <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                 placeholder="Select Operator" formControlName="bus_operator_id"
                                 [clearable]="false">
                             </ng-select>                                          

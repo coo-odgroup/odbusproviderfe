@@ -433,6 +433,7 @@ export class MastersettingComponent implements OnInit {
       this.busOperartorService.readAll().subscribe(
         record=>{
         this.operators=record.data;
+        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
         }
       );
     }
