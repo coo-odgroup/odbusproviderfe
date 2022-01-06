@@ -39,7 +39,7 @@ export class BuscancellationService {
 
 
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/busCancelled/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/busCancelled', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
