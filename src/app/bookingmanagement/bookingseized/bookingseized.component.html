@@ -369,6 +369,7 @@
                   <div class="row form-group col-sm-12">
                     <div formArrayName="bookingseized" class="col-12">
                       <table>
+                       
                         <tr
                           *ngFor=" let singleseized of bookingseizedForm.controls.bookingseized.controls; let layout_row = index "
                           [formGroupName]="layout_row">
@@ -385,6 +386,9 @@
                               *ngIf="singleseized.controls['time'].errors?.pattern">
                               Time Should be Numbers.
                             </span>
+                          </td>
+                          <td style="min-width: 200px;" class="text-center">
+                            {{singleseized.controls.dep_time.value | date:'shortTime'}}
                           </td>
 
                         </tr>

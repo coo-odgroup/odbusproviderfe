@@ -94,7 +94,7 @@
               <th class="hide_screen">Meta Keyword</th>
               <th class="hide_screen">Meta Description</th>
               <th class="hide_screen">Extra Meta </th>
-              <th class="hide_screen">Canonical URL</th>
+              <!-- <th class="hide_screen">Canonical URL</th> -->
               <th scope="col">Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
@@ -111,7 +111,7 @@
               <td class="hide_screen">{{page.meta_keyword}}</td>
               <td class="hide_screen">{{page.meta_description}}</td>
               <td class="hide_screen">{{page.extra_meta}}</td>
-              <td class="hide_screen">{{page.canonical_url}}</td>
+              <!-- <td class="hide_screen">{{page.canonical_url}}</td> -->
               <td>
                 <label *ngIf="page.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, page.id);">Active</label>
@@ -373,21 +373,21 @@
 
 
                           <div class="from-group">
-                            <label for="name" class="col-sm-4 col-form-label">Extra Meta :</label>
+                            <label for="name" class="col-sm-4 col-form-label">SEO Script :</label>
                             <div class="col-sm-12">
-                              <textarea class="form-control" ngbAutofocus placeholder="Enter Extra Meta"
+                              <textarea class="form-control" ngbAutofocus placeholder="Enter SEO Script"
                                 formControlName="extra_meta" rows="3"></textarea>
                             </div>
                           </div>
 
-                          <div class="from-group">
+                          <!-- <div class="from-group">
 
                             <label for="name" class="col-sm-3 col-form-label">Canonical URL :</label>
                             <div class="col-sm-12">
                               <textarea class="form-control" ngbAutofocus placeholder="Enter Canonical URL"
                                 formControlName="canonical_url" rows="3"></textarea>
                             </div>
-                          </div>
+                          </div> -->
 
                         </div>
 

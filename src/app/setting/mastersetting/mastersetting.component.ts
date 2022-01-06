@@ -121,6 +121,7 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[null,Validators.compose([Validators.required])],
       mobile_no_3:[null,Validators.compose([Validators.required])],
       mobile_no_4:[],
+      seo_script:[],
       logo:[null],
       iconSrc:[null],
       favIcon:[null],
@@ -459,6 +460,7 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[null,Validators.compose([Validators.required])],
       mobile_no_3:[null,Validators.compose([Validators.required])],
       mobile_no_4:[],
+      seo_script:[],
       logo:[null],
       iconSrc:[null],
       favIcon:[null],
@@ -501,6 +503,7 @@ export class MastersettingComponent implements OnInit {
     fd.append("mobile_no_2",this.settingForm.value.mobile_no_2);
     fd.append("mobile_no_3",this.settingForm.value.mobile_no_3);
     fd.append("mobile_no_4",this.settingForm.value.mobile_no_4);
+    fd.append("seo_script",this.settingForm.value.seo_script);
     fd.append("operator_slogan",this.settingForm.value.operator_slogan);
     fd.append("operator_home_content",this.settingForm.value.operator_home_content);
     fd.append("created_by",localStorage.getItem('USERNAME'));
@@ -575,6 +578,7 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[this.settingRecord.mobile_no_2],
       mobile_no_3:[this.settingRecord.mobile_no_3],
       mobile_no_4:[this.settingRecord.mobile_no_4],
+      seo_script:[this.settingRecord.seo_script],
       logo: [],
       favIcon:[],
       iconSrc:[this.settingRecord.logo],
