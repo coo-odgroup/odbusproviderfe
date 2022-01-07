@@ -1,7 +1,7 @@
 export interface SettingsRecords{
     seo_script: any;
     id: number;
-    bus_operator_id:any;
+    user_id:any;
     payment_gateway_charges:any;
     email_sms_charges:any;
     odbus_gst_charges:any;

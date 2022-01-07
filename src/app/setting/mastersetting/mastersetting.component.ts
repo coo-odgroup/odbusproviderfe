@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import {SettingsService} from '../../services/settings.service';
 import { SettingsRecords } from '../../model/settings';
 import { BusOperatorService } from '../../services/bus-operator.service';
+import { UserService } from '../../services/user.service';
 import { Busoperator } from '../../model/busoperator';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -25,6 +26,9 @@ export class MastersettingComponent implements OnInit {
   settings: SettingsRecords[];
   settingRecord: SettingsRecords;
   operators: Busoperator[];
+
+  users:any=[];
+
   modalReference: NgbModalRef;
   message: string;
   imageSrc:any;
@@ -56,7 +60,8 @@ export class MastersettingComponent implements OnInit {
   all: any;
 
 
-  constructor( private spinner: NgxSpinnerService,private fb: FormBuilder,private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer,config: NgbModalConfig,private modalService: NgbModal,private busOperartorService:BusOperatorService)
+  constructor( private spinner: NgxSpinnerService,private fb: FormBuilder,
+    private settingsService:SettingsService, private notificationService:NotificationService,private sanitizer: DomSanitizer,config: NgbModalConfig,private modalService: NgbModal,private busOperartorService:BusOperatorService,private userService: UserService)
    {
     this.isSubmit = false;
     this.settingRecord= {} as SettingsRecords;
@@ -77,7 +82,7 @@ export class MastersettingComponent implements OnInit {
               this.settings= res.data.data.data; 
               this.pagination = res.data.data;
               this.all = res.data;
-              // console.log(res.data.data.data);
+             //console.log(res.data.data.data);
               this.spinner.hide();
             },
     );
@@ -110,6 +115,7 @@ export class MastersettingComponent implements OnInit {
 
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
       email_sms_charges:[null,Validators.compose([Validators.required])],
       odbus_gst_charges:[null,Validators.compose([Validators.required])],
       advance_days_show:[null, Validators.compose([Validators.required])],
@@ -437,6 +443,17 @@ export class MastersettingComponent implements OnInit {
         this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
         }
       );
+
+      ////// get all user list
+
+      this.userService.getAllUser().subscribe(
+        record=>{
+        this.users=record.data;
+        this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+        }
+      );
+
+
     }
     ResetAttributes()
   {
@@ -448,7 +465,7 @@ export class MastersettingComponent implements OnInit {
 
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
       email_sms_charges:[null,Validators.compose([Validators.required])],
       odbus_gst_charges:[null,Validators.compose([Validators.required])],
       advance_days_show:[null, Validators.compose([Validators.required])],
@@ -490,7 +507,7 @@ export class MastersettingComponent implements OnInit {
     fd.append("favicon_image", this.finalFavIcon);
     fd.append("logo_image", this.finalLogo);
     fd.append("footer_logo", this.finalFootericon);
-    fd.append("bus_operator_id",this.settingForm.value.bus_operator_id);
+    fd.append("user_id",this.settingForm.value.user_id);
     fd.append("payment_gateway_charges",this.settingForm.value.payment_gateway_charges);
     fd.append("email_sms_charges",this.settingForm.value.email_sms_charges);
     fd.append("odbus_gst_charges",this.settingForm.value.odbus_gst_charges);
@@ -565,7 +582,7 @@ export class MastersettingComponent implements OnInit {
     this.footerImgURL ='';
     this.settingForm=this.fb.group({
       id:[this.settingRecord.id],
-      bus_operator_id:[this.settingRecord.bus_operator_id],
+      user_id:[this.settingRecord.user_id],
       payment_gateway_charges:[this.settingRecord.payment_gateway_charges],
       email_sms_charges:[this.settingRecord.email_sms_charges],
       odbus_gst_charges:[this.settingRecord.odbus_gst_charges],
@@ -588,6 +605,9 @@ export class MastersettingComponent implements OnInit {
       footer_logo:[null],
 
     });
+
+    //console.log(this.settingForm);
+
     this.LoadAllService();
     this.ModalHeading = "Edit Master Settings";
     this.ModalBtn = "Update";  

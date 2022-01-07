@@ -60,8 +60,8 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Operator Name </th>
-              <th scope="col">Operator Number/ Email </th>
+              <th scope="col">User Name </th>
+              <th scope="col">User Number/ Email </th>
               <th scope="col">Logo</th>
               <th scope="col">Status </th>
               <th scope="col">Created/Updated On</th>
@@ -72,8 +72,8 @@
           <tbody *ngIf="settings?.length != 0">
             <tr *ngFor="let settingdata of settings; let i = index">
               <td>{{ i+1 }}</td>
-              <td>{{settingdata.bus_operator.operator_name}} </td>
-              <td>{{settingdata.bus_operator.contact_number}}<br>{{settingdata.bus_operator.email_id}}</td>
+              <td>{{settingdata.user.name}} </td>
+              <td>{{settingdata.user.phone}}<br>{{settingdata.user.email}}</td>
               <!-- <td>
                 <img class="sliderImage" [attr.src]="getImagepath(settingdata.logo)">
               </td> -->
@@ -191,15 +191,15 @@
                         <div class="col-md-6">
 
                           <div class="form-group row">
-                            <label  class="col-sm-5 col-form-label"><strong>Operator</strong> <span
+                            <label  class="col-sm-5 col-form-label"><strong>User</strong> <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <ng-select  [items]="operators" bindLabel="operatorData" bindValue="id"
-                                    placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
+                              <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                                    placeholder="Select User" formControlName="user_id" [clearable]="false">
                                   </ng-select>
                               <span class="text-danger"
-                                *ngIf="settingForm.controls['bus_operator_id'].touched && settingForm.controls['bus_operator_id'].hasError('required')">
-                                Bus Operator Name Required
+                                *ngIf="settingForm.controls['user_id'].touched && settingForm.controls['user_id'].hasError('required')">
+                                User Filed is Required
                               </span>
                             </div>
                           </div>
@@ -290,9 +290,9 @@
                           </div>
 
                           <div class="form-group row">
-                            <label for="opr_slogan" class="col-sm-5 col-form-label"><strong>Operator Slogan</strong> </label>
+                            <label for="opr_slogan" class="col-sm-5 col-form-label"><strong>Slogan</strong> </label>
                             <div class="col-sm-7">
-                              <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="Operator Slogan"
+                              <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="Slogan"
                                  formControlName="operator_slogan"/>
                             </div>
                           </div> 
