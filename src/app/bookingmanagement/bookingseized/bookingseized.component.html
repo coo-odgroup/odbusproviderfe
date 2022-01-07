@@ -80,10 +80,7 @@
               <th scope="col">Time in  minute </th>
               <th scope="col">Reason</th>
               <th scope="col">Created By</th>
-              <th scope="col">Created/Updated on</th>
-             
-      
-
+              <th scope="col">Created/Updated on</th>            
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
@@ -369,6 +366,11 @@
                   <div class="row form-group col-sm-12">
                     <div formArrayName="bookingseized" class="col-12">
                       <table>
+                        <tr *ngIf="bookingseizedForm.controls.bookingseized.controls.length!= 0">
+                          <th>From - To</th>
+                          <th> Seized Time</th>
+                          <th class="text-center"> Dept .Time</th>
+                        </tr>
                        
                         <tr
                           *ngFor=" let singleseized of bookingseizedForm.controls.bookingseized.controls; let layout_row = index "

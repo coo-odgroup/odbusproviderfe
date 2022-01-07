@@ -299,7 +299,7 @@ export class SeatblockComponent implements OnInit {
         // console.log(this.selectedSeats);
         this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
-        console.log(resp);
+        // console.log(resp);
         let counter = 0;
         this.seatLayoutData = (<FormArray>this.seatBlockForm.controls['bus_seat_layout_data']) as FormArray;
         this.seatLayoutData.clear();
