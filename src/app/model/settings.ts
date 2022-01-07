@@ -1,5 +1,4 @@
 export interface SettingsRecords{
-    seo_script: any;
     id: number;
     user_id:any;
     payment_gateway_charges:any;
@@ -21,6 +20,14 @@ export interface SettingsRecords{
     operator_slogan:any;
     operator_home_content:any;
     footer_logo:any;
-
+    google_verification_code:any;
+    bing_verification_code:any;
+    pintrest_verification_code:any;
+    google_analytics:any;
+    fb_page_id:any;
+    twitter_page_id:any;
+    seo_script: any;
+    og_image:any;
+    no_script:any;
   } 
   

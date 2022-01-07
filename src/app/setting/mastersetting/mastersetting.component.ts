@@ -55,6 +55,7 @@ export class MastersettingComponent implements OnInit {
   finalLogo: any;
   finalFavIcon: any;
   finalFootericon: any;
+  og_image:any;
   favSrc: any[];
   footerIcoSrc: any[];
   all: any;
@@ -112,6 +113,8 @@ export class MastersettingComponent implements OnInit {
     this.finalLogo =[null];
     this.finalFavIcon =[null];
     this.finalFootericon =[null];
+    this.og_image =[null];
+
 
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
@@ -138,6 +141,14 @@ export class MastersettingComponent implements OnInit {
       operator_slogan:[null],
       operator_home_content:[null],
       footer_logo:[null],
+      google_verification_code:[null],
+      bing_verification_code:[null],
+      pintrest_verification_code:[null],
+      google_analytics:[null],
+      fb_page_id:[null],
+      twitter_page_id:[null],
+      no_script:[null],
+      og_image:[null]
     });
 
     this.formConfirm=this.fb.group({
@@ -240,6 +251,12 @@ export class MastersettingComponent implements OnInit {
         // this.imgURL=this.sanitizer.bypassSecurityTrustResourceUrl(this.imgURL);
         this.finalLogo= files[0] ;
       }
+    }
+
+
+    Upload_og_image(event:any){
+      this.og_image=event.target.files[0];      
+      
     }
 
 
@@ -462,6 +479,7 @@ export class MastersettingComponent implements OnInit {
     this.finalLogo =[null];
     this.finalFavIcon =[null];
     this.finalFootericon =[null];
+    this.og_image =[null];
 
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
@@ -488,6 +506,14 @@ export class MastersettingComponent implements OnInit {
       operator_slogan:[null],
       operator_home_content:[null],
       footer_logo:[null],
+      google_verification_code:[null],
+      bing_verification_code:[null],
+      pintrest_verification_code:[null],
+      google_analytics:[null],
+      fb_page_id:[null],
+      twitter_page_id:[null],
+      no_script:[null],
+      og_image:[null]
     });
     this.LoadAllService();
     this.ModalHeading = "Add Master Settings";
@@ -523,6 +549,14 @@ export class MastersettingComponent implements OnInit {
     fd.append("seo_script",this.settingForm.value.seo_script);
     fd.append("operator_slogan",this.settingForm.value.operator_slogan);
     fd.append("operator_home_content",this.settingForm.value.operator_home_content);
+    fd.append("google_verification_code",this.settingForm.value.google_verification_code);
+    fd.append("bing_verification_code",this.settingForm.value.bing_verification_code);
+    fd.append("pintrest_verification_code",this.settingForm.value.pintrest_verification_code);
+    fd.append("google_analytics",this.settingForm.value.google_analytics);
+    fd.append("fb_page_id",this.settingForm.value.fb_page_id);
+    fd.append("twitter_page_id",this.settingForm.value.twitter_page_id);
+    fd.append("og_image",this.og_image);
+    fd.append("no_script",this.settingForm.value.no_script);
     fd.append("created_by",localStorage.getItem('USERNAME'));
 
    
@@ -603,10 +637,18 @@ export class MastersettingComponent implements OnInit {
       operator_slogan:[this.settingRecord.operator_slogan],
       operator_home_content:[this.settingRecord.operator_home_content],
       footer_logo:[null],
+      google_verification_code:[this.settingRecord.google_verification_code],
+      bing_verification_code:[this.settingRecord.bing_verification_code],
+      pintrest_verification_code:[this.settingRecord.pintrest_verification_code],
+      google_analytics:[this.settingRecord.google_analytics],
+      fb_page_id:[this.settingRecord.fb_page_id],
+      twitter_page_id:[this.settingRecord.twitter_page_id],
+      no_script:[this.settingRecord.no_script],
+      og_image:[]
 
     });
 
-    //console.log(this.settingForm);
+    console.log(this.settingForm);
 
     this.LoadAllService();
     this.ModalHeading = "Edit Master Settings";

@@ -183,314 +183,424 @@
           </div>
           <div class="modal-body">
             <div class="row">
+
+             
+
               <div class="col-sm-12">
                 <div class="form-material">
                   <div class="right-icon-control">
                     <form [formGroup]="settingForm" class="editForm" novalidate>
-                      <div class="row">
-                        <div class="col-md-6">
-
-                          <div class="form-group row">
-                            <label  class="col-sm-5 col-form-label"><strong>User</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <ng-select  [items]="users" bindLabel="userData" bindValue="id"
-                                    placeholder="Select User" formControlName="user_id" [clearable]="false">
-                                  </ng-select>
-                              <span class="text-danger"
-                                *ngIf="settingForm.controls['user_id'].touched && settingForm.controls['user_id'].hasError('required')">
-                                User Filed is Required
-                              </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="pay_chrg" class="col-sm-5 col-form-label"><strong> Payment Gateway Charges</strong><span
-                              class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="pay_chrg" type="text" class="form-control" ngbAutofocus placeholder="Payment Gateway Charges" required
-                                formControlName="payment_gateway_charges" />
-                              <span class="text-danger"
-                                *ngIf="settingForm.controls['payment_gateway_charges'].touched && settingForm.controls['payment_gateway_charges'].hasError('required')">
-                                Payment Gateway Charges Required
-                              </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="eml_chrg" class="col-sm-5 col-form-label"><strong>Email SMS charges</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="eml_chrg" type="text" class="form-control" ngbAutofocus placeholder="Email SMS Charges" required
-                                formControlName="email_sms_charges" />
-                              <span class="text-danger"
-                                *ngIf="settingForm.controls['email_sms_charges'].touched && settingForm.controls['email_sms_charges'].hasError('required')">
-                                Email SMS Charges Required
-                              </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="gst" class="col-sm-5 col-form-label"><strong>GST Charges</strong><span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="gst" type="text" class="form-control" ngbAutofocus placeholder="GST charges" required
-                              formControlName="odbus_gst_charges" />
-                            <span class="text-danger"
-                              *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">
-                              GST Charges Required
-                            </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="s_eml" class="col-sm-5 col-form-label"><strong>Support email</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="s_eml" type="text" class="form-control" ngbAutofocus placeholder="support email" required
-                              formControlName="support_email" />
-                            <span class="text-danger"
-                              *ngIf="settingForm.controls['support_email'].touched && settingForm.controls['support_email'].hasError('required')">
-                              Support Email Required
-                            </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="b_eml" class="col-sm-5 col-form-label"><strong>Booking email</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="b_eml" type="text" class="form-control" ngbAutofocus placeholder="Booking Email" required
-                                formControlName="booking_email" />
-                              <span class="text-danger"
-                                *ngIf="settingForm.controls['booking_email'].touched && settingForm.controls['booking_email'].hasError('required')">
-                                Booking Email Required
-                              </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="r_eml" class="col-sm-5 col-form-label"><strong>Request email</strong> </label>
-                            <div class="col-sm-7">
-                              <input id="r_eml" type="text" class="form-control" ngbAutofocus placeholder="Request Email"
-                                formControlName="request_email" />
-                                <span class="text-danger"
-                                *ngIf="settingForm.controls['request_email'].touched && settingForm.controls['request_email'].hasError('required')">
-                                Request Email Required
-                              </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="o_eml" class="col-sm-5 col-form-label"><strong>Other email</strong> </label>
-                            <div class="col-sm-7">
-                              <input id="o_eml" type="text" class="form-control" ngbAutofocus placeholder="Other Email"
-                                 formControlName="other_email"/>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="opr_slogan" class="col-sm-5 col-form-label"><strong>Slogan</strong> </label>
-                            <div class="col-sm-7">
-                              <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="Slogan"
-                                 formControlName="operator_slogan"/>
-                            </div>
-                          </div> 
-                          
-                          <div class="form-group row">
-                            <label for="opr_content" class="col-sm-5 col-form-label"><strong>Home Content</strong> </label>
-                            <div class="col-sm-7">
-                              <!-- <input id="opr_content" type="text" class="form-control" ngbAutofocus placeholder="operator home content"
-                                 formControlName="operator_home_content"/> -->
-                                 <textarea id="opr_content" class="form-control" ngbAutofocus placeholder="Home Page Content" formControlName="operator_home_content"></textarea>
-                            </div>
-                          </div>                        
-                        </div>
-
-                        <div class="col-md-6">
-
-                          <div class="form-group row">
-                            <label for="adv" class="col-sm-5 col-form-label"><strong>Advance days show</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="adv" type="text" class="form-control" ngbAutofocus placeholder="Advance Days Show" required
-                              formControlName="advance_days_show" />
-                            <span class="text-danger"
-                              *ngIf="settingForm.controls['advance_days_show'].touched && settingForm.controls['advance_days_show'].hasError('required')">
-                              Advance Days Show Required
-                            </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="mob_1" class="col-sm-5 col-form-label"><strong>Mobile no:1 </strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="mob_1" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:1" required
-                                formControlName="mobile_no_1" />
-                                <span class="text-danger"
-                              *ngIf="settingForm.controls['mobile_no_1'].touched && settingForm.controls['mobile_no_1'].hasError('required')">
-                              Mobile No:1 Required
-                            </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="mob_2" class="col-sm-5 col-form-label"><strong>Mobile no:2</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <input id="mob_2" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:2"
-                                required formControlName="mobile_no_2"/>
-                                <span class="text-danger"
-                              *ngIf="settingForm.controls['mobile_no_2'].touched && settingForm.controls['mobile_no_2'].hasError('required')">
-                              Mobile No:2 required
-                            </span>
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="mob_3" class="col-sm-5 col-form-label"><strong> Mobile no:3</strong></label>
-                            <div class="col-sm-7">
-                              <input id="mob_3" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:3"
-                                formControlName="mobile_no_3"  required/>
-                                <span class="text-danger"
-                                *ngIf="settingForm.controls['mobile_no_3'].touched && settingForm.controls['mobile_no_3'].hasError('required')">
-                                Mobile No:3 required
-                              </span>
-                            </div>                            
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="mob_4" class="col-sm-5 col-form-label"><strong>Mobile no:4</strong></label>
-                            <div class="col-sm-7">
-                              <input id="mob_4" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:4"
-                                formControlName="mobile_no_4" />
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="logo" class="col-sm-5 col-form-label"><strong>Logo</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <div>
-                                <input  type="file" #file accept='image/*' (change)="picked($event,file.files);"
-                                  class="form-control" id="logo" placeholder="Drop logo image here"
-                                  formControlName="logo" />
-                              </div>
-                              <span class="text-info">Max file size 100Kb</span><br>
-                              <span class="text-danger">{{imageError}}</span>
-                              <span class="text-danger"
-                                *ngIf="settingForm.controls['logo'].touched && settingForm.controls['logo'].hasError('required')">
-                                Image file is required! </span>
-                             
-
-                              <div class="col-12">
-                                <div class="row">
-                                  <div class="col-md-6" *ngIf="settingRecord.logo_image">
-                                    <span><b>Existing Image</b></span> <br>                       
-                                    <img    class="sliderImage bg-info" src="{{path}}logo/{{settingRecord.logo_image}}" height="70"/>
-    
-                                  </div>
-                                  <div class="col-md-6" *ngIf="imgURL">
-                                    <span ><b>New image</b></span><br>
-                                    <img id="sliderImgPreview " class="sliderImage-edit bg-info"
-                                    [attr.src]="getImagepath(settingForm.value['iconSrc'])" height="70">
-    
+                     
+                      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                        <li [ngbNavItem]="1">
+                          <a ngbNavLink>Basic Settings</a>
+                          <ng-template ngbNavContent>
+                         
+                            <div class="row">
+                              
+                              <div class="col-md-6">
+      
+                                <div class="form-group row">
+                                  <label  class="col-sm-5 col-form-label"><strong>User</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                                          placeholder="Select User" formControlName="user_id" [clearable]="false">
+                                        </ng-select>
+                                    <span class="text-danger"
+                                      *ngIf="settingForm.controls['user_id'].touched && settingForm.controls['user_id'].hasError('required')">
+                                      User Filed is Required
+                                    </span>
                                   </div>
                                 </div>
-                              </div>        
-                            </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="favIcon" class="col-sm-5 col-form-label"><strong>Fav Icon</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <div>
-                                <!-- <input  type="file" #file accept='image/*' (change)="pickedfav($event,file.files);"
-                                  class="form-control" id="favIcon" placeholder="Drop favIcon image here"
-                                  formControlName="favIcon" /> -->
-
-                                  <input  type="file" accept='image/*' (change)="pickedfav($event);"
-                                  class="form-control" id="favIcon" placeholder="Drop favIcon image here"
-                                  formControlName="favIcon" />
-
+      
+                                <div class="form-group row">
+                                  <label for="pay_chrg" class="col-sm-5 col-form-label"><strong> Payment Gateway Charges</strong><span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="pay_chrg" type="text" class="form-control" ngbAutofocus placeholder="Payment Gateway Charges" required
+                                      formControlName="payment_gateway_charges" />
+                                    <span class="text-danger"
+                                      *ngIf="settingForm.controls['payment_gateway_charges'].touched && settingForm.controls['payment_gateway_charges'].hasError('required')">
+                                      Payment Gateway Charges Required
+                                    </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="eml_chrg" class="col-sm-5 col-form-label"><strong>Email SMS charges</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="eml_chrg" type="text" class="form-control" ngbAutofocus placeholder="Email SMS Charges" required
+                                      formControlName="email_sms_charges" />
+                                    <span class="text-danger"
+                                      *ngIf="settingForm.controls['email_sms_charges'].touched && settingForm.controls['email_sms_charges'].hasError('required')">
+                                      Email SMS Charges Required
+                                    </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="gst" class="col-sm-5 col-form-label"><strong>GST Charges</strong><span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="gst" type="text" class="form-control" ngbAutofocus placeholder="GST charges" required
+                                    formControlName="odbus_gst_charges" />
+                                  <span class="text-danger"
+                                    *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">
+                                    GST Charges Required
+                                  </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="s_eml" class="col-sm-5 col-form-label"><strong>Support email</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="s_eml" type="text" class="form-control" ngbAutofocus placeholder="support email" required
+                                    formControlName="support_email" />
+                                  <span class="text-danger"
+                                    *ngIf="settingForm.controls['support_email'].touched && settingForm.controls['support_email'].hasError('required')">
+                                    Support Email Required
+                                  </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="b_eml" class="col-sm-5 col-form-label"><strong>Booking email</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="b_eml" type="text" class="form-control" ngbAutofocus placeholder="Booking Email" required
+                                      formControlName="booking_email" />
+                                    <span class="text-danger"
+                                      *ngIf="settingForm.controls['booking_email'].touched && settingForm.controls['booking_email'].hasError('required')">
+                                      Booking Email Required
+                                    </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="r_eml" class="col-sm-5 col-form-label"><strong>Request email</strong> </label>
+                                  <div class="col-sm-7">
+                                    <input id="r_eml" type="text" class="form-control" ngbAutofocus placeholder="Request Email"
+                                      formControlName="request_email" />
+                                      <span class="text-danger"
+                                      *ngIf="settingForm.controls['request_email'].touched && settingForm.controls['request_email'].hasError('required')">
+                                      Request Email Required
+                                    </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="o_eml" class="col-sm-5 col-form-label"><strong>Other email</strong> </label>
+                                  <div class="col-sm-7">
+                                    <input id="o_eml" type="text" class="form-control" ngbAutofocus placeholder="Other Email"
+                                       formControlName="other_email"/>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="opr_slogan" class="col-sm-5 col-form-label"><strong>Slogan</strong> </label>
+                                  <div class="col-sm-7">
+                                    <input id="opr_slogan" type="text" class="form-control" ngbAutofocus placeholder="Slogan"
+                                       formControlName="operator_slogan"/>
+                                  </div>
+                                </div> 
+                                
+                                <div class="form-group row">
+                                  <label for="opr_content" class="col-sm-5 col-form-label"><strong>Home Content</strong> </label>
+                                  <div class="col-sm-7">
+                                    <!-- <input id="opr_content" type="text" class="form-control" ngbAutofocus placeholder="operator home content"
+                                       formControlName="operator_home_content"/> -->
+                                       <textarea id="opr_content" class="form-control" ngbAutofocus placeholder="Home Page Content" formControlName="operator_home_content"></textarea>
+                                  </div>
+                                </div>                        
                               </div>
-                              <span class="text-info">Max file size 100Kb</span><br>
-                              <span class="text-danger">{{favError}}</span>
-                              <span class="text-danger"
-                                *ngIf="settingForm.controls['favIcon'].touched && settingForm.controls['favIcon'].hasError('required')">
-                                Image file is required! </span>
+      
+                              <div class="col-md-6">
+      
+                                <div class="form-group row">
+                                  <label for="adv" class="col-sm-5 col-form-label"><strong>Advance days show</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="adv" type="text" class="form-control" ngbAutofocus placeholder="Advance Days Show" required
+                                    formControlName="advance_days_show" />
+                                  <span class="text-danger"
+                                    *ngIf="settingForm.controls['advance_days_show'].touched && settingForm.controls['advance_days_show'].hasError('required')">
+                                    Advance Days Show Required
+                                  </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="mob_1" class="col-sm-5 col-form-label"><strong>Mobile no:1 </strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="mob_1" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:1" required
+                                      formControlName="mobile_no_1" />
+                                      <span class="text-danger"
+                                    *ngIf="settingForm.controls['mobile_no_1'].touched && settingForm.controls['mobile_no_1'].hasError('required')">
+                                    Mobile No:1 Required
+                                  </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="mob_2" class="col-sm-5 col-form-label"><strong>Mobile no:2</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <input id="mob_2" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:2"
+                                      required formControlName="mobile_no_2"/>
+                                      <span class="text-danger"
+                                    *ngIf="settingForm.controls['mobile_no_2'].touched && settingForm.controls['mobile_no_2'].hasError('required')">
+                                    Mobile No:2 required
+                                  </span>
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="mob_3" class="col-sm-5 col-form-label"><strong> Mobile no:3</strong></label>
+                                  <div class="col-sm-7">
+                                    <input id="mob_3" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:3"
+                                      formControlName="mobile_no_3"  required/>
+                                      <span class="text-danger"
+                                      *ngIf="settingForm.controls['mobile_no_3'].touched && settingForm.controls['mobile_no_3'].hasError('required')">
+                                      Mobile No:3 required
+                                    </span>
+                                  </div>                            
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="mob_4" class="col-sm-5 col-form-label"><strong>Mobile no:4</strong></label>
+                                  <div class="col-sm-7">
+                                    <input id="mob_4" type="text" class="form-control" ngbAutofocus placeholder="Mobile No:4"
+                                      formControlName="mobile_no_4" />
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="logo" class="col-sm-5 col-form-label"><strong>Logo</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <div>
+                                      <input  type="file" #file accept='image/*' (change)="picked($event,file.files);"
+                                        class="form-control" id="logo" placeholder="Drop logo image here"
+                                        formControlName="logo" />
+                                    </div>
+                                    <span class="text-info">Max file size 100Kb</span><br>
+                                    <span class="text-danger">{{imageError}}</span>
+                                    <span class="text-danger"
+                                      *ngIf="settingForm.controls['logo'].touched && settingForm.controls['logo'].hasError('required')">
+                                      Image file is required! </span>
+                                   
+      
+                                    <div class="col-12">
+                                      <div class="row">
+                                        <div class="col-md-6" *ngIf="settingRecord.logo_image">
+                                          <span><b>Existing Image</b></span> <br>                       
+                                          <img    class="sliderImage bg-info" src="{{path}}logo/{{settingRecord.logo_image}}" height="70"/>
+          
+                                        </div>
+                                        <div class="col-md-6" *ngIf="imgURL">
+                                          <span ><b>New image</b></span><br>
+                                          <img id="sliderImgPreview " class="sliderImage-edit bg-info"
+                                          [attr.src]="getImagepath(settingForm.value['iconSrc'])" height="70">
+          
+                                        </div>
+                                      </div>
+                                    </div>        
+                                  </div>
+                                </div>
+      
+                                <div class="form-group row">
+                                  <label for="favIcon" class="col-sm-5 col-form-label"><strong>Fav Icon</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <div>
+                                      <!-- <input  type="file" #file accept='image/*' (change)="pickedfav($event,file.files);"
+                                        class="form-control" id="favIcon" placeholder="Drop favIcon image here"
+                                        formControlName="favIcon" /> -->
+      
+                                        <input  type="file" accept='image/*' (change)="pickedfav($event);"
+                                        class="form-control" id="favIcon" placeholder="Drop favIcon image here"
+                                        formControlName="favIcon" />
+      
+                                    </div>
+                                    <span class="text-info">Max file size 100Kb</span><br>
+                                    <span class="text-danger">{{favError}}</span>
+                                    <span class="text-danger"
+                                      *ngIf="settingForm.controls['favIcon'].touched && settingForm.controls['favIcon'].hasError('required')">
+                                      Image file is required! </span>
+      
+                                      <div class="col-12">
+                                        <div class="row">
+                                          <div class="col-md-6" *ngIf="settingRecord.favicon_image">
+                                            <span><b>Existing Image</b></span> <br>                       
+                                            <img class="bg-info sliderImage"  src="{{path}}favIcon/{{settingRecord.favicon_image}}" height="70"/>
+            
+                                          </div>
+                                          <div class="col-md-6" *ngIf="favURL">
+                                            <span ><b>New image</b></span><br>
+                                            <img  class="sliderImage-edit bg-info"
+                                             [attr.src]="getImagepath(settingForm.value['favSrc'])" height="70">
+            
+                                          </div>
+                                        </div>
+                                      </div>                             
+                                  </div>
+                                </div>
+      
+      
+                                
+                                <div class="form-group row">
+                                  <label for="ft_logo" class="col-sm-5 col-form-label"><strong>Footer Logo</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <div>
+                                   
+      
+                                        <input  type="file" accept='image/*' (change)="pickedFooterImage($event);"
+                                        class="form-control" id="ft_logo" placeholder="Drop favIcon image here"
+                                        formControlName="footer_logo" />
+      
+                                    </div>
+                                    <span class="text-info">Max file size 100Kb</span><br>
+                                    <span class="text-danger">{{favError}}</span>
+                                    <span class="text-danger"
+                                      *ngIf="settingForm.controls['footer_logo'].touched && settingForm.controls['footer_logo'].hasError('required')">
+                                      Image file is required! </span>
+      
+                                      <div class="col-12">
+                                        <div class="row">
+                                          <div class="col-md-6" *ngIf="settingRecord.footer_logo">
+                                            <span><b>Existing Image</b></span> <br>                       
+                                            <img class="bg-info sliderImage"  src="{{path}}logo/{{settingRecord.footer_logo}}" height="70"/>
+            
+                                          </div>
+                                          <div class="col-md-6" *ngIf="footerImgURL">
+                                            <span ><b>New image</b></span><br>
+                                            <img  class="sliderImage-edit bg-info"
+                                             [attr.src]=footerImgURL height="70">
+            
+                                          </div>
+                                        </div>
+                                      </div>                             
+                                  </div>
+                                </div>
+      
+                               
+      
+                              </div>
+                            </div>
+                         
+                         
+                          </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                          <a ngbNavLink>Webmaster Tools</a>
+                          <ng-template ngbNavContent>
 
+                            <div class="form-group row">
+                              <label for="b_eml" class="col-sm-5 col-form-label"><strong>Google Verification Code</strong></label>
+                              <div class="col-sm-7">
+                                <input id="google_verification_code" type="text" class="form-control" ngbAutofocus placeholder="Google Verification Code" 
+                                  formControlName="google_verification_code" />                               
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <label for="b_eml" class="col-sm-5 col-form-label"><strong>Bing Verification Code</strong></label>
+                              <div class="col-sm-7">
+                                <input id="bing_verification_code" type="text" class="form-control" ngbAutofocus placeholder="Bing Verification Code" 
+                                  formControlName="bing_verification_code" />                               
+                              </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                              <label for="b_eml" class="col-sm-5 col-form-label"><strong>Pintrest Verification Code</strong></label>
+                              <div class="col-sm-7">
+                                <input id="pintrest_verification_code" type="text" class="form-control" ngbAutofocus placeholder="Pintrest Verification Code" 
+                                  formControlName="pintrest_verification_code" />                               
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <label for="b_eml" class="col-sm-5 col-form-label"><strong>Google Analytics URL</strong></label>
+                              <div class="col-sm-7">
+                                <input id="google_analytics" type="text" class="form-control" ngbAutofocus placeholder="Google Analytics URL" 
+                                  formControlName="google_analytics" />                               
+                              </div>
+                            </div> 
+                       
+                            <div class="form-group row">
+                              <label for="no_script" class="col-sm-5 col-form-label"><strong>No Script (Don't include noscript tag)</strong> </label>
+                              <div class="col-sm-7">
+                                   <textarea id="no_script" class="form-control" ngbAutofocus placeholder="No Script" formControlName="no_script"></textarea>
+                              </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                              <label for="seo_script" class="col-sm-5 col-form-label"><strong>Additional Script (Don't include Script tag)</strong> </label>
+                              <div class="col-sm-7">
+                                   <textarea id="seo_script" class="form-control" ngbAutofocus placeholder="Additional Script" formControlName="seo_script"></textarea>
+                              </div>
+                            </div>
+                       
+                          </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3">
+                          <a ngbNavLink>Open Grapg Tag</a>
+                          <ng-template ngbNavContent>
+                            
+                            <div class="form-group row">
+                              <label for="fb_page_id" class="col-sm-5 col-form-label"><strong>Facebook Page ID</strong></label>
+                              <div class="col-sm-7">
+                                <input id="fb_page_id" type="text" class="form-control" ngbAutofocus placeholder="Facebook Page ID" 
+                                  formControlName="fb_page_id" />                               
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <label for="twitter_page_id" class="col-sm-5 col-form-label"><strong>Twitter Page ID</strong></label>
+                              <div class="col-sm-7">
+                                <input id="twitter_page_id" type="text" class="form-control" ngbAutofocus placeholder="Twitter Page ID" 
+                                  formControlName="twitter_page_id" />                               
+                              </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                              <label for="og_image" class="col-sm-5 col-form-label"><strong>Og Image</strong> <span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-7">
+                                <div>
+                                  <input  type="file" #file accept='image/*' (change)="Upload_og_image($event);"
+                                    class="form-control" id="og_image" placeholder="Drop og image here"
+                                    formControlName="og_image" />
+                                </div>
+                               
+  
                                 <div class="col-12">
                                   <div class="row">
-                                    <div class="col-md-6" *ngIf="settingRecord.favicon_image">
-                                      <span><b>Existing Image</b></span> <br>                       
-                                      <img class="bg-info sliderImage"  src="{{path}}favIcon/{{settingRecord.favicon_image}}" height="70"/>
+                                    <div class="col-md-6" *ngIf="settingRecord.og_image!=''">
+                                                          
+                                      <img  class="sliderImage bg-info" src="{{path}}og_image/{{settingRecord.og_image}}" height="70"/>
       
                                     </div>
-                                    <div class="col-md-6" *ngIf="favURL">
-                                      <span ><b>New image</b></span><br>
-                                      <img  class="sliderImage-edit bg-info"
-                                       [attr.src]="getImagepath(settingForm.value['favSrc'])" height="70">
-      
-                                    </div>
+                                  
                                   </div>
-                                </div>                             
-                            </div>
-                          </div>
-
-
-                          
-                          <div class="form-group row">
-                            <label for="ft_logo" class="col-sm-5 col-form-label"><strong>Footer Logo</strong> <span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-7">
-                              <div>
-                             
-
-                                  <input  type="file" accept='image/*' (change)="pickedFooterImage($event);"
-                                  class="form-control" id="ft_logo" placeholder="Drop favIcon image here"
-                                  formControlName="footer_logo" />
-
+                                </div>        
                               </div>
-                              <span class="text-info">Max file size 100Kb</span><br>
-                              <span class="text-danger">{{favError}}</span>
-                              <span class="text-danger"
-                                *ngIf="settingForm.controls['footer_logo'].touched && settingForm.controls['footer_logo'].hasError('required')">
-                                Image file is required! </span>
-
-                                <div class="col-12">
-                                  <div class="row">
-                                    <div class="col-md-6" *ngIf="settingRecord.footer_logo">
-                                      <span><b>Existing Image</b></span> <br>                       
-                                      <img class="bg-info sliderImage"  src="{{path}}logo/{{settingRecord.footer_logo}}" height="70"/>
-      
-                                    </div>
-                                    <div class="col-md-6" *ngIf="footerImgURL">
-                                      <span ><b>New image</b></span><br>
-                                      <img  class="sliderImage-edit bg-info"
-                                       [attr.src]=footerImgURL height="70">
-      
-                                    </div>
-                                  </div>
-                                </div>                             
                             </div>
-                          </div>
-
-                          <div class="form-group row">
-                            <label for="seo_content" class="col-sm-5 col-form-label"><strong>SEO Script</strong> </label>
-                            <div class="col-sm-7">
-                                 <textarea id="seo_content" class="form-control" ngbAutofocus placeholder="SEO Script Content" formControlName="seo_script"></textarea>
-                            </div>
-                          </div>
 
 
-                        
-
-
-                        </div>
-                      </div>
+                          </ng-template>
+                        </li>
+                      </ul>
+                      
+                      <div [ngbNavOutlet]="nav" class="mt-2"></div>
                   
                     </form>
                   </div>
