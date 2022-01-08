@@ -10,6 +10,8 @@ import {Constants} from '../../constant/constant';
 import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { LocationService } from '../../services/location.service';
+
 
 @Component({
   selector: 'app-coupon',
@@ -35,13 +37,14 @@ export class CouponComponent implements OnInit {
   pagination: any;
   busoperators: any;
   all: any;
+  locations: any;
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
     private modalService: NgbModal,
     private couponService:CouponService,private spinner: NgxSpinnerService,
-    private busOperatorService: BusOperatorService,
+    private busOperatorService: BusOperatorService,    private locationService: LocationService,
     config: NgbModalConfig
     )
     { 
@@ -60,11 +63,14 @@ export class CouponComponent implements OnInit {
     this.spinner.show();
     this.form = this.fb.group({
       id:[null],
+      coupon_type:  [null, Validators.compose([Validators.required])],
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
+      source_id: [null],
+      destination_id: [null],
       full_description: [null],
-      coupon_type: [null],
+      coupon_discount_type: [null],
       percentage: [null],
       max_discount_price: [null],
       amount: [null],
@@ -105,7 +111,10 @@ export class CouponComponent implements OnInit {
     this.form.controls.coupon_code.setValue(this.couponRecord.coupon_code);
     this.form.controls.short_description.setValue(this.couponRecord.short_desc);
     this.form.controls.full_description.setValue(this.couponRecord.full_desc);
-    this.form.controls.coupon_type.setValue(this.couponRecord.type);
+    this.form.controls.coupon_discount_type.setValue(this.couponRecord.coupon_discount_type);
+    this.form.controls.coupon_type.setValue(this.couponRecord.coupon_type);
+    this.form.controls.source_id.setValue(this.couponRecord.source_id);
+    this.form.controls.destination_id.setValue(this.couponRecord.destination_id);
     this.form.controls.max_discount_price.setValue(this.couponRecord.max_discount_price);
     this.form.controls.percentage.setValue(this.couponRecord.percentage);
     this.form.controls.amount.setValue(this.couponRecord.amount);
@@ -185,11 +194,14 @@ export class CouponComponent implements OnInit {
     this.couponRecord = {} as Coupon;
     this.form = this.fb.group({
       id:[null],
+      coupon_type:  [null, Validators.compose([Validators.required])],
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
+      source_id: [null],
+      destination_id: [null],
       full_description: [null],
-      coupon_type: [null],
+      coupon_discount_type: [null],
       percentage: [null],
       max_discount_price: [null],
       amount: [null],
@@ -211,17 +223,43 @@ export class CouponComponent implements OnInit {
   {
     this.spinner.show();
     let id=this.couponRecord.id;
+    // console.log(this.form.value);
+
+    if(this.form.value.coupon_type==1 && this.form.value.bus_operator_id==null)
+    {
+ 
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"bus operator required", type:Constants.ErrorType});
+      this.spinner.hide();
+      return;
+    }
+    if(this.form.value.coupon_type==2 && (this.form.value.source_id==null ||this.form.value.destination_id==null))
+    {
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Source and Destination required", type:Constants.ErrorType});
+      this.spinner.hide();
+      return;
+    }
+
+    if(this.form.value.coupon_type==3 && (this.form.value.source_id==null ||this.form.value.destination_id==null||this.form.value.bus_operator_id==null))
+    {
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Operator,Source and Destination required", type:Constants.ErrorType});
+      this.spinner.hide();
+      return;
+    }
+
     const data={
       coupon_code:this.form.value.coupon_code,
       coupon_title:this.form.value.coupon_title,
-      type:this.form.value.coupon_type,
+      coupon_type:this.form.value.coupon_type,
+      coupon_discount_type:this.form.value.coupon_discount_type,
       amount:this.form.value.amount,
-      full_desc:this.form.value.full_description,
+      source_id:this.form.value.source_id,
+      destination_id:this.form.value.destination_id,
+      full_description:this.form.value.full_description,
       max_discount_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
       min_tran_amount:this.form.value.min_tran_amount,
       percentage:this.form.value.percentage,
-      short_desc:this.form.value.short_description,
+      short_description:this.form.value.short_description,
       valid_by:this.form.value.valid_by,
       from_date:this.form.value.from_date,
       to_date:this.form.value.to_date,
@@ -229,7 +267,7 @@ export class CouponComponent implements OnInit {
       created_by:localStorage.getItem('USERNAME') 
     };
 
-    
+
     if(id==null)
     {
     this.couponService.create(data).subscribe(
@@ -265,14 +303,7 @@ export class CouponComponent implements OnInit {
             }
       });         
     }    
-    // if(data.id != "")
-    // {
-    //   //UPDATE CASE
-    // }
-    // else
-    // {
-      
-    // }
+   
   }
 
   
@@ -312,6 +343,12 @@ export class CouponComponent implements OnInit {
         }
       );
     }
+
+    this.locationService.readAll().subscribe(
+      records => {
+        this.locations = records.data;
+      }
+    );
 
   }
 
