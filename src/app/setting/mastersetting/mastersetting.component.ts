@@ -648,7 +648,7 @@ export class MastersettingComponent implements OnInit {
 
     });
 
-    console.log(this.settingForm);
+    //console.log(this.settingForm);
 
     this.LoadAllService();
     this.ModalHeading = "Edit Master Settings";

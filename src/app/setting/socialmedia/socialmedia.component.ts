@@ -4,6 +4,7 @@ import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SocialMedia } from '../../model/socialmedia';
+import { UserService } from '../../services/user.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { SocialmediaService } from '../../services/socialmedia.service';
@@ -30,7 +31,7 @@ export class SocialmediaComponent implements OnInit {
   public isSubmit: boolean;
   public ModalHeading: any;
   public ModalBtn: any;
-
+  users:any=[];
   social: SocialMedia[];
   socialRecord: SocialMedia;
   busoperators: any;
@@ -43,7 +44,8 @@ export class SocialmediaComponent implements OnInit {
     private fb: FormBuilder, private busOperatorService: BusOperatorService,
     private ss: SocialmediaService,
     private modalService: NgbModal,
-    config: NgbModalConfig
+    config: NgbModalConfig,
+    private userService: UserService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -59,7 +61,7 @@ export class SocialmediaComponent implements OnInit {
     this.spinner.show();
     this.socialFrom = this.fb.group({
       id: [null],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
       facebook_link: [null],
       twitter_link: [null],
       instagram_link: [null],
@@ -71,7 +73,7 @@ export class SocialmediaComponent implements OnInit {
       id: [null]
     });
     this.searchForm = this.fb.group({
-      bus_operator_id: [null],
+      user_id: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -88,7 +90,7 @@ export class SocialmediaComponent implements OnInit {
     this.socialRecord = {} as SocialMedia;
     this.socialFrom = this.fb.group({
       id: [null],
-      bus_operator_id: [null],
+      user_id: [null, Validators.compose([Validators.required])],
       facebook_link: [null],
       twitter_link: [null],
       instagram_link: [null],
@@ -109,7 +111,7 @@ export class SocialmediaComponent implements OnInit {
   search(pageurl = "") {
     this.spinner.show();
     const data = {
-      bus_operator_id: this.searchForm.value.bus_operator_id,
+      user_id: this.searchForm.value.user_id,
       rows_number: this.searchForm.value.rows_number,
     };
 
@@ -140,7 +142,7 @@ export class SocialmediaComponent implements OnInit {
   refresh() {
     this.spinner.show();
     this.searchForm = this.fb.group({
-      bus_operator_id: [null],
+      user_id: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -174,13 +176,23 @@ export class SocialmediaComponent implements OnInit {
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
       }
     );
+
+      ////// get all user list
+
+      this.userService.getAllUser().subscribe(
+        record=>{
+        this.users=record.data;
+        this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+        }
+      );
+
   }
 
 
   addData() {
     this.spinner.show();
     const data = {
-      bus_operator_id: this.socialFrom.value.bus_operator_id,
+      user_id: this.socialFrom.value.user_id,
       facebook_link:this.socialFrom.value.facebook_link,
       twitter_link: this.socialFrom.value.twitter_link,
       instagram_link: this.socialFrom.value.instagram_link,
@@ -238,7 +250,7 @@ export class SocialmediaComponent implements OnInit {
 
     // console.log(this.urlcontentRecord);
     this.socialFrom.controls.id.setValue(this.socialRecord.id);
-    this.socialFrom.controls.bus_operator_id.setValue(this.socialRecord.bus_operator_id);
+    this.socialFrom.controls.user_id.setValue(this.socialRecord.user_id);
     this.socialFrom.controls.facebook_link.setValue(this.socialRecord.facebook_link);
     this.socialFrom.controls.twitter_link.setValue(this.socialRecord.twitter_link);
     this.socialFrom.controls.instagram_link.setValue(this.socialRecord.instagram_link);

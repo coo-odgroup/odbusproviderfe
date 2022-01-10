@@ -9,6 +9,8 @@ import { BusOperatorService } from '../../services/bus-operator.service';
 import { Busoperator } from '../../model/busoperator';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
+import { UserService } from '../../services/user.service';
+
 import * as _ from 'lodash';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -52,8 +54,11 @@ export class SpecialsliderComponent implements OnInit {
   public pagination: any;
   public imageSizeFlag = true;
   all: any;
+  users:any=[];
 
-  constructor(private spinner: NgxSpinnerService,private specialsliderService: SpecialsliderService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer,private busOperartorService:BusOperatorService)
+
+    
+  constructor(private spinner: NgxSpinnerService,private specialsliderService: SpecialsliderService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer,private busOperartorService:BusOperatorService,private userService: UserService)
      { 
         this.isSubmit = false;
         this.sliderRecord= {} as SpecialSlider;
@@ -234,13 +239,23 @@ export class SpecialsliderComponent implements OnInit {
       this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
       }
     );
+
+     ////// get all user list
+
+     this.userService.getAllUser().subscribe(
+      record=>{
+      this.users=record.data;
+      this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+      }
+    );
+
   }
   ResetAttributes()
   {
     //this.sliderRecord = {} as SpecialSlider;
     this.sliderForm = this.fb.group({
       id:[null],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
@@ -269,7 +284,7 @@ export class SpecialsliderComponent implements OnInit {
     let fd: any = new FormData();
     fd.append("id",this.sliderForm.value.id);
     fd.append("slider_img", this.sliderForm.get('slider_img').value);
-    fd.append("bus_operator_id",this.sliderForm.value.bus_operator_id);
+    fd.append("user_id",this.sliderForm.value.user_id);
     fd.append("occassion",this.sliderForm.value.occassion);
     fd.append("url",this.sliderForm.value.url);
     fd.append("start_date",this.sliderForm.value.start_date);
@@ -278,22 +293,7 @@ export class SpecialsliderComponent implements OnInit {
     fd.append("end_date",this.sliderForm.value.end_date);
     fd.append("end_time",this.sliderForm.value.end_time);
     fd.append("created_by",localStorage.getItem('USERNAME'));
-    
-    // const data ={
-    //   bus_operator_id:this.sliderForm.value.bus_operator_id,
-    //   occassion:this.sliderForm.value.occassion,
-    //   category:this.sliderForm.value.category,
-    //   url:this.sliderForm.value.url,
-    //   start_date:this.sliderForm.value.start_date,
-    //   start_time:this.sliderForm.value.start_time,
-    //   alt_tag:this.sliderForm.value.alt_tag,
-    //   end_date:this.sliderForm.value.end_date,
-    //   end_time:this.sliderForm.value.end_time,
-    //   //slider_img:this.sliderForm.value.slider_img,
-    //   slider_img:this.sliderForm.value.iconSrc,
-    //   created_by: localStorage.getItem('USERNAME'),
-    // };
-    //let id = this.sliderRecord?.id;
+   
     if (id == null) {
       this.specialsliderService.create(fd).subscribe(
         resp => {
@@ -343,7 +343,7 @@ export class SpecialsliderComponent implements OnInit {
 
     this.sliderForm=this.fb.group({
       id:[this.sliderRecord.id],
-      bus_operator_id:[this.sliderRecord.bus_operator_id],
+      user_id:[this.sliderRecord.user_id],
       occassion:[this.sliderRecord.occassion],
       category:[this.sliderRecord.category],
       url:[this.sliderRecord.url],

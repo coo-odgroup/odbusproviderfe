@@ -17,11 +17,11 @@
               <div class="col-3">
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                            placeholder="Select Operator" formControlName="bus_operator_id"
-                            [clearable]="false">
-                        </ng-select>
+                      <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                      placeholder="Select User" formControlName="user_id" [clearable]="false">
+                    </ng-select>
                     </div>
+                   
                 </div>
             </div>
 
@@ -83,7 +83,7 @@
               <th scope="col">Testimonial</th>
               <th scope="col">Route</th>
               <th scope="col">Posted By</th>
-              <th scope="col">Operator</th>
+              <th scope="col">User</th>
               <th scope="col">Travel Date</th>
               <th scope="col">Created/Updated On</th>
               <th scope="col">Created By</th>
@@ -97,7 +97,7 @@
               <td>{{page.testinmonial_content}}</td>
               <td>{{page.source}}  >>  {{page.destination}}</td>
               <td>{{page.posted_by}}</td>
-              <td>{{page.bus_operator.operator_name}}</td>
+              <td>{{page.user.name}}</td>
               <td>{{page.travel_date}}</td>
               <td>{{ page.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ page.created_by }}</td>
@@ -255,23 +255,22 @@
 
                             <div class="col-md-4 ">
                               <div class="from-group">
-                                <label for="name" class=" col-form-label col-sm-12">Operator Name :<span
+                                <label for="name" class=" col-form-label col-sm-12">User Name :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
                                   <!-- <input type="text" class="form-control" ngbAutofocus placeholder="Enter Page name"
                                     required formControlName="operator" /> -->
                                     <div class="form-group row">
                                       <div class="col-sm-12">
-                                          <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                                              placeholder="Select Operator" formControlName="operator"
-                                              [clearable]="false">
-                                          </ng-select>                                          
+                                        <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                                        placeholder="Select User" formControlName="user_id" [clearable]="false">
+                                      </ng-select>                       
                                       </div>
                                   </div>
                                   <span class="text-danger"
-                                    *ngIf="form.controls['operator'].touched && form.controls['operator'].hasError('required')">
-                                    Operator is Required
-                                  </span>
+                                        *ngIf="form.controls['user_id'].touched && form.controls['user_id'].hasError('required')">
+                                        User Field is Required
+                                      </span>  
                                 </div>
                               </div>
                             </div>

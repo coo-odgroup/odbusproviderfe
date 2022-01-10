@@ -21,10 +21,9 @@
               <div class="col-5">
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                            placeholder="Select Operator" formControlName="bus_operator_id"
-                            [clearable]="false">
-                        </ng-select>
+                      <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                      placeholder="Select User" formControlName="user_id" [clearable]="false">
+                    </ng-select>
                     </div>
                 </div>
             </div>
@@ -71,7 +70,7 @@
           <thead>
             <tr>
               <th scope="col" width="100px">#</th>
-              <th scope="col">Operator</th>
+              <th scope="col">User</th>
 
               <th class="hide_screen">Facebook URL</th>
               <th class="hide_screen">Instagram URL</th>
@@ -87,7 +86,7 @@
           <tbody *ngIf="social?.length != 0">
             <tr *ngFor="let page of social; let i=index;">
               <td>{{i+1}}</td>
-              <td>{{page.bus_operator.operator_name}}</td>
+              <td>{{page.user.name}}</td>
              
               <td class="hide_screen">{{page.facebook_link}}</td>
               <td class="hide_screen">{{page.instagram_link}}</td>
@@ -295,17 +294,20 @@
                     <form [formGroup]="socialFrom">
 
                       <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-3 col-form-label ">Operator <span class="text-danger">*</span></label>
+                        <label for="inputPassword" class="col-sm-3 col-form-label ">User</label>
                         <div class="col-sm-9">
-                            <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                                placeholder="Select Operator" formControlName="bus_operator_id"
-                                [clearable]="false">
-                            </ng-select>                                          
+                          <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                          placeholder="Select User" formControlName="user_id" [clearable]="false">
+                        </ng-select>
+                        <span class="text-danger"
+                          *ngIf="socialFrom.controls['user_id'].touched && socialFrom.controls['user_id'].hasError('required')">
+                          User Field is Required
+                        </span>                                        
                         </div>
                     </div>
 
                       <div class="form-group row">
-                          <label for="inputPassword" class="col-sm-3 col-form-label ">Facebook Link <span class="text-danger">*</span></label>
+                          <label for="inputPassword" class="col-sm-3 col-form-label ">Facebook URL</label>
                           <div class="col-sm-9">                                    
                               <div class="input-group">
                                 <div class="input-group-prepend">
@@ -317,7 +319,7 @@
                         </div>
 
                         <div class="form-group row">
-                          <label for="inputPassword" class="col-sm-3 col-form-label ">Twitter Link <span class="text-danger">*</span> </label>
+                          <label for="inputPassword" class="col-sm-3 col-form-label ">Twitter URL</label>
                           <div class="col-sm-9">                                    
                               <div class="input-group">
                                 <div class="input-group-prepend">
@@ -329,7 +331,7 @@
                         </div>
 
                         <div class="form-group row">
-                          <label for="inputPassword" class="col-sm-3 col-form-label">Instagram Link <span class="text-danger">*</span></label>
+                          <label for="inputPassword" class="col-sm-3 col-form-label">Instagram URL</label>
                           <div class="col-sm-9">                                    
                               <div class="input-group">
                                 <div class="input-group-prepend">
@@ -341,7 +343,7 @@
                         </div>
 
                         <div class="form-group row">
-                          <label for="inputPassword" class="col-sm-3 col-form-label">Googleplus Link <span class="text-danger">*</span></label>
+                          <label for="inputPassword" class="col-sm-3 col-form-label">Googleplus URL</label>
                           <div class="col-sm-9">                                    
                               <div class="input-group">
                                 <div class="input-group-prepend">
@@ -353,13 +355,13 @@
                         </div>
 
                         <div class="form-group row">
-                          <label for="inputPassword" class="col-sm-3 col-form-label">Linkedin Link <span class="text-danger">*</span></label>
+                          <label for="inputPassword" class="col-sm-3 col-form-label">Linkedin URL</label>
                           <div class="col-sm-9">                                    
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <div class="input-group-text icon"><i class="fab fa-linkedin-in"></i></div>
                                 </div>
-                                <input type="text" class="form-control sml_input"  placeholder="Enter Linkedin Link" formControlName="linkedin_link" required>
+                                <input type="text" class="form-control sml_input"  placeholder="Enter Linkedin Link" formControlName="linkedin_link">
                               </div>
                             </div>
                         </div>                            

@@ -8,6 +8,8 @@ import {Constants} from '../../constant/constant' ;
 import { NotificationService } from '../../services/notification.service';
 import { BusOperatorService } from '../../services/bus-operator.service';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../../services/user.service';
+
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as _ from 'lodash';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -37,6 +39,8 @@ export class BannermanagementComponent implements OnInit {
   imgURL: any;
   finalImage:any;
   public imagePath;
+  users:any=[];
+
 
   path = Constants.PATHURL;
 
@@ -52,7 +56,10 @@ export class BannermanagementComponent implements OnInit {
   public imageSizeFlag = true;
   all: any;
 
-  constructor(private spinner: NgxSpinnerService,private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer, private busOperartorService:BusOperatorService)
+   
+  constructor(private spinner: NgxSpinnerService,private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer, private busOperartorService:BusOperatorService,
+    private userService: UserService
+    )
      { 
         this.isSubmit = false;
         this.bannerRecord= {} as Banner;
@@ -96,6 +103,17 @@ export class BannermanagementComponent implements OnInit {
   }
   ngOnInit(): void {
     this.spinner.show();
+
+      ////// get all user list
+
+      this.userService.getAllUser().subscribe(
+        record=>{
+        this.users=record.data;
+        this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+        }
+      );
+
+
     this.searchForm =this.fb.group({
       searchBy:[null],
       status:[null],
@@ -108,7 +126,7 @@ export class BannermanagementComponent implements OnInit {
       category: [null],
       url:[null],
       heading:[null],
-      bus_operator_id:[null],
+      user_id:[null, Validators.compose([Validators.required])],
       banner_img:[null],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -233,7 +251,7 @@ export class BannermanagementComponent implements OnInit {
       // category: [null],
       url:[null],
       heading:[null],
-      bus_operator_id:[],
+      user_id:[null, Validators.compose([Validators.required])],
       banner_img:[null],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -258,28 +276,9 @@ export class BannermanagementComponent implements OnInit {
   addBanner()
   {
     this.spinner.show();
-
-    // this.finalJson = {
-    //   "File": this.imageSrc,
-    // }
-
-    // const data ={
-    //   bus_operator_id:this.bannerForm.value.bus_operator_id,
-    //   occassion:this.bannerForm.value.occassion,
-    //   category:this.bannerForm.value.category,
-    //   url:this.bannerForm.value.url,
-    //   heading:this.bannerForm.value.heading,
-    //   start_date:this.bannerForm.value.start_date,
-    //   start_time:this.bannerForm.value.start_time,
-    //   alt_tag:this.bannerForm.value.alt_tag,
-    //   end_date:this.bannerForm.value.end_date,
-    //   end_time:this.bannerForm.value.end_time,
-    //   banner_img:this.bannerForm.value.iconSrc,
-    //   created_by: localStorage.getItem('USERNAME') 
-    // };
     let fd: any = new FormData();
     fd.append("banner_img", this.finalImage);
-    fd.append("bus_operator_id",this.bannerForm.value.bus_operator_id);
+    fd.append("user_id",this.bannerForm.value.user_id);
     fd.append("occassion",this.bannerForm.value.occassion);
     // fd.append("category",this.bannerForm.value.category);
     fd.append("url",this.bannerForm.value.url);
@@ -351,7 +350,7 @@ export class BannermanagementComponent implements OnInit {
 
     this.bannerForm=this.fb.group({
       id:[this.bannerRecord.id],
-      bus_operator_id:this.bannerRecord.bus_operator_id,
+      user_id:this.bannerRecord.user_id,
       occassion:[this.bannerRecord.occassion],
       // category:[this.bannerRecord.category],
       url:[this.bannerRecord.url],

@@ -4,6 +4,7 @@ import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Urlcontent } from '../../model/urlcontent';
+import { UserService } from '../../services/user.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { SeosettingService } from '../../services/seosetting.service';
@@ -25,6 +26,8 @@ export class SeosettingComponent implements OnInit {
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
   pagination: any;
+  users:any=[];
+
 
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
@@ -47,7 +50,8 @@ export class SeosettingComponent implements OnInit {
     private locationService:LocationService,
     private ss: SeosettingService,
     private modalService: NgbModal,
-    config: NgbModalConfig
+    config: NgbModalConfig,
+    private userService: UserService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -67,7 +71,7 @@ export class SeosettingComponent implements OnInit {
       source_id: [null],
       destination_id: [null],
       page_url: [null, Validators.compose([Validators.required])],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
       url_description: [null],
       meta_title: [null],
       meta_keyword: [null],
@@ -79,7 +83,7 @@ export class SeosettingComponent implements OnInit {
       id: [null]
     });
     this.searchForm = this.fb.group({
-      bus_operator_id: [null],
+      user_id: [null],
       name: [null],
       rows_number: Constants.RecordLimit,
     });
@@ -101,7 +105,7 @@ export class SeosettingComponent implements OnInit {
       source_id: [null],
       destination_id: [null],
       page_url: [null, Validators.compose([Validators.required])],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
       url_description: [null],
       meta_title: [null],
       meta_keyword: [null],
@@ -133,7 +137,7 @@ export class SeosettingComponent implements OnInit {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
-      bus_operator_id: this.searchForm.value.bus_operator_id,
+      user_id: this.searchForm.value.user_id,
       rows_number: this.searchForm.value.rows_number,
     };
 
@@ -165,7 +169,7 @@ export class SeosettingComponent implements OnInit {
     this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
-      bus_operator_id: [null],
+      user_id: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -205,13 +209,25 @@ export class SeosettingComponent implements OnInit {
         this.locations=records.data;
       }
     );
+
+    
+      ////// get all user list
+
+      this.userService.getAllUser().subscribe(
+        record=>{
+        this.users=record.data;
+        this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+        }
+      );
+
+
   }
 
   addData() {
     this.spinner.show();
     const data = {
       page_url: this.form.value.page_url,
-      bus_operator_id:this.form.value.bus_operator_id,
+      user_id:this.form.value.user_id,
       seo_type:this.form.value.seo_type,
       source_id:this.form.value.source_id,
       destination_id:this.form.value.destination_id,
@@ -273,7 +289,7 @@ export class SeosettingComponent implements OnInit {
     this.form = this.fb.group({
 
       id:[this.urlcontentRecord.id],
-      bus_operator_id: [this.urlcontentRecord.bus_operator_id],
+      user_id: [this.urlcontentRecord.user_id],
       page_url: [this.urlcontentRecord.page_url],
       seo_type: [(this.urlcontentRecord.seo_type).toString()],
       source_id: [this.urlcontentRecord.source_id],
@@ -287,25 +303,54 @@ export class SeosettingComponent implements OnInit {
       
     });
 
-    // this.form.controls.id.setValue(this.urlcontentRecord.id);
-    // this.form.controls.bus_operator_id.setValue(this.urlcontentRecord.bus_operator_id);
-    // this.form.controls.page_url.setValue(this.urlcontentRecord.page_url);
-    // this.form.controls.seo_type.setValue(this.urlcontentRecord.seo_type);
-    // this.form.controls.source_id.setValue(this.urlcontentRecord.source_id);
-    // this.form.controls.destination_id.setValue(this.urlcontentRecord.destination_id);
-    // this.form.controls.url_description.setValue(this.urlcontentRecord.url_description);
-    // this.form.controls.meta_title.setValue(this.urlcontentRecord.meta_title);
-    // this.form.controls.meta_keyword.setValue(this.urlcontentRecord.meta_keyword);
-    // this.form.controls.meta_description.setValue(this.urlcontentRecord.meta_description);
-    // this.form.controls.extra_meta.setValue(this.urlcontentRecord.extra_meta);
-    // this.form.controls.canonical_url.setValue(this.urlcontentRecord.canonical_url);
-
     this.ModalHeading = "Edit URL";
     this.ModalBtn = "Update";
 
-    console.log(this.form.controls.seo_type.value);
+    //console.log(this.form.controls.seo_type.value);
 
 
+  }
+
+
+  toSeoUrl(url) {
+    return url.toString()               // Convert to string
+      .normalize('NFD')               // Change diacritics
+      .replace(/[\u0300-\u036f]/g, '') // Remove illegal characters
+      .replace(/\s+/g, '-')            // Change whitespace to dashes
+      .toLowerCase()                  // Change to lowercase
+      .replace(/&/g, '-and-')          // Replace ampersand
+      .replace(/[^a-z0-9\-]/g, '')     // Remove anything that is not a letter, number or dash
+      .replace(/-+/g, '-')             // Remove duplicate dashes
+      .replace(/^-*/, '')              // Remove starting dashes
+      .replace(/-*$/, '');             // Remove trailing dashes
+  }
+  
+  generate_url() {
+    let source_id = this.form.controls.source_id.value;
+    let dest_id = this.form.controls.destination_id.value;
+    if(source_id!=null && dest_id!=null){
+      
+      let source_name='';
+      let dest_name='';
+      
+      this.locations.filter((itm) =>{
+        if(source_id===itm.id){
+          source_name=itm.name;
+        }
+
+        if(dest_id===itm.id){
+          dest_name=itm.name;
+        }
+
+      });
+
+      let source_url = this.toSeoUrl(source_name);
+      let dest_url = this.toSeoUrl(dest_name);
+      let full_url =source_url+'-'+dest_url+'-bus-services';
+      this.form.controls.page_url.setValue(full_url);
+
+    }
+   
   }
 
   openConfirmDialog(content, id: any) {

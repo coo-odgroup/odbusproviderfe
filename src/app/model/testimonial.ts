@@ -4,7 +4,7 @@ export interface Testimonial{
     testinmonial_content: any;
     designation: any; 
     travel_date:any;
-    bus_operator_id:any;
+    user_id:any;
     destination:any;
     source:any;
 

@@ -19,10 +19,10 @@
                 <div class="col-5">
                   <div class="form-group row">
                       <div class="col-sm-12">
-                          <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                              placeholder="Select Operator" formControlName="bus_operator_id"
-                              [clearable]="false">
-                          </ng-select>
+
+                        <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                        placeholder="Select User" formControlName="user_id" [clearable]="false">
+                      </ng-select>
                       </div>
                   </div>
               </div>           
@@ -61,7 +61,7 @@
                   <thead>
                       <tr>
                           <th scope="col" width ="100px">#</th>
-                          <th scope="col">Operator</th>
+                          <th scope="col">User</th>
                           <th scope="col">Page Name</th>
                           <th scope="col">Page URL</th>
                           <th scope="col">Created/Updated On</th>
@@ -72,7 +72,7 @@
                   <tbody *ngIf="pagecontent?.length != 0">
                     <tr  *ngFor="let page of pagecontent; let i=index;">
                       <td>{{i+1}}</td>
-                      <td><strong>{{page.bus_operator.operator_name}}</strong></td>
+                      <td><strong>{{page.user.name}}</strong></td>
                       <td>{{page.page_name}}</td>
                       <td>{{page.page_url}}</td>
                       <td>{{page.updated_at | date: 'dd/MM/yyyy'}}</td>
@@ -170,13 +170,13 @@
                                         <!-- <label>Page name :</label> -->
                                         <label for="name" class="col-sm-12 col-form-label">Select Operator :<span class="text-danger">*</span></label>
                                         <div class="col-sm-12">
-                                          <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                                          placeholder="Select Operator" formControlName="bus_operator_id"
-                                          [clearable]="false">
-                                          </ng-select>
-                                            <span class="text-danger" *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
-                                                Operator is Required 
-                                            </span>
+                                          <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                                          placeholder="Select User" formControlName="user_id" [clearable]="false">
+                                        </ng-select>
+                                    <span class="text-danger"
+                                      *ngIf="form.controls['user_id'].touched && form.controls['user_id'].hasError('required')">
+                                      User Filed is Required
+                                    </span>
                                         </div>                                             
                                       </div>
 

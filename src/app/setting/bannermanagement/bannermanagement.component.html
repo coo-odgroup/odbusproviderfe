@@ -63,7 +63,7 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Operator</th>
+                <th scope="col">User</th>
                 <th scope="col">Occasion </th>
                 <th scope="col">Banner</th>
                 <th scope="col">Start Date Time</th>
@@ -77,7 +77,7 @@
             <tbody *ngIf="banners?.length != 0">
               <tr *ngFor="let bannerData of banners; let i = index">
                 <td>{{ i+1 }}</td>
-                <td>{{bannerData.bus_operator.operator_name}} </td>
+                <td>{{bannerData.user.name}} </td>
                 <td>{{bannerData.occassion}} </td>
                
                 <!-- <td>
@@ -203,17 +203,19 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group row ">
-                              <label for="bus" class="col-sm-5  col-form-label">Operator <span
+                              <label for="bus" class="col-sm-5  col-form-label">User <span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-7">
-                                <ng-select [items]="operators" bindLabel="operatorData" bindValue="id"
-                                  placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
-                                </ng-select>
-                                <span class="text-danger"
-                                  *ngIf="bannerForm.controls['bus_operator_id'].touched && bannerForm.controls['bus_operator_id'].hasError('required')">
-                                  Operator Name is required! </span>
-                              </div>
+                                <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                                        placeholder="Select User" formControlName="user_id" [clearable]="false">
+                                      </ng-select>
+
+                                      <span class="text-danger"
+                                      *ngIf="bannerForm.controls['user_id'].touched && bannerForm.controls['user_id'].hasError('required')">
+                                      User Field is Required
+                                    </span>
                             </div>
+                          </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group row">
@@ -333,28 +335,6 @@
                             </div>
                           </div>
                           <div class="col-md-6">
-                            <!-- <div class="form-group row">
-                              <label for="Name" class="col-sm-5 col-form-label">Banner Image<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-7">
-                                <div>
-                                  <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
-                                    class="form-control" id="banner_img" placeholder="Drop your image here"
-                                    formControlName="banner_img" />
-                                </div>
-                                <span class="text-danger">Max file size 100Kb</span>
-                                <span class="text-danger">{{imageError}}</span>
-                                <span class="text-danger"
-                                  *ngIf="bannerForm.controls['banner_img'].touched && bannerForm.controls['banner_img'].hasError('required')">
-                                  Image file is required! </span>
-                                <div *ngIf="imgURL">
-                                  <img class="sliderImage" [src]="imgURL" height="100" >
-                                   <img id="sliderImgPreview" class="sliderImage-edit"
-                                    [attr.src]="getBannerImagepath(bannerForm.value['iconSrc'])">
-                                </div>
-                              </div>
-                            </div> -->
-
                             <div class="form-group row">
                               <label for="safety" class="col-sm-4 col-form-label">Image</label>
                               <div class="col-sm-8">
@@ -382,8 +362,8 @@
                                 </div>                      
                               </div>
                             </div>
+                            </div>
                           </div>
-                        </div>
                       </form>
                     </div>
                   </div>

@@ -8,5 +8,5 @@ export interface Pagecontent {
     meta_description:any;
     extra_meta:any;
     canonical_url:any;
-    bus_operator_id:null;
+    user_id:null;
 }

@@ -8,6 +8,7 @@ import { Testimonial } from '../../model/testimonial';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import {TestimonialService } from '../../services/testimonial.service';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+import { UserService } from '../../services/user.service';
 import{Constants} from '../../constant/constant';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -37,6 +38,7 @@ export class TestimonialComponent implements OnInit {
   testimonial: Testimonial[];
   testimonialRecord: Testimonial;
   all: any;
+  users:any=[];
 
   constructor(
     private http: HttpClient, 
@@ -44,7 +46,9 @@ export class TestimonialComponent implements OnInit {
     private fb: FormBuilder,
     private ts: TestimonialService, private busOperatorService: BusOperatorService ,
     private modalService: NgbModal,private spinner: NgxSpinnerService,
-    config: NgbModalConfig
+    config: NgbModalConfig,
+    private userService: UserService
+
     )
     { 
       config.backdrop = 'static';
@@ -63,7 +67,7 @@ export class TestimonialComponent implements OnInit {
         testinmonial_content: [null, Validators.compose([Validators.required])],
         designation: [null, Validators.compose([Validators.required])],
         travel_date: [null, Validators.compose([Validators.required])],
-        operator: [null, Validators.compose([Validators.required])],
+        user_id: [null, Validators.compose([Validators.required])],
         destination: [null, Validators.compose([Validators.required])],
         source: [null, Validators.compose([Validators.required])]
 
@@ -73,7 +77,7 @@ export class TestimonialComponent implements OnInit {
       });
       this.searchForm = this.fb.group({  
         name: [null],  
-        bus_operator_id:[null],
+        user_id:[null],
         rows_number: Constants.RecordLimit,
       });
       this.search();
@@ -91,14 +95,14 @@ export class TestimonialComponent implements OnInit {
     {  this.testimonialRecord = {} as Testimonial;
       
     this.form = this.fb.group({
-        id:[null],
-        posted_by: [null],
-        testinmonial_content: [null],
-        designation: [null],
-        travel_date: [null],
-        operator: [null],
-        destination: [null],
-        source: [null] 
+      id:[null],
+      posted_by: [null, Validators.compose([Validators.required])],
+      testinmonial_content: [null, Validators.compose([Validators.required])],
+      designation: [null, Validators.compose([Validators.required])],
+      travel_date: [null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
+      destination: [null, Validators.compose([Validators.required])],
+      source: [null, Validators.compose([Validators.required])]
       });
       this.ModalHeading = "Add Testimonial Content";
       this.ModalBtn = "Save";
@@ -114,7 +118,7 @@ export class TestimonialComponent implements OnInit {
     {     this.spinner.show(); 
       const data = { 
         name: this.searchForm.value.name,
-        bus_operator_id:  this.searchForm.value.bus_operator_id,
+        user_id:  this.searchForm.value.user_id,
         rows_number:this.searchForm.value.rows_number, 
       };
      
@@ -149,7 +153,7 @@ export class TestimonialComponent implements OnInit {
       this.spinner.show();
       this.searchForm = this.fb.group({  
         name: [null],
-        bus_operator_id:[null],
+        user_id:[null],
         rows_number: Constants.RecordLimit,
       });
        this.search();
@@ -165,7 +169,7 @@ export class TestimonialComponent implements OnInit {
         testinmonial_content:this.form.value.testinmonial_content,
         designation: this.form.value.designation, 
         travel_date: this.form.value.travel_date,
-        operator: this.form.value.operator,
+        user_id: this.form.value.user_id,
         destination: this.form.value.destination,
         source: this.form.value.source,
         created_by: localStorage.getItem('USERNAME') 
@@ -214,13 +218,12 @@ export class TestimonialComponent implements OnInit {
     editData(id)
     {  
       this.testimonialRecord = this.testimonial[id];
-      console.log(this.testimonialRecord);
       this.form.controls.id.setValue(this.testimonialRecord.id);
       this.form.controls.posted_by.setValue(this.testimonialRecord.posted_by);
       this.form.controls.testinmonial_content.setValue(this.testimonialRecord.testinmonial_content);
       this.form.controls.designation.setValue(this.testimonialRecord.designation);
       this.form.controls.travel_date.setValue(this.testimonialRecord.travel_date);
-      this.form.controls.operator.setValue(this.testimonialRecord.bus_operator_id);
+      this.form.controls.user_id.setValue(this.testimonialRecord.user_id);
       this.form.controls.destination.setValue(this.testimonialRecord.destination);
       this.form.controls.source.setValue(this.testimonialRecord.source);
         
@@ -281,6 +284,16 @@ export class TestimonialComponent implements OnInit {
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
       }
     );
+
+     ////// get all user list
+
+     this.userService.getAllUser().subscribe(
+      record=>{
+      this.users=record.data;
+      this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+      }
+    );
+
   }
 
   

@@ -4,6 +4,7 @@ import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Pagecontent } from '../../model/pagecontent';
+import { UserService } from '../../services/user.service';
 import { Constants } from '../../constant/constant';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { PagecontentService } from '../../services/pagecontent.service';
@@ -27,6 +28,8 @@ export class PagecontentComponent implements OnInit {
   public isSubmit: boolean;
   public ModalHeading: any;
   public ModalBtn: any;
+  users:any=[];
+
 
   pagecontent: Pagecontent[];
   pagecontentRecord: Pagecontent;
@@ -41,7 +44,8 @@ export class PagecontentComponent implements OnInit {
     private pc: PagecontentService,
     private busOperatorService: BusOperatorService,
     private modalService: NgbModal,
-    config: NgbModalConfig
+    config: NgbModalConfig,
+    private userService: UserService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -58,7 +62,7 @@ export class PagecontentComponent implements OnInit {
 
     this.form = this.fb.group({
       id: [null],
-      bus_operator_id: [null, Validators.compose([Validators.required])],
+      user_id: [null, Validators.compose([Validators.required])],
       page_name: [null, Validators.compose([Validators.required])],
       page_url: [null, Validators.compose([Validators.required])],
       page_description: [null, Validators.compose([Validators.required])],
@@ -73,7 +77,7 @@ export class PagecontentComponent implements OnInit {
     });
     this.searchForm = this.fb.group({
       name: [null],
-      bus_operator_id: [null],
+      user_id: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -93,7 +97,7 @@ export class PagecontentComponent implements OnInit {
 
     const data = {
       name: this.searchForm.value.name,
-      bus_operator_id: this.searchForm.value.bus_operator_id,
+      user_id: this.searchForm.value.user_id,
       rows_number: this.searchForm.value.rows_number,
     };
 
@@ -102,6 +106,7 @@ export class PagecontentComponent implements OnInit {
       this.pc.getAllaginationData(pageurl, data).subscribe(
         res => {
           this.pagecontent = res.data.data.data;
+
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
@@ -113,6 +118,7 @@ export class PagecontentComponent implements OnInit {
         res => {
           this.pagecontent = res.data.data.data;
           this.pagination = res.data.data;
+
           this.all = res.data;
           this.spinner.hide();
         }
@@ -126,7 +132,7 @@ export class PagecontentComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       name: [null],
-      bus_operator_id: [null],
+      user_id: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -142,7 +148,19 @@ export class PagecontentComponent implements OnInit {
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
       }
     );
+
+
+     ////// get all user list
+
+     this.userService.getAllUser().subscribe(
+      record=>{
+      this.users=record.data;
+      this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+      }
+    );
+
   }
+
   toSeoUrl(url) {
     return url.toString()               // Convert to string
       .normalize('NFD')               // Change diacritics
@@ -155,6 +173,7 @@ export class PagecontentComponent implements OnInit {
       .replace(/^-*/, '')              // Remove starting dashes
       .replace(/-*$/, '');             // Remove trailing dashes
   }
+  
   generate_url() {
     let pagecontent = this.form.controls.page_name.value;
     pagecontent = this.toSeoUrl(pagecontent);
@@ -167,7 +186,7 @@ export class PagecontentComponent implements OnInit {
     this.pagecontentRecord = {} as Pagecontent;
     this.form = this.fb.group({
       id: [null],
-      bus_operator_id: [null],
+      user_id: [null],
       page_name: [null],
       page_url: [null],
       page_description: [null],
@@ -197,7 +216,7 @@ export class PagecontentComponent implements OnInit {
     this.spinner.show();
 
     const data = {
-      bus_operator_id: this.form.value.bus_operator_id,
+      user_id: this.form.value.user_id,
       page_name: this.form.value.page_name,
       page_url: this.form.value.page_url,
       page_description: this.form.value.page_description,
@@ -256,7 +275,7 @@ export class PagecontentComponent implements OnInit {
 
     // console.log(this.pagecontentRecord);
     this.form.controls.id.setValue(this.pagecontentRecord.id);
-    this.form.controls.bus_operator_id.setValue(this.pagecontentRecord.bus_operator_id);
+    this.form.controls.user_id.setValue(this.pagecontentRecord.user_id);
     this.form.controls.page_name.setValue(this.pagecontentRecord.page_name);
     this.form.controls.page_url.setValue(this.pagecontentRecord.page_url);
     this.form.controls.page_description.setValue(this.pagecontentRecord.page_description);
