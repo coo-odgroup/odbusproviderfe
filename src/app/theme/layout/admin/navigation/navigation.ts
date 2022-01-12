@@ -742,6 +742,21 @@ const NavigationItems = [
           },
         ]
       },
+      {
+        id: 'ticketinformation',
+        title: 'Ticket Information',
+        type: 'collapse',
+        icon: 'feather icon-thermometer',
+        children: [         
+          {
+            id: 'cancelticket',
+            title: 'Cancel Ticket',
+            type: 'item',
+            icon:'feather icon-wind',
+            url: 'ticketinformation/cancelticket'
+          }
+        ]
+      }
 
     ]
   }

@@ -30,7 +30,8 @@ const routes: Routes = [
       {
         path: 'agentDetails',
         loadChildren: () => import('./agent-details/agent-details.module').then(module =>module.AgentDetailsModule)
-      },
+      }
+      
     ]
   },
   {
@@ -77,6 +78,10 @@ const routes: Routes = [
         path: 'agent',
         loadChildren: () => import('./agent/agent.module').then(module => module.AgentModule),
         canActivate: [Routeguard]
+      },
+      {
+        path: 'ticketinformation',
+        loadChildren: () => import('./ticketinformation/ticketinformation.module').then(module =>module.TicketinformationModule)
       },
     ]
   }

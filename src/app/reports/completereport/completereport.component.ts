@@ -110,7 +110,7 @@ export class CompletereportComponent implements OnInit {
       rangeToDate :this.completeReportRecord.rangeToDate
             
     };
-   
+       
     // console.log(data);
     if(pageurl!="")
     {

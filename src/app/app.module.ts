@@ -31,6 +31,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,6 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     NavRightComponent,
     ConfigurationComponent,
     ToggleFullScreenDirective
-    
   ],
   imports: [
     BrowserModule,
