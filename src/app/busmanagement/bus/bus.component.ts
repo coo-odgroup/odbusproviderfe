@@ -743,7 +743,7 @@ export class BusComponent implements OnInit {
       max_seat_book:this.busForm.value.max_seat_book,
       cancellationslabs_id:this.busForm.value.cancellationslabs_id,
       name:this.busForm.value.name,
-      // bus_number:this.busRecord.bus_number,
+      //bus_number:this.busRecord.bus_number,
       bus_number:this.busForm.value.bus_number,
       bus_seat_layout_id:this.busRecord.bus_seat_layout_id,
       via:this.busForm.value.via,
@@ -777,7 +777,7 @@ export class BusComponent implements OnInit {
     const data={
       id:this.busForm.value.id,
       created_by:localStorage.getItem('USERNAME'),
-      // bus_number:this.busForm.value.bus_number,
+      bus_number:this.busForm.value.bus_number,
       conductor_no:this.busForm.value.conductor_no,
       c_sms_ticket:this.busForm.value.c_sms_ticket,
       c_sms_cancel:this.busForm.value.c_sms_cancel,
@@ -952,7 +952,7 @@ export class BusComponent implements OnInit {
     {
       this.busService.create(data).subscribe(
         resp => {
-          console.log(resp);
+          //console.log(resp);
           if(resp.status==1)
           {   
               
@@ -1100,6 +1100,7 @@ export class BusComponent implements OnInit {
       busRoutes: this.fb.array([]),
       busRoutesInfo:this.fb.array([
         this.fb.group({
+          route_id:[null],
           from_location:[null],
           to_location:[null],
           arr_days:[null],
@@ -1139,94 +1140,11 @@ export class BusComponent implements OnInit {
         let counter=0;
         this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
         
-        // if(resp.data.lowerBerth!=undefined)
-        // {
-        //   for(let lowerData of resp.data.lowerBerth)
-        //   {            
-        //     let arraylen=this.seatLayoutData.length;
-        //     let berthData: FormGroup = this.fb.group({ 
-        //       lowerBerth: this.fb.array([
-        //       ]),
-        //       upperBerth: this.fb.array([
-        //       ])
-        //     });
-        //     this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-        //     this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
-        //     for(let seatData of lowerData)
-        //     {
-        //       let checkedval="";
-        //       let seatId="";
-        //       for(let selectedSeat of this.selectedSeats)
-        //       {
-        //         if(selectedSeat.seats_id==seatData.id)
-        //         {
-        //           checkedval="true";
-        //           seatId=selectedSeat.id;
-        //         }
-        //       }
-
-        //       let collen=this.seatLayoutCol.length;
-        //       let columnData: FormGroup = this.fb.group({ 
-        //         seatText:[seatData.seatText],
-        //         seatType:[seatData.seat_class_id],
-        //         berthType:[seatData.berthType],
-        //         seatChecked:[checkedval],
-        //         category:['0'],
-        //         seatId:[seatData.id],
-        //         busId:[this.busRecord.id]
-        //       });
-        //       this.seatLayoutCol.insert(collen, columnData);
-              
-        //     }
-        //     counter++;
-        //   }
-          
-        // }
-        // if(resp.data.upperBerth!=undefined)
-        // {
-        //   for(let upperData of resp.data.upperBerth)
-        //   {
-        //     let arraylen=this.seatLayoutData.length;
-        //     let berthData: FormGroup = this.fb.group({ 
-        //       lowerBerth: this.fb.array([
-        //       ]),
-        //       upperBerth: this.fb.array([
-        //       ])
-        //     });
-        //     this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-        //     this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
-        //     for(let seatData of upperData)
-        //     {
-        //       let checkedval="";
-        //       let seatId="";
-        //       for(let selectedSeat of this.selectedSeats)
-        //       {
-        //         if(selectedSeat.seats_id==seatData.id)
-        //         {
-        //           checkedval="true";
-        //           seatId=selectedSeat.id;
-        //         }
-        //       }
-        //       let collen=this.seatLayoutCol.length;
-        //       let columnData: FormGroup = this.fb.group({ 
-        //         seatText:[seatData.seatText],
-        //         seatType:[seatData.seat_class_id],
-        //         berthType:[seatData.berthType],
-        //         seatChecked:[checkedval],
-        //         category:['0'],
-        //         seatId:[seatData.id],
-        //         busId:[this.busRecord.id]
-        //       });
-        //       this.seatLayoutCol.insert(collen, columnData);
-        //     }
-        //     counter++;
-        //   }
-        // }
-
         if(resp.data.lowerBerth!=undefined)
         {
           for(let lowerData of resp.data.lowerBerth)
           {
+            
             let arraylen=this.seatLayoutData.length;
             let berthData: FormGroup = this.fb.group({ 
               lowerBerth: this.fb.array([
@@ -1464,7 +1382,7 @@ export class BusComponent implements OnInit {
       resp => {
         if(resp.status==1)
         {        
-
+          //console.log(resp);
           this.busRoutesInfoRecords=this.busForm.get('busRoutesInfo') as FormArray;
           this.busRoutesInfoRecords.clear();
           let counter=0;
@@ -1486,6 +1404,7 @@ export class BusComponent implements OnInit {
               checked="";
             }
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
+              route_id:[JSON.parse(singleRoute.id)],
               from_location:[JSON.parse(singleRoute.source_id)],
               to_location:[JSON.parse(singleRoute.destination_id)],
               arr_days:[JSON.parse(singleRoute.start_j_days)],
@@ -1609,7 +1528,10 @@ export class BusComponent implements OnInit {
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data
 
     };
-    console.log(data);
+    
+    //console.log(JSON.stringify(data));
+   // return
+    
     if(data.id!=null)
     {
       this.busService.updateRoutes(data.id,data).subscribe(
@@ -2302,8 +2224,7 @@ export class BusComponent implements OnInit {
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
       created_by:localStorage.getItem('USERNAME'),
     };
-// console.log(data);
-// return;
+
     if(data.id!=null)
     {
       this.busService.updateExtraSeat(data.id,data).subscribe(
@@ -2583,7 +2504,7 @@ export class BusComponent implements OnInit {
                     seatText:[seatData.seatText],
                     seatType:[seatData.seat_class_id],
                     berthType:[seatData.berthType],
-                    seatChecked:[{value:true,disabled:true}],
+                    seatChecked:[{value:'true',disabled:true}],
                     category:['0'],
                     seatId:[seatData.id],
                     busId:[this.busRecord.id],
