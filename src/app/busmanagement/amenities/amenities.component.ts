@@ -77,7 +77,7 @@ export class AmenitiesComponent implements OnInit {
 
     this.form = this.fb.group({
       id: [null],
-      name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
+      name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(20)])],
       icon: [null],
       iconSrc: [null],
       android_image: [null],
@@ -167,7 +167,7 @@ export class AmenitiesComponent implements OnInit {
     this.iconSrc = "";
     this.form = this.fb.group({
       id: [null],
-      name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
+      name: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(20)])],
       icon: [null],
       iconSrc: [null],
       android_image: [null],
@@ -241,7 +241,7 @@ export class AmenitiesComponent implements OnInit {
     //this.imgURL = this.AmenitiesRecord.icon;
     this.form = this.fb.group({
       id: [this.AmenitiesRecord.id],
-      name: [this.AmenitiesRecord.name, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
+      name: [this.AmenitiesRecord.name, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(20)])],
       icon: [],
       iconSrc: [this.AmenitiesRecord.icon],
       androidSrc: [this.AmenitiesRecord.android_image],

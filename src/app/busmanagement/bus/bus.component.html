@@ -674,7 +674,7 @@
                             <div class="row">
                               <div class="col-6" *ngFor="let singleRoute of routeFormGroup.controls; let i = index;">
                                 <div [formGroupName]="i" class="row">
-                                  <div class="form-group col-8">
+                                  <div class="form-group col-5">
                                     <label>Location and Time <span class="text-danger">*</span></label>
 
 
@@ -686,7 +686,16 @@
                                       *ngIf="singleRoute.controls.source_id.touched && singleRoute.controls.source_id.hasError('required')">
                                       Source is required! </span>
                                   </div>
+
                                   <div class="form-group col-md-3">
+                                    <label>Time <span class="text-danger">*</span></label>
+                                    <input type="time" formControlName="location_time" class="form-control">
+                                    <span class="text-danger"
+                                      *ngIf="singleRoute.controls.location_time.touched && singleRoute.controls.location_time.hasError('required')">
+                                      Location Time is required! </span>
+                                  </div>
+
+                                  <div class="form-group col-md-2">
                                     <label>Seq <span class="text-danger">*</span></label>
                                     <input type="text" formControlName="sequence" class="form-control">
                                     <span class="text-danger"
@@ -808,7 +817,7 @@
                                       *ngIf="singleRoute.controls.seater_fare.touched && singleRoute.controls.seater_fare.hasError('required')">
                                       Seater Fare is required! </span>
                                   </div>
-                                  <div class="form-group col-md-2 " style="padding:0px 5px;">
+                                  <div class="form-group col-md-1 " style="padding:0px 5px;">
                                     <label for="bus">Sleeper Fare<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" required formControlName="sleeper_fare"
                                       [value]="busRecord.sleeper_fare" placeholder="Sleeper Fare" placement="top"
@@ -821,27 +830,41 @@
                                     <label for="bus">Seize Time</label>
                                     <input type="text" class="form-control" required formControlName="booking_seized"
                                       [value]="busRecord.booking_seized" placeholder="Enter minute" placement="top"
-                                      ngbTooltip="Enter minute here" />
+                                      ngbTooltip="Enter minute here3" (input)="getActualtime(i);"/>
                                      
                                     <span class="text-danger"
                                       *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
                                       Seize Time is required! </span>
                                   </div>
+                                  
+
+                                  <div class="form-group col-md-2" style="padding:0px 5px;">
+                                    <label for="bus">Actual Time</label>
+                                    <input type="time" readonly class="form-control" required formControlName="actual_time"
+                                        placement="top"/>
+                                     
+                                    <span class="text-danger"
+                                      *ngIf="singleRoute.controls.actual_time.touched && singleRoute.controls.actual_time.hasError('required')">
+                                     Actual Time is required! </span>
+                                  </div>
+
+
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
                                     <label for="route_status">Status</label>
                                     <div class="custom-control custom-switch">
                                       <input type="checkbox" class="custom-control-input" id="route_status{{i}}" formControlName="route_status">
                                       <label class="custom-control-label" for="route_status{{i}}"></label>
+
+                                      <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)"> X </button>
                                     </div>
                                   </div>
                                  
                                   <!-- (click)="removeRoute(i)"  -->
 
-                                  <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
+                                  <!-- <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
                                     <label>&nbsp;</label>
-                                    <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)"
-                                      style="margin-top: 32px;"> X </button>
-                                  </div>
+                                   
+                                  </div> -->
 
 
                                 </div>
@@ -1555,7 +1578,7 @@
                             <div class="row">
                               <div class="col-6" *ngFor="let singleRoute of routeFormGroup.controls; let i = index;">
                                 <div [formGroupName]="i" class="row">
-                                  <div class="form-group col-8">
+                                  <div class="form-group col-5">
                                     <label>Location and Time <span class="text-danger">*</span></label>
                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                       placeholder="Select Location" formControlName="source_id"
@@ -1568,7 +1591,16 @@
 
 
                                   </div>
+
                                   <div class="form-group col-md-3">
+                                    <label>Time <span class="text-danger">*</span></label>
+                                    <input type="time" formControlName="location_time" class="form-control">
+                                    <span class="text-danger"
+                                      *ngIf="singleRoute.controls.location_time.touched && singleRoute.controls.location_time.hasError('required')">
+                                      Location Time is required! </span>
+                                  </div>
+
+                                  <div class="form-group col-md-2">
                                     <label>Seq <span class="text-danger">*</span></label>
                                     <input type="text" formControlName="sequence" class="form-control">
                                     <span class="text-danger"
@@ -1681,7 +1713,7 @@
                                       *ngIf="singleRoute.controls.seater_fare.touched && singleRoute.controls.seater_fare.hasError('required')">
                                       Seater Fare is required! </span>
                                   </div>
-                                  <div class="form-group col-md-2 " style="padding:0px 5px;">
+                                  <div class="form-group col-md-1 " style="padding:0px 5px;">
                                     <label for="bus">Sleeper Fare<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" required formControlName="sleeper_fare"
                                       [value]="busRecord.sleeper_fare" placeholder="Sleeper Fare" placement="top"
@@ -1694,25 +1726,36 @@
                                     <label for="bus">Seize Time</label>
                                     <input type="text" class="form-control" required formControlName="booking_seized"
                                       [value]="busRecord.booking_seized" placeholder="Enter minute" placement="top"
-                                      ngbTooltip="Enter minute here" />
+                                      ngbTooltip="Enter minute here1" (input)="getActualtime(i);"/>
                                      
                                     <span class="text-danger"
                                       *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
                                       Seize Time is required! </span>
                                   </div>
+
+                                  <div class="form-group col-md-2" style="padding:0px 5px;">
+                                    <label for="bus">Actual Time</label>
+                                    <input type="time" readonly class="form-control" required formControlName="actual_time" placement="top"/>
+                                     
+                                    <span class="text-danger"
+                                      *ngIf="singleRoute.controls.actual_time.touched && singleRoute.controls.actual_time.hasError('required')">
+                                     Actual Time is required! </span>
+                                  </div>
+
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
                                     <label for="route_status">Status</label>
                                     <div class="custom-control custom-switch">
                                       <input type="checkbox" class="custom-control-input" id="route_status{{i}}" formControlName="route_status">
                                       <label class="custom-control-label" for="route_status{{i}}"></label>
+                                      <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)"> X </button>
                                     </div>
+
                                   </div>
                                   <!-- (click)="removeRoute(i)"  -->
-                                  <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
+                                  <!-- <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
                                     <label>&nbsp;</label>
-                                    <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)"
-                                      style="margin-top: 32px;"> X </button>
-                                  </div>
+                                    
+                                  </div> -->
 
 
                                 </div>
@@ -2213,7 +2256,7 @@
                             <div class="row">
                               <div class="col-6" *ngFor="let singleRoute of routeFormGroup.controls; let i = index;">
                                 <div [formGroupName]="i" class="row">
-                                  <div class="form-group col-8">
+                                  <div class="form-group col-5">
                                     <label>Location and Time <span class="text-danger">*</span></label>
 
                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
@@ -2226,7 +2269,16 @@
 
 
                                   </div>
+
                                   <div class="form-group col-md-3">
+                                    <label>Time <span class="text-danger">*</span></label>
+                                    <input type="time" formControlName="location_time" class="form-control">
+                                    <span class="text-danger"
+                                      *ngIf="singleRoute.controls.location_time.touched && singleRoute.controls.location_time.hasError('required')">
+                                      Location Time is required! </span>
+                                  </div>
+
+                                  <div class="form-group col-md-2">
                                     <label>Seq <span class="text-danger">*</span></label>
                                     <input type="text" formControlName="sequence" class="form-control">
                                     <span class="text-danger"
@@ -2341,7 +2393,7 @@
                                       *ngIf="singleRoute.controls.seater_fare.touched && singleRoute.controls.seater_fare.hasError('required')">
                                       Seater Fare is required! </span>
                                   </div>
-                                  <div class="form-group col-md-2 " style="padding:0px 5px;">
+                                  <div class="form-group col-md-1 " style="padding:0px 5px;">
                                     <label for="bus">Sleeper Fare<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" required formControlName="sleeper_fare"
                                       [value]="busRecord.sleeper_fare" placeholder="Sleeper Fare" placement="top"
@@ -2355,26 +2407,39 @@
                                     <label for="bus">Seize Time</label>
                                     <input type="text" class="form-control" required formControlName="booking_seized"
                                       [value]="busRecord.booking_seized" placeholder="Enter minute" placement="top"
-                                      ngbTooltip="Enter minute here" />
+                                      ngbTooltip="Enter minute here" (input)="getActualtime(i);"/>
                                      
                                     <span class="text-danger"
                                       *ngIf="singleRoute.controls.booking_seized.touched && singleRoute.controls.booking_seized.hasError('required')">
                                       Seize Time is required! </span>
                                   </div>
+
+                                  <div class="form-group col-md-2" style="padding:0px 5px;">
+                                    <label for="bus">Actual Time</label>
+                                    <input type="time" readonly class="form-control" required formControlName="actual_time"
+                                      [value]="busRecord.actual_time"  placement="top"/>
+                                     
+                                    <span class="text-danger"
+                                      *ngIf="singleRoute.controls.actual_time.touched && singleRoute.controls.actual_time.hasError('required')">
+                                     Actual Time is required! </span>
+                                  </div>
+
                                   <div class="form-group col-md-1" style="padding:0px 5px;">
                                     <label for="route_status">Status</label>
                                     <div class="custom-control custom-switch">
                                       <input type="checkbox" class="custom-control-input" id="route_status{{i}}" formControlName="route_status">
                                       <label class="custom-control-label" for="route_status{{i}}"></label>
-                                    </div>
+                                      <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)"> X </button>
+                                    </div>  
+
                                   </div>
 
                                   <!-- (click)="removeRoute(i)"  -->
-                                  <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
+                                  <!-- <div class="form-group col-md-1 text-right" style="padding:0px 5px;">
                                     <label>&nbsp;</label>
                                     <button class="btn btn-danger btn-sm" type="button" (click)="removeRouteInfo(i)"
                                       style="margin-top: 32px;"> X </button>
-                                  </div>
+                                  </div> -->
 
 
                                 </div>

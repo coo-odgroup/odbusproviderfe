@@ -7,6 +7,10 @@
     font-weight: normal;
 }
 
+label {
+    font-size: 11px !important;
+}
+
 ::ng-deep .ng-select>div
 {
 	border:none !important;

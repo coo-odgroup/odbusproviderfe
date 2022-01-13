@@ -26,6 +26,7 @@ import { BusContactService } from '../../services/bus-contact.service';
 import { SeatlayoutService } from '../../services/seatlayout.service';
 import { LocationService } from '../../services/location.service';
 import { BoardingdropingService } from '../../services/boardingdroping.service';
+import * as moment from 'moment';
 
 //import {IOption} from 'ng-select';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -45,6 +46,7 @@ interface SeatBlock{
 }
 interface sequenceItem{
   sequence:any;
+  location_time:any;
 }
 interface SelectedLocation{
   [index: number]: { id: any; location_name: any};
@@ -170,6 +172,30 @@ export class BusComponent implements OnInit {
     
   }
 
+  getActualtime(i:any){
+    let busRoutesInfoRecords=this.busForm.get('busRoutesInfo') as FormArray;
+    let busRoutesRecords= this.busForm.get('busRoutes') as FormArray;
+
+   let loc_id=busRoutesInfoRecords.controls[i].value.from_location;
+   let booking_seized=busRoutesInfoRecords.controls[i].value.booking_seized;
+
+    busRoutesRecords.value.forEach(e => {
+
+      if(loc_id == e.source_id && (e.location_time != null || e.location_time != '') ){
+
+       let time= e.location_time;
+
+       const res = moment(time,"HH:mm").subtract(booking_seized, 'minutes');
+
+      let act=res.format('HH:mm');      
+       busRoutesInfoRecords.controls[i].patchValue({"actual_time":act});      
+
+      }
+      
+    });
+
+  }
+
   deleteRecord()
   {
     let delitem=this.formConfirm.value.id;
@@ -279,6 +305,8 @@ export class BusComponent implements OnInit {
   dropfg:any;
   allDestinationDroppings:FormArray;
 
+  
+
   ngOnInit() {    
     this.spinner.show();
     this.busForm = this.fb.group({
@@ -315,6 +343,7 @@ export class BusComponent implements OnInit {
         this.fb.group({
           source_id: [null, Validators.compose([Validators.required])], 
           sequence: [null, Validators.compose([Validators.required])], 
+          location_time: [null, Validators.compose([Validators.required])], 
           sourceBoarding: this.fb.array([])
         })
       ]),
@@ -327,6 +356,7 @@ export class BusComponent implements OnInit {
           seater_fare:[null],
           sleeper_fare:[null],
           booking_seized:[null],
+          actual_time:[null],
           route_status:[null]
         })
       ]),
@@ -435,6 +465,7 @@ export class BusComponent implements OnInit {
   createRoute(): FormGroup {
       return this.fb.group({
         sequence: [null, Validators.compose([Validators.required])], 
+        location_time: [null, Validators.compose([Validators.required])], 
         source_id: [null, Validators.compose([Validators.required])], 
         sourceBoarding: this.fb.array([])
       });
@@ -448,6 +479,7 @@ export class BusComponent implements OnInit {
       seater_fare:[null, Validators.compose([Validators.required])],
       sleeper_fare:[null, Validators.compose([Validators.required])],
       booking_seized:[null, Validators.compose([Validators.required])],
+      actual_time:[null, Validators.compose([Validators.required])],
       route_status:[null]
     });
 
@@ -667,6 +699,7 @@ export class BusComponent implements OnInit {
         this.fb.group({
           source_id: [null, Validators.compose([Validators.required])], 
           sequence:[null, Validators.compose([Validators.required])],
+          location_time:[null, Validators.compose([Validators.required])],
           sourceBoarding: this.fb.array([])
         })
       ]),
@@ -679,6 +712,7 @@ export class BusComponent implements OnInit {
           seater_fare:[null],
           sleeper_fare:[null],
           booking_seized:[null],
+          actual_time:[null],
           route_status:[null]
         })
       ]),
@@ -839,6 +873,7 @@ export class BusComponent implements OnInit {
       let boardingPointArr={
         "source_id": element.source_id,
         "sequence": element.sequence,
+        "location_time": element.location_time,
         "sourceBoarding":[]
       };     
 
@@ -1108,6 +1143,7 @@ export class BusComponent implements OnInit {
           seater_fare:[null],
           sleeper_fare:[null],
           booking_seized:[null],
+          actual_time:[null],
           route_status:[null]
         })
       ]),    
@@ -1313,6 +1349,8 @@ export class BusComponent implements OnInit {
 
     this.busService.fetchBusTime(this.busRecord.id).subscribe(
       timing=>{
+
+       // console.log(timing);
         
         if(timing.status==1)
         {
@@ -1330,6 +1368,7 @@ export class BusComponent implements OnInit {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
               sequence:[this.sequenceItem[counter][0].sequence,Validators.compose([Validators.required])],
+              location_time:[this.sequenceItem[counter][0].location_time,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -1412,6 +1451,7 @@ export class BusComponent implements OnInit {
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],              
               booking_seized:[singleRoute.seize_booking_minute],
+              actual_time:[singleRoute.actual_time],
               route_status:[checked]
             });
            
@@ -1443,6 +1483,7 @@ export class BusComponent implements OnInit {
       let boardingPointArr={
         "source_id": element.source_id,
         "sequence": element.sequence,
+        "location_time": element.location_time,
         "sourceBoarding":[]
       };     
 
@@ -1766,6 +1807,7 @@ export class BusComponent implements OnInit {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
               sequence:[this.sequenceItem[counter][0].sequence,Validators.compose([Validators.required])],
+              location_time:[this.sequenceItem[counter][0].location_time,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -1849,6 +1891,7 @@ export class BusComponent implements OnInit {
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],
               booking_seized:[singleRoute.seize_booking_minute],
+              actual_time:[singleRoute.actual_time],
               route_status:[checked]
             });
             
@@ -2112,6 +2155,7 @@ export class BusComponent implements OnInit {
             let arraylen = this.busRoutesRecords.length;
             let new_BusRoute_group : FormGroup=this.fb.group({
               sequence:[counter,Validators.compose([Validators.required])],
+              location_time:[null,Validators.compose([Validators.required])],
               source_id: [JSON.parse(items['location_id']), Validators.compose([Validators.required])], 
               sourceBoarding: this.fb.array([]),
             });
@@ -2170,11 +2214,12 @@ export class BusComponent implements OnInit {
             let new_busRoutesInfo_group : FormGroup=this.fb.group({
               from_location:[JSON.parse(singleRoute.destination_id)],
               to_location:[JSON.parse(singleRoute.source_id)],
-              arr_days:[JSON.parse(singleRoute.j_day)],
-              dep_days:[JSON.parse(singleRoute.start_j_days)],
+              arr_days:[JSON.parse(singleRoute.start_j_days)],
+              dep_days:[JSON.parse(singleRoute.j_day)],
               seater_fare:[singleRoute.base_seat_fare],
               sleeper_fare:[singleRoute.base_sleeper_fare],
               booking_seized:[null],
+              actual_time:[null],
               route_status:[singleRoute.route_status]
             });
             
