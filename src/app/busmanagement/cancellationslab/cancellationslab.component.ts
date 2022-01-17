@@ -11,6 +11,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { UserService } from '../../services/user.service';
+
 
 @Component({
   selector: 'app-cancellationslab',
@@ -76,6 +78,8 @@ export class CancellationslabComponent implements OnInit {
   confirmDialogReference: NgbModalRef;
   @ViewChild("addnew") addnew;
 
+  users:any=[];
+
   cancellationSlabs: Cancellationslab[];
   cancellationSlabRecord: Cancellationslab;
 
@@ -99,7 +103,7 @@ export class CancellationslabComponent implements OnInit {
   get slabFormGroup() {
     return this.form.get('slabs') as FormArray;
   }
-  constructor( private spinner: NgxSpinnerService,private http: HttpClient,private busOperatorService: BusOperatorService, private cSlabService:CancellationslabService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal) {
+  constructor( private spinner: NgxSpinnerService,private http: HttpClient,private busOperatorService: BusOperatorService, private cSlabService:CancellationslabService, private notificationService: NotificationService,private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private userService: UserService) {
     this.isSubmit = false;
     this.cancellationSlabRecord= {} as Cancellationslab;
     config.backdrop = 'static';
@@ -117,7 +121,7 @@ export class CancellationslabComponent implements OnInit {
     // this.loadcSlab();
     this.form = this.fb.group({
       id:[null],
-      bus_operator_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
+      user_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
       rule_name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       slabs: this.fb.array([this.createSlab()]),
     });
@@ -162,6 +166,15 @@ export class CancellationslabComponent implements OnInit {
       );
     }
 
+     ////// get all user list
+
+     this.userService.getAllUser().subscribe(
+      record=>{
+      this.users=record.data;
+      this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+      }
+    );
+
   }
   page(label:any){
     return label;
@@ -174,7 +187,6 @@ export class CancellationslabComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
       user_role:localStorage.getItem('ROLE_ID'),
       user_id:localStorage.getItem('USERID')
     };
@@ -266,7 +278,7 @@ export class CancellationslabComponent implements OnInit {
 
     this.form = this.fb.group({
       id:[null],
-      bus_operator_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
+      user_id: [null, Validators.compose([Validators.required,Validators.minLength(2)])],
       cancellation_policy_desc:[null],
       rule_name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       slabs: this.fb.array([this.createSlab()]),
@@ -282,12 +294,11 @@ export class CancellationslabComponent implements OnInit {
     this.allDeductions="";
     let id:any=this.cancellationSlabRecord.id; 
     const data ={
-      bus_operator_id:this.form.value.bus_operator_id,
+      user_id:this.form.value.user_id,
       rule_name:this.form.value.rule_name,
       cancellation_policy_desc:this.form.value.cancellation_policy_desc,
       slabs:this.form.value.slabs,
-      created_by:localStorage.getItem('USERNAME'),
-      user_id:localStorage.getItem('USERID') 
+      created_by:localStorage.getItem('USERNAME')
     };
     // console.log(data);
     // return false;
@@ -335,7 +346,7 @@ export class CancellationslabComponent implements OnInit {
     this.form = this.fb.group({
       id:[this.cancellationSlabRecord.id],
       cancellation_policy_desc:[this.cancellationSlabRecord.cancellation_policy_desc],
-      bus_operator_id: [this.cancellationSlabRecord.bus_operator_id, Validators.compose([Validators.required,Validators.minLength(2)])],
+      user_id: [this.cancellationSlabRecord.user_id, Validators.compose([Validators.required,Validators.minLength(2)])],
       rule_name: [this.cancellationSlabRecord.rule_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       slabs: this.fb.array([this.createSlab()]),
     });

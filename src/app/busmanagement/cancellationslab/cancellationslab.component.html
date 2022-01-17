@@ -68,7 +68,7 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Operator Name</th>
+              <th>User Name</th>
               <th>Rule Name</th>
               <th>Duration</th>
               <th>Deduction %</th>
@@ -82,7 +82,7 @@
           <tbody *ngIf="cancellationSlabs?.length != 0">
             <tr *ngFor="let cSlab of cancellationSlabs; let i=index; ">
               <td>{{ cSlab.id }}</td>
-              <td>{{ cSlab.bus_operator.organisation_name }}  [{{ cSlab.bus_operator.operator_name }}]</td>
+              <td>{{ cSlab.user.name }}</td>
               <td>{{ cSlab.rule_name }}</td>
               <td>
                 <div *ngFor="let cSlabduration of cSlab.slab_info; let durationIndex=index;">
@@ -203,15 +203,17 @@
                       <div class="row">
                         <div class="col-md-5">
                           <div class="form-group row">
-                            <label for="operator_name" class="col-sm-3 col-form-label">Bus Operator</label>
+                            <label for="operator_name" class="col-sm-3 col-form-label">User</label>
                             <div class="col-sm-9">
-                              <ng-select [items]="busoperators" bindLabel="operatorData"
-                                  bindValue="id" placeholder="Select Operator"
-                                  formControlName="bus_operator_id" [clearable]="false">
-                              </ng-select>
-                              <span class="text-danger"
-                                  *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
-                                  Operator Name is required! </span>
+                              <ng-select  [items]="users" bindLabel="userData" bindValue="id"
+                              placeholder="Select User" formControlName="user_id" [clearable]="false">
+                            </ng-select>
+
+                            <span class="text-danger"
+                            *ngIf="form.controls['user_id'].touched && form.controls['user_id'].hasError('required')">
+                            User Field is Required
+                          </span>
+                          
                             </div>
                           </div>
                         </div>

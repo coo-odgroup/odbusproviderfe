@@ -1,6 +1,6 @@
 export interface Cancellationslab {
     id:string;
-    bus_operator_id:any;
+    user_id:any;
     rule_name:any;
     duration:any;
     deduction:any;
