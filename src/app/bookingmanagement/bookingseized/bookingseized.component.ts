@@ -214,7 +214,7 @@ export class BookingseizedComponent implements OnInit {
     if (this.bookingSeizedRecord[0].ticket_price.length != 0)
     {
       for (let seized of this.bookingSeizedRecord[0].ticket_price) {
-        console.log(seized);
+        // console.log(seized);
            let arraylen = this.bookingseizedData.length;
            let seizeddata: FormGroup = this.fb.group({
             location: this.fb.control( seized.from_location[0].name +">>"+ seized.to_location[0].name ),

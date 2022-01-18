@@ -7,8 +7,7 @@ import { AdjustticketComponent } from './adjustticket/adjustticket.component';
 
 @NgModule({
   declarations: [
-  
-    AdjustticketComponent
+
   ],
   imports: [
     CommonModule,

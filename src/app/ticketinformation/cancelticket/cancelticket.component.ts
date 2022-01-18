@@ -198,7 +198,7 @@ export class CancelticketComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Owner-Fare.xlsx';
+  fileName= 'Cancel-ticket.xlsx';
 
   exportexcel(): void
   {
@@ -217,6 +217,7 @@ export class CancelticketComponent implements OnInit {
   }
   ResetAttributes()
   {
+    this.msg ='';
     this.pnrDetails=[];
     // this.festivalFareRecord = {} as Festivalfare;
     this.cancelTicketForm = this.fb.group({
@@ -226,7 +227,7 @@ export class CancelticketComponent implements OnInit {
       reason:[null]
   });
     this.ModalHeading = "Cancel Ticket By Admin End";
-    this.ModalBtn = "Save"; 
+    this.ModalBtn = "Cancel Ticket"; 
   }
 
 

@@ -81,10 +81,11 @@
                             <th>Pnr No</th>
                             <th>Bus Details</th>
                             <th>From - To</th>
+                            <th>Fare Detais</th>
                             <th>Cancel Date</th>
                             <th>Seat no</th>                         
                             <th>Cancelled By</th>                            
-                         
+                            <th>Reason</th>                          
                         </tr>
                     </thead>
                     <tbody *ngIf="cancelTickets?.length != 0">
@@ -99,6 +100,12 @@
                                 {{cancelTkt.from_location[0].name}} >>
                                 {{cancelTkt.to_location[0].name}} 
                             </td>
+                            <td>
+                               Total fare: {{cancelTkt.total_fare}}<br>
+                               Deduction Percent: <b class="text-danger">{{cancelTkt.deduction_percent }} %</b><br>
+                               Refund Amount : <b class="text-danger">{{cancelTkt.refund_amount }}</b>
+
+                            </td>
 
                             <td>{{ cancelTkt.updated_at | date: 'dd/MM/yyyy' }}</td>
                             <td>
@@ -106,7 +113,8 @@
                                     {{seat.bus_seats.seats.seatText}},
                                 </span>
                             </td>
-                            <td>{{ cancelTkt.cancel_by }}</td>                      
+                            <td>{{ cancelTkt.cancel_by }}</td>
+                            <td>{{ cancelTkt.cancel_reason }}</td>                      
                         </tr>
                     </tbody>
                     <tbody *ngIf="cancelTickets?.length == 0">
@@ -200,7 +208,7 @@
                                                             <span class="text-danger"
                                                                 *ngIf="cancelTicketForm.controls['percentage_deduct'].touched && cancelTicketForm.controls['percentage_deduct'].hasError('required')">
                                                                 %
-                                                            Deductionis required! </span>
+                                                            Deduction is required! </span>
                                                         </div>
                                                     </div>
 

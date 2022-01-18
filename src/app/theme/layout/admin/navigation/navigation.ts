@@ -754,6 +754,13 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-wind',
             url: 'ticketinformation/cancelticket'
+          },
+          {
+            id: 'adjustticket',
+            title: 'Adjust Ticket',
+            type: 'item',
+            icon:'feather icon-wind',
+            url: 'ticketinformation/adjustticket'
           }
         ]
       }

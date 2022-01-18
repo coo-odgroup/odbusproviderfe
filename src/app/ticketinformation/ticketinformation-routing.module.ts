@@ -8,6 +8,10 @@ const routes: Routes = [
       {
         path: 'cancelticket',
         loadChildren: () => import('./cancelticket/cancelticket.module').then(module => module.CancelTicketModule)
+      },
+      {
+        path: 'adjustticket',
+        loadChildren: () => import('./adjustticket/adjustticket.module').then(module => module.AdjustticketModule)
       },  
     ]
   }
