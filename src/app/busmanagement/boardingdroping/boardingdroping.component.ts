@@ -244,6 +244,7 @@ export class BoardingdropingComponent implements OnInit {
     else {
       this.BoardDropService.update(data.id, data).subscribe(
         resp => {
+
           if (resp.status == 1) {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
@@ -275,9 +276,11 @@ export class BoardingdropingComponent implements OnInit {
 
     for (let items of this.BoardingDroppingRecord.boarding_dropping) {
       this.boardingList.push(this.fb.group({
+        id: [items.id],
         boarding_point: [items.boarding_point, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(50)])],
         landmark: [items.landmark, Validators.compose([Validators.minLength(2), Validators.maxLength(50)])]
       }));
+
       // editBoarding.push({value:''+items+''});
     }
 
