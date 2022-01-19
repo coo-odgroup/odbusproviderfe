@@ -266,8 +266,7 @@ export class CouponComponent implements OnInit {
       bus_operator_id:this.form.value.bus_operator_id,
       created_by:localStorage.getItem('USERNAME') 
     };
-
-
+   
     if(id==null)
     {
     this.couponService.create(data).subscribe(

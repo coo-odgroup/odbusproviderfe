@@ -54,6 +54,8 @@ export class AdjustticketComponent implements OnInit {
   seatFare: any[];
   seaterRecord: any;
   seatFareDetails: any[];
+  seatIDs: any=[];
+  seatNames:any=[];
   selectedSeats: string;
   maxAllowedSeat:number=0;
 
@@ -137,19 +139,27 @@ export class AdjustticketComponent implements OnInit {
     if (pnr != null) {
       this.acts.getPnrDetails(pnr).subscribe(
         res => {
-          this.pnrDetails = res.data;
-          if(this.pnrDetails.length!=0)
-          {
-            this.maxAllowedSeat= this.pnrDetails[0].booking_detail.length;
-          }
-          
-          this.spinner.hide();
-          // console.log(this.pnrDetails[0]);          
-          this.busListing();
+
+         
+          this.pnrDetails = res.data; 
 
           if (this.pnrDetails.length == 0) {
-            this.msg = "No Pnr Found"
+            this.msg = "No Pnr Found";
           }
+          else{
+
+            if(this.pnrDetails.length!=0)
+            {
+              this.maxAllowedSeat= this.pnrDetails[0].booking_detail.length;
+            }
+                 
+            this.busListing();
+          }         
+          
+          this.spinner.hide();
+         
+
+         
         }
       );
     }
@@ -244,8 +254,7 @@ export class AdjustticketComponent implements OnInit {
       resp => {
         this.seatLayout = resp.data;
         this.spinner.hide();
-        console.log(this.seatLayout) ;   
-
+      
         
       this.seatLayoutData = (<FormArray>this.adjustTicketForm.controls['bus_seat_layout_data']) as FormArray;
       this.seatLayoutData.clear();    
@@ -398,6 +407,10 @@ export class AdjustticketComponent implements OnInit {
   {
     // console.log(this.pnrDetails[0]);
 
+    this.seatIDs=[];
+    this.seatNames=[];
+    
+
     let bookingDetailarr=[];
 
     let i=0;
@@ -406,14 +419,15 @@ export class AdjustticketComponent implements OnInit {
 
       if(b.seatChecked==true && this.pnrDetails[0].booking_detail[i]){
         let booking_dtl={
-          "bus_seats_id": b.bus_seats_id,
+          "bus_seats_id": b.seatId,
           "passenger_name": this.pnrDetails[0].booking_detail[i].passenger_name,
           "passenger_gender": this.pnrDetails[0].booking_detail[i].passenger_gender,
           "passenger_age": this.pnrDetails[0].booking_detail[i].passenger_age,
           "created_by": localStorage.getItem('USERNAME')
           };  
           bookingDetailarr.push(booking_dtl);
-
+          this.seatIDs.push(b.seatId);
+          this.seatNames.push(b.seatText);          
           i++;
       }
     });
@@ -424,48 +438,99 @@ export class AdjustticketComponent implements OnInit {
       return false;
   
     }
-    if(bookingDetailarr.length!= this.maxAllowedSeat)
+
+    if(bookingDetailarr.length < this.maxAllowedSeat)
+    {
+      this.notificationService.addToast({ title: 'Error', msg: "You must select "+this.maxAllowedSeat+" seat(s)", type: 'error' });
+      return false;
+  
+    }
+
+    if(bookingDetailarr.length > this.maxAllowedSeat)
     {
       this.notificationService.addToast({ title: 'Error', msg: "You are allowed to select "+this.maxAllowedSeat+" seat(s) only ", type: 'error' });
       return false;
   
     }
 
+
+    let conductor_number='';
+
+    if(this.pnrDetails[0].bus.bus_contacts.length>0){
+      this.pnrDetails[0].bus.bus_contacts.forEach(c => {
+
+        if(c.type==2){
+          conductor_number = c.phone;
+        }
+      
+      });
+    }
+
+    
    
     const data = {
-      
-        "id": this.pnrDetails[0].id,
-        "pnr": this.pnrDetails[0].pnr,
-        "bus_id": this.adjustTicketForm.value.bus,
-        "source_id":this.pnrDetails[0].source_id,
-        "destination_id": this.pnrDetails[0].destination_id,
-        "journey_dt": this.adjustTicketForm.value.j_date,
-        "boarding_point":  this.pnrDetails[0].boarding_point,
-        "dropping_point":  this.pnrDetails[0].dropping_point,
-        "boarding_time": this.pnrDetails[0].boarding_time,
-        "dropping_time": this.pnrDetails[0].dropping_time,
-        "origin": this.pnrDetails[0].users.origin,
-        "app_type": this.pnrDetails[0].app_type,
-        "typ_id": this.pnrDetails[0].typ_id,
-        "total_fare": this.seatFareDetails[0].totalFare,
-        "owner_fare": this.seatFareDetails[0].ownerFare,
-        "odbus_service_Charges": this.seatFareDetails[0].odbusServiceCharges,
-        "reason": this.adjustTicketForm.value.reason,
-        "adj_note": this.adjustTicketForm.value.adj_note,
-        "created_by": localStorage.getItem('USERNAME'),
-        "bookingDetail": bookingDetailarr
- 
-     
+        "customerInfo":{
+          "email": this.pnrDetails[0].users.email,
+          "phone": this.pnrDetails[0].users.phone,
+          "name": this.pnrDetails[0].users.name
+        },
+        "bookingInfo":{
+          "id": this.pnrDetails[0].id,
+          "pnr": this.pnrDetails[0].pnr,
+          "bus_id": this.adjustTicketForm.value.bus,
+          "busname": this.pnrDetails[0].bus.name,
+          "busNumber": this.pnrDetails[0].bus.bus_number,
+          "bustype":this.pnrDetails[0].bus.bus_type.bus_class.class_name,
+          "busTypeName":this.pnrDetails[0].bus.bus_type.name,
+          "sittingType":this.pnrDetails[0].bus.bus_sitting.name,
+          "conductor_number":conductor_number,
+          "source_id":this.pnrDetails[0].source_id,
+          "source_name":this.pnrDetails[0].from_location[0].name,
+          "destination_id": this.pnrDetails[0].destination_id,
+          "destination_name": this.pnrDetails[0].to_location[0].name,
+          "seat_ids":this.seatIDs,
+          "seat_names":this.seatNames,
+          "journey_dt": this.adjustTicketForm.value.j_date,
+          "boarding_point":  this.pnrDetails[0].boarding_point,
+          "dropping_point":  this.pnrDetails[0].dropping_point,
+          "boarding_time": this.pnrDetails[0].boarding_time,
+          "dropping_time": this.pnrDetails[0].dropping_time,
+          "origin": this.pnrDetails[0].origin,
+          "app_type": this.pnrDetails[0].app_type,
+          "typ_id": this.pnrDetails[0].typ_id,
+          "total_fare": this.seatFareDetails[0].totalFare,
+          "specialFare": this.seatFareDetails[0].specialFare,
+          "addOwnerFare": this.seatFareDetails[0].addOwnerFare,
+          "festiveFare": this.seatFareDetails[0].festiveFare,
+          "owner_fare": this.seatFareDetails[0].ownerFare,
+          "odbus_service_Charges": this.seatFareDetails[0].odbusServiceCharges,
+          "odbus_gst":this.seatFareDetails[0].transactionFee, 
+          "reason": this.adjustTicketForm.value.reason,
+          "adj_note": this.adjustTicketForm.value.adj_note,
+          "created_by": localStorage.getItem('USERNAME'),
+          "customer_payment_id" : this.pnrDetails[0].customer_payment.id,
+          "razorpay_payment_id" : this.pnrDetails[0].customer_payment.razorpay_id,
+          "razorpay_order_id" : this.pnrDetails[0].customer_payment.order_id,
+          "razorpay_signature" :this.pnrDetails[0].customer_payment.razorpay_signature , 
+          "bookingDetail": bookingDetailarr 
+        },
     };
-    // console.log(data);
-    // return;
-   
+    
 
       this.acts.adjustTicket(data).subscribe(
         res =>{
+          console.log(res);
           if (res.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
-            this.refresh();
+             if(res.data=='SEAT NOT AVAIL'){
+              this.notificationService.addToast({ title: 'Error', msg:"Seat(s) are not available at the moment.Please select other..", type: 'error' });
+
+             }else{
+
+              this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
+               this.refresh();
+
+             }
+            
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
