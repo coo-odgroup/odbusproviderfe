@@ -105,7 +105,10 @@ export class CouponComponent implements OnInit {
     var d = new Date(this.couponRecord.from_date);
     let date = [d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2)].join('-');
     var e = new Date(this.couponRecord.from_date);
-    let to_date = [d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2)].join('-');
+    
+    var to = new Date(this.couponRecord.to_date);
+
+    let to_date = [to.getFullYear(), ('0' + (to.getMonth() + 1)).slice(-2), ('0' + to.getDate()).slice(-2)].join('-');
     // console.log(this.couponRecord);
     this.form.controls.coupon_title.setValue(this.couponRecord.coupon_title);
     this.form.controls.coupon_code.setValue(this.couponRecord.coupon_code);
