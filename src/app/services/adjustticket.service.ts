@@ -26,6 +26,13 @@ export class AdjustticketService {
     )
   }
 
+  getBoardingDropping(post){
+    return this.httpClient.get<any>(this.consumerURL + 'BoardingDroppingPoints?busId='+post['busId']+'&sourceId='+post['source']+'&destinationId='+post['destination'], this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   getBusList(post){
     return this.httpClient.get<any>(this.consumerURL + 'Listing?source='+post['source']+'&destination='+post['destination']+'&entry_date='+post['journey_dt'], this.httpOptions)
     .pipe(
@@ -77,6 +84,8 @@ export class AdjustticketService {
       catchError(this.errorHandler)
     )
   }
+
+  
 
   errorHandler(error) {
     let errorMessage = '';

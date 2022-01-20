@@ -211,10 +211,42 @@
                                                                 bindValue="busId"
                                                                 placeholder="Select Bus"
                                                                 formControlName="bus"
-                                                                (change)="getSeatLayout()" 
+                                                                (change)="getSeatLayout();getBoardingDropping()" 
                                                                 [clearable]="false">
                                                             </ng-select>
                                                           </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="from-group">
+                                                                <label for="name" class="col-sm-10 col-form-label">Boarding Point:<span class="text-danger">*</span></label>
+                                                                <div class="col-sm-12">
+                                                                    <ng-select 
+                                                                        [items]="boardingPoints"
+                                                                        bindLabel="boarding"
+                                                                        bindValue="id"
+                                                                        placeholder="Select Boarding Point"
+                                                                        formControlName="boarding_id"      
+                                                                        [clearable]="false">
+                                                                    </ng-select>
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="from-group">
+                                                                <label for="name" class="col-sm-10 col-form-label">Dropping Point:<span class="text-danger">*</span></label>
+                                                                <div class="col-sm-12">
+                                                                    <ng-select 
+                                                                        [items]="droppingPoints"
+                                                                        bindLabel="dropping"
+                                                                        bindValue="id"
+                                                                        placeholder="Select Dropping Point"
+                                                                        formControlName="dropping_id"
+                                                                        [clearable]="false">
+                                                                    </ng-select>
+                                                                  </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="row form-group col-sm-12">
