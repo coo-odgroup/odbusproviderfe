@@ -122,6 +122,7 @@ export class MastersettingComponent implements OnInit {
       email_sms_charges:[null,Validators.compose([Validators.required])],
       odbus_gst_charges:[null,Validators.compose([Validators.required])],
       advance_days_show:[null, Validators.compose([Validators.required])],
+      busListingseq:[null, Validators.compose([Validators.required])],
       support_email:[null,Validators.compose([Validators.required])],
       booking_email:[null,Validators.compose([Validators.required])],
       request_email:[null,Validators.compose([Validators.required])],
@@ -487,6 +488,7 @@ export class MastersettingComponent implements OnInit {
       email_sms_charges:[null,Validators.compose([Validators.required])],
       odbus_gst_charges:[null,Validators.compose([Validators.required])],
       advance_days_show:[null, Validators.compose([Validators.required])],
+      busListingseq:[null, Validators.compose([Validators.required])],
       support_email:[null,Validators.compose([Validators.required])],
       booking_email:[null,Validators.compose([Validators.required])],
       request_email:[null,Validators.compose([Validators.required])],
@@ -537,6 +539,7 @@ export class MastersettingComponent implements OnInit {
     fd.append("payment_gateway_charges",this.settingForm.value.payment_gateway_charges);
     fd.append("email_sms_charges",this.settingForm.value.email_sms_charges);
     fd.append("odbus_gst_charges",this.settingForm.value.odbus_gst_charges);
+    fd.append("busListingseq",this.settingForm.value.busListingseq);
     fd.append("advance_days_show",this.settingForm.value.advance_days_show);
     fd.append("support_email",this.settingForm.value.support_email);
     fd.append("booking_email",this.settingForm.value.booking_email);
@@ -621,6 +624,7 @@ export class MastersettingComponent implements OnInit {
       email_sms_charges:[this.settingRecord.email_sms_charges],
       odbus_gst_charges:[this.settingRecord.odbus_gst_charges],
       advance_days_show:[this.settingRecord.advance_days_show],
+      busListingseq:[this.settingRecord.bus_list_sequence],
       support_email:[this.settingRecord.support_email],
       booking_email:[this.settingRecord.booking_email],
       request_email:[this.settingRecord.request_email],

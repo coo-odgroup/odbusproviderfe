@@ -294,14 +294,23 @@
                             <div class="col-md-4 ">
                               <div class="from-group">
                                 <!-- <label>Page name :</label> -->
-                                <label for="name" class=" col-form-label col-sm-12">Designation :<span
+                                <label for="name" class=" col-form-label col-sm-12">Review Source :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
-                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Designation"
-                                    required formControlName="designation" />
+                                  <div class="dropdown">
+                                    <select class="form-control" formControlName="designation" required>
+                                      <option value="google">Google</option>
+                                      <option value="facebook">Facebook</option>
+                                      <option value="tripadvisor">Trip Advisor</option>
+                                      <option value="trustpilot">Trust Pilot</option>
+                                  </select>
+                                </div>
+                                  <!-- <input type="text" class="form-control" ngbAutofocus placeholder="Enter Designation"
+                                    required formControlName="designation" /> -->                                  
+
                                   <span class="text-danger"
                                     *ngIf="form.controls['designation'].touched && form.controls['designation'].hasError('required')">
-                                    Designation is Required
+                                    Review Source is Required
                                   </span>
                                 </div>
                               </div>

@@ -318,6 +318,28 @@
                               </div>
       
                               <div class="col-md-6">
+
+                                <div class="form-group row">
+                                  <label for="adv" class="col-sm-5 col-form-label"><strong>Bus Listing Sequence</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <!-- <input id="adv" type="text" class="form-control" ngbAutofocus placeholder="Advance Days Show" required
+                                    formControlName="advance_days_show" /> -->
+
+                                    <div class="dropdown">
+                                      <select class="form-control" formControlName="busListingseq" required>
+                                        <option value="1">Price Wise</option>
+                                        <option value="2">Dept.Time Wise</option>
+                                        <option value="3">Total Seat Wise</option>
+                                    </select>
+                                  </div>
+
+                                  <span class="text-danger"
+                                    *ngIf="settingForm.controls['busListingseq'].touched && settingForm.controls['busListingseq'].hasError('required')">
+                                    Bus Listing Sequence Required
+                                  </span>
+                                  </div>
+                                </div>
       
                                 <div class="form-group row">
                                   <label for="adv" class="col-sm-5 col-form-label"><strong>Advance days show</strong> <span

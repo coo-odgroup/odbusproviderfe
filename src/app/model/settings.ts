@@ -1,4 +1,5 @@
 export interface SettingsRecords{
+  bus_list_sequence: any;
     id: number;
     user_id:any;
     payment_gateway_charges:any;
