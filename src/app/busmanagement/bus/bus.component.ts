@@ -378,20 +378,34 @@ export class BusComponent implements OnInit {
     // this.loadBus();
     this.searchForm = this.fb.group({  
       name: [null], 
-      bus_type: [null],  
+      bus_type: [null],
+      status:[null],
+      operator:[null],  
       rows_number: Constants.RecordLimit,
     });
      this.search(); 
+     this.LoadAllService(); 
+
+    //  this.busOperartorService.readAll().subscribe(
+    //   record=>{
+    //   this.operators=record.data;
+    //   this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+    //   }
+    // );
   }
   page(label:any){
     return label;
    }
   search(pageurl="")
-  {
+  { 
+    
+
     
     this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
+      status: this.searchForm.value.status,
+      operator: this.searchForm.value.operator,
       rows_number:this.searchForm.value.rows_number, 
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
       user_role:localStorage.getItem('ROLE_ID'),
@@ -425,15 +439,17 @@ export class BusComponent implements OnInit {
   }
   refresh()
    {
-     
-   this.spinner.show();
-
     this.spinner.show();
+    this.operators=[];
     this.searchForm = this.fb.group({  
-      name: [null], 
-      rows_number: Constants.RecordLimit,
+          name: [null], 
+          bus_type: [null],
+          status:[null],
+          operator:[null],  
+          rows_number: Constants.RecordLimit,
     });
      this.search();
+     this.LoadAllService();
    }
    title = 'angular-app';
    fileName= 'Bus.xlsx';
