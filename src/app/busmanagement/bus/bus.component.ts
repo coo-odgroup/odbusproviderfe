@@ -1141,7 +1141,7 @@ export class BusComponent implements OnInit {
     this.locationService.readAll().subscribe(
       records=>{
       this.locations=records.data;
-      this.spinner.hide();
+     
       }
     );
     this.ModalHeading = "Update Seat Layout & Routes";
@@ -1189,277 +1189,282 @@ export class BusComponent implements OnInit {
         this.selectedSeats=seatData.data['seat']; 
         //console.log(this.selectedSeats);       
         //this.spinner.hide();
+
+
+
+        this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
+          resp=>{    
+            let counter=0;
+            this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
+            
+            if(resp.data.lowerBerth!=undefined)
+            {
+              for(let lowerData of resp.data.lowerBerth)
+              {
+                
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
+                for(let seatData of lowerData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                  let durationCheck=0;
+                  let operation_date='';
+                  let type ='';
+    
+                  if(this.selectedSeats.length > 0){
+    
+                    for(let selectedSeat of this.selectedSeats)
+                    {
+                      if(selectedSeat.seats_id==seatData.id)
+                      {
+                        checkedval="1";
+                        seatId=selectedSeat.id;
+                        durationCheck=selectedSeat.duration;
+                        operation_date= selectedSeat.operation_date;
+                        type = selectedSeat.type;
+                      }
+                    }
+    
+                  }
+                 
+                  let collen=this.seatLayoutCol.length;
+                  
+                  if(checkedval=="1")
+                  {
+                    
+                    if(durationCheck==0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:['true'],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else if(durationCheck==0 && type == '1' && operation_date!='' && operation_date >= today )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]                    
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else if(durationCheck !=0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }else{
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[''],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+    
+                    }
+                    
+                  }
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                      
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }           
+                }
+                counter++;
+              }
+              
+            }
+            if(resp.data.upperBerth!=undefined)
+            {
+              for(let upperData of resp.data.upperBerth)
+              {
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
+                for(let seatData of upperData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                  let durationCheck=0;
+                  let operation_date='';
+                  let type ='';
+    
+                  if(this.selectedSeats.length > 0){
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      //console.log(seatData.seatText+today);
+                      checkedval="1";
+                      seatId=selectedSeat.id;
+                      durationCheck=selectedSeat.duration;
+                      operation_date= selectedSeat.operation_date;
+                      type = selectedSeat.type;
+                    }
+                  }
+                }
+    
+                  
+    
+                  let collen=this.seatLayoutCol.length;
+                  
+                  if(checkedval=="1")
+                  {
+                   
+    
+                    if(durationCheck==0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:['true'],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]                    
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+    
+                  else if(durationCheck ==0 && type == '1' && operation_date!='' && operation_date >= today )
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[{value:true,disabled:true}],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]                    
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+    
+                  else if(durationCheck !=0 && type == null && operation_date ==null )
+                  {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+    
+                    else{
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[''],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+    
+                    }
+                    
+                  }              
+                 
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                      
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+    
+                 
+    
+                }
+                counter++;
+              }
+    
+            }
+    
+            this.spinner.hide();
+    
+          }
+        ); 
+
+
+
+
+
       }
     );
    
-    this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
-      resp=>{
-
-        console.log(resp);
-        console.log(this.selectedSeats);
-
-        let counter=0;
-        this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
-        
-        if(resp.data.lowerBerth!=undefined)
-        {
-          for(let lowerData of resp.data.lowerBerth)
-          {
-            
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
-            for(let seatData of lowerData)
-            {
-              let checkedval="";
-              let seatId="";
-              let durationCheck=0;
-              let operation_date='';
-              let type ='';
-
-              if(this.selectedSeats.length > 0){
-
-                for(let selectedSeat of this.selectedSeats)
-                {
-                  if(selectedSeat.seats_id==seatData.id)
-                  {
-                    checkedval="1";
-                    seatId=selectedSeat.id;
-                    durationCheck=selectedSeat.duration;
-                    operation_date= selectedSeat.operation_date;
-                    type = selectedSeat.type;
-                  }
-                }
-
-              }
-             
-              let collen=this.seatLayoutCol.length;
-              
-              if(checkedval=="1")
-              {
-                
-                if(durationCheck==0 && type == null && operation_date ==null )
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:['true'],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                    
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-                else if(durationCheck==0 && type == '1' && operation_date!='' && operation_date >= today )
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[{value:true,disabled:true}],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]                    
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-                else if(durationCheck !=0 && type == null && operation_date ==null )
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[{value:true,disabled:true}],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                    
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }else{
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[''],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                    
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-
-                }
-                
-              }
-              else
-              {
-                let columnData: FormGroup = this.fb.group({ 
-                  seatText:[seatData.seatText],
-                  seatType:[seatData.seat_class_id],
-                  berthType:[seatData.berthType],
-                  seatChecked:[checkedval],
-                  category:['0'],
-                  seatId:[seatData.id],
-                  busId:[this.busRecord.id],
-                  extraSeat:[durationCheck]
-                  
-                });
-                this.seatLayoutCol.insert(collen, columnData);
-              }           
-            }
-            counter++;
-          }
-          
-        }
-        if(resp.data.upperBerth!=undefined)
-        {
-          for(let upperData of resp.data.upperBerth)
-          {
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
-            for(let seatData of upperData)
-            {
-              let checkedval="";
-              let seatId="";
-              let durationCheck=0;
-              let operation_date='';
-              let type ='';
-
-              if(this.selectedSeats.length > 0){
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  //console.log(seatData.seatText+today);
-                  checkedval="1";
-                  seatId=selectedSeat.id;
-                  durationCheck=selectedSeat.duration;
-                  operation_date= selectedSeat.operation_date;
-                  type = selectedSeat.type;
-                }
-              }
-            }
-
-              
-
-              let collen=this.seatLayoutCol.length;
-              
-              if(checkedval=="1")
-              {
-               
-
-                if(durationCheck==0 && type == null && operation_date ==null )
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:['true'],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]                    
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-
-              else if(durationCheck ==0 && type == '1' && operation_date!='' && operation_date >= today )
-              {
-                let columnData: FormGroup = this.fb.group({ 
-                  seatText:[seatData.seatText],
-                  seatType:[seatData.seat_class_id],
-                  berthType:[seatData.berthType],
-                  seatChecked:[{value:true,disabled:true}],
-                  category:['0'],
-                  seatId:[seatData.id],
-                  busId:[this.busRecord.id],
-                  extraSeat:[durationCheck]                    
-                });
-                this.seatLayoutCol.insert(collen, columnData);
-              }
-
-              else if(durationCheck !=0 && type == null && operation_date ==null )
-              {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[{value:true,disabled:true}],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                    
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-
-                else{
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[''],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                    
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-
-                }
-                
-              }              
-             
-              else
-              {
-                let columnData: FormGroup = this.fb.group({ 
-                  seatText:[seatData.seatText],
-                  seatType:[seatData.seat_class_id],
-                  berthType:[seatData.berthType],
-                  seatChecked:[checkedval],
-                  category:['0'],
-                  seatId:[seatData.id],
-                  busId:[this.busRecord.id],
-                  extraSeat:[durationCheck]
-                  
-                });
-                this.seatLayoutCol.insert(collen, columnData);
-              }
-
-             
-
-            }
-            counter++;
-          }
-
-        }
-
-        this.spinner.hide();
-
-      }
-    ); 
+   
 
    
 
@@ -1755,107 +1760,111 @@ export class BusComponent implements OnInit {
       seatData=>{
         this.selectedSeats=seatData.data['seat'];
         //this.spinner.hide();
+
+
+        this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
+          resp=>{
+            let counter=0;
+            this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
+            if(resp.data.lowerBerth!=undefined)
+            {
+              for(let lowerData of resp.data.lowerBerth)
+              {
+                
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
+                for(let seatData of lowerData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                  if(this.selectedSeats.length>0){
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="true";
+                      seatId=selectedSeat.id;
+                    }
+                  }
+                }
+    
+                  let collen=this.seatLayoutCol.length;
+                  let columnData: FormGroup = this.fb.group({ 
+                    seatText:[seatData.seatText],
+                    seatType:[seatData.seat_class_id],
+                    berthType:[seatData.berthType],
+                    seatChecked:[checkedval],
+                    category:['0'],
+                    seatId:[seatData.id],
+                    busId:[this.busRecord.id]
+                  });
+                  this.seatLayoutCol.insert(collen, columnData);
+                  
+                }
+                counter++;
+              }
+              
+            }
+            if(resp.data.upperBerth!=undefined)
+            {
+              for(let upperData of resp.data.upperBerth)
+              {
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
+                for(let seatData of upperData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                  if(this.selectedSeats.length>0){
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="true";
+                      seatId=selectedSeat.id;
+                    }
+                  }
+                }
+                  let collen=this.seatLayoutCol.length;
+                  let columnData: FormGroup = this.fb.group({ 
+                    seatText:[seatData.seatText],
+                    seatType:[seatData.seat_class_id],
+                    berthType:[seatData.berthType],
+                    seatChecked:[checkedval],
+                    category:['0'],
+                    seatId:[seatData.id],
+                    busId:[this.busRecord.id]
+                  });
+                  this.seatLayoutCol.insert(collen, columnData);
+                }
+                counter++;
+              }
+            }
+    
+            this.spinner.hide();
+          }
+    
+          
+        );
+
       }
     );
    
-    this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
-      resp=>{
-        let counter=0;
-        this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
-        if(resp.data.lowerBerth!=undefined)
-        {
-          for(let lowerData of resp.data.lowerBerth)
-          {
-            
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
-            for(let seatData of lowerData)
-            {
-              let checkedval="";
-              let seatId="";
-              if(this.selectedSeats.length>0){
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="true";
-                  seatId=selectedSeat.id;
-                }
-              }
-            }
-
-              let collen=this.seatLayoutCol.length;
-              let columnData: FormGroup = this.fb.group({ 
-                seatText:[seatData.seatText],
-                seatType:[seatData.seat_class_id],
-                berthType:[seatData.berthType],
-                seatChecked:[checkedval],
-                category:['0'],
-                seatId:[seatData.id],
-                busId:[this.busRecord.id]
-              });
-              this.seatLayoutCol.insert(collen, columnData);
-              
-            }
-            counter++;
-          }
-          
-        }
-        if(resp.data.upperBerth!=undefined)
-        {
-          for(let upperData of resp.data.upperBerth)
-          {
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
-            for(let seatData of upperData)
-            {
-              let checkedval="";
-              let seatId="";
-              if(this.selectedSeats.length>0){
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="true";
-                  seatId=selectedSeat.id;
-                }
-              }
-            }
-              let collen=this.seatLayoutCol.length;
-              let columnData: FormGroup = this.fb.group({ 
-                seatText:[seatData.seatText],
-                seatType:[seatData.seat_class_id],
-                berthType:[seatData.berthType],
-                seatChecked:[checkedval],
-                category:['0'],
-                seatId:[seatData.id],
-                busId:[this.busRecord.id]
-              });
-              this.seatLayoutCol.insert(collen, columnData);
-            }
-            counter++;
-          }
-        }
-
-        this.spinner.hide();
-      }
-
-      
-    ); 
+  
 
     this.busService.fetchBusContact(this.busRecord.id).subscribe(
       resp => {
@@ -2109,109 +2118,113 @@ export class BusComponent implements OnInit {
       seatData=>{
         this.selectedSeats=seatData.data['seat'];
         //this.spinner.hide();
+
+
+        this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
+          resp=>{
+            let counter=0;
+            this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
+            
+            if(resp.data.lowerBerth!=undefined)
+            {
+              for(let lowerData of resp.data.lowerBerth)
+              {
+                
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
+                for(let seatData of lowerData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                 
+                if(this.selectedSeats.length>0){
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="true";
+                      seatId=selectedSeat.id;
+                    }
+                  }
+                }
+    
+                  let collen=this.seatLayoutCol.length;
+                  let columnData: FormGroup = this.fb.group({ 
+                    seatText:[seatData.seatText],
+                    seatType:[seatData.seat_class_id],
+                    berthType:[seatData.berthType],
+                    seatChecked:[checkedval],
+                    category:['0'],
+                    seatId:[seatData.id],
+                    busId:[this.busRecord.id]
+                  });
+                  this.seatLayoutCol.insert(collen, columnData);
+                  
+                }
+                counter++;
+              }
+              
+            }
+            if(resp.data.upperBerth!=undefined)
+            {
+              for(let upperData of resp.data.upperBerth)
+              {
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
+                for(let seatData of upperData)
+                {
+                  let checkedval="";
+                  let seatId="";
+    
+                if(this.selectedSeats.length>0){
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="true";
+                      seatId=selectedSeat.id;
+                    }
+                  }
+                }
+    
+                  let collen=this.seatLayoutCol.length;
+                  let columnData: FormGroup = this.fb.group({ 
+                    seatText:[seatData.seatText],
+                    seatType:[seatData.seat_class_id],
+                    berthType:[seatData.berthType],
+                    seatChecked:[checkedval],
+                    category:['0'],
+                    seatId:[seatData.id],
+                    busId:[this.busRecord.id]
+                  });
+                  this.seatLayoutCol.insert(collen, columnData);
+                }
+                counter++;
+              }
+            }
+    
+            this.spinner.hide();
+          }
+        ); 
+
       }
     );
    
-    this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
-      resp=>{
-        let counter=0;
-        this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
-        
-        if(resp.data.lowerBerth!=undefined)
-        {
-          for(let lowerData of resp.data.lowerBerth)
-          {
-            
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
-            for(let seatData of lowerData)
-            {
-              let checkedval="";
-              let seatId="";
-             
-            if(this.selectedSeats.length>0){
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="true";
-                  seatId=selectedSeat.id;
-                }
-              }
-            }
-
-              let collen=this.seatLayoutCol.length;
-              let columnData: FormGroup = this.fb.group({ 
-                seatText:[seatData.seatText],
-                seatType:[seatData.seat_class_id],
-                berthType:[seatData.berthType],
-                seatChecked:[checkedval],
-                category:['0'],
-                seatId:[seatData.id],
-                busId:[this.busRecord.id]
-              });
-              this.seatLayoutCol.insert(collen, columnData);
-              
-            }
-            counter++;
-          }
-          
-        }
-        if(resp.data.upperBerth!=undefined)
-        {
-          for(let upperData of resp.data.upperBerth)
-          {
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
-            for(let seatData of upperData)
-            {
-              let checkedval="";
-              let seatId="";
-
-            if(this.selectedSeats.length>0){
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="true";
-                  seatId=selectedSeat.id;
-                }
-              }
-            }
-
-              let collen=this.seatLayoutCol.length;
-              let columnData: FormGroup = this.fb.group({ 
-                seatText:[seatData.seatText],
-                seatType:[seatData.seat_class_id],
-                berthType:[seatData.berthType],
-                seatChecked:[checkedval],
-                category:['0'],
-                seatId:[seatData.id],
-                busId:[this.busRecord.id]
-              });
-              this.seatLayoutCol.insert(collen, columnData);
-            }
-            counter++;
-          }
-        }
-
-        this.spinner.hide();
-      }
-    ); 
+  
 
     this.busService.fetchBusContact(this.busRecord.id).subscribe(
       resp => {
@@ -2491,109 +2504,111 @@ export class BusComponent implements OnInit {
       seatData=>{
         this.selectedSeats=seatData.data['seat'];        
         //this.spinner.hide();
+
+        this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
+          resp=>{
+            let counter=0;
+            this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
+            
+            if(resp.data.lowerBerth!=undefined)
+            {
+              for(let lowerData of resp.data.lowerBerth)
+              {
+                
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
+                for(let seatData of lowerData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                 
+                  if(this.selectedSeats.length>0){
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="true";
+                      seatId=selectedSeat.id;
+                    }
+                  }
+                }
+    
+                  let collen=this.seatLayoutCol.length;
+                  let columnData: FormGroup = this.fb.group({ 
+                    seatText:[seatData.seatText],
+                    seatType:[seatData.seat_class_id],
+                    berthType:[seatData.berthType],
+                    seatChecked:[checkedval],
+                    category:['0'],
+                    seatId:[seatData.id],
+                    busId:[this.busRecord.id]
+                  });
+                  this.seatLayoutCol.insert(collen, columnData);
+                  
+                }
+                counter++;
+              }
+              
+            }
+            if(resp.data.upperBerth!=undefined)
+            {
+              for(let upperData of resp.data.upperBerth)
+              {
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
+                for(let seatData of upperData)
+                {
+                  let checkedval="";
+                  let seatId="";
+    
+                  if(this.selectedSeats.length>0){ 
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="true";
+                      seatId=selectedSeat.id;
+                    }
+                  }
+                }
+    
+                  let collen=this.seatLayoutCol.length;
+                  let columnData: FormGroup = this.fb.group({ 
+                    seatText:[seatData.seatText],
+                    seatType:[seatData.seat_class_id],
+                    berthType:[seatData.berthType],
+                    seatChecked:[checkedval],
+                    category:['0'],
+                    seatId:[seatData.id],
+                    busId:[this.busRecord.id]
+                  });
+                  this.seatLayoutCol.insert(collen, columnData);
+                }
+                counter++;
+              }
+            }
+    
+            this.spinner.hide();
+          }
+        ); 
       }
     );
    
-    this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
-      resp=>{
-        let counter=0;
-        this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
-        
-        if(resp.data.lowerBerth!=undefined)
-        {
-          for(let lowerData of resp.data.lowerBerth)
-          {
-            
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
-            for(let seatData of lowerData)
-            {
-              let checkedval="";
-              let seatId="";
-             
-              if(this.selectedSeats.length>0){
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="true";
-                  seatId=selectedSeat.id;
-                }
-              }
-            }
-
-              let collen=this.seatLayoutCol.length;
-              let columnData: FormGroup = this.fb.group({ 
-                seatText:[seatData.seatText],
-                seatType:[seatData.seat_class_id],
-                berthType:[seatData.berthType],
-                seatChecked:[checkedval],
-                category:['0'],
-                seatId:[seatData.id],
-                busId:[this.busRecord.id]
-              });
-              this.seatLayoutCol.insert(collen, columnData);
-              
-            }
-            counter++;
-          }
-          
-        }
-        if(resp.data.upperBerth!=undefined)
-        {
-          for(let upperData of resp.data.upperBerth)
-          {
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
-            for(let seatData of upperData)
-            {
-              let checkedval="";
-              let seatId="";
-
-              if(this.selectedSeats.length>0){ 
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="true";
-                  seatId=selectedSeat.id;
-                }
-              }
-            }
-
-              let collen=this.seatLayoutCol.length;
-              let columnData: FormGroup = this.fb.group({ 
-                seatText:[seatData.seatText],
-                seatType:[seatData.seat_class_id],
-                berthType:[seatData.berthType],
-                seatChecked:[checkedval],
-                category:['0'],
-                seatId:[seatData.id],
-                busId:[this.busRecord.id]
-              });
-              this.seatLayoutCol.insert(collen, columnData);
-            }
-            counter++;
-          }
-        }
-
-        this.spinner.hide();
-      }
-    );    
+      
   }
 
   editExtraSeat(event : Event, id : any)
@@ -2643,189 +2658,193 @@ export class BusComponent implements OnInit {
          {
           this.busForm.controls.duration_minuties.setValue(seatData.data['duration'][0].duration);
          }
+
+
+         this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
+          resp=>{
+            
+            let counter=0;
+            
+            this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
+            
+            if(resp.data.lowerBerth!=undefined)
+            {
+              for(let lowerData of resp.data.lowerBerth)
+              {
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
+                for(let seatData of lowerData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                  let durationCheck=0;
+    
+                if(this.selectedSeats.length>0){ 
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="1";
+                      seatId=selectedSeat.id;
+                      durationCheck=selectedSeat.duration;
+                    }
+                  }
+                }
+                  let collen=this.seatLayoutCol.length;
+                  
+                  if(checkedval=="1")
+                  {
+                    
+                    if(durationCheck==0)
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:'true',disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:["true"],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    
+                  }
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+                  
+                  
+                  
+                }
+                counter++;
+              }
+              
+            }
+            if(resp.data.upperBerth!=undefined)
+            {
+              for(let upperData of resp.data.upperBerth)
+              {
+                let arraylen=this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({ 
+                  lowerBerth: this.fb.array([
+                  ]),
+                  upperBerth: this.fb.array([
+                  ])
+                });
+                this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+                this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
+                for(let seatData of upperData)
+                {
+                  let checkedval="";
+                  let seatId="";
+                  let durationCheck=0;
+                
+                if(this.selectedSeats.length>0){
+                  for(let selectedSeat of this.selectedSeats)
+                  {
+                    if(selectedSeat.seats_id==seatData.id)
+                    {
+                      checkedval="1";
+                      seatId=selectedSeat.id;
+                      durationCheck=selectedSeat.duration;
+                    }
+                  }
+                } 
+                  let collen=this.seatLayoutCol.length;
+                  
+                  if(checkedval=="1")
+                  {
+                    if(durationCheck==0)
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:["true"],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    
+                  }
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+    
+    
+                }
+                counter++;
+              }
+            }
+          }
+        );
+
       }
     );
    
-    this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
-      resp=>{
-        
-        let counter=0;
-        
-        this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
-        
-        if(resp.data.lowerBerth!=undefined)
-        {
-          for(let lowerData of resp.data.lowerBerth)
-          {
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
-            for(let seatData of lowerData)
-            {
-              let checkedval="";
-              let seatId="";
-              let durationCheck=0;
-
-            if(this.selectedSeats.length>0){ 
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="1";
-                  seatId=selectedSeat.id;
-                  durationCheck=selectedSeat.duration;
-                }
-              }
-            }
-              let collen=this.seatLayoutCol.length;
-              
-              if(checkedval=="1")
-              {
-                
-                if(durationCheck==0)
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[{value:'true',disabled:true}],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-                else
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:["true"],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-                
-              }
-              else
-              {
-                let columnData: FormGroup = this.fb.group({ 
-                  seatText:[seatData.seatText],
-                  seatType:[seatData.seat_class_id],
-                  berthType:[seatData.berthType],
-                  seatChecked:[checkedval],
-                  category:['0'],
-                  seatId:[seatData.id],
-                  busId:[this.busRecord.id],
-                  extraSeat:[durationCheck]
-                });
-                this.seatLayoutCol.insert(collen, columnData);
-              }
-              
-              
-              
-            }
-            counter++;
-          }
-          
-        }
-        if(resp.data.upperBerth!=undefined)
-        {
-          for(let upperData of resp.data.upperBerth)
-          {
-            let arraylen=this.seatLayoutData.length;
-            let berthData: FormGroup = this.fb.group({ 
-              lowerBerth: this.fb.array([
-              ]),
-              upperBerth: this.fb.array([
-              ])
-            });
-            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
-            this.seatLayoutCol = (<FormArray>this.busForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
-            for(let seatData of upperData)
-            {
-              let checkedval="";
-              let seatId="";
-              let durationCheck=0;
-            
-            if(this.selectedSeats.length>0){
-              for(let selectedSeat of this.selectedSeats)
-              {
-                if(selectedSeat.seats_id==seatData.id)
-                {
-                  checkedval="1";
-                  seatId=selectedSeat.id;
-                  durationCheck=selectedSeat.duration;
-                }
-              }
-            } 
-              let collen=this.seatLayoutCol.length;
-              
-              if(checkedval=="1")
-              {
-                if(durationCheck==0)
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[{value:true,disabled:true}],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-                else
-                {
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:["true"],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id],
-                    extraSeat:[durationCheck]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
-                }
-                
-              }
-              else
-              {
-                let columnData: FormGroup = this.fb.group({ 
-                  seatText:[seatData.seatText],
-                  seatType:[seatData.seat_class_id],
-                  berthType:[seatData.berthType],
-                  seatChecked:[checkedval],
-                  category:['0'],
-                  seatId:[seatData.id],
-                  busId:[this.busRecord.id],
-                  extraSeat:[durationCheck]
-                });
-                this.seatLayoutCol.insert(collen, columnData);
-              }
-
-
-            }
-            counter++;
-          }
-        }
-      }
-    );    
+       
   }
   editBus(event : Event, id : any)
   {
