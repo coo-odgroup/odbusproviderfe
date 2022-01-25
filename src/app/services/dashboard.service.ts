@@ -25,11 +25,19 @@ export class DashboardService {
     )
   }
 
-  toproute(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/toproutedata').pipe(
+  // toproute(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/toproutedata').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+  toproute(data:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/toproutedata', JSON.stringify(data), this.httpOptions)
+    .pipe(
       catchError(this.errorHandler)
     )
   }
+
   operatordata(): Observable<any> {
     return this.httpClient.get(this.apiURL + '/operatordata').pipe(
       catchError(this.errorHandler)

@@ -212,7 +212,9 @@ export class LandingComponent implements OnInit {
         rangeFor:range,
         rangeFrom:"",
         rangeTo:"",
-        USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+        USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
+        USERID:localStorage.getItem("USERID"),
+        ROLE_ID:localStorage.getItem("ROLE_ID"),
       };
       this.ds.dashboard(data).subscribe(
         res => {
@@ -231,7 +233,12 @@ export class LandingComponent implements OnInit {
     }
 
     toproute() {
-      this.ds.toproute().subscribe(
+
+      const data={
+        USERID:localStorage.getItem("USERID"),
+        ROLE_ID:localStorage.getItem("ROLE_ID"),
+      };
+      this.ds.toproute(data).subscribe(
         res => {
           this.routedata= res.data;
          
