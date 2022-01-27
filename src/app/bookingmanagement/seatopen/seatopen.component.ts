@@ -318,10 +318,11 @@ export class SeatopenComponent implements OnInit {
               let seatId = "";
               for (let selectedSeat of this.selectedSeats) {
                 if (selectedSeat.seats_id == seatData.id) {
-                  checkedval = "true";
-                  seatId = selectedSeat.id;
+                  if(selectedSeat.type== null){
+                    checkedval = "true";
+                    seatId = selectedSeat.id;
+                  }                 
                 }
-
               }
 
               let collen = this.seatLayoutCol.length;
@@ -403,9 +404,11 @@ export class SeatopenComponent implements OnInit {
               let desiabled_seats = "";
               for (let selectedSeat of this.selectedSeats) {
                 if (selectedSeat.seats_id == seatData.id) {
-                  checkedval = "true";
-                  seatId = selectedSeat.id;
-                  desiabled_seats = "true";
+                  if(selectedSeat.type== null){                  
+                    checkedval = "true";
+                    seatId = selectedSeat.id;
+                    // desiabled_seats = "true";
+                  }                
                 }
               }
               let collen = this.seatLayoutCol.length;

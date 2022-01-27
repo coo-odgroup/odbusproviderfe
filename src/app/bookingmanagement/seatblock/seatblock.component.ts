@@ -296,7 +296,7 @@ export class SeatblockComponent implements OnInit {
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
         this.selectedSeats = seatData.data['seat'];
-        // console.log(this.selectedSeats);
+        console.log(this.selectedSeats);
         this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
         // console.log(resp);
@@ -321,9 +321,16 @@ export class SeatblockComponent implements OnInit {
               let desiabled_seats = "";
               for (let selectedSeat of this.selectedSeats) {
                 if (selectedSeat.seats_id == seatData.id) {
-                  checkedval = "true";
-                  seatId = selectedSeat.id;
-                  desiabled_seats = "true";
+                  if(selectedSeat.type== null){ 
+                    if(selectedSeat.duration == '0')    
+                    {
+                      // console.log(seatData);
+                      checkedval = "true";
+                      seatId = selectedSeat.id;
+                      desiabled_seats = "true";
+
+                    }                 
+                  }
                 }
               }
               let collen = this.seatLayoutCol.length;
@@ -408,9 +415,14 @@ export class SeatblockComponent implements OnInit {
               let desiabled_seats = "";
               for (let selectedSeat of this.selectedSeats) {
                 if (selectedSeat.seats_id == seatData.id) {
+                  if(selectedSeat.type== null){ 
+                    if(selectedSeat.duration == '0')    
+                    {
                   checkedval = "true";
                   seatId = selectedSeat.id;
                   // desiabled_seats = "true";
+                    }
+                  }
                 }
               }
               let collen = this.seatLayoutCol.length;
