@@ -283,6 +283,7 @@ export class SeatopenComponent implements OnInit {
   }
 
   checkEvent(event: any) {
+    this.spinner.show();
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
@@ -298,6 +299,7 @@ export class SeatopenComponent implements OnInit {
 
     this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
+        this.spinner.hide();
         let counter = 0;
         this.seatLayoutData = (<FormArray>this.seatOpenForm.controls['bus_seat_layout_data']) as FormArray;
         this.seatLayoutData.clear();
@@ -519,6 +521,7 @@ export class SeatopenComponent implements OnInit {
 
   ResetAttributes() {
     this.route = [];
+    this.buses ="";
     this.loadServices();
     this.busSchedule =[] ;
     this.route = "";
@@ -549,12 +552,12 @@ export class SeatopenComponent implements OnInit {
   }
 
   loadServices() {
-    this.busService.all().subscribe(
-      res => {
-        this.buses = res.data;
-        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
-      }
-    );
+    // this.busService.all().subscribe(
+    //   res => {
+    //     this.buses = res.data;
+    //     this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+    //   }
+    // );
     const BusOperator = {
       USER_BUS_OPERATOR_ID: localStorage.getItem("USER_BUS_OPERATOR_ID")
     };

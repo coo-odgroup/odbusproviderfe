@@ -114,7 +114,11 @@ export class SeatfareComponent implements OnInit {
         destinationId = journey.destination_id;
         let seatFare = "";
         for (let singleSeats of journey.get_bus_seats) {
+          if(singleSeats.seats!=null)
+          {
           seatFare = (singleSeats.seats.berthType == "1") ? baseSeaterFare : baseSleeperFare;
+
+          }
           let totalLength = this.fareRecord.length;
           let seatRow: FormGroup = this.fb.group({
             id: [singleSeats.id],
