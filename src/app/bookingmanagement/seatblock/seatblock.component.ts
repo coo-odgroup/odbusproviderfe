@@ -301,7 +301,7 @@ export class SeatblockComponent implements OnInit {
         this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
         // console.log(resp);
-        this.spinner.hide();
+       
         let counter = 0;
         this.seatLayoutData = (<FormArray>this.seatBlockForm.controls['bus_seat_layout_data']) as FormArray;
         this.seatLayoutData.clear();
@@ -493,7 +493,7 @@ export class SeatblockComponent implements OnInit {
             counter++;
           }
         }
-
+        this.spinner.hide();
       }
     );
       }
