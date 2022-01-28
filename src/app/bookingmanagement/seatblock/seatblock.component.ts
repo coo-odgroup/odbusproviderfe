@@ -292,11 +292,11 @@ export class SeatblockComponent implements OnInit {
     const data = {
       bus_id: this.seatBlockForm.value.bus_id
     };
-    console.log(data);
+    // console.log(data);
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
         this.selectedSeats = seatData.data['seat'];
-        console.log(this.selectedSeats);
+        // console.log(this.selectedSeats);
         this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
         // console.log(resp);
@@ -610,6 +610,7 @@ export class SeatblockComponent implements OnInit {
   findOperator(event: any) {
     this.seatBlockForm.controls.bus_id.setValue('');
     this.seatBlockForm.controls.busRoute.setValue('');
+
     let operatorId = event.id;
     if (operatorId) {
       this.busService.getByOperaor(operatorId).subscribe(
