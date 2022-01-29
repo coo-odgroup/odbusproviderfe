@@ -18,6 +18,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 
 interface SeatBlock{
+  id?:any;
   rowNumber?:any;
   colNumber?:any;
   seatType?:any;
@@ -128,7 +129,16 @@ export class SeatlayoutComponent implements OnInit {
   sleeper_row_arr=[];
   viewSeatLayout(event : Event, id : any)
   {
+
+    this.seatBlocks=[];
+    this.sLayoutData=[];
+    this.lowerBerthSeats=[];
+    this.upperBerthSeats=[];
+
+    this.spinner.show();
     this.SeatLayoutRecord=this.SeatLayouts[id] ;
+
+   // console.log(this.SeatLayoutRecord);
 
     this.row_arr=[];
     this.sleeper_row_arr=[];
@@ -166,13 +176,13 @@ export class SeatlayoutComponent implements OnInit {
               cellData[coldata.rowNumber]=[coldata.rowNumber,coldata.colNumber,coldata.seatType,1];
               rowArray.push(cellData);
               counterItem++;
-              var seatData: SeatBlock = {rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:1, seatText:'', seat_class_id:coldata.seat_class_id};
+              var seatData: SeatBlock = {id: coldata.id,rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:1, seatText:'', seat_class_id:coldata.seat_class_id};
               this.seatBlocks.push(seatData); //Value Pushed to Interface
             }
             this.lowerBerthBasketText[rowCounter]=rowArray; //Value Pushed to Array
             rowCounter++;
           }
-          //console.log(this.seatBlocks);
+         
           
         }
         if(resp.data.upperBerth)
@@ -191,13 +201,19 @@ export class SeatlayoutComponent implements OnInit {
               upperrowArray.push(cellData);
               counterItem++;
 
-              var seatData: SeatBlock = {rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:2, seatText:'',seat_class_id:coldata.seat_class_id};
+              var seatData: SeatBlock = {id: coldata.id,rowNumber: coldata.rowNumber, colNumber:coldata.colNumber, seatType: coldata.seatType, berthType:2, seatText:'',seat_class_id:coldata.seat_class_id};
               this.seatBlocks.push(seatData); //Value Pushed to Interface
             }
             this.upperBerthBasketText[rowCounter]=upperrowArray; //Value Pushed to Array
             rowCounter++;
           }
         }
+
+        this.spinner.hide();
+
+
+
+        //console.log(this.seatBlocks);
       }
     )  
   }
@@ -271,8 +287,10 @@ export class SeatlayoutComponent implements OnInit {
       created_by:localStorage.getItem('USERNAME'),
       bus_operator_id:this.SeatLayoutRecord.bus_operator_id  
     }
-    
-    
+
+    //console.log(this.seatBlocks);
+    //return;
+
     this.sLayout.update(this.SeatLayoutRecord.id, data).subscribe(
       resp => {
         if(resp.status==1)
