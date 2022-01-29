@@ -542,20 +542,7 @@ const NavigationItems = [
         type: 'collapse',
         icon: 'feather icon-file-text',
         children: [
-          {
-            id: 'agentwalletrequest',
-            title: 'Agent Wallet Request',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/agentwalletrequest'
-          },
-          {
-            id: 'pushnotification',
-            title: 'Push Notification',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/pushnotification'
-          },
+          
           // {
           //   id: 'seatopenreport',
           //   title: 'Seat Open Report',
@@ -711,20 +698,43 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-users',
             url: 'setting/user'
-          }, 
-          {
-            id: 'agent',
-            title: 'Agent',
-            type: 'item',
-            icon:'feather icon-user-plus',
-            url: 'setting/agent'
-          },
+          },          
           {
             id: 'association',
             title: 'Association',
             type: 'item',
             icon:'feather icon-user-plus',
             url: 'setting/association'
+          },
+          
+        ]
+      },
+      {
+        // id: 'ticketinformation',
+        title: 'Agent',
+        type: 'collapse',
+        icon: 'feather icon-cloud',
+        children: [         
+          {
+            id: 'agentwalletrequest',
+            title: 'Agent Wallet Request',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'reports/agentwalletrequest'
+          },
+          {
+            id: 'pushnotification',
+            title: 'Push Notification',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'reports/pushnotification'
+          },
+          {
+            id: 'agent',
+            title: 'Manage Agent',
+            type: 'item',
+            icon:'feather icon-user-plus',
+            url: 'setting/agent'
           },
           {
             id: 'agentcomission',

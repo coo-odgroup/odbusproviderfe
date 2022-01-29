@@ -36,7 +36,8 @@ export class AgentComponent implements OnInit {
   public ModalBtn:any;
   pagination: any;
   all: any;
-  
+  pan_pattern ="/^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/";
+
   constructor(private spinner: NgxSpinnerService,private AgentserviceService: AgentserviceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig,  private busOperatorService:BusOperatorService) {
     this.isSubmit = false;
     this.agentRecord= {} as Agent;
@@ -55,10 +56,10 @@ export class AgentComponent implements OnInit {
       id:[null],
       name: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
-      phone: [null, Validators.compose([Validators.required])],
-      password: [null, Validators.compose([Validators.required])],
+      phone: [null, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+      password: [null, Validators.compose([Validators.required,Validators.minLength(6)])],
       location: [null, Validators.compose([Validators.required])],
-      adhar_no: [null, Validators.compose([Validators.required])],
+      adhar_no: [null, Validators.compose([ Validators.required,Validators.minLength(12),Validators.maxLength(12)])],
       pancard_no: [null, Validators.compose([Validators.required])],
       organization_name: [null],
       address: [null, Validators.compose([Validators.required])],
@@ -76,6 +77,7 @@ export class AgentComponent implements OnInit {
 
     this.searchForm = this.fb.group({  
       name: [null], 
+      status: [null], 
       rows_number: Constants.RecordLimit,
     });
      this.search(); 
@@ -113,24 +115,11 @@ export class AgentComponent implements OnInit {
     this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
-      email: this.searchForm.value.email,
-      phone:this.searchForm.value.phone, 
-      password:this.searchForm.value.password,
-      location:this.searchForm.value.location,
-      adhar_no:this.searchForm.value.adhar_no,
-      pancard_no:this.searchForm.value.pancard_no,
-      organization_name:this.searchForm.value.organization_name,
-      address:this.searchForm.value.address,
-      landmark:this.searchForm.value.landmark,
-      pincode:this.searchForm.value.pincode,
-      name_on_bank_account:this.searchForm.value.name_on_bank_account,
-      bank_name:this.searchForm.value.bank_name,
-      ifsc_code:this.searchForm.value.ifsc_code,
-      bank_account_no:this.searchForm.value.bank_account_no,
-      
+      status: this.searchForm.value.status,
+      rows_number:this.searchForm.value.rows_number      
     };
    
-    // console.log(data);
+    console.log(data);
     if(pageurl!="")
     {
       this.AgentserviceService.getAllaginationData(pageurl,data).subscribe(
@@ -162,10 +151,10 @@ export class AgentComponent implements OnInit {
   refresh()
    {
      this.spinner.show();
-    this.searchForm = this.fb.group({  
-      price_from: [null], 
-      price_to: [null],  
-      max_comission: Constants.RecordLimit,
+     this.searchForm = this.fb.group({  
+      name: [null], 
+      status: [null], 
+      rows_number: Constants.RecordLimit,
     });
      this.search();
    }
@@ -195,21 +184,21 @@ export class AgentComponent implements OnInit {
     } as Agent;
     this.form = this.fb.group({
       id:[null],
-      name: ['', Validators.compose([Validators.required])],
-      email: ['',Validators.compose([Validators.required])],
-      phone: ['',Validators.compose([Validators.required])],
-      password: ['',Validators.compose([Validators.required])],
-      location: ['',Validators.compose([Validators.required])],
-      adhar_no: ['',Validators.compose([Validators.required])],
-      pancard_no: ['',Validators.compose([Validators.required])],
-      organization_name: ['',Validators.compose([Validators.required])],
-      address: ['',Validators.compose([Validators.required])],
-      landmark: ['',Validators.compose([Validators.required])],
-      pincode: ['',Validators.compose([Validators.required])],
-      name_on_bank_account: [''],
-      bank_name: [''],
-      ifsc_code: [''],
-      bank_account_no: [''],
+      name: [null, Validators.compose([Validators.required])],
+      email: [null, Validators.compose([Validators.required])],
+      phone: [null, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+      password: [null, Validators.compose([Validators.required,Validators.minLength(6)])],
+      location: [null, Validators.compose([Validators.required])],
+      adhar_no: [null, Validators.compose([ Validators.required,Validators.minLength(14),Validators.maxLength(14)])],
+      pancard_no: [null, Validators.compose([Validators.required])],
+      organization_name: [null],
+      address: [null, Validators.compose([Validators.required])],
+      landmark: [null, Validators.compose([Validators.required])],
+      pincode: [null, Validators.compose([Validators.required])],
+      name_on_bank_account: [null],
+      bank_name: [null],
+      ifsc_code: [null],
+      bank_account_no: [null],
       
     });
     this.ModalHeading = "Add Agent";

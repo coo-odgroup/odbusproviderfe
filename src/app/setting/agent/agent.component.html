@@ -15,9 +15,43 @@
           </div>
           <div class="col-10">
             <form [formGroup]="searchForm">
-              <div class="row">             
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-group row">            
+                    <div class="dropdown">
+                      <div class="col-sm-12">
+                        <select class="form-control sml_input" formControlName="status">
+                          <option value='1'>Active</option>
+                          <option value='0'>Panding</option>
+                      </select>
+                      </div>                    
+                      
+                  </div>              
+                  </div>              
+                </div>  
+                <div class="col-6">
+                  <div class="form-group row">
+  
+                    <div class="col-sm-12">
+                      <div class="input-group">
+                        <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                          formControlName="name" (keyup.enter)="search()">
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                            <i class="fas fa-search"> </i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+                <div class="col-2">
+                  <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                    <i class="fas fa-sync-alt"> </i> Refresh
+                  </button>
+                </div>          
                 
-                <div class="col-12">
+                <div class="col-2">
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
@@ -42,9 +76,9 @@
             <thead>
               <tr>
                 <th>SL</th>
-                <th>Agent Name</th>
-                <th>Email</th>
-                <th>Phone</th>
+                <th>Name/Email/Location</th>
+                <th>Address</th>
+                <th>Bank Details</th>
                 <th scope="col">Created/Updated On</th>
                 <th scope="col">Created By</th>
                 <th scope="col">Status</th>
@@ -54,9 +88,18 @@
             <tbody *ngIf="agents?.length != 0">
               <tr *ngFor="let agent of agents; let i=index;">
                 <td>{{ i+1}}</td>
-                <td>{{ agent.name }}</td>
-                <td>{{ agent.email }}</td>
-                <td>{{ agent.phone }}</td>
+                <td>{{ agent.name }} <br> <strong>{{ agent.email }} <br> {{ agent.phone }}</strong><br>{{agent.location}}</td>
+                <td> <span title="orgination">{{agent.  }}</span> <br> 
+                  <span title="address">{{agent.address}}</span> <br>
+                  <span title="landmark">{{agent.landmark}}</span></td>
+                <td>
+                  <span *ngIf='agent.bank_name!=null'>
+                    <strong>Bank Name - </strong>{{agent.bank_name }}<br>
+                    <strong>A/c No. </strong>{{ agent.bank_account_no }} <br>
+                    <strong> Branch -</strong> {{agent.branch_name}}<br>
+                    <strong>IFSC Code. </strong> {{ agent.ifsc_code }} 
+                  </span> 
+                </td>
                 <td>{{ agent.updated_at| date: 'dd/MM/yyyy' }}</td>
                 <td>{{ agent.created_by }}</td>
                 <td>
@@ -149,7 +192,11 @@
                               <label for="email" class="col-sm-4 col-form-label">Email<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Login Email id" formControlName="email">
+                                <input type="text" class="form-control" placeholder="Login Email id" formControlName="email" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*">
+
+                                <span class="text-danger row col-12" *ngIf="form.controls['email'].errors?.pattern">
+                                  Email Id not valid.
+                                 </span>
                                 <span class="text-danger"
                                   *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
                                   Email is required! </span>
@@ -161,10 +208,19 @@
                               <label for="phone" class="col-sm-4 col-form-label">Phone<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Contact Phone Number" formControlName="phone">
+                                <input type="text" class="form-control" oninput="this.value=this.value.replace(/[^\d]/,'')"  placeholder="Contact Phone Number" formControlName="phone" minlength="10" maxlength="10">
                                 <span class="text-danger"
                                   *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
                                   Phone is required! </span>
+
+                                <span class="text-danger"
+                                *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('minlength')">
+                                Minimum 10 Characters Required
+                              </span>
+                              <span class="text-danger"
+                              *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('maxlength')">
+                              Maximum 10 Characters Allowed
+                            </span>
                               </div>
                             </div>
                           </div>
@@ -176,9 +232,15 @@
                                 <label for="password" class="col-sm-4 col-form-label">Password<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" placeholder="Password" formControlName="password">
+                                  <input type="text" class="form-control" placeholder="Password" formControlName="password" minlength="6">
+
                                   <span class="text-danger"
-                                    *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
+                                    *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
+                                    Minimum 6 Characters Required
+                                  </span>
+
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')" >
                                     Password is required! </span>
                                 </div>
                               </div>
@@ -216,10 +278,22 @@
                                   <label for="adhar_no" class="col-sm-4 col-form-label">Aadhaar<span
                                     class="text-danger">*</span></label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" placeholder="Aadhaar Number" formControlName="adhar_no">
+                                    <input type="text" class="form-control" placeholder="Aadhaar Number" formControlName="adhar_no" minlength="12" maxlength="12" oninput="this.value=this.value.replace(/[^\d]/,'')" >
                                     <span class="text-danger"
                                       *ngIf="form.controls['adhar_no'].touched && form.controls['adhar_no'].hasError('required')">
-                                      Adhar is required! </span>
+                                      Aadhaar is required! </span>
+                                    <span class="text-danger"
+                                      *ngIf="form.controls['adhar_no'].touched && form.controls['adhar_no'].hasError('minlength')">
+                                      Aadhaar has Minimum 12 characters.
+                                    </span>
+                                    <span class="text-danger"
+                                      *ngIf="form.controls['adhar_no'].touched && form.controls['adhar_no'].hasError('maxlength')">
+                                      Aadhaar has Maximum 12 characters.
+                                    </span>
+
+                                    <!-- <span class="text-danger"
+                                      *ngIf="form.controls['adhar_no'].touched && form.controls['adhar_no'].errors?.pattern">
+                                      Enter a valid Aadhaar number! </span> -->
                                   </div>
                                 </div>
                               </div>
@@ -228,10 +302,15 @@
                                 <label for="pancard_no" class="col-sm-4 col-form-label">Pan Card<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" placeholder="Valid Pan Number" formControlName="pancard_no">
+                                  <input type="text" class="form-control" placeholder="Valid Pan Number" formControlName="pancard_no" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$">
+
+                                  <span class="text-danger row col-12" *ngIf="form.controls['pancard_no'].errors?.pattern">
+                                   Pan Card not valid.
+                                  </span>
+
                                   <span class="text-danger"
                                     *ngIf="form.controls['pancard_no'].touched && form.controls['pancard_no'].hasError('required')">
-                                    Pancard is required! </span>
+                                    Pan Card is required! </span>
                                 </div>
                               </div>
                             </div>
@@ -240,10 +319,15 @@
                                 <label for="pincode" class="col-sm-4 col-form-label">Pincode<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" placeholder="Zip Code / Pin Code" formControlName="pincode">
+                                  <input type="text" class="form-control" placeholder="Zip Code / Pin Code" formControlName="pincode" minlength="6" maxlength="6" oninput="this.value=this.value.replace(/[^\d]/,'')">
                                   <span class="text-danger"
                                     *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('required')">
                                     Pincode is required! </span>
+                             
+
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('minlength')">
+                                    Pincode is of 6 character required! </span>
                                 </div>
                               </div>
                             </div>
