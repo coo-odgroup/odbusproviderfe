@@ -89,15 +89,17 @@
               <tr *ngFor="let agent of agents; let i=index;">
                 <td>{{ i+1}}</td>
                 <td>{{ agent.name }} <br> <strong>{{ agent.email }} <br> {{ agent.phone }}</strong><br>{{agent.location}}</td>
-                <td> <span title="orgination">{{agent.  }}</span> <br> 
-                  <span title="address">{{agent.address}}</span> <br>
-                  <span title="landmark">{{agent.landmark}}</span></td>
+                <td> 
+                  <span title="orgination" *ngIf="agent.organization_name!=null">{{agent.organization_name  }}</span> <br>  
+                   <span title="address" *ngIf="agent.address!=null">{{agent.address}}</span> <br> 
+                 <span title="landmark" *ngIf="agent.landmark!=null">{{agent.landmark}}</span>
+                </td>
                 <td>
                   <span *ngIf='agent.bank_name!=null'>
-                    <strong>Bank Name - </strong>{{agent.bank_name }}<br>
-                    <strong>A/c No. </strong>{{ agent.bank_account_no }} <br>
-                    <strong> Branch -</strong> {{agent.branch_name}}<br>
-                    <strong>IFSC Code. </strong> {{ agent.ifsc_code }} 
+                    <strong *ngIf="agent.bank_name!=null">Bank Name - </strong>{{agent.bank_name }}<br>
+                    <strong *ngIf="agent.bank_account_no!=null">A/c No. </strong>{{ agent.bank_account_no }} <br>
+                    <strong *ngIf="agent.branch_name!=null"> Branch -</strong> {{agent.branch_name}}<br>
+                    <strong *ngIf="agent.ifsc_code!=null">IFSC Code. </strong> {{ agent.ifsc_code }} 
                   </span> 
                 </td>
                 <td>{{ agent.updated_at| date: 'dd/MM/yyyy' }}</td>

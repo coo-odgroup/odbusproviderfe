@@ -119,7 +119,7 @@ export class AgentComponent implements OnInit {
       rows_number:this.searchForm.value.rows_number      
     };
    
-    console.log(data);
+    // console.log(data);
     if(pageurl!="")
     {
       this.AgentserviceService.getAllaginationData(pageurl,data).subscribe(
