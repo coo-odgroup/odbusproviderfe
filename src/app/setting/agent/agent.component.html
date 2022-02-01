@@ -424,7 +424,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" [disabled]="!form.valid" (click)="addAgent()" class="btn btn-primary"
+              <button type="button" [disabled]="!form.valid" (click)='addAgent()' class="btn btn-primary"
                 ngbAutofocus>{{ModalBtn}}</button>
               <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
                 (click)="modal.dismiss('Cross click')">Close</button>

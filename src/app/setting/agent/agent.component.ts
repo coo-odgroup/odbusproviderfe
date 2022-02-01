@@ -229,7 +229,7 @@ export class AgentComponent implements OnInit {
       created_by: localStorage.getItem('USERNAME') 
       
     };
-    //console.log(data);
+    console.log(data);
     if(id==null)
     {
       this.AgentserviceService.create(data).subscribe(
