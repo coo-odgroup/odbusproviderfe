@@ -131,7 +131,8 @@ export class BusComponent implements OnInit {
                 seatId:[seatData.id],
                 seatType:[seatData.seat_class_id],
                 berthType:[seatData.berthType],
-                seatChecked:[null]
+                seatChecked:[null],
+                extraSeat:[0]
               });
               this.seatLayoutCol.insert(collen, columnData);
               
@@ -1719,6 +1720,9 @@ export class BusComponent implements OnInit {
     this.ModalHeading = "Bus Copied";
     this.ModalBtn = "Add New";
     this.busRecord=this.buses[id] ;
+
+    let today = formatDate(new Date(),'yyyy-MM-dd','en_US');
+
    
     
     this.busForm = this.fb.group({
@@ -1761,11 +1765,11 @@ export class BusComponent implements OnInit {
         this.selectedSeats=seatData.data['seat'];
         //this.spinner.hide();
 
-
         this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
-          resp=>{
+          resp=>{    
             let counter=0;
             this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
+            
             if(resp.data.lowerBerth!=undefined)
             {
               for(let lowerData of resp.data.lowerBerth)
@@ -1784,29 +1788,106 @@ export class BusComponent implements OnInit {
                 {
                   let checkedval="";
                   let seatId="";
-                  if(this.selectedSeats.length>0){
-                  for(let selectedSeat of this.selectedSeats)
-                  {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
-                    {
-                      checkedval="true";
-                      seatId=selectedSeat.id;
-                    }
-                  }
-                }
+                  let durationCheck=0;
+                  let operation_date='';
+                  let type ='';
     
+                  if(this.selectedSeats.length > 0){
+    
+                    for(let selectedSeat of this.selectedSeats)
+                    {
+                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                      {
+                        checkedval="1";
+                        seatId=selectedSeat.id;
+                        durationCheck=selectedSeat.duration;
+                        operation_date= selectedSeat.operation_date;
+                        type = selectedSeat.type;
+                      }
+                    }
+    
+                  }
+                 
                   let collen=this.seatLayoutCol.length;
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[checkedval],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
                   
+                  if(checkedval=="1")
+                  {
+                    
+                    if(durationCheck==0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:['true'],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else if(durationCheck==0 && type == '1' && operation_date!='' && operation_date >= today )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]                    
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else if(durationCheck !=0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }else{
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[''],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+    
+                    }
+                    
+                  }
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                      
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }           
                 }
                 counter++;
               }
@@ -1829,37 +1910,126 @@ export class BusComponent implements OnInit {
                 {
                   let checkedval="";
                   let seatId="";
-                  if(this.selectedSeats.length>0){
+                  let durationCheck=0;
+                  let operation_date='';
+                  let type ='';
+    
+                  if(this.selectedSeats.length > 0){
                   for(let selectedSeat of this.selectedSeats)
                   {
                     if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
                     {
-                      checkedval="true";
+                      //console.log(seatData.seatText+today);
+                      checkedval="1";
                       seatId=selectedSeat.id;
+                      durationCheck=selectedSeat.duration;
+                      operation_date= selectedSeat.operation_date;
+                      type = selectedSeat.type;
                     }
                   }
                 }
+    
+                  
+    
                   let collen=this.seatLayoutCol.length;
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[checkedval],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
+                  
+                  if(checkedval=="1")
+                  {
+                   
+    
+                    if(durationCheck==0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:['true'],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]                    
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+    
+                  else if(durationCheck ==0 && type == '1' && operation_date!='' && operation_date >= today )
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[{value:true,disabled:true}],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]                    
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+    
+                  else if(durationCheck !=0 && type == null && operation_date ==null )
+                  {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+    
+                    else{
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[''],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+    
+                    }
+                    
+                  }              
+                 
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                      
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+    
+                 
+    
                 }
                 counter++;
               }
+    
             }
     
             this.spinner.hide();
-          }
     
-          
-        );
+          }
+        ); 
+       
 
       }
     );
@@ -2077,6 +2247,9 @@ export class BusComponent implements OnInit {
     this.ModalHeading = "Bus Cloned";
     this.ModalBtn = "Add New";
     this.busRecord=this.buses[id] ;
+
+    let today = formatDate(new Date(),'yyyy-MM-dd','en_US');
+
     
     this.busForm = this.fb.group({
       id:[null],
@@ -2119,9 +2292,8 @@ export class BusComponent implements OnInit {
         this.selectedSeats=seatData.data['seat'];
         //this.spinner.hide();
 
-
         this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(
-          resp=>{
+          resp=>{    
             let counter=0;
             this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
             
@@ -2143,30 +2315,106 @@ export class BusComponent implements OnInit {
                 {
                   let checkedval="";
                   let seatId="";
-                 
-                if(this.selectedSeats.length>0){
-                  for(let selectedSeat of this.selectedSeats)
-                  {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                  let durationCheck=0;
+                  let operation_date='';
+                  let type ='';
+      
+                  if(this.selectedSeats.length > 0){
+      
+                    for(let selectedSeat of this.selectedSeats)
                     {
-                      checkedval="true";
-                      seatId=selectedSeat.id;
+                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                      {
+                        checkedval="1";
+                        seatId=selectedSeat.id;
+                        durationCheck=selectedSeat.duration;
+                        operation_date= selectedSeat.operation_date;
+                        type = selectedSeat.type;
+                      }
                     }
+      
                   }
-                }
-    
+                 
                   let collen=this.seatLayoutCol.length;
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[checkedval],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
                   
+                  if(checkedval=="1")
+                  {
+                    
+                    if(durationCheck==0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:['true'],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else if(durationCheck==0 && type == '1' && operation_date!='' && operation_date >= today )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]                    
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+                    else if(durationCheck !=0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }else{
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[''],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+      
+                    }
+                    
+                  }
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                      
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }           
                 }
                 counter++;
               }
@@ -2189,37 +2437,127 @@ export class BusComponent implements OnInit {
                 {
                   let checkedval="";
                   let seatId="";
-    
-                if(this.selectedSeats.length>0){
+                  let durationCheck=0;
+                  let operation_date='';
+                  let type ='';
+      
+                  if(this.selectedSeats.length > 0){
                   for(let selectedSeat of this.selectedSeats)
                   {
                     if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
                     {
-                      checkedval="true";
+                      //console.log(seatData.seatText+today);
+                      checkedval="1";
                       seatId=selectedSeat.id;
+                      durationCheck=selectedSeat.duration;
+                      operation_date= selectedSeat.operation_date;
+                      type = selectedSeat.type;
                     }
                   }
                 }
-    
+      
+                  
+      
                   let collen=this.seatLayoutCol.length;
-                  let columnData: FormGroup = this.fb.group({ 
-                    seatText:[seatData.seatText],
-                    seatType:[seatData.seat_class_id],
-                    berthType:[seatData.berthType],
-                    seatChecked:[checkedval],
-                    category:['0'],
-                    seatId:[seatData.id],
-                    busId:[this.busRecord.id]
-                  });
-                  this.seatLayoutCol.insert(collen, columnData);
+                  
+                  if(checkedval=="1")
+                  {
+                   
+      
+                    if(durationCheck==0 && type == null && operation_date ==null )
+                    {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:['true'],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]                    
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+      
+                  else if(durationCheck ==0 && type == '1' && operation_date!='' && operation_date >= today )
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[{value:true,disabled:true}],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]                    
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+      
+                  else if(durationCheck !=0 && type == null && operation_date ==null )
+                  {
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[{value:true,disabled:true}],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+                    }
+      
+                    else{
+                      let columnData: FormGroup = this.fb.group({ 
+                        seatText:[seatData.seatText],
+                        seatType:[seatData.seat_class_id],
+                        berthType:[seatData.berthType],
+                        seatChecked:[''],
+                        category:['0'],
+                        seatId:[seatData.id],
+                        busId:[this.busRecord.id],
+                        extraSeat:[durationCheck]
+                        
+                      });
+                      this.seatLayoutCol.insert(collen, columnData);
+      
+                    }
+                    
+                  }              
+                 
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({ 
+                      seatText:[seatData.seatText],
+                      seatType:[seatData.seat_class_id],
+                      berthType:[seatData.berthType],
+                      seatChecked:[checkedval],
+                      category:['0'],
+                      seatId:[seatData.id],
+                      busId:[this.busRecord.id],
+                      extraSeat:[durationCheck]
+                      
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+      
+                 
+      
                 }
                 counter++;
               }
+      
             }
-    
+      
             this.spinner.hide();
+      
           }
         ); 
+
+
 
       }
     );
