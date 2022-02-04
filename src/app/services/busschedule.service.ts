@@ -37,7 +37,7 @@ export class BusscheduleService {
     )
   }
 
-  getAllaginationData(url,post): Observable<any> {
+  getAllPaginationData(url,post): Observable<any> {
     return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)

@@ -98,7 +98,7 @@ export class BusscheduleComponent implements OnInit {
     };
     if(pageurl!="")
     {
-      this.busscheduleService.getAllaginationData(pageurl,data).subscribe(
+      this.busscheduleService.getAllPaginationData(pageurl,data).subscribe(
         res => {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
@@ -115,7 +115,7 @@ export class BusscheduleComponent implements OnInit {
           this.pagination= res.data.data;
           this.all =res.data;
           this.spinner.hide();
-          // console.log(this.busSchedules);
+           console.log(this.busSchedules);
         }
       );
     }

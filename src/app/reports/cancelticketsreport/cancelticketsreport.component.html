@@ -169,6 +169,7 @@
                                 <th scope="col">Seater / Sleeper </th>
                                 <th scope="col">ODBUS Fare</th>
                                 <th scope="col">Refund Price</th>
+                                <th scope="col">Booked By</th>
                                 <th scope="col">Cancel By</th>
                             </tr>
                         </thead>
@@ -183,15 +184,13 @@
                                     'dd-MM-yyyy'}} )
 
                                     <br>
-                                    <span *ngFor="let frlocation of complete.from_location">
-                                        {{frlocation.name}}
-                                    </span> -
+                                    <span > {{ complete.from_location[0].name }} </span> -
                                     ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
                                     <br>
-                                    <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
+                                    <strong style="color: brown;" *ngIf="complete.customer_payment">{{complete.customer_payment.order_id}}</strong>
                                     <br>
                                     <strong
-                                        style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
+                                        style="color: darkgoldenrod;" *ngIf="complete.customer_payment">{{complete.customer_payment.razorpay_id}}</strong>
 
 
                                 </td>
@@ -336,9 +335,20 @@
                                         <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->
     
                                     </p>
-                                    <h5>Coming<br> Soon</h5>
+                                    <h5>Rs {{ complete.refund_amount }} <br>
+
+                                        <span *ngIf="complete.user_id > 0" style="color:red;font-size: 12px;">(Refund to Agent)</span>
+                                        <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>
+                                    
+                                    </h5>
     
                                 </td>
+
+                                <td>
+                                    <h5> {{ (complete.user_id > 0) ? 'Agent' : 'Customer'  }} </h5>
+    
+                                </td>
+
                                 <td>
                                     <b>{{complete.created_by}}</b>
                                 </td>
@@ -435,11 +445,11 @@
                             {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
                         </td>
                         <td>
-                            <span *ngFor="let boarding of complete.from_location;">
-                                {{boarding.name}}
+                            <span>
+                                {{complete.from_location[0].name}}
                             </span> -
-                            <span *ngFor="let dropping of complete.to_location;">
-                                {{dropping.name}}
+                            <span>
+                                {{complete.to_location[0].name}}
                             </span>
                         </td>
                         <td>
@@ -480,8 +490,8 @@
                         <td>
                             {{complete.odbus_charges}}
                         </td>
-                        <td>{{complete.customer_payment.razorpay_id}} </td>
-                        <td>{{complete.customer_payment.order_id}}</td>
+                        <td>{{ (complete.customer_payment) ? complete.customer_payment.razorpay_id  : '' }} </td>
+                        <td>{{ (complete.customer_payment) ? complete.customer_payment.order_id : '' }}</td>
                         <!-- <td>{{complete.created_at | date: 'dd/MM/yyyy  HH:mm:ss'}}</td> -->
                         <td>
                             {{complete.users.name}}

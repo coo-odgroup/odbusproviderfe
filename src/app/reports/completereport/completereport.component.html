@@ -179,6 +179,10 @@
                                 <th scope="col">Total Fare</th>
                                 <th scope="col">Odbus Received</th>
                                 <th scope="col">Coupon Amount</th>
+                                <th scope="col">Book By</th>
+
+                               
+
                             </tr>
                         </thead>
                         <tbody *ngIf="completedata?.length != 0" style="height: 100px !important; overflow: scroll; ">
@@ -338,6 +342,10 @@
                                         <i class="fas fa-rupee-sign"></i> <b>{{complete.coupon_discount }}</b>
                                     </p>
                                 </td>
+                                <td>
+                                    <h5> {{ (complete.user_id > 0) ? 'Agent' : 'Customer'  }} </h5>
+    
+                                </td>
                             </tr>
                         </tbody>
                         <tbody *ngIf="completedata?.length == 0">
@@ -397,6 +405,7 @@
                         <th>From- To</th>
                         <th>Source- Destination</th>
                         <th>Seat No</th>
+                        <th>Sleeper No</th>
                         <th>Journey Date</th>
                         <!-- <th>Booking Date</th> -->
 
@@ -445,7 +454,14 @@
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
 
-                                {{seat.bus_seats.seats.seatText}} ,
+                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} ,</span> 
+                            </span>
+                        </td>
+
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
+
+                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ,</span> 
                             </span>
                         </td>
                         <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
