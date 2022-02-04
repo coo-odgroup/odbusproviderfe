@@ -46,6 +46,35 @@ export class WalletService {
     )
   }
 
+  getAllagentbalance(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/agentWalletBalance', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllAgentPaginationBalance(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllagentTransaction(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/agentAllTransaction', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllAgentPaginationTransaction(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
 
   create(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/agentWallet', JSON.stringify(data), this.httpOptions)

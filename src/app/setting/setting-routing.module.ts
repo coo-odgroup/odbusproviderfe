@@ -57,6 +57,22 @@ const routes: Routes = [
         path: 'agentfee',
         loadChildren: () => import('./agentfee/agentfee.module').then(module => module.AgentFeeModule)
       },
+      {
+        path: 'ouragent',
+        loadChildren: () => import('./ouragent/ouragent.module').then(module => module.OuragentModule)
+      },
+      {
+        path: 'agentalltransaction',
+        loadChildren: () => import('./agentalltransaction/agentalltransaction.module').then(module => module.AgentalltransactionModule)
+      },
+      {
+        path: 'agentfeedback',
+        loadChildren: () => import('./agentfeedback/agentfeedback.module').then(module => module.AgentfeedbackModule)
+      },
+      {
+        path: 'agentwalletbalance',
+        loadChildren: () => import('./agentwalletbalance/agentwalletbalance.module').then(module => module.AgentwalletbalanceModule)
+      },
     
     
       

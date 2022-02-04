@@ -11,11 +11,13 @@ import { Agent } from 'src/app/model/agent';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: 'app-agent',
-  templateUrl: './agent.component.html',
-  styleUrls: ['./agent.component.scss']
+  selector: 'app-ouragent',
+  templateUrl: './ouragent.component.html',
+  styleUrls: ['./ouragent.component.scss']
 })
-export class AgentComponent implements OnInit {
+
+
+export class OuragentComponent implements OnInit {
 
   
   public form: FormGroup;
@@ -72,7 +74,8 @@ export class AgentComponent implements OnInit {
       
     });  
     this.formConfirm=this.fb.group({
-      id:[null]
+      id:[null],
+      reason:[null, Validators.compose([Validators.required])]
     });
 
     this.searchForm = this.fb.group({  
@@ -122,7 +125,7 @@ export class AgentComponent implements OnInit {
     // console.log(data);
     if(pageurl!="")
     {
-      this.AgentserviceService.getAllaginationData(pageurl,data).subscribe(
+      this.AgentserviceService.getAllaginationOurData(pageurl,data).subscribe(
         res => {
           this.agents= res.data.data.data;
           this.pagination= res.data.data;
@@ -133,7 +136,7 @@ export class AgentComponent implements OnInit {
     }
     else
     {
-      this.AgentserviceService.getAllData(data).subscribe(
+      this.AgentserviceService.getAllOurData(data).subscribe(
         res => {
           this.agents= res.data.data.data;
           this.pagination= res.data.data;
@@ -200,6 +203,11 @@ export class AgentComponent implements OnInit {
       ifsc_code: [null],
       bank_account_no: [null],
       
+    });
+
+    this.formConfirm=this.fb.group({
+      id:[null],
+      reason:[null, Validators.compose([Validators.required])]
     });
     this.ModalHeading = "Add Agent";
     this.ModalBtn = "Save";
@@ -296,20 +304,38 @@ export class AgentComponent implements OnInit {
     this.ModalHeading = "Edit Agent";
     this.ModalBtn = "Update";
   }
-  openConfirmDialog(content)
+  openConfirmDialog(content,id)
   {
+    // console.log(id);
+    this.formConfirm.controls['id'].setValue(id);
     this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'md' });
   }
   changeStatus(event : Event, stsitem:any)
   { 
+    if(stsitem!=undefined)
+    {
+    this.formConfirm.controls['id'].setValue(stsitem);
+    }
+    const data = { 
+      id: this.formConfirm.value.id,
+      reason: this.formConfirm.value.reason    
+    };
+    // console.log(data);
+    // return;
     this.spinner.show();
-    this.AgentserviceService.chngsts(stsitem).subscribe(
+  
+    this.AgentserviceService.blockAgent(data).subscribe(
       resp => {
         if(resp.status==1)
         {
-            //this.closebutton.nativeElement.click();
+          if(this.formConfirm.value.reason!=null)
+          {
+            this.confirmDialogReference.close();
+          }
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
             this.refresh();
+        
+
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

@@ -3,17 +3,17 @@
 
 <div class="row">
     <div class="col-sm-12">
-      <app-card [hidHeader]="false" cardTitle="Agent Request" cardClass="card-datatable" [options]="false"
+      <app-card [hidHeader]="false" cardTitle="Our Agent " cardClass="card-datatable" [options]="false"
         cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
         <div class="row">
-          <div class="col-2">
+          <!-- <div class="col-2">
             <div class="from-group ">
               <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
                 Add Agent
               </button>
             </div>
-          </div>
-          <div class="col-10">
+          </div> -->
+          <div class="col-12">
             <form [formGroup]="searchForm">
               <div class="row">
                 <div class="col-2">
@@ -22,7 +22,7 @@
                       <div class="col-sm-12">
                         <select class="form-control sml_input" formControlName="status">
                           <option value='1'>Active</option>
-                          <option value='0'>Panding</option>
+                          <option value='3'>Block</option>
                       </select>
                       </div>                    
                       
@@ -81,8 +81,9 @@
                 <th>Bank Details</th>
                 <th scope="col">Created/Updated On</th>
                 <th scope="col">Created By</th>
-                <th scope="col">Status</th>
-                <!-- <th width="100" class="hide_print" >&nbsp; </th> -->
+                <th scope="col">Status</th> 
+                <th scope="col">Reason</th> 
+                <th width="100" class="hide_print" >&nbsp; </th>
               </tr>
             </thead>
             <tbody *ngIf="agents?.length != 0">
@@ -106,19 +107,23 @@
                 <td>{{ agent.created_by }}</td>
                 <td>
                   <div >
-                    <label *ngIf="agent.status==1" class="badge badge-light-primary pointer text-dark"
-                    (click)="changeStatus($event, agent.id);">Active</label>
-                    <label *ngIf="agent.status==0" class="badge badge-light-danger pointer text-dark"
-                    (click)="changeStatus($event, agent.id);">Pending</label>
+                    <label *ngIf="agent.status==1" class="badge bg-primary pointer text-white"
+                     (click)="ResetAttributes();openConfirmDialog(confirmDialog, agent.id)">Active</label>
+                    <label *ngIf="agent.status==3" class="badge bg-danger pointer text-white"
+                    (click)="ResetAttributes();changeStatus($event, agent.id);">Block</label>
+                 
                   </div>
                 </td>
+                <td>
+                  <span title="orgination" *ngIf="agent.reason!=null">{{agent.reason  }}</span> 
+                </td>
                
-                <!-- <td class="hide_print">
+                <td class="hide_print">
                   <div class="overlay-edit">
                       <button type="button" (click)="editAgent($event, i); OpenModal(content);"
                           class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                   </div>
-              </td> -->
+              </td>
               </tr>
             </tbody>
           </table>
@@ -159,6 +164,44 @@
   
   
         <div class="app-card-footer">
+            <ng-template #confirmDialog let-modal>
+                <div class="modal-header">
+                  <h5 class="ng-tns-c116-5"> Would you Like to Block the Agent??</h5>
+                  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                      aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-material">
+                        <div class="right-icon-control">
+                        
+                          <form [formGroup]="formConfirm" class="editForm" novalidate>
+                            <input type="hidden" formControlName="id">
+                            <!-- <input type="text" formControlName="reason"> -->
+
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-2 col-form-label">Reason<span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+                                    <textarea class="form-control" placeholder="Enter Your Reason " formControlName="reason"></textarea>
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" (click)="changeStatus()" class="btn btn-primary" ngbAutofocus>Block</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                    (click)="modal.dismiss('Cross click')">Cancel</button>
+                </div>
+              </ng-template>
           <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
             (click)="ResetAttributes();OpenModal(content)">Add </button>
           <ng-template #content let-modal>

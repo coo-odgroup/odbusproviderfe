@@ -37,6 +37,21 @@ export class AgentserviceService {
       catchError(this.errorHandler)
     )
   }
+
+  getAllOurData(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/ourAgentData', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getAllaginationOurData(url,post): Observable<any> {
+    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   create(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/Agent' , JSON.stringify(post), this.httpOptions)
     .pipe(
@@ -52,6 +67,13 @@ export class AgentserviceService {
   }
   chngsts(id){
     return this.httpClient.put<any>(this.apiURL + '/AgentChangeStatus/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  blockAgent(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/blockAgent' , JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

@@ -14,10 +14,16 @@ import { UserComponent } from './user/user.component';
 import { AgentComponent } from './agent/agent.component';
 import { AgentcomissionComponent } from './agentcomission/agentcomission.component';
 import { AgentfeeComponent } from './agentfee/agentfee.component';
+import { OuragentComponent } from './ouragent/ouragent.component';
+import { AgentwalletbalanceComponent } from './agentwalletbalance/agentwalletbalance.component';
+import { AgentalltransactionComponent } from './agentalltransaction/agentalltransaction.component';
+import { AgentfeedbackComponent } from './agentfeedback/agentfeedback.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+   
+  ],
   imports: [
     CommonModule,
     SharedModule,

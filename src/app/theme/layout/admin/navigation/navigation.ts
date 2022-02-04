@@ -711,7 +711,7 @@ const NavigationItems = [
       },
       {
         // id: 'ticketinformation',
-        title: 'Agent',
+        title: 'Manage Agent',
         type: 'collapse',
         icon: 'feather icon-cloud',
         children: [         
@@ -723,6 +723,28 @@ const NavigationItems = [
             url: 'reports/agentwalletrequest'
           },
           {
+            id: 'agentwalletbalance',
+            title: 'Agent Wallet Balance',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'setting/agentwalletbalance'
+          },
+          {
+            id: 'agentalltransaction',
+            title: 'Agent All Transaction',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'setting/agentalltransaction'
+          },
+          {
+            id: 'agentfeedback',
+            title: 'Agent Feedback',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'setting/agentfeedback'
+          },
+         
+          {
             id: 'pushnotification',
             title: 'Push Notification',
             type: 'item',
@@ -731,10 +753,17 @@ const NavigationItems = [
           },
           {
             id: 'agent',
-            title: 'Manage Agent',
+            title: 'Agent Requested',
             type: 'item',
             icon:'feather icon-user-plus',
             url: 'setting/agent'
+          },
+          {
+            id: 'ouragent',
+            title: 'Our Agent',
+            type: 'item',
+            icon:'feather icon-user-plus',
+            url: 'setting/ouragent'
           },
           {
             id: 'agentcomission',
