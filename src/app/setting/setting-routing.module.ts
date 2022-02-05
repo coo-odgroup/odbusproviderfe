@@ -73,6 +73,18 @@ const routes: Routes = [
         path: 'agentwalletbalance',
         loadChildren: () => import('./agentwalletbalance/agentwalletbalance.module').then(module => module.AgentwalletbalanceModule)
       },
+      {
+        path: 'agentbookingreport',
+        loadChildren: () => import('./agentbookingreport/agentbookingreport.module').then(module => module.AgentbookingreportModule)
+      },
+      {
+        path: 'agentcancellationreport',
+        loadChildren: () => import('./agentcancellationreport/agentcancellationreport.module').then(module => module.AgentcancellationreportModule)
+      },
+      {
+        path: 'agentcommissionreport',
+        loadChildren: () => import('./agentcommissionreport/agentcommissionreport.module').then(module => module.AgentcommissionreportModule)
+      },
     
     
       

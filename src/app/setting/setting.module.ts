@@ -18,11 +18,16 @@ import { OuragentComponent } from './ouragent/ouragent.component';
 import { AgentwalletbalanceComponent } from './agentwalletbalance/agentwalletbalance.component';
 import { AgentalltransactionComponent } from './agentalltransaction/agentalltransaction.component';
 import { AgentfeedbackComponent } from './agentfeedback/agentfeedback.component';
+import { AgentbookingreportComponent } from './agentbookingreport/agentbookingreport.component';
+import { AgentcommissionreportComponent } from './agentcommissionreport/agentcommissionreport.component';
+import { AgentcancellationreportComponent } from './agentcancellationreport/agentcancellationreport.component';
 
 
 @NgModule({
   declarations: [
-   
+
+  
+  
   ],
   imports: [
     CommonModule,

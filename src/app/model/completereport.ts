@@ -1,5 +1,6 @@
 export interface CompleteReport {
-    pnr: any;   
+    pnr: any; 
+    name: any;   
     bus_operator_id: any;   
     payment_id: any;
     date_type: any;

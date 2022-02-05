@@ -116,22 +116,20 @@
                 <td >{{page.balance}} </td>               
 
                 <td >
-                    <span class="badge bg-success text-dark" *ngIf="page.payment_via!='' && page.transaction_type =='c'"> 
-                       Wallet recharge
+                    <span style="color: #A511ED;" *ngIf="page.payment_via!='' && page.transaction_type =='c'"> 
+                       <b>Wallet recharge</b>
                     </span>                   
-                    <span class="badge bg-info text-dark" *ngIf="page.payment_via=='' && page.transaction_type =='c' && page.amount < 100"> 
-                      Commission Received
+                    <span style="color: #BC4107  ;" *ngIf="page.payment_via=='' && page.transaction_type =='c' && page.amount < 100"> 
+                      <b>Commission Received</b>
                     </span>                   
-                    <span class="badge bg-warning text-dark" *ngIf="page.payment_via=='' && page.transaction_type =='c' && page.amount > 100"> 
-                      Ticket Cancel Refund
+                    <span class=" text-dark" *ngIf="page.payment_via=='' && page.transaction_type =='c' && page.amount > 100"> 
+                      <b>Ticket Cancel Refund</b>
                     </span>                   
-                    <span class="badge bg-danger text-dark" *ngIf="page.payment_via=='' && page.transaction_type =='d'"> 
-                     Pnr Booking 
+                    <span style="color: #FF0000;" *ngIf="page.payment_via=='' && page.transaction_type =='d'"> 
+                     <b>Pnr Booking</b> 
                     </span>                   
                     
                 </td>
-       
-             
               </tr>
             </tbody>
             <tbody *ngIf="wallet?.length == 0">

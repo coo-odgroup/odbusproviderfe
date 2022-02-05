@@ -779,6 +779,27 @@ const NavigationItems = [
             icon:'feather icon-wind',
             url: 'setting/agentfee'
           },
+          {
+            id: 'agentbookingreport',
+            title: 'Agent Booking Report',
+            type: 'item',
+            icon:'feather icon-wind',
+            url: 'setting/agentbookingreport'
+          },
+          {
+            id: 'agentcancellationreport',
+            title: 'Agent Cancellation Report',
+            type: 'item',
+            icon:'feather icon-wind',
+            url: 'setting/agentcancellationreport'
+          },
+          // {
+          //   id: 'agentcommissionreport',
+          //   title: 'Agent Commission Report',
+          //   type: 'item',
+          //   icon:'feather icon-wind',
+          //   url: 'setting/agentcommissionreport'
+          // },
         ]
       },
       {
