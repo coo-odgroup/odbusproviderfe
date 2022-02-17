@@ -115,7 +115,7 @@ export class BusscheduleComponent implements OnInit {
           this.pagination= res.data.data;
           this.all =res.data;
           this.spinner.hide();
-           console.log(this.busSchedules);
+           //console.log(this.busSchedules);
         }
       );
     }

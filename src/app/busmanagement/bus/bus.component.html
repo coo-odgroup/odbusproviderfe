@@ -125,7 +125,7 @@
 
               <td>{{i+1}}</td>
               <td>{{bus.bus_operator.organisation_name }}<br>[{{ bus.bus_operator.operator_name }}]</td>
-              <td>{{ bus.name }}</td>
+              <td>{{ bus.name }}  <br> (Bus ID : {{bus.id}}) </td>
               <td class="text-uppercase">{{ bus.bus_number }}</td>
               <!-- <td>{{ bus.via}}</td> -->
               <td>
@@ -2553,7 +2553,7 @@
                           <th>Bus Type </th> 
                         </tr>
                         <tr>
-                          <td> {{busRecord.name}} </td>
+                          <td> {{busRecord.name}}</td>
                           <td><span class="text-danger"> <b>{{busRecord.bus_number}}</b></span></td>
                           <td><span> {{busRecord.bus_operator.organisation_name}}<br> [{{busRecord.bus_operator.operator_name}}]</span></td>
                           <td>{{busRecord.via}} </td>
