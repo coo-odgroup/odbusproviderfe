@@ -1,4 +1,5 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
 <div class="row">
   <div class="col-sm-12">
     <app-card [hidHeader]="false" cardTitle="BUS SCHEDULE" cardClass="card-datatable"  [options]="false"
@@ -80,8 +81,8 @@
           </thead>
           <tbody *ngIf="busSchedules?.length != 0">
             <tr *ngFor="let busSchedule of busSchedules; let i=index; ">
-              <td>{{ i+1 }}</td>
-              <td (click)="showEntryDates($event,i)">{{ busSchedule.bus.bus_operator.organisation_name }}  [{{ busSchedule.bus.bus_operator.operator_name }}]</td>
+              <td>{{ i+1 }} </td>
+              <td (click)="showEntryDates($event,i);OpenModal(schedulecontent);">{{ busSchedule.bus.bus_operator.organisation_name }}  [{{ busSchedule.bus.bus_operator.operator_name }}] </td>
 
               <td *ngIf="busSchedule.from_location!='' && busSchedule.from_location!=null">
                   {{busSchedule.from_location[0].name}} - {{busSchedule.to_location[0].name}}
@@ -148,24 +149,9 @@
         </div>
       </div>
       <div class="app-card-footer">
-        <div class="row">
-          <div class="col-sm-12" *ngIf="showdates==1">           
-            <div class="row">
-              <div class="col-sm-6">
-                <h4>{{busScheduleRecord.bus.name}} [ {{busScheduleRecord.bus.bus_number}}]</h4>
-              </div>
-              <div class="col-sm-6 text-right ">
-                <span *ngIf="busScheduleRecord.from_location?.length!= 0 && busScheduleRecord.to_location?.length!= 0 " >
-                  <h5 class="text-danger">{{busScheduleRecord.from_location[0].name}} >>  {{busScheduleRecord.to_location[0].name}}</h5>
-                </span>               
-              </div>
-            </div>               
-            <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date;"
-              class="col-2" >               
-               {{entryDate.entry_date}}      
-            </label>
-          </div>
-        </div>
+
+        
+
       </div>
     </app-card>
    
@@ -197,9 +183,10 @@
     </ng-template>
     <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
       (click)="ResetAttributes();loadServices();OpenModal(content);">Add</button>
+
     <ng-template #content let-modal>
       <div class="modal-header">
-        <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+        <h5 class="ng-tns-c116-5"> {{ModalHeading}} </h5>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
             aria-hidden="true">&times;</span></button>
       </div>
@@ -304,5 +291,40 @@
           (click)="modal.dismiss('Cross click')">Close</button>
       </div>
     </ng-template>
+
+
+
+
+
+    <ng-template #schedulecontent let-modal>
+      <div class="modal-header">
+        <h5 class="ng-tns-c116-5">{{busScheduleRecord.bus.name}} [ {{busScheduleRecord.bus.bus_number}} ] - 
+          <span class="text-danger"> ( {{busScheduleRecord.from_location[0].name}} <i class="fa fa-solid fa-arrow-right"></i>   {{busScheduleRecord.to_location[0].name}} )</span></h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+       
+        <!-- Bus Schedule Info -->
+        <div class="row">
+          <div class="col-sm-12" *ngIf="showdates==1"> 
+            <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date;"
+              class="col-2" >               
+               {{entryDate.entry_date}}      
+            </label>
+          </div>
+        </div>
+        <!-- // // -->
+      </div>
+      <div class="modal-footer">
+       
+        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+          (click)="modal.dismiss('Cross click')">Close</button>
+      </div>
+    </ng-template>
+
+
   </div>
-</div>
+
+
+ 
