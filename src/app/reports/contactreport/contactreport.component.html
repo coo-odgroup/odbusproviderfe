@@ -103,7 +103,7 @@
               <th scope="col" width="150px">Date</th>
               <th scope="col">Name</th>
               <th scope="col">Phone Number</th>
-              <th scope="col">Operator</th>
+              <!-- <th scope="col">Operator</th> -->
               <th scope="col">Email Id</th>
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
@@ -114,7 +114,11 @@
               <td>{{contact.created_at | date: 'dd/MM/yyyy'}}</td>
               <td>{{contact.name}}</td>
               <td>{{contact.phone}}</td>
-              <td>{{contact.bus_operator.operator_name}}</td>
+              <!-- <td>
+                <span *ngIf="contact.bus_operator!=null">
+                  {{contact.bus_operator.operator_name}}
+                </span>
+              </td> -->
               <td>{{contact.email}}</td>
               <td class="hide_print">
                 <div class="overlay-edit">

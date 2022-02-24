@@ -69,6 +69,14 @@ export class BusscheduleService {
       catchError(this.errorHandler)
     )
   }
+ 
+  unschedulebuslist(){
+    return this.httpClient.get<any>(this.apiURL + '/unscheduledbuslist', this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

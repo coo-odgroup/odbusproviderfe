@@ -119,6 +119,7 @@ export class ContactreportComponent implements OnInit {
       this.cs.contactReport(data).subscribe(
         res => {
           this.contactcontent= res.data.data;
+          console.log(this.contactcontent);
           this.pagination= res.data;
           this.spinner.hide();
         }

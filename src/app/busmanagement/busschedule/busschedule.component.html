@@ -35,9 +35,7 @@
         
                
             <div class="col-6">
-              <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
-                <i class="fas fa-search"> </i> Search
-              </button> -->
+              
               <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                 <i class="fas fa-sync-alt"> </i> Refresh
               </button>
@@ -48,6 +46,9 @@
                 [useExistingCss]="true" title="Print">
                 <i class="fas fa-print"> </i> Print
               </button>
+              <button type="button" class="btn btn-primary  sml_input" (click)="unschedulebuslist();OpenModal(unschedule);" title="search">
+                <i class="fas fa-list"> </i> UNSCHEDULES BUS LIST
+              </button> 
             </div>
                 <div class="col-2">                 
                    <div class="dropdown float-right">
@@ -287,6 +288,62 @@
       <div class="modal-footer">
         <button type="button" [disabled]="!busScheduleForm.valid" (click)="addBusSchedule()" class="btn btn-primary"
           ngbAutofocus>{{ModalBtn}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+          (click)="modal.dismiss('Cross click')">Close</button>
+      </div>
+    </ng-template>
+
+    <ng-template #unschedule let-modal>
+      <div class="modal-header">
+        <h5 class="ng-tns-c116-5">NO OF UNSCHEDULE BUS LIST  = <span *ngIf="unSubscribeData?.length != 0" class="text-danger" style="font-size: 25px;;">{{unSubscribeData.length}}</span> </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-material">
+              <div class="right-icon-control">
+                <div class="table-responsive"  id="print-section">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Operator Details</th>                        
+                        <th>Bus Details</th>
+                        <th>VIA</th>
+                        <th style="width: 180px;">Created/Updated On</th>
+                        <th>Created By</th>
+                       <!--  <th>Status</th> -->
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="unSubscribeData?.length != 0">
+                      <tr *ngFor="let unSchedule of unSubscribeData; let i=index; ">
+                          <td>{{unSchedule.id}}</td>
+                          <td>{{unSchedule.bus_operator.operator_name}}<br>{{unSchedule.bus_operator.organisation_name}}</td>                          
+                          <td>{{unSchedule.name}}<br>{{unSchedule.bus_number}}</td>
+                          <td>{{unSchedule.via}}</td>
+                          <td>{{unSchedule.updated_at | date: 'dd/MM/yyyy'}}</td>
+                          <td>{{unSchedule.created_by}}</td>
+                     
+                          <!-- <td>{{i+1}}</td> -->
+                      </tr>
+                    </tbody>
+                    <tbody *ngIf="unSubscribeData?.length == 0">
+                      <tr>
+                        <td colspan="6" class="no-data-available">No data!</td>
+                      </tr>
+                    <tbody>
+                  </table>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>       
+      </div>
+      <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
           (click)="modal.dismiss('Cross click')">Close</button>
       </div>

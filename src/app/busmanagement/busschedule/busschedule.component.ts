@@ -52,6 +52,7 @@ export class BusscheduleComponent implements OnInit {
   pagination: any;
   all: any;
   cancelDates: any;
+  unSubscribeData: any;
   constructor(private buscanCellationService: BuscancellationService,private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
     this.isSubmit = false;
@@ -382,6 +383,26 @@ export class BusscheduleComponent implements OnInit {
         }
       }
     );
+  }
+
+  unschedulebuslist()
+  {
+    this.unSubscribeData=[];
+    this.spinner.show();
+    this.busscheduleService.unschedulebuslist().subscribe(
+      resp => {
+        if(resp.status==1)
+          {   
+            this.unSubscribeData=  resp.data; 
+            this.spinner.hide();
+            // console.log(resp.data);          
+            // this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+            // this.modalReference.close();
+            // this.ResetAttributes();
+            // this.refresh();
+          }
+
+    })
   }
   
 }
