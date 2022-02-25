@@ -32,6 +32,8 @@ export class SeatblockComponent implements OnInit {
   confirmDialogReference: NgbModalRef;
 
   seatBlock: any=[];
+  seatBlockDetails: any;
+
   // seatBlock: Seatblock[];
   seatBlockRecord: Seatblock;
 
@@ -263,6 +265,12 @@ export class SeatblockComponent implements OnInit {
      this.search();
   
     
+   }
+
+   viewDetails(id)
+   {
+    // console.log(id);
+    this.seatBlockDetails= this.seatBlock[id] ;
    }
 
 
@@ -737,6 +745,7 @@ export class SeatblockComponent implements OnInit {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
           this.confirmDialogReference.close();
+          this.modalReference.close();
 
           this.refresh();
         }

@@ -114,8 +114,9 @@
               <th>#</th>
               <th>Bus</th>
               <th>Operator</th>
+              <th>View Details</th>    
               
-              <th>&nbsp;</th>        
+              <!-- <th>&nbsp;</th>         -->
             
             </tr>
           </thead>
@@ -128,62 +129,9 @@
                   [ {{ sopen[0][0].value[0].bus.bus_operator.operator_name }} ]     
               </td>
               <td>
-                <table>                 
-                  <tr *ngFor="let opendate of sopen;let dateIndex= index ">
-                    <!-- <td>
-                       {{opendate[i].value[0].operation_date}} 
-                    </td>  -->
-                    <td>
-                      <table>
-                        <tr>
-                          <th><small> Date</small> </th>
-                          <th> <small>Route </small> </th>                     
-                          <th> <small> Extra Seats Block</small> </th> 
-                           <th> <small> Reason</small> </th>
-                          <th> <small> Created On</small> </th>
-                          <th><small>  Created By</small></th>
-                          <th class="hide_print">Action</th>
-                        </tr>
-                        <tr *ngFor="let routdate of opendate;let routIndex= index ">
-                          <td>
-                            {{routdate.value[0].operation_date}}
-                          </td>
-                          <td>
-                            {{routdate.value[0].source[0].name}} >> {{routdate.value[0].destination[0].name}}
-                          </td>
-                          <td>
-                            <span *ngFor="let seat of routdate.value; let seatIndex= index ">
-                              {{seat.seats.seatText}}, 
-                            </span>                           
-                          </td>
-                          <td>
-                            {{routdate.value[0].reason}} <br> {{routdate.value[0].other_reason}}
-                          </td>
-
-                          <td>
-                            {{routdate.value[0].created_at  | date: 'dd/MM/yyyy'}} 
-                          </td>
-                          <td>
-                            {{routdate.value[0].created_by}} 
-                          </td>
-
-                          <td class="hide_print">
-                            <div class="overlay-edit">
-                              <button type="button" 
-                                      (click)="openConfirmDialog (confirmDialog,
-                                               sopen[0][0].value[0].bus.id ,
-                                              routdate.value[routIndex].ticket_price_id,
-                                              routdate.value[routIndex].operation_date)" class="btn btn-icon btn-danger">
-                                              <i  class="feather icon-trash-2"></i>
-                                </button>
-                            </div>
-                          </td>                          
-                        </tr>
-                      </table>
-                    </td>                              
-                  </tr>
-                </table>
-              </td>            
+                <button (click)="OpenModal(details);viewDetails(i);" class="btn btn-info"> <i class="fas fa-eye"> </i></button> 
+            </td>
+                         
             </tr>
           </tbody>
           <tbody *ngIf="seatOpen?.length == 0">
@@ -668,6 +616,96 @@
             >
               {{ ModalBtn }}
             </button>
+            <button
+              type="button"
+              class="btn btn-default"
+              data-dismiss="modal"
+              #defaultClick
+              (click)="modal.dismiss('Cross click')"
+            >
+              Close
+            </button>
+          </div>
+        </ng-template>
+
+        <ng-template #details let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">Extra Seat Block Details Of [<b class="text-danger">{{ extraSeatBlockDetails[0][0].value[0].bus.name}}: {{ extraSeatBlockDetails[0][0].value[0].bus.bus_number}}</b>]</h5>
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <table  class="col-sm-12">                  
+                  <tr *ngFor="let opendate of extraSeatBlockDetails;let dateIndex= index ">
+                    <td>
+                      <!-- {{opendate |json}} -->
+                      <table class="table table-striped">
+                        <tr>
+                          <th><small> #</small> </th>
+                          <th><small> Date</small> </th>
+                          <th> <small>Route </small> </th>                     
+                          <th> <small> Extra Seats Block</small> </th> 
+                           <th> <small> Reason</small> </th>
+                          <th> <small> Created On</small> </th>
+                          <th><small>  Created By</small></th>
+                          <th class="hide_print">Action</th>
+                        </tr>
+                        <tr *ngFor="let routdate of opendate;let routIndex= index ">
+                          <td>
+                            {{routIndex+1}}
+                          </td>
+                          <td>
+                            {{routdate.value[0].operation_date}}
+                          </td>
+                          <td>
+                            {{routdate.value[0].source[0].name}} >> {{routdate.value[0].destination[0].name}}
+                          </td>
+                          <td>
+                            <span *ngFor="let seat of routdate.value; let seatIndex= index ">
+                              {{seat.seats.seatText}}, 
+                            </span>                           
+                          </td>
+                          <td>
+                            {{routdate.value[0].reason}} <br> {{routdate.value[0].other_reason}}
+                          </td>
+        
+                          <td>
+                            {{routdate.value[0].created_at  | date: 'dd/MM/yyyy'}} 
+                          </td>
+                          <td>
+                            {{routdate.value[0].created_by}} 
+                          </td>
+        
+                          <td class="hide_print">
+                            <div class="overlay-edit">
+                              <button type="button" 
+                                      (click)="openConfirmDialog (confirmDialog,
+                                              opendate[0].value[0].bus.id ,
+                                              routdate.value[0].ticket_price_id,
+                                              routdate.value[0].operation_date)" class="btn btn-icon btn-danger">
+                                              <i  class="feather icon-trash-2"></i>
+                                </button>
+                            </div>
+                          </td>
+                          
+                        </tr>
+                      </table>
+        
+                    </td>                              
+                  </tr>
+                  </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
             <button
               type="button"
               class="btn btn-default"

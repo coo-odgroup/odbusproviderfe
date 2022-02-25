@@ -32,7 +32,6 @@ export class SeatopenComponent implements OnInit {
   confirmDialogReference: NgbModalRef;
 
   seatOpen: any=[];
-  // seatOpen: Seatopen[];
   seatOpenRecord: Seatopen;
 
 
@@ -65,6 +64,7 @@ export class SeatopenComponent implements OnInit {
   deletedata: any;
   page_no=1;
   busSchedule: any;
+  seatOpenDetails: any;
   constructor(
     private seatopenService: SeatopenService,
     private seatlayoutService: SeatlayoutService,
@@ -261,6 +261,13 @@ export class SeatopenComponent implements OnInit {
     
 
 
+  }
+
+
+  viewDetails(id)
+  {
+   // console.log(id);
+   this.seatOpenDetails= this.seatOpen[id] ;
   }
 
 
@@ -717,6 +724,7 @@ export class SeatopenComponent implements OnInit {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
           this.confirmDialogReference.close();
+          this.modalReference.close();
           this.refresh();
         }
         else {

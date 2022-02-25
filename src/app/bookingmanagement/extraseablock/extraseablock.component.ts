@@ -67,6 +67,7 @@ export class ExtraseablockComponent implements OnInit {
   page_no=1;
   busSchedule: any[];
   cancelDates: any;
+  extraSeatBlockDetails: any;
   constructor(
     private buscanCellationService: BuscancellationService,
     private seatopenService: ExtraseatblockService,
@@ -263,6 +264,12 @@ export class ExtraseablockComponent implements OnInit {
     
 
 
+  }
+
+  viewDetails(id)
+  {
+   // console.log(id);
+   this.extraSeatBlockDetails= this.seatOpen[id] ;
   }
 
 
@@ -700,7 +707,7 @@ console.log(data);
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
-          this.confirmDialogReference.close();
+          this.confirmDialogReference.close();this.modalReference.close();
           this.refresh();
         }
         else {

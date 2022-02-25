@@ -80,7 +80,8 @@ export class BusscheduleComponent implements OnInit {
 
     this.searchForm = this.fb.group({  
       name: [null],  
-      rows_number: Constants.RecordLimit,
+      // rows_number: Constants.RecordLimit,
+      rows_number: 50,
     });
 
     this.search();
@@ -395,11 +396,6 @@ export class BusscheduleComponent implements OnInit {
           {   
             this.unSubscribeData=  resp.data; 
             this.spinner.hide();
-            // console.log(resp.data);          
-            // this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-            // this.modalReference.close();
-            // this.ResetAttributes();
-            // this.refresh();
           }
 
     })
