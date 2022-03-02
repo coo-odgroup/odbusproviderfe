@@ -204,12 +204,15 @@
                                     </span> -
                                     ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
                                     <br>
-                                    <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
+                                    <span *ngIf="complete.customer_payment">
+                                        <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
+                                  
+                                    
                                     <br>
                                     <strong
                                         style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
 
-
+                                    </span>
                                 </td>
 
 
@@ -494,8 +497,16 @@
                         <td>
                             {{complete.odbus_charges}}
                         </td>
-                        <td>{{complete.customer_payment.razorpay_id}} </td>
-                        <td>{{complete.customer_payment.order_id}}</td>
+                        <td>
+                            <span *ngIf="complete.customer_payment">
+                                {{complete.customer_payment.razorpay_id}} 
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.customer_payment">
+                                {{complete.customer_payment.order_id}}
+                            </span>
+                        </td>
                         <!-- <td>{{complete.created_at | date: 'dd/MM/yyyy  HH:mm:ss'}}</td> -->
                         <td>
                             {{complete.users.name}}

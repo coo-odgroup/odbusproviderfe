@@ -65,6 +65,8 @@ export class AgentComponent implements OnInit {
       address: [null, Validators.compose([Validators.required])],
       landmark: [null, Validators.compose([Validators.required])],
       pincode: [null, Validators.compose([Validators.required])],
+      street: [null, Validators.compose([Validators.required])],
+      city: [null, Validators.compose([Validators.required])],
       name_on_bank_account: [null],
       bank_name: [null],
       ifsc_code: [null],
@@ -189,12 +191,14 @@ export class AgentComponent implements OnInit {
       phone: [null, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
       password: [null, Validators.compose([Validators.required,Validators.minLength(6)])],
       location: [null, Validators.compose([Validators.required])],
-      adhar_no: [null, Validators.compose([ Validators.required,Validators.minLength(14),Validators.maxLength(14)])],
+      adhar_no: [null, Validators.compose([ Validators.required,Validators.minLength(12),Validators.maxLength(12)])],
       pancard_no: [null, Validators.compose([Validators.required])],
       organization_name: [null],
       address: [null, Validators.compose([Validators.required])],
       landmark: [null, Validators.compose([Validators.required])],
       pincode: [null, Validators.compose([Validators.required])],
+      street: [null, Validators.compose([Validators.required])],
+      city: [null, Validators.compose([Validators.required])],
       name_on_bank_account: [null],
       bank_name: [null],
       ifsc_code: [null],
@@ -220,6 +224,8 @@ export class AgentComponent implements OnInit {
       organization_name:this.form.value.organization_name,
       address:this.form.value.address,
       landmark:this.form.value.landmark,
+      city:this.form.value.city,
+      street:this.form.value.street,
       pincode:this.form.value.pincode,
       name_on_bank_account:this.form.value.name_on_bank_account,
       bank_name:this.form.value.bank_name,
@@ -287,6 +293,8 @@ export class AgentComponent implements OnInit {
       address: [this.agentRecord.address,Validators.compose([Validators.required])],
       landmark: [this.agentRecord.landmark,Validators.compose([Validators.required])],
       pincode: [this.agentRecord.pincode,Validators.compose([Validators.required])],
+      street: [this.agentRecord.street,Validators.compose([Validators.required])],
+      city: [this.agentRecord.city,Validators.compose([Validators.required])],
       name_on_bank_account: [this.agentRecord.name_on_bank_account],
       bank_name: [this.agentRecord.bank_name],
       ifsc_code: [this.agentRecord.ifsc_code],
@@ -302,8 +310,15 @@ export class AgentComponent implements OnInit {
   }
   changeStatus(event : Event, stsitem:any)
   { 
+    const data = {
+      created_by: localStorage.getItem('USERNAME'),
+      id:stsitem
+    }
+    // console.log(data);
+    // return;
+
     this.spinner.show();
-    this.AgentserviceService.chngsts(stsitem).subscribe(
+    this.AgentserviceService.chngsts(data).subscribe(
       resp => {
         if(resp.status==1)
         {

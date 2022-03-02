@@ -119,10 +119,10 @@
                     <span style="color: #A511ED;" *ngIf="page.payment_via!='' && page.transaction_type =='c'"> 
                        <b>Wallet recharge</b>
                     </span>                   
-                    <span style="color: #BC4107  ;" *ngIf="page.payment_via=='' && page.transaction_type =='c' && page.amount < 100"> 
+                    <span style="color: #BC4107  ;" *ngIf="page.type=='Commission'"> 
                       <b>Commission Received</b>
                     </span>                   
-                    <span class=" text-dark" *ngIf="page.payment_via=='' && page.transaction_type =='c' && page.amount > 100"> 
+                    <span class=" text-dark" *ngIf="page.type=='Refund'"> 
                       <b>Ticket Cancel Refund</b>
                     </span>                   
                     <span style="color: #FF0000;" *ngIf="page.payment_via=='' && page.transaction_type =='d'"> 
