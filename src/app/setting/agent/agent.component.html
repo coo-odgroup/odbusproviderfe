@@ -346,6 +346,20 @@
                                 </div>
                               </div>
                             </div>
+                            <div class="col-md-6">     
+                              <div class="row">
+                                <label for="Name"
+                                class="col-sm-3 col-form-label">Area,Colony,Street,Sector,Village<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" formControlName="street" id="street"
+                                        placeholder="Area,Colony,Street,Sector,Village" />
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['street'].touched && form.controls['street'].hasError('required')">
+                                        Area,Colony,Street,Sector,Village </span>
+                                </div>
+                              </div>                      
+                            </div>
                             <div class="col-md-6">
                               <div class="form-group row">
                                 <label for="landmark" class="col-sm-3 col-form-label">Landmark<span
@@ -358,6 +372,36 @@
                                 </div>
                               </div>
                             </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="Name" class="col-sm-3 col-form-label">Town/City<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" formControlName="city" id="city"
+                                        placeholder="Town/City" />
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['city'].touched && form.controls['city'].hasError('required')">
+                                        Town/city is required! </span>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="Name" class="col-sm-4 col-form-label">PinCode<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" formControlName="pincode"
+                                        id="pincode" placeholder="PinCode" minlength="6" maxlength="6"
+                                        oninput="this.value=this.value.replace(/[^\d]/,'')" />
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('required')">
+                                        Pincode is required! </span>
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('minlength')">
+                                        Pincode is of 6 character required! </span>
+                                </div>
+                            </div>
+                            </div> -->
   
                         </div>
                         <div class="row">

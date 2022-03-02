@@ -65,13 +65,19 @@ export class AgentserviceService {
       catchError(this.errorHandler)
     )
   }
-  chngsts(id){
-    return this.httpClient.put<any>(this.apiURL + '/AgentChangeStatus/' + id, this.httpOptions)
+  // chngsts(id){
+  //   return this.httpClient.put<any>(this.apiURL + '/AgentChangeStatus/' + id, this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
+  chngsts(post): Observable<any> {
+    return this.httpClient.put<any>(this.apiURL + '/AgentChangeStatus' , JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-
   blockAgent(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/blockAgent' , JSON.stringify(post), this.httpOptions)
     .pipe(
