@@ -19,6 +19,7 @@ export class Constants {
     //  public static PATHURL:any = 'http://127.0.0.1:8000/uploads/';
     
      public static BASE_URL:any ='https://provider.odbus.co.in/api';
+     public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api';
      public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
     
 
