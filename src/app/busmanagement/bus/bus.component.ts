@@ -431,6 +431,7 @@ export class BusComponent implements OnInit {
       this.busService.getAllData(data).subscribe(
         res => {
           this.buses= res.data.data.data;
+         // console.log(this.buses);
           this.pagination= res.data.data;
           this.all =res.data;
           this.spinner.hide();
@@ -459,7 +460,7 @@ export class BusComponent implements OnInit {
    {
      
      /* pass here the table id */
-     let element = document.getElementById('print-section');
+     let element = document.getElementById('expert_table');
      const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
   
      /* generate workbook and add the worksheet */

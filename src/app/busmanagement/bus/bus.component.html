@@ -103,7 +103,7 @@
       </div>
       </div>
 
-      <div class="table-responsive" id="print-section">
+      <div class="table-responsive" id="print-section" >
         <table class="table table-striped ">
           <thead>
             <tr>
@@ -2722,6 +2722,113 @@
         </ng-template>
 
 
+      </div>
+
+
+
+
+      <div class="table-responsive d-none" id="expert_table">
+        <table class="table table-striped ">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Organization Name</th>
+              <th>Bus Name</th>
+              <th>Bus Number</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Via</th>
+              <th>Bus Safety</th>
+              <th>Bus Type</th>
+              <th>Bus Amenities</th>
+              <th>Seat Allotted</th>
+              <th>Sleeper Allotted</th>
+              <th>Seat Fare</th>
+              <th>Sleeper Fare</th>
+              <th>Departure Time</th>
+              <th>Arrival Time</th>
+              <th>Journey Duration</th>
+              <th>Bus Operator Name</th>
+              <th>Contact (Owner)</th>
+              <th>Contact (Manager)</th>
+              <th>Contact (Conductor)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="buses?.length != 0">
+            <tr *ngFor="let bus of buses; let i=index; ">
+              <td>{{i+1}}</td>
+              <td>{{ bus.bus_operator.organisation_name }}</td>
+              <td>{{ bus.name }} </td>
+              <td>{{ bus.bus_number}} </td>
+              <td>{{ bus.ticket_price[0].from_location[0].name }}</td>
+              <td>{{ bus.ticket_price[0].to_location[0].name }} </td>
+              <td>{{ bus.via}} </td>
+              <td>
+                <span *ngFor="let safety of bus.bus_safety; let i=index; ">
+                  {{safety.safety.name}},
+                </span> 
+              </td>
+              <td>{{bus.bus_type.name}} </td>
+              <td>
+                <span *ngFor="let amenities of bus.bus_amenities; let i=index; ">
+                  {{amenities.amenities.name}},
+                </span>
+              </td>
+              <td>
+                <span *ngFor="let allSeats of bus.ticket_price[0].get_bus_seats">
+                  <span *ngIf="allSeats.seats!=null">
+                    <span *ngIf="allSeats.seats.seat_class_id==1">
+                      {{allSeats.seats.seatText}},  
+                    </span>
+                  </span>                                
+                </span>
+              </td>
+              <td>
+                <span class="text-uppercase"  *ngFor="let allSeats of bus.ticket_price[0].get_bus_seats">
+                  <span *ngIf="allSeats.seats!=null">
+                    <span *ngIf="allSeats.seats.seat_class_id==2 || allSeats.seats.seat_class_id==3">
+                      {{allSeats.seats.seatText}} ,  
+                    </span>
+                  </span>
+                </span>
+              </td>
+              <td>
+                  {{bus.ticket_price[0].base_seat_fare}}
+              </td>
+              <td>
+                  {{bus.ticket_price[0].base_sleeper_fare}}  
+              </td>
+              <td>{{bus.ticket_price[0].dep_time | date:'h:mm a'}} </td>
+              <td>{{bus.ticket_price[0].arr_time | date:'h:mm a'}} </td>
+              <td>{{bus.ticket_price[0].j_day}} Day(s)</td>
+              <td>{{bus.bus_operator.operator_name}} </td>
+              <td> 
+                <span *ngFor="let owner of bus.bus_contacts ">
+                  <span *ngIf="owner.type == 0">
+                    {{owner.phone}}
+                  </span>
+                </span>
+              </td>
+              <td> 
+                <span *ngFor="let manager of bus.bus_contacts ">
+                  <span *ngIf="manager.type == 1">
+                    {{manager.phone}}
+                  </span>
+                </span>
+              </td>
+              <td> 
+                <span *ngFor="let conductor of bus.bus_contacts ">
+                  <span *ngIf="conductor.type == 2">
+                    {{conductor.phone}}
+                  </span>
+                </span>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+        
+        
       </div>
 
 
