@@ -72,7 +72,8 @@
             <tr>
               <th>ID</th>
               <th>Operator</th>
-              <th>Source - Destination</th>
+              <th>Source</th>
+              <th>Destination</th>
               <th>BusName/Number</th>
               <th style="width: 180px;">Created/Updated On</th>
               <th>Created By</th>
@@ -86,8 +87,13 @@
               <td (click)="showEntryDates($event,i);OpenModal(schedulecontent);">{{ busSchedule.bus.bus_operator.organisation_name }}  [{{ busSchedule.bus.bus_operator.operator_name }}] </td>
 
               <td *ngIf="busSchedule.from_location!='' && busSchedule.from_location!=null">
-                  {{busSchedule.from_location[0].name}} - {{busSchedule.to_location[0].name}}
+                  {{busSchedule.from_location[0].name}}
               </td>
+
+              <td *ngIf="busSchedule.from_location!='' && busSchedule.from_location!=null">
+                 {{busSchedule.to_location[0].name}}
+              </td>
+
               <td *ngIf="busSchedule.from_location=='' || busSchedule.from_location==null">
                   ----no data-----
               </td>

@@ -75,7 +75,8 @@
                             <th>#</th>
                             <th >Coupan type</th>
                             <th>Operator</th>
-                            <th>Route</th>
+                            <th>Source</th>
+                            <th>Destination</th>
                             <th>Valid From</th>
                             <th>Valid Till</th>
                             <th>Coupon Title</th>
@@ -106,11 +107,19 @@
                                 </span>
                             </td>
                             <td>
-                                <span *ngIf="couponData.from_location!=null && couponData.to_location!=null">
-                                    {{couponData.from_location[0].name}} >> {{couponData.to_location[0].name}}
+                                <span *ngIf="couponData.from_location!=null">
+                                    {{couponData.from_location[0].name}} 
                                 </span>
-                                <span *ngIf="couponData.from_location==null && couponData.to_location==null">
-                                    --No Route--
+                                <span *ngIf="couponData.from_location==null">
+                                    -- Source not found --
+                                </span> 
+                            </td>
+                            <td>
+                                <span *ngIf="couponData.to_location!=null">
+                                    {{couponData.to_location[0].name}}
+                                </span>
+                                <span *ngIf="couponData.to_location==null">
+                                    -- Destination not found --
                                 </span>
                             </td>
                             <td>{{couponData.from_date | date: 'MMM d, y'}}</td>

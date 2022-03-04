@@ -80,7 +80,9 @@
                             <th>Id</th>
                             <th>Pnr No</th>
                             <th>Bus Details</th>
-                            <th>From - To</th>
+                            <!-- <th>From - To</th> -->
+                            <th>Source</th>
+                            <th>Destination</th>
                             <th>Cancel Date</th>
                             <th>Seat no</th>                         
                             <th>Cancelled By</th>                            
@@ -95,8 +97,14 @@
                                 {{cancelTkt.bus.name}}<br>
                                 {{cancelTkt.bus.bus_number}}
                             </td>
-                            <td>
+                            <!-- <td>
                                 {{cancelTkt.from_location[0].name}} >>
+                                {{cancelTkt.to_location[0].name}} 
+                            </td> -->
+                            <td>
+                                {{cancelTkt.from_location[0].name}} 
+                            </td>
+                            <td>
                                 {{cancelTkt.to_location[0].name}} 
                             </td>
 

@@ -61,7 +61,8 @@
               <th>ID</th>
               <th>Name</th>
               <th>Via</th>
-              <th>Source >> Destination</th>
+              <th>Source</th>
+              <th>Destination</th>
               <th>Bus number</th>
               <th>Last Changes</th>
               <th scope="col">Created/Updated On</th>
@@ -76,10 +77,17 @@
               <td>{{ bus.name }}</td>
               <td>{{ bus.via }}</td>
               <td>
-                <span *ngIf="bus.from_location?.length > 0 && bus.to_location?.length > 0">
-                   {{bus.from_location[0].name}} >> {{bus.to_location[0].name}} 
+                <span *ngIf="bus.from_location?.length > 0 ">
+                   {{bus.from_location[0].name}}
                  </span>              
               </td>
+
+              <td>
+                <span *ngIf="bus.to_location?.length > 0">
+                   {{bus.to_location[0].name}} 
+                 </span>              
+              </td>
+
               <td>{{ bus.bus_number }}</td>
               <td>
                 Value

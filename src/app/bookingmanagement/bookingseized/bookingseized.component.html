@@ -76,7 +76,9 @@
               <th scope="col">#</th>
               <th scope="col">Operator Name</th>
               <th scope="col">Bus Name/Number</th>
-              <th scope="col">Location Name </th>
+              <!-- <th scope="col">Location Name </th> -->
+              <th scope="col">Source </th>
+              <th scope="col">Destination </th>
               <th scope="col">Time in  minute </th>
               <th scope="col">Reason</th>
               <th scope="col">Created By</th>
@@ -89,9 +91,16 @@
               <td>{{i+1}}</td>
               <td>{{seized.bus.bus_operator.operator_name}}</td>
               <td>{{seized.bus.name}} <br> {{seized.bus.bus_number}}</td>
-              <td>
+              <!-- <td>
                 {{seized.from_location[0].name}} >> {{seized.to_location[0].name}}               
+              </td> -->
+              <td>
+                {{seized.from_location[0].name}}             
               </td>
+              <td>
+                {{seized.to_location[0].name}}               
+              </td>
+
               <td>
                 {{seized.seize_booking_minute}}              
               </td>

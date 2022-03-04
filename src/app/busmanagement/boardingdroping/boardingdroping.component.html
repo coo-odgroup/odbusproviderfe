@@ -83,8 +83,8 @@
               <td>{{ i+1}}</td>
               <td>{{ BoardDrop.name }}</td>
               <td>
-                <div *ngFor="let bp of BoardDrop.boarding_dropping; let dura=index;"><strong>{{dura+1}}</strong>. {{
-                  bp.boarding_point }}</div>
+                <div *ngFor="let bp of BoardDrop.boarding_dropping; let dura=index;">{{
+                  bp.boarding_point }}, </div>
               </td>
               <td>{{ BoardDrop.boarding_dropping[0].created_by }}</td>
               <td>{{ BoardDrop.boarding_dropping[0].updated_at| date: 'dd/MM/yyyy' }}</td>
