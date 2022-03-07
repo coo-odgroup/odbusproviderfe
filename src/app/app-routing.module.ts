@@ -80,6 +80,11 @@ const routes: Routes = [
         canActivate: [Routeguard]
       },
       {
+        path: 'association',
+        loadChildren: () => import('./association/association.module').then(module => module.AssociationModule),
+        canActivate: [Routeguard]
+      },
+      {
         path: 'ticketinformation',
         loadChildren: () => import('./ticketinformation/ticketinformation.module').then(module =>module.TicketinformationModule)
       },

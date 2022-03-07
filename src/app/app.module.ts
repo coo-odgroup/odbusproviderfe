@@ -18,19 +18,16 @@ import { NavLeftComponent } from './theme/layout/admin/nav-bar/nav-left/nav-left
 import { NavSearchComponent } from './theme/layout/admin/nav-bar/nav-left/nav-search/nav-search.component';
 import { NavRightComponent } from './theme/layout/admin/nav-bar/nav-right/nav-right.component';
 import { ConfigurationComponent } from './theme/layout/admin/configuration/configuration.component';
-
 import { ToggleFullScreenDirective } from './theme/shared/full-screen/toggle-full-screen';
 /* Menu Items */
 import { NavigationItem } from './theme/layout/admin/navigation/navigation';
 import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgSelectModule} from '@ng-select/ng-select';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
-
 
 
 
@@ -49,7 +46,7 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NavSearchComponent,
     NavRightComponent,
     ConfigurationComponent,
-    ToggleFullScreenDirective
+    ToggleFullScreenDirective,
   ],
   imports: [
     BrowserModule,

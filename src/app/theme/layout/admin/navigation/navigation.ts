@@ -689,7 +689,53 @@ const NavigationItems = [
         id: 'associates',
         title: 'Associates',
         type: 'collapse',
-        icon: 'feather icon-thermometer',
+        icon: 'feather icon-command',
+        // icon: 'feather icon-thermometer',
+        children: [  
+          {
+            id: 'association',
+            title: 'Manage Association',
+            type: 'item',
+            icon:'feather icon-user-plus',
+            url: 'setting/association'
+          },
+          {
+            id: 'assignoperator',
+            title: 'Assign Operator',
+            type: 'item',
+            icon:'feather icon-aperture',
+            url: 'association/assignoperator'
+          },
+          {
+            id: 'assignbus',
+            title: 'Assign Bus',
+            type: 'item',
+            icon:'feather icon-bold',
+            url: 'association/assignbus'
+          },
+          // {
+          //   id: 'bookingreport',
+          //   title: 'Booking Report',
+          //   type: 'item',
+          //   icon:'feather icon-book',
+          //   url: 'setting/association'
+          // },
+          // {
+          //   id: 'cancelreport',
+          //   title: 'Cancel Report',
+          //   type: 'item',
+          //   icon:'feather icon-scissors',
+          //   url: 'setting/association'
+          // },
+          
+        ]
+      },
+
+      {
+        id: 'operator',
+        title: 'Operators',
+        type: 'collapse',
+        icon: 'feather icon-users',
         children: [
          
           {
@@ -698,15 +744,7 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-users',
             url: 'setting/user'
-          },          
-          {
-            id: 'association',
-            title: 'Association',
-            type: 'item',
-            icon:'feather icon-user-plus',
-            url: 'setting/association'
-          },
-          
+          },                    
         ]
       },
       {
