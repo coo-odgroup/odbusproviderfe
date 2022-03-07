@@ -13,6 +13,14 @@ const routes: Routes = [
         path: 'assignoperator',
         loadChildren: () => import('./assignoperator/assignoperator.module').then(module => module.AssignoperatorModule)
       },
+      {
+        path: 'bookingreport',
+        loadChildren: () => import('./bookingreport/bookingreport.module').then(module => module.BookingreportModule)
+      },
+      {
+        path: 'cancelreport',
+        loadChildren: () => import('./cancelreport/cancelreport.module').then(module => module.CancelreportModule)
+      },
     ]
   }
 ];

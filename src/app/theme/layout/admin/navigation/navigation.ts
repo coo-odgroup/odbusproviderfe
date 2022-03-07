@@ -713,21 +713,20 @@ const NavigationItems = [
             icon:'feather icon-bold',
             url: 'association/assignbus'
           },
-          // {
-          //   id: 'bookingreport',
-          //   title: 'Booking Report',
-          //   type: 'item',
-          //   icon:'feather icon-book',
-          //   url: 'setting/association'
-          // },
-          // {
-          //   id: 'cancelreport',
-          //   title: 'Cancel Report',
-          //   type: 'item',
-          //   icon:'feather icon-scissors',
-          //   url: 'setting/association'
-          // },
-          
+          {
+            id: 'bookingreport',
+            title: 'Booking Report',
+            type: 'item',
+            icon:'feather icon-book',
+            url: 'association/bookingreport'
+          },
+          {
+            id: 'cancelreport',
+            title: 'Cancel Report',
+            type: 'item',
+            icon:'feather icon-scissors',
+            url: 'association/cancelreport'
+          },
         ]
       },
 
