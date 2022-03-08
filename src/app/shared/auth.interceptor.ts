@@ -36,8 +36,8 @@ export class AuthInterceptor implements HttpInterceptor {
                 if (err.status === 401) {
                         this.tokenSubject.next(null);                        
                         this.auth.getToken().subscribe(res=>{
-                            localStorage.setItem('AccessToken', res.access_token);
-                            this.tokenSubject.next(res.access_token);
+                            localStorage.setItem('AccessToken', res.data);
+                            this.tokenSubject.next(res.data);
                             this.collectFailedRequest(req);
                             this.retryFailedRequests(req,next);
                           }); 
@@ -71,7 +71,7 @@ retryFailedRequests(request: HttpRequest<any>, next: HttpHandler): void {
            Authorization: "Bearer " + APIAccessToken
        }
    } );   
-   window.location.reload();
+  // window.location.reload();
    return  next.handle(request);    
    } );
 
