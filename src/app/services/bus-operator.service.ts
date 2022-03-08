@@ -46,6 +46,12 @@ export class BusOperatorService {
       catchError(this.errorHandler)
     )
   }
+  readassoc(): Observable<any> {
+    return this.httpClient.get(this.endPoint+'/allAssoc').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  
   readOne(BusOperatorId): Observable<any> {
     return this.httpClient.get(this.endPoint+'/busoperator/'+BusOperatorId ).pipe(
       catchError(this.errorHandler)

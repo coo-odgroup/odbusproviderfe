@@ -8,11 +8,12 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import {AssignbusRoutingModule} from './assignbus-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {NgxPrintModule} from 'ngx-print';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 @NgModule({
   imports: [
-    CommonModule,
+    CommonModule,NgxSpinnerModule,
     AssignbusRoutingModule,
     SharedModule,
     FormsModule,
