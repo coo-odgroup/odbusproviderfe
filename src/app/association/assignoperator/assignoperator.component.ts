@@ -8,6 +8,7 @@ import { Constants } from '../../constant/constant';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AssociationService } from '../../services/association.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
+import { AssocassignbuoperatorService } from './../../services/assocassignbuoperator.service';
 import { constant } from 'lodash';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -37,11 +38,14 @@ export class AssignoperatorComponent implements OnInit {
   userRecord: User;
   busoperators: any;
   allAssoc: any;
+  assocOperater: any;
+  assocOperaterRecord: any;
 
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
+    private assocBusOprService: AssocassignbuoperatorService,
     private fb: FormBuilder,
     private AssociationService: AssociationService,
     private busOperatorService: BusOperatorService,
@@ -56,11 +60,12 @@ export class AssignoperatorComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    this.loadServices();
     this.spinner.show();
     this.form = this.fb.group({
+      id:[null],
       assocName: [null, Validators.compose([Validators.required])],
-     
+      busoperator: [null, Validators.compose([Validators.required])],
     });
 
     this.formConfirm = this.fb.group({
@@ -68,13 +73,10 @@ export class AssignoperatorComponent implements OnInit {
     });
     this.searchForm = this.fb.group({
       name: [null],
+      assoc_id:[null],
       rows_number: Constants.RecordLimit,
     });
-    this.search();
-
-    // this.getAll();
-
-    this.loadServices();
+    this.search();  
   }
 
   page(label: any) {
@@ -87,26 +89,27 @@ export class AssignoperatorComponent implements OnInit {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
+      assoc_id: this.searchForm.value.assoc_id,
       rows_number: this.searchForm.value.rows_number,
     };
 
     // console.log(data);
     if (pageurl != "") {
-      this.AssociationService.getAllaginationData(pageurl, data).subscribe(
+      this.assocBusOprService.getAllaginationData(pageurl, data).subscribe(
         res => {
-          this.user = res.data.data.data;
-          this.pagination = res.data.data;
+          this.assocOperater = res.data.data;
+          this.pagination = res.data;
           // console.log( this.BusOperators);
           this.spinner.hide();
         }
       );
     }
     else {
-      this.AssociationService.getAllData(data).subscribe(
+      this.assocBusOprService.getAllData(data).subscribe(
         res => {
-          this.user = res.data.data.data;
-          this.pagination = res.data.data;
-          // console.log( res.data);
+          this.assocOperater = res.data.data;
+          this.pagination = res.data;
+          // console.log( this.assocOperater);
           this.spinner.hide();
         }
       );
@@ -119,6 +122,7 @@ export class AssignoperatorComponent implements OnInit {
     this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
+      assoc_id:[null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -129,10 +133,27 @@ export class AssignoperatorComponent implements OnInit {
     this.busOperatorService.readassoc().subscribe(
       res => {
         this.allAssoc = res.data;
-        // console.log(this.allAssoc);
+      }
+    );
+
+    this.busOperatorService.readAll().subscribe(
+      res => {
+        this.busoperators = res.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
       }
     );
   }
+
+  
+  onSelectAll() {
+    const selected = this.busoperators.map(item => item.id);
+    this.form.get('busoperator').patchValue(selected);
+  }
+  onClearAll() {
+    this.form.get('busoperator').patchValue([]);
+  }
+
+
 
   OpenModal(content) {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
@@ -143,11 +164,13 @@ export class AssignoperatorComponent implements OnInit {
   ResetAttributes() {
     this.userRecord = {} as User;
     this.form = this.fb.group({
-      assocName: [null],
+      id:[null],
+      assocName: [null, Validators.compose([Validators.required])],
+      busoperator: [null, Validators.compose([Validators.required])],
     });
 
     this.form.reset();
-    this.ModalHeading = "Add Association";
+    this.ModalHeading = "Add Bus Operator ";
     this.ModalBtn = "Save";
   }
 
@@ -156,73 +179,36 @@ export class AssignoperatorComponent implements OnInit {
     this.spinner.show();
 
     const data = {
-      name: this.form.value.name,
+      user_id: this.form.value.assocName,
+      operator_id: this.form.value.busoperator,
+      created_by: localStorage.getItem('USERNAME'),
     };
 
-    let id = this.userRecord?.id;
-    if (id != null) {
-      this.AssociationService.update(id, data).subscribe(
-        resp => {
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
-
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            this.spinner.hide();
-          }
-        }
-      );
-    }
-    else {
-      this.AssociationService.create(data).subscribe(
-        resp => {
-
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
-
-
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            this.spinner.hide();
-          }
-        }
-      );
-
-    }
+    this.assocBusOprService.create(data).subscribe(
+          resp => {
+            if (resp.status == 1) {
+                      this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+                      this.modalReference.close();
+                      this.ResetAttributes();
+                      this.refresh();
+          
+                    }
+          });
 
   }
 
-
-  editData(id) {
-
-    this.userRecord = this.user[id];
-
-    this.editform.controls.id.setValue(this.userRecord.id);
-    this.editform.controls.name.setValue(this.userRecord.name);
-
-
-    this.ModalHeading = "Edit Association";
-    this.ModalBtn = "Update";
-  }
 
   openConfirmDialog(content, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
-    this.userRecord = this.user[id];
+    this.assocOperaterRecord = this.assocOperater[id];
   }
 
   deleteRecord() {
-
-    
-    let delitem = this.userRecord.id;
-    this.AssociationService.delete(delitem).subscribe(
+    let delitem = this.assocOperaterRecord.id;
+    const data = {
+      id: this.assocOperaterRecord.id
+    };
+    this.assocBusOprService.delete(data).subscribe(
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -235,59 +221,6 @@ export class AssignoperatorComponent implements OnInit {
           this.spinner.hide();
         }
       });
-  }
-
-
-  changePassword(id) {
-
-
-    this.userRecord = this.user[id];
-
-    this.ModalHeading = "Edit Password";
-    this.ModalBtn = "Update Password";
-  }
-  updatePassword() {
-    this.spinner.show();
-    let id = this.userRecord?.id;
-    const updateDate = {
-      password: this.pwdform.value.password
-    }
-
-    this.AssociationService.changepwd(id, updateDate).subscribe(
-      resp => {
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.modalReference.close();
-          this.ResetAttributes();
-          this.refresh();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          this.spinner.hide();
-        }
-      }
-    );
-
-
-  }
-
-  changeStatus(event: Event, stsitem: any) {
-
-    this.spinner.show();
-    this.AssociationService.changestatus(stsitem).subscribe(
-      resp => {
-
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.ResetAttributes();
-          this.refresh();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          this.spinner.hide();
-        }
-      }
-    );
   }
 
 }

@@ -1,10 +1,11 @@
-
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
 
 <div class="row">
     <div class="col-sm-12">
-        <app-card [hidHeader]="false" cardTitle="Assign Bus Operator to Association" cardClass="card-datatable" [options]="false"
-            cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
+        <app-card [hidHeader]="false" cardTitle="Assign Bus Operator to Association" cardClass="card-datatable"
+            [options]="false" cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
             <div class="row">
                 <div class="col-2">
                     <div class="from-group ">
@@ -15,8 +16,14 @@
                 </div>
                 <div class="col-10">
                     <form [formGroup]="searchForm">
-                        <div class="row">                        
-                            <div class="col-12">
+                        <div class="row">
+                            <div class="col-8">
+                                <ng-select [items]="allAssoc" bindLabel="name" bindValue="id"
+                                    placeholder="Select Association" formControlName="assoc_id"
+                                    [clearable]="false"  (change)=search()>
+                                </ng-select>
+                            </div>
+                            <div class="col-4">
                                 <div class="dropdown float-right">
                                     <select class="form-control sml_input" formControlName="rows_number"
                                         (change)=search()>
@@ -37,37 +44,21 @@
                     <thead>
                         <tr>
                             <th scope="col" width="100px">#</th>
-                            <!-- <th scope="col">Operator</th> -->
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Association Details</th>
+                            <th scope="col">Bus Operator</th>
+                            <th scope="col">Bus Operator Contacts</th>
 
                             <th width="150" class="hide_print">&nbsp; </th>
                         </tr>
                     </thead>
-                    <tbody *ngIf="user?.length != 0">
-                        <tr *ngFor="let page of user; let i=index;">
+                    <tbody *ngIf="assocOperater?.length != 0">
+                        <tr *ngFor="let page of assocOperater; let i=index;">
                             <td>{{i+1}}</td>
-                            <!-- <td><strong>{{page.bus_operator.operator_name}}</strong></td> -->
-                            <td>{{page.name}}</td>
-                            <td>{{page.email}}</td>
-                            <td>{{page.phone}}</td>
-
-                            <td>
-                                <label *ngIf="page.status==1" class="badge badge-light-primary pointer text-dark"
-                                  (click)="changeStatus($event, page.id);">Active</label>
-                                <label *ngIf="page.status==0" class="badge badge-light-danger pointer text-dark"
-                                  (click)="changeStatus($event, page.id);">Pending</label>
-                              </td>
-
+                            <td>{{page.user.name}} [<b>{{page.user.location}}</b>] </td>
+                            <td>{{page.bus_operator.operator_name}}<br> <span class="text-danger"><b>[{{page.bus_operator.organisation_name}}]</b></span></td>
+                            <td>{{page.bus_operator.email_id }}<br><b>{{page.bus_operator.contact_number }}</b></td>
                             <td class="hide_print">
                                 <div class="overlay-edit">
-                                    <button type="button" (click)="changePassword(i);OpenModal(pwdcontent)"
-                                    class="btn btn-icon btn-warning" title="Change password"><i class="fa fa-key" aria-hidden="true"></i></button>
-
-                                    <button type="button" (click)="editData(i);OpenModal(editcontent)"
-                                        class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                                     <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
                                         class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                                 </div>
@@ -140,36 +131,62 @@
                         <button type="button" class="close" aria-label="Close"
                             (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="min-height: 444px;">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-material">
                                     <div class="right-icon-control">
                                         <form [formGroup]="form" class="editForm" novalidate>
                                             <div class="row">
-                                                 
 
-                                                <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Association Name :<span
-                                                            class="text-danger">*</span></label>
-                                                            <div class="col-sm-12">
-                    
-                                                                <ng-select [items]="allAssoc" bindLabel="name" bindValue="id"
-                                                                  placeholder="Select Operator" formControlName="assocName" [clearable]="false">
-                                                                </ng-select>                      
-                                                             
-                                                            </div> 
-                                                    <!-- <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Association name" required
-                                                            formControlName="name" />
-                                                        <span class="text-danger"
-                                                            *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
-                                                            Name is Required
-                                                        </span>
-                                                    </div> -->
+
+                                                <div class="from-group col-md-5">
+                                                    <label for="name" class="col-sm-12 col-form-label">Association Name
+                                                        :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+
+                                                        <ng-select [items]="allAssoc" bindLabel="name" bindValue="id"
+                                                            placeholder="Select Association" formControlName="assocName"
+                                                            [clearable]="false">
+                                                        </ng-select>
+
+                                                    </div>
+
+                                                    <span class="text-danger"
+                                                        *ngIf="form.controls['assocName'].touched && form.controls['assocName'].hasError('required')">
+                                                        Assocation is Required
+                                                    </span>
                                                 </div>
-                                             
+                                                
+
+                                                <div class="from-group col-md-7">
+                                                    <label for="name" class="col-sm-12 col-form-label">Operator Name
+                                                        :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+
+                                                        <ng-select [items]="busoperators" bindLabel="operatorData"
+                                                            bindValue="id" placeholder="Select Operator"  [multiple]="true"
+                                                            formControlName="busoperator" [clearable]="false">
+
+                                                            <ng-template ng-header-tmp *ngIf="busoperators?.length > 0">
+                                                                <div>
+                                                                  <button class="btn btn-link"
+                                                                          (click)="onSelectAll()">Select All</button>
+                                                                  <button class="btn btn-link"
+                                                                          (click)="onClearAll()">Clear All</button>
+                                                                </div>
+                                                              </ng-template>
+                                                        </ng-select>
+
+                                                    </div>
+
+                                                    <span class="text-danger"
+                                                        *ngIf="form.controls['busoperator'].touched && form.controls['busoperator'].hasError('required')">
+                                                        Bus Operator is Required
+                                                    </span>
+                                                </div>
+
+
 
                                             </div>
                                         </form>
