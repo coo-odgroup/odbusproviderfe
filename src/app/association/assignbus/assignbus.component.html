@@ -1,22 +1,29 @@
-
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
 
 <div class="row">
     <div class="col-sm-12">
-        <app-card [hidHeader]="false" cardTitle="Assign Bus to Association" cardClass="card-datatable" [options]="false"
-            cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
+        <app-card [hidHeader]="false" cardTitle="Assign Bus to Association" cardClass="card-datatable"
+            [options]="false" cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
             <div class="row">
                 <div class="col-2">
                     <div class="from-group ">
                         <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                            Assign Bus
+                            Assign Bus 
                         </button>
                     </div>
                 </div>
                 <div class="col-10">
                     <form [formGroup]="searchForm">
-                        <div class="row">                        
-                            <div class="col-12">
+                        <div class="row">
+                            <div class="col-8">
+                                <ng-select [items]="allAssoc" bindLabel="name" bindValue="id"
+                                    placeholder="Select Association" formControlName="assoc_id"
+                                    [clearable]="false"  (change)=search()>
+                                </ng-select>
+                            </div>
+                            <div class="col-4">
                                 <div class="dropdown float-right">
                                     <select class="form-control sml_input" formControlName="rows_number"
                                         (change)=search()>
@@ -37,37 +44,23 @@
                     <thead>
                         <tr>
                             <th scope="col" width="100px">#</th>
-                            <!-- <th scope="col">Operator</th> -->
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Association Details</th>
+                            <th scope="col">Bus Operator Details</th>
+                            <th scope="col">Bus Name/Number</th>  
+                            <th scope="col">Source >> Destination</th>                         
 
                             <th width="150" class="hide_print">&nbsp; </th>
                         </tr>
                     </thead>
-                    <tbody *ngIf="user?.length != 0">
-                        <tr *ngFor="let page of user; let i=index;">
+                    <tbody *ngIf="assocBus?.length != 0">
+                        <tr *ngFor="let page of assocBus; let i=index;">
                             <td>{{i+1}}</td>
-                            <!-- <td><strong>{{page.bus_operator.operator_name}}</strong></td> -->
-                            <td>{{page.name}}</td>
-                            <td>{{page.email}}</td>
-                            <td>{{page.phone}}</td>
-
-                            <td>
-                                <label *ngIf="page.status==1" class="badge badge-light-primary pointer text-dark"
-                                  (click)="changeStatus($event, page.id);">Active</label>
-                                <label *ngIf="page.status==0" class="badge badge-light-danger pointer text-dark"
-                                  (click)="changeStatus($event, page.id);">Pending</label>
-                              </td>
-
+                            <td>{{page.user.name}} [<b>{{page.user.location}}</b>] </td>
+                            <td>{{page.bus.bus_operator.operator_name }}<br><b>{{page.bus.bus_operator.organisation_name }}</b></td>
+                            <td>{{page.bus.name}}<br> <span class="text-danger"><b>[{{page.bus.bus_number}}]</b></span></td>
+                            <td>{{page.from_location[0].name}} >> {{page.to_location[0].name}}</td>
                             <td class="hide_print">
                                 <div class="overlay-edit">
-                                    <button type="button" (click)="changePassword(i);OpenModal(pwdcontent)"
-                                    class="btn btn-icon btn-warning" title="Change password"><i class="fa fa-key" aria-hidden="true"></i></button>
-
-                                    <button type="button" (click)="editData(i);OpenModal(editcontent)"
-                                        class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                                     <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
                                         class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                                 </div>
@@ -140,136 +133,60 @@
                         <button type="button" class="close" aria-label="Close"
                             (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="min-height: 444px;">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-material">
                                     <div class="right-icon-control">
                                         <form [formGroup]="form" class="editForm" novalidate>
                                             <div class="row">
-                                                 
 
-                                                <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Association Name :<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Association name" required
-                                                            formControlName="name" />
-                                                        <span class="text-danger"
-                                                            *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
-                                                            Name is Required
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Phone :<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Phone Number" required
-                                                            formControlName="phone" />
-                                                            <span class="text-danger"
-                                                            *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
-                                                            Phone is required! </span>
-                                                          <span class="text-danger row col-12" *ngIf="form.controls['phone'].errors?.pattern">
-                                                            Enter 10 digit Mobile Number
-                                                          </span>
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Location :<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Location name" required
-                                                            formControlName="location" />
-                                                            <span class="text-danger"
-                                                            *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
-                                                            Location is required! </span>
-                                                          
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-12">
-                                                    <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Contact Information</label>
-                                                </div>
-                                                <div class="from-group col-md-3">
-                                                    <label for="president_name" class="col-sm-12 col-form-label">President Name :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter President Name" 
-                                                            formControlName="president_name" />
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-3">
-                                                    <label for="president_phone" class="col-sm-12 col-form-label">President Phone :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter President Phone" 
-                                                            formControlName="president_phone" />
-                                                        
-                                                    </div>
-                                                </div>
 
-                                                <div class="from-group col-md-3">
-                                                    <label for="general_secretary_name" class="col-sm-12 col-form-label">Secretary Name :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter General Secretary Name" 
-                                                            formControlName="general_secretary_name" />
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-3">
-                                                    <label for="general_secretary_phone" class="col-sm-12 col-form-label">Secretary Phone :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter General Secretary Phone" 
-                                                            formControlName="general_secretary_phone" />
-                                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="from-group col-md-12">
-                                                    <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Login Credentials</label>
-                                                </div>
-                                                <div class="from-group col-md-6">
-                                                    <label for="email" class="col-sm-12 col-form-label">Email :<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Page name" required
-                                                            formControlName="email" />
-                                                        <span class="text-danger"
-                                                            *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
-                                                            Email is Required
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-6">
-                                                    <label for="name" class="col-sm-12 col-form-label">Password
+                                                <div class="from-group col-md-5">
+                                                    <label for="name" class="col-sm-12 col-form-label">Association Name
                                                         :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
-                                                        <input type="password" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Page name" required
-                                                            formControlName="password" />
-                                                        <span class="text-danger"
-                                                            *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
-                                                            Password is Required
-                                                        </span>
-                                                    
-                                                        <span class="text-danger"
-                                                            *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
-                                                            minimum 5 Characters Allowed
-                                                        </span>
-                                                        <span class="text-danger"
-                                                            *ngIf="form.controls['password'].touched && form.controls['password'].hasError('maxlength')">
-                                                            Maximum 10 Characters Allowed
-                                                        </span>
-                                                    </div>
-                                                </div>
 
+                                                        <ng-select [items]="allAssoc" bindLabel="name" bindValue="id"
+                                                            placeholder="Select Association" formControlName="assocName"
+                                                            [clearable]="false" (change)="check_bus()">
+                                                        </ng-select>
+
+                                                    </div>
+
+                                                    <span class="text-danger"
+                                                        *ngIf="form.controls['assocName'].touched && form.controls['assocName'].hasError('required')">
+                                                        Assocation is Required
+                                                    </span>
+                                                </div>
+                                                
+
+                                                <div class="from-group col-md-7">
+                                                    <label for="name" class="col-sm-12 col-form-label">Bus Name & Number
+                                                        :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+
+                                                        <ng-select [items]="buses" bindLabel="testing"
+                                                            bindValue="id" placeholder="Select Bus"  [multiple]="true"
+                                                            formControlName="bus_id" [clearable]="false" >
+
+                                                            <ng-template ng-header-tmp *ngIf="buses?.length > 0">
+                                                                <div>
+                                                                  <button class="btn btn-link"
+                                                                          (click)="onSelectAll()">Select All</button>
+                                                                  <button class="btn btn-link"
+                                                                          (click)="onClearAll()">Clear All</button>
+                                                                </div>
+                                                              </ng-template>
+                                                        </ng-select>
+
+                                                    </div>
+
+                                                    <span class="text-danger"
+                                                        *ngIf="form.controls['bus_id'].touched && form.controls['bus_id'].hasError('required')">
+                                                        Bus Operator is Required
+                                                    </span>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -279,186 +196,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" (click)="addData()" [disabled]="!form.valid"
-                            class="btn btn-primary">{{ModalBtn}}</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-                            (click)="modal.dismiss('Cross click')">Close</button>
-                    </div>
-                </ng-template>
-
-                <ng-template #editcontent let-modal>
-                    <div class="modal-header">
-                        <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
-                        <button type="button" class="close" aria-label="Close"
-                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-material">
-                                    <div class="right-icon-control">
-                                        <form [formGroup]="editform" class="editForm" novalidate>
-                                            <div class="row">
-                                                
-                                                <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Association Name :<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Association name" required
-                                                            formControlName="name" />
-                                                        <span class="text-danger"
-                                                            *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
-                                                            Name is Required
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Phone :<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Phone Number" required
-                                                            formControlName="phone" />
-                                                            <span class="text-danger"
-                                                            *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
-                                                            Phone is required! </span>
-                                                          <span class="text-danger row col-12" *ngIf="form.controls['phone'].errors?.pattern">
-                                                            Enter 10 digit Mobile Number
-                                                          </span>
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Location :<span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter Location name" required
-                                                            formControlName="location" />
-                                                            <span class="text-danger"
-                                                            *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
-                                                            Location is required! </span>
-                                                          
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-12">
-                                                    <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Contact Information</label>
-                                                </div>
-                                                <div class="from-group col-md-3">
-                                                    <label for="president_name" class="col-sm-12 col-form-label">President Name :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter President Name"
-                                                            formControlName="president_name" />
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-3">
-                                                    <label for="president_phone" class="col-sm-12 col-form-label">President Phone :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter President Phone"
-                                                            formControlName="president_phone" />
-                                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="from-group col-md-3">
-                                                    <label for="general_secretary_name" class="col-sm-12 col-form-label">Secretary Name :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter General Secretary Name"
-                                                            formControlName="general_secretary_name" />
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="from-group col-md-3">
-                                                    <label for="general_secretary_phone" class="col-sm-12 col-form-label">Secretary Phone :</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="form-control" ngbAutofocus
-                                                            placeholder="Enter General Secretary Phone"
-                                                            formControlName="general_secretary_phone" />                                                        
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" (click)="addData()" [disabled]="!editform.valid"
-                            class="btn btn-primary">{{ModalBtn}}</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-                            (click)="modal.dismiss('Cross click')">Close</button>
-                    </div>
-                </ng-template>
-
-                <ng-template #pwdcontent let-modal>
-                    <div class="modal-header">
-                        <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
-                        <button type="button" class="close" aria-label="Close"
-                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-material">
-                                    <div class="right-icon-control">
-                                        <form [formGroup]="pwdform" class="editForm" novalidate>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <!-- <h5>USER</h5>                                                  -->
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Password :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="password" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Password" required
-                                                                formControlName="password" />
-                                                            <span class="text-danger"
-                                                                *ngIf="pwdform.controls['password'].touched && pwdform.controls['password'].hasError('required')">
-                                                               Password is Required
-                                                            </span>
-                                                            <span class="text-danger"
-                                                            *ngIf="pwdform.controls['password'].touched && pwdform.controls['password'].hasError('minlength')">
-                                                            minimum 5 Characters Allowed
-                                                        </span>
-                                                        <span class="text-danger"
-                                                            *ngIf="pwdform.controls['password'].touched && pwdform.controls['password'].hasError('maxlength')">
-                                                            Maximum 10 Characters Allowed
-                                                        </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Confirm Password :<span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="password" class="form-control" ngbAutofocus
-                                                                placeholder="Enter Confirm Password" required
-                                                                formControlName="conf_password" />
-                                                            <span class="text-danger"
-                                                                *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('required') ">
-                                                                Confirm Password is Required
-                                                            </span> 
-                                                            
-                                                            <span  *ngIf="pwdform.controls['conf_password'].touched && pwdform.controls['conf_password'].hasError('mustMatch') ">
-                                                                Password doesn't match
-                                                              </span>
-                                                                                                                  
-                                                        </div>
-                                                    </div>                                                
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" (click)="updatePassword()" [disabled]="!pwdform.valid"
                             class="btn btn-primary">{{ModalBtn}}</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
                             (click)="modal.dismiss('Cross click')">Close</button>
