@@ -359,7 +359,7 @@ export class BusComponent implements OnInit {
           sleeper_fare:[null],
           booking_seized:[null],
           actual_time:[null],
-          route_status:[null]
+          route_status:["true"]
         })
       ]),
       bus_number: [null, Validators.compose([Validators.required])], 
@@ -499,7 +499,7 @@ export class BusComponent implements OnInit {
       sleeper_fare:[null, Validators.compose([Validators.required])],
       booking_seized:[null, Validators.compose([Validators.required])],
       actual_time:[null, Validators.compose([Validators.required])],
-      route_status:[null]
+      route_status:["true"]
     });
 
 }
@@ -732,7 +732,7 @@ export class BusComponent implements OnInit {
           sleeper_fare:[null],
           booking_seized:[null],
           actual_time:[null],
-          route_status:[null]
+          route_status:["true"]
         })
       ]),
       bus_number: [null,Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(15)])], 
@@ -1166,7 +1166,7 @@ export class BusComponent implements OnInit {
           sleeper_fare:[null],
           booking_seized:[null],
           actual_time:[null],
-          route_status:[null]
+          route_status:["true"]
         })
       ]),    
       bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
