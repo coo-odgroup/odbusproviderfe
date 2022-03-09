@@ -744,6 +744,34 @@ const NavigationItems = [
             icon:'feather icon-users',
             url: 'setting/user'
           },                    
+          {
+            id: 'assignoperator',
+            title: 'AssignOperators',
+            type: 'item',
+            icon:'feather icon-users',
+            url: 'operator/assignoperator'
+          }, 
+          {
+            id: 'assignoperatorbus',
+            title: 'AssignOperatorsBus',
+            type: 'item',
+            icon:'feather icon-users',
+            url: 'operator/assignoperatorbus'
+          }, 
+          {
+            id: 'operatorbookingreport',
+            title: 'OperatorBookingReport',
+            type: 'item',
+            icon:'feather icon-users',
+            url: 'operator/operatorbookingreport'
+          },
+          {
+            id: 'operatorcancelreport',
+            title: 'OperatorCancelReport',
+            type: 'item',
+            icon:'feather icon-users',
+            url: 'operator/operatorcancelreport'
+          },
         ]
       },
       {

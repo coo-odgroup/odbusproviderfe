@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModalConfig,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../../model/user';
 import { Constants } from '../../constant/constant';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -10,14 +14,13 @@ import { AssociationService } from '../../services/association.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { constant } from 'lodash';
 
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-association',
   templateUrl: './association.component.html',
-  styleUrls: ['./association.component.scss']
+  styleUrls: ['./association.component.scss'],
 })
 export class AssociationComponent implements OnInit {
-
   public form: FormGroup;
   public editform: FormGroup;
   public formConfirm: FormGroup;
@@ -49,49 +52,70 @@ export class AssociationComponent implements OnInit {
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Add New Association";
-    this.ModalBtn = "Save";
+    this.ModalHeading = 'Add New Association';
+    this.ModalBtn = 'Save';
   }
 
-
   ngOnInit(): void {
-
     this.spinner.show();
     this.form = this.fb.group({
       id: [null],
       name: [null, Validators.compose([Validators.required])],
+      short_nm: [null, Validators.compose([Validators.required])],
+      support_email: [null, Validators.compose([Validators.required])],
+      support_contact: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
-      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
-      location:['', Validators.compose([Validators.required])],
-      president_name:[null],
-      president_phone:[null],
-      general_secretary_name:[null],
-      general_secretary_phone:[null],
-      password: [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.required, Validators.maxLength(10)])]
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      location: ['', Validators.compose([Validators.required])],
+      president_name: [null],
+      president_phone: [null],
+      general_secretary_name: [null],
+      general_secretary_phone: [null],
+      password: [
+        null,
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(6),
+          Validators.required,
+          Validators.maxLength(10),
+        ]),
+      ],
     });
 
     this.editform = this.fb.group({
       id: [null],
       name: [null, Validators.compose([Validators.required])],
+      short_nm: [null, Validators.compose([Validators.required])],
+      support_email: [null, Validators.compose([Validators.required])],
+      support_contact: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required])],
-      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
-      location:['', Validators.compose([Validators.required])],
-      president_name:[null],
-      president_phone:[null],
-      general_secretary_name:[null],
-      general_secretary_phone:[null],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      location: ['', Validators.compose([Validators.required])],
+      president_name: [null],
+      president_phone: [null],
+      general_secretary_name: [null],
+      general_secretary_phone: [null],
     });
 
-    this.pwdform = this.fb.group({
-      id: [null],
-      password: [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.required, Validators.maxLength(10)])],
-      conf_password: [null, Validators.compose([Validators.required])]
-    },
-      { validator: this.checkPasswords });
-
+    this.pwdform = this.fb.group(
+      {
+        id: [null],
+        password: [
+          null,
+          Validators.compose([
+            Validators.required,
+            Validators.minLength(6),
+            Validators.required,
+            Validators.maxLength(10),
+          ]),
+        ],
+        conf_password: [null, Validators.compose([Validators.required])],
+      },
+      { validator: this.checkPasswords }
+    );
 
     this.formConfirm = this.fb.group({
-      id: [null]
+      id: [null],
     });
     this.searchForm = this.fb.group({
       name: [null],
@@ -104,26 +128,19 @@ export class AssociationComponent implements OnInit {
     this.loadServices();
   }
 
-
-
-  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+  checkPasswords(group: FormGroup) {
+    // here we have the 'passwords' group
     const password = group.get('password').value;
     const confirmPassword = group.get('conf_password').value;
 
-    return password === confirmPassword ? null : { notSame: true }
+    return password === confirmPassword ? null : { notSame: true };
   }
-
-
-
-
 
   page(label: any) {
     return label;
   }
 
-
-  search(pageurl = "") {
-
+  search(pageurl = '') {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
@@ -131,31 +148,26 @@ export class AssociationComponent implements OnInit {
     };
 
     // console.log(data);
-    if (pageurl != "") {
+    if (pageurl != '') {
       this.AssociationService.getAllaginationData(pageurl, data).subscribe(
-        res => {
+        (res) => {
           this.user = res.data.data.data;
           this.pagination = res.data.data;
           // console.log( this.BusOperators);
           this.spinner.hide();
         }
       );
-    }
-    else {
-      this.AssociationService.getAllData(data).subscribe(
-        res => {
-          this.user = res.data.data.data;
-          this.pagination = res.data.data;
-          // console.log( res.data);
-          this.spinner.hide();
-        }
-      );
+    } else {
+      this.AssociationService.getAllData(data).subscribe((res) => {
+        this.user = res.data.data.data;
+        this.pagination = res.data.data;
+        // console.log( res.data);
+        this.spinner.hide();
+      });
     }
   }
 
-
   refresh() {
-
     this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
@@ -164,17 +176,17 @@ export class AssociationComponent implements OnInit {
     this.search();
   }
 
-
   loadServices() {
-    this.busOperatorService.readAll().subscribe(
-      res => {
-        this.busoperators = res.data;
-      }
-    );
+    this.busOperatorService.readAll().subscribe((res) => {
+      this.busoperators = res.data;
+    });
   }
 
   OpenModal(content) {
-    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
+    this.modalReference = this.modalService.open(content, {
+      scrollable: true,
+      size: 'xl',
+    });
   }
   get confirm_password() {
     return this.pwdform.controls['conf_password'];
@@ -184,38 +196,54 @@ export class AssociationComponent implements OnInit {
     this.form = this.fb.group({
       id: [null],
       name: [null],
+      short_nm: [null],
+      support_email: [null],
+      support_contact: [null],
       email: [null],
-      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
-      location:['', Validators.compose([Validators.required])],
-      president_name:[null],
-      president_phone:[null],
-      general_secretary_name:[null],
-      general_secretary_phone:[null],
-      password: [null]
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      location: ['', Validators.compose([Validators.required])],
+      president_name: [null],
+      president_phone: [null],
+      general_secretary_name: [null],
+      general_secretary_phone: [null],
+      password: [null],
     });
 
     this.editform = this.fb.group({
       id: [null],
       name: [null],
+      short_nm: ['',Validators.compose([Validators.required])],
+      support_email: ['',Validators.compose([Validators.required])],
+      support_contact:['',Validators.compose([Validators.required])],
       email: [null],
-      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
-      location:['', Validators.compose([Validators.required])],
-      president_name:[''],
-      president_phone:[''],
-      general_secretary_name:[''],
-      general_secretary_phone:[''],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      location: ['', Validators.compose([Validators.required])],
+      president_name: [''],
+      president_phone: [''],
+      general_secretary_name: [''],
+      general_secretary_phone: [''],
     });
 
-    this.pwdform = this.fb.group({
-      id: [null],
-      password: [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.required, Validators.maxLength(10)])],
-      conf_password: [null, Validators.compose([Validators.required])]
-    },
-      { validator: this.checkPasswords });
+    this.pwdform = this.fb.group(
+      {
+        id: [null],
+        password: [
+          null,
+          Validators.compose([
+            Validators.required,
+            Validators.minLength(6),
+            Validators.required,
+            Validators.maxLength(10),
+          ]),
+        ],
+        conf_password: [null, Validators.compose([Validators.required])],
+      },
+      { validator: this.checkPasswords }
+    );
 
     this.form.reset();
-    this.ModalHeading = "Add Association";
-    this.ModalBtn = "Save";
+    this.ModalHeading = 'Add Association';
+    this.ModalBtn = 'Save';
   }
 
   // getAll()
@@ -228,177 +256,200 @@ export class AssociationComponent implements OnInit {
   //   );
   // }
 
-
   addData() {
-
     this.spinner.show();
 
     const data = {
-      name: this.form.value.name,
-      email: this.form.value.email,
-      phone: this.form.value.phone,
-      password: this.form.value.password,
-      location: this.form.value.location,
-      president_name:this.form.value.president_name,
-      president_phone:this.form.value.president_phone,
-      general_secretary_name:this.form.value.general_secretary_name,
-      general_secretary_phone:this.form.value.general_secretary_phone
+        name: this.form.value.name,
+        short_nm: this.form.value.short_nm,
+        support_email: this.form.value.support_email,
+        support_contact: this.form.value.support_contact,
+        email: this.form.value.email,
+        phone: this.form.value.phone,
+        password: this.form.value.password,
+        location: this.form.value.location,
+        president_name: this.form.value.president_name,
+        president_phone: this.form.value.president_phone,
+        general_secretary_name: this.form.value.general_secretary_name,
+        general_secretary_phone: this.form.value.general_secretary_phone,
     };
 
-
     const updateDate = {
-      name: this.editform.value.name,
-      email: this.editform.value.email,
-      phone: this.editform.value.phone,
-      location: this.editform.value.location,
-      president_name:this.editform.value.president_name,
-      president_phone:this.editform.value.president_phone,
-      general_secretary_name:this.editform.value.general_secretary_name,
-      general_secretary_phone:this.editform.value.general_secretary_phone
-    }
+        name: this.editform.value.name,
+        short_nm: this.editform.value.short_nm,
+        support_email: this.editform.value.support_email,
+        support_contact: this.editform.value.support_contact,
+        email: this.editform.value.email,
+        phone: this.editform.value.phone,
+        location: this.editform.value.location,
+        president_name: this.editform.value.president_name,
+        president_phone: this.editform.value.president_phone,
+        general_secretary_name: this.editform.value.general_secretary_name,
+        general_secretary_phone: this.editform.value.general_secretary_phone,
+    };
 
+    //console.log(updateDate);
 
     // console.log(this.editform);
     // return false;
     let id = this.userRecord?.id;
     if (id != null) {
-      this.AssociationService.update(id, updateDate).subscribe(
-        resp => {
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
-
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            this.spinner.hide();
-          }
+      this.AssociationService.update(id, updateDate).subscribe((resp) => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({
+            title: 'Success',
+            msg: resp.message,
+            type: 'success',
+          });
+          this.modalReference.close();
+          this.ResetAttributes();
+          this.refresh();
+        } else {
+          this.notificationService.addToast({
+            title: 'Error',
+            msg: resp.message,
+            type: 'error',
+          });
+          this.spinner.hide();
         }
-      );
-    }
-    else {
-      this.AssociationService.create(data).subscribe(
-        resp => {
-
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
-
-
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            this.spinner.hide();
-          }
+      });
+    } else {
+      this.AssociationService.create(data).subscribe((resp) => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({
+            title: 'Success',
+            msg: resp.message,
+            type: 'success',
+          });
+          this.modalReference.close();
+          this.ResetAttributes();
+          this.refresh();
+        } else {
+          this.notificationService.addToast({
+            title: 'Error',
+            msg: resp.message,
+            type: 'error',
+          });
+          this.spinner.hide();
         }
-      );
-
+      });
     }
-
   }
 
-
   editData(id) {
-
     this.userRecord = this.user[id];
+
+    console.log(this.userRecord);
 
     this.editform.controls.id.setValue(this.userRecord.id);
     this.editform.controls.name.setValue(this.userRecord.name);
+    this.editform.controls.short_nm.setValue(this.userRecord.short_nm);
+    this.editform.controls.support_email.setValue(this.userRecord.support_email);
+    this.editform.controls.support_contact.setValue(this.userRecord.support_contact);
     this.editform.controls.email.setValue(this.userRecord.email);
     this.editform.controls.phone.setValue(this.userRecord.phone);
     this.editform.controls.location.setValue(this.userRecord.location);
-    this.editform.controls.president_name.setValue(this.userRecord.president_name);
-    this.editform.controls.president_phone.setValue(this.userRecord.president_phone);
-    this.editform.controls.general_secretary_name.setValue(this.userRecord.general_secretary_name);
-    this.editform.controls.general_secretary_phone.setValue(this.userRecord.general_secretary_phone);
+    this.editform.controls.president_name.setValue(
+      this.userRecord.president_name
+    );
+    this.editform.controls.president_phone.setValue(
+      this.userRecord.president_phone
+    );
+    this.editform.controls.general_secretary_name.setValue(
+      this.userRecord.general_secretary_name
+    );
+    this.editform.controls.general_secretary_phone.setValue(
+      this.userRecord.general_secretary_phone
+    );
 
-
-
-    this.ModalHeading = "Edit Association";
-    this.ModalBtn = "Update";
+    this.ModalHeading = 'Edit Association';
+    this.ModalBtn = 'Update';
   }
 
   openConfirmDialog(content, id: any) {
-    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+    this.confirmDialogReference = this.modalService.open(content, {
+      scrollable: true,
+      size: 'md',
+    });
     this.userRecord = this.user[id];
   }
 
   deleteRecord() {
-
-    
     let delitem = this.userRecord.id;
-    this.AssociationService.delete(delitem).subscribe(
-      resp => {
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.confirmDialogReference.close();
-          this.ResetAttributes();
-          this.search();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          this.spinner.hide();
-        }
-      });
+    this.AssociationService.delete(delitem).subscribe((resp) => {
+      if (resp.status == 1) {
+        this.notificationService.addToast({
+          title: 'Success',
+          msg: resp.message,
+          type: 'success',
+        });
+        this.confirmDialogReference.close();
+        this.ResetAttributes();
+        this.search();
+      } else {
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: resp.message,
+          type: 'error',
+        });
+        this.spinner.hide();
+      }
+    });
   }
 
-
   changePassword(id) {
-
-
     this.userRecord = this.user[id];
 
-    this.ModalHeading = "Edit Password";
-    this.ModalBtn = "Update Password";
+    this.ModalHeading = 'Edit Password';
+    this.ModalBtn = 'Update Password';
   }
   updatePassword() {
     this.spinner.show();
     let id = this.userRecord?.id;
     const updateDate = {
-      password: this.pwdform.value.password
-    }
+      password: this.pwdform.value.password,
+    };
 
-    this.AssociationService.changepwd(id, updateDate).subscribe(
-      resp => {
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.modalReference.close();
-          this.ResetAttributes();
-          this.refresh();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          this.spinner.hide();
-        }
+    this.AssociationService.changepwd(id, updateDate).subscribe((resp) => {
+      if (resp.status == 1) {
+        this.notificationService.addToast({
+          title: 'Success',
+          msg: resp.message,
+          type: 'success',
+        });
+        this.modalReference.close();
+        this.ResetAttributes();
+        this.refresh();
+      } else {
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: resp.message,
+          type: 'error',
+        });
+        this.spinner.hide();
       }
-    );
-
-
+    });
   }
 
   changeStatus(event: Event, stsitem: any) {
-
     this.spinner.show();
-    this.AssociationService.changestatus(stsitem).subscribe(
-      resp => {
-
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.ResetAttributes();
-          this.refresh();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          this.spinner.hide();
-        }
+    this.AssociationService.changestatus(stsitem).subscribe((resp) => {
+      if (resp.status == 1) {
+        this.notificationService.addToast({
+          title: 'Success',
+          msg: resp.message,
+          type: 'success',
+        });
+        this.ResetAttributes();
+        this.refresh();
+      } else {
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: resp.message,
+          type: 'error',
+        });
+        this.spinner.hide();
       }
-    );
+    });
   }
-
-  
-
 }

@@ -31,7 +31,6 @@ export class AssocassignbuoperatorService {
     )
   }
 
-
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL+ '/getassocAssignOperator', JSON.stringify(post), this.httpOptions)
     .pipe(
@@ -46,19 +45,14 @@ export class AssocassignbuoperatorService {
     )
   }
 
-
-
-
-
-
-  
-  errorHandler(error) {
-    let errorMessage = '';
-    if(error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    return throwError(errorMessage);
+  errorHandler(error) 
+  {
+      let errorMessage = '';
+      if(error.error instanceof ErrorEvent) {
+        errorMessage = error.error.message;
+      } else {
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      }
+      return throwError(errorMessage);
  }
 }

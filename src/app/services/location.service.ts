@@ -6,6 +6,8 @@ import {Constants} from '../constant/constant';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class LocationService {
   private apiURL = Constants.BASE_URL;
   httpOptions = {

@@ -1,4 +1,3 @@
-
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
 <div class="row">
@@ -16,10 +15,6 @@
                 <div class="col-10">
                     <form [formGroup]="searchForm">
                         <div class="row">
-                            
-
-
-
                             <div class="col-12">
                                 <div class="dropdown float-right">
                                     <select class="form-control sml_input" formControlName="rows_number"
@@ -151,9 +146,7 @@
                                     <div class="right-icon-control">
                                         <form [formGroup]="form" class="editForm" novalidate>
                                             <div class="row">
-                                                 
-
-                                                <div class="from-group col-md-4">
+                                                <div class="from-group col-md-3">
                                                     <label for="name" class="col-sm-12 col-form-label">Association Name :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
@@ -166,7 +159,20 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="from-group col-md-4">
+                                                <div class="from-group col-md-3">
+                                                    <label for="name" class="col-sm-12 col-form-label">Short Name :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Short name" required
+                                                            formControlName="short_nm" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['short_nm'].touched && form.controls['short_nm'].hasError('required')">
+                                                           Short Name is Required
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-3">
                                                     <label for="name" class="col-sm-12 col-form-label">Phone :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
@@ -181,7 +187,7 @@
                                                           </span>
                                                     </div>
                                                 </div>
-                                                <div class="from-group col-md-4">
+                                                <div class="from-group col-md-3">
                                                     <label for="name" class="col-sm-12 col-form-label">Location :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
@@ -234,6 +240,33 @@
                                                         
                                                     </div>
                                                 </div>
+                                                <div class="from-group col-md-6">
+                                                    <label for="email" class="col-sm-12 col-form-label">Support Email:<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="email" class="form-control" 
+                                                            placeholder="Enter Support Email" required
+                                                            formControlName="support_email" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['support_email'].touched && form.controls['support_email'].hasError('required')">
+                                                            Support Email is Required
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-6">
+                                                    <label for="name" class="col-sm-12 col-form-label">Support Number
+                                                        :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" 
+                                                            placeholder="Enter Support Number" required
+                                                            formControlName="support_contact" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['support_contact'].touched && form.controls['support_contact'].hasError('required')">
+                                                            Support Number is Required
+                                                        </span>
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="from-group col-md-12">
                                                     <label for="email" class="col-sm-12 col-form-label" style="font-weight:bold">Login Credentials</label>
@@ -303,7 +336,7 @@
                                         <form [formGroup]="editform" class="editForm" novalidate>
                                             <div class="row">
                                                 
-                                                <div class="from-group col-md-4">
+                                                <div class="from-group col-md-3">
                                                     <label for="name" class="col-sm-12 col-form-label">Association Name :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
@@ -316,7 +349,20 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="from-group col-md-4">
+                                                <div class="from-group col-md-3">
+                                                    <label for="name" class="col-sm-12 col-form-label">Short Name :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Short name" required
+                                                            formControlName="short_nm" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['short_nm'].touched && form.controls['short_nm'].hasError('required')">
+                                                            Short Name is Required
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-3">
                                                     <label for="name" class="col-sm-12 col-form-label">Phone :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
@@ -331,7 +377,7 @@
                                                           </span>
                                                     </div>
                                                 </div>
-                                                <div class="from-group col-md-4">
+                                                <div class="from-group col-md-3">
                                                     <label for="name" class="col-sm-12 col-form-label">Location :<span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
@@ -342,6 +388,32 @@
                                                             *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
                                                             Location is required! </span>
                                                           
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-6">
+                                                    <label for="name" class="col-sm-12 col-form-label">Support Email :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Support Email" required
+                                                            formControlName="support_email" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['support_email'].touched && form.controls['support_email'].hasError('required')">
+                                                            Support Email  is Required
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="from-group col-md-6">
+                                                    <label for="name" class="col-sm-12 col-form-label">Support Number :<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" ngbAutofocus
+                                                            placeholder="Enter Support Number" required
+                                                            formControlName="support_contact" />
+                                                        <span class="text-danger"
+                                                            *ngIf="form.controls['support_contact'].touched && form.controls['support_contact'].hasError('required')">
+                                                            Support Number is Required
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="from-group col-md-12">

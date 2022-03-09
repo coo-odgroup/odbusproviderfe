@@ -85,6 +85,11 @@ const routes: Routes = [
         canActivate: [Routeguard]
       },
       {
+        path: 'operator',
+        loadChildren: () => import('./operator/operator.module').then(module => module.OperatorModule),
+        canActivate: [Routeguard]
+      },
+      {
         path: 'ticketinformation',
         loadChildren: () => import('./ticketinformation/ticketinformation.module').then(module =>module.TicketinformationModule)
       },

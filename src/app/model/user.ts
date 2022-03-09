@@ -3,6 +3,9 @@ export interface User {
     bus_operator_id:any;
     name:any;
     email:any;
+    short_nm:any;
+    support_email:any;
+    support_contact:any;
     phone:any;
     password:any; 
     location:any,

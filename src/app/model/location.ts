@@ -5,9 +5,7 @@ export interface Location {
         created_at: any;
         updated_at: any;
         created_by: any;
-        status: any;
-
- 
+        status: any; 
  }
 
  export interface LocationCode {
@@ -19,6 +17,4 @@ export interface Location {
          updated_at: any;
          created_by: any;
          status: any;
-
-
  }

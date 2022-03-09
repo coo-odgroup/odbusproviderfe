@@ -2,9 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  {
+{
     path: '',
     children: [
+      {
+        path: 'employee',
+        loadChildren: () => import('./employee/employee.module').then(module => module.EmployeeModule)
+      },
       {
         path: 'bustype',
         loadChildren: () => import('./bustype/bustype.module').then(module => module.BusTypedModule)
