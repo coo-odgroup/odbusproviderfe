@@ -153,12 +153,10 @@ export class AssignbusComponent implements OnInit {
     const data = {
       assoc_id: this.form.value.assocName
     };
-    // console.log(data);
     this.assocBusService.getbuslist(data).subscribe(
       res => {
-        // console.log(res);
         this.buses = res;
-        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number ; return i; });
+        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')'+'['+i.bus_operator.organisation_name+']' ; return i; });
       }
     );
 
@@ -191,7 +189,7 @@ export class AssignbusComponent implements OnInit {
     });
 
     this.form.reset();
-    this.ModalHeading = "Add Bus Operator ";
+    this.ModalHeading = "Assign Bus ";
     this.ModalBtn = "Save";
   }
 

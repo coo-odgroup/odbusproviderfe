@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import {CancelreportRoutingModule} from './cancelreport-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {NgxPrintModule} from 'ngx-print';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import {NgxPrintModule} from 'ngx-print';
     CancelreportRoutingModule,
     SharedModule,
     FormsModule,
-    NgSelectModule,
+    NgSelectModule,NgxSpinnerModule,
     NgbModule,NgxPrintModule
   ],
   declarations: [ CancelreportComponent],

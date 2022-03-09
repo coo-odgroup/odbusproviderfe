@@ -9,5 +9,6 @@ export interface CompleteReport {
     destination_id:any ;
     rangeFromDate:any;
     rangeToDate:any;
+    user_id:any;
 
 }
