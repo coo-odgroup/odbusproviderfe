@@ -8,7 +8,6 @@ import { Constants} from '../constant/constant';
   providedIn: 'root'
 })
 export class OprassignbusService {
-
   
   private apiURL = Constants.BASE_URL;
   httpOptions = {
@@ -56,12 +55,12 @@ export class OprassignbusService {
   }
 
   errorHandler(error) {
-    let errorMessage = '';
-    if(error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    return throwError(errorMessage);
+      let errorMessage = '';
+      if(error.error instanceof ErrorEvent) {
+        errorMessage = error.error.message;
+      } else {
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      }
+      return throwError(errorMessage);
  }
 }
