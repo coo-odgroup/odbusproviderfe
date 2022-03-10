@@ -103,7 +103,7 @@
                                         couponData.bus_operator.operator_name }}]
                                 </span>
                                 <span *ngIf='couponData.bus_operator==null '>
-                                    --No Operator--
+                                    ----
                                 </span>
                             </td>
                             <td>
@@ -111,7 +111,7 @@
                                     {{couponData.from_location[0].name}} 
                                 </span>
                                 <span *ngIf="couponData.from_location==null">
-                                    -- Source not found --
+                                    ----
                                 </span> 
                             </td>
                             <td>
@@ -119,7 +119,7 @@
                                     {{couponData.to_location[0].name}}
                                 </span>
                                 <span *ngIf="couponData.to_location==null">
-                                    -- Destination not found --
+                                    ----
                                 </span>
                             </td>
                             <td>{{couponData.from_date | date: 'MMM d, y'}}</td>

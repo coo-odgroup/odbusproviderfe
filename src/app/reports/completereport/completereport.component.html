@@ -179,6 +179,7 @@
                                 <th scope="col">Total Fare</th>
                                 <th scope="col">Odbus Received</th>
                                 <th scope="col">Coupon Amount</th>
+                                <th scope="col">Amount Received</th>
                                 <th scope="col">Book By</th>
 
                                
@@ -345,8 +346,14 @@
                                         <i class="fas fa-rupee-sign"></i> <b>{{complete.coupon_discount }}</b>
                                     </p>
                                 </td>
+
                                 <td>
-                                    <h5> {{ (complete.user_id > 0) ? 'Agent' : 'Customer'  }} </h5>
+                                    <p>
+                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.payable_amount - complete.agent_commission }}</b>
+                                    </p>
+                                </td>
+                                <td>
+                                    <h5> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer'  }} </h5>
     
                                 </td>
                             </tr>
