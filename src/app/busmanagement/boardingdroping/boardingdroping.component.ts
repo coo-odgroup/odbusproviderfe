@@ -290,6 +290,18 @@ export class BoardingdropingComponent implements OnInit {
     this.ModalBtn = "Update";
   }
 
+  viewBoardDrop(board_arr:any){
+
+    let main_arr=[];
+
+    board_arr.forEach(e => {
+      main_arr.push(e.boarding_point);
+    });
+
+    return main_arr.join(',');
+
+  }
+
   openConfirmDialog(content) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'lgx' });
   }
