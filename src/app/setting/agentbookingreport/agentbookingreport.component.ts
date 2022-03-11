@@ -129,7 +129,15 @@ export class AgentbookingreportComponent implements OnInit {
   }
 
   
+  DisplayAllSeat(seatArr:any){
+    let AllArr=[];
+    seatArr.forEach(e => {
+      AllArr.push(e.bus_seats.seats.seatText);      
+    });
 
+    return AllArr.join(',');
+
+  }
 
 ///////////////Function to Copy data to Clipboard/////////////////
   copyMessage($event:any ){

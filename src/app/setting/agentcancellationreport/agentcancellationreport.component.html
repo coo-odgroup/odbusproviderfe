@@ -121,6 +121,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Ticket Details</th>
                                 <th scope="col">Bus Details </th>
+                                <th scope="col">User Details </th>
                                 <th scope="col">Seat No</th>
                                 <th scope="col">agent Details</th>
                                 <th scope="col">Seater / Sleeper </th>
@@ -206,12 +207,45 @@
                                     <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
                                 </td>
 
-                                <td>
-                                    <span *ngFor="let seat of complete.booking_detail;">
 
-                                        {{seat.bus_seats.seats.seatText}},
-                                    </span>
+                                <td class="text-capitalize">
+                                    <ng-template #tipContent>
+                                        <table>
+                                            <tr class="text-center">
+                                                <h5 class="text-danger">Passanger Details</h5>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>Gender</td>
+                                                <td>Seat No</td>
+                                                <td>Age</td>
+                                            </tr>
+                                            <tr *ngFor="let passanger of complete.booking_detail;">
+                                                <td><b>{{passanger.passenger_name}}</b></td>
+                                                <td><b>{{passanger.passenger_gender}}</b></td>
+                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
+                                                <td><b>{{passanger.passenger_age}}</b></td>
+                                            </tr>
+                                        </table>
+                                    </ng-template>
+                                    <strong [ngbTooltip]="tipContent">
+                                        {{complete.users.name}}
+                                    </strong> <br>
+
+                                    <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
+                                        placement="bottom" ngbTooltip="Click to Copy Phone Number"
+                                        (click)="copyMessage(complete.users.phone)">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger text-light mt-2 hide_print" placement="bottom"
+                                        ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
+                                        <i class="far fa-envelope"></i>
+                                    </button>
+
                                 </td>
+
+                                <td  [innerHTML]="DisplayAllSeat(complete.booking_detail)"></td>
                                 <td class="text-capitalize">
                                     <ng-template #tipContent>
                                         <table>

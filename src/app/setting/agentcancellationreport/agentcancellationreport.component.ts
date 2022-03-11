@@ -102,7 +102,7 @@ export class AgentcancellationreportComponent implements OnInit {
             
     };
        
-    // console.log(data);
+     // console.log(data);
     if(pageurl!="")
     {
       this.rs.cancelpaginationReport(pageurl,data).subscribe(
@@ -160,7 +160,15 @@ export class AgentcancellationreportComponent implements OnInit {
     this.search();
   }
 
+  DisplayAllSeat(seatArr:any){
+    let AllArr=[];
+    seatArr.forEach(e => {
+      AllArr.push(e.bus_seats.seats.seatText);      
+    });
 
+    return AllArr.join(',');
+
+  }
 
   loadServices() {
 
