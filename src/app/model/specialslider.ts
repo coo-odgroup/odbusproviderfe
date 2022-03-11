@@ -13,4 +13,6 @@ export interface SpecialSlider {
     iconSrc:any;
     created_by: string;
     status: 1;
+    coupon_id;
+    slider_description;
 }

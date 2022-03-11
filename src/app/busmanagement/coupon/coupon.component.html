@@ -92,9 +92,9 @@
                         <tr *ngFor="let couponData of coupons; let i=index;">
                             <td>{{i+1}}</td>
                             <td>
-                                <label *ngIf="couponData.coupon_type ==1" class="badge badge-primary pointer text-white">Operator Coupon</label>
-                                <label *ngIf="couponData.coupon_type ==2" class="badge badge-info pointer text-dark">Route Coupon</label>
-                                <label *ngIf="couponData.coupon_type ==3" class="badge badge-warning pointer text-dark">Operator Route<br> Coupon</label>
+                                <label *ngIf="couponData.coupon_type_id ==1" class="badge badge-primary pointer text-white">Operator Coupon</label>
+                                <label *ngIf="couponData.coupon_type_id ==2" class="badge badge-info pointer text-dark">Route Coupon</label>
+                                <label *ngIf="couponData.coupon_type_id ==3" class="badge badge-warning pointer text-dark">Operator Route<br> Coupon</label>
                             </td>
                             <td>
                                 <!-- {{couponData|json}} -->

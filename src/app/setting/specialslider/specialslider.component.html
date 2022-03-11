@@ -330,10 +330,38 @@
                             <label for="Type" class="col-sm-5 col-form-label">URL(if any)</label>
                             <div class="col-sm-7">
                               <input type="text" class="form-control" ngbAutofocus placeholder="Enter Url"
-                                required formControlName="url"/>
+                                 formControlName="url"/>
                             </div>
                           </div>
                         </div> 
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="Type" class="col-sm-5 col-form-label">Coupon</label>
+                            <div class="col-sm-7">
+                              <ng-select  [items]="coupondet" bindLabel="coupondata" bindValue="id"
+                              placeholder="Select User" formControlName="coupon_id" [clearable]="false">
+                            </ng-select>
+                           
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="Type" class="col-sm-5 col-form-label">Description)</label>
+                            <div class="col-sm-7">
+                                <textarea rows="3" class="form-control"  placeholder="Enter Description" formControlName="slider_description"></textarea>
+                            </div>
+                          </div>
+                        </div> 
+                        <!-- <div class="col-md-12">                     
+                        <div class="form-group row">
+                          <label for="Type" class="col-sm-3 col-form-label">URL(if any)</label>
+                          <div class="col-sm-9">
+                         
+                          </div>
+                        </div> </div> -->
                       </div>
                     </form>
                   </div>

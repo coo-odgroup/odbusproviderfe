@@ -115,7 +115,7 @@ export class CouponComponent implements OnInit {
     this.form.controls.short_description.setValue(this.couponRecord.short_desc);
     this.form.controls.full_description.setValue(this.couponRecord.full_desc);
     this.form.controls.coupon_discount_type.setValue(this.couponRecord.type);
-    this.form.controls.coupon_type.setValue(this.couponRecord.coupon_type);
+    this.form.controls.coupon_type.setValue(this.couponRecord.coupon_type_id);
     this.form.controls.source_id.setValue(this.couponRecord.source_id);
     this.form.controls.destination_id.setValue(this.couponRecord.destination_id);
     this.form.controls.max_discount_price.setValue(this.couponRecord.max_discount_price);

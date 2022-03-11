@@ -225,7 +225,8 @@ export class AssignbusComponent implements OnInit {
   deleteRecord() {
     let delitem = this.assocBusRecord.id;
     const data = {
-      id: this.assocBusRecord.id
+      id: this.assocBusRecord.id,
+      created_by:localStorage.getItem('USERNAME')
     };
     // console.log(data);
     // return;

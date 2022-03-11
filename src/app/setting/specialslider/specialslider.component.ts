@@ -55,6 +55,7 @@ export class SpecialsliderComponent implements OnInit {
   public imageSizeFlag = true;
   all: any;
   users:any=[];
+  coupondet: any;
 
 
     
@@ -113,6 +114,8 @@ export class SpecialsliderComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
+      coupon_id:[null, Validators.compose([Validators.required])],
+      slider_description:[null, Validators.compose([Validators.required])],
       slider_img:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -126,6 +129,7 @@ export class SpecialsliderComponent implements OnInit {
     });
     this.getAll();
   }
+  
  
   //////image validation////////
   public picked(event:any, fileSrc:any) {
@@ -249,6 +253,15 @@ export class SpecialsliderComponent implements OnInit {
       }
     );
 
+    ////get all coupon
+     this.specialsliderService.allCoupon().subscribe(
+      record=>{
+        // console.log(record.data);
+        this.coupondet =record.data;
+        this.coupondet.map((i: any) => { i.coupondata = i.coupon_title + '    (  ' + i.coupon_type.coupon_type_name  + '  )'; return i; });
+      }
+    );
+
   }
   ResetAttributes()
   {
@@ -259,6 +272,8 @@ export class SpecialsliderComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
+      coupon_id:[null, Validators.compose([Validators.required])],
+      slider_description:[null, Validators.compose([Validators.required])],
       slider_img:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -287,6 +302,8 @@ export class SpecialsliderComponent implements OnInit {
     fd.append("user_id",this.sliderForm.value.user_id);
     fd.append("occassion",this.sliderForm.value.occassion);
     fd.append("url",this.sliderForm.value.url);
+    fd.append("coupon_id",this.sliderForm.value.coupon_id);
+    fd.append("slider_description",this.sliderForm.value.slider_description);
     fd.append("start_date",this.sliderForm.value.start_date);
     fd.append("start_time",this.sliderForm.value.start_time);
     fd.append("alt_tag",this.sliderForm.value.alt_tag);
@@ -336,6 +353,7 @@ export class SpecialsliderComponent implements OnInit {
   editSlider(id)
   { 
     this.sliderRecord = this.sliders[id];   
+    // console.log(this.sliderRecord);
     //this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.sliderRecord.slider_img); 
     //sliderImgPreview
    // let objectURL = 'data:image/*;base64,'+ this.imgURL.changingThisBreaksApplicationSecurity;
@@ -353,6 +371,8 @@ export class SpecialsliderComponent implements OnInit {
       alt_tag:[this.sliderRecord.alt_tag],
       end_date:[this.sliderRecord.end_date],
       end_time:[this.sliderRecord.end_time],
+      slider_description:[this.sliderRecord.slider_description],
+      coupon_id:[this.sliderRecord.coupon_id],
       slider_img: [],
       iconSrc:[this.sliderRecord.slider_img]
     });

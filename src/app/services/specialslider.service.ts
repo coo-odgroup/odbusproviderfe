@@ -30,6 +30,13 @@ export class SpecialsliderService {
     )
   }
 
+  allCoupon():Observable<any> {
+    return this.httpClient.get<any>(this.apiURL + '/coupon',  this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   all(): Observable<any> {
     return this.httpClient.get<any>(this.apiURL + '/slider',  this.httpOptions)
     .pipe(

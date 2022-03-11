@@ -9,16 +9,17 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AssociationService } from '../../services/association.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { AssocassignbuoperatorService } from './../../services/assocassignbuoperator.service';
+import {AssocassignagentService} from './../../services/assocassignagent.service';
 import { constant } from 'lodash';
 import { NgxSpinnerService } from "ngx-spinner";
 
-
 @Component({
-  selector: 'app-assignoperator',
-  templateUrl: './assignoperator.component.html',
-  styleUrls: ['./assignoperator.component.scss']
+  selector: 'app-assignagent',
+  templateUrl: './assignagent.component.html',
+  styleUrls: ['./assignagent.component.scss']
 })
-export class AssignoperatorComponent implements OnInit {
+export class AssignagentComponent implements OnInit {
+
   public form: FormGroup;
   public editform: FormGroup;
   public formConfirm: FormGroup;
@@ -38,14 +39,16 @@ export class AssignoperatorComponent implements OnInit {
   userRecord: User;
   busoperators: any;
   allAssoc: any;
-  assocOperater: any;
-  assocOperaterRecord: any;
+  assocBus: any;
+  assocBusRecord: any;
+  buses: any;
+  allagent: any;
 
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
-    private assocBusOprService: AssocassignbuoperatorService,
+    private assocAgentService: AssocassignagentService,
     private fb: FormBuilder,
     private AssociationService: AssociationService,
     private busOperatorService: BusOperatorService,
@@ -65,7 +68,7 @@ export class AssignoperatorComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       assocName: [null, Validators.compose([Validators.required])],
-      busoperator: [null, Validators.compose([Validators.required])],
+      agent_id: [null, Validators.compose([Validators.required])],
     });
 
     this.formConfirm = this.fb.group({
@@ -95,9 +98,9 @@ export class AssignoperatorComponent implements OnInit {
 
     // console.log(data);
     if (pageurl != "") {
-      this.assocBusOprService.getAllaginationData(pageurl, data).subscribe(
+      this.assocAgentService.getAllaginationData(pageurl, data).subscribe(
         res => {
-          this.assocOperater = res.data.data;
+          this.assocBus = res.data.data;
           this.pagination = res.data;
           // console.log( this.BusOperators);
           this.spinner.hide();
@@ -105,11 +108,11 @@ export class AssignoperatorComponent implements OnInit {
       );
     }
     else {
-      this.assocBusOprService.getAllData(data).subscribe(
+      this.assocAgentService.getAllData(data).subscribe(
         res => {
-          this.assocOperater = res.data.data;
+          this.assocBus = res.data.data;
           this.pagination = res.data;
-          // console.log( this.assocOperater);
+          // console.log( this.assocBus);
           this.spinner.hide();
         }
       );
@@ -136,21 +139,37 @@ export class AssignoperatorComponent implements OnInit {
       }
     );
 
-    this.busOperatorService.readAll().subscribe(
+    this.busOperatorService.getAllAgent().subscribe(
       res => {
-        this.busoperators = res.data;
-        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        // console.log(res.data);
+        this.allagent = res.data;
+        this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
       }
     );
   }
 
+  // check_agent()
+  // {
+  //   this.buses=[];
+  //   const data = {
+  //     assoc_id: this.form.value.assocName
+  //   };
+  //   this.assocAgentService.getbuslist(data).subscribe(
+  //     res => {
+  //       this.buses = res;
+  //       this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')'+'['+i.bus_operator.organisation_name+']' ; return i; });
+  //     }
+  //   );
+
+  // }
+
   
   onSelectAll() {
-    const selected = this.busoperators.map(item => item.id);
-    this.form.get('busoperator').patchValue(selected);
+    const selected = this.allagent.map(item => item.id);
+    this.form.get('agent_id').patchValue(selected);
   }
   onClearAll() {
-    this.form.get('busoperator').patchValue([]);
+    this.form.get('agent_id').patchValue([]);
   }
 
 
@@ -162,15 +181,16 @@ export class AssignoperatorComponent implements OnInit {
     return this.pwdform.controls['conf_password'];
   }
   ResetAttributes() {
+    this.buses=[];
     this.userRecord = {} as User;
     this.form = this.fb.group({
       id:[null],
       assocName: [null, Validators.compose([Validators.required])],
-      busoperator: [null, Validators.compose([Validators.required])],
+      agent_id: [null, Validators.compose([Validators.required])],
     });
 
     this.form.reset();
-    this.ModalHeading = "Add Bus Operator ";
+    this.ModalHeading = "Assign Agent ";
     this.ModalBtn = "Save";
   }
 
@@ -180,11 +200,11 @@ export class AssignoperatorComponent implements OnInit {
 
     const data = {
       user_id: this.form.value.assocName,
-      operator_id: this.form.value.busoperator,
+      agent_id: this.form.value.agent_id,
       created_by: localStorage.getItem('USERNAME'),
     };
 
-    this.assocBusOprService.create(data).subscribe(
+    this.assocAgentService.create(data).subscribe(
           resp => {
             if (resp.status == 1) {
                       this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -200,16 +220,17 @@ export class AssignoperatorComponent implements OnInit {
 
   openConfirmDialog(content, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
-    this.assocOperaterRecord = this.assocOperater[id];
+    this.assocBusRecord = this.assocBus[id];
   }
 
   deleteRecord() {
-    let delitem = this.assocOperaterRecord.id;
+    let delitem = this.assocBusRecord.id;
     const data = {
-      id: this.assocOperaterRecord.id,
-      created_by:localStorage.getItem('USERNAME')
+      id: this.assocBusRecord.id,created_by: localStorage.getItem('USERNAME'),
     };
-    this.assocBusOprService.delete(data).subscribe(
+    // console.log(data);
+    // return;
+    this.assocAgentService.delete(data).subscribe(
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
@@ -225,3 +246,5 @@ export class AssignoperatorComponent implements OnInit {
   }
 
 }
+
+

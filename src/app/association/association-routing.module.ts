@@ -21,6 +21,10 @@ const routes: Routes = [
         path: 'cancelreport',
         loadChildren: () => import('./cancelreport/cancelreport.module').then(module => module.CancelreportModule)
       },
+      {
+        path: 'assignagent',
+        loadChildren: () => import('./assignagent/assign.module').then(module => module.AssignagentModule)
+      },
     ]
   }
 ];
