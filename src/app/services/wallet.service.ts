@@ -90,7 +90,12 @@ export class WalletService {
       catchError(this.errorHandler)
     )
   }
-
+  declineWlletReq(id, post): Observable<any>{
+    return this.httpClient.put<any>(this.apiURL + '/declineWlletReqStatus/' + id, JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
