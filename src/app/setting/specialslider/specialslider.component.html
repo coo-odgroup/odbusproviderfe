@@ -68,6 +68,7 @@
               <th scope="col">Banner</th>
               <th scope="col">Start Date Time</th>
               <th scope="col">End Date Time</th>
+              <th scope="col">Coupon</th>
               <th scope="col">Created/Updated On</th>
               <th scope="col">Created By</th>
               <th scope="col">Status </th>
@@ -86,6 +87,11 @@
                 </td>
               <td>{{sliderdata.start_date}} <br>{{sliderdata.start_time}} </td>
               <td>{{sliderdata.end_date}}<br> {{sliderdata.end_time}}</td>
+              <td>
+                <span *ngIf="sliderdata.coupon!=null">
+                  {{sliderdata.coupon.coupon_title}}<br> <b>{{sliderdata.coupon.coupon_code}}</b>
+                </span>                
+              </td>
               <td>{{ sliderdata.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ sliderdata.created_by }}</td>
               <td>

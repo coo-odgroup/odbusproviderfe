@@ -81,7 +81,7 @@ export class SpecialsliderComponent implements OnInit {
               this.sliders= res.data.data.data; 
               this.pagination = res.data.data;
               this.all = res.data;
-              //console.log(res.data.data);
+              console.log(res.data.data.data);
               this.spinner.hide();
             },
     );
@@ -114,8 +114,8 @@ export class SpecialsliderComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
-      coupon_id:[null, Validators.compose([Validators.required])],
-      slider_description:[null, Validators.compose([Validators.required])],
+      coupon_id:[null],
+      slider_description:[null],
       slider_img:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -272,8 +272,8 @@ export class SpecialsliderComponent implements OnInit {
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
-      coupon_id:[null, Validators.compose([Validators.required])],
-      slider_description:[null, Validators.compose([Validators.required])],
+      coupon_id:[null],
+      slider_description:[null],
       slider_img:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],

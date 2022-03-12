@@ -38,6 +38,7 @@ export class CouponComponent implements OnInit {
   busoperators: any;
   all: any;
   locations: any;
+  couponType: any;
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
@@ -166,8 +167,6 @@ export class CouponComponent implements OnInit {
           this.pagination= res.data.data;
           this.all =res.data;
           this.spinner.hide();
-
-          // console.log(  this.pagination);
         }
       );
     }
@@ -352,7 +351,15 @@ export class CouponComponent implements OnInit {
       }
     );
 
-  }
+    this.couponService.couponType().subscribe(
+      records => {
+        // console.log(records.data);
+        this.couponType = records.data;
+       
+      }
+    );
+
+  } 
 
   
   title = 'angular-app';

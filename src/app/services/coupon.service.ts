@@ -54,6 +54,13 @@ export class CouponService {
       catchError(this.errorHandler)
     )
   }
+
+  couponType(): Observable<any>{
+    return this.httpClient.get<any>(Constants.BASE_URL + '/couponType/', this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   errorHandler(error:any) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
