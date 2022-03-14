@@ -3,10 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {  Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {Constants} from '../constant/constant';
+
 @Injectable({
   providedIn: 'root'
 })
-export class RoleService {
+export class PermissionService {
+
   private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({
@@ -16,14 +18,14 @@ export class RoleService {
 
   constructor(private httpClient: HttpClient) { }
   
-  getRoles(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/GetAllRoles').pipe(
-      catchError(this.errorHandler)
-    )
-  }
+  // getPermission(): Observable<any> {
+  //   return this.httpClient.get(this.apiURL + '/Permission').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
 
-  getAllData(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/RoleData', JSON.stringify(post), this.httpOptions)
+  getAllPermission(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/PermissionData', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -32,7 +34,7 @@ export class RoleService {
 
   //Added by chakra on 11 March 2022 03:14 PM
   readAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/Role' ).pipe(
+    return this.httpClient.get(this.apiURL + '/Permission' ).pipe(
       catchError(this.errorHandler)
     )
   }
@@ -46,25 +48,25 @@ export class RoleService {
 
 
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/createrole', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/createpermission', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
   update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/Role/' + id, JSON.stringify(post), this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/Permission/' + id, JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
   delete(id){
-    return this.httpClient.delete<any>(this.apiURL + '/Role/' + id, this.httpOptions)
+    return this.httpClient.delete<any>(this.apiURL + '/Permission/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
   chngsts(id){
-    return this.httpClient.put<any>(this.apiURL + '/changeStatusRole/' + id, this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/changeStatusPermission/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

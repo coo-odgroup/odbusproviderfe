@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
- import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-managerole',
@@ -86,7 +86,7 @@ export class ManageroleComponent implements OnInit {
     // console.log(data);
     if(pageurl!="")
     {
-      this.roleService.getAllaginationData(pageurl,data).subscribe(
+      this.roleService.getAllpaginationData(pageurl,data).subscribe(
         res => {
           this.roles= res.data.data.data;
           this.pagination= res.data.data;

@@ -895,7 +895,38 @@ const NavigationItems = [
             url: 'ticketinformation/adjustticket'
           }
         ]
-      }
+      },
+      
+      {
+        id: 'useracessmanagement',
+        title: 'User Management',
+        type: 'collapse',
+        icon: 'feather icon-user',
+        children: [         
+          {
+                id: 'managerole',
+                title: 'Manage Role',
+                type: 'item',
+                icon:'feather icon-user',
+                url: 'useracessmanagement/managerole'
+          },  
+          {
+            id: 'managepermission',
+            title: 'Manage Permission',
+            type: 'item',
+            icon:'feather icon-user',
+            url: 'useracessmanagement/managepermission'
+          },  
+          {
+            id: 'managepermissiontorole',
+            title: 'Permission To Role',
+            type: 'item',
+            icon:'feather icon-user',
+            url: 'useracessmanagement/managepermissiontorole'
+          },                          
+         
+        ]
+      },
 
     ]
   }
