@@ -73,13 +73,15 @@
 
       <div class="table-responsive" id="print-section">
         <table class="table table-striped table-bordered ">
+          <!-- {{toDay }} -->
           <thead>
             <tr>
               <th>ID</th>
               <th>Operator</th>
               <th>Bus Name/No</th>
-              <!-- <th>Routes</th> -->
+              <th>Routes</th>
               <th>Reason</th>
+              <th>Cancelled Dates</th>
               <th>Cancelled By</th>
               <th>Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
@@ -90,8 +92,13 @@
               <td>{{ i+1}}</td>
               <td>{{ busCancellation.bus.bus_operator.organisation_name }}  [{{ busCancellation.bus.bus_operator.operator_name }}]</td>
               <td (click)="showCancelledDates($event,i)"><b>{{ busCancellation.bus.name }}  <br> {{ busCancellation.bus.bus_number }} </b></td>
-              <!-- <td>{{ busCancellation.routes }}</td> -->
+              <td>{{ busCancellation.from_location[0].name }} - {{ busCancellation.to_location[0].name }}</td>
               <td>{{ busCancellation.reason }}</td>
+              <td>
+                  <span *ngFor="let cancelDT of busCancellation.bus_cancelled_date">
+                        {{cancelDT.cancelled_date}} ,<br>
+                  </span>
+              </td>
               <td>{{ busCancellation.created_by }}</td>
               <td>
                 <label *ngIf="busCancellation.status==1" class="badge badge-light-primary pointer text-dark"
@@ -270,10 +277,13 @@
                         <div class="col-md-12">
                           <strong>{{busesitem.controls.busName.value}}</strong>
                         </div>
+                      
                       <div class="row col-md-12" formArrayName="dateLists">
                         
                         <label *ngFor="let busesFormGroup of busesitem['controls'].dateLists['controls']; let i=index"
                           class="col-2" [formGroupName]="i">
+
+                     
                           <input type="checkbox" formControlName="datechecked" />
                           {{busesFormGroup.controls.entryDates.value}}
                         </label>

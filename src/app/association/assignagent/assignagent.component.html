@@ -54,7 +54,11 @@
                         <tr *ngFor="let page of assocBus; let i=index;">
                             <td>{{i+1}}</td>
                             <td>{{page.user.name}} [<b>{{page.user.location}}</b>] </td>
-                            <td>{{page.agent[0].name }}<br><b>{{page.agent[0].location }}</b></td>
+                            <td>
+                                <span *ngIf="page.agent.length > 0">
+                                    {{page.agent[0].name }}<br><b>{{page.agent[0].location }}</b>
+                                </span>
+                            </td>
                             <td class="hide_print">
                                 <div class="overlay-edit">
                                     <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
@@ -163,7 +167,7 @@
                                                     <div class="col-sm-12">
 
                                                         <ng-select [items]="allagent" bindLabel="agentData"
-                                                            bindValue="id" placeholder="Select Bus"  [multiple]="true"
+                                                            bindValue="id" placeholder="Select Agent"  [multiple]="true"
                                                             formControlName="agent_id" [clearable]="false" >
 
                                                             <ng-template ng-header-tmp *ngIf="allagent?.length > 0">

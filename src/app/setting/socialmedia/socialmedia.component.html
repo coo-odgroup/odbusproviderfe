@@ -6,7 +6,7 @@
   <div class="col-sm-12">
       <app-card [hidHeader]="false" cardTitle="Social Media" cardClass="card-datatable" [options]="false"
       cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
-      <div class="row">
+      <div class="row" *ngIf="role_id==1">
         <div class="col-2">
           <div class="from-group ">
             <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
@@ -79,7 +79,7 @@
               <th class="hide_screen">Linkedin URL</th>
               <th scope="col">Created/Updated On</th>
               <th scope="col">Created By</th>
-              <th scope="col" class="hide_print">Status</th>
+              <th scope="col" class="hide_print" *ngIf="role_id==1">Status</th>
               <th width="100" class="hide_print">&nbsp; </th>
             </tr>
           </thead>
@@ -95,7 +95,7 @@
               <td class="hide_screen">{{page.linkedin_link}}</td>
               <td>{{ page.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ page.created_by }}</td>
-              <td class="hide_print">
+              <td class="hide_print" *ngIf="role_id==1">
                 <label *ngIf="page.status==1" class="badge badge-light-primary pointer text-dark"
                   (click)="changeStatus($event, page.id);">Active</label>
                 <label *ngIf="page.status==0" class="badge badge-light-danger pointer text-dark"
@@ -103,11 +103,11 @@
               </td>
 
 
-              <td class="hide_print">
+              <td class="hide_print" >
                 <div class="overlay-edit">
                   <button type="button" (click)="editData(i);OpenModal(content)"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
-                  <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
+                  <button *ngIf="role_id==1" type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
                       class="feather icon-trash-2"></i></button>
                 </div>
               </td>
@@ -195,115 +195,23 @@
               <div class="col-sm-12">
                 <div class="form-material">
                   <div class="right-icon-control">
-                    <!-- <form [formGroup]="form" class="editForm" novalidate>
-                      <div class="row">
-                        <div class="col-md-12">
-
-                          <div class="from-group">
-                            <label for="name" class="col-sm-6 col-form-label">Select Operator :<span class="text-danger">*</span></label>
-                           <div class="col-sm-12">
-                            
-                               <div class="form-group row">
-                                 <div class="col-sm-12">
-                                     <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
-                                         placeholder="Select Operator" formControlName="bus_operator_id"
-                                         [clearable]="false">
-                                     </ng-select>                                          
-                                 </div>
-                             </div>
-                             <span class="text-danger"
-                               *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
-                               Operator is Required
-                             </span>
-                           </div>
-                         </div>
-                          <div class="from-group">
-                            <label for="name" class="col-sm-3 col-form-label"> URL :<span
-                                class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter URL here" required
-                                formControlName="page_url" />
-                              <span class="text-danger"
-                                *ngIf="form.controls['page_url'].touched && form.controls['page_url'].hasError('required')">
-                                URL is Required
-                              </span>
-                            </div>
-                          </div>
-                        
-                           
-                          
-
-                         
-
-
-
-                        </div>
-
-                        <div class="col-md-12">
-
-                          <h4 class="text-center mt-3">SEO Content</h4>
-
-                          <div class="from-group">
-                            <label for="name" class="col-sm-3 col-form-label">Meta Title :</label>
-                            <div class="col-sm-12">
-                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Meta Title"
-                                formControlName="meta_title" />
-                            </div>
-                          </div>
-
-                          <div class="from-group">
-                            <label for="name" class="col-sm-3 col-form-label">Meta Keyword :</label>
-                            <div class="col-sm-12">
-                              <input type="text" class="form-control" ngbAutofocus placeholder="Enter Meta Keyword"
-                                formControlName="meta_keyword" />
-                            </div>
-                          </div>
-
-                          <div class="from-group">
-                            <label for="name" class="col-sm-4 col-form-label">Meta Description :</label>
-                            <div class="col-sm-12">
-                              <textarea class="form-control" ngbAutofocus placeholder="Enter Meta Description"
-                                formControlName="meta_description" rows="3"></textarea>
-                            </div>
-                          </div>
-
-
-                          <div class="from-group">
-                            <label for="name" class="col-sm-4 col-form-label">Extra Meta :</label>
-                            <div class="col-sm-12">
-                              <textarea class="form-control" ngbAutofocus placeholder="Enter Extra Meta"
-                                formControlName="extra_meta" rows="3"></textarea>
-                            </div>
-                          </div>
-
-                          <div class="from-group">
-
-                            <label for="name" class="col-sm-3 col-form-label">Canonical URL :</label>
-                            <div class="col-sm-12">
-                              <textarea class="form-control" ngbAutofocus placeholder="Enter Canonical URL"
-                                formControlName="canonical_url" rows="3"></textarea>
-                            </div>
-                          </div>
-
-                        </div>
-
-
-                      </div>
-
-                    </form> -->
+                    
                     <form [formGroup]="socialFrom">
 
                       <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label ">User</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-9" *ngIf="role_id==1">
                           <ng-select  [items]="users" bindLabel="userData" bindValue="id"
                           placeholder="Select User" formControlName="user_id" [clearable]="false">
                         </ng-select>
                         <span class="text-danger"
                           *ngIf="socialFrom.controls['user_id'].touched && socialFrom.controls['user_id'].hasError('required')">
-                          User Field is Required
-                        </span>                                        
-                        </div>
+                          User Filed is Required
+                        </span>
+                        </div>  
+                        <div class="col-sm-9" *ngIf="role_id!=1">
+                            {{usre_name}}
+                        </div> 
                     </div>
 
                       <div class="form-group row">

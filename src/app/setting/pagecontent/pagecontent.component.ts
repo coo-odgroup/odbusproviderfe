@@ -29,6 +29,9 @@ export class PagecontentComponent implements OnInit {
   public ModalHeading: any;
   public ModalBtn: any;
   users:any=[];
+  role_id: any;
+  usre_name:any ;
+
 
 
   pagecontent: Pagecontent[];
@@ -59,9 +62,10 @@ export class PagecontentComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
     this.form = this.fb.group({
-      id: [null],
+      id: [null],      
       user_id: [null, Validators.compose([Validators.required])],
       page_name: [null, Validators.compose([Validators.required])],
       page_url: [null, Validators.compose([Validators.required])],
@@ -97,11 +101,13 @@ export class PagecontentComponent implements OnInit {
 
     const data = {
       name: this.searchForm.value.name,
-      user_id: this.searchForm.value.user_id,
-      rows_number: this.searchForm.value.rows_number,
+      role_id: localStorage.getItem('ROLE_ID'),
+      user_id: localStorage.getItem('USERID'),
+      rows_number: this.searchForm.value.rows_number
     };
 
     // console.log(data);
+    // return;
     if (pageurl != "") {
       this.pc.getAllaginationData(pageurl, data).subscribe(
         res => {
@@ -214,6 +220,9 @@ export class PagecontentComponent implements OnInit {
 
   addData() {
     this.spinner.show();
+    if(this.role_id!=1){
+      this.form.controls.user_id.setValue(localStorage.getItem('USERID'));
+    }
 
     const data = {
       user_id: this.form.value.user_id,
@@ -227,6 +236,9 @@ export class PagecontentComponent implements OnInit {
       canonical_url: this.form.value.canonical_url,
       created_by: localStorage.getItem('USERNAME')
     };
+    // console.log(data);
+    // return;
+
     let id = this.pagecontentRecord?.id;
     if (id != null) {
       this.pc.update(id, data).subscribe(

@@ -42,6 +42,8 @@ export class UserreviewComponent implements OnInit {
   contactcontentRecord: Userreview;
   pagination: any;
   busoperators: any;
+  role_id: any;
+  usre_name:any ;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -69,6 +71,9 @@ export class UserreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
+
     this.formConfirm=this.fb.group({
       id:[null]
     });
@@ -99,6 +104,8 @@ export class UserreviewComponent implements OnInit {
     this.spinner.show();
       
     const data = {
+      role_id: localStorage.getItem('ROLE_ID'),
+      user_id: localStorage.getItem('USERID'),
       bus_operator_id:this.searchFrom.value.bus_operator_id,
       rows_number:this.searchFrom.value.rows_number,  
       rangeFromDate:this.searchFrom.value.rangeFromDate,

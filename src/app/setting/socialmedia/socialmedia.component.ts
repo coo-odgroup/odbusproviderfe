@@ -36,6 +36,8 @@ export class SocialmediaComponent implements OnInit {
   socialRecord: SocialMedia;
   busoperators: any;
   all: any;
+  role_id: any;
+  usre_name:any ;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -59,6 +61,8 @@ export class SocialmediaComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
     this.socialFrom = this.fb.group({
       id: [null],
       user_id: [null, Validators.compose([Validators.required])],
@@ -111,8 +115,10 @@ export class SocialmediaComponent implements OnInit {
   search(pageurl = "") {
     this.spinner.show();
     const data = {
-      user_id: this.searchForm.value.user_id,
-      rows_number: this.searchForm.value.rows_number,
+      name: this.searchForm.value.name,
+      role_id: localStorage.getItem('ROLE_ID'),
+      user_id: localStorage.getItem('USERID'),
+      rows_number: this.searchForm.value.rows_number
     };
 
     // console.log(data);
@@ -191,6 +197,10 @@ export class SocialmediaComponent implements OnInit {
 
   addData() {
     this.spinner.show();
+    if(this.role_id!=1){
+      this.socialFrom.controls.user_id.setValue(localStorage.getItem('USERID'));
+    }
+
     const data = {
       user_id: this.socialFrom.value.user_id,
       facebook_link:this.socialFrom.value.facebook_link,

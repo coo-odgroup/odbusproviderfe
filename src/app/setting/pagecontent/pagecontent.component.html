@@ -168,16 +168,19 @@
                                   
                                       <div class="from-group col-md-4">
                                         <!-- <label>Page name :</label> -->
-                                        <label for="name" class="col-sm-12 col-form-label">Select Operator :<span class="text-danger">*</span></label>
-                                        <div class="col-sm-12">
+                                        <label for="name" class="col-sm-12 col-form-label">Select User :<span class="text-danger">*</span></label>
+                                        <div class="col-sm-12" *ngIf="role_id==1">
                                           <ng-select  [items]="users" bindLabel="userData" bindValue="id"
                                           placeholder="Select User" formControlName="user_id" [clearable]="false">
                                         </ng-select>
-                                    <span class="text-danger"
-                                      *ngIf="form.controls['user_id'].touched && form.controls['user_id'].hasError('required')">
-                                      User Filed is Required
-                                    </span>
-                                        </div>                                             
+                                        <span class="text-danger"
+                                          *ngIf="form.controls['user_id'].touched && form.controls['user_id'].hasError('required')">
+                                          User Filed is Required
+                                        </span>
+                                        </div>  
+                                        <div class="col-sm-12" *ngIf="role_id!=1">
+                                            {{usre_name}}
+                                        </div>                                           
                                       </div>
 
                                       <div class="from-group col-md-4">
