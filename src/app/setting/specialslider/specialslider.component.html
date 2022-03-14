@@ -68,6 +68,7 @@
               <th scope="col">Banner</th>
               <th scope="col">Start Date Time</th>
               <th scope="col">End Date Time</th>
+              <th scope="col">Coupon</th>
               <th scope="col">Created/Updated On</th>
               <th scope="col">Created By</th>
               <th scope="col">Status </th>
@@ -86,6 +87,11 @@
                 </td>
               <td>{{sliderdata.start_date}} <br>{{sliderdata.start_time}} </td>
               <td>{{sliderdata.end_date}}<br> {{sliderdata.end_time}}</td>
+              <td>
+                <span *ngIf="sliderdata.coupon!=null">
+                  {{sliderdata.coupon.coupon_title}}<br> <b>{{sliderdata.coupon.coupon_code}}</b>
+                </span>                
+              </td>
               <td>{{ sliderdata.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ sliderdata.created_by }}</td>
               <td>
@@ -330,10 +336,38 @@
                             <label for="Type" class="col-sm-5 col-form-label">URL(if any)</label>
                             <div class="col-sm-7">
                               <input type="text" class="form-control" ngbAutofocus placeholder="Enter Url"
-                                required formControlName="url"/>
+                                 formControlName="url"/>
                             </div>
                           </div>
                         </div> 
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="Type" class="col-sm-5 col-form-label">Coupon</label>
+                            <div class="col-sm-7">
+                              <ng-select  [items]="coupondet" bindLabel="coupondata" bindValue="id"
+                              placeholder="Select User" formControlName="coupon_id" [clearable]="false">
+                            </ng-select>
+                           
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="Type" class="col-sm-5 col-form-label">Description)</label>
+                            <div class="col-sm-7">
+                                <textarea rows="3" class="form-control"  placeholder="Enter Description" formControlName="slider_description"></textarea>
+                            </div>
+                          </div>
+                        </div> 
+                        <!-- <div class="col-md-12">                     
+                        <div class="form-group row">
+                          <label for="Type" class="col-sm-3 col-form-label">URL(if any)</label>
+                          <div class="col-sm-9">
+                         
+                          </div>
+                        </div> </div> -->
                       </div>
                     </form>
                   </div>

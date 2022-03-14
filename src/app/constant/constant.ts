@@ -15,7 +15,7 @@ export class Constants {
     public static RecordLimit: any = 10 ;
     //public static BUS_OPERATOR_ID: any = 1;
     //FOR LOCAL
-    //  public static BASE_URL:any ='http://127.0.0.1:8000/api';
+      //public static BASE_URL:any ='http://127.0.0.1:8000/api';
     //  public static PATHURL:any = 'http://127.0.0.1:8000/uploads/';
     
      public static BASE_URL:any ='https://provider.odbus.co.in/api';

@@ -92,9 +92,11 @@
                         <tr *ngFor="let couponData of coupons; let i=index;">
                             <td>{{i+1}}</td>
                             <td>
-                                <label *ngIf="couponData.coupon_type ==1" class="badge badge-primary pointer text-white">Operator Coupon</label>
-                                <label *ngIf="couponData.coupon_type ==2" class="badge badge-info pointer text-dark">Route Coupon</label>
-                                <label *ngIf="couponData.coupon_type ==3" class="badge badge-warning pointer text-dark">Operator Route<br> Coupon</label>
+                                <label *ngIf="couponData.coupon_type_id ==1" class="badge badge-primary pointer text-white">{{couponData.coupon_type.coupon_type_name}}</label>
+                                <label *ngIf="couponData.coupon_type_id ==2" class="badge badge-info pointer text-dark">{{couponData.coupon_type.coupon_type_name}}</label>
+                                <label *ngIf="couponData.coupon_type_id ==3" class="badge badge-warning pointer text-dark">{{couponData.coupon_type.coupon_type_name}}</label>
+                            
+                            
                             </td>
                             <td>
                                 <!-- {{couponData|json}} -->
@@ -241,11 +243,10 @@
                                                         <label for="name" class="col-sm-5 col-form-label">Coupon Type
                                                             :<span class="text-danger">*</span></label>
                                                         <div class="col-sm-12">
-                                                            <select class="form-control" formControlName="coupon_type">
-                                                                <option value="1">Operator Coupon</option>
-                                                                <option value="2">Route Coupon</option>
-                                                                <option value="3">Operator Route Coupon</option>
-                                                            </select>
+                                                            <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
+                                                            placeholder="Select Coupon Type" formControlName="coupon_type"
+                                                            [clearable]="false" >
+                                                        </ng-select>
                                                             <span class="text-danger"
                                                                 *ngIf="form.controls['coupon_type'].touched && form.controls['coupon_type'].hasError('required')">
                                                                 Coupon Type is required! </span>

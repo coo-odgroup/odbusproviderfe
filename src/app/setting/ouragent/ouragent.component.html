@@ -76,6 +76,7 @@
             <thead>
               <tr>
                 <th>SL</th>
+                <th>Agent ID</th>
                 <th>Name/Email/Location</th>
                 <th>Address</th>
                 <th>Bank Details</th>
@@ -89,6 +90,7 @@
             <tbody *ngIf="agents?.length != 0">
               <tr *ngFor="let agent of agents; let i=index;">
                 <td>{{ i+1}}</td>
+                <td>{{ agent.unique_id}}</td>
                 <td>{{ agent.name }} <br> <strong>{{ agent.email }} <br> {{ agent.phone }}</strong><br>{{agent.location}}</td>
                 <td> 
                   <span title="orgination" *ngIf="agent.organization_name!=null">{{agent.organization_name  }}</span> <br>  
@@ -176,7 +178,7 @@
                       <div class="form-material">
                         <div class="right-icon-control">
                         
-                          <form [formGroup]="formConfirm" class="editForm" novalidate>
+                          <form [formGroup]="FormWalletDecline" class="editForm" novalidate>
                             <input type="hidden" formControlName="id">
                             <!-- <input type="text" formControlName="reason"> -->
 

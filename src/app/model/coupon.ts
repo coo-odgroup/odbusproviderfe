@@ -1,7 +1,7 @@
 export interface Coupon {
     destination_id: any;
     source_id: any;
-    coupon_type: any;
+    coupon_type_id: any;
     coupon_discount_type: any;
     id:any;
     coupon_title:any;

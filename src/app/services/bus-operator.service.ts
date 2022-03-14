@@ -51,6 +51,11 @@ export class BusOperatorService {
       catchError(this.errorHandler)
     )
   }
+  getAllAgent(): Observable<any> {
+    return this.httpClient.get(this.endPoint+'/allAgent').pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   readuseroperator(): Observable<any> {
     return this.httpClient.get(this.endPoint+'/allUserOperator').pipe(

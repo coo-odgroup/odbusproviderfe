@@ -20,6 +20,7 @@ export class AgentwalletrequestComponent implements OnInit {
   public form: FormGroup;
 
   public formConfirm: FormGroup;
+  public formRejectReason: FormGroup;
   public searchForm: FormGroup;
   pagination: any;
 
@@ -61,6 +62,12 @@ export class AgentwalletrequestComponent implements OnInit {
       id: [null],
       otp: [null, Validators.compose([Validators.required])]
     });
+
+    this.formRejectReason = this.fb.group({
+      id: [null],
+      reject_reason: [null, Validators.compose([Validators.required])]
+    });
+    
     this.formConfirm = this.fb.group({
       id: [null]
     });
@@ -80,6 +87,8 @@ export class AgentwalletrequestComponent implements OnInit {
     this.walletRecord =this.wallet[id];
     // console.log(this.walletRecord);
   }
+
+  
   ResetAttributes() {
     this.walletRecord = {} as AgentWallet;
     this.form = this.fb.group({
@@ -153,6 +162,47 @@ export class AgentwalletrequestComponent implements OnInit {
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
         }
+
+        this.spinner.hide();
+      }
+    );
+  }
+
+
+  OpenDeclinemodal(declinemodal,id){
+    this.modalReference = this.modalService.open(declinemodal, { scrollable: true, size: 'md' });
+    this.walletRecord =this.wallet[id];
+  }
+  ResetDeclineAttributes(){
+    this.formRejectReason = this.fb.group({
+      id: [null],
+      reject_reason: [null, Validators.compose([Validators.required])]
+    });
+    this.formRejectReason.reset();
+  }
+  changeWalletReqStatus(){
+    this.spinner.show();
+    let id:any=this.walletRecord.id;
+    
+    const data ={
+      reject_reason:this.formRejectReason.value.reject_reason,
+      user_name : localStorage.getItem('USERNAME'),
+    };
+
+    //this.ws.chngsts(id,data).subscribe(
+    this.ws.declineWlletReq(id,data).subscribe(
+      resp => {        
+        if(resp.status==1){          
+          //console.log(resp.data);
+          this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
+          this.refresh();
+          this.ResetDeclineAttributes();
+          this.modalReference.close();
+        }
+        else{
+          this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
+        }
+        this.spinner.hide();
       }
     );
   }

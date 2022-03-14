@@ -686,8 +686,8 @@ const NavigationItems = [
         ]
       },
       {
-        id: 'associates',
-        title: 'Associates',
+        id: 'association',
+        title: 'Association',
         type: 'collapse',
         icon: 'feather icon-command',
         // icon: 'feather icon-thermometer',
@@ -712,6 +712,13 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-bold',
             url: 'association/assignbus'
+          },
+          {
+            id: 'assignagent',
+            title: 'Assign Agent',
+            type: 'item',
+            icon:'feather icon-aperture',
+            url: 'association/assignagent'
           },
           {
             id: 'bookingreport',
