@@ -93,6 +93,10 @@ const routes: Routes = [
         path: 'ticketinformation',
         loadChildren: () => import('./ticketinformation/ticketinformation.module').then(module =>module.TicketinformationModule)
       },
+      {
+        path: 'useracessmanagement',
+        loadChildren: () => import('./useraccessmanagement/useraccessmanagement.module').then(module =>module.UserAccessManagementModule)
+      },
     ]
   }
 ];

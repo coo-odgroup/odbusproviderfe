@@ -29,6 +29,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +46,6 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NavRightComponent,
     ConfigurationComponent,
     ToggleFullScreenDirective,
-
   ],
   imports: [
     BrowserModule,
