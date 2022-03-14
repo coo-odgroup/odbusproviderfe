@@ -250,7 +250,7 @@ export class LandingComponent implements OnInit {
       this.ds.operatordata().subscribe(
         res => {
           this.oprdata= res.data;
-          console.log(res.data);
+          //console.log(res.data);
         }
       );
     }

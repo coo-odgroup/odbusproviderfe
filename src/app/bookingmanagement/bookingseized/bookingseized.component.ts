@@ -10,6 +10,9 @@ import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 import { BusService } from '../../services/bus.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
+import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
+
 
 
 
@@ -40,6 +43,8 @@ export class BookingseizedComponent implements OnInit {
   buses: any;
   busoperators: any;
 
+  datepipe = new DatePipe('en-US');
+
   constructor(
     private http: HttpClient,  private busService: BusService,
     private busOperatorService: BusOperatorService,
@@ -48,7 +53,9 @@ export class BookingseizedComponent implements OnInit {
     private fb: FormBuilder,
     config: NgbModalConfig,private spinner: NgxSpinnerService,
     private modalService: NgbModal)
-    {
+    {      
+     
+
       config.backdrop = 'static';
       config.keyboard = false;
       this.ModalBtn = "Save";
@@ -101,7 +108,8 @@ export class BookingseizedComponent implements OnInit {
 
    
   search(pageurl="")
-  {        this.spinner.show();
+  {        
+    this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
@@ -201,6 +209,8 @@ export class BookingseizedComponent implements OnInit {
       bus_id: this.bookingseizedForm.value.bus_id
     };
 
+    this.spinner.show();
+
     this.bookingseizedService.getById(data.bus_id).subscribe(
       resp => {
         this.bookingSeizedRecord= resp.data;  
@@ -220,6 +230,7 @@ export class BookingseizedComponent implements OnInit {
             location: this.fb.control( seized.from_location[0].name +">>"+ seized.to_location[0].name ),
             time: [seized.seize_booking_minute,Validators.compose([Validators.required ,Validators.pattern("^[0-9]*$")])] ,
             dep_time: this.fb.control( seized.dep_time),
+            closing_time: [seized.actual_time,Validators.compose([Validators.required])] ,
             id: this.fb.control( seized.id)
           });
           this.bookingseizedData.insert(arraylen, seizeddata);
@@ -227,12 +238,34 @@ export class BookingseizedComponent implements OnInit {
 
     }
 
+    this.spinner.hide();
+
+
       }
     );
    
 
     this.ModalHeading = 'Edit Booking Seized';
   }
+
+
+  getActualtime(i:any){
+    let bookingseized=this.bookingseizedForm.get('bookingseized') as FormArray;
+
+   let time=bookingseized.controls[i].value.time;
+   let dept_time=bookingseized.controls[i].value.dep_time;
+
+    dept_time=this.datepipe.transform(dept_time, 'HH:mm');
+
+   const res = moment(dept_time,"HH:mm").subtract(time, 'minutes');
+  // console.log(time);
+  // console.log(dept_time);
+
+   let act=res.format('HH:mm:ss');      
+   bookingseized.controls[i].patchValue({"closing_time":act});      
+
+  }
+
 
 
   updatebookingseized()
@@ -247,8 +280,8 @@ export class BookingseizedComponent implements OnInit {
       date: this.bookingseizedForm.controls.date.value,
       bus_id: this.bookingseizedForm.controls.bus_id.value,
       otherReson: this.bookingseizedForm.controls.otherReson.value      
-    }   
-
+    }  
+   
     // this.bookingseizedService.save(data).subscribe(
     //   resp => {
     //     this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
@@ -308,10 +341,21 @@ loadServices() {
 findOperator(event: any) {
   let operatorId = event.id;
   if (operatorId) {
+    this.spinner.show();
+
+    this.bookingseizedForm.controls.bus_id.setValue(null);
+
+    this.bookingseizedData = (<FormArray>this.bookingseizedForm.controls['bookingseized']) as FormArray;
+    this.bookingseizedData.clear();
+   
     this.busService.getByOperaor(operatorId).subscribe(
       res => {
         this.buses = res.data;
         this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+        
+       this.spinner.hide();
+
+     
       }
     );
   }
