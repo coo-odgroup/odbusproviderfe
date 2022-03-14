@@ -69,6 +69,7 @@ const OperatorItems =[{
           icon:'feather icon-gitlab',
           url: 'busmanagement/managebus'
         },
+       
         {
           id: 'coupon',
           title: 'Coupon',
@@ -338,6 +339,13 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-gitlab',
             url: 'busmanagement/managebus'
+          },
+          {
+            id: 'coupontype',
+            title: 'CouponType',
+            type: 'item',
+            icon:'feather icon-tag',
+            url: 'busmanagement/coupontype'
           },
           {
             id: 'coupon',
