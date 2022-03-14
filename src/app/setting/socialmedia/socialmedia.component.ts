@@ -55,9 +55,7 @@ export class SocialmediaComponent implements OnInit {
     this.ModalBtn = "Save";
   }
 
-
-
-
+  
 
   ngOnInit(): void {
     this.spinner.show();

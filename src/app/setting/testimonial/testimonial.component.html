@@ -15,7 +15,7 @@
           <form [formGroup]="searchForm">
             <div class="row">
               <div class="col-3">
-                <div class="form-group row">
+                <div class="form-group row"  *ngIf="role_id==1">
                     <div class="col-sm-12">
                       <ng-select  [items]="users" bindLabel="userData" bindValue="id"
                       placeholder="Select User" formControlName="user_id" [clearable]="false">

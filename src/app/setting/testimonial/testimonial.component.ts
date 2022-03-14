@@ -39,6 +39,8 @@ export class TestimonialComponent implements OnInit {
   testimonialRecord: Testimonial;
   all: any;
   users:any=[];
+  role_id: any;
+  usre_name:any ;
 
   constructor(
     private http: HttpClient, 
@@ -61,6 +63,10 @@ export class TestimonialComponent implements OnInit {
     ngOnInit(): void {
       
       this.spinner.show();
+
+      this.role_id= localStorage.getItem('ROLE_ID');
+      this.usre_name= localStorage.getItem('USERNAME');
+
       this.form = this.fb.group({
         id:[null],
         posted_by: [null, Validators.compose([Validators.required])],
@@ -120,6 +126,8 @@ export class TestimonialComponent implements OnInit {
         name: this.searchForm.value.name,
         user_id:  this.searchForm.value.user_id,
         rows_number:this.searchForm.value.rows_number, 
+        role_id: localStorage.getItem('ROLE_ID'),
+        userID: localStorage.getItem('USERID'),
       };
      
       // console.log(data);
@@ -163,6 +171,9 @@ export class TestimonialComponent implements OnInit {
     addData() { 
 
       this.spinner.show();
+      if(this.role_id!=1){
+        this.form.controls.user_id.setValue(localStorage.getItem('USERID'));
+      }
       // console.log(this.form.value);return false; 
       const data = {
         posted_by:this.form.value.posted_by,

@@ -11,9 +11,9 @@
             <form [formGroup]="searchFrom">
               <div class="row">
 
-                <div class="col-3"  *ngIf="role_id==1">
+                <div class="col-3" >
                   <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12"  *ngIf="role_id==1">
                       <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                         placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
                       </ng-select>
