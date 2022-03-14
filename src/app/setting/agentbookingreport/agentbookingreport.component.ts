@@ -91,8 +91,9 @@ export class AgentbookingreportComponent implements OnInit {
   search(pageurl="")
   {
     this.spinner.show();
-     this.completeReportRecord = this.searchFrom.value ; 
-     
+    this.completeReportRecord = this.searchFrom.value ; 
+    //console.log(this.completeReportRecord);
+
     const data = {
       date_type :this.completeReportRecord.date_type,
       pnr :this.completeReportRecord.pnr,
@@ -101,6 +102,8 @@ export class AgentbookingreportComponent implements OnInit {
       rangeToDate :this.completeReportRecord.rangeToDate
             
     };
+
+    console.log(data);
        
     // console.log(data);
     if(pageurl!="")
