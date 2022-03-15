@@ -10,16 +10,20 @@ const routes: Routes = [
             loadChildren: () => import('./assignoperator/assignoperator.module').then(module => module.AssignOperatorModule)
         },  
         {
-          path: 'assignoperatorbus',
-          loadChildren: () => import('./assignoperatorbus/assignoperatorbus.module').then(module => module.AssignOperatorBusModule)
-        },        
+            path: 'assignoperatorbus',
+            loadChildren: () => import('./assignoperatorbus/assignoperatorbus.module').then(module => module.AssignOperatorBusModule)
+        }, 
         {
-          path: 'operatorbookingreport',
-          loadChildren: () => import('./operatorbookingreport/operatorbookingreport.module').then(module => module.OperatorBookingReportModule)
+            path: 'assignagent',
+            loadChildren: () => import('./assignagents/assignagents.module').then(module => module.AssignagentsModule)
+        },               
+        {
+            path: 'operatorbookingreport',
+            loadChildren: () => import('./operatorbookingreport/operatorbookingreport.module').then(module => module.OperatorBookingReportModule)
         },
         {
-          path: 'operatorcancelreport',
-          loadChildren: () => import('./operatorcancelreport/operatorcancelreport.module').then(module => module.OperatorCancelReportModule)
+            path: 'operatorcancelreport',
+            loadChildren: () => import('./operatorcancelreport/operatorcancelreport.module').then(module => module.OperatorCancelReportModule)
         },
       ]
     }

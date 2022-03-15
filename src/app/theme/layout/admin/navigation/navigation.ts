@@ -761,17 +761,24 @@ const NavigationItems = [
           },                    
           {
             id: 'assignoperator',
-            title: 'AssignOperators',
+            title: 'Assign Operators',
             type: 'item',
             icon:'feather icon-users',
             url: 'operator/assignoperator'
           }, 
           {
             id: 'assignoperatorbus',
-            title: 'AssignOperatorsBus',
+            title: 'Assign OperatorsBus',
             type: 'item',
             icon:'feather icon-users',
             url: 'operator/assignoperatorbus'
+          }, 
+          {
+            id: 'assignagent',
+            title: 'Assign Agent',
+            type: 'item',
+            icon:'feather icon-users',
+            url: 'operator/assignagent'
           }, 
           {
             id: 'operatorbookingreport',
@@ -907,7 +914,7 @@ const NavigationItems = [
       
       {
         id: 'useracessmanagement',
-        title: 'User Management',
+        title: 'Role Management',
         type: 'collapse',
         icon: 'feather icon-user',
         children: [         

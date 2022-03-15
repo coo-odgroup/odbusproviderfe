@@ -5,7 +5,9 @@ import {SharedModule} from '../theme/shared/shared.module';
 
 
 @NgModule({
-  declarations: [
+  declarations: [        
+  
+   
   ],
   imports: [
     CommonModule,
