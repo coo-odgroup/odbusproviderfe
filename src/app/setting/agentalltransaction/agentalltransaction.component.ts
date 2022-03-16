@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BusOperatorService } from './../../services/bus-operator.service';
 import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import { WalletService } from '../../services/wallet.service'
 import { AgentWallet } from '../../model/agentwallet';
 import { Constants } from '../../constant/constant';
@@ -28,22 +30,32 @@ export class AgentalltransactionComponent implements OnInit {
   public isSubmit: boolean;
   public ModalHeading: any;
   public ModalBtn: any;
+  
 
   wallet: AgentWallet[];
   walletRecord: AgentWallet;
   busoperators: any;
   all: any;
+  allagent: any;
+
+  hoveredDate: NgbDate | null = null;
+  fromDate: NgbDate | null;
+  toDate: NgbDate | null;
 
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, 
-
+    private busOperatorService: BusOperatorService, 
+    private calendar: NgbCalendar, 
+    public formatter: NgbDateParserFormatter,
     private ws: WalletService,
     private modalService: NgbModal,
     config: NgbModalConfig
-  ) {
+  ) 
+  
+  {
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add New Location";
@@ -64,12 +76,16 @@ export class AgentalltransactionComponent implements OnInit {
       id: [null]
     });
     this.searchForm = this.fb.group({
-      bus_operator_id: [null],
+      bus_operator_id: [null],      
       name: [null],
+      rangeFromDate:[null],
+      rangeToDate:[null],
+      user_id:[null],
       rows_number: Constants.RecordLimit,
     });
 
     this.search();
+    this.loadServices();
 
   }
 
@@ -129,7 +145,59 @@ export class AgentalltransactionComponent implements OnInit {
     }
   }
 
+  loadServices() {
+    this.busOperatorService.getAllAgent().subscribe(
+      res => {
+        this.allagent = res.data;
+        this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+      }
+    );
+  }
 
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+  
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+  
+    return [year, month, day].join('-');
+  }
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.searchForm.controls.rangeFromDate.setValue(date);
+      this.fromDate = date;
+    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+      this.toDate = date;
+      this.searchForm.controls.rangeToDate.setValue(date);
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+      this.searchForm.controls.rangeFromDate.setValue(date);
+    }
+  }
+  
+  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+    const parsed = this.formatter.parse(input);
+    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  }
+  
+  isHovered(date: NgbDate) {
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+  }
+  
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+  
+  isRange(date: NgbDate) {
+    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
+  }
 
 
   refresh() {

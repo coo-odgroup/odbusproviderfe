@@ -1,4 +1,4 @@
-export interface CompleteReport {
+export interface CompleteReport {    
     pnr: any; 
     name: any;   
     bus_operator_id: any;   

@@ -31,6 +31,7 @@ export class AgentbookingreportComponent implements OnInit {
   url: any;
   locations: any;
   buses: any;
+  allagent: any;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
@@ -60,6 +61,7 @@ export class AgentbookingreportComponent implements OnInit {
       rangeToDate:[null],
       date_type:['journey'],
       pnr:[null],
+      user_id:[null],
       rows_number: Constants.RecordLimit,
     })  
    
@@ -92,36 +94,37 @@ export class AgentbookingreportComponent implements OnInit {
   {
     this.spinner.show();
     this.completeReportRecord = this.searchFrom.value ; 
-    //console.log(this.completeReportRecord);
+    console.log(this.completeReportRecord);
 
     const data = {
       date_type :this.completeReportRecord.date_type,
       pnr :this.completeReportRecord.pnr,
+      user_id :this.completeReportRecord.user_id,
       rows_number:this.completeReportRecord.rows_number,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate
             
     };
 
-    console.log(data);
-       
+    
     // console.log(data);
     if(pageurl!="")
     {
       this.rs.completepaginationReport(pageurl,data).subscribe(
         res => {
           this.completedata= res.data;
-          // console.log( this.completedata);
+          //console.log( this.completedata);
           this.spinner.hide();
         }
       );
+      console.log(this.rs);
     }
     else
     {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata= res.data;
-          // console.log( this.completedata);
+           console.log( this.completedata);
           this.spinner.hide();
         }
       );
@@ -187,6 +190,16 @@ export class AgentbookingreportComponent implements OnInit {
         this.locations=records.data;
       }
     );
+
+    this.busOperatorService.getAllAgent().subscribe(
+      res => {
+        // console.log(res.data);
+        this.allagent = res.data;
+        this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+        //console.log(this.allagent);
+      }
+    );
+
   }
 
   findSource(event:any)
@@ -245,6 +258,7 @@ validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
   const parsed = this.formatter.parse(input);
   return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
 }
+
 isHovered(date: NgbDate) {
   return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
 }
