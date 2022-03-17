@@ -17,7 +17,7 @@
             <div class="row">
 
               <div class="col-3">
-                <div class="form-group row">
+                <div class="form-group row" *ngIf="role_id==1">
                   <div class="col-sm-12">
                     <ng-select  [items]="users" bindLabel="userData" bindValue="id"
                     placeholder="Select User" formControlName="user_id" [clearable]="false">
@@ -27,7 +27,7 @@
               </div>
 
               <div class="col-2">
-                <div class="form-group row">
+                <div class="form-group row" *ngIf="role_id==1">
 
                   <div class="col-sm-12">
                     <div class="input-group">
@@ -45,7 +45,8 @@
 
 
               <div class="col-5">
-                <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                <div *ngIf="role_id==1">
+                     <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                   <i class="fas fa-search"> </i> Search
                 </button> -->
                 <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
@@ -58,6 +59,7 @@
                   [useExistingCss]="true" title="Print">
                   <i class="fas fa-print"> </i> Print
                 </button>
+                </div>             
               </div>
 
 
@@ -215,13 +217,11 @@
                                 class="text-danger">*</span></label>
                             <div class="col-sm-12">
 
-                              <div class="form-group row">
+                              <div class="form-group row"  *ngIf="role_id==1">
                                 <div class="col-sm-12">
                                   <ng-select  [items]="users" bindLabel="userData" bindValue="id"
                                   placeholder="Select User" formControlName="user_id" [clearable]="false">
                                 </ng-select>
-
-                               
                                 </div>
                               </div>
                               <span class="text-danger"
@@ -229,6 +229,9 @@
                                 User Field is Required
                               </span>
                             </div>
+                            <div class="col-sm-12" *ngIf="role_id!=1">
+                              {{usre_name}}
+                          </div> 
                           </div>
 
                           <div class="row">

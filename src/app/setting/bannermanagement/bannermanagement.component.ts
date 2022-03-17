@@ -55,6 +55,8 @@ export class BannermanagementComponent implements OnInit {
   public pagination: any;
   public imageSizeFlag = true;
   all: any;
+  role_id: any;
+  usre_name:any ;
 
    
   constructor(private spinner: NgxSpinnerService,private bannerService: BannerService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer, private busOperartorService:BusOperatorService,
@@ -73,7 +75,9 @@ export class BannermanagementComponent implements OnInit {
             const data= {
               status:this.searchForm.value.status,
               searchBy:this.searchForm.value.searchBy,
-              per_page:this.searchForm.value.per_page
+              per_page:this.searchForm.value.per_page,
+              role_id: localStorage.getItem('ROLE_ID'),
+              userID: localStorage.getItem('USERID'),
             }; 
      this.bannerService.bannerDataTable(url,data).subscribe(
             res=>{    
@@ -103,6 +107,9 @@ export class BannermanagementComponent implements OnInit {
   }
   ngOnInit(): void {
     this.spinner.show();
+    this.role_id= localStorage.getItem('ROLE_ID');
+      this.usre_name= localStorage.getItem('USERNAME');
+
 
       ////// get all user list
 
@@ -251,7 +258,7 @@ export class BannermanagementComponent implements OnInit {
       // category: [null],
       url:[null],
       heading:[null],
-      user_id:[null, Validators.compose([Validators.required])],
+      user_id:[null],
       banner_img:[null],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
@@ -275,6 +282,10 @@ export class BannermanagementComponent implements OnInit {
   }
   addBanner()
   {
+    if(this.role_id!=1){
+      this.bannerForm.controls.user_id.setValue(localStorage.getItem('USERID'));
+    }
+    
     this.spinner.show();
     let fd: any = new FormData();
     fd.append("banner_img", this.finalImage);

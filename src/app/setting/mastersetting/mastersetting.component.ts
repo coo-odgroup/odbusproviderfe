@@ -59,6 +59,8 @@ export class MastersettingComponent implements OnInit {
   favSrc: any[];
   footerIcoSrc: any[];
   all: any;
+  role_id: any;
+  usre_name:any ;
 
 
   constructor( private spinner: NgxSpinnerService,private fb: FormBuilder,
@@ -76,7 +78,9 @@ export class MastersettingComponent implements OnInit {
     this.spinner.show();
      const data= {
           name:this.searchForm.value.name,
-          per_page:this.searchForm.value.per_page
+          per_page:this.searchForm.value.per_page,
+          role_id: localStorage.getItem('ROLE_ID'),
+          userID: localStorage.getItem('USERID'),
      }; 
      this.settingsService.DataTable(url,data).subscribe(
             res=>{    
@@ -106,6 +110,10 @@ export class MastersettingComponent implements OnInit {
   ngOnInit(): void {
       
       this.spinner.show();
+      
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
+
     this.searchForm =this.fb.group({
       name:[null],
       per_page:Constants.RecordLimit,
@@ -484,7 +492,7 @@ export class MastersettingComponent implements OnInit {
 
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
-      user_id: [null, Validators.compose([Validators.required])],
+      user_id: [null],
       email_sms_charges:[null,Validators.compose([Validators.required])],
       odbus_gst_charges:[null,Validators.compose([Validators.required])],
       advance_days_show:[null, Validators.compose([Validators.required])],
@@ -530,6 +538,9 @@ export class MastersettingComponent implements OnInit {
     this.spinner.show();
 
     let id = this.settingRecord?.id;
+    if(this.role_id!=1){
+      this.settingForm.controls.user_id.setValue(localStorage.getItem('USERID'));
+    }
 
     let fd: any = new FormData();
     fd.append("favicon_image", this.finalFavIcon);

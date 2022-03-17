@@ -56,7 +56,19 @@ const routes: Routes = [
       {
         path: 'pushnotification',
         loadChildren: () => import('./pushnotification/pushnotification.module').then(module => module.PushNotificationModule)
-      }                   
+      },
+      {
+        path: 'assignagentreport',
+        loadChildren: () => import('./assignagentreport/assignagentreport.module').then(module => module.AssignagentreportReportModule)
+      },
+      {
+        path: 'assignbusreport',
+        loadChildren: () => import('./assignbusreport/assignbusreport.module').then(module => module.AssignbusreportReportModule)
+      },                 
+      {
+        path: 'assignoperatorreport',
+        loadChildren: () => import('./assignoperatorreport/assignoperatorreport.module').then(module => module.AssignoperatorreportReportModule)
+      }                  
     ]
   }
 ];

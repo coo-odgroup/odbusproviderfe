@@ -92,7 +92,7 @@ export class SocialmediaComponent implements OnInit {
     this.socialRecord = {} as SocialMedia;
     this.socialFrom = this.fb.group({
       id: [null],
-      user_id: [null, Validators.compose([Validators.required])],
+      user_id: [null],
       facebook_link: [null],
       twitter_link: [null],
       instagram_link: [null],

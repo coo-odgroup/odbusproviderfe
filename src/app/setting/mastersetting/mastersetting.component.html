@@ -19,7 +19,7 @@
           <form [formGroup]="searchForm" class="editForm" novalidate>
             <div class="row">
               <div class="from-group col-6">
-                <div class="input-group">
+                <div class="input-group" *ngIf="role_id==1">
                   <input type="text" class="form-control sml_input" placeholder="Search Here " required
                     formControlName="name" (keyup.enter)="getAll()">
                   <div class="input-group-append">
@@ -34,7 +34,7 @@
                 <!-- <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
                   <i class="fas fa-search"> </i> Search
                 </button> -->
-                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh" *ngIf="role_id==1">
                   <i class="fas fa-sync-alt"> </i> Refresh
                 </button>
               </div>
@@ -203,7 +203,7 @@
                                 <div class="form-group row">
                                   <label  class="col-sm-5 col-form-label"><strong>User</strong> <span
                                       class="text-danger">*</span></label>
-                                  <div class="col-sm-7">
+                                  <div class="col-sm-7"  *ngIf="role_id==1">
                                     <ng-select  [items]="users" bindLabel="userData" bindValue="id"
                                           placeholder="Select User" formControlName="user_id" [clearable]="false">
                                         </ng-select>
@@ -212,6 +212,9 @@
                                       User Filed is Required
                                     </span>
                                   </div>
+                                  <div class="col-sm-7" *ngIf="role_id!=1">
+                                    {{usre_name}}
+                                </div> 
                                 </div>
       
                                 <div class="form-group row">

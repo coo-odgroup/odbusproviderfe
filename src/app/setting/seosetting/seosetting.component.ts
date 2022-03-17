@@ -41,6 +41,9 @@ export class SeosettingComponent implements OnInit {
   busoperators: any;
   locations: any;
   all: any;
+  role_id: any;
+  usre_name:any ;
+
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -65,6 +68,10 @@ export class SeosettingComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
+
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
+
     this.form = this.fb.group({
       id: [null],
       seo_type: [null],     
@@ -105,7 +112,7 @@ export class SeosettingComponent implements OnInit {
       source_id: [null],
       destination_id: [null],
       page_url: [null, Validators.compose([Validators.required])],
-      user_id: [null, Validators.compose([Validators.required])],
+      user_id: [null],
       url_description: [null],
       meta_title: [null],
       meta_keyword: [null],
@@ -139,6 +146,8 @@ export class SeosettingComponent implements OnInit {
       name: this.searchForm.value.name,
       user_id: this.searchForm.value.user_id,
       rows_number: this.searchForm.value.rows_number,
+      role_id: localStorage.getItem('ROLE_ID'),
+      userID: localStorage.getItem('USERID'),
     };
 
     // console.log(data);
@@ -225,6 +234,11 @@ export class SeosettingComponent implements OnInit {
 
   addData() {
     this.spinner.show();
+
+    if(this.role_id!=1){
+      this.form.controls.user_id.setValue(localStorage.getItem('USERID'));
+    }
+
     const data = {
       page_url: this.form.value.page_url,
       user_id:this.form.value.user_id,
@@ -267,8 +281,6 @@ export class SeosettingComponent implements OnInit {
             this.modalReference.close();
             this.ResetAttributes();
             this.refresh();
-
-
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });

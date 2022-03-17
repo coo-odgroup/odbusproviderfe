@@ -742,6 +742,27 @@ const NavigationItems = [
             icon:'feather icon-scissors',
             url: 'association/cancelreport'
           },
+          {
+            id: 'assignagentreport',
+            title: 'Assign Agent Report',
+            type: 'item',
+            icon:'feather icon-loader',
+            url: 'reports/assignagentreport'
+          },
+          {
+            id: 'assignbusreport',
+            title: 'Assign Bus Report',
+            type: 'item',
+            icon:'feather icon-briefcase',
+            url: 'reports/assignbusreport'
+          },
+          {
+            id: 'assignoperatorreport',
+            title: 'Assign Operator Report',
+            type: 'item',
+            icon:'feather icon-aperture',
+            url: 'reports/assignoperatorreport'
+          },
         ]
       },
 
@@ -1160,96 +1181,117 @@ const AssociationNavItems = [
         type: 'collapse',
         icon: 'feather icon-file-text',
         children: [
-          {
-            id: 'agentwalletrequest',
-            title: 'Agent Wallet Request',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/agentwalletrequest'
-          },
-          {
-            id: 'pushnotification',
-            title: 'Push Notification',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/pushnotification'
-          },
-          {
-            id: 'seatopenreport',
-            title: 'Seat Open Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/seatopenReport'
-          },
-          {
-            id: 'extraseatopenreport',
-            title: 'Extra Seat Open Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/extraseatopenReport'
-          },
-          {
-            id: 'completereport',
-            title: 'Complete Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/completeReport'
-          },
-          {
-            id: 'seatblockreport',
-            title: 'Seat Block Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/seatblockReport'
-          },
-          {
-            id: 'cancleticketsReport',
-            title: 'Cancel Tickets Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/cancleticketsReport'
-          },
-          {
-            id: 'failedtransactionreport',
-            title: 'Failed Transaction Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/failedtransactionreport'
-          },
-          {
-            id: 'buscancellationreport',
-            title: 'Bus Cancellation Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/buscancellationreport'
-          },
-          {
-            id: 'ownerpaymentreport',
-            title: 'Owner Payment Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/ownerpaymentreport'
-          },
+            {
+              id: 'assignagentreport',
+              title: 'Assign Agent Report',
+              type: 'item',
+              icon:'feather icon-loader',
+              url: 'reports/assignagentreport'
+            },
+            {
+              id: 'assignbusreport',
+              title: 'Assign Bus Report',
+              type: 'item',
+              icon:'feather icon-briefcase',
+              url: 'reports/assignbusreport'
+            },
+            {
+              id: 'assignoperatorreport',
+              title: 'Assign Operator Report',
+              type: 'item',
+              icon:'feather icon-aperture',
+              url: 'reports/assignoperatorreport'
+            },
+          // {
+          //   id: 'agentwalletrequest',
+          //   title: 'Agent Wallet Request',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/agentwalletrequest'
+          // },
+          // {
+          //   id: 'pushnotification',
+          //   title: 'Push Notification',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/pushnotification'
+          // },
+          // {
+          //   id: 'seatopenreport',
+          //   title: 'Seat Open Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/seatopenReport'
+          // },
+          // {
+          //   id: 'extraseatopenreport',
+          //   title: 'Extra Seat Open Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/extraseatopenReport'
+          // },
+          // {
+          //   id: 'completereport',
+          //   title: 'Complete Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/completeReport'
+          // },
+          // {
+          //   id: 'seatblockreport',
+          //   title: 'Seat Block Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/seatblockReport'
+          // },
+          // {
+          //   id: 'cancleticketsReport',
+          //   title: 'Cancel Tickets Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/cancleticketsReport'
+          // },
+          // {
+          //   id: 'failedtransactionreport',
+          //   title: 'Failed Transaction Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/failedtransactionreport'
+          // },
+          // {
+          //   id: 'buscancellationreport',
+          //   title: 'Bus Cancellation Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/buscancellationreport'
+          // },
+          // {
+          //   id: 'ownerpaymentreport',
+          //   title: 'Owner Payment Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/ownerpaymentreport'
+          // },
           // {
           //   id   : 'cleartransactionreport',
           //   title: 'Clear Transaction Tickets Report',
           //   type : 'item',
           //   url  : 'reports/cleartransactionreport'
           // },
-          {
-            id: 'contactreport',
-            title: 'Contact Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/contactreport'
-          },
-          {
-            id: 'couponuseduserreport',
-            title: 'Coupon Used User Report',
-            type: 'item',
-            icon:'feather icon-pie-chart',
-            url: 'reports/couponuseduserreport'
-          },
+          // {
+          //   id: 'contactreport',
+          //   title: 'Contact Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/contactreport'
+          // },
+          // {
+          //   id: 'couponuseduserreport',
+          //   title: 'Coupon Used User Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/couponuseduserreport'
+          // },
         ]
       },
       {

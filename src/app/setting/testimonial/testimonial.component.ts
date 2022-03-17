@@ -106,7 +106,7 @@ export class TestimonialComponent implements OnInit {
       testinmonial_content: [null, Validators.compose([Validators.required])],
       designation: [null, Validators.compose([Validators.required])],
       travel_date: [null, Validators.compose([Validators.required])],
-      user_id: [null, Validators.compose([Validators.required])],
+      user_id: [null],
       destination: [null, Validators.compose([Validators.required])],
       source: [null, Validators.compose([Validators.required])]
       });

@@ -57,6 +57,9 @@ export class SpecialsliderComponent implements OnInit {
   users:any=[];
   coupondet: any;
 
+  role_id: any;
+  usre_name:any ;
+
 
     
   constructor(private spinner: NgxSpinnerService,private specialsliderService: SpecialsliderService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private sanitizer: DomSanitizer,private busOperartorService:BusOperatorService,private userService: UserService)
@@ -74,7 +77,9 @@ export class SpecialsliderComponent implements OnInit {
             const data= {
               status:this.searchForm.value.status,
               searchBy:this.searchForm.value.searchBy,
-              per_page:this.searchForm.value.per_page
+              per_page:this.searchForm.value.per_page,
+              role_id: localStorage.getItem('ROLE_ID'),
+              userID: localStorage.getItem('USERID'),
             }; 
      this.specialsliderService.sliderDataTable(url,data).subscribe(
             res=>{    
@@ -104,6 +109,10 @@ export class SpecialsliderComponent implements OnInit {
   }
   ngOnInit(): void {
     this.spinner.show();
+
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
+
     this.searchForm =this.fb.group({
       searchBy:[null],
       status:[null],
@@ -265,10 +274,11 @@ export class SpecialsliderComponent implements OnInit {
   }
   ResetAttributes()
   {
-    //this.sliderRecord = {} as SpecialSlider;
+    this.sliderRecord = {} as SpecialSlider;
+    
     this.sliderForm = this.fb.group({
       id:[null],
-      user_id: [null, Validators.compose([Validators.required])],
+      user_id: [null],
       occassion: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       category: [null],
       url:[null],
@@ -294,6 +304,9 @@ export class SpecialsliderComponent implements OnInit {
     this.spinner.show();
     this.finalJson = {
       "File": this.imageSrc,
+    }
+    if(this.role_id!=1){
+      this.sliderForm.controls.user_id.setValue(localStorage.getItem('USERID'));
     }
     let id: any = this.sliderForm.value.id;
     let fd: any = new FormData();

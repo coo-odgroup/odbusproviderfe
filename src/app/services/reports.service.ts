@@ -183,14 +183,6 @@ export class ReportsService {
   }
 
 
-
-
-
-
-
-
-
-
   cleartransactionReport(): Observable<any> {
     return this.httpClient.get(this.apiURL + '/cleartransactionreport').pipe(
       catchError(this.errorHandler)
@@ -205,6 +197,46 @@ export class ReportsService {
 
 
   couponUsedUserpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  assocAssignAgentReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/assocAssignAgentreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  assocAssignAgentpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  assocAssignBusReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/assocAssignBusreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  assocAssignBuspaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  assocAssignOperatorReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/assocAssignOperatorreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  assocAssignnoperatorpaginationReport(url,data): Observable<any> {
     return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
     )

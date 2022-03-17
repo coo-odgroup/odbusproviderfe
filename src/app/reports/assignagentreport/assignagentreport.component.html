@@ -1,0 +1,188 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Association Assign Agent Report" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
+            <div class=" mb-3">
+                <div class="row p-0">
+                    <div class="col-12">
+                        <form [formGroup]="searchFrom">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group row" *ngIf="role_id==1">
+                                        <div class="col-sm-12">
+                                            <ng-select [items]="allAssoc" bindLabel="name" bindValue="id"
+                                            placeholder="Select Association" formControlName="assoc_id"
+                                            [clearable]="false"  (change)=search()>
+                                        </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-4">
+                                    <div class="row">
+                                        <input class="form-control hidden" ngbDatepicker #datepicker="ngbDatepicker"
+                                            [autoClose]="'outside'" (dateSelect)="onDateSelection($event)"
+                                            [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden"
+                                            [startDate]="fromDate!" tabindex="-1">
+                                        <ng-template #t let-date let-focused="focused">
+                                            <span class="custom-day" [class.focused]="focused"
+                                                [class.range]="isRange(date)"
+                                                [class.faded]="isHovered(date) || isInside(date)"
+                                                (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                                {{ date.day }}
+                                            </span>
+                                        </ng-template>
+                                        <div class="form-group col-6">
+                                            <div class="input-group">
+                                                <input #dpFromDate class="form-control sml_input"
+                                                    placeholder="yyyy-mm-dd" formControlName="rangeFromDate"
+                                                    [value]="formatter.format(fromDate)"
+                                                    (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary calendar"
+                                                        (click)="datepicker.toggle()" type="button"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <div class="input-group">
+                                                <input #dpToDate class="form-control sml_input" placeholder="yyyy-mm-dd"
+                                                    formControlName="rangeToDate" [value]="formatter.format(toDate)"
+                                                    (input)="toDate = validateInput(toDate, dpToDate.value)">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary calendar"
+                                                        (click)="datepicker.toggle()" type="button"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> -->
+
+
+
+
+                                <div class="col-8">
+                                    <div class="dropdown float-right">
+                                        <select class="form-control sml_input" formControlName="rows_number"
+                                            (change)=search()>
+                                            <option value=10>10</option>
+                                            <option value=25>25</option>
+                                            <option value=50>50</option>
+                                            <option value=100>100</option>
+                                            <option value='all'>All</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- <div class="row ">
+
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-success  sml_input" (click)="search()"
+                                        title="search">
+                                        <i class="fas fa-search"> </i> Search
+                                    </button>
+                                    <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
+                                        title="refresh">
+                                        <i class="fas fa-sync-alt"> </i> Refresh
+                                    </button>
+                                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                                        title="Export">
+                                        <i class="fas fa-file-export"> </i> Export
+                                    </button>
+                                    <button type="button" printSectionId="print-section" ngxPrint
+                                        class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
+                                        <i class="fas fa-print"> </i> Print
+                                    </button>
+                                </div>
+
+                            </div> -->
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="table-responsive" id="print-section">
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Association Name</th>
+                            <th scope="col">Agent Name </th>
+                            <th scope="col">Created/Updated At</th>
+                         
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="completedata?.length != 0">
+                        <tr *ngFor="let assoc of completedata; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>
+                                <span *ngIf="assoc.user">
+                                    {{assoc.user.name}}<br>
+                                    <b>{{assoc.user.location}}</b>
+                                </span>                             
+                            </td>
+                            <td>
+                                <span *ngIf="assoc.agent.length != 0">
+                                    {{assoc.agent[0].name}}<br>
+                                    <b>{{assoc.agent[0].location}}</b>
+                                </span>                             
+                            </td>
+                            <td>
+                                {{assoc.updated_at | date:'dd/MM/yyyy'}}                            
+                            </td>
+
+                           
+
+                        </tr>
+                    </tbody>
+
+                    <tbody *ngIf="completedata?.length == 0">
+                        <tr>
+                          <td colspan="6" class="no-data-available">No data!</td>
+                        </tr>
+                    <tbody>
+                </table>
+
+                <div *ngIf="completedata?.length != 0" class="hide_print container">
+                    <div class="row">
+                      <div class="col-6">
+                       
+                          <div class="col-12">
+                            <p class=" row mt-3 ml-1"> Showing {{all?.to}} of {{all?.total}} records. </p>
+                          </div> 
+                      </div>
+                      <div class="col-6">
+                        <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="all?.links">
+                            <nav class="my-1 pt-1 ">
+                                <ul class="pagination pagination-circle pg-blue mb-0">
+                                    <li (click)="search(all.first_page_url,statusLabel)"
+                                        class="page-item {{ all.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                                        <a class="page-link">First</a>
+                                    </li>
+                                    <li class="page-item " *ngFor="let b of all.links ; let i = index ">
+                                        <a class="page-link {{ all.current_page == b.label ? 'active' : '' }}"
+                                            (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                                    </li>
+                                    <li class="page-item {{ all.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
+                                        (click)="search(all.last_page_url,statusLabel)">
+                                        <a class="page-link">Last</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+            
+                      </div>
+            
+                    </div>
+                  </div> 
+                  
+
+             
+
+            </div>
+        </app-card>
+    </div>
+</div>

@@ -17,6 +17,9 @@ import { CouponuseduserreportComponent } from './couponuseduserreport/couponused
 import { ContactreportComponent } from './contactreport/contactreport.component';
 import { AgentwalletrequestComponent } from './agentwalletrequest/agentwalletrequest.component';
 import { PushnotificationComponent } from './pushnotification/pushnotification.component';
+import { AssignagentreportComponent } from './assignagentreport/assignagentreport.component';
+import { AssignoperatorreportComponent } from './assignoperatorreport/assignoperatorreport.component';
+import { AssignbusreportComponent } from './assignbusreport/assignbusreport.component';
 
 
 
