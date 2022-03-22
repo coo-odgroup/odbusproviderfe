@@ -35,6 +35,8 @@ export class CancelreportComponent implements OnInit {
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   allAssoc: any;
+  role_id: any;
+  usre_name:any ;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -54,6 +56,10 @@ export class CancelreportComponent implements OnInit {
     fileName= 'Complete-Report.xlsx';
   ngOnInit(): void {
     this.spinner.show();
+
+    
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
 
     this.searchFrom = this.fb.group({
       user_id: [null],
@@ -95,7 +101,7 @@ export class CancelreportComponent implements OnInit {
   search(pageurl="")
   {
     this.spinner.show();
-     this.completeReportRecord = this.searchFrom.value ; 
+    this.completeReportRecord = this.searchFrom.value ; 
      
     const data = {
       user_id: this.completeReportRecord.user_id,
@@ -106,8 +112,9 @@ export class CancelreportComponent implements OnInit {
       source_id:this.completeReportRecord.source_id,
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
-      rangeToDate :this.completeReportRecord.rangeToDate
-            
+      rangeToDate :this.completeReportRecord.rangeToDate,
+      role_id: localStorage.getItem('ROLE_ID'),
+      userID: localStorage.getItem('USERID')      
     };
        
     // console.log(data);

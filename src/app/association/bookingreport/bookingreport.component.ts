@@ -34,7 +34,9 @@ export class BookingreportComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
-  allAssoc: any;
+  allAssoc: any; 
+  role_id: any;
+  usre_name:any ;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -54,6 +56,10 @@ export class BookingreportComponent implements OnInit {
     fileName= 'Complete-Report.xlsx';
   ngOnInit(): void {
     this.spinner.show();
+
+    this.role_id= localStorage.getItem('ROLE_ID');
+    this.usre_name= localStorage.getItem('USERNAME');
+
 
     this.searchFrom = this.fb.group({
       user_id: [null],
@@ -106,8 +112,9 @@ export class BookingreportComponent implements OnInit {
       source_id:this.completeReportRecord.source_id,
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
-      rangeToDate :this.completeReportRecord.rangeToDate
-            
+      rangeToDate :this.completeReportRecord.rangeToDate, 
+      role_id: localStorage.getItem('ROLE_ID'),
+      userID: localStorage.getItem('USERID')            
     };
        
     // console.log(data);
@@ -165,8 +172,9 @@ export class BookingreportComponent implements OnInit {
       date_type:['journey'],
       rows_number: Constants.RecordLimit,
       source_id:[null],
-      destination_id:[null]
-
+      destination_id:[null],
+      role_id: localStorage.getItem('ROLE_ID'),
+      userID: localStorage.getItem('USERID'),
     })
     this.search();
   }

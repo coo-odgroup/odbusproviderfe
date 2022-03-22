@@ -16,11 +16,48 @@ import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 import { replace } from 'lodash';
 
+import {Input,Output,EventEmitter} from '@angular/core';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+
+
+
+const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
+  one && two && two.year === one.year && two.month === one.month && two.day === one.day;
+
+const before = (one: NgbDateStruct, two: NgbDateStruct) =>
+  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
+    ? false : one.day < two.day : one.month < two.month : one.year < two.year;
+
+const after = (one: NgbDateStruct, two: NgbDateStruct) =>
+  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
+    ? false : one.day > two.day : one.month > two.month : one.year > two.year;
+
 @Component({
   selector: 'app-seatblock',
   templateUrl: './seatblock.component.html',
-  styleUrls: ['./seatblock.component.scss']
+  styleUrls: ['./seatblock.component.scss'],
+  styles: [`
+  .custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+  }
+  .custom-day.range, .custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+  }
+  .custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+  }
+  .custom-day.selected{  
+    background-color: rgba(255, 255, 0, .5);
+      
+  }
+`]
 })
+
 export class SeatblockComponent implements OnInit {
 
   @ViewChild("addnew") addnew;
@@ -58,6 +95,8 @@ export class SeatblockComponent implements OnInit {
   lowerData: FormArray;
   upperData: FormArray;
   busopenform: any;
+
+  // datesSelected:NgbDateStruct[]=[]; 
   dtOptionsSeatblock: { pagingType: string; pageLength: number; serverSide: boolean; processing: boolean; dom: string; order: string[]; aLengthMenu: (string | number)[]; buttons: ({ extend: string; className: string; init: (api: any, node: any, config: any) => void; exportOptions: { columns: string; }; text?: undefined; action?: undefined; } | { text: string; className: string; init: (api: any, node: any, config: any) => void; action: () => void; extend?: undefined; exportOptions?: undefined; })[]; language: { searchPlaceholder: string; processing: string; }; ajax: (dataTablesParameters: any, callback: any) => void; columns: ({ data: string; title?: undefined; render?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: string; render?: undefined; orderable?: undefined; className?: undefined; } | { data: string; render: (data: any) => "Active" | "Pending"; title?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: any; orderable: boolean; className: string; render?: undefined; })[]; };
   pagination: any;
   all: any;
@@ -66,6 +105,7 @@ export class SeatblockComponent implements OnInit {
   page_no=1;
   busSchedule: any;
   constructor(
+    calendar: NgbCalendar,
     private seatblockService: SeatblockService,
     private seatlayoutService: SeatlayoutService,
     private bss: BusscheduleService,
@@ -141,6 +181,8 @@ export class SeatblockComponent implements OnInit {
   page(label:any){
     return label;
    }
+
+   
 
    
   search(pageurl="")
@@ -550,6 +592,7 @@ export class SeatblockComponent implements OnInit {
 
 
   ResetAttributes() {
+    this.datesSelected=[];
     this.route = [];
     this.buses ="";
     this.loadServices();
@@ -658,6 +701,12 @@ export class SeatblockComponent implements OnInit {
 
   addBlockseat() {
     this.spinner.show();
+    if(this.seatBlockForm.value.date == null)
+    {
+      this.notificationService.addToast({ title: 'Error', msg: 'Please Select Date', type: 'error' });
+      this.spinner.hide();
+      return;
+    }else{
     const data = {
       bus_operator_id: this.seatBlockForm.value.bus_operator_id,
       bus_id: this.seatBlockForm.value.bus_id,
@@ -704,7 +753,7 @@ export class SeatblockComponent implements OnInit {
       );
 
     }
-
+  }
   }
 
   changeStatus(event: Event, stsitem: any) {
@@ -789,6 +838,95 @@ export class SeatblockComponent implements OnInit {
     this.ModalBtn = "Update";
     this.checkEvent(this.seatBlockRecord.bus_id);
   }
+
+
+  
+  hoveredDate: NgbDateStruct;
+
+  fromDate: NgbDateStruct;
+  toDate: NgbDateStruct;
+
+  _datesSelected:NgbDateStruct[]=[]; 
+
+  @Input()
+  set datesSelected(value:NgbDateStruct[])  
+  {
+     this._datesSelected=value;
+     
+  }
+  get datesSelected():NgbDateStruct[]
+  {
+    
+    return this._datesSelected?this._datesSelected:[];
+  }
+
+  @Output() datesSelectedChange=new EventEmitter<NgbDateStruct[]>();
+
+ 
+
+  onDateSelection(event:any,date: NgbDateStruct) {
+
+    event.target.parentElement.blur();  //make that not appear the outline
+    if (!this.fromDate && !this.toDate) {
+      if (event.ctrlKey==true)  //If is CrtlKey pressed
+        this.fromDate = date;
+      else
+        this.addDate(date);
+
+      this.datesSelectedChange.emit(this.datesSelected);
+
+    } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
+      this.toDate = date;
+      this.addRangeDate(this.fromDate,this.toDate);
+      this.fromDate=null;
+      this.toDate=null;
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+    }
+  }
+
+  addDate(date:NgbDateStruct)
+  {
+      let index=this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year);
+      if (index>=0)       //If exist, remove the date
+        this.datesSelected.splice(index,1);
+      else   //a simple push
+        this.datesSelected.push(date);
+        // console.log(this.datesSelected);
+        this.seatBlockForm.controls['date'].setValue(this.datesSelected);
+    }
+    addRangeDate(fromDate:NgbDateStruct,toDate:NgbDateStruct)
+    {
+        //We get the getTime() of the dates from and to
+        let from=new Date(fromDate.year+"-"+fromDate.month+"-"+fromDate.day).getTime();
+        let to=new Date(toDate.year+"-"+toDate.month+"-"+toDate.day).getTime();
+        for (let time=from;time<=to;time+=(24*60*60*1000)) //add one day
+        {
+            let date=new Date(time);
+            //javascript getMonth give 0 to January, 1, to February...
+            this.addDate({year:date.getFullYear(),month:date.getMonth()+1,day:date.getDate()});
+        }   
+        this.datesSelectedChange.emit(this.datesSelected);
+    }
+    //return true if is selected
+    isDateSelected(date:NgbDateStruct)
+    {
+        return (this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year)>=0);
+    }
+  isHovered = date => this.fromDate && !this.toDate && this.hoveredDate && after(date, this.fromDate) && before(date, this.hoveredDate);
+  isInside = date => after(date, this.fromDate) && before(date, this.toDate);
+  isFrom = date => equals(date, this.fromDate);
+  isTo = date => equals(date, this.toDate);
+
+
+  
+  // change(value:NgbDateStruct[])
+  // {
+  //   this.datesSelected=value;
+    
+
+  // }
 
 
 

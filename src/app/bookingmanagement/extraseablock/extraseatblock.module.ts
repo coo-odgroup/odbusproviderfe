@@ -8,6 +8,7 @@ import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import {NgxPrintModule} from 'ngx-print';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import {NgxPrintModule} from 'ngx-print';
     ExtraSeatBlockRoutingModule,
     SharedModule,
    NgSelectModule,NgxSpinnerModule,
-    FormsModule,NgxPrintModule
+    FormsModule,NgxPrintModule,NgbModule
   ],
   declarations: [ ExtraseablockComponent],
   providers: [NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA]

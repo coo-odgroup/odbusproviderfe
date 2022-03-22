@@ -8,6 +8,7 @@ import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {SeatBlockRoutingModule} from './seatblock-routing.module';
 import {NgxPrintModule} from 'ngx-print';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import {NgxPrintModule} from 'ngx-print';
     SharedModule,
     FormsModule,
     NgSelectModule,
-    NgxPrintModule,NgxSpinnerModule
+    NgxPrintModule,NgxSpinnerModule,NgbModule
   ],
   declarations: [ SeatblockComponent],
   providers: [NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
