@@ -207,8 +207,7 @@ export class ManagepermissionComponent implements OnInit {
 
   deleteRecord()
   {
-
-    let delitem=this.formConfirm.value.id;
+     let delitem = this.formConfirm.value.id;
      this.permissionService.delete(delitem).subscribe(
       resp => {
         if(resp.status==1)

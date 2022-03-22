@@ -95,13 +95,11 @@ export class AssignagentsComponent implements OnInit {
       rows_number: this.searchForm.value.rows_number,
     };
 
-    // console.log(data);
     if (pageurl != "") {
       this.oprassignagentsService.getAllaginationData(pageurl, data).subscribe(
         res => {
           this.opragents = res.data.data;
           this.pagination = res.data;
-          // console.log( this.BusOperators);
           this.spinner.hide();
         }
       );
@@ -111,7 +109,6 @@ export class AssignagentsComponent implements OnInit {
         res => {
           this.opragents = res.data.data;
           this.pagination = res.data;
-          // console.log( this.assocBus);
           this.spinner.hide();
         }
       );
@@ -177,6 +174,7 @@ export class AssignagentsComponent implements OnInit {
   get confirm_password() {
     return this.pwdform.controls['conf_password'];
   }
+  
   ResetAttributes() {
     this.buses=[];
     this.userRecord = {} as User;
@@ -201,8 +199,6 @@ export class AssignagentsComponent implements OnInit {
       created_by: localStorage.getItem('USERNAME'),
     };
 
-    //console.log(data);
-
     this.oprassignagentsService.create(data).subscribe(
           resp => {
             if (resp.status == 1) {
@@ -216,7 +212,6 @@ export class AssignagentsComponent implements OnInit {
 
   }
 
-
   openConfirmDialog(content, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.assocBusRecord = this.opragents[id];
@@ -227,8 +222,7 @@ export class AssignagentsComponent implements OnInit {
     const data = {
       id: this.assocBusRecord.id,created_by: localStorage.getItem('USERNAME'),
     };
-    // console.log(data);
-    // return;
+
     this.oprassignagentsService.delete(data).subscribe(
       resp => {
         if (resp.status == 1) {
