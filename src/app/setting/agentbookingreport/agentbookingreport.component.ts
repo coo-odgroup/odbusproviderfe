@@ -94,7 +94,7 @@ export class AgentbookingreportComponent implements OnInit {
   {
     this.spinner.show();
     this.completeReportRecord = this.searchFrom.value ; 
-    console.log(this.completeReportRecord);
+    //console.log(this.completeReportRecord);
 
     const data = {
       date_type :this.completeReportRecord.date_type,
@@ -124,7 +124,7 @@ export class AgentbookingreportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata= res.data;
-           console.log( this.completedata);
+          console.log( this.completedata);
           this.spinner.hide();
         }
       );

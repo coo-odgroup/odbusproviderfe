@@ -10,6 +10,8 @@ import { AgentWallet } from '../../model/agentwallet';
 import { Constants } from '../../constant/constant';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { ExitStatus } from 'typescript';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-agentalltransaction',
@@ -19,7 +21,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class AgentalltransactionComponent implements OnInit {
 
   public form: FormGroup;
-
+  model: NgbDateStruct;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
   pagination: any;
@@ -67,7 +69,7 @@ export class AgentalltransactionComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.spinner.show();
+    // this.spinner.show();
     this.form = this.fb.group({
       id: [null],
       otp: [null, Validators.compose([Validators.required])]
@@ -114,11 +116,16 @@ export class AgentalltransactionComponent implements OnInit {
 
 
   search(pageurl = "") {
-    this.spinner.show();
+    // this.spinner.show();
+    console.log(this.searchForm.value);
+  
     const data = {
       name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
+      rangeFromDate:this.searchForm.value.rangeFromDate,
+      rangeToDate :this.searchForm.value.rangeToDate,
+      user_id:this.searchForm.value.user_id
     };
     // console.log(data);
     if (pageurl != "") {
@@ -139,7 +146,7 @@ export class AgentalltransactionComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log( this.wallet);
+           console.log( this.all);
         }
       );
     }
@@ -155,14 +162,19 @@ export class AgentalltransactionComponent implements OnInit {
   }
 
 
-  formatDate(date) {
-    var d = new Date(date),
+  formatDate(d) {
+    
+    var //d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-  
+
+    console.log(d);
+    console.log(month);
+
     if (month.length < 2) 
         month = '0' + month;
+        
     if (day.length < 2) 
         day = '0' + day;
   
@@ -202,8 +214,11 @@ export class AgentalltransactionComponent implements OnInit {
 
   refresh() {
     this.searchForm = this.fb.group({
+      bus_operator_id: [null],      
       name: [null],
-      bus_operator_id: [null],
+      rangeFromDate:[null],
+      rangeToDate:[null],
+      user_id:[null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
