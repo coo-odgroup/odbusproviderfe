@@ -56,7 +56,7 @@ export class CouponService {
   }
 
   couponType(): Observable<any>{
-    return this.httpClient.get<any>(Constants.BASE_URL + '/couponType', this.httpOptions)
+    return this.httpClient.get<any>(Constants.BASE_URL + '/CouponType', this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

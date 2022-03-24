@@ -255,10 +255,10 @@
 
                                                     <div class="from-group"  *ngIf="form.controls.coupon_type.value=='1' || form.controls.coupon_type.value=='3' ">
                                                         <label for="bus"
-                                                            class="col-sm-5  col-form-label">Operator</label>
+                                                            class="col-sm-5  col-form-label">Bus Operator</label>
                                                         <div class="col-sm-12">
                                                             <ng-select [items]="busoperators" bindLabel="operatorData"
-                                                                bindValue="id" placeholder="Select Operator"
+                                                                bindValue="id" placeholder="Select Bus Operator"
                                                                 formControlName="bus_operator_id" [clearable]="false">
                                                             </ng-select>
 
@@ -334,7 +334,7 @@
                                                             :<span class="text-danger">*</span></label>
                                                         <div class="col-sm-12">
                                                             <select class="form-control"
-                                                                formControlName="coupon_discount_type" required>
+                                                                formControlName="coupon_discount_type" required>                                                            
                                                                 <option value="1">Percentage %</option>
                                                                 <option value="2">Cut Off</option>
                                                             </select>
