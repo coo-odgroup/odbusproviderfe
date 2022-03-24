@@ -124,7 +124,7 @@ export class AgentbookingreportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata= res.data;
-          console.log( this.completedata);
+          //console.log( this.completedata);
           this.spinner.hide();
         }
       );
@@ -168,6 +168,7 @@ export class AgentbookingreportComponent implements OnInit {
       rangeFromDate:[null],
       rangeToDate:[null],
       date_type:['journey'],
+      user_id:[null],
       pnr:[null],
       rows_number: Constants.RecordLimit,
     })  

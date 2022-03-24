@@ -128,12 +128,13 @@ export class AgentwalletrequestComponent implements OnInit {
     }
     else {
       this.ws.getAllagentData(data).subscribe(
+        
         res => {
           this.wallet = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log( res.data);
+          //console.log( res.data);
         }
       );
     }
