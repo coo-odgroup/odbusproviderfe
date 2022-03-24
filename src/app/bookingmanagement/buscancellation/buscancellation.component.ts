@@ -255,6 +255,7 @@ export class BuscancellationComponent implements OnInit {
     const arr = <FormArray>this.busCancellationForm.controls.buses;
     arr.controls = [];
     //console.log(this.busCancellationForm.value);
+    this.spinner.show();
     this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
       response => {
         // console.log(response);
@@ -275,7 +276,12 @@ export class BuscancellationComponent implements OnInit {
           let arraylen = this.DatesRecord.length;
           let data = this.busCancellationRecord.bus_cancelled_date;
 
+         
+
           for (let eDate of bData.entryDates) {
+
+         
+
             let dateformate = this.pipe.transform(eDate.entry_date, 'y-MM-dd');
       
             let isPresent=false;
@@ -301,13 +307,17 @@ export class BuscancellationComponent implements OnInit {
 
                 datechecked: [null],
               })
-              this.DatesRecord.insert(arraylen, newDatesgroup);
+              this.DatesRecord.insert(arraylen, newDatesgroup);            
 
             }
           }
           counter++;
         }
         response = [];
+
+        this.spinner.hide();
+
+        
       }
     );
   }
