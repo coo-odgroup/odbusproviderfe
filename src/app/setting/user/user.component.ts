@@ -8,7 +8,7 @@ import { Constants } from '../../constant/constant';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { UserService } from '../../services/user.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
-import { constant } from 'lodash';
+import { constant, values } from 'lodash';
 
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -37,8 +37,8 @@ export class UserComponent implements OnInit {
 
   user: User[];
   userRecord: User;
-  busoperators: any;
-
+  busoperators: any[];
+  oprRecord: any;
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient,
@@ -234,9 +234,7 @@ export class UserComponent implements OnInit {
       email: this.editform.value.email,
       phone: this.editform.value.phone,
     }
-
-
-    // console.log(data);
+ 
     let id = this.userRecord?.id;
     if (id != null) {
       this.userService.update(id, updateDate).subscribe(
@@ -299,7 +297,7 @@ export class UserComponent implements OnInit {
 
   deleteRecord() {
 
-    
+
     let delitem = this.userRecord.id;
     this.userService.delete(delitem).subscribe(
       resp => {
@@ -369,7 +367,20 @@ export class UserComponent implements OnInit {
     );
   }
 
+  oprDetails() {
+    let oprId = this.form.value.bus_operator_id;
 
+    for (var val of this.busoperators) {
+      if (val.id == oprId) {
+        this.oprRecord = val;
+        this.form.controls.name.setValue(this.oprRecord.operator_name);
+        this.form.controls.email.setValue(this.oprRecord.email_id);
+        this.form.controls.phone.setValue(this.oprRecord.contact_number);
+        this.form.controls.password.setValue(this.oprRecord.password);
+      }
+    }
+
+  }
 
 
 }

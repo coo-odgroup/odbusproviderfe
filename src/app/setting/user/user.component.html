@@ -21,7 +21,7 @@
                                     <div class="col-sm-12">
                                         <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
                                             placeholder="Select Operator" formControlName="bus_operator_id"
-                                            [clearable]="false">
+                                            [clearable]="false" >
                                         </ng-select>
                                     </div>
                                 </div>
@@ -172,12 +172,12 @@
                                         <form [formGroup]="form" class="editForm" novalidate>
                                             <div class="row">
                                                 <div class="from-group col-md-4">
-                                                    <label for="name" class="col-sm-12 col-form-label">Select
+                                                    <label for="name" class="col-sm-12 col-form-label">Select Bus
                                                         Operator :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
                                                         <ng-select [items]="busoperators" bindLabel="operator_name" ngbAutofocus
-                                                            bindValue="id" placeholder="Select Operator"
-                                                            formControlName="bus_operator_id" [clearable]="false">
+                                                            bindValue="id" placeholder="Select Bus Operator"
+                                                            formControlName="bus_operator_id" [clearable]="false" (change)="oprDetails()">
                                                         </ng-select>
                                                         <span class="text-danger"
                                                             *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
@@ -234,7 +234,7 @@
                                                     <label for="name" class="col-sm-12 col-form-label">Password
                                                         :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
-                                                        <input type="password" class="form-control" ngbAutofocus
+                                                        <input type="text" class="form-control" ngbAutofocus
                                                             placeholder="Enter Page name" required
                                                             formControlName="password" />
                                                         <span class="text-danger"

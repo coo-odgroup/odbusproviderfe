@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <app-card [hidHeader]="false" cardTitle="Assign Bus to Association" cardClass="card-datatable"
+        <app-card [hidHeader]="false" cardTitle="Assign Bus to Operator" cardClass="card-datatable"
             [options]="false" cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
             <div class="row">
                 <div class="col-2">
@@ -17,11 +17,16 @@
                 <div class="col-10">
                     <form [formGroup]="searchForm">
                         <div class="row">
-                            <div class="col-8">
-                                <ng-select [items]="allUserOperator" bindLabel="name" bindValue="id"
+                            <div class="col-6">
+                                <ng-select [items]="allUserOperator" bindLabel="operatorData" bindValue="id"
                                     placeholder="User Name" formControlName="assoc_id"
                                     [clearable]="false"  (change)=search()>
-                                </ng-select>
+                                </ng-select>                                
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                                    <i class="fas fa-sync-alt"> </i> Refresh
+                                  </button>
                             </div>
                             <div class="col-4">
                                 <div class="dropdown float-right">
@@ -44,7 +49,7 @@
                     <thead>
                         <tr>
                             <th scope="col" width="100px">#</th>
-                            <th scope="col">User Details</th>
+                            <!-- <th scope="col">User Details</th> -->
                             <th scope="col">Bus Operator Details</th>
                             <th scope="col">Bus Name/Number</th>  
                             <th scope="col">Source >> Destination</th>                         
@@ -55,7 +60,7 @@
                     <tbody *ngIf="assocBus?.length != 0">
                         <tr *ngFor="let page of assocBus; let i=index;">
                             <td>{{i+1}}</td>
-                            <td>{{page.user.name}} [<b>{{page.user.location}}</b>] </td>
+                            <!-- <td>{{page.user.name}} [<b>{{page.user.location}}</b>] </td> -->
                             <td>{{page.bus.bus_operator.operator_name }}<br><b>{{page.bus.bus_operator.organisation_name }}</b></td>
                             <td>{{page.bus.name}}<br> <span class="text-danger"><b>[{{page.bus.bus_number}}]</b></span></td>
                             <td>{{page.from_location[0].name}} >> {{page.to_location[0].name}}</td>
@@ -145,7 +150,7 @@
                                                         :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
 
-                                                        <ng-select [items]="allUserOperator" bindLabel="name" bindValue="id"
+                                                        <ng-select [items]="allUserOperator" bindLabel="operatorData" bindValue="id"
                                                             placeholder="Select User Name" formControlName="assocName"
                                                             [clearable]="false" (change)="check_bus()">
                                                         </ng-select>

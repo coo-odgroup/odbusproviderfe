@@ -5,10 +5,10 @@ const routes: Routes = [
     {
       path: '',
       children: [
-        {
-            path: 'assignoperator',
-            loadChildren: () => import('./assignoperator/assignoperator.module').then(module => module.AssignOperatorModule)
-        },  
+        // {
+        //     path: 'assignoperator',
+        //     loadChildren: () => import('./assignoperator/assignoperator.module').then(module => module.AssignOperatorModule)
+        // },  
         {
             path: 'assignoperatorbus',
             loadChildren: () => import('./assignoperatorbus/assignoperatorbus.module').then(module => module.AssignOperatorBusModule)

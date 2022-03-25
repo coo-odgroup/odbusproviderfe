@@ -110,6 +110,7 @@ export class AssignagentsComponent implements OnInit {
           this.opragents = res.data.data;
           this.pagination = res.data;
           this.spinner.hide();
+          // console.log(this.opragents);
         }
       );
     }
@@ -132,6 +133,7 @@ export class AssignagentsComponent implements OnInit {
     this.busOperatorService.readuseroperator().subscribe(
       res => {
         this.allUserOperator = res.data;
+        this.allUserOperator.map((i: any) => { i.operatorData = i.bus_operator.organisation_name + '    (  ' + i.bus_operator.operator_name  + '  )'; return i; });
       }
     );
 

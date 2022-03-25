@@ -54,6 +54,13 @@ export class OprassignbusService {
     )
   }
 
+  getOperatorbuslist(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/getOperatorbuslist', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   errorHandler(error) {
       let errorMessage = '';
       if(error.error instanceof ErrorEvent) {

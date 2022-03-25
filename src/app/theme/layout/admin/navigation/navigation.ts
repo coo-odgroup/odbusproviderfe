@@ -780,13 +780,13 @@ const NavigationItems = [
             icon:'feather icon-users',
             url: 'setting/user'
           },                    
-          {
-            id: 'assignoperator',
-            title: 'Assign Operators',
-            type: 'item',
-            icon:'feather icon-users',
-            url: 'operator/assignoperator'
-          }, 
+          // {
+          //   id: 'assignoperator',
+          //   title: 'Assign Operators',
+          //   type: 'item',
+          //   icon:'feather icon-users',
+          //   url: 'operator/assignoperator'
+          // }, 
           {
             id: 'assignoperatorbus',
             title: 'Assign OperatorsBus',

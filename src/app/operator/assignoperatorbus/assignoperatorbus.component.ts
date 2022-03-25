@@ -136,6 +136,8 @@ export class AssignoperatorbusComponent implements OnInit {
     this.busOperatorService.readuseroperator().subscribe(
       res => {
         this.allUserOperator = res.data;
+        this.allUserOperator.map((i: any) => { i.operatorData = i.bus_operator.organisation_name + '    (  ' + i.bus_operator.operator_name  + '  )'; return i; });
+        // console.log(this.allUserOperator.bus_operator);
       }
     );
 
@@ -149,14 +151,13 @@ export class AssignoperatorbusComponent implements OnInit {
 
   check_bus()
   {
+
     this.buses=[];
     const data = {
       assoc_id: this.form.value.assocName
     };
-    // console.log(data);
-    this.oprassignbusService.getbuslist(data).subscribe(
+    this.oprassignbusService.getOperatorbuslist(data).subscribe(
       res => {
-        // console.log(res);
         this.buses = res;
         this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number ; return i; });
       }
@@ -204,6 +205,7 @@ export class AssignoperatorbusComponent implements OnInit {
       bus_id: this.form.value.bus_id,
       created_by: localStorage.getItem('USERNAME'),
     };
+    // console.log(data);
 
     this.oprassignbusService.create(data).subscribe(
           resp => {
@@ -213,6 +215,10 @@ export class AssignoperatorbusComponent implements OnInit {
                       this.ResetAttributes();
                       this.refresh();
           
+                    }
+                    else{
+                      this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+                      this.spinner.hide();
                     }
           });
 

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <app-card [hidHeader]="false" cardTitle="Assign Agent to User" cardClass="card-datatable"
+        <app-card [hidHeader]="false" cardTitle="Assign Agent to Operator" cardClass="card-datatable"
             [options]="false" cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
             <div class="row">
                 <div class="col-2">
@@ -17,11 +17,16 @@
                 <div class="col-10">
                     <form [formGroup]="searchForm">
                         <div class="row">
-                            <div class="col-8">
-                                <ng-select [items]="allUserOperator" bindLabel="name" bindValue="id"
+                            <div class="col-6">
+                                <ng-select [items]="allUserOperator" bindLabel="operatorData" bindValue="id"
                                     placeholder="Select User" formControlName="user_id"
                                     [clearable]="false"  (change)=search()>
                                 </ng-select>
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                                    <i class="fas fa-sync-alt"> </i> Refresh
+                                  </button>
                             </div>
                             <div class="col-4">
                                 <div class="dropdown float-right">
@@ -52,7 +57,7 @@
                     <tbody *ngIf="opragents?.length != 0">
                         <tr *ngFor="let page of opragents; let i=index;">
                             <td>{{i+1}}</td>
-                            <td>{{page.user.name}} [<b>{{page.user.location}}</b>] </td>
+                            <td>{{page.user.bus_operator.organisation_name}} [<b>{{page.user.bus_operator.operator_name}}</b>] </td>
                             <td>
                                 <span *ngIf="page.agent.length > 0">
                                     {{page.agent[0].name }}<br><b>{{page.agent[0].location }}</b>
@@ -143,7 +148,7 @@
                                                     <label for="name" class="col-sm-12 col-form-label">User Name
                                                         :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
-                                                        <ng-select [items]="allUserOperator" bindLabel="name" bindValue="id"
+                                                        <ng-select [items]="allUserOperator" bindLabel="operatorData" bindValue="id"
                                                             placeholder="Select User" formControlName="user_id"
                                                             [clearable]="false">
                                                         </ng-select>

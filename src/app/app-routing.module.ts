@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('./login/login.module').then(module =>module.LoginModule)
       },
       {
+        path: 'forget-password',
+        loadChildren: () => import('./forgetpassword/forgetpassword.module').then(module =>module.ForgetPasswordModule)
+      },
+      {
         path: 'signup',
         loadChildren: () => import('./signup/signup.module').then(module =>module.SignupModule)
       },
