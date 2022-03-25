@@ -8,6 +8,7 @@ import { AgentWallet } from '../../model/agentwallet';
 import { Constants } from '../../constant/constant';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { BusOperatorService } from './../../services/bus-operator.service';
 
 @Component({
   selector: 'app-agentwalletbalance',
@@ -34,13 +35,14 @@ export class AgentwalletbalanceComponent implements OnInit {
   walletRecord: AgentWallet;
   busoperators: any;
   all: any;
+  allagent: any;
 
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, 
-
+    private busOperatorService: BusOperatorService, 
     private ws: WalletService,
     private modalService: NgbModal,
     config: NgbModalConfig
@@ -67,9 +69,11 @@ export class AgentwalletbalanceComponent implements OnInit {
     this.searchForm = this.fb.group({
       bus_operator_id: [null],
       name: [null],
+      user_id:[null],
       rows_number: Constants.RecordLimit,
     });
 
+    this.loadServices();
     this.search();
 
   }
@@ -102,10 +106,11 @@ export class AgentwalletbalanceComponent implements OnInit {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
+      user_id: this.searchForm.value.user_id,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
     };
-    // console.log(data);
+     //console.log(data);
     if (pageurl != "") {
       this.ws.getAllAgentPaginationBalance(pageurl, data).subscribe(
         res => {
@@ -130,6 +135,16 @@ export class AgentwalletbalanceComponent implements OnInit {
     }
   }
 
+  loadServices() {
+
+    this.busOperatorService.getAllAgent().subscribe(
+      res => {
+        this.allagent = res.data;
+        this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+      }
+    );
+
+  }
 
 
 
@@ -137,6 +152,7 @@ export class AgentwalletbalanceComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [null],
       bus_operator_id: [null],
+      user_id: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();

@@ -31,6 +31,7 @@ export class AgentcancellationreportComponent implements OnInit {
   url: any;
   locations: any;
   buses: any;
+  allagent: any;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
@@ -58,6 +59,7 @@ export class AgentcancellationreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       rangeFromDate:[null],
       rangeToDate:[null],
+      user_id:[null],
       date_type:['journey'],
       pnr:[null],
       rows_number: Constants.RecordLimit,
@@ -96,6 +98,7 @@ export class AgentcancellationreportComponent implements OnInit {
     const data = {
       date_type :this.completeReportRecord.date_type,
       pnr :this.completeReportRecord.pnr,
+      user_id :this.completeReportRecord.user_id,
       rows_number:this.completeReportRecord.rows_number,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate
@@ -153,6 +156,7 @@ export class AgentcancellationreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       rangeFromDate:[null],
       rangeToDate:[null],
+      user_id:[null],
       date_type:['journey'],
       pnr:[null],
       rows_number: Constants.RecordLimit,
@@ -182,6 +186,14 @@ export class AgentcancellationreportComponent implements OnInit {
     this.locationService.readAll().subscribe(
       records=>{
         this.locations=records.data;
+      }
+    );
+    this.busOperatorService.getAllAgent().subscribe(
+      res => {
+        // console.log(res.data);
+        this.allagent = res.data;
+        this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+        //console.log(this.allagent);
       }
     );
   }
