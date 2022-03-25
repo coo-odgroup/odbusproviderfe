@@ -8,7 +8,7 @@
                 <div class="col-2">
                     <div class="from-group ">
                         <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                            Assign Agent 
+                            Assign Role 
                         </button>
                     </div>
                 </div>
@@ -43,7 +43,9 @@
                                     <tr>
                                         <th scope="col" >#</th>
                                         <th scope="col">Role</th>
-                                        <th>Details</th>
+                                        <th>Menu</th>
+                                        <th>Submenu</th>
+                                        <th>Access</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="permissiontoroles?.length != 0">
@@ -51,14 +53,31 @@
                                     <tr *ngFor="let pr of permissiontoroles;let i=index;">                           
                                         <td>{{i+1}}</td>                           
                                         <td>{{pr.name}}</td>
-                                        <td >
+                                        <td>
                                            <table *ngIf="pr.permission_to_role?.length!=0">
                                             <tr *ngFor="let ptr of pr.permission_to_role;">
-                                                <td>{{ ptr.permission.name }}</td>
-                                                <td> <div class="overlay-edit">
+                                                <td>{{ ptr.menu}}</td>
+                                                <td>{{ ptr.submenu}}</td>
+                                                <td>
+                                                    <label *ngIf="ptr.add_status==1">
+                                                        Add 
+                                                    </label>
+                                                    <label *ngIf="ptr.view_status==1">
+                                                         || View
+                                                    </label>
+                                                    <label *ngIf="ptr.update_status==1">
+                                                        || Update
+                                                    </label>
+                                                    <label *ngIf="ptr.delete_status==1">
+                                                        || Delete
+                                                    </label>                                                   
+                                                </td>
+                                                <td> 
+                                                    <div class="overlay-edit">
                                                         <button type="button" (click)="openConfirmDialog(confirmDialog, pr.id)"
                                                             class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
-                                                    </div></td>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             </table>  
                                         </td>
@@ -142,7 +161,7 @@
                                         <form [formGroup]="form" class="editForm" novalidate>
                                             <!-- <input type="hidden" formControlName="id" [value]="permissiontoroleRecord.id"> -->
                                             <div class="row">
-                                                <div class="from-group col-md-5">
+                                                <div class="from-group col-md-4">
                                                     <label for="name" class="col-sm-12 col-form-label">Role
                                                         :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
@@ -157,30 +176,59 @@
                                                     </span>
                                                 </div>                                                
 
-                                                <div class="from-group col-md-7">
-                                                    <label for="name" class="col-sm-12 col-form-label">Select Permission
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">Menu
                                                         :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
-                                                        <ng-select [items]="allpermission" bindLabel="name"
-                                                            bindValue="id" placeholder="Select Permission"  [multiple]="true"
-                                                            formControlName="permission_id" [clearable]="false" >
+                                                        <ng-select [items]="AllMenu" bindLabel="name"
+                                                            bindValue="id" placeholder="Select Menu" formControlName="menu" [clearable]="false" (change)="check_submenu()" >                                                           
+                                                        </ng-select>
+                                                    </div>
+                                                    <span class="text-danger"
+                                                        *ngIf="form.controls['menu'].touched && form.controls['menu'].hasError('required')">
+                                                        Menu is Required
+                                                    </span>
+                                                </div>
 
-                                                            <ng-template ng-header-tmp *ngIf="allpermission?.length > 0">
+                                                <div class="from-group col-md-4">
+                                                    <label for="name" class="col-sm-12 col-form-label">SubMenu
+                                                        :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-12">
+                                                        <ng-select [items]="SubMenu" bindLabel="name"
+                                                            bindValue="id" placeholder="Select Sub Menu" formControlName="submenu" [multiple]="true" [clearable]="false" > 
+                                                            <ng-template ng-header-tmp *ngIf="SubMenu?.length > 0">
                                                                 <div>
                                                                   <button class="btn btn-link"
                                                                           (click)="onSelectAll()">Select All</button>
                                                                   <button class="btn btn-link"
                                                                           (click)="onClearAll()">Clear All</button>
                                                                 </div>
-                                                              </ng-template>
+                                                              </ng-template>                                                         
                                                         </ng-select>
                                                     </div>
 
                                                     <span class="text-danger"
-                                                        *ngIf="form.controls['permission_id'].touched && form.controls['permission_id'].hasError('required')">
-                                                        Permission is Required
+                                                        *ngIf="form.controls['submenu'].touched && form.controls['submenu'].hasError('required')">
+                                                        Submenu is Required
                                                     </span>
-                                                </div>
+                                                </div>                                               
+                                            </div>
+                                            <div class="form-group row">                                                    
+                                                <label class="col-sm-12 col-form-label">Select Following Option
+                                                    <span class="text-danger">*</span>
+                                                </label>    
+                                                <label  class="col-3"><input type="checkbox" formControlName="add_status"> 
+                                                    Add
+                                                </label> 
+                                                <label  class="col-3"><input type="checkbox" formControlName="update_status"> 
+                                                    Update
+                                                </label> 
+                                                <label  class="col-3"><input type="checkbox" formControlName="view_status"> 
+                                                    View
+                                                </label> 
+                                                <label  class="col-3"><input type="checkbox" formControlName="delete_status"> 
+                                                    Delete
+                                                </label>                                                                                                      
                                             </div>
                                         </form>
                                     </div>

@@ -42,6 +42,8 @@ export class ManagepermissiontoroleComponent implements OnInit
     permissiontoroleRecord: any;
     buses: any;
     allpermission: any;
+    AllMenu:any;    
+    SubMenu:any;
 
     constructor(
       private spinner: NgxSpinnerService,
@@ -65,17 +67,23 @@ export class ManagepermissiontoroleComponent implements OnInit
     this.loadServices();
     this.spinner.show();
     this.form = this.fb.group({
-      id:[null],
-      permission_id: [null, Validators.compose([Validators.required])],
+      id:[null],      
       role_id: [null, Validators.compose([Validators.required])],
+      menu: [null, Validators.compose([Validators.required])],
+      submenu: [null, Validators.compose([Validators.required])],
+      add_status: [null],
+      update_status: [null],
+      view_status: [null],
+      delete_status: [null],
     });
 
     this.formConfirm = this.fb.group({
       id: [null]
     });
     this.searchForm = this.fb.group({
-      permission_id: [null],
       role_id:[null],
+      menu: [null],
+      submenu: [null],     
       rows_number: Constants.RecordLimit,
     });
     this.search();  
@@ -89,17 +97,17 @@ export class ManagepermissiontoroleComponent implements OnInit
   search(pageurl = "") {
 
     this.spinner.show();
-    const data = {
-        permission_id: this.searchForm.value.permission_id,
+    const data = {       
         role_id: this.searchForm.value.role_id,
+        menu: this.searchForm.value.menu,
+        submenu: this.searchForm.value.submenu,
         rows_number: this.searchForm.value.rows_number,
     };
 
     if (pageurl != "") {
       this.permissiontoroleService.getAllaginationData(pageurl, data).subscribe(
         res => {
-            this.permissiontoroles = res.data.data;
-            
+            this.permissiontoroles = res.data.data;            
             this.pagination = res.data;
             this.spinner.hide();
         }
@@ -109,7 +117,7 @@ export class ManagepermissiontoroleComponent implements OnInit
       this.permissiontoroleService.getAllData(data).subscribe(
         res => {
           this.permissiontoroles = res.data.data;
-          console.log(this.permissiontoroles);
+         // console.log(this.permissiontoroles);
           this.pagination = res.data;
           this.spinner.hide();
         }
@@ -122,8 +130,10 @@ export class ManagepermissiontoroleComponent implements OnInit
   {
       this.spinner.show();
       this.searchForm = this.fb.group({
-        permission_id: [null],
+        menu: [null],
+        submenu:[null],
         role_id:[null],
+
         rows_number: Constants.RecordLimit,
       });
       this.search();
@@ -131,43 +141,49 @@ export class ManagepermissiontoroleComponent implements OnInit
 
 
   loadServices() {
+
+    this.permissiontoroleService.menuItems().subscribe(
+        res => {
+          this.AllMenu = res;
+         // console.log(this.AllMenu);
+        }
+    );
+
     this.roleService.readAll().subscribe(
       res => {
         this.allroles = res.data;
       }
     );
 
-    this.permissionService.readAll().subscribe(
-      res => {
-        this.allpermission = res.data;
-        //console.log(this.allpermission);
-       // this.allpermission.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
-      }
-    );
+    // this.permissionService.readAll().subscribe(
+    //   res => {
+    //     this.allpermission = res.data;
+    //     //console.log(this.allpermission);
+    //    // this.allpermission.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+    //   }
+    // );
   }
 
-  // check_agent()
-  // {
-  //   this.buses=[];
-  //   const data = {
-  //     assoc_id: this.form.value.assocName
-  //   };
-  //   this.oprassignagentsService.getbuslist(data).subscribe(
-  //     res => {
-  //       this.buses = res;
-  //       this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')'+'['+i.bus_operator.organisation_name+']' ; return i; });
-  //     }
-  //   );
+  check_submenu()
+  {
+      this.SubMenu = [];     
+      let menu = this.form.value.menu;
 
-  // }
+      this.permissiontoroleService.subMenuItems(menu).subscribe(
+        res => {
+          this.SubMenu = res;
+         // console.log(this.SubMenu);
+        }
+      );
+  }
 
   
   onSelectAll() {
-    const selected = this.allpermission.map(item => item.id);
-    this.form.get('permission_id').patchValue(selected);
+    const selected = this.AllMenu.map(item => item.id);
+    this.form.get('submenu').patchValue(selected);
   }
   onClearAll() {
-    this.form.get('permission_id').patchValue([]);
+    this.form.get('submenu').patchValue([]);
   }
 
   OpenModal(content) {
@@ -181,13 +197,18 @@ export class ManagepermissiontoroleComponent implements OnInit
     this.buses=[];
     this.userRecord = {} as User;
     this.form = this.fb.group({
-      id:[null],
-      permission_id: [null, Validators.compose([Validators.required])],
+      id:[null],      
       role_id: [null, Validators.compose([Validators.required])],
+      menu: [null, Validators.compose([Validators.required])],
+      submenu: [null, Validators.compose([Validators.required])],
+      add_status: [null],
+      update_status: [null],
+      view_status: [null],
+      delete_status: [null],
     });
 
     this.form.reset();
-    this.ModalHeading = "Assign Agent ";
+    this.ModalHeading = "Assign Role";
     this.ModalBtn = "Save";
   }
 
@@ -195,11 +216,18 @@ export class ManagepermissiontoroleComponent implements OnInit
 
     this.spinner.show();
 
-    const data = {
-      permission_id: this.form.value.permission_id,
+    const data = {     
       role_id: this.form.value.role_id,
+      menu: this.form.value.menu,
+      submenu: this.form.value.submenu,
+      add_status: this.form.value.add_status,
+      update_status: this.form.value.update_status,
+      view_status: this.form.value.view_status,
+      delete_status: this.form.value.delete_status,
       created_by: localStorage.getItem('USERNAME'),
     };
+
+    console.log(data);
 
     this.permissiontoroleService.create(data).subscribe(
           resp => {
