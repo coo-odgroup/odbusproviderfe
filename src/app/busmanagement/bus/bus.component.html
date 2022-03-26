@@ -372,7 +372,13 @@
                               <div class="form-group row">
                                 <label for="bus" class="col-sm-4 col-form-label">Display Info</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="bus_description" />
+                                    <ng-select [items]="GetBusTypeList" bindLabel="name"
+                                    bindValue="id" placeholder="Select Display Info" formControlName="bus_description" [clearable]="false">                                                           
+                                </ng-select>
+                                
+                                <span class="text-danger"
+                                *ngIf="busForm.controls['bus_description'].touched && busForm.controls['bus_description'].hasError('required')">
+                                Display Info is required! </span>
 
                                 </div>
                               </div>
@@ -1281,7 +1287,16 @@
                               <div class="form-group row">
                                 <label for="bus" class="col-sm-4 col-form-label">Display Info</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" formControlName="bus_description" />
+
+                                  <ng-select [items]="GetBusTypeList" bindLabel="name"
+                                  bindValue="id" placeholder="Select Display Info" formControlName="bus_description" [clearable]="false">                                                           
+                              </ng-select>
+
+                              <span class="text-danger"
+                              *ngIf="busForm.controls['bus_description'].touched && busForm.controls['bus_description'].hasError('required')">
+                             Display Info is required! </span>
+
+                                  <!-- <input type="text" class="form-control" formControlName="bus_description" /> -->
 
                                 </div>
                               </div>
@@ -1957,7 +1972,13 @@
                           <div class="form-group row">
                             <label for="bus" class="col-sm-4 col-form-label">Display Info</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" formControlName="bus_description" />
+                                <ng-select [items]="GetBusTypeList" bindLabel="name"
+                                bindValue="id" placeholder="Select Display Info" formControlName="bus_description" [clearable]="false">                                                           
+                            </ng-select>
+                            
+                            <span class="text-danger"
+                            *ngIf="busForm.controls['bus_description'].touched && busForm.controls['bus_description'].hasError('required')">
+                            Display Info is required! </span>
 
                             </div>
                           </div>

@@ -286,6 +286,7 @@ export class BusComponent implements OnInit {
   public data_owner_no="";
   public data_o_sms_ticket="";
   public data_o_sms_cancel="";
+  public GetBusTypeList:any[];
 
   constructor(private spinner: NgxSpinnerService,private safetyService: SafetyService,private http: HttpClient, private busService:BusService, private notificationService: NotificationService,private busOperartorService:BusOperatorService, private busTypeService:BusTypeService, private seatingtypeService:SeatingtypeService, private amenitiesService:AmenitiesService, private cancellationslabService:CancellationslabService, private busContactService:BusContactService, private seatlayoutService:SeatlayoutService, private locationService:LocationService, private boardingdropingService:BoardingdropingService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal,dpconfig: NgbDropdownConfig ) {
     this.isSubmit = false;
@@ -299,6 +300,16 @@ export class BusComponent implements OnInit {
 
     dpconfig.placement = 'top-left';
     dpconfig.autoClose = false;
+
+
+    this.busService.GetBusTypeList().subscribe(
+      res => {
+        this.GetBusTypeList=res;
+      }
+    );
+
+
+    
   }
   OpenModal(content) {
    
@@ -702,7 +713,7 @@ export class BusComponent implements OnInit {
       bus_operator_id: [null, Validators.compose([Validators.required])],
       name: [null, Validators.compose([Validators.required])],
       via: [null, Validators.compose([Validators.required])],
-      bus_description:[null],
+      bus_description:[null, Validators.compose([Validators.required])],
       bus_type_id: [null, Validators.compose([Validators.required])],
       bus_sitting_id: [null, Validators.compose([Validators.required])],
       max_seat_book: ['6', Validators.compose([Validators.required])],
@@ -1152,7 +1163,7 @@ export class BusComponent implements OnInit {
 
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
-      bus_description:[this.busRecord.bus_description],
+      bus_description:[this.busRecord.bus_description, Validators.compose([Validators.required])],
       bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       busRoutes: this.fb.array([]),
       busRoutesInfo:this.fb.array([
@@ -1731,7 +1742,7 @@ export class BusComponent implements OnInit {
       bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
-      bus_description:[this.busRecord.bus_description],
+      bus_description:[this.busRecord.bus_description, Validators.compose([Validators.required])],
       bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
       bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
       max_seat_book:[this.busRecord.max_seat_book],
@@ -2257,7 +2268,7 @@ export class BusComponent implements OnInit {
       bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
-      bus_description:[this.busRecord.bus_description],
+      bus_description:[this.busRecord.bus_description, Validators.compose([Validators.required])],
       bus_type_id: [JSON.parse(this.busRecord.bus_type_id), Validators.compose([Validators.required])],
       bus_sitting_id: [JSON.parse(this.busRecord.bus_sitting_id), Validators.compose([Validators.required])],
       max_seat_book:[this.busRecord.max_seat_book],
@@ -2810,7 +2821,7 @@ export class BusComponent implements OnInit {
     this.busRecord=this.buses[id] ;
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
-      bus_description:[this.busRecord.bus_description],
+      bus_description:[this.busRecord.bus_description, Validators.compose([Validators.required])],
       bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
@@ -3037,7 +3048,7 @@ export class BusComponent implements OnInit {
     
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
-      bus_description:[this.busRecord.bus_description],
+      bus_description:[this.busRecord.bus_description, Validators.compose([Validators.required])],
       bus_operator_id: [this.busRecord.bus_operator_id, Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       via: [this.busRecord.via, Validators.compose([Validators.required])],
@@ -3348,7 +3359,7 @@ export class BusComponent implements OnInit {
     );
     this.busForm = this.fb.group({
       id:[this.busRecord.id],
-      bus_description:[this.busRecord.bus_description],
+      bus_description:[this.busRecord.bus_description, Validators.compose([Validators.required])],
       bus_operator_id: [JSON.parse(this.busRecord.bus_operator_id), Validators.compose([Validators.required])],
       name: [this.busRecord.name, Validators.compose([Validators.required])],
       bus_number: [this.busRecord.bus_number, Validators.compose([Validators.required])],
