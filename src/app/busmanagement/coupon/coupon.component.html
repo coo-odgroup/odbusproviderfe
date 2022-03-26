@@ -74,6 +74,7 @@
                         <tr>
                             <th>#</th>
                             <th >Coupan type</th>
+                            <th >Bus Details</th>
                             <th>Operator</th>
                             <th>Source</th>
                             <th>Destination</th>
@@ -98,6 +99,12 @@
                             
                             
                             </td>
+
+                            <td>
+                                <p>{{couponData.bus.name}}</p>
+                                <p>{{couponData.bus.bus_number}}</p>                            
+                            </td>
+
                             <td>
                                 <!-- {{couponData|json}} -->
                                 <span *ngIf='couponData.bus_operator!=null '>
@@ -145,8 +152,8 @@
                             </td>
                             <td class="hide_print">
                                 <div class="overlay-edit">
-                                    <button type="button" (click)="loadElements(i);OpenModal(content)"
-                                        class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                                    <!-- <button type="button" (click)="loadElements(i);OpenModal(content)"
+                                        class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button> -->
                                     <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
                                         class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                                 </div>
@@ -233,219 +240,239 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-material">
-                                    <div class="right-icon-control">
-                                        <form [formGroup]="form" class="editForm" novalidate>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h5>Coupon Basic Info</h5>
+                        <div class="right-icon-control">
+                            <form [formGroup]="form" class="editForm" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Coupon Basic Info</h5>
 
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-5 col-form-label">Coupon Type
-                                                            :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
-                                                            placeholder="Select Coupon Type" formControlName="coupon_type"
-                                                            [clearable]="false" >
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-5 col-form-label">Coupon Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
+                                                placeholder="Select Coupon Type" formControlName="coupon_type"
+                                                [clearable]="false" (change)="coupon_type()">
+                                            </ng-select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_type'].touched && form.controls['coupon_type'].hasError('required')">
+                                                    Coupon Type is required! </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="from-group"  *ngIf="form.controls.coupon_type.value=='1' || form.controls.coupon_type.value=='3' ">
+                                            <label for="bus"
+                                                class="col-sm-5  col-form-label">Bus Operator</label>
+                                            <div class="col-sm-12">
+                                                <ng-select [items]="busoperators" [multiple]="true" bindLabel="operatorData"
+                                                    bindValue="id" placeholder="Select Bus Operator"
+                                                    formControlName="bus_operator_id" [clearable]="false" (change)="getBusoperatorRoute()">
+                                                </ng-select>
+
+                                            </div>
+                                        </div>
+                                        <div class="from-group" *ngIf="form.controls.coupon_type.value=='2' || form.controls.coupon_type.value=='3' ">
+                                            <label for="bus" class="col-sm-5  col-form-label">Routes</label>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <ng-select id="route" [multiple]="true"  [items]="allRoutes"
+                                                            bindLabel="route" bindValue="id"
+                                                            placeholder="Select Route"
+                                                            formControlName="route" [clearable]="false" (change)="GetBusList()">
                                                         </ng-select>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['coupon_type'].touched && form.controls['coupon_type'].hasError('required')">
-                                                                Coupon Type is required! </span>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="from-group"  *ngIf="form.controls.coupon_type.value=='1' || form.controls.coupon_type.value=='3' ">
-                                                        <label for="bus"
-                                                            class="col-sm-5  col-form-label">Bus Operator</label>
-                                                        <div class="col-sm-12">
-                                                            <ng-select [items]="busoperators" bindLabel="operatorData"
-                                                                bindValue="id" placeholder="Select Bus Operator"
-                                                                formControlName="bus_operator_id" [clearable]="false">
-                                                            </ng-select>
-
-                                                        </div>
+                                                        
                                                     </div>
-                                                    <div class="from-group" *ngIf="form.controls.coupon_type.value=='2' || form.controls.coupon_type.value=='3' ">
-                                                        <label for="bus" class="col-sm-5  col-form-label">Routes</label>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group row">
-                                                                <div class="col-sm-6">
-                                                                    <ng-select id="source_id" [items]="locations"
-                                                                        bindLabel="name" bindValue="id"
-                                                                        placeholder="Select Source"
-                                                                        formControlName="source_id" [clearable]="false">
-                                                                    </ng-select>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <ng-select id="destination_id" [items]="locations"
-                                                                        bindLabel="name" bindValue="id"
-                                                                        placeholder="Select Destination"
-                                                                        formControlName="destination_id"
-                                                                        [clearable]="false">
-                                                                    </ng-select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-3 col-form-label">Coupon
-                                                            Title:<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                formControlName="coupon_title"
-                                                                placeholder="Coupon Title" required />
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['coupon_title'].touched && form.controls['coupon_title'].hasError('required')">
-                                                                Coupon Title is required! </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <!-- <label>Page name :</label> -->
-                                                        <label for="name" class="col-sm-3 col-form-label">Coupon
-                                                            Code:<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control text-uppercase"
-                                                                ngbAutofocus formControlName="coupon_code"
-                                                                placeholder="Coupon Code" required />
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['coupon_code'].touched && form.controls['coupon_code'].hasError('required')">
-                                                                Coupon Code is required! </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <!-- <label>Page name :</label> -->
-                                                        <label for="name" class="col-sm-12 col-form-label">Short
-                                                            Description:</label>
-                                                        <div class="col-sm-12">
-                                                            <textarea class="form-control"
-                                                                formControlName="short_description" ngbAutofocus
-                                                                placeholder="Short Description" rows="8"></textarea>
-                                                        </div>
-                                                    </div>
-                                                   
+                                                    <!-- <div class="col-sm-6">
+                                                        <ng-select id="destination_id" [items]="locations"
+                                                            bindLabel="name" bindValue="id"
+                                                            placeholder="Select Destination"
+                                                            formControlName="destination_id"
+                                                            [clearable]="false">
+                                                        </ng-select>
+                                                    </div> -->
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <h5>Coupon Discount Type And Validity</h5>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-5 col-form-label">Coupon
-                                                            Discount Type
-                                                            :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <select class="form-control"
-                                                                formControlName="coupon_discount_type" required>                                                            
-                                                                <option value="1">Percentage %</option>
-                                                                <option value="2">Cut Off</option>
-                                                            </select>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['coupon_discount_type'].touched && form.controls['coupon_discount_type'].hasError('required')">
-                                                                Coupon Discount Type is required! </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group"
-                                                        *ngIf="form.controls.coupon_discount_type.value=='1'">
-                                                        <label for="name" class="col-sm-3 col-form-label">Percentage
-                                                            :</label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                formControlName="percentage" placeholder="Percentage">
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group"
-                                                        *ngIf="form.controls.coupon_discount_type.value=='1'">
-                                                        <label for="name" class="col-sm-4 col-form-label">Max Discount
-                                                            :</label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                formControlName="max_discount_price"
-                                                                placeholder="Max Discount">
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group"
-                                                        *ngIf="form.controls.coupon_discount_type.value=='2'">
-                                                        <label for="name" class="col-sm-12 col-form-label">Cut Off
-                                                            Ammount :</label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                formControlName="amount" placeholder="Cut Off Amount">
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group"
-                                                        *ngIf="form.controls.coupon_discount_type.value=='2'">
-                                                        <label for="name" class="col-sm-12 col-form-label">Min
-                                                            Transaction Ammount :</label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                formControlName="min_tran_amount"
-                                                                placeholder="Min Transaction Ammount">
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-4 col-form-label">Valid By
-                                                            :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <select class="form-control" formControlName="valid_by"
-                                                                required>
-                                                                <option value="1">Journey Date</option>
-                                                                <option value="2">Booking Date</option>
-                                                            </select>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['valid_by'].touched && form.controls['valid_by'].hasError('required')">
-                                                                Valid By is required! </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-4 col-form-label">From Date
-                                                            :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="date" class="form-control" ngbAutofocus
-                                                                formControlName="from_date" placeholder="From Date"
-                                                                required>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['from_date'].touched && form.controls['from_date'].hasError('required')">
-                                                                From Date is required! </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-4 col-form-label">To Date
-                                                            :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="date" class="form-control" ngbAutofocus
-                                                                formControlName="to_date" placeholder="To Date"
-                                                                required>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['to_date'].touched && form.controls['to_date'].hasError('required')">
-                                                                To Date is required! </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="from-group">
-                                                        <label for="name" class="col-sm-4 col-form-label">Max Redeem
-                                                            :<span class="text-danger">*</span></label>
-                                                        <div class="col-sm-12">
-                                                            <input type="text" class="form-control" ngbAutofocus
-                                                                formControlName="max_redeem" placeholder="Max Redeem"
-                                                                required>
-                                                            <span class="text-danger"
-                                                                *ngIf="form.controls['max_redeem'].touched && form.controls['max_redeem'].hasError('required')">
-                                                                Max Redeem is required! </span>
-                                                        </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="from-group">
+                                            <label for="bus" class="col-sm-5  col-form-label">Bus</label>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <ng-select id="bus_id" [multiple]="true"  [items]="busList"
+                                                            bindLabel="bus_name" bindValue="id"
+                                                            placeholder="Select Bus"
+                                                            formControlName="bus_id" [clearable]="false">
+                                                        </ng-select>
+
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div>
-                                                        <label for="name" class="col-sm-5 col-form-label">About Coupon
-                                                            :</label>
-                                                        <angular-editor class="col-sm-12"
-                                                            formControlName="full_description" [config]="editorConfig">
-                                                        </angular-editor>
-                                                    </div>
-                                                </div>
+                                        </div>
+
+
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-3 col-form-label">Coupon
+                                                Title:<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="coupon_title"
+                                                    placeholder="Coupon Title" required />
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_title'].touched && form.controls['coupon_title'].hasError('required')">
+                                                    Coupon Title is required! </span>
                                             </div>
-                                        </form>
+                                        </div>
+                                        <div class="from-group">
+                                            <!-- <label>Page name :</label> -->
+                                            <label for="name" class="col-sm-3 col-form-label">Coupon
+                                                Code:<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control text-uppercase"
+                                                    ngbAutofocus formControlName="coupon_code"
+                                                    placeholder="Coupon Code" required />
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_code'].touched && form.controls['coupon_code'].hasError('required')">
+                                                    Coupon Code is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <!-- <label>Page name :</label> -->
+                                            <label for="name" class="col-sm-12 col-form-label">Short
+                                                Description:</label>
+                                            <div class="col-sm-12">
+                                                <textarea class="form-control"
+                                                    formControlName="short_description" ngbAutofocus
+                                                    placeholder="Short Description" rows="8"></textarea>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
+                                    <div class="col-md-6">
+                                        <h5>Coupon Discount Type And Validity</h5>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-5 col-form-label">Coupon
+                                                Discount Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control"
+                                                    formControlName="coupon_discount_type" required>                                                            
+                                                    <option value="1">Percentage %</option>
+                                                    <option value="2">Cut Off</option>
+                                                </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_discount_type'].touched && form.controls['coupon_discount_type'].hasError('required')">
+                                                    Coupon Discount Type is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='1'">
+                                            <label for="name" class="col-sm-3 col-form-label">Percentage
+                                                :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="percentage" placeholder="Percentage">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='1'">
+                                            <label for="name" class="col-sm-4 col-form-label">Max Discount
+                                                :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="max_discount_price"
+                                                    placeholder="Max Discount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='2'">
+                                            <label for="name" class="col-sm-12 col-form-label">Cut Off
+                                                Ammount :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="amount" placeholder="Cut Off Amount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='2'">
+                                            <label for="name" class="col-sm-12 col-form-label">Min
+                                                Transaction Ammount :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="min_tran_amount"
+                                                    placeholder="Min Transaction Ammount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Valid By
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" formControlName="valid_by"
+                                                    required>
+                                                    <option value="1">Journey Date</option>
+                                                    <option value="2">Booking Date</option>
+                                                </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['valid_by'].touched && form.controls['valid_by'].hasError('required')">
+                                                    Valid By is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">From Date
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="date" class="form-control" ngbAutofocus
+                                                    formControlName="from_date" placeholder="From Date"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['from_date'].touched && form.controls['from_date'].hasError('required')">
+                                                    From Date is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">To Date
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="date" class="form-control" ngbAutofocus
+                                                    formControlName="to_date" placeholder="To Date"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['to_date'].touched && form.controls['to_date'].hasError('required')">
+                                                    To Date is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Max Redeem
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="max_redeem" placeholder="Max Redeem"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['max_redeem'].touched && form.controls['max_redeem'].hasError('required')">
+                                                    Max Redeem is required! </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
+                                            <label for="name" class="col-sm-5 col-form-label">About Coupon
+                                                :</label>
+                                            <angular-editor class="col-sm-12"
+                                                formControlName="full_description" [config]="editorConfig">
+                                            </angular-editor>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                                 </div>
                             </div>
                         </div>
