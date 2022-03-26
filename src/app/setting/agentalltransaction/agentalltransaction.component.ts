@@ -117,7 +117,7 @@ export class AgentalltransactionComponent implements OnInit {
 
   search(pageurl = "") {
     // this.spinner.show();
-    console.log(this.searchForm.value);
+    // console.log(this.searchForm.value);
   
     const data = {
       name: this.searchForm.value.name,
@@ -146,7 +146,7 @@ export class AgentalltransactionComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-           console.log( this.all);
+          //  console.log( this.all);
         }
       );
     }
@@ -162,55 +162,7 @@ export class AgentalltransactionComponent implements OnInit {
   }
 
 
-  formatDate(d) {
-    
-    var //d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    console.log(d);
-    console.log(month);
-
-    if (month.length < 2) 
-        month = '0' + month;
-        
-    if (day.length < 2) 
-        day = '0' + day;
-  
-    return [year, month, day].join('-');
-  }
-  onDateSelection(date: NgbDate) {
-    if (!this.fromDate && !this.toDate) {
-      this.searchForm.controls.rangeFromDate.setValue(date);
-      this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
-      this.toDate = date;
-      this.searchForm.controls.rangeToDate.setValue(date);
-    } else {
-      this.toDate = null;
-      this.fromDate = date;
-      this.searchForm.controls.rangeFromDate.setValue(date);
-    }
-  }
-  
-  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
-    const parsed = this.formatter.parse(input);
-    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
-  }
-  
-  isHovered(date: NgbDate) {
-    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
-  }
-  
-  isInside(date: NgbDate) {
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
-  }
-  
-  isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
-  }
-
+ 
 
   refresh() {
     this.searchForm = this.fb.group({
