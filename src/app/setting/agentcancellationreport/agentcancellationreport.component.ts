@@ -31,6 +31,7 @@ export class AgentcancellationreportComponent implements OnInit {
   url: any;
   locations: any;
   buses: any;
+  allagent: any;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
@@ -58,6 +59,7 @@ export class AgentcancellationreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       rangeFromDate:[null],
       rangeToDate:[null],
+      user_id:[null],
       date_type:['journey'],
       pnr:[null],
       rows_number: Constants.RecordLimit,
@@ -96,6 +98,7 @@ export class AgentcancellationreportComponent implements OnInit {
     const data = {
       date_type :this.completeReportRecord.date_type,
       pnr :this.completeReportRecord.pnr,
+      user_id :this.completeReportRecord.user_id,
       rows_number:this.completeReportRecord.rows_number,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate
@@ -153,6 +156,7 @@ export class AgentcancellationreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       rangeFromDate:[null],
       rangeToDate:[null],
+      user_id:[null],
       date_type:['journey'],
       pnr:[null],
       rows_number: Constants.RecordLimit,
@@ -184,75 +188,16 @@ export class AgentcancellationreportComponent implements OnInit {
         this.locations=records.data;
       }
     );
-  }
-
-  findSource(event:any)
-{
-  let source_id=this.searchFrom.controls.source_id.value;
-  let destination_id=this.searchFrom.controls.destination_id.value;
-
-
-  if(source_id!="" && destination_id!="")
-  {
-    this.busService.findSource(source_id,destination_id).subscribe(
-      res=>{
-        this.buses=res.data;
+    this.busOperatorService.getAllAgent().subscribe(
+      res => {
+        // console.log(res.data);
+        this.allagent = res.data;
+        this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+        //console.log(this.allagent);
       }
     );
   }
-  else
-  {
-    this.busService.all().subscribe(
-      res=>{
-        this.buses=res.data;
-      }
-    );
-  }
-}
 
-
-formatDate(date) {
-  var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-
-  if (month.length < 2) 
-      month = '0' + month;
-  if (day.length < 2) 
-      day = '0' + day;
-
-  return [year, month, day].join('-');
-}
-onDateSelection(date: NgbDate) {
-  if (!this.fromDate && !this.toDate) {
-    this.searchFrom.controls.rangeFromDate.setValue(date);
-    this.fromDate = date;
-  } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
-    this.toDate = date;
-    this.searchFrom.controls.rangeToDate.setValue(date);
-  } else {
-    this.toDate = null;
-    this.fromDate = date;
-    this.searchFrom.controls.rangeFromDate.setValue(date);
-  }
-}
-
-validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
-  const parsed = this.formatter.parse(input);
-  return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
-}
-isHovered(date: NgbDate) {
-  return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
-}
-
-isInside(date: NgbDate) {
-  return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
-}
-
-isRange(date: NgbDate) {
-  return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
-}
-
+ 
 
 }

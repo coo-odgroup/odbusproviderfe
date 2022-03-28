@@ -35,6 +35,18 @@ export class BusstoppageService {
     )
   }
   
+
+  AllRoutes(post:any=null): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/AllRoute', JSON.stringify(post), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  GetBusList(post:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/GetBusList', JSON.stringify(post), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
   
   errorHandler(error) {
     let errorMessage = '';

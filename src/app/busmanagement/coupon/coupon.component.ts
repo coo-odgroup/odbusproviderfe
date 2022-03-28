@@ -11,6 +11,7 @@ import { BusOperatorService } from '../../services/bus-operator.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 import { LocationService } from '../../services/location.service';
+import { BusstoppageService } from '../../services/busstoppage.service';
 
 
 @Component({
@@ -39,6 +40,9 @@ export class CouponComponent implements OnInit {
   all: any;
   locations: any;
   couponType: any;
+  allRoutes: any[];
+  busList:any=[];
+
   constructor(
     private http: HttpClient, 
     private notificationService: NotificationService, 
@@ -46,7 +50,8 @@ export class CouponComponent implements OnInit {
     private modalService: NgbModal,
     private couponService:CouponService,private spinner: NgxSpinnerService,
     private busOperatorService: BusOperatorService,    private locationService: LocationService,
-    config: NgbModalConfig
+    config: NgbModalConfig,
+    private busstoppageService:BusstoppageService
     )
     { 
       config.backdrop = 'static';
@@ -54,10 +59,6 @@ export class CouponComponent implements OnInit {
       this.ModalHeading = "Add New Coupon";
       this.ModalBtn = "Save"; 
     }
-
-
-    
-    
 
   ngOnInit(): void {
 
@@ -68,9 +69,8 @@ export class CouponComponent implements OnInit {
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
-      source_id: [null],
-      destination_id: [null],
       full_description: [null],
+      route: [null],
       coupon_discount_type: [null],
       percentage: [null],
       max_discount_price: [null],
@@ -80,6 +80,7 @@ export class CouponComponent implements OnInit {
       from_date: [null],
       to_date: [null],
       bus_operator_id:[null],
+      bus_id:[null, Validators.compose([Validators.required])],
       max_redeem: [null]
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -97,6 +98,161 @@ export class CouponComponent implements OnInit {
     this.loadServices();
     
   }
+
+  coupon_type(){
+
+    this.form.controls.bus_id.setValue(null);
+    this.form.controls.route.setValue(null);
+    this.form.controls.bus_operator_id.setValue(null);
+
+    this.allRoutes=[];
+    this.busList=[];
+
+    let typ=this.form.controls.coupon_type.value;
+    if(typ==2){
+
+      
+    this.spinner.show();
+
+      /////// get all routes
+
+      this.busstoppageService.AllRoutes().subscribe(
+      res => {
+        //console.log(res);
+        this.allRoutes=res.data;
+        this.spinner.hide();
+      }
+    ); 
+      
+    }
+
+
+  }
+
+
+  getBusoperatorRoute(){
+
+    this.allRoutes=[];
+    this.busList=[];
+
+    let typ=this.form.controls.coupon_type.value;
+
+    let bus_operator_id=this.form.controls.bus_operator_id.value;
+
+   
+    this.form.controls.bus_id.setValue(null);
+
+    if(typ==3){
+
+      this.form.controls.route.setValue(null);
+
+    const param={
+      "bus_operator_id": bus_operator_id
+    }
+    
+        this.spinner.show();
+        /////// get all routes
+
+        this.busstoppageService.AllRoutes(param).subscribe(
+        res => {
+          //console.log(res);
+          this.allRoutes=res.data;
+          this.spinner.hide();
+        }
+      ); 
+
+     
+
+    }
+
+    /////// get bus list operator wise
+
+    if(typ==1){
+
+      if(bus_operator_id.length>0){    
+    
+        const param={
+          "bus_operator_id":bus_operator_id
+        };
+    
+        this.busstoppageService.GetBusList(param).subscribe(
+          res => {
+            
+            // console.log("opr");
+            // console.log(res.data);
+           this.busList=res.data;
+            this.spinner.hide();
+          }
+        );
+  
+      }
+
+    }
+    
+
+  
+
+  }
+
+  GetBusList(){
+
+    
+    this.form.controls.bus_id.setValue(null);
+    this.busList=[];
+
+    let typ=this.form.controls.coupon_type.value;
+
+    let route=this.form.controls.route.value;
+
+    if(typ==3){
+
+      let bus_operator_id=this.form.controls.bus_operator_id.value;
+
+       /////////// get bus List     
+    
+
+     if(bus_operator_id.length>0 && route.length>0){    
+   
+         const param={
+           "bus_operator_id":bus_operator_id,
+           "route": route,
+         };
+     
+         this.busstoppageService.GetBusList(param).subscribe(
+           res => {
+          //  console.log("opr_route");              
+          //    console.log(res.data);
+            this.busList=res.data;
+             this.spinner.hide();
+           }
+         );
+   
+       }
+
+    }
+
+    else{
+      if(route.length>0){
+
+        const param={
+          "route":route
+        };
+    
+        this.busstoppageService.GetBusList(param).subscribe(
+          res => {
+            // console.log("route");
+            // console.log(res.data);
+           this.busList=res.data;
+            this.spinner.hide();
+          }
+        );
+  
+      }
+
+    }
+
+  }
+
   loadElements(index:any)
   {
     this.ModalHeading = "Edit Coupon";
@@ -200,8 +356,7 @@ export class CouponComponent implements OnInit {
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
-      source_id: [null],
-      destination_id: [null],
+      route: [null],
       full_description: [null],
       coupon_discount_type: [null],
       percentage: [null],
@@ -212,6 +367,7 @@ export class CouponComponent implements OnInit {
       from_date: [null],
       to_date: [null],
       bus_operator_id:[null],
+      bus_id:[null, Validators.compose([Validators.required])],
       max_redeem: [null]
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -227,25 +383,33 @@ export class CouponComponent implements OnInit {
     let id=this.couponRecord.id;
     // console.log(this.form.value);
 
-    if(this.form.value.coupon_type==1 && this.form.value.bus_operator_id==null)
+    if(this.form.value.coupon_type==1 && this.form.value.bus_operator_id.length ==0)
     {
  
-      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"bus operator required", type:Constants.ErrorType});
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Bus Operator required", type:Constants.ErrorType});
       this.spinner.hide();
       return;
     }
-    if(this.form.value.coupon_type==2 && (this.form.value.source_id==null ||this.form.value.destination_id==null))
+    if(this.form.value.coupon_type==2 && this.form.value.route.length == 0)
     {
-      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Source and Destination required", type:Constants.ErrorType});
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Route is required", type:Constants.ErrorType});
       this.spinner.hide();
       return;
     }
 
-    if(this.form.value.coupon_type==3 && (this.form.value.source_id==null ||this.form.value.destination_id==null||this.form.value.bus_operator_id==null))
+    if(this.form.value.coupon_type==3 && this.form.value.route.length == 0 && this.form.value.bus_operator_id.length ==0 )
     {
-      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Operator,Source and Destination required", type:Constants.ErrorType});
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Operator & Route required", type:Constants.ErrorType});
       this.spinner.hide();
       return;
+    }
+
+    if(this.form.value.bus_id.length == 0){
+
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Bus is required", type:Constants.ErrorType});
+      this.spinner.hide();
+      return;
+
     }
 
     const data={
@@ -254,8 +418,9 @@ export class CouponComponent implements OnInit {
       coupon_type:this.form.value.coupon_type,
       coupon_discount_type:this.form.value.coupon_discount_type,
       amount:this.form.value.amount,
-      source_id:this.form.value.source_id,
-      destination_id:this.form.value.destination_id,
+      route:this.form.value.route,
+      bus_id:this.form.value.bus_id,
+     // destination_id:this.form.value.destination_id,
       full_description:this.form.value.full_description,
       max_discount_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
@@ -358,6 +523,9 @@ export class CouponComponent implements OnInit {
        
       }
     );
+
+   
+
 
   } 
 
