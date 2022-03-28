@@ -55,7 +55,7 @@
                                         <td>{{pr.name}}</td>
                                         <td>
                                            <table *ngIf="pr.permission_to_role?.length!=0">
-                                            <tr *ngFor="let ptr of pr.permission_to_role;">
+                                            <tr *ngFor="let ptr of pr.permission_to_role; let ii=index;">
                                                 <td>{{ ptr.menu}}</td>
                                                 <td>{{ ptr.submenu}}</td>
                                                 <td>
@@ -74,17 +74,14 @@
                                                 </td>
                                                 <td> 
                                                     <div class="overlay-edit">
-                                                        <button type="button" (click)="openConfirmDialog(confirmDialog, pr.id)"
+                                                        <button type="button" (click)="openConfirmDialog(confirmDialog, ptr.id)"
                                                             class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
                                             </table>  
                                         </td>
-                                                
-                                         
-                                            </tr>
-                                                                   
+                                      </tr>                                                                   
                                 </tbody>
                                 <tbody *ngIf="permissiontoroles?.length == 0">
                                     <tr>
@@ -159,7 +156,7 @@
                                 <div class="form-material">
                                     <div class="right-icon-control">
                                         <form [formGroup]="form" class="editForm" novalidate>
-                                            <!-- <input type="hidden" formControlName="id" [value]="permissiontoroleRecord.id"> -->
+                                            <input type="hidden" formControlName="id" [value]="permissiontoroleRecord.id">
                                             <div class="row">
                                                 <div class="from-group col-md-4">
                                                     <label for="name" class="col-sm-12 col-form-label">Role

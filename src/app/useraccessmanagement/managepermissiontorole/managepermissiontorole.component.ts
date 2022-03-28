@@ -44,6 +44,7 @@ export class ManagepermissiontoroleComponent implements OnInit
     allpermission: any;
     AllMenu:any;    
     SubMenu:any;
+  del_id: any;
 
     constructor(
       private spinner: NgxSpinnerService,
@@ -117,7 +118,7 @@ export class ManagepermissiontoroleComponent implements OnInit
       this.permissiontoroleService.getAllData(data).subscribe(
         res => {
           this.permissiontoroles = res.data.data;
-         // console.log(this.permissiontoroles);
+          // console.log(this.permissiontoroles);
           this.pagination = res.data;
           this.spinner.hide();
         }
@@ -227,7 +228,7 @@ export class ManagepermissiontoroleComponent implements OnInit
       created_by: localStorage.getItem('USERNAME'),
     };
 
-    console.log(data);
+   // console.log(data);
 
     this.permissiontoroleService.create(data).subscribe(
           resp => {
@@ -243,15 +244,17 @@ export class ManagepermissiontoroleComponent implements OnInit
   }
 
   openConfirmDialog(content, id: any) {
+    
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
-    this.permissiontoroleRecord = this.permissiontoroles[id];
+  
+    this.del_id = id ;
   }
 
   deleteRecord() {
-    let delitem = this.permissiontoroleRecord.id;
-    const data = {
-      id: this.permissiontoroleRecord.id,created_by: localStorage.getItem('USERNAME'),
-    };
+    let delitem = this.del_id;
+    // const data = {
+    //   id: this.permissiontoroleRecord.id,created_by: localStorage.getItem('USERNAME'),
+    // };
 
     this.permissiontoroleService.delete(delitem).subscribe(
       resp => {
