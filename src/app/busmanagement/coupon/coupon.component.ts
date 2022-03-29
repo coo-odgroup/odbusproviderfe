@@ -437,20 +437,26 @@ export class CouponComponent implements OnInit {
     if(id==null)
     {
     this.couponService.create(data).subscribe(
-      resp => {
+      resp => {        
         if(resp.status==1)
         {
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
             this.modalReference.close();
-            this.ResetAttributes();
+           this.ResetAttributes();
             this.search(); 
-        }
+        }        
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
             this.spinner.hide();
         }
+      },
+      error => {
+        this.notificationService.notify(error.error.message,"Error");
+        this.spinner.hide();   
+  
       }
-    );  }
+    );  
+  }
     else{     
      
       this.couponService.update(id,data).subscribe(
