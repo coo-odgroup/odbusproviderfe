@@ -81,7 +81,8 @@ export class CouponComponent implements OnInit {
       to_date: [null],
       bus_operator_id:[null],
       bus_id:[null, Validators.compose([Validators.required])],
-      max_redeem: [null]
+      max_redeem: [null],
+      auto_apply: [false]
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
@@ -368,7 +369,8 @@ export class CouponComponent implements OnInit {
       to_date: [null],
       bus_operator_id:[null],
       bus_id:[null, Validators.compose([Validators.required])],
-      max_redeem: [null]
+      max_redeem: [null],
+      auto_apply: [false]
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
@@ -424,6 +426,7 @@ export class CouponComponent implements OnInit {
       full_description:this.form.value.full_description,
       max_discount_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
+      auto_apply:this.form.value.auto_apply,
       min_tran_amount:this.form.value.min_tran_amount,
       percentage:this.form.value.percentage,
       short_description:this.form.value.short_description,
@@ -433,17 +436,21 @@ export class CouponComponent implements OnInit {
       bus_operator_id:this.form.value.bus_operator_id,
       created_by:localStorage.getItem('USERNAME') 
     };
+
    
     if(id==null)
     {
     this.couponService.create(data).subscribe(
-      resp => {        
+      resp => {  
+
+        this.spinner.hide();
+
         if(resp.status==1)
         {
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-            this.modalReference.close();
-           this.ResetAttributes();
-            this.search(); 
+          //   this.modalReference.close();
+          //  this.ResetAttributes();
+          //   this.search(); 
         }        
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
