@@ -80,6 +80,8 @@ export class AgentComponent implements OnInit {
     this.searchForm = this.fb.group({  
       name: [null], 
       status: [null], 
+      rangeFromDate:[null],
+      rangeToDate:[null],
       rows_number: Constants.RecordLimit,
     });
      this.search(); 
@@ -118,7 +120,9 @@ export class AgentComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       status: this.searchForm.value.status,
-      rows_number:this.searchForm.value.rows_number      
+      rows_number:this.searchForm.value.rows_number,
+      rangeFromDate:this.searchForm.value.rangeFromDate,
+      rangeToDate :this.searchForm.value.rangeToDate      
     };
    
     // console.log(data);
@@ -157,6 +161,8 @@ export class AgentComponent implements OnInit {
       name: [null], 
       status: [null], 
       rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null]
     });
      this.search();
    }
