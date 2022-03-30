@@ -425,6 +425,29 @@
 
                             </div>
                           </div>
+
+                          
+                          <div class="row">
+
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="bus" class="col-sm-4 col-form-label">Type<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <select class="form-control" formControlName="type">
+                                    <option value="1">Seater</option>
+                                    <option value="2">Sleeper</option>
+                                  </select>                                 
+
+                                  <span class="text-danger"
+                                  *ngIf="busForm.controls['type'].touched && busForm.controls['type'].hasError('required')">
+                                  Type is required! </span>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+
                           <div class="row">
                             <div class="col-md-6">
                               <div class="form-group row">
@@ -1344,6 +1367,28 @@
                             </div>
                           </div>
 
+                          
+                          <div class="row">
+
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="bus" class="col-sm-4 col-form-label">Type<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <select class="form-control" formControlName="type">
+                                    <option value="1">Seater</option>
+                                    <option value="2">Sleeper</option>
+                                  </select>                                 
+
+                                  <span class="text-danger"
+                                  *ngIf="busForm.controls['type'].touched && busForm.controls['type'].hasError('required')">
+                                  Type is required! </span>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+
                           <div class="row">
                             <div class="col-md-6">
                               <div class="form-group row">
@@ -2030,6 +2075,29 @@
 
 
                       </div>
+
+                      
+                      <div class="row">
+
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label for="bus" class="col-sm-4 col-form-label">Type<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                              <select class="form-control" formControlName="type">
+                                <option value="1">Seater</option>
+                                <option value="2">Sleeper</option>
+                              </select>                                 
+
+                              <span class="text-danger"
+                              *ngIf="busForm.controls['type'].touched && busForm.controls['type'].hasError('required')">
+                              Type is required! </span>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      
                       <div class="row">
 
                         <div class="col-md-6">
