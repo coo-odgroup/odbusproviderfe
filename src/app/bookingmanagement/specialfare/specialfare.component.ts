@@ -142,7 +142,10 @@ export class SpecialfareComponent implements OnInit {
 
     this.searchForm = this.fb.group({  
       name: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: Constants.RecordLimit, 
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
 
     this.search();
@@ -162,6 +165,9 @@ export class SpecialfareComponent implements OnInit {
     this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
+      fromDate: this.searchForm.value.fromDate,
+      toDate: this.searchForm.value.toDate,
+      bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number:this.searchForm.value.rows_number, 
     };
    
@@ -196,10 +202,12 @@ export class SpecialfareComponent implements OnInit {
     this.spinner.show();
     this.searchForm = this.fb.group({  
       name: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: Constants.RecordLimit, 
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
      this.search();
-
     
    }
 

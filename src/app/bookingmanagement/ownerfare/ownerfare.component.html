@@ -15,9 +15,8 @@
           <form [formGroup]="searchForm">
             <div class="row">
 
-              <div class="col-4">
+              <div class="col-6">
                 <div class="form-group row">
-
                   <div class="col-sm-12">
                     <div class="input-group">
                       <input type="text" class="form-control sml_input" placeholder="Search Here " required
@@ -31,25 +30,16 @@
                   </div>
                 </div>
               </div>
-
-
-              <div class="col-6">
-                <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
-                  <i class="fas fa-search"> </i> Search
-                </button> -->
-                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                  <i class="fas fa-sync-alt"> </i> Refresh
-                </button>
-                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
-                  <i class="fas fa-file-export"> </i> Export
-                </button>
-                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
-                  [useExistingCss]="true" title="Print">
-                  <i class="fas fa-print"> </i> Print
-                </button>
-              </div>
-
-
+              <div class="col-4">
+                <div class="form-group row">
+                  <div class="col-sm-12">
+                    <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                            placeholder="Select Operator" formControlName="bus_operator_id" 
+                            [clearable]="false">
+                    </ng-select>
+                  </div>
+                </div>
+              </div>  
 
               <div class="col-2">
                 <div class="dropdown float-right">
@@ -62,10 +52,37 @@
                   </select>
                 </div>
               </div>
+
+              <div class="col-7">
+                <div class="form-group row">
+                  <div class="col-sm-12">
+                    <div class="input-group">
+                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                        formControlName="fromDate">
+                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                        formControlName="toDate">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-5">
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
+                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                  <i class="fas fa-file-export"> </i> Export
+                </button>
+                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                  [useExistingCss]="true" title="Print">
+                  <i class="fas fa-print"> </i> Print
+                </button>
+              </div>
             </div>
           </form>
-
-
         </div>
 
       </div>
@@ -91,7 +108,8 @@
               <td>{{ ownerFare.id }}</td>
               <td>
                 <span *ngIf="ownerFare.bus?.length != 0">
-                  {{ownerFare.bus[0].bus_operator.operator_name}}
+                  <b> {{ownerFare.bus[0].bus_operator.organisation_name}} </b><br>
+                  [ {{ownerFare.bus[0].bus_operator.operator_name}} ]
                 </span>
                 <span *ngIf="ownerFare.bus?.length == 0">
                  --No Operator--
