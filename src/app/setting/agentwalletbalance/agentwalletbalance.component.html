@@ -16,45 +16,22 @@
             <form [formGroup]="searchForm">
               <div class="row">
   
-                <!-- <div class="col-5">
-                  <div class="row">
-                      <input class="form-control hidden" ngbDatepicker #datepicker="ngbDatepicker"
-                          [autoClose]="'outside'" (dateSelect)="onDateSelection($event)"
-                          [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden"
-                          [startDate]="fromDate!" tabindex="-1">
-                      <ng-template #t let-date let-focused="focused">
-                          <span class="custom-day" [class.focused]="focused"
-                              [class.range]="isRange(date)"
-                              [class.faded]="isHovered(date) || isInside(date)"
-                              (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
-                              {{ date.day }}
-                          </span>
-                      </ng-template>
-                      <div class="form-group col-6">
-                          <div class="input-group">
-                              <input #dpFromDate class="form-control sml_input"
-                                  placeholder="yyyy-mm-dd" formControlName="rangeFromDate"
-                                  [value]="formatter.format(fromDate)"
-                                  (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
-                              <div class="input-group-append">
-                                  <button class="btn btn-outline-secondary calendar"
-                                      (click)="datepicker.toggle()" type="button"></button>
-                              </div>
-                          </div>
+                <!-- <div class="col-4">
+                  <div class="row">  
+                      <div class="col-6">
+                          
+                              <input type="date" class="form-control sml_input" placeholder="Start Date"
+                              required formControlName="rangeFromDate" />
+                          
                       </div>
                       <div class="form-group col-6">
-                          <div class="input-group">
-                              <input #dpToDate class="form-control sml_input" placeholder="yyyy-mm-dd"
-                                  formControlName="rangeToDate" [value]="formatter.format(toDate)"
-                                  (input)="toDate = validateInput(toDate, dpToDate.value)">
-                              <div class="input-group-append">
-                                  <button class="btn btn-outline-secondary calendar"
-                                      (click)="datepicker.toggle()" type="button"></button>
-                              </div>
-                          </div>
+                          <div class="form-group ">
+                              <input type="date" class="form-control sml_input" placeholder="End Date"
+                              required formControlName="rangeToDate" />
+                          </div>                                            
                       </div>
                   </div>
-              </div> -->
+                </div> -->
               
               <div class="col-3">                                    
                 <ng-select [items]="allagent" bindLabel="agentData"  bindValue="id" placeholder="Select Agent"  
@@ -72,7 +49,18 @@
                     </div>
                   </div>
                 </div>
-  
+                
+                <div class="col-2">
+                  <div class="dropdown">
+                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                      <option value=10>10</option>
+                      <option value=25>25</option>
+                      <option value=50>50</option>
+                      <option value=100>100</option>
+                      <option value='all'>All</option>
+                    </select>
+                  </div>
+                </div>
   
                 <div class="col-4">
                   <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
@@ -93,17 +81,7 @@
   
   
   
-                <div class="col-2">
-                  <div class="dropdown">
-                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
-                      <option value=10>10</option>
-                      <option value=25>25</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                      <option value='all'>All</option>
-                    </select>
-                  </div>
-                </div>
+               
               </div>
             </form>
   
