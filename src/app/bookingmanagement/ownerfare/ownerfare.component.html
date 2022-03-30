@@ -102,8 +102,11 @@
               </td>
               <td>
                 <div *ngIf="ownerFare.bus?.length != 0">
-                  <span *ngFor="let busName of ownerFare.bus; let nameIndex=index;"> 
+                  <!-- <span *ngFor="let busName of ownerFare.bus; let nameIndex=index;"> 
                     {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  ,<br>
+                  </span> -->
+                  <span *ngFor="let busName of ownerFare.bus; let nameIndex=index;"> 
+                    {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  [<strong>{{busName.source[0][0].name}} >> {{busName.destination[0][0].name}}</strong>]  ,<br>
                   </span>
                 </div>
 

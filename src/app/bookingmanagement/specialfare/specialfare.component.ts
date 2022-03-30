@@ -183,7 +183,7 @@ export class SpecialfareComponent implements OnInit {
         res => {
           this.specialFares= res.data.data.data;
           this.pagination= res.data.data;  this.all= res.data;
-          // console.log( res.data);
+          console.log(this.specialFares);
           this.spinner.hide();
         }
       );

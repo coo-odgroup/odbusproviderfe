@@ -394,6 +394,8 @@ export class BusComponent implements OnInit {
       bus_type: [null],
       status:[null],
       operator:[null],  
+      source_id:[null],
+      destination_id:[null],
       rows_number: Constants.RecordLimit,
     });
      this.search(); 
@@ -419,6 +421,8 @@ export class BusComponent implements OnInit {
       name: this.searchForm.value.name,
       status: this.searchForm.value.status,
       operator: this.searchForm.value.operator,
+      source_id: this.searchForm.value.source_id,
+      destination_id: this.searchForm.value.destination_id,
       rows_number:this.searchForm.value.rows_number, 
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
       user_role:localStorage.getItem('ROLE_ID'),
@@ -456,11 +460,13 @@ export class BusComponent implements OnInit {
     this.spinner.show();
     this.operators=[];
     this.searchForm = this.fb.group({  
-          name: [null], 
-          bus_type: [null],
-          status:[null],
-          operator:[null],  
-          rows_number: Constants.RecordLimit,
+      name: [null], 
+      bus_type: [null],
+      status:[null],
+      operator:[null],  
+      source_id:[null],
+      destination_id:[null],
+      rows_number: Constants.RecordLimit,
     });
      this.search();
      this.LoadAllService();

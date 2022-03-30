@@ -92,7 +92,8 @@
              
               <td>
                 <span *ngIf="specialFare.bus?.length != 0">
-                  {{specialFare.bus[0].bus_operator.operator_name}}
+                  <b>{{specialFare.bus[0].bus_operator.organisation_name}}</b><br>
+                  [ {{specialFare.bus[0].bus_operator.operator_name}} ]
                 </span>
                 <span *ngIf="specialFare.bus?.length == 0">
                  --No Operator--
@@ -101,7 +102,7 @@
               <td>
                 <div *ngIf="specialFare.bus?.length != 0">
                   <span *ngFor="let busName of specialFare.bus; let nameIndex=index;"> 
-                    {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  ,<br>
+                    {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  [<strong>{{busName.source[0][0].name}} >> {{busName.destination[0][0].name}}</strong>]  ,<br>
                   </span>
                 </div>
 
@@ -109,6 +110,7 @@
                   -- No Bus --
                 </div>
               </td>
+              
               <td>{{ specialFare.date }}</td>
               <td>{{ specialFare.seater_price }}</td>
               <td>{{ specialFare.sleeper_price }}</td>
