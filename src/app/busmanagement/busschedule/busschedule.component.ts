@@ -14,6 +14,7 @@ import { Constants } from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { LocationService } from '../../services/location.service';
 
 
 
@@ -53,7 +54,8 @@ export class BusscheduleComponent implements OnInit {
   all: any;
   cancelDates: any;
   unSubscribeData: any;
-  constructor(private buscanCellationService: BuscancellationService,private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
+  locations: any;
+  constructor(  private locationService:LocationService,private buscanCellationService: BuscancellationService,private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
     this.isSubmit = false;
     this.busScheduleRecord= {} as Busschedule;
@@ -82,6 +84,9 @@ export class BusscheduleComponent implements OnInit {
       name: [null],  
       // rows_number: Constants.RecordLimit,
       rows_number: 50,
+      source_id: [null],  
+      destination_id: [null], 
+      bus_operator_id:[null]
     });
 
     this.search();
@@ -95,7 +100,10 @@ export class BusscheduleComponent implements OnInit {
     this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
+      bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number:this.searchForm.value.rows_number, 
+      source_id:this.searchForm.value.source_id, 
+      destination_id:this.searchForm.value.destination_id, 
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
     if(pageurl!="")
@@ -126,6 +134,9 @@ export class BusscheduleComponent implements OnInit {
    {
     this.searchForm = this.fb.group({  
       name: [null],  
+      bus_operator_id: [null],  
+      source_id: [null],  
+      destination_id: [null],  
       rows_number: Constants.RecordLimit,
     });
      this.search(); 
@@ -229,8 +240,17 @@ export class BusscheduleComponent implements OnInit {
       );
     }
 
+    this.locationService.readAll().subscribe(
+      records=>{
+        this.locations=records.data;
+      }
+    );
+
+
     
   }
+
+
   addBusSchedule()
   {  this.spinner.show();
     let id:any=this.busScheduleRecord.id

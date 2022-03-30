@@ -13,6 +13,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DatePipe } from '@angular/common';
+import { LocationService } from '../../services/location.service';
 
 
 @Component({
@@ -53,11 +54,12 @@ export class BuscancellationComponent implements OnInit {
   public busesRecord: any;
   public DatesRecord: any;
   dateformate: string;
+  locations: any;
   //getter for form array buses
   get busesFormGroup() {
     return this.busCancellationForm.get('buses') as FormArray;
   }
-  constructor(private buscanCellationService: BuscancellationService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busOperatorService: BusOperatorService, private busService: BusService, private spinner: NgxSpinnerService,) {
+  constructor(private locationService:LocationService,private buscanCellationService: BuscancellationService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busOperatorService: BusOperatorService, private busService: BusService, private spinner: NgxSpinnerService,) {
     this.isSubmit = false;
     this.busCancellationRecord = {} as Buscancellation;
     config.backdrop = 'static';
@@ -90,6 +92,11 @@ export class BuscancellationComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       name: [null],
+      bus_operator_id: [null],
+      source_id: [null],
+      destination_id: [null],
+      toDate: [null],
+      fromDate: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -108,6 +115,11 @@ export class BuscancellationComponent implements OnInit {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
+      bus_operator_id: this.searchForm.value.bus_operator_id,
+      source_id: this.searchForm.value.source_id,
+      destination_id: this.searchForm.value.destination_id,
+      toDate: this.searchForm.value.toDate,
+      fromDate: this.searchForm.value.fromDate,
       rows_number: this.searchForm.value.rows_number,
       USER_BUS_OPERATOR_ID: localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
@@ -142,6 +154,11 @@ export class BuscancellationComponent implements OnInit {
     this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
+      bus_operator_id: [null],
+      source_id: [null],
+      destination_id: [null],
+      toDate: [null],
+      fromDate: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -348,6 +365,12 @@ export class BuscancellationComponent implements OnInit {
         }
       );
     }
+
+    this.locationService.readAll().subscribe(
+      records=>{
+        this.locations=records.data;
+      }
+    );
 
   }
   addBusCancellation() {

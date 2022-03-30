@@ -392,7 +392,7 @@
                                         <div class="from-group"
                                             *ngIf="form.controls.coupon_discount_type.value=='2'">
                                             <label for="name" class="col-sm-12 col-form-label">Cut Off
-                                                Ammount :</label>
+                                                Amount :</label>
                                             <div class="col-sm-12">
                                                 <input type="text" class="form-control" ngbAutofocus
                                                     formControlName="amount" placeholder="Cut Off Amount">
@@ -401,11 +401,11 @@
                                         <div class="from-group"
                                             *ngIf="form.controls.coupon_discount_type.value=='2'">
                                             <label for="name" class="col-sm-12 col-form-label">Min
-                                                Transaction Ammount :</label>
+                                                Transaction Amount :</label>
                                             <div class="col-sm-12">
                                                 <input type="text" class="form-control" ngbAutofocus
                                                     formControlName="min_tran_amount"
-                                                    placeholder="Min Transaction Ammount">
+                                                    placeholder="Min Transaction Amount">
                                             </div>
                                         </div>
                                         <div class="from-group">
@@ -458,6 +458,13 @@
                                                     Max Redeem is required! </span>
                                             </div>
                                         </div>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Auto Apply
+                                                : <input type="checkbox" formControlName="auto_apply" [value]="1"
+                                                ></label>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="row">
