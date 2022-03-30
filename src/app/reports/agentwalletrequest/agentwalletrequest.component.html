@@ -16,7 +16,11 @@
             <form [formGroup]="searchForm">
               <div class="row">
   
-  
+                <div class="col-3">
+                  <ng-select [items]="allagent" bindLabel="agentData"  bindValue="id" placeholder="Select Agent"  
+                    formControlName="user_id" [clearable]="false" >
+                  </ng-select>
+                </div>
   
                 <div class="col-4">
                   <div class="form-group row">
@@ -29,7 +33,7 @@
                 </div>
   
   
-                <div class="col-6">
+                <div class="col-3">
                   <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                     <i class="fas fa-search"> </i> Search
                   </button>

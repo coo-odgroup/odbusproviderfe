@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BusOperatorService } from './../../services/bus-operator.service';
 import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -35,13 +36,14 @@ export class AgentwalletrequestComponent implements OnInit {
   walletRecord: AgentWallet;
   busoperators: any;
   all: any;
+  allagent: any;
 
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder, 
-
+    private busOperatorService: BusOperatorService, 
     private ws: WalletService,
     private modalService: NgbModal,
     config: NgbModalConfig
@@ -75,9 +77,13 @@ export class AgentwalletrequestComponent implements OnInit {
       bus_operator_id: [null],
       name: [null],
       rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null],
+      user_id:[null],
     });
 
     this.search();
+    this.loadServices();
 
   }
 
@@ -113,6 +119,9 @@ export class AgentwalletrequestComponent implements OnInit {
       name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
+      user_id:this.searchForm.value.user_id,
+      rangeFromDate:this.searchForm.value.rangeFromDate,
+      rangeToDate :this.searchForm.value.rangeToDate,
     };
     // console.log(data);
     if (pageurl != "") {
@@ -209,14 +218,30 @@ export class AgentwalletrequestComponent implements OnInit {
   }
 
 
+  
+  loadServices() {
+    this.busOperatorService.getAllAgent().subscribe(
+      res => {
+        this.allagent = res.data;
+        this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+      }
+    );
+  }
+
+
+
   refresh() {
     this.searchForm = this.fb.group({
       name: [null],
       bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null],
+      user_id:[null],
     });
     this.search();
     this.spinner.hide();
+    
 
   }
 
