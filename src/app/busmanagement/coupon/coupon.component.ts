@@ -23,6 +23,7 @@ import { BusstoppageService } from '../../services/busstoppage.service';
 export class CouponComponent implements OnInit {
 
   public form: FormGroup;
+  public editform: FormGroup;
   public searchForm: FormGroup;
   
   public formConfirm: FormGroup;
@@ -42,6 +43,7 @@ export class CouponComponent implements OnInit {
   couponType: any;
   allRoutes: any[];
   busList:any=[];
+  allBus:any=[];
 
   constructor(
     private http: HttpClient, 
@@ -71,6 +73,32 @@ export class CouponComponent implements OnInit {
       short_description: [null],
       full_description: [null],
       route: [null],
+      coupon_discount_type: [null],
+      percentage: [null],
+      max_discount_price: [null],
+      amount: [null],
+      min_tran_amount: [null],
+      valid_by: [null],
+      from_date: [null],
+      to_date: [null],
+      bus_operator_id:[null],
+      bus_id:[null, Validators.compose([Validators.required])],
+      max_redeem: [null],
+      auto_apply: [false]
+
+      // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      // synonym: [null, Validators.compose([Validators.maxLength(15)])]
+    });
+
+    this.editform= this.fb.group({
+      id:[null],
+      coupon_type:  [null, Validators.compose([Validators.required])],
+      coupon_title: [null, Validators.compose([Validators.required])],
+      coupon_code: [null, Validators.compose([Validators.required])],
+      short_description: [null],
+      full_description: [null],
+      source_id: [null],
+      destination_id: [null],
       coupon_discount_type: [null],
       percentage: [null],
       max_discount_price: [null],
@@ -268,23 +296,40 @@ export class CouponComponent implements OnInit {
 
     let to_date = [to.getFullYear(), ('0' + (to.getMonth() + 1)).slice(-2), ('0' + to.getDate()).slice(-2)].join('-');
     // console.log(this.couponRecord);
-    this.form.controls.coupon_title.setValue(this.couponRecord.coupon_title);
-    this.form.controls.coupon_code.setValue(this.couponRecord.coupon_code);
-    this.form.controls.short_description.setValue(this.couponRecord.short_desc);
-    this.form.controls.full_description.setValue(this.couponRecord.full_desc);
-    this.form.controls.coupon_discount_type.setValue(this.couponRecord.type);
-    this.form.controls.coupon_type.setValue(this.couponRecord.coupon_type_id);
-    this.form.controls.source_id.setValue(this.couponRecord.source_id);
-    this.form.controls.destination_id.setValue(this.couponRecord.destination_id);
-    this.form.controls.max_discount_price.setValue(this.couponRecord.max_discount_price);
-    this.form.controls.percentage.setValue(this.couponRecord.percentage);
-    this.form.controls.amount.setValue(this.couponRecord.amount);
-    this.form.controls.min_tran_amount.setValue(this.couponRecord.min_tran_amount);
-    this.form.controls.valid_by.setValue(this.couponRecord.valid_by);
-    this.form.controls.from_date.setValue(date);
-    this.form.controls.to_date.setValue(to_date);
-    this.form.controls.bus_operator_id.setValue(this.couponRecord.bus_operator_id);
-    this.form.controls.max_redeem.setValue(this.couponRecord.max_redeem);
+
+
+    this.couponService.getAllBus(this.couponRecord.id).subscribe(
+      records => {
+        //console.log(records.data);
+        this.allBus = records.data;
+        this.spinner.hide();       
+      }
+    );
+
+
+    this.editform.controls.coupon_title.setValue(this.couponRecord.coupon_title);
+    this.editform.controls.coupon_code.setValue(this.couponRecord.coupon_code);
+    this.editform.controls.short_description.setValue(this.couponRecord.short_desc);
+    this.editform.controls.full_description.setValue(this.couponRecord.full_desc);
+    this.editform.controls.auto_apply.setValue(this.couponRecord.auto_apply);   
+    
+    this.editform.controls.coupon_discount_type.setValue(this.couponRecord.type);
+    this.editform.controls.coupon_type.setValue(this.couponRecord.coupon_type_id);
+    this.editform.controls.coupon_type.setValue(this.couponRecord.coupon_type_id);
+    this.editform.controls.source_id.setValue(this.couponRecord.source_id);
+    this.editform.controls.destination_id.setValue(this.couponRecord.destination_id);
+    this.editform.controls.max_discount_price.setValue(this.couponRecord.max_discount_price);
+    this.editform.controls.percentage.setValue(this.couponRecord.percentage);
+    this.editform.controls.amount.setValue(this.couponRecord.amount);
+    this.editform.controls.min_tran_amount.setValue(this.couponRecord.min_tran_amount);
+    this.editform.controls.valid_by.setValue(this.couponRecord.valid_by);
+    this.editform.controls.from_date.setValue(date);
+    this.editform.controls.to_date.setValue(to_date);
+    this.editform.controls.bus_operator_id.setValue(this.couponRecord.bus_operator_id);
+    this.editform.controls.max_redeem.setValue(this.couponRecord.max_redeem);
+    this.editform.controls.bus_id.setValue(this.couponRecord.bus_id);
+
+
 
   }
 
@@ -347,6 +392,7 @@ export class CouponComponent implements OnInit {
   OpenModal(content) 
   {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
+
   }
   ResetAttributes()
   { 
@@ -377,6 +423,33 @@ export class CouponComponent implements OnInit {
     });
     this.ModalHeading = "Add Coupon";
     this.ModalBtn = "Save";
+  }
+
+  updateCoupon(){
+
+    const data={
+      full_description:this.editform.value.full_description,
+      auto_apply:this.editform.value.auto_apply,
+      short_description:this.editform.value.short_description,
+      created_by:localStorage.getItem('USERNAME') 
+    };
+
+    this.couponService.update(this.couponRecord.id,data).subscribe(
+      resp => {
+        if(resp.status==1)
+          {                
+            this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+            this.modalReference.close();
+            this.ResetAttributes();
+           this.search(); 
+          }
+          else
+          {                
+            this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+            this.spinner.hide();
+          }
+    });     
+
   }
 
   addData()
@@ -441,16 +514,14 @@ export class CouponComponent implements OnInit {
     if(id==null)
     {
     this.couponService.create(data).subscribe(
-      resp => {  
-
-        this.spinner.hide();
+      resp => { 
 
         if(resp.status==1)
         {
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-          //   this.modalReference.close();
-          //  this.ResetAttributes();
-          //   this.search(); 
+            this.modalReference.close();
+           this.ResetAttributes();
+            this.search(); 
         }        
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -464,35 +535,21 @@ export class CouponComponent implements OnInit {
       }
     );  
   }
-    else{     
-     
-      this.couponService.update(id,data).subscribe(
-        resp => {
-          if(resp.status==1)
-            {                
-              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-              this.modalReference.close();
-              this.ResetAttributes();
-             this.search(); 
-            }
-            else
-            {                
-              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-              this.spinner.hide();
-            }
-      });         
-    }    
-   
+  
   }
 
   
 
-  editData()
+  edit_coupon(i,content:any)
   {
-    
 
     this.ModalHeading = "Edit Coupon";
     this.ModalBtn = "Update";
+
+    this.spinner.show();
+    this.loadElements(i);
+    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
+  
   
 
   }
@@ -536,10 +593,6 @@ export class CouponComponent implements OnInit {
        
       }
     );
-
-   
-
-
   } 
 
   

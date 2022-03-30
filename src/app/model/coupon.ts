@@ -16,6 +16,8 @@ export interface Coupon {
     from_date:any;
     to_date:any;
     max_redeem:any;
+    auto_apply:any;
+    bus_id:any;
     coupon_code:any;
     bus_operator_id:any;
 }
