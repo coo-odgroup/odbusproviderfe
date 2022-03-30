@@ -142,6 +142,9 @@ export class OwnerfareComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [null],
       rows_number: Constants.RecordLimit,
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
 
     this.search();
@@ -159,16 +162,17 @@ export class OwnerfareComponent implements OnInit {
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
+      fromDate:this.searchForm.value.fromDate,
+      toDate:this.searchForm.value.toDate,
+      bus_operator_id:this.searchForm.value.bus_operator_id,
     };
 
-    // console.log(data);
     if (pageurl != "") {
       this.ownerfareService.getAllaginationData(pageurl, data).subscribe(
         res => {
           this.ownerFares = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          // console.log( this.BusOperators);
           this.spinner.hide();
         }
       );
@@ -180,7 +184,7 @@ export class OwnerfareComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log( res.data);
+          // console.log(this.ownerFares);
         }
       );
     }
@@ -192,6 +196,9 @@ export class OwnerfareComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [null],
       rows_number: Constants.RecordLimit,
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
     this.search();
 

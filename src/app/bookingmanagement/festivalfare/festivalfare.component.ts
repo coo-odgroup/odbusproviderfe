@@ -138,10 +138,14 @@ export class FestivalfareComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.searchForm = this.fb.group({  
-      name: [null],  
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
+
 
     this.search();
     this.loadServices();
@@ -159,7 +163,10 @@ export class FestivalfareComponent implements OnInit {
       this.spinner.show(); 
     const data = { 
       name: this.searchForm.value.name,
-      rows_number:this.searchForm.value.rows_number, 
+      rows_number: this.searchForm.value.rows_number,
+      fromDate:this.searchForm.value.fromDate,
+      toDate:this.searchForm.value.toDate,
+      bus_operator_id:this.searchForm.value.bus_operator_id,
     };
    
     // console.log(data);
@@ -193,10 +200,14 @@ export class FestivalfareComponent implements OnInit {
   refresh()
    {
     this.spinner.show();
-    this.searchForm = this.fb.group({  
-      name: [null],  
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
+
      this.search();
 
     

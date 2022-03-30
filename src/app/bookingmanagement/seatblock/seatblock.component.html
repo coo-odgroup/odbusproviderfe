@@ -18,46 +18,24 @@
         <div class="col-10">
           <form [formGroup]="searchForm">
             <div class="row">
-
-              <div class="col-3">
+              <div class="col-6">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <div class="input-group">
-                      <input type="date" class="form-control sml_input" formControlName="date">
+                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                        formControlName="fromDate">
+                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                        formControlName="toDate">
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-2">
+              <div class="col-4">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <div class="input-group">
                       <input type="text" class="form-control sml_input" placeholder="Search Bus Here "
                         formControlName="name" (keyup.enter)="search()">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-5 p-0">
-                <div class="row">
-                  <div class="col-6">
-                    <div class="form-group ">
-                      <div class="col-sm-12">
-                        <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Source"
-                          formControlName="source_id" [clearable]="false">
-                        </ng-select>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <div class="col-6">
-                    <div class="form-group">
-                      <div class="col-sm-12">
-                        <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Destination"
-                          formControlName="destination_id" [clearable]="false">
-                        </ng-select>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -74,8 +52,42 @@
                   </select>
                 </div>
               </div>
-            </div>
+              <div class="col-12 p-0">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group row">
+                      <div class="col-sm-12">
+                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                                placeholder="Select Operator" formControlName="bus_operator_id" 
+                                [clearable]="false">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>  
 
+                  <div class="col-4">
+                    <div class="form-group ">
+                      <div class="col-sm-12">
+                        <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Source"
+                          formControlName="source_id" [clearable]="false">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-4">
+                    <div class="form-group">
+                      <div class="col-sm-12">
+                        <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Destination"
+                          formControlName="destination_id" [clearable]="false">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>

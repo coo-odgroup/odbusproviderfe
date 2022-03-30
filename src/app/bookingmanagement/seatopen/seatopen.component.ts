@@ -85,7 +85,7 @@ export class SeatopenComponent implements OnInit {
   seatLayoutData: any;
   busForm: any;
   seatLayoutCol: any;
-  upperberthcol: any;
+  upperberthcol: any; 
   lowerberthcol: any;
   selectedSeats: any=[];
   busArray: FormArray;
@@ -155,10 +155,12 @@ export class SeatopenComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [null],
       rows_number: Constants.RecordLimit,
-      page_no: this.page_no,
-      date:[null],
+      page_no:this.page_no,
+      fromDate:[null],
+      toDate:[null],
       source_id:[null],
       destination_id:[null],
+      bus_operator_id:[null],
     });
 
     this.search();
@@ -172,8 +174,7 @@ export class SeatopenComponent implements OnInit {
   set_page(url:any)
   {  
     this.page_no = url.replace('/api/seatopenData?&page=','');
-    // console.log(url)
-   this.search();
+    this.search();
   
   }
 
@@ -185,7 +186,9 @@ export class SeatopenComponent implements OnInit {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
       page_no:this.page_no,
-      date:this.searchForm.value.date,
+      bus_operator_id:this.searchForm.value.bus_operator_id,
+      fromDate:this.searchForm.value.fromDate,
+      toDate:this.searchForm.value.toDate,
       source_id:this.searchForm.value.source_id,
       destination_id:this.searchForm.value.destination_id,
       USER_BUS_OPERATOR_ID: localStorage.getItem('USER_BUS_OPERATOR_ID')
@@ -290,9 +293,11 @@ export class SeatopenComponent implements OnInit {
       name: [null],
       rows_number: Constants.RecordLimit,
       page_no:this.page_no,
-      date:[null],
+      fromDate:[null],
+      toDate:[null],
       source_id:[null],
       destination_id:[null],
+      bus_operator_id:[null],
     });
     this.search();
     

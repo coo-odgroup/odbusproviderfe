@@ -77,11 +77,16 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Bus Name</th>
-                            <th scope="col">Bus Number</th>
-                           
                             <th scope="col">Operator Name</th>
+                            <th scope="col">Bus Name/Number</th>
+                            <th scope="col">Via</th>
+                            <th scope="col">From >> To</th>
+                            <th scope="col">Seize Minute</th>
+                           
+                           
+                            
                             <th scope="col">Extra Open Seats</th>
+                            <th scope="col">Extra Open Sleeper</th>
                             <!-- <th scope="col">Reason</th> -->
                             <!-- <th scope="col">Status</th> -->
                         </tr>
@@ -91,28 +96,38 @@
                             <td>{{ i+1 }}</td>
                             <!-- <td>{{ sopen.date_applied | date: 'dd/MM/yyyy'}}</td> -->
                             <td>
-                                {{ sopen.name }}
+                                <strong class="text-danger">{{ sopen.bus_operator.organisation_name }}</strong>
+                                <br>[ {{ sopen.bus_operator.operator_name }} ]
                             </td>
-                            <td>{{ sopen.bus_number }}</td>
-
-                            
-                            <td><strong>{{ sopen.bus_operator.organisation_name }}</strong><br>[ {{ sopen.bus_operator.operator_name }} ]</td>
                             <td>
-                                <!-- <span *ngFor="let seat of sopen.bus_seats;let seatIndex = index">
-                                   <span  *ngIf="seat.duration != 0">
-                                       {{ seat.seats.seatText }},
-                                    </span> 
-                                </span> -->
+                               <b><span class="text-danger">{{ sopen.name }}</span></b> 
+                               <br>{{ sopen.bus_number }}
+                            </td>
+                            <td>
+                               <span class="text-info">{{ sopen.via }}</span> 
+                            </td>
+                            <td>
+                               <b>{{ sopen.source[0][0].name }} >> {{ sopen.destination[0][0].name }} </b>
+                            </td>
+                            <td>
+                               <b>{{ sopen.ticket_price[0].seize_booking_minute }}  </b>
+                            </td>
+
+                            <td> 
                                 <span *ngFor="let seat of sopen.ticket_price[0].get_bus_seats;let seatIndex = index">
-                                     {{seat.seats.seatText}} ,                                                                
+                                    <span *ngIf="seat.seats.berthType == 1">
+                                        {{seat.seats.seatText}} ,  
+                                    </span>                                                                                                                                                                                      
                                  </span>
 
                             </td>
-                            <!-- <td>{{ sopen.reason }}</td> -->
-                            <!-- <td>
-                                <label *ngIf="sopen.status == 1" class="badge badge-light-success ">Active</label>
-                                <label *ngIf="sopen.status == 0" class="badge badge-light-danger ">Pending</label>
-                            </td> -->
+                            <td>
+                                <span *ngFor="let seat of sopen.ticket_price[0].get_bus_seats;let seatIndex = index">
+                                    <span *ngIf="seat.seats.berthType == 2">
+                                        {{seat.seats.seatText}} ,  
+                                    </span>                                                                                                                                                                                         
+                                 </span>
+                            </td>                       
 
                         </tr>
                     </tbody>
