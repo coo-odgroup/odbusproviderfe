@@ -17,7 +17,7 @@
                 <div class="col-10">
                     <form [formGroup]="searchForm">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-3">
                                 <div class="form-group row">
 
                                     <div class="col-sm-12">
@@ -34,24 +34,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()"
-                                    title="search">
-                                    <i class="fas fa-search"> </i> Search
-                                </button> -->
-                                <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
-                                    title="refresh">
-                                    <i class="fas fa-sync-alt"> </i> Refresh
-                                </button>
-                                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
-                                    title="Export">
-                                    <i class="fas fa-file-export"> </i> Export
-                                </button>
-                                <button type="button" printSectionId="print-section" ngxPrint
-                                    class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
-                                    <i class="fas fa-print"> </i> Print
-                                </button>
-                            </div>
+                            <div class="col-3">
+                                <div class="form-group row">
+                                  <div class="col-sm-12">
+                                    <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                                            placeholder="Select Operator" formControlName="bus_operator_id" 
+                                            [clearable]="false">
+                                    </ng-select>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="col-4">
+                                <div class="form-group row">
+                                  <div class="col-sm-12">
+                                    <div class="input-group">
+                                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                                        formControlName="fromDate">
+                                        <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                                        formControlName="toDate">
+                                    </div>
+                                  </div>                
+                                </div>
+                              </div>  
+                            
                             <div class="col-2">
                                 <div class="dropdown float-right">
                                     <select class="form-control sml_input" formControlName="rows_number"
@@ -64,8 +69,81 @@
                                     </select>
                                 </div>
                             </div>
+                       
+                            <div class="col-3">
+                                <div class="form-group ">
+                                    <div class="col-sm-12">
+                                        <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                            placeholder="Select Source" formControlName="source_id"
+                                            [clearable]="false" >
+                                        </ng-select>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                              placeholder="Select Destination"
+                                              formControlName="destination_id" [clearable]="false"
+                                              >
+                                          </ng-select>
+                
+                                      </div>
+                                  </div>
+                              </div> 
+
+                              <div class="col-3">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
+                                            placeholder="Select Coupon Type" formControlName="coupon_type"
+                                            [clearable]="false" >
+                                        </ng-select>
+              
+                                    </div>
+                                </div>
+                            </div> 
+                              <div class="col-3">
+                                <div class="form-group">
+                                    <div class="dropdown">
+                                        <div class="col-sm-12">
+                                          <select class="form-control sml_input" formControlName="status">
+                                            <option value='1'>Active</option>
+                                            <option value='0'>Panding</option>
+                                            <option value='3'>Deactive</option>
+                                        </select>
+                                        <small>Status</small>
+                                        </div>                    
+                                        
+                                    </div>   
+                                </div>
+                            </div> 
+
+
+                           
                         </div>
                     </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <button type="button" class="btn btn-success  sml_input" (click)="search()"
+                        title="search">
+                        <i class="fas fa-search"> </i> Search
+                    </button>
+                    <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
+                        title="refresh">
+                        <i class="fas fa-sync-alt"> </i> Refresh
+                    </button>
+                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                        title="Export">
+                        <i class="fas fa-file-export"> </i> Export
+                    </button>
+                    <button type="button" printSectionId="print-section" ngxPrint
+                        class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
+                        <i class="fas fa-print"> </i> Print
+                    </button>
                 </div>
             </div>
             <div class="table-responsive" id="print-section">
@@ -253,7 +331,7 @@
                                                 <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
                                                 placeholder="Select Coupon Type" formControlName="coupon_type"
                                                 [clearable]="false" (change)="coupon_type()">
-                                            </ng-select>
+                                                </ng-select>
                                                 <span class="text-danger"
                                                     *ngIf="form.controls['coupon_type'].touched && form.controls['coupon_type'].hasError('required')">
                                                     Coupon Type is required! </span>

@@ -118,8 +118,16 @@ export class CouponComponent implements OnInit {
 
     this.searchForm = this.fb.group({  
       name: [null],  
+      bus_operator_id: [null],  
+      fromDate: [null],  
+      toDate: [null],  
+      source_id: [null],  
+      destination_id: [null],  
+      coupon_type: [null],  
+      status: [null],  
       rows_number: Constants.RecordLimit,
     });
+
     this.formConfirm=this.fb.group({
       id:[null]
     });
@@ -342,6 +350,13 @@ export class CouponComponent implements OnInit {
   {      this.spinner.show();
     const data = {
       name:this.searchForm.value.name,  
+      bus_operator_id:this.searchForm.value.bus_operator_id,  
+      fromDate:this.searchForm.value.fromDate,  
+      toDate:this.searchForm.value.toDate,  
+      source_id:this.searchForm.value.source_id,  
+      destination_id:this.searchForm.value.destination_id,  
+      coupon_type:this.searchForm.value.coupon_type,  
+      status:this.searchForm.value.status,  
       rows_number:this.searchForm.value.rows_number,
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
     };
@@ -380,6 +395,13 @@ export class CouponComponent implements OnInit {
    {
     this.searchForm = this.fb.group({  
       name: [null],  
+      bus_operator_id: [null],  
+      fromDate: [null],  
+      toDate: [null],  
+      source_id: [null],  
+      destination_id: [null],  
+      coupon_type: [null],  
+      status: [null],  
       rows_number: Constants.RecordLimit,
     });
 
