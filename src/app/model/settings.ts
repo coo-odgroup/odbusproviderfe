@@ -5,6 +5,7 @@ export interface SettingsRecords{
     payment_gateway_charges:any;
     email_sms_charges:any;
     odbus_gst_charges:any;
+    customer_gst:any;
     advance_days_show:any;
     support_email:any;
     booking_email:any;

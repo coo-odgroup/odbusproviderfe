@@ -218,7 +218,7 @@
                                 </div>
       
                                 <div class="form-group row">
-                                  <label for="pay_chrg" class="col-sm-5 col-form-label"><strong> Payment Gateway Charges</strong><span
+                                  <label for="pay_chrg" class="col-sm-5 col-form-label"><strong> Payment Gateway Charges (%)</strong><span
                                     class="text-danger">*</span></label>
                                   <div class="col-sm-7">
                                     <input id="pay_chrg" type="text" class="form-control" ngbAutofocus placeholder="Payment Gateway Charges" required
@@ -244,7 +244,7 @@
                                 </div>
       
                                 <div class="form-group row">
-                                  <label for="gst" class="col-sm-5 col-form-label"><strong>GST Charges</strong><span
+                                  <label for="gst" class="col-sm-5 col-form-label"><strong>GST Charges (%)</strong><span
                                       class="text-danger">*</span></label>
                                   <div class="col-sm-7">
                                     <input id="gst" type="text" class="form-control" ngbAutofocus placeholder="GST charges" required
@@ -253,6 +253,15 @@
                                     *ngIf="settingForm.controls['odbus_gst_charges'].touched && settingForm.controls['odbus_gst_charges'].hasError('required')">
                                     GST Charges Required
                                   </span>
+                                  </div>
+                                </div>
+
+                                <div class="form-group row">
+                                  <label for="gst" class="col-sm-5 col-form-label"><strong>Customer GST (%)</strong></label>
+                                  <div class="col-sm-7">
+                                    <input id="customer_gst" type="number" class="form-control" ngbAutofocus placeholder="Customer GST"
+                                    formControlName="customer_gst" />
+                                 
                                   </div>
                                 </div>
       

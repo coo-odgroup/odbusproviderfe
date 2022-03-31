@@ -410,6 +410,7 @@ export class CouponComponent implements OnInit {
 
    }
 
+  
 
   OpenModal(content) 
   {
@@ -616,6 +617,32 @@ export class CouponComponent implements OnInit {
       }
     );
   } 
+
+  onSelectAll() {
+    const selected = this.busoperators.map(item => item.id);
+    this.form.get('bus_operator_id').patchValue(selected);
+  }
+  onClearAll() {
+    this.form.get('bus_operator_id').patchValue([]);
+  }
+
+
+  onSelectAllBus() {
+    const selected = this.busList.map(item => item.id);
+    this.form.get('bus_id').patchValue(selected);
+  }
+  onClearAllBus() {
+    this.form.get('bus_id').patchValue([]);
+  }
+
+  onSelectAllRoute() {
+    const selected = this.allRoutes.map(item => item.id);
+    this.form.get('route').patchValue(selected);
+  }
+  onClearAllRoute() {
+    this.form.get('route').patchValue([]);
+  }
+
 
   
   title = 'angular-app';

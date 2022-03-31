@@ -129,6 +129,7 @@ export class MastersettingComponent implements OnInit {
       user_id: [null, Validators.compose([Validators.required])],
       email_sms_charges:[null,Validators.compose([Validators.required])],
       odbus_gst_charges:[null,Validators.compose([Validators.required])],
+      customer_gst:[0],      
       advance_days_show:[null, Validators.compose([Validators.required])],
       busListingseq:[null, Validators.compose([Validators.required])],
       support_email:[null,Validators.compose([Validators.required])],
@@ -495,6 +496,7 @@ export class MastersettingComponent implements OnInit {
       user_id: [null],
       email_sms_charges:[null,Validators.compose([Validators.required])],
       odbus_gst_charges:[null,Validators.compose([Validators.required])],
+      customer_gst:[0], 
       advance_days_show:[null, Validators.compose([Validators.required])],
       busListingseq:[null, Validators.compose([Validators.required])],
       support_email:[null,Validators.compose([Validators.required])],
@@ -550,6 +552,7 @@ export class MastersettingComponent implements OnInit {
     fd.append("payment_gateway_charges",this.settingForm.value.payment_gateway_charges);
     fd.append("email_sms_charges",this.settingForm.value.email_sms_charges);
     fd.append("odbus_gst_charges",this.settingForm.value.odbus_gst_charges);
+    fd.append("customer_gst",this.settingForm.value.customer_gst);
     fd.append("busListingseq",this.settingForm.value.busListingseq);
     fd.append("advance_days_show",this.settingForm.value.advance_days_show);
     fd.append("support_email",this.settingForm.value.support_email);
@@ -624,7 +627,9 @@ export class MastersettingComponent implements OnInit {
   }
   editSettings(id)
   { 
+    
     this.settingRecord = this.settings[id]; 
+
     this.imgURL =''; 
     this.favURL =''; 
     this.footerImgURL ='';
@@ -634,6 +639,7 @@ export class MastersettingComponent implements OnInit {
       payment_gateway_charges:[this.settingRecord.payment_gateway_charges],
       email_sms_charges:[this.settingRecord.email_sms_charges],
       odbus_gst_charges:[this.settingRecord.odbus_gst_charges],
+      customer_gst:[this.settingRecord.customer_gst],
       advance_days_show:[this.settingRecord.advance_days_show],
       busListingseq:[this.settingRecord.bus_list_sequence],
       support_email:[this.settingRecord.support_email],
