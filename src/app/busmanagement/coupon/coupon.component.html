@@ -209,8 +209,8 @@
                                     ----
                                 </span>
                             </td>
-                            <td>{{couponData.from_date | date: 'MMM d, y'}}</td>
-                            <td>{{couponData.to_date | date: 'MMM d, y'}}</td>
+                            <td>{{couponData.from_date  }}</td>
+                            <td>{{couponData.to_date }} </td>
                             <td>{{couponData.coupon_title}}</td>
                             <td>{{couponData.coupon_code}}</td>
                             <td>
@@ -223,10 +223,18 @@
                                 {{couponData.created_by}}
                             </td>
                             <td>
-                                <label *ngIf="couponData.status==1" class="badge badge-light-primary pointer text-dark"
+                                <span *ngIf="couponData.from_date <= todayDate && todayDate <=couponData.to_date">
+                                    <label *ngIf="couponData.status==1" class="badge badge-light-primary pointer text-dark"
                                     (click)="changeStatus($event, couponData.id);">Active</label>
                                 <label *ngIf="couponData.status==0" class="badge badge-light-danger pointer text-dark"
                                     (click)="changeStatus($event, couponData.id);">Pending</label>
+                                <label *ngIf="couponData.status==3" class="badge  pointer text-white" style="background-color: rgb(76, 24, 124);"
+                                    (click)="changeStatus($event, couponData.id);">Deactive</label>
+                                </span>
+
+                                <span *ngIf="todayDate > couponData.to_date" class="text-danger">  
+                                  <b>Coupon Expeired</b>
+                                </span>
                             </td>
                             <td class="hide_print">
                                 <div class="overlay-edit">
@@ -373,17 +381,7 @@
                                                                 </div>
                                                               </ng-template>
                                                         </ng-select>
-
-                                                        
-                                                    </div>
-                                                    <!-- <div class="col-sm-6">
-                                                        <ng-select id="destination_id" [items]="locations"
-                                                            bindLabel="name" bindValue="id"
-                                                            placeholder="Select Destination"
-                                                            formControlName="destination_id"
-                                                            [clearable]="false">
-                                                        </ng-select>
-                                                    </div> -->
+                                                    </div>                                                   
                                                 </div>
                                             </div>
                                         </div>
