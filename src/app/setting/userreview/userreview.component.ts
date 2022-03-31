@@ -161,6 +161,20 @@ export class UserreviewComponent implements OnInit {
     );
   }
 
+  changeStatus(event,id){
+
+    this.spinner.show();
+
+    this.us.chngsts(id).subscribe(
+      res => {
+        this.refresh();
+        this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
+        this.spinner.hide();
+      }
+    );
+
+  }
+
   ResetAttributes()
   {     
     this.ModalHeading = "View Details";

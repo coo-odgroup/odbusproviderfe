@@ -68,6 +68,8 @@ export class AgentwalletbalanceComponent implements OnInit {
     });
     this.searchForm = this.fb.group({
       bus_operator_id: [null],
+      rangeFromDate:[null],
+      rangeToDate:[null],
       name: [null],
       user_id:[null],
       rows_number: Constants.RecordLimit,
@@ -109,8 +111,10 @@ export class AgentwalletbalanceComponent implements OnInit {
       user_id: this.searchForm.value.user_id,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
+      rangeFromDate:this.searchForm.value.rangeFromDate,
+      rangeToDate :this.searchForm.value.rangeToDate,
     };
-     //console.log(data);
+   //  console.log(data);
     if (pageurl != "") {
       this.ws.getAllAgentPaginationBalance(pageurl, data).subscribe(
         res => {
@@ -118,6 +122,7 @@ export class AgentwalletbalanceComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
+          console.log(this.wallet);
           // console.log( this.BusOperators);
         }
       );
@@ -154,6 +159,8 @@ export class AgentwalletbalanceComponent implements OnInit {
       bus_operator_id: [null],
       user_id: [null],
       rows_number: Constants.RecordLimit,
+      rangeFromDate:[null],
+      rangeToDate:[null],
     });
     this.search();
     this.spinner.hide();

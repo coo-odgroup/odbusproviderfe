@@ -8,6 +8,7 @@ import {FestivalfareComponent} from './festivalfare.component';
 import { NotificationService } from '../../services/notification.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {NgxPrintModule} from 'ngx-print';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -16,7 +17,10 @@ import {NgxPrintModule} from 'ngx-print';
     FestivalFareRoutingModule,
     SharedModule,
     FormsModule,
-    NgSelectModule,NgxPrintModule,NgxSpinnerModule
+    NgSelectModule,
+    NgxPrintModule,
+    NgxSpinnerModule,
+    NgbModule
   ],
   declarations: [ FestivalfareComponent],
   providers: [NotificationService], schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -61,6 +61,14 @@ export class CouponService {
       catchError(this.errorHandler)
     )
   }
+
+  getAllBus(id): Observable<any>{
+    return this.httpClient.get<any>(Constants.BASE_URL + '/allCouponBusList/'+id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   errorHandler(error:any) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

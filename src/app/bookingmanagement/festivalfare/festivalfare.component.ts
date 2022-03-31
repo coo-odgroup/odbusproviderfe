@@ -20,19 +20,54 @@ import {IOption} from 'ng-select';
 import * as XLSX from 'xlsx';
 import { debounceTime, map } from 'rxjs/operators';
 import { NgxSpinnerService } from "ngx-spinner";
+import {Input,Output,EventEmitter} from '@angular/core';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 
+
+
+const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
+  one && two && two.year === one.year && two.month === one.month && two.day === one.day;
+
+const before = (one: NgbDateStruct, two: NgbDateStruct) =>
+  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
+    ? false : one.day < two.day : one.month < two.month : one.year < two.year;
+
+const after = (one: NgbDateStruct, two: NgbDateStruct) =>
+  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
+    ? false : one.day > two.day : one.month > two.month : one.year > two.year;
 
 
 @Component({
   selector: 'app-festivalfare',
   templateUrl: './festivalfare.component.html',
   styleUrls: ['./festivalfare.component.scss'],
-  providers: [NgbModalConfig, NgbModal]
+  providers: [NgbModalConfig, NgbModal],
+  styles: [`
+  .custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+  }
+  .custom-day.range, .custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+  }
+  .custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+  }
+  .custom-day.selected{  
+    background-color: rgba(255, 255, 0, .5);
+      
+  }
+`]
 
 })
 export class FestivalfareComponent implements OnInit {
   @ViewChild("addnew") addnew;
   public festivalFareForm: FormGroup;
+  public editfestivalFareForm: FormGroup;
   public formConfirm: FormGroup;
 
   modalReference: NgbModalRef;
@@ -76,6 +111,18 @@ export class FestivalfareComponent implements OnInit {
   }
   ngOnInit(): void {
     this.spinner.show();
+    this.editfestivalFareForm = this.fb.group({
+      searchBy: ['operator'],
+      bus_operator_id: [null],
+      source_id: [null],
+      destination_id: [null],
+      id:[null],
+      bus_id:[null],
+      date: [null],
+      seater_price: [null],
+      sleeper_price: [null],
+      reason: [null],
+    });
     this.festivalFareForm = this.fb.group({
       searchBy: ['operator'],
       bus_operator_id: [null],
@@ -91,10 +138,14 @@ export class FestivalfareComponent implements OnInit {
     this.formConfirm=this.fb.group({
       id:[null]
     });
-    this.searchForm = this.fb.group({  
-      name: [null],  
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
+
 
     this.search();
     this.loadServices();
@@ -112,7 +163,10 @@ export class FestivalfareComponent implements OnInit {
       this.spinner.show(); 
     const data = { 
       name: this.searchForm.value.name,
-      rows_number:this.searchForm.value.rows_number, 
+      rows_number: this.searchForm.value.rows_number,
+      fromDate:this.searchForm.value.fromDate,
+      toDate:this.searchForm.value.toDate,
+      bus_operator_id:this.searchForm.value.bus_operator_id,
     };
    
     // console.log(data);
@@ -146,10 +200,14 @@ export class FestivalfareComponent implements OnInit {
   refresh()
    {
     this.spinner.show();
-    this.searchForm = this.fb.group({  
-      name: [null],  
+    this.searchForm = this.fb.group({
+      name: [null],
       rows_number: Constants.RecordLimit,
+      fromDate:[null],
+      toDate:[null],
+      bus_operator_id:[null],
     });
+
      this.search();
 
     
@@ -176,8 +234,22 @@ export class FestivalfareComponent implements OnInit {
   }
   ResetAttributes()
   {
+    this.datesSelected=[];
     this.festivalFareRecord = {} as Festivalfare;
     //this.busstoppageRecord= {} as Busstoppage;
+    this.editfestivalFareForm = this.fb.group({
+      searchBy: ["operator"],
+      bus_operator_id: [null],
+      source_id: [null],
+      destination_id: [null],
+      id:[null],
+      bus_id:[null],
+      date:[null],
+      seater_price:[null],
+      sleeper_price:[null],
+      reason:[null],
+      
+    });
     this.festivalFareForm = this.fb.group({
       searchBy: ["operator"],
       bus_operator_id: [null],
@@ -262,67 +334,86 @@ findSource()
 addfestivalFare()
   {
     this.spinner.show();
-    let id:any=this.festivalFareForm.value.id;
-    const data ={
-     
-      date:this.festivalFareForm.value.date,
-      seater_price:this.festivalFareForm.value.seater_price,
-      sleeper_price:this.festivalFareForm.value.sleeper_price,
-      reason:this.festivalFareForm.value.reason,
-      bus_operator_id:this.festivalFareForm.value.bus_operator_id,
-      source_id:this.festivalFareForm.value.source_id,
-      destination_id:this.festivalFareForm.value.destination_id,
-      created_by:localStorage.getItem('USERNAME'),
-      bus_id:this.festivalFareForm.value.bus_id,
-    };
+    let id:any=this.editfestivalFareForm.value.id;
+   
   //  return false;
 
-    if(id==null)
-    {
-      this.festivalfareService.create(data).subscribe(
-        resp => {
-      if(resp.status==1)
-       {       
-          
-          this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-          this.modalReference.close();
-          this.ResetAttributes();
-          this.loadServices();
-          this.refresh();
-        
-       }
-       else
-       {
-          
-        this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-        this.spinner.hide();
-       }
-      });    
-    }
-    else{     
-     
-      this.festivalfareService.update(id,data).subscribe(
-        resp => {
+      if(id==null)
+      {
+        if(this.festivalFareForm.value.date == null){
+          this.notificationService.addToast({ title: 'Error', msg: 'Please Select Date', type: 'error' });
+          this.spinner.hide();
+          return;
+        }
+        else{
+          const data ={     
+            date:this.festivalFareForm.value.date,
+            seater_price:this.festivalFareForm.value.seater_price,
+            sleeper_price:this.festivalFareForm.value.sleeper_price,
+            reason:this.festivalFareForm.value.reason,
+            bus_operator_id:this.festivalFareForm.value.bus_operator_id,
+            source_id:this.festivalFareForm.value.source_id,
+            destination_id:this.festivalFareForm.value.destination_id,
+            created_by:localStorage.getItem('USERNAME'),
+            bus_id:this.festivalFareForm.value.bus_id,
+          };
+          this.festivalfareService.create(data).subscribe(
+            resp => {
           if(resp.status==1)
-            {                
+          {       
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
+              this.loadServices();
               this.refresh();
-            }
-            else
-            {                
-              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-              this.spinner.hide();
-            }
-      });         
-    }    
+          }
+          else
+          {          
+            this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+            this.spinner.hide();
+          }
+          });  
+
+        }          
+      }
+      else{    
+          const data ={     
+            date:this.editfestivalFareForm.value.date,
+            seater_price:this.editfestivalFareForm.value.seater_price,
+            sleeper_price:this.editfestivalFareForm.value.sleeper_price,
+            reason:this.editfestivalFareForm.value.reason,
+            bus_operator_id:this.editfestivalFareForm.value.bus_operator_id,
+            source_id:this.editfestivalFareForm.value.source_id,
+            destination_id:this.editfestivalFareForm.value.destination_id,
+            created_by:localStorage.getItem('USERNAME'),
+            bus_id:this.editfestivalFareForm.value.bus_id,
+          };
+         
+      
+        this.festivalfareService.update(id,data).subscribe(
+          resp => {
+            if(resp.status==1)
+              {                
+                this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+                this.modalReference.close();
+                this.ResetAttributes();
+                this.refresh();
+              }
+              else
+              {                
+                this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+                this.spinner.hide();
+              }
+        });         
+      }    
     
   }
 
+  
 
   editfestivalFare(event : Event, id : any)
   {
+    this.spinner.show();
     this.festivalFareRecord=this.festivalFares[id] ;
     this.busOperatorService.readAll().subscribe(
       res=>{
@@ -345,7 +436,7 @@ addfestivalFare()
         res=>{
           this.buses=res.data;
         this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
-
+        this.spinner.hide();
         }
       );
     }
@@ -357,7 +448,7 @@ addfestivalFare()
         res=>{
           this.buses=res.data;
         this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
-
+        this.spinner.hide();
         }
       );
     }
@@ -367,7 +458,7 @@ addfestivalFare()
         res=>{
           this.buses=res.data;
         this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
-
+        this.spinner.hide();
         }
       );
     }
@@ -375,8 +466,8 @@ addfestivalFare()
     
     var d = new Date(this.festivalFareRecord.date);
     let date = [d.getFullYear(),('0' + (d.getMonth() + 1)).slice(-2),('0' + d.getDate()).slice(-2)].join('-');
-    console.log((this.festivalFareRecord.bus));
-    this.festivalFareForm = this.fb.group({
+    // console.log((this.festivalFareRecord.bus));
+    this.editfestivalFareForm = this.fb.group({
 
       id:[this.festivalFareRecord.id],
       bus_id: [null],
@@ -395,7 +486,7 @@ addfestivalFare()
       selBusses.push(JSON.parse(busData.id));
     }
     
-    this.festivalFareForm.controls.bus_id.setValue(selBusses);
+    this.editfestivalFareForm.controls.bus_id.setValue(selBusses);
 
     this.ModalHeading = "Edit Festival Fare";
     this.ModalBtn = "Update";
@@ -452,5 +543,85 @@ addfestivalFare()
       }
     );
   }
+
+  hoveredDate: NgbDateStruct;
+
+  fromDate: NgbDateStruct;
+  toDate: NgbDateStruct;
+
+  _datesSelected:NgbDateStruct[]=[]; 
+
+  @Input()
+  set datesSelected(value:NgbDateStruct[])  
+  {
+     this._datesSelected=value;
+     
+  }
+  get datesSelected():NgbDateStruct[]
+  {
+    
+    return this._datesSelected?this._datesSelected:[];
+  }
+
+  @Output() datesSelectedChange=new EventEmitter<NgbDateStruct[]>();
+
+ 
+
+  onDateSelection(event:any,date: NgbDateStruct) {
+
+    event.target.parentElement.blur();  //make that not appear the outline
+    if (!this.fromDate && !this.toDate) {
+      if (event.ctrlKey==true)  //If is CrtlKey pressed
+        this.fromDate = date;
+      else
+        this.addDate(date);
+
+      this.datesSelectedChange.emit(this.datesSelected);
+
+    } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
+      this.toDate = date;
+      this.addRangeDate(this.fromDate,this.toDate);
+      this.fromDate=null;
+      this.toDate=null;
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+    }
+  }
+
+  addDate(date:NgbDateStruct)
+  {
+      let index=this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year);
+      if (index>=0)       //If exist, remove the date
+        this.datesSelected.splice(index,1);
+      else   //a simple push
+        this.datesSelected.push(date);
+  
+        this.festivalFareForm.controls['date'].setValue(this.datesSelected);
+    }
+    addRangeDate(fromDate:NgbDateStruct,toDate:NgbDateStruct)
+    {
+        //We get the getTime() of the dates from and to
+        let from=new Date(fromDate.year+"-"+fromDate.month+"-"+fromDate.day).getTime();
+        let to=new Date(toDate.year+"-"+toDate.month+"-"+toDate.day).getTime();
+        for (let time=from;time<=to;time+=(24*60*60*1000)) //add one day
+        {
+            let date=new Date(time);
+            //javascript getMonth give 0 to January, 1, to February...
+            this.addDate({year:date.getFullYear(),month:date.getMonth()+1,day:date.getDate()});
+        }   
+        this.datesSelectedChange.emit(this.datesSelected);
+    }
+    //return true if is selected
+    isDateSelected(date:NgbDateStruct)
+    {
+        return (this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year)>=0);
+    }
+  isHovered = date => this.fromDate && !this.toDate && this.hoveredDate && after(date, this.fromDate) && before(date, this.hoveredDate);
+  isInside = date => after(date, this.fromDate) && before(date, this.toDate);
+  isFrom = date => equals(date, this.fromDate);
+  isTo = date => equals(date, this.toDate);
+
+
 
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import {  Observable, throwError } from 'rxjs';
+import {  Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {Constants} from '../constant/constant';
 
@@ -180,6 +180,46 @@ export class BusService {
       catchError(this.errorHandler)
     );
   }
+
+  List:any = [
+    
+    ' Leyland, Executive Luxury A/C Sleeper / Chair Car ',
+    'DLX Luxury, AC Sleeper+Seater',
+    'Luxury A/C Sleeper+Seater',
+    'Leyland, Air Suspension, A/C Seater+Sleeper',
+    'Leyland A/C Seater+Sleeper',
+    'Executive Luxury A/C Seater+Sleeper', 
+    'Bharat Benz Air Suspension AC Sleeper+Seater',
+    'Bharat Benz AC Sleeper+Seater',
+    'A/C Sleeper+Seater',
+    'Volvo Multi-Axle A/C Semi Sleeper',
+    'Volvo Multi-Axle A/C Seater',
+    'Volvo Multi-Axle B9R A/C Seater+Sleeper',
+    'Volvo Multi-Axle B9R A/C',
+    'Volvo Multi Axle A/C Sleeper B11R',
+    'Volvo Multi Axle A/C Sleeper',
+    'A/C Seater Push Back',
+    'Non A/C Seater Push Back',
+    'Leyland A/C Seater',
+    'Leyland Non A/C Seater',
+    'Leyland A/C Push Back Seater', 
+    'Leyland Non-A/C Push Back Seater',
+    'Bharat Benz A/C Seater',
+    'Bharat Benz Non-A/C Push Back Seater',
+    'DLX Air Suspension, Non-AC Sleeper+Seater',
+    'Luxury Air Suspension, Non-AC Sleeper+Seater',
+    'DLX Luxury, Non-AC Sleeper+Seater',
+    'Non-AC Sleeper+Seater, Executive Airbus',
+    'Non-A/C Seater+Semi Sleeper',
+    'Non-A/C Seater+Sleeper'
+
+]; 
+
+  GetBusTypeList(): Observable<any> 
+  {    
+      return of(this.List);   
+  }
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

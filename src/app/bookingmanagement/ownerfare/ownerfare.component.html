@@ -15,9 +15,8 @@
           <form [formGroup]="searchForm">
             <div class="row">
 
-              <div class="col-4">
+              <div class="col-6">
                 <div class="form-group row">
-
                   <div class="col-sm-12">
                     <div class="input-group">
                       <input type="text" class="form-control sml_input" placeholder="Search Here " required
@@ -31,25 +30,16 @@
                   </div>
                 </div>
               </div>
-
-
-              <div class="col-6">
-                <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
-                  <i class="fas fa-search"> </i> Search
-                </button> -->
-                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                  <i class="fas fa-sync-alt"> </i> Refresh
-                </button>
-                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
-                  <i class="fas fa-file-export"> </i> Export
-                </button>
-                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
-                  [useExistingCss]="true" title="Print">
-                  <i class="fas fa-print"> </i> Print
-                </button>
-              </div>
-
-
+              <div class="col-4">
+                <div class="form-group row">
+                  <div class="col-sm-12">
+                    <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                            placeholder="Select Operator" formControlName="bus_operator_id" 
+                            [clearable]="false">
+                    </ng-select>
+                  </div>
+                </div>
+              </div>  
 
               <div class="col-2">
                 <div class="dropdown float-right">
@@ -62,10 +52,37 @@
                   </select>
                 </div>
               </div>
+
+              <div class="col-7">
+                <div class="form-group row">
+                  <div class="col-sm-12">
+                    <div class="input-group">
+                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                        formControlName="fromDate">
+                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                        formControlName="toDate">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-5">
+                <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <i class="fas fa-search"> </i> Search
+                </button>
+                <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  <i class="fas fa-sync-alt"> </i> Refresh
+                </button>
+                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                  <i class="fas fa-file-export"> </i> Export
+                </button>
+                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                  [useExistingCss]="true" title="Print">
+                  <i class="fas fa-print"> </i> Print
+                </button>
+              </div>
             </div>
           </form>
-
-
         </div>
 
       </div>
@@ -91,7 +108,8 @@
               <td>{{ ownerFare.id }}</td>
               <td>
                 <span *ngIf="ownerFare.bus?.length != 0">
-                  {{ownerFare.bus[0].bus_operator.operator_name}}
+                  <b> {{ownerFare.bus[0].bus_operator.organisation_name}} </b><br>
+                  [ {{ownerFare.bus[0].bus_operator.operator_name}} ]
                 </span>
                 <span *ngIf="ownerFare.bus?.length == 0">
                  --No Operator--
@@ -102,8 +120,11 @@
               </td>
               <td>
                 <div *ngIf="ownerFare.bus?.length != 0">
-                  <span *ngFor="let busName of ownerFare.bus; let nameIndex=index;"> 
+                  <!-- <span *ngFor="let busName of ownerFare.bus; let nameIndex=index;"> 
                     {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  ,<br>
+                  </span> -->
+                  <span *ngFor="let busName of ownerFare.bus; let nameIndex=index;"> 
+                    {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  [<strong>{{busName.source[0][0].name}} >> {{busName.destination[0][0].name}}</strong>]  ,<br>
                   </span>
                 </div>
 
@@ -126,7 +147,7 @@
              
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button type="button" (click)="editOwnerFare($event, i); OpenModal(content);"
+                  <button type="button" (click)="ResetAttributes();editOwnerFare($event, i); OpenModal(editcontent);"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                   <button type="button"  (click)="deleteOwnerFare(confirmDialog,ownerFare.id)" class="btn btn-icon btn-danger"><i
                       class="feather icon-trash-2"></i></button>
@@ -219,14 +240,195 @@
                   <div class="right-icon-control">
                     <form [formGroup]="ownerFareForm" class="editForm" novalidate>
                       <div class="row">
+                        <div class="col-md-8">
+                          <div class="row">
+                            <div class="col-md-2">
+                              <div class="form-group">
+                                <label for="owner fare">Select</label>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="operator"><input id="operator" type="radio" [checked]="true" value="operator"
+                                    formControlName="searchBy">
+                                  Operator</label>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="routes"><input id="routes" type="radio" value="routes"
+                                    formControlName="searchBy">
+                                  Routes</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="ownerFareForm.controls.searchBy.value=='operator'">
+                            <div class="col-md-12">
+                              <div class="form-group row">
+                                <label for="bus" class="col-sm-2 col-form-label">Operator<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="hidden" class="form-control" formControlName="id"
+                                    [value]="ownerFareRecord.id" />
+                                  <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                                    placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false"
+                                    (change)="findOperator($event)">
+                                  </ng-select>
+    
+    
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+                          <div class="row" *ngIf="ownerFareForm.controls.searchBy.value=='routes'">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="routes" class="col-sm-4 col-form-label">Routes<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Source"
+                                    formControlName="source_id" [clearable]="false" (change)="findSource()">
+                                  </ng-select>
+    
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <div class="col-sm-8">
+                                  <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                    placeholder="Select Destination" formControlName="destination_id" [clearable]="false"
+                                    (change)="findSource($event)">
+                                  </ng-select>
+    
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group row">
+                                <label for="busname" class="col-sm-2 col-form-label">Bus Name<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <ng-select [items]="buses" bindLabel="testing" bindValue="id" placeholder="Select Bus"
+                                    formControlName="bus_id" [multiple]="true" [clearable]="false">
+                                  </ng-select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="seaterprice" class="col-sm-4 col-form-label">Price</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Enter Seater Price" 
+                                    formControlName="seater_price" [value]="ownerFareRecord.seater_price" />
+                             
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <!-- <label for="sleeperprice" class="col-sm-5 col-form-label">/label> -->
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Enter Sleeper Price" 
+                                    formControlName="sleeper_price" [value]="ownerFareRecord.sleeper_price" />
+                                 
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="reason" class="col-sm-4 col-form-label">Reason<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Enter Reason" required
+                                    formControlName="reason" [value]="ownerFareRecord.reason" />
+                                  <span class="text-danger"
+                                    *ngIf="ownerFareForm.controls['reason'].touched && ownerFareForm.controls['reason'].hasError('required')">
+                                    Reason is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="col-md-3">
+
+                          <div class="col-12">
+                            <div class="form-group row">
+                              <!-- <label for="date" class="col-sm-4 col-form-label"
+                                >Date<span class="text-danger">*</span></label> -->
+                              <div class="col-sm-8">
+                                <div class="col-sm-8">
+  
+                                  <ngb-datepicker #dp (datesSelectedChange)="change($event)" [displayMonths]="1"
+                                    [dayTemplate]="t">
+                                  </ngb-datepicker>
+    
+                                  <ng-template #t let-date="date" let-focused="focused">
+                                    <span class="custom-day" (click)="onDateSelection($event,date)"
+                                      [class.focused]="focused"
+                                      [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
+                                      [class.faded]="isHovered(date) || isInside(date)"
+                                      [class.selected]="isDateSelected(date)" (mouseenter)="hoveredDate = date"
+                                      (mouseleave)="hoveredDate = null">
+                                      {{ date.day }}
+                                    </span>
+                                  </ng-template>
+                                  <!-- <hr> -->
+                                  <!-- <pre>DateSelected: {{ datesSelected | json }} </pre> -->
+    
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      
+                      
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" [disabled]="!ownerFareForm.valid" (click)="addOwnerFare()" class="btn btn-primary"
+              ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+
+        <ng-template #editcontent let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form [formGroup]="editownerFareForm" class="editForm" novalidate>
+                      <div class="row">
                         <div class="col-md-2">
                           <div class="form-group">
-                            <label for="owner fare">Select</label>
+                            <label for="festival fare">Select</label>
                           </div>
                         </div>
                         <div class="col-md-2">
                           <div class="form-group">
-                            <label for="operator"><input id="operator" type="radio" [checked]="true" value="operator"
+                            <label for="operator"><input id="operator" type="radio" value="operator"
                                 formControlName="searchBy">
                               Operator</label>
                           </div>
@@ -239,14 +441,13 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row" *ngIf="ownerFareForm.controls.searchBy.value=='operator'">
+                      <div class="row" *ngIf="editownerFareForm.controls.searchBy.value=='operator'">
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label for="bus" class="col-sm-4 col-form-label">Operator<span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-8">
-                              <input type="hidden" class="form-control" formControlName="id"
-                                [value]="ownerFareRecord.id" />
+
                               <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                 placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false"
                                 (change)="findOperator($event)">
@@ -258,7 +459,7 @@
                         </div>
                       </div>
 
-                      <div class="row" *ngIf="ownerFareForm.controls.searchBy.value=='routes'">
+                      <div class="row" *ngIf="editownerFareForm.controls.searchBy.value=='routes'">
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label for="routes" class="col-sm-4 col-form-label">Routes<span
@@ -276,7 +477,7 @@
                             <div class="col-sm-8">
                               <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                 placeholder="Select Destination" formControlName="destination_id" [clearable]="false"
-                                (change)="findSource($event)">
+                                (change)="findSource()">
                               </ng-select>
 
                             </div>
@@ -302,9 +503,9 @@
                           <div class="form-group row">
                             <label for="seaterprice" class="col-sm-4 col-form-label">Seater Price</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" placeholder="Enter Seater Price" 
+                              <input type="text" class="form-control" placeholder="Enter Seater Price"
                                 formControlName="seater_price" [value]="ownerFareRecord.seater_price" />
-                         
+                    
                             </div>
                           </div>
                         </div>
@@ -314,7 +515,7 @@
                             <div class="col-sm-8">
                               <input type="text" class="form-control" placeholder="Enter Sleeper Price" 
                                 formControlName="sleeper_price" [value]="ownerFareRecord.sleeper_price" />
-                             
+                          
                             </div>
                           </div>
                         </div>
@@ -328,8 +529,8 @@
                               <input type="date" class="form-control" placeholder="Enter Date" required
                                 formControlName="date" [value]="ownerFareRecord.date" />
                               <span class="text-danger"
-                                *ngIf="ownerFareForm.controls['date'].touched && ownerFareForm.controls['date'].hasError('required')">
-                                Date of owner fare required! </span>
+                                *ngIf="editownerFareForm.controls['date'].touched && editownerFareForm.controls['date'].hasError('required')">
+                                Date is required! </span>
                             </div>
                           </div>
                         </div>
@@ -341,7 +542,7 @@
                               <input type="text" class="form-control" placeholder="Enter Reason" required
                                 formControlName="reason" [value]="ownerFareRecord.reason" />
                               <span class="text-danger"
-                                *ngIf="ownerFareForm.controls['reason'].touched && ownerFareForm.controls['reason'].hasError('required')">
+                                *ngIf="editownerFareForm.controls['reason'].touched && editownerFareForm.controls['reason'].hasError('required')">
                                 Reason is required! </span>
                             </div>
                           </div>
@@ -356,8 +557,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" [disabled]="!ownerFareForm.valid" (click)="addOwnerFare()" class="btn btn-primary"
-              ngbAutofocus>{{ModalBtn}}</button>
+            <button type="button" [disabled]="!editownerFareForm.valid" (click)="addOwnerFare()"
+              class="btn btn-primary" ngbAutofocus>{{ModalBtn}}</button>
             <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
               (click)="modal.dismiss('Cross click')">Close</button>
           </div>

@@ -135,7 +135,6 @@ export class AgentalltransactionComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log( this.BusOperators);
         }
       );
     }
