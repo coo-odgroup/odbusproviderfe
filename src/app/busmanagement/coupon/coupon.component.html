@@ -232,8 +232,8 @@
                                 <div class="overlay-edit">
                                     <button type="button" (click)="edit_coupon(i,editCoupon)"
                                         class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
-                                    <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
-                                        class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
+                                    <!-- <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
+                                        class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button> -->
                                 </div>
                             </td>
                         </tr>
@@ -345,6 +345,13 @@
                                                 <ng-select [items]="busoperators" [multiple]="true" bindLabel="operatorData"
                                                     bindValue="id" placeholder="Select Bus Operator"
                                                     formControlName="bus_operator_id" [clearable]="false" (change)="getBusoperatorRoute()">
+
+                                                    <ng-template ng-header-tmp *ngIf="busoperators?.length > 0">
+                                                        <div>
+                                                          <button class="btn btn-link" (click)="onSelectAll()">Select All</button>
+                                                          <button class="btn btn-link" (click)="onClearAll()">Clear All</button>
+                                                        </div>
+                                                      </ng-template>
                                                 </ng-select>
 
                                             </div>
@@ -358,6 +365,13 @@
                                                             bindLabel="route" bindValue="id"
                                                             placeholder="Select Route"
                                                             formControlName="route" [clearable]="false" (change)="GetBusList()">
+
+                                                            <ng-template ng-header-tmp *ngIf="allRoutes?.length > 0">
+                                                                <div>
+                                                                  <button class="btn btn-link" (click)="onSelectAllRoute()">Select All</button>
+                                                                  <button class="btn btn-link" (click)="onClearAllRoute()">Clear All</button>
+                                                                </div>
+                                                              </ng-template>
                                                         </ng-select>
 
                                                         
@@ -380,10 +394,17 @@
                                             <div class="col-md-12">
                                                 <div class="form-group row">
                                                     <div class="col-sm-12">
-                                                        <ng-select id="bus_id" [multiple]="true"  [items]="busList"
+                                                        <ng-select  id="bus_id" [multiple]="true"  [items]="busList"
                                                             bindLabel="bus_name" bindValue="id"
                                                             placeholder="Select Bus"
                                                             formControlName="bus_id" [clearable]="false">
+
+                                                            <ng-template ng-header-tmp *ngIf="busList?.length > 0">
+                                                                <div>
+                                                                  <button class="btn btn-link" (click)="onSelectAllBus()">Select All</button>
+                                                                  <button class="btn btn-link" (click)="onClearAllBus()">Clear All</button>
+                                                                </div>
+                                                              </ng-template>
                                                         </ng-select>
 
                                                         
