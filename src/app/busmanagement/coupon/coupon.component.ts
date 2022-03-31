@@ -12,12 +12,14 @@ import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 import { LocationService } from '../../services/location.service';
 import { BusstoppageService } from '../../services/busstoppage.service';
+import { DatePipe} from '@angular/common';
 
 
 @Component({
   selector: 'app-coupon',
   templateUrl: './coupon.component.html',
-  styleUrls: ['./coupon.component.scss']
+  styleUrls: ['./coupon.component.scss'],  
+  providers: [DatePipe]
 })
 
 export class CouponComponent implements OnInit {
@@ -44,8 +46,10 @@ export class CouponComponent implements OnInit {
   allRoutes: any[];
   busList:any=[];
   allBus:any=[];
+  todayDate:any;
 
   constructor(
+    private datePipe: DatePipe,
     private http: HttpClient, 
     private notificationService: NotificationService, 
     private fb: FormBuilder,
@@ -56,6 +60,9 @@ export class CouponComponent implements OnInit {
     private busstoppageService:BusstoppageService
     )
     { 
+
+      this.todayDate =this.datePipe.transform((new Date), 'yyyy-MM-dd'); 
+
       config.backdrop = 'static';
       config.keyboard = false;
       this.ModalHeading = "Add New Coupon";
@@ -383,6 +390,7 @@ export class CouponComponent implements OnInit {
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
+          console.log( this.coupons);
           this.spinner.hide();
         }
       );
