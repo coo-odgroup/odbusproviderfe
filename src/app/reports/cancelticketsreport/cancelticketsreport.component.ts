@@ -69,6 +69,7 @@ export class CancelticketsreportComponent implements OnInit {
     this.loadServices();
   }
   
+
   page(label:any){
     return label;
    }
@@ -118,6 +119,21 @@ export class CancelticketsreportComponent implements OnInit {
   }
 
 
+  copyMessage($event:any ){
+    // console.log($event);
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = $event;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
+  
   exportexcel(): void
   {
     

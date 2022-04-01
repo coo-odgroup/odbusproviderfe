@@ -295,14 +295,28 @@
                                     <ng-template #tipContent2>
 
                                         <table>
-                                            <tr>
+                                            <tr *ngIf="complete.odbus_gst_amount != 0  ">
                                                 <td>ODBUS GST</td>
                                                 <td><b>{{complete.odbus_gst_amount}}</b></td>
                                             </tr>
-                                            <tr>
+                                            <tr *ngIf="complete.owner_gst_amount != 0  ">
                                                 <td>OWNER GST</td>
                                                 <td>{{complete.owner_gst_amount}}</td>
                                             </tr>
+
+                                            <tr *ngIf="complete.additional_festival_fare != 0  ">
+                                                <td>Additionl Festival Fare</td>
+                                                <td><b>{{complete.additional_festival_fare}}</b></td>
+                                            </tr>
+                                            <tr *ngIf="complete.additional_owner_fare != 0  ">
+                                                <td>Additional Owner Fare</td>
+                                                <td><b>{{complete.additional_owner_fare}}</b></td>
+                                            </tr>
+                                            <tr *ngIf="complete.additional_special_fare != 0  ">
+                                                <td>Additional Special Fare</td>
+                                                <td><b>{{complete.additional_special_fare}}</b></td>
+                                            </tr>
+
                                         </table>
                                     </ng-template>
 
@@ -397,6 +411,9 @@
                         <th>Seater Fare</th>
                         <th>Sleeper Fare</th>
                         <th>Owner Fare</th>
+                        <td>Additionl Festival Fare</td>
+                        <td>Additional Owner Fare</td>
+                        <td>Additional Special Fare</td>
                         <th>Total Fare</th>
                         <th>Odbus GST</th>
                         <th>Owner GST</th>
@@ -407,14 +424,32 @@
                         <th>User Phone</th>
                         <th>User Email</th>
                         <!-- <th>Boarding From</th>
-                        <th>Boarding Time</th>                     -->
-
-
-
-
-
+                        <th>Boarding Time</th>  -->
                     </tr>
                 </thead>
+
+                <!-- <tr *ngIf="complete.odbus_gst_amount != 0  ">
+                    <td>ODBUS GST</td>
+                    <td><b>{{complete.odbus_gst_amount}}</b></td>
+                </tr>
+                <tr *ngIf="complete.owner_gst_amount != 0  ">
+                    <td>OWNER GST</td>
+                    <td>{{complete.owner_gst_amount}}</td>
+                </tr>
+
+                <tr *ngIf="complete.additional_festival_fare != 0  ">
+                    <td>Additionl Festival Fare</td>
+                    <td><b>{{complete.additional_festival_fare}}</b></td>
+                </tr>
+                <tr *ngIf="complete.additional_owner_fare != 0  ">
+                    <td>Additional Owner Fare</td>
+                    <td><b>{{complete.additional_owner_fare}}</b></td>
+                </tr>
+                <tr *ngIf="complete.additional_special_fare != 0  ">
+                    <td>Additional Special Fare</td>
+                    <td><b>{{complete.additional_special_fare}}</b></td>
+                </tr> -->
+
 
                 <tbody *ngIf="completedata?.length != 0">
                     <tr *ngFor="let complete of completedata?.data.data; let i = index">
@@ -467,6 +502,16 @@
                             {{complete.owner_fare}}
                         </td>
                         <td>
+                            {{complete.additional_festival_fare}}
+                        </td>
+                        <td>
+                            {{complete.additional_owner_fare}}
+                        </td>
+                        <td>
+                            {{complete.additional_special_fare}}
+                        </td>
+                        
+                        <td>
                             {{complete.total_fare}}
                         </td>
                         <td>
@@ -504,14 +549,6 @@
                         ( {{complete.boarding_point}} )
                     </td>
                     <td>{{complete.boarding_time}}</td> -->
-
-
-
-
-
-
-
-
                     </tr>
                 </tbody>
             </table>
