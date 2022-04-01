@@ -134,7 +134,9 @@
               <td>{{ busCancellation.bus.bus_operator.organisation_name }}  [{{ busCancellation.bus.bus_operator.operator_name }}]</td>
               <td (click)="showCancelledDates($event,i)"><b>{{ busCancellation.bus.name }}  <br> {{ busCancellation.bus.bus_number }} </b></td>
               <td>{{ busCancellation.from_location[0].name }} - {{ busCancellation.to_location[0].name }}</td>
-              <td>{{ busCancellation.reason }}</td>
+              <td>{{ busCancellation.reason }}<br>
+                <b *ngIf="busCancellation.other_reson">{{busCancellation.other_reson}}</b>
+              </td>
               <td>
                   <span *ngFor="let cancelDT of busCancellation.bus_cancelled_date">
                         {{cancelDT.cancelled_date}} ,<br>
@@ -309,7 +311,12 @@
                       <ng-select [items]="reasons" bindLabel="reason" bindValue="reason" placeholder="Select reason"
                         [clearable]="false" required formControlName="reason">
                       </ng-select>
+                      <span *ngIf="busCancellationForm.controls.reason.value=='others'">
+                        <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reson"
+                          formControlName="other_reson" />
+                      </span>
                     </div>
+                  
                   </div>
 
                   <div class="form-group row" formArrayName="buses">

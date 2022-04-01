@@ -11,6 +11,7 @@ export interface Buscancellation {
      entry_date:any;   
      cancelled_by: 'Admin';
      reason: any;
+     other_reson: any;
      status: 1; 
      busLists: any;
      bus_cancelled_date:any;

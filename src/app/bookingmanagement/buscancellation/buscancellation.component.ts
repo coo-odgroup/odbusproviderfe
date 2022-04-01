@@ -90,6 +90,29 @@ export class BuscancellationComponent implements OnInit {
     this.createBusCancellationForm();
     this.loadServices();
 
+    this.busCancellationForm = this.fb.group({
+      bus_operator_id: [null],
+      //busOperatorname: [null],
+      month: [null],
+      year: [null],
+      reason: [null],
+      other_reson: [null],
+      busLists: [null],
+      buses: this.fb.array([
+        this.fb.group({
+          bus_id: [null],
+          busName: [null],
+          dateLists: this.fb.array([
+            this.fb.group({
+              //busScheduleId: [null],
+              entryDates: [null],
+              datechecked: [''],
+            })
+          ]),
+        }),
+      ]),
+    });
+
     this.searchForm = this.fb.group({
       name: [null],
       bus_operator_id: [null],
@@ -132,7 +155,7 @@ export class BuscancellationComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log( this.BusOperators);
+          console.log( this.busCancellations);
         }
       );
     }
@@ -143,7 +166,8 @@ export class BuscancellationComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log(this.busCancellations);  
+          // console.log(this.busCancellations);
+          console.log( this.busCancellations);  
         }
       );
     }
@@ -198,6 +222,7 @@ export class BuscancellationComponent implements OnInit {
       month: '',
       year: '',
       reason: '',
+      other_reson: '',
       buses: this.fb.array([
         this.fb.group({
           bus_id: [null],
@@ -228,6 +253,7 @@ export class BuscancellationComponent implements OnInit {
       month: [null],
       year: [null],
       reason: [null],
+      other_reson: [null],
       busLists: [null],
       buses: this.fb.array([
         this.fb.group({
@@ -382,9 +408,11 @@ export class BuscancellationComponent implements OnInit {
       month: this.busCancellationForm.value.month,
       year: this.busCancellationForm.value.year,
       reason: this.busCancellationForm.value.reason,
+      other_reson: this.busCancellationForm.value.other_reson,
       //BELOW ELEMENTS ARE ARRAY
       buses: this.busCancellationForm.value.buses,
     };
+    console.log(data);
 
     if (id == null) {
       this.buscanCellationService.create(data).subscribe(
@@ -436,7 +464,7 @@ export class BuscancellationComponent implements OnInit {
       month: this.busCancellationRecord.month,
       year: this.busCancellationRecord.year,
       reason: this.busCancellationRecord.reason,
-
+      other_reson: this.busCancellationRecord.other_reson,
       busLists: this.selectedCancelBus
     });
     this.getBusbyOperator();
@@ -457,10 +485,6 @@ export class BuscancellationComponent implements OnInit {
     arr.controls = [];
     this.getBusScheduleEntryDatesFilter();
   }
-  // onChange()
-  // {
-  //   //alert('Hello'+this.busCancellationForm.get('bus_operator_id').value);
-  // }
   openConfirmDialog(content) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
   }
