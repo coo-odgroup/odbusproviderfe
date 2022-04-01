@@ -77,8 +77,8 @@ export class AgentwalletrequestComponent implements OnInit {
       bus_operator_id: [null],
       name: [null],
       rows_number: Constants.RecordLimit,
-      // rangeFromDate:[null],
-      // rangeToDate:[null],
+      rangeFromDate:[null],
+      rangeToDate:[null],
       user_id:[null],
       status: [null], 
     });
@@ -121,11 +121,12 @@ export class AgentwalletrequestComponent implements OnInit {
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
       user_id:this.searchForm.value.user_id,
-      // rangeFromDate:this.searchForm.value.rangeFromDate,
-      // rangeToDate :this.searchForm.value.rangeToDate,
+      rangeFromDate:this.searchForm.value.rangeFromDate,
+      rangeToDate :this.searchForm.value.rangeToDate,
       status: this.searchForm.value.status,
     };
-    //console.log(pageurl);
+    console.log(data);
+
     if (pageurl != "") 
     {      
       this.ws.getAllAgentPaginationData(pageurl, data).subscribe(
@@ -236,8 +237,8 @@ export class AgentwalletrequestComponent implements OnInit {
       name: [null],
       bus_operator_id: [null],
       rows_number: Constants.RecordLimit,
-      // rangeFromDate:[null],
-      // rangeToDate:[null],
+      rangeFromDate:[null],
+      rangeToDate:[null],
       user_id:[null],
       status: [null], 
     });
