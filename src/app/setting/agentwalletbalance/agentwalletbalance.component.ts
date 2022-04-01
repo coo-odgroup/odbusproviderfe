@@ -61,16 +61,14 @@ export class AgentwalletbalanceComponent implements OnInit {
     this.spinner.show();
     this.form = this.fb.group({
       id: [null],
-      otp: [null, Validators.compose([Validators.required])]
+     // otp: [null, Validators.compose([Validators.required])]
     });
     this.formConfirm = this.fb.group({
       id: [null]
     });
-    this.searchForm = this.fb.group({
-      bus_operator_id: [null],
+    this.searchForm = this.fb.group({     
       rangeFromDate:[null],
       rangeToDate:[null],
-      name: [null],
       user_id:[null],
       rows_number: Constants.RecordLimit,
     });
@@ -107,14 +105,12 @@ export class AgentwalletbalanceComponent implements OnInit {
   search(pageurl = "") {
     this.spinner.show();
     const data = {
-      name: this.searchForm.value.name,
       user_id: this.searchForm.value.user_id,
-      bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
       rangeFromDate:this.searchForm.value.rangeFromDate,
       rangeToDate :this.searchForm.value.rangeToDate,
     };
-   //  console.log(data);
+    // console.log(data);
     if (pageurl != "") {
       this.ws.getAllAgentPaginationBalance(pageurl, data).subscribe(
         res => {
@@ -122,8 +118,7 @@ export class AgentwalletbalanceComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          console.log(this.wallet);
-          // console.log( this.BusOperators);
+          //console.log(this.wallet);
         }
       );
     }
@@ -134,7 +129,7 @@ export class AgentwalletbalanceComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log( this.wallet);
+         // console.log(this.wallet);
         }
       );
     }
@@ -155,8 +150,8 @@ export class AgentwalletbalanceComponent implements OnInit {
 
   refresh() {
     this.searchForm = this.fb.group({
-      name: [null],
-      bus_operator_id: [null],
+     // name: [null],
+   //   bus_operator_id: [null],
       user_id: [null],
       rows_number: Constants.RecordLimit,
       rangeFromDate:[null],
@@ -184,11 +179,4 @@ export class AgentwalletbalanceComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
 
   }
-
-  
-
-
- 
-
-
 }

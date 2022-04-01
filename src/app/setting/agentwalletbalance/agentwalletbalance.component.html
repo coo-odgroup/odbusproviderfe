@@ -16,22 +16,20 @@
             <form [formGroup]="searchForm">
               <div class="row">
   
-                <!-- <div class="col-4">
+                <div class="col-4">
                   <div class="row">  
-                      <div class="col-6">
-                          
-                              <input type="date" class="form-control sml_input" placeholder="Start Date"
-                              required formControlName="rangeFromDate" />
-                          
+                      <div class="col-6">                          
+                              <input type="date" class="form-control btn-sm" placeholder="Start Date"
+                              required formControlName="rangeFromDate" />                          
                       </div>
                       <div class="form-group col-6">
                           <div class="form-group ">
-                              <input type="date" class="form-control sml_input" placeholder="End Date"
+                              <input type="date" class="form-control btn-sm" placeholder="End Date"
                               required formControlName="rangeToDate" />
                           </div>                                            
                       </div>
                   </div>
-                </div> -->
+                </div>
               
               <div class="col-3">                                    
                 <ng-select [items]="allagent" bindLabel="agentData"  bindValue="id" placeholder="Select Agent"  
@@ -40,36 +38,25 @@
                
             </div>
 
-                <div class="col-3">
-                  <div class="form-group row">
-  
+                <!-- <div class="col-3">
+                  <div class="form-group row">  
                     <div class="col-sm-12">
                       <input type="text" class="form-control sml_input" placeholder="Search Transaction Id Here " required
                         formControlName="name" />
                     </div>
                   </div>
-                </div>
+                </div> -->
                 
-                <div class="col-2">
-                  <div class="dropdown">
-                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
-                      <option value=10>10</option>
-                      <option value=25>25</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                      <option value='all'>All</option>
-                    </select>
-                  </div>
-                </div>
+                
   
                 <div class="col-4">
-                  <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <button type="button" class="btn btn-success btn-sm" (click)="search()" title="search">
                     <i class="fas fa-search"> </i> Search
-                  </button>
-                  <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                  </button>&nbsp;
+                  <button type="button" class="btn btn-danger btn-sm" (click)="refresh()" title="refresh">
                     <i class="fas fa-sync-alt"> </i> Refresh
-                  </button>
-                  <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                  </button>&nbsp;
+                  <button type="button" (click)="exportexcel()" class="btn btn-warning btn-sm"
                       title="Export">
                       <i class="fas fa-file-export"> </i> Export
                   </button>
@@ -78,56 +65,54 @@
                       <i class="fas fa-print"> </i> Print
                   </button> -->
                 </div>
-  
-  
-  
-               
+                <div class="col-1">
+                  <div class="dropdown">
+                    <select class="form-control" formControlName="rows_number" (change)=search()>
+                      <option value=10>10</option>
+                      <option value=25>25</option>
+                      <option value=50>50</option>
+                      <option value=100>100</option>
+                      <option value='all'>All</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-            </form>
-  
-  
-          </div>
-  
+            </form> 
+          </div>  
         </div>
         <div class="table-responsive" id="print-section">
           <table class="table table-striped ">
             <thead>
               <tr>
                 <th scope="col" width="100px">#</th>
-                <th>Agent Details</th>
-                <th scope="col">Last Tran DateTime</th>
-                <!-- <th scope="col">Tran ID</th>
-                <th scope="col">Tran Via</th> -->
-                <th scope="col">Amount</th>
-                <th scope="col">Balance</th>                
-                <!-- <th scope="col">Message</th> -->
-                <!-- <th scope="col">wallet status </th> -->
+                <th scope="col">Tran DateTime</th>
+                <th scope="col">Agent Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Mobile</th>                
+                <th scope="col">Balance</th>   
+                <th scope="col">status </th>
               </tr>
             </thead>
             <tbody *ngIf="wallet?.length != 0">
               <tr *ngFor="let page of wallet; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{page.name}}<br>{{page.email}}<br>{{page.phone}}</td>
-
                 <td>
-                    <span *ngIf="page.agent_wallet.length!=0"> 
-                    {{page.agent_wallet[0].created_at | date: 'dd/MM/yyyy'}}
-                    </span>
-
-                    <span class="text-danger" *ngIf="page.agent_wallet.length==0"> 
-                       ----
-                    </span>
+                  <span *ngIf="page.length!=0"> 
+                  {{page.created_at | date: 'yyyy-MM-dd H:mm:ss'}}
+                  </span>
+                  <span class="text-danger" *ngIf="page.length==0"> 
+                     ----
+                  </span>
                 </td>
-                <!-- <td >{{page.transaction_id}}</td>
-                <td >{{page.payment_via}}</td> -->
-                <!-- <td >{{page.amount}}</td> -->
+                <td>{{page.user.name}}</td>
+                <td>{{page.user.email}}</td>
+                <td>{{page.user.phone}}</td>                
                 <td >
-                  <!-- {{page.balance}} -->
-                    <span *ngIf="page.agent_wallet.length!=0"> 
-                        {{page.agent_wallet[0].balance}}
+                    <span *ngIf="page.length!=0"> 
+                        {{page.amount}}
                     </span>
                     
-                    <span class="text-danger" *ngIf="page.agent_wallet.length==0"> 
+                    <span class="text-danger" *ngIf="page.length==0"> 
                        ----
                     </span>
                 </td>               
