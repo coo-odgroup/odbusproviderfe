@@ -19,7 +19,7 @@
                             <div class="col-5">
                                 <div class="form-group row">
                                     <div class="col-sm-12">
-                                        <ng-select [items]="busoperators" bindLabel="operator_name" bindValue="id"
+                                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                             placeholder="Select Operator" formControlName="bus_operator_id"
                                             [clearable]="false" >
                                         </ng-select>
@@ -175,7 +175,7 @@
                                                     <label for="name" class="col-sm-12 col-form-label">Select Bus
                                                         Operator :<span class="text-danger">*</span></label>
                                                     <div class="col-sm-12">
-                                                        <ng-select [items]="busoperators" bindLabel="operator_name" ngbAutofocus
+                                                        <ng-select [items]="busoperators" bindLabel="operatorData" ngbAutofocus
                                                             bindValue="id" placeholder="Select Bus Operator"
                                                             formControlName="bus_operator_id" [clearable]="false" (change)="oprDetails()">
                                                         </ng-select>

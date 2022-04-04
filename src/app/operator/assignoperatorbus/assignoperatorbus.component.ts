@@ -137,7 +137,7 @@ export class AssignoperatorbusComponent implements OnInit {
       res => {
         this.allUserOperator = res.data;
         this.allUserOperator.map((i: any) => { i.operatorData = i.bus_operator.organisation_name + '    (  ' + i.bus_operator.operator_name  + '  )'; return i; });
-        // console.log(this.allUserOperator.bus_operator);
+        console.log(this.allUserOperator.bus_operator);
       }
     );
 
