@@ -283,12 +283,15 @@ export class OwnerfareComponent implements OnInit {
   }
 
   findOperator(event: any) {
+   
     let operatorId = event.id;
     if (operatorId) {
+      this.spinner.show();
       this.busService.getByOperaor(operatorId).subscribe(
         res => {
           this.buses = res.data;
           this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+          this.spinner.hide();
         }
       );
     }
@@ -322,12 +325,14 @@ export class OwnerfareComponent implements OnInit {
     let source_id = this.ownerFareForm.controls.source_id.value;
     let destination_id = this.ownerFareForm.controls.destination_id.value;
 
-
-    if (source_id != "" && destination_id != "") {
+    if (source_id != null && destination_id != null) {
+      this.spinner.show();
       this.busService.findSource(source_id, destination_id).subscribe(
         res => {
           this.buses = res.data;
           this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+          this.spinner.hide();
+          
         }
       );
     }
