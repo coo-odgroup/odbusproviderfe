@@ -246,6 +246,8 @@ export class SeatopenComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
+          console.log(mainArray);
+
 
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
           // console.log(mainArray);
@@ -637,6 +639,7 @@ export class SeatopenComponent implements OnInit {
   }
 
   findOperator(event: any) {
+    this.spinner.show();
     this.seatOpenForm.controls.bus_id.setValue('');
     this.seatOpenForm.controls.busRoute.setValue('');
     let operatorId = event.id;
@@ -645,6 +648,7 @@ export class SeatopenComponent implements OnInit {
         res => {
           this.buses = res.data;
           this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+          this.spinner.hide();
         }
       );
     }

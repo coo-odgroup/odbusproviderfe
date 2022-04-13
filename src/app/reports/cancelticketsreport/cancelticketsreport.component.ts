@@ -57,7 +57,7 @@ export class CancelticketsreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],pnr:[null],
-      date_type:['booking'],
+      date_type:['journey'],
       rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null],
@@ -156,7 +156,7 @@ export class CancelticketsreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       payment_id : [null],pnr:[null],
-      date_type:['booking'],
+      date_type:['journey'],
       rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null],

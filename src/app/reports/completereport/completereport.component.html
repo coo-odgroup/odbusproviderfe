@@ -164,8 +164,12 @@
                             <tr *ngFor="let complete of completedata?.data.data; let i = index">
                                 <td>{{ i+1 }}</td>
                                 <td>
+                                    <!-- {{complete.app_type}} -->
                                     <span *ngIf="complete.app_type == 'WEB'">
                                         <strong>(W)&nbsp;</strong>
+                                    </span>
+                                    <span *ngIf="complete.app_type == 'MOB'">
+                                        <strong>(M)&nbsp;</strong>
                                     </span>
                                     <span *ngIf="complete.app_type == 'ANDROID'">
                                         <strong class="text-danger">(A)&nbsp;</strong>

@@ -129,7 +129,7 @@ export class AgentwalletbalanceComponent implements OnInit {
           this.pagination = res.data.data;
           this.all = res.data;
           this.spinner.hide();
-         // console.log(this.wallet);
+         console.log(this.wallet);
         }
       );
     }

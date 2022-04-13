@@ -125,7 +125,7 @@ export class AgentwalletrequestComponent implements OnInit {
       rangeToDate :this.searchForm.value.rangeToDate,
       status: this.searchForm.value.status,
     };
-    console.log(data);
+    // console.log(data);
 
     if (pageurl != "") 
     {      

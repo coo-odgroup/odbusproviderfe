@@ -90,7 +90,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Mobile</th>                
                 <th scope="col">Balance</th>   
-                <th scope="col">status </th>
+                <!-- <th scope="col">status </th> -->
               </tr>
             </thead>
             <tbody *ngIf="wallet?.length != 0">
@@ -98,7 +98,7 @@
                 <td>{{i+1}}</td>
                 <td>
                   <span *ngIf="page.length!=0"> 
-                  {{page.created_at | date: 'yyyy-MM-dd H:mm:ss'}}
+                  {{page.wallet[0].created_at | date: 'yyyy-MM-dd H:mm:ss'}}
                   </span>
                   <span class="text-danger" *ngIf="page.length==0"> 
                      ----
@@ -109,7 +109,7 @@
                 <td>{{page.user.phone}}</td>                
                 <td >
                     <span *ngIf="page.length!=0"> 
-                        {{page.amount}}
+                        {{page.wallet[0].balance}}
                     </span>
                     
                     <span class="text-danger" *ngIf="page.length==0"> 

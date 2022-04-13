@@ -118,6 +118,7 @@
               <th>#</th>
               <th>Bus</th>
               <th>Operator</th>
+              <th>Bus Route</th>
               <th>View Details</th>
             </tr>
           </thead>
@@ -130,11 +131,12 @@
                 [ {{ sopen[0][0].value[0].bus.bus_operator.operator_name }} ]
               </td>
               <td>
+                {{sopen[0][0].value[0].bus_source[0]?.name}}  >>  {{sopen[0][0].value[0].bus_destination[0]?.name}}
+              </td>
+              <td>
                 <button (click)="OpenModal(details);viewDetails(i);" class="btn btn-info"> <i class="fas fa-eye">
                   </i></button>
               </td>
-
-
             </tr>
           </tbody>
           <tbody *ngIf="seatOpen?.length == 0">
@@ -508,7 +510,7 @@
                           <th><small> #</small> </th>
                           <th><small> Date</small> </th>
                           <th> <small>Route </small> </th>
-                          <th> <small>Block Seats</small> </th>
+                          <th> <small>OPen Seats</small> </th>
                           <th> <small> Reason</small> </th>
                           <th> <small> Created On</small> </th>
                           <th><small> Created By</small></th>
