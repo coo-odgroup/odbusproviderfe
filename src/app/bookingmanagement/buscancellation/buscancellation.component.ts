@@ -167,7 +167,7 @@ export class BuscancellationComponent implements OnInit {
           this.all = res.data;
           this.spinner.hide();
           // console.log(this.busCancellations);
-          console.log( this.busCancellations);  
+          // console.log( this.busCancellations);  
         }
       );
     }
@@ -293,7 +293,7 @@ export class BuscancellationComponent implements OnInit {
 
 
   getBusScheduleEntryDatesFilter() {
-    if (this.busCancellationForm.value.month == null || this.busCancellationForm.value.year == null)
+    if (this.busCancellationForm.value.month == null || this.busCancellationForm.value.year == null ||this.busCancellationForm.value.busLists == null)
       return false;
     const arr = <FormArray>this.busCancellationForm.controls.buses;
     arr.controls = [];
@@ -401,6 +401,7 @@ export class BuscancellationComponent implements OnInit {
   }
   addBusCancellation() {
     this.spinner.show();
+    let counter = 0;
     let id: any = this.busCancellationRecord.id;
     const data = {
       bus_operator_id: this.busCancellationForm.value.bus_operator_id,
@@ -412,8 +413,23 @@ export class BuscancellationComponent implements OnInit {
       //BELOW ELEMENTS ARE ARRAY
       buses: this.busCancellationForm.value.buses,
     };
-    console.log(data);
 
+
+    data.buses[0].dateLists.forEach(function (value) {
+      if(value.datechecked == true)
+      {
+        counter++;
+      }
+
+  });
+  
+  if(counter == 0)
+  {
+    this.notificationService.addToast({ title: Constants.ErrorTitle, msg:'Please Select a Date', type: Constants.ErrorType });
+            this.spinner.hide();
+  }
+  else
+  {
     if (id == null) {
       this.buscanCellationService.create(data).subscribe(
         resp => {
@@ -448,6 +464,8 @@ export class BuscancellationComponent implements OnInit {
           }
         });
     }
+
+  }
   }
 
   editBusCancellation(event: Event, id: any) {

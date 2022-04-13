@@ -223,11 +223,16 @@
                                 {{couponData.created_by}}
                             </td>
                             <td>
+                                <!-- {{couponData.status}} -->
                                 <span *ngIf="couponData.from_date <= todayDate && todayDate <=couponData.to_date">
                                     <label *ngIf="couponData.status==1" class="badge badge-light-primary pointer text-dark"
                                     (click)="changeStatus($event, couponData.id);">Active</label>
+                                    </span>
+                                <span>
                                 <label *ngIf="couponData.status==0" class="badge badge-light-danger pointer text-dark"
                                     (click)="changeStatus($event, couponData.id);">Pending</label>
+                                </span>
+                                <span>
                                 <label *ngIf="couponData.status==3" class="badge  pointer text-white" style="background-color: rgb(76, 24, 124);"
                                     (click)="changeStatus($event, couponData.id);">Deactive</label>
                                 </span>
