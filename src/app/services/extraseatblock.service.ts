@@ -38,12 +38,12 @@ export class ExtraseatblockService {
     )
   }
 
-  update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/seatopen/' + id, JSON.stringify(post), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
+  // update(id, post): Observable<any> {
+  //   return this.httpClient.put<any>(this.apiURL + '/seatopen/' + id, JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
   delete(post){
     return this.httpClient.post<any>(this.apiURL + '/deleteExtraSeat', JSON.stringify(post), this.httpOptions)
     .pipe(

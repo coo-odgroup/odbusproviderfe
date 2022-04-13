@@ -636,10 +636,13 @@ console.log(data);
     this.seatOpenForm.controls.busRoute.setValue('');
     let operatorId = event.id;
     if (operatorId) {
+      this.spinner.show();
       this.busService.getByOperaor(operatorId).subscribe(
         res => {
           this.buses = res.data;
           this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+           this.spinner.hide();
+          
         }
       );
     }
@@ -692,23 +695,23 @@ console.log(data);
       };
       // console.log(data);
       // return;
-      let id = this.seatOpenRecord.id;
-      if (id != null) {
-        this.seatopenService.update(id, data).subscribe(
-          resp => {
-            if (resp.status == 1) {
-              this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-              this.modalReference.close();
-              this.refresh();
-            }
-            else {
-              this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-              this.spinner.hide();
-            }
-          }
-        );
-      }
-      else {
+      // let id = this.seatOpenRecord.id;
+      // if (id != null) {
+      //   this.seatopenService.update(id, data).subscribe(
+      //     resp => {
+      //       if (resp.status == 1) {
+      //         this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+      //         this.modalReference.close();
+      //         this.refresh();
+      //       }
+      //       else {
+      //         this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+      //         this.spinner.hide();
+      //       }
+      //     }
+      //   );
+      // }
+      // else {
         this.seatopenService.create(data).subscribe(
           resp => {
   
@@ -724,7 +727,7 @@ console.log(data);
           }
         );
   
-      }
+      //}
   
 
     }   
