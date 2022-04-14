@@ -367,7 +367,7 @@ export class SeatopenComponent implements OnInit {
                   let seatId = "";
                   for (let selectedSeat of this.selectedSeats) {
                     if (selectedSeat.seats_id == seatData.id) {
-                      if(selectedSeat.type== null){
+                      if(selectedSeat.type== null && selectedSeat.operation_date==null){
                         checkedval = "true";
                         seatId = selectedSeat.id;
                       }                 
@@ -453,7 +453,7 @@ export class SeatopenComponent implements OnInit {
                   let desiabled_seats = "";
                   for (let selectedSeat of this.selectedSeats) {
                     if (selectedSeat.seats_id == seatData.id) {
-                      if(selectedSeat.type== null){                  
+                      if(selectedSeat.type== null && selectedSeat.operation_date==null){                  
                         checkedval = "true";
                         seatId = selectedSeat.id;
                         // desiabled_seats = "true";

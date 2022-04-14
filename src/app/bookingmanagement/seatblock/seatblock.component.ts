@@ -379,7 +379,7 @@ export class SeatblockComponent implements OnInit {
               for (let selectedSeat of this.selectedSeats) {
                 if (selectedSeat.seats_id == seatData.id) {
                   if(selectedSeat.type== null){ 
-                    if(selectedSeat.duration == '0')    
+                    if(selectedSeat.duration == '0' && selectedSeat.operation_date==null)    
                     {
                       // console.log(seatData);
                       checkedval = "true";
@@ -473,7 +473,7 @@ export class SeatblockComponent implements OnInit {
               for (let selectedSeat of this.selectedSeats) {
                 if (selectedSeat.seats_id == seatData.id) {
                   if(selectedSeat.type== null){ 
-                    if(selectedSeat.duration == '0')    
+                    if(selectedSeat.duration == '0' && selectedSeat.operation_date==null)    
                     {
                   checkedval = "true";
                   seatId = selectedSeat.id;

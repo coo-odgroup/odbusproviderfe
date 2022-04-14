@@ -1247,7 +1247,7 @@ export class BusComponent implements OnInit {
     
                     for(let selectedSeat of this.selectedSeats)
                     {
-                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                       {
                         checkedval="1";
                         seatId=selectedSeat.id;
@@ -1264,7 +1264,7 @@ export class BusComponent implements OnInit {
                   if(checkedval=="1")
                   {
                     
-                    if(durationCheck==0 && type == null && operation_date ==null )
+                    if(durationCheck==0 && type == null && operation_date ==null  )
                     {
                       let columnData: FormGroup = this.fb.group({ 
                         seatText:[seatData.seatText],
@@ -1368,7 +1368,8 @@ export class BusComponent implements OnInit {
                   if(this.selectedSeats.length > 0){
                   for(let selectedSeat of this.selectedSeats)
                   {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
+                    
                     {
                       //console.log(seatData.seatText+today);
                       checkedval="1";
@@ -1820,7 +1821,7 @@ export class BusComponent implements OnInit {
     
                     for(let selectedSeat of this.selectedSeats)
                     {
-                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null&& selectedSeat.operation_date==null)
                       {
                         checkedval="1";
                         seatId=selectedSeat.id;
@@ -1941,7 +1942,7 @@ export class BusComponent implements OnInit {
                   if(this.selectedSeats.length > 0){
                   for(let selectedSeat of this.selectedSeats)
                   {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                     {
                       //console.log(seatData.seatText+today);
                       checkedval="1";
@@ -2348,7 +2349,7 @@ export class BusComponent implements OnInit {
       
                     for(let selectedSeat of this.selectedSeats)
                     {
-                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                      if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                       {
                         checkedval="1";
                         seatId=selectedSeat.id;
@@ -2469,7 +2470,7 @@ export class BusComponent implements OnInit {
                   if(this.selectedSeats.length > 0){
                   for(let selectedSeat of this.selectedSeats)
                   {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                     {
                       //console.log(seatData.seatText+today);
                       checkedval="1";
@@ -2897,7 +2898,7 @@ export class BusComponent implements OnInit {
                 if(this.selectedSeats.length>0){ 
                   for(let selectedSeat of this.selectedSeats)
                   {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                     {
                       checkedval="1";
                       seatId=selectedSeat.id;
@@ -2984,7 +2985,7 @@ export class BusComponent implements OnInit {
                 if(this.selectedSeats.length>0){
                   for(let selectedSeat of this.selectedSeats)
                   {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                     {
                       checkedval="1";
                       seatId=selectedSeat.id;
