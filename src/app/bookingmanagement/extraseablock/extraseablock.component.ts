@@ -343,7 +343,8 @@ export class ExtraseablockComponent implements OnInit {
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
-console.log(data);
+
+    this.spinner.show();
 
     this.busService.getSelectedextraSeat(data.bus_id).subscribe(
       seatData => {
@@ -351,7 +352,7 @@ console.log(data);
         //console.log(this.selectedSeats);
         this.seatlayoutService.seatsBus(data).subscribe(
       resp => {
-        console.log(resp);
+        //console.log(resp);
         let counter = 0;
         this.seatLayoutData = (<FormArray>this.seatOpenForm.controls['bus_seat_layout_data']) as FormArray;
         this.seatLayoutData.clear();
@@ -531,6 +532,9 @@ console.log(data);
             counter++;
           }
         }
+
+        this.spinner.hide();
+
 
       }
     );
