@@ -266,6 +266,10 @@
                                         {{complete.users.name}}
                                     </strong> <br>
 
+                                    <span *ngFor="let passanger of complete.booking_detail;">
+                                        <b>{{passanger.passenger_gender}}</b>,
+                                    </span><br>
+
                                     <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
                                         placement="bottom" ngbTooltip="Click to Copy Phone Number"
                                         (click)="copyMessage(complete.users.phone)">
