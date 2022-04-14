@@ -175,6 +175,7 @@ export class CancelticketComponent implements OnInit {
       res =>{
         if (res.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
+          this.modalReference.close();
           this.refresh();
         }
         else {
