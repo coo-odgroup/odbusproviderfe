@@ -495,6 +495,7 @@ export class BusComponent implements OnInit {
      this.ModalHeading = "BUS DETAILS"
     
       this.busRecord = this.buses[index];
+      console.log(this.busRecord);
     
    }
 
@@ -3131,8 +3132,9 @@ export class BusComponent implements OnInit {
                 if(this.selectedSeats.length>0){ 
                   for(let selectedSeat of this.selectedSeats)
                   {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                     {
+                      console.log(selectedSeat);
                       checkedval="1";
                       seatId=selectedSeat.id;
                       durationCheck=selectedSeat.duration;
@@ -3218,7 +3220,8 @@ export class BusComponent implements OnInit {
                 if(this.selectedSeats.length>0){
                   for(let selectedSeat of this.selectedSeats)
                   {
-                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null)
+                    if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
+                    
                     {
                       checkedval="1";
                       seatId=selectedSeat.id;

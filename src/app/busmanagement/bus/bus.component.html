@@ -2742,19 +2742,23 @@
                         <tr>
                           <td >
                               <span class="text-info" *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
-                                <span *ngIf="allSeats.seats!=null">
-                                  <span *ngIf="allSeats.seats.seat_class_id==1">
-                                    <b>{{allSeats.seats.seatText}}</b>, 
+                                <span *ngIf="allSeats.operation_date==null && allSeats.type==null  && allSeats.duration== '0'">
+                                  <span *ngIf="allSeats.seats!=null">
+                                    <span *ngIf="allSeats.seats.seat_class_id==1">
+                                      <b>{{allSeats.seats.seatText}}</b>, 
+                                    </span>
                                   </span>
                                 </span>                                
                               </span>
                           </td>
                           <td>
                             <span class="text-info text-uppercase"  *ngFor="let allSeats of busRecord.ticket_price[0].get_bus_seats">
+                              <span *ngIf="allSeats.operation_date==null && allSeats.type==null && allSeats.duration== 0">
                               <span *ngIf="allSeats.seats!=null">
                                 <span *ngIf="allSeats.seats.seat_class_id==2 || allSeats.seats.seat_class_id==3">
                                   <b>{{allSeats.seats.seatText}}</b>,  
                                 </span>
+                              </span>
                               </span>
                           </span>
                           </td>
