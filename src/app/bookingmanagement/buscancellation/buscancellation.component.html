@@ -252,11 +252,11 @@
               <div class="right-icon-control">
                 <form [formGroup]="busCancellationForm" class="editForm" novalidate>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                       <div class="form-group row">
-                        <label for="busCancel" class="col-sm-4 col-form-label">Operator<span
+                        <label for="busCancel" class="col-sm-3 col-form-label">Operator<span
                             class="text-danger">*</span></label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                           <ng-select [items]="operators" bindLabel="operatorData" bindValue="id"
                             placeholder="Select Operator" formControlName="bus_operator_id" #operator
                              (change)="getBusbyOperator($event)"
@@ -265,22 +265,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label for="busList" class="col-sm-3 col-form-label">Bus Name<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                          <ng-select [items]="buses" bindLabel="name" bindValue="id" placeholder="Select Bus"
-                            [multiple]="true" [clearable]="false" (change)="getBusScheduleEntryDatesFilter()"
-                            formControlName="busLists">
-                          </ng-select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <div class="form-group row">
                         <label for="busCancel" class="col-sm-4 col-form-label">Month<span
                             class="text-danger">*</span></label>
@@ -292,11 +277,27 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-8">
                       <div class="form-group row">
-                        <label for="busCancel" class="col-sm-3 col-form-label">Year<span
+                        <label for="busList" class="col-sm-3 col-form-label">Bus Name<span
                             class="text-danger">*</span></label>
                         <div class="col-sm-9">
+                          <ng-select [items]="buses" bindLabel="name" bindValue="id" placeholder="Select Bus"
+                            [multiple]="true" [clearable]="false" (change)="getBusScheduleEntryDatesFilter()"
+                            formControlName="busLists">
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label for="busCancel" class="col-sm-4 col-form-label">Year<span
+                            class="text-danger">*</span></label>
+                        <div class="col-sm-8">
                           <ng-select [items]="years" bindLabel="name" bindValue="name" placeholder="Select year"
                             [clearable]="false" required formControlName="year"
                             (change)="getBusScheduleEntryDatesFilter()">
@@ -306,8 +307,8 @@
                     </div>
                   </div>
                   <div class="form-group row" style="height: 200px;">
-                    <label for="reason" class="col-sm-4 col-form-label">Reason<span class="text-danger">*</span></label>
-                    <div class="col-sm-8">
+                    <label for="reason" class="col-sm-2 col-form-label">Reason<span class="text-danger">*</span></label>
+                    <div class="col-sm-6">
                       <ng-select [items]="reasons" bindLabel="reason" bindValue="reason" placeholder="Select reason"
                         [clearable]="false" required formControlName="reason">
                       </ng-select>

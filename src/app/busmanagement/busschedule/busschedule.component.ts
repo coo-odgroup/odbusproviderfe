@@ -185,12 +185,16 @@ export class BusscheduleComponent implements OnInit {
   }
 
   findOperator(event: any) {
+    this.spinner.show();
+
     let operatorId = event.id;
     if (operatorId) {
       this.busService.getByOperaor(operatorId).subscribe(
         res => {
           this.buses = res.data;
           this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+          this.spinner.hide();
+
         }
       );
     }
@@ -198,11 +202,13 @@ export class BusscheduleComponent implements OnInit {
   }
   getBusScheduleEntryDatesByBusId(event)
   { 
+    this.spinner.show();
     if(event.id!="")
     {
     this.busService.getBusScheduleEntryDates(event.id).subscribe(
       resp=>{
       this.eDates=resp.data;
+      this.spinner.hide();
       }); 
     }
   }

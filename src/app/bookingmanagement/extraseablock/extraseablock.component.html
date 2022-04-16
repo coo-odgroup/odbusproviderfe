@@ -114,6 +114,7 @@
               <th>#</th>
               <th>Bus</th>
               <th>Operator</th>
+               <th>Bus Route</th>
               <th>View Details</th>    
               
               <!-- <th>&nbsp;</th>         -->
@@ -127,6 +128,9 @@
               <td>
                   {{ sopen[0][0].value[0].bus.bus_operator.organisation_name }} <br>
                   [ {{ sopen[0][0].value[0].bus.bus_operator.operator_name }} ]     
+              </td>
+              <td>
+                {{sopen[0][0].value[0].bus_source[0]?.name}}  >>  {{sopen[0][0].value[0].bus_destination[0]?.name}}
               </td>
               <td>
                 <button (click)="OpenModal(details);viewDetails(i);" class="btn btn-info"> <i class="fas fa-eye"> </i></button> 
@@ -251,7 +255,7 @@
                       novalidate
                     >
                     <div class="row">
-                      <div class="col-md-7">
+                      <div class="col-md-9">
                         <div class="row">
                           <div class="col-sm-12">
                             <div class="form-group row">
@@ -401,10 +405,10 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-2">
                         <div class="form-group row">
-                          <label for="date" class="col-sm-4 col-form-label"
-                            >Date<span class="text-danger">*</span></label>
+                          <!-- <label for="date" class="col-sm-4 col-form-label"
+                            >Date<span class="text-danger">*</span></label> -->
                           <div class="col-sm-8">
                             
                             <ngb-datepicker #dp (datesSelectedChange)="change($event)" [displayMonths]="1"

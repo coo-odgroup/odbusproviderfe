@@ -227,13 +227,13 @@
                     <form [formGroup]="seatOpenForm" class="editForm" novalidate>
 
                       <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                           <div class="row">
                             <div class="col-12">
                               <div class="form-group row">
-                                <label for="bus" class="col-sm-4 col-form-label">Operator<span
+                                <label for="bus" class="col-sm-2 col-form-label">Operator<span
                                     class="text-danger">*</span></label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-10">
                                   <ng-select [items]="busoperators" required bindLabel="operatorData" bindValue="id"
                                     placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false"
                                     (change)="findOperator($event)">
@@ -251,9 +251,9 @@
                             </div>
                             <div class="col-12">
                               <div class="form-group row">
-                                <label for="busname" class="col-sm-4 col-form-label">Bus Name/Number<span
+                                <label for="busname" class="col-sm-2 col-form-label">Bus Name<span
                                     class="text-danger">*</span></label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-10">
                                   <ng-select [items]="buses" required bindLabel="testing" bindValue="id"
                                     placeholder="Select Bus" formControlName="bus_id" [clearable]="false"
                                     (change)="getSchedule();checkroute();checkEvent($event);">
@@ -272,9 +272,9 @@
                             </div>
                             <div class="col-12">
                               <div class="form-group row">
-                                <label for="busname" class="col-sm-4 col-form-label">Bus Route<span
+                                <label for="busname" class="col-sm-2 col-form-label">Route<span
                                     class="text-danger">*</span></label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-10">
                                   <ng-select [items]="route" required bindLabel="routes" bindValue="id"
                                     placeholder="Select Bus" formControlName="busRoute" [clearable]="false"
                                     [multiple]="true">
@@ -299,8 +299,8 @@
                             </div>
                             <div class="col-12">
                               <div class="form-group row">
-                                <label for="reason" class="col-sm-4 col-form-label">Reason</label>
-                                <div class="col-sm-8">
+                                <label for="reason" class="col-sm-2 col-form-label">Reason</label>
+                                <div class="col-sm-10">
                                   <select class="form-control" formControlName="reason" required>
                                     <option>Select</option>
                                     <option>Request From Owner</option>
@@ -327,11 +327,11 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-">
                           <div class="col-12">
                             <div class="form-group row">
-                              <label for="date" class="col-sm-4 col-form-label">Date<span
-                                  class="text-danger">*</span></label>
+                              <!-- <label for="date" class="col-sm-4 col-form-label">Date<span
+                                  class="text-danger">*</span></label> -->
                               <div class="col-sm-8">
                                 <div class="col-sm-8">
 

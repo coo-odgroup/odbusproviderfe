@@ -280,6 +280,7 @@ export class BuscancellationComponent implements OnInit {
     this.busCancellationRecord = this.busCancellations[id];
   }
   getBusbyOperator() {
+    this.spinner.show();
 
     // this.busCancellationForm.controls.busLists.setValue('');
     //alert("getBusbyOperator: "+event.value);
@@ -287,6 +288,8 @@ export class BuscancellationComponent implements OnInit {
       this.busOperatorService.getBusbyOperator(this.busCancellationForm.get('bus_operator_id').value).subscribe(
         resp => {
           this.buses = resp.data;
+          this.spinner.hide();
+
         });
     }
   }

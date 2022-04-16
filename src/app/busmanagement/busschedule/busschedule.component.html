@@ -232,18 +232,18 @@
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
             aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="height: 500px;">
         <div class="row">
           <div class="col-sm-12">
             <div class="form-material">
               <div class="right-icon-control">
                 <form [formGroup]="busScheduleForm" class="editForm" novalidate>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                       <div class="form-group row">
-                        <label for="busSchedule" class="col-sm-4 col-form-label">Operator<span
+                        <label for="busSchedule" class="col-sm-3 col-form-label">Operator<span
                             class="text-danger">*</span></label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                           <ng-select [items]="operators" bindLabel="operatorData" bindValue="id"
                             placeholder="Select Operator" [clearable]="false" required formControlName="bus_operator_id"
                             #operator (change)="findOperator($event)">
@@ -254,7 +254,25 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label for="busSchedule" class="col-sm-4 col-form-label">Entry Date<span
+                            class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                          <input type="date" data-date="" data-date-format="DD MM YYYY" class="form-control"
+                            placeholder="Enter Entry Date" required formControlName="entry_date"
+                            [value]="busScheduleRecord.entry_date" />
+                          <span class="text-danger"
+                            *ngIf="busScheduleForm.controls['entry_date'].touched && busScheduleForm.controls['entry_date'].hasError('required')">
+                            Entry Date is required!
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div class="row">
+                    <div class="col-md-9">
                       <div class="form-group row">
                         <label for="busname" class="col-sm-3 col-form-label">Bus Name<span
                             class="text-danger">*</span></label>
@@ -270,24 +288,8 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label for="busSchedule" class="col-sm-4 col-form-label">Entry Date<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-8">
-                          <input type="date" data-date="" data-date-format="DD MM YYYY" class="form-control"
-                            placeholder="Enter Entry Date" required formControlName="entry_date"
-                            [value]="busScheduleRecord.entry_date" />
-                          <span class="text-danger"
-                            *ngIf="busScheduleForm.controls['entry_date'].touched && busScheduleForm.controls['entry_date'].hasError('required')">
-                            Entry Date is required!
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-3">
                       <div class="form-group row" style="height:150px;">
                         <label for="busSchedule" class="col-sm-3 col-form-label">Running Cycle<span
                             class="text-danger">*</span></label>

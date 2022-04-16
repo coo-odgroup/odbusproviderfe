@@ -174,8 +174,8 @@
                                     <span *ngIf="complete.app_type == 'ANDROID'">
                                         <strong class="text-danger">(A)&nbsp;</strong>
                                     </span>
-                                    <strong>{{complete.pnr}}</strong> (DOB - {{complete.created_at | date:
-                                    'dd-MM-yyyy'}} )
+                                    <strong>{{complete.pnr}}</strong><br> (DOB - {{complete.created_at | date:
+                                    'dd-MM-yyyy | H:mm:ss'}} )
 
                                     <br>
                                     <span *ngFor="let frlocation of complete.from_location">
@@ -201,10 +201,10 @@
                                     <ng-template #tipContent1>
                                         <table style="width: 350px;">
                                             <tr>
-                                                <td style="text-align: left;">
+                                                <td style="text-align: left;" colspan="2">
                                                     Start
                                                 </td>
-                                                <td style="text-align: left;">
+                                                <td style="text-align: left;" colspan="2">
                                                     End
                                                 </td>
                                             </tr>
@@ -216,8 +216,20 @@
                                                     </span>
                                                 </td>
                                                 <td style="text-align: left;">
+
+                                                    <span *ngFor="let frTime of complete.bus.busstoppage">
+                                                        {{frTime.dep_time  | date: 'H:mm'}}<br />
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: left;">
                                                     <span *ngFor="let tolocation of complete.destination">
                                                         {{tolocation[0].name}} <br />
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: left;">
+
+                                                    <span *ngFor="let toTime of complete.bus.busstoppage">
+                                                        {{toTime.arr_time  | date: 'H:mm'}}<br />
                                                     </span>
                                                 </td>
                                             </tr>
@@ -262,13 +274,16 @@
                                             </tr>
                                         </table>
                                     </ng-template>
-                                    <strong [ngbTooltip]="tipContent">
+                                    <strong [ngbTooltip]="tipContent" class="text-danger">
                                         {{complete.users.name}}
                                     </strong> <br>
 
+                                   
+                                    [<b>{{complete.booking_detail[0].passenger_name}}</b>] -
                                     <span *ngFor="let passanger of complete.booking_detail;">
                                         <b>{{passanger.passenger_gender}}</b>,
-                                    </span><br>
+                                    </span>
+                                    <br>
 
                                     <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
                                         placement="bottom" ngbTooltip="Click to Copy Phone Number"
@@ -403,70 +418,66 @@
             <table class="table table-striped ">
                 <thead>
                     <tr>
-                        <!-- <th>Sl.no</th> -->
                         <th>Pnr No</th>
-                        <th>App Type</th>
-                        <th>Bus Name</th>
-                        <th>Bus Number</th>
-                        <th>From- To</th>
-                        <th>Source- Destination</th>
                         <th>Seat No</th>
                         <th>Sleeper No</th>
+                        <th>Bus Number</th>
+                        <th>Bus Name</th>
+                        <th>From- To</th>
+                        <th>Source- Destination</th>
                         <th>Journey Date</th>
-                        <!-- <th>Booking Date</th> -->
-
                         <th>Passenger Details</th>
+                        <th>User Name</th>
+                        <th>User Phone</th>
+                        <th>User Email</th>
+                        <th>Total Fare</th>
+                        <th>Owner Fare</th>
                         <th>Seater Fare</th>
                         <th>Sleeper Fare</th>
-                        <th>Owner Fare</th>
                         <td>Additionl Festival Fare</td>
                         <td>Additional Owner Fare</td>
                         <td>Additional Special Fare</td>
-                        <th>Total Fare</th>
+                       
                         <th>Odbus GST</th>
                         <th>Owner GST</th>
                         <th>Odbus Received</th>
                         <th>Transaction Id</th>
                         <th>Order Id</th>
-                        <th>User Name</th>
-                        <th>User Phone</th>
-                        <th>User Email</th>
-                        <!-- <th>Boarding From</th>
-                        <th>Boarding Time</th>  -->
+
+                        <th>App Type</th>
+                        
+                        
+                       
+                        
+                        
+                        
+                       
+                        
+                        
                     </tr>
                 </thead>
 
-                <!-- <tr *ngIf="complete.odbus_gst_amount != 0  ">
-                    <td>ODBUS GST</td>
-                    <td><b>{{complete.odbus_gst_amount}}</b></td>
-                </tr>
-                <tr *ngIf="complete.owner_gst_amount != 0  ">
-                    <td>OWNER GST</td>
-                    <td>{{complete.owner_gst_amount}}</td>
-                </tr>
-
-                <tr *ngIf="complete.additional_festival_fare != 0  ">
-                    <td>Additionl Festival Fare</td>
-                    <td><b>{{complete.additional_festival_fare}}</b></td>
-                </tr>
-                <tr *ngIf="complete.additional_owner_fare != 0  ">
-                    <td>Additional Owner Fare</td>
-                    <td><b>{{complete.additional_owner_fare}}</b></td>
-                </tr>
-                <tr *ngIf="complete.additional_special_fare != 0  ">
-                    <td>Additional Special Fare</td>
-                    <td><b>{{complete.additional_special_fare}}</b></td>
-                </tr> -->
+              
 
 
                 <tbody *ngIf="completedata?.length != 0">
                     <tr *ngFor="let complete of completedata?.data.data; let i = index">
-                        <!-- <td>{{ i+1 }}</td> -->
                         <td>{{complete.pnr}}</td>
-                        <td>{{complete.app_type}}</td>
-                        <td>{{ complete.bus.name }}</td>
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
+
+                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} ,</span> 
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
+
+                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ,</span> 
+                            </span>
+                        </td>
                         <td>{{ complete.bus.bus_number }}</td>
 
+                        <td>{{ complete.bus.name }}</td>
                         <td>
                             {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
                         </td>
@@ -478,36 +489,36 @@
                                 {{dropping.name}}
                             </span>
                         </td>
-                        <td>
-                            <span *ngFor="let seat of complete.booking_detail;">
-
-                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} ,</span> 
-                            </span>
-                        </td>
-
-                        <td>
-                            <span *ngFor="let seat of complete.booking_detail;">
-
-                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ,</span> 
-                            </span>
-                        </td>
                         <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
-
                         <td>
                             <p *ngFor="let passanger of complete.booking_detail;">
                                 {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
                                 {{passanger.bus_seats.seats.seatText}}] ,
                             </p>
-                            <!-- age - {{passanger.passenger_age}}, -->
+                        </td>
+
+                        <td>
+                            {{complete.users.name}}
+                        </td>
+                        <td>
+                            {{complete.users.phone}}
+                        </td>
+                        <td>
+                            {{complete.users.email}}
+                        </td>
+
+                        <td>
+                            {{complete.total_fare}}
+                        </td>
+                       
+                        <td>
+                            {{complete.owner_fare}}
                         </td>
                         <td>
                             {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
                         </td>
                         <td>
                             {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
-                        </td>
-                        <td>
-                            {{complete.owner_fare}}
                         </td>
                         <td>
                             {{complete.additional_festival_fare}}
@@ -519,9 +530,6 @@
                             {{complete.additional_special_fare}}
                         </td>
                         
-                        <td>
-                            {{complete.total_fare}}
-                        </td>
                         <td>
                             {{complete.odbus_gst_amount}}
                         </td>
@@ -541,16 +549,14 @@
                                 {{complete.customer_payment.order_id}}
                             </span>
                         </td>
+
+
+                        <td>{{complete.app_type}}</td>
+                        
+                        
+                        
                         <!-- <td>{{complete.created_at | date: 'dd/MM/yyyy  HH:mm:ss'}}</td> -->
-                        <td>
-                            {{complete.users.name}}
-                        </td>
-                        <td>
-                            {{complete.users.phone}}
-                        </td>
-                        <td>
-                            {{complete.users.email}}
-                        </td>
+                      
                         <!-- <td> <span *ngFor="let frlocation of complete.from_location">
                             {{frlocation.name}}
                         </span> -
