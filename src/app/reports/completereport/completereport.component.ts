@@ -63,7 +63,7 @@ export class CompletereportComponent implements OnInit {
       payment_id : [null],
       date_type:['journey'],
       pnr:[null],
-      rows_number: Constants.RecordLimit,
+      rows_number:50,
       source_id:[null],
       destination_id:[null]
     })  
@@ -128,7 +128,7 @@ export class CompletereportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata= res.data;
-          console.log( this.completedata);
+          // console.log( this.completedata);
           this.spinner.hide();
         }
       );
@@ -165,7 +165,8 @@ export class CompletereportComponent implements OnInit {
       payment_id : [null],
       pnr:[null],
       date_type:['journey'],
-      rows_number: Constants.RecordLimit,
+      rows_number: 50,
+      // rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null]
 

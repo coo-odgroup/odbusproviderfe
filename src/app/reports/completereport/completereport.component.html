@@ -140,7 +140,7 @@
 
             <div class="table-responsive " id="print-section">
                 <div class=" tableFixHead">
-                    <table class="table table-striped  header-fixed">
+                    <table class="table table-striped  header-fixed" style="font-size: 11px !important;">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -160,7 +160,8 @@
 
                             </tr>
                         </thead>
-                        <tbody *ngIf="completedata?.length != 0" style="height: 100px !important; overflow: scroll; ">
+                        <!-- style="height: 100px !important; overflow: scroll; " -->
+                        <tbody *ngIf="completedata?.length != 0" >
                             <tr *ngFor="let complete of completedata?.data.data; let i = index">
                                 <td>{{ i+1 }}</td>
                                 <td>
@@ -286,13 +287,13 @@
                                     <br>
 
                                     <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
-                                        placement="bottom" ngbTooltip="Click to Copy Phone Number"
+                                        placement="bottom" ngbTooltip="Phone no {{complete.users.phone}}"
                                         (click)="copyMessage(complete.users.phone)">
                                         <i class="fas fa-mobile-alt"></i>
                                     </button>
 
                                     <button class="btn btn-sm btn-danger text-light mt-2 hide_print" placement="bottom"
-                                        ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
+                                        ngbTooltip=" Email -- {{complete.users.email}}" (click)="copyMessage(complete.users.email)">
                                         <i class="far fa-envelope"></i>
                                     </button>
 
@@ -364,7 +365,7 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <h5> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer'  }} </h5>
+                                    <p> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer'  }} </p>
     
                                 </td>
                             </tr>
@@ -423,7 +424,7 @@
                         <th>Sleeper No</th>
                         <th>Bus Number</th>
                         <th>Bus Name</th>
-                        <th>From- To</th>
+                        <!-- <th>From- To</th> -->
                         <th>Source- Destination</th>
                         <th>Journey Date</th>
                         <th>Passenger Details</th>
@@ -441,6 +442,7 @@
                         <th>Odbus GST</th>
                         <th>Owner GST</th>
                         <th>Odbus Received</th>
+                        <th>Amount Received</th>
                         <th>Transaction Id</th>
                         <th>Order Id</th>
 
@@ -466,21 +468,21 @@
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
 
-                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} ,</span> 
+                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
                             </span>
                         </td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
 
-                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ,</span> 
+                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span> 
                             </span>
                         </td>
                         <td>{{ complete.bus.bus_number }}</td>
 
-                        <td>{{ complete.bus.name }}</td>
-                        <td>
+                        <td>{{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ] </td>
+                        <!-- <td>
                             {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
-                        </td>
+                        </td> -->
                         <td>
                             <span *ngFor="let boarding of complete.from_location;">
                                 {{boarding.name}}
@@ -538,6 +540,9 @@
                         </td>
                         <td>
                             {{complete.odbus_charges}}
+                        </td>
+                        <td>
+                            {{complete.payable_amount - complete.agent_commission }}
                         </td>
                         <td>
                             <span *ngIf="complete.customer_payment">

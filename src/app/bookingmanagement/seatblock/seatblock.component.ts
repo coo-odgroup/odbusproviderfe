@@ -189,6 +189,7 @@ export class SeatblockComponent implements OnInit {
    
   search(pageurl="")
   {        
+    // console.log("hi");
     this.spinner.show();
     this.seatBlock = [];
     const data = { 
@@ -211,7 +212,7 @@ export class SeatblockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log(this.all);
+          console.log(mainArray);
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
           // console.log(mainArray);
           if(mainArray.length >0)
