@@ -55,6 +55,7 @@ export class BuscancellationComponent implements OnInit {
   public DatesRecord: any;
   dateformate: string;
   locations: any;
+
   //getter for form array buses
   get busesFormGroup() {
     return this.busCancellationForm.get('buses') as FormArray;
@@ -298,17 +299,20 @@ export class BuscancellationComponent implements OnInit {
   getBusScheduleEntryDatesFilter() {
     if (this.busCancellationForm.value.month == null || this.busCancellationForm.value.year == null ||this.busCancellationForm.value.busLists == null)
       return false;
+
+
     const arr = <FormArray>this.busCancellationForm.controls.buses;
     arr.controls = [];
     //console.log(this.busCancellationForm.value);
+
     this.spinner.show();
     this.busService.getBusScheduleEntryDatesFilter(this.busCancellationForm.value).subscribe(
       response => {
-        // console.log(response);
         this.busDatas = response.data.busDatas;
         let counter = 0;
+    // console.log(this.busDatas);
+        
         for (let bData of this.busDatas) {
-
           this.busesRecord = (<FormArray>this.busCancellationForm.controls['buses']) as FormArray;
           let busesGroup: FormGroup = this.fb.group({
             bus_id: [bData.bus_id],
@@ -321,49 +325,114 @@ export class BuscancellationComponent implements OnInit {
 
           let arraylen = this.DatesRecord.length;
           let data = this.busCancellationRecord.bus_cancelled_date;
-
-         
-
+          let canceldates = bData.cancelDates;
+          let caneldateArr=[] ; 
+          let count = 0;
+          for (let canceldt of bData.cancelDates) {
+            caneldateArr[count]= this.pipe.transform(canceldt.cancelled_date, 'y-MM-dd');
+            count++;
+         }
+          // console.log(caneldateArr);
+          
+          let existingDate=false;
           for (let eDate of bData.entryDates) {
-
-         
 
             let dateformate = this.pipe.transform(eDate.entry_date, 'y-MM-dd');
       
             let isPresent=false;
+            
             if(this.busCancellationRecord.bus_cancelled_date)
             {
-              isPresent = this.busCancellationRecord.bus_cancelled_date.some(function (el) {   
-                      
+              isPresent = this.busCancellationRecord.bus_cancelled_date.some(function (el) {    ////checking the date in the array                      
                 return  el.cancelled_date === dateformate;               
               });
            
-            }
-           
-            if (isPresent) {
-              let newDatesgroup: FormGroup = this.fb.group({
-                entryDates: [eDate.entry_date],
-                datechecked: [true],
-              })
-              this.DatesRecord.insert(arraylen, newDatesgroup);
-            }
-            else {
-              let newDatesgroup: FormGroup = this.fb.group({
-                entryDates: [eDate.entry_date],
-
-                datechecked: [null],
-              })
-              this.DatesRecord.insert(arraylen, newDatesgroup);            
+            }    
+              if(canceldates.length>0)
+            { 
+              existingDate = caneldateArr.some(function (el) { 
+              return  el === dateformate;
+                            
+              });
 
             }
+
+            if(this.ModalBtn=="Save")
+            {
+              if (existingDate) {
+                let newDatesgroup: FormGroup = this.fb.group({
+                  entryDates: [eDate.entry_date],
+                  datechecked: [{ value: false, disabled: true }],
+                })
+                this.DatesRecord.insert(arraylen, newDatesgroup);
+              }       
+              
+              else {
+                let newDatesgroup: FormGroup = this.fb.group({
+                  entryDates: [eDate.entry_date],
+  
+                  datechecked: [null],
+                })
+                this.DatesRecord.insert(arraylen, newDatesgroup);            
+              }
+            }
+            if(this.ModalBtn=="Update")
+            {
+                    
+              if (isPresent) {
+                let newDatesgroup: FormGroup = this.fb.group({
+                  entryDates: [eDate.entry_date],
+                  datechecked: [true],
+                })
+                this.DatesRecord.insert(arraylen, newDatesgroup);
+              }
+              else {
+                let newDatesgroup: FormGroup = this.fb.group({
+                  entryDates: [eDate.entry_date],
+  
+                  datechecked: [null],
+                })
+                this.DatesRecord.insert(arraylen, newDatesgroup);            
+  
+              }
+            }
+
+            // if (existingDate) {
+            //   let newDatesgroup: FormGroup = this.fb.group({
+            //     entryDates: [eDate.entry_date],
+            //     datechecked: [{ value: false, disabled: true }],
+            //   })
+            //   this.DatesRecord.insert(arraylen, newDatesgroup);
+            // }       
+            // if (isPresent) {
+            //   let newDatesgroup: FormGroup = this.fb.group({
+            //     entryDates: [eDate.entry_date],
+            //     datechecked: [true],
+            //   })
+            //   this.DatesRecord.insert(arraylen, newDatesgroup);
+            // }
+            // else {
+            //   let newDatesgroup: FormGroup = this.fb.group({
+            //     entryDates: [eDate.entry_date],
+
+            //     datechecked: [null],
+            //   })
+            //   this.DatesRecord.insert(arraylen, newDatesgroup);            
+
+            // }
+
+            
+            
           }
+    
+         
           counter++;
         }
         response = [];
 
         this.spinner.hide();
 
-        
+        // console.log(this.DatesRecord);
       }
     );
   }

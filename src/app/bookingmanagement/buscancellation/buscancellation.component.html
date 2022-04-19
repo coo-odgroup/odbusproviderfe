@@ -329,13 +329,25 @@
                         </div>
                       
                       <div class="row col-md-12" formArrayName="dateLists">
-                        
+                        <!-- {{busesitem['controls'].dateLists}} -->
                         <label *ngFor="let busesFormGroup of busesitem['controls'].dateLists['controls']; let i=index"
                           class="col-2" [formGroupName]="i">
 
-                     
+                           <!-- <span *ngIf=" !busesFormGroup.controls.datechecked">
+                          <input type="checkbox" formControlName="datechecked"  class="text-danger"/>
+                          {{busesFormGroup.controls.entryDates.value}}
+                        </span> 
+                        <span *ngIf=" busesFormGroup.controls.datechecked.value == null">
                           <input type="checkbox" formControlName="datechecked" />
                           {{busesFormGroup.controls.entryDates.value}}
+                        </span>  -->
+                        
+
+                        <input type="checkbox" formControlName="datechecked" />
+                        {{busesFormGroup.controls.entryDates.value}}
+
+                     
+                        
                         </label>
                       </div>
                       </div>
