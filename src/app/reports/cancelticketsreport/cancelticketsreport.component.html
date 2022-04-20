@@ -389,29 +389,35 @@
             <table class="table table-striped ">
                 <thead>
                     <tr>
-                        <!-- <th>Sl.no</th> -->
                         <th>Pnr No</th>
-                        <th>App Type</th>
-                        <th>Bus Name</th>
-                        <th>Bus Number</th>
-                        <th>From- To</th>
-                        <th>Source- Destination</th>
                         <th>Seat No</th>
+                        <th>Sleeper No</th>
+                        <th>Bus Number</th>
+                        <th>Bus Name</th>
+                        <!-- <th>From- To</th> -->
+                        <th>Source- Destination</th>
                         <th>Journey Date</th>
-                        <th>Cancel Date</th>
                         <th>Passenger Details</th>
-                        <th>Seater Fare</th>
-                        <th>Sleeper Fare</th>
-                        <th>Owner Fare</th>
-                        <th>Total Fare</th>
-                        <th>Odbus GST</th>
-                        <th>Owner GST</th>
-                        <th>Odbus Received</th>
-                        <th>Transaction Id</th>
-                        <th>Order Id</th>
                         <th>User Name</th>
                         <th>User Phone</th>
                         <th>User Email</th>
+                        <th>Total Fare</th>
+                        <th>Owner Fare</th>
+                        <th>Seater Fare</th>
+                        <th>Sleeper Fare</th>
+                        <td>Additionl Festival Fare</td>
+                        <td>Additional Owner Fare</td>
+                        <td>Additional Special Fare</td>
+                       
+                        <th>Odbus GST</th>
+                        <th>Owner GST</th>
+                        <th>Odbus Received</th>
+                        <th>Amount Refund</th>
+                        <th>Profit</th>
+                        <th>Transaction Id</th>
+                        <th>Order Id</th>
+
+                        <th>App Type</th>
                        
 
                     </tr>
@@ -419,64 +425,41 @@
 
                 <tbody *ngIf="cancelticketdata?.length != 0">
                     <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
-                        <!-- <td>{{ i+1 }}</td> -->
                         <td>{{complete.pnr}}</td>
-                        <td>{{complete.app_type}}</td>
-                        <td>{{ complete.bus.name }}</td>
-                        <td>{{ complete.bus.bus_number }}</td>
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
 
-                        <td>
-                            {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
-                        </td>
-                        <td>
-                            <span>
-                                {{complete.from_location[0].name}}
-                            </span> -
-                            <span>
-                                {{complete.to_location[0].name}}
+                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
                             </span>
                         </td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
 
-                                {{seat.bus_seats.seats.seatText}} ,
+                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span> 
+                            </span>
+                        </td>
+                        <td>{{ complete.bus.bus_number }}</td>
+
+                        <td>{{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ] </td>
+                        <!-- <td>
+                            {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
+                        </td> -->
+                        <td>
+                            <span *ngFor="let boarding of complete.from_location;">
+                                {{boarding.name}}
+                            </span> -
+                            <span *ngFor="let dropping of complete.to_location;">
+                                {{dropping.name}}
                             </span>
                         </td>
                         <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
-                        <td>
-                            {{ complete.updated_at | date: 'dd/MM/yyyy' }}
-                        </td>
                         <td>
                             <p *ngFor="let passanger of complete.booking_detail;">
                                 {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
                                 {{passanger.bus_seats.seats.seatText}}] ,
                             </p>
-                            <!-- age - {{passanger.passenger_age}}, -->
                         </td>
-                        <td>
-                            {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
-                        </td>
-                        <td>
-                            {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
-                        </td>
-                        <td>
-                            {{complete.owner_fare}}
-                        </td>
-                        <td>
-                            {{complete.total_fare}}
-                        </td>
-                        <td>
-                            {{complete.odbus_gst_amount}}
-                        </td>
-                        <td>
-                            {{complete.owner_gst_amount}}
-                        </td>
-                        <td>
-                            {{complete.odbus_charges}}
-                        </td>
-                        <td>{{ (complete.customer_payment) ? complete.customer_payment.razorpay_id  : '' }} </td>
-                        <td>{{ (complete.customer_payment) ? complete.customer_payment.order_id : '' }}</td>
-                        <!-- <td>{{complete.created_at | date: 'dd/MM/yyyy  HH:mm:ss'}}</td> -->
+
                         <td>
                             {{complete.users.name}}
                         </td>
@@ -486,6 +469,60 @@
                         <td>
                             {{complete.users.email}}
                         </td>
+
+                        <td>
+                            {{complete.total_fare}}
+                        </td>
+                       
+                        <td>
+                            {{complete.owner_fare}}
+                        </td>
+                        <td>
+                            {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
+                        </td>
+                        <td>
+                            {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
+                        </td>
+                        <td>
+                            {{complete.additional_festival_fare}}
+                        </td>
+                        <td>
+                            {{complete.additional_owner_fare}}
+                        </td>
+                        <td>
+                            {{complete.additional_special_fare}}
+                        </td>
+                        
+                        <td>
+                            {{complete.odbus_gst_amount}}
+                        </td>
+                        <td>
+                            {{complete.owner_gst_amount}}
+                        </td>
+                        <td>
+                            {{complete.odbus_charges}}
+                        </td>
+                        <td>
+                            <!-- {{complete.payable_amount - complete.agent_commission }} -->
+                            {{ complete.refund_amount }}
+                        </td>
+                        <td>
+                            {{(complete.payable_amount + complete.agent_commission)-complete.refund_amount }}
+                            <!-- {{ complete.refund_amount }} -->
+                        </td>
+                        <td>
+                            <span *ngIf="complete.customer_payment">
+                                {{complete.customer_payment.razorpay_id}} 
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.customer_payment">
+                                {{complete.customer_payment.order_id}}
+                            </span>
+                        </td>
+
+
+                        <td>{{complete.app_type}}</td>
                        
                     </tr>
                 </tbody>
