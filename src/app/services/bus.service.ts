@@ -211,7 +211,8 @@ export class BusService {
     'DLX Luxury, Non-AC Sleeper+Seater',
     'Non-AC Sleeper+Seater, Executive Airbus',
     'Non-A/C Seater+Semi Sleeper',
-    'Non-A/C Seater+Sleeper'
+    'Non-A/C Seater+Sleeper',
+    'Bharat Benz AC Semi Sleeper'
 
 ]; 
 
