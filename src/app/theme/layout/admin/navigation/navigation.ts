@@ -929,6 +929,13 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-wind',
             url: 'ticketinformation/adjustticket'
+          },
+          {
+            id: 'smsemailticket',
+            title: 'Sms Email Ticket',
+            type: 'item',
+            icon:'feather icon-wind',
+            url: 'ticketinformation/smsemailticket'
           }
         ]
       },

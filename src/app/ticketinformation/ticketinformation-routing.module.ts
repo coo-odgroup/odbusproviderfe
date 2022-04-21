@@ -13,6 +13,10 @@ const routes: Routes = [
         path: 'adjustticket',
         loadChildren: () => import('./adjustticket/adjustticket.module').then(module => module.AdjustticketModule)
       },  
+      {
+        path: 'smsemailticket',
+        loadChildren: () => import('./sms-email-ticket/sms-email-ticket.module').then(module => module.smsEmailTicketModule)
+      },  
     ]
   }
 ];

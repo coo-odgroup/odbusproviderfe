@@ -19,7 +19,7 @@ export class AdmincancelticketService {
   constructor(private httpClient: HttpClient) { }
 
   getPnrDetails(post){
-    return this.httpClient.post<any>(this.apiURL + '/getpnrdetails', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/getPnrDetailsForSms', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

@@ -1,0 +1,287 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-sm-12">
+        <app-card [hidHeader]="false" cardTitle="Send Sms Email Ticket Form" cardClass="card-datatable"
+            [options]="false" cardClass=" table-border-style user-profile-list ">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-material">
+                        <div class="right-icon-control">
+                            <form [formGroup]="sendSmsEmailTicketForm" class="editForm" novalidate>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <div class="input-group col-10 offset-1">
+                                                <input type="text" class="form-control sml_input"
+                                                    placeholder="Enter Pnr No" required
+                                                    formControlName="pnr_no">
+                                                <div class="input-group-append">
+                                                    <button type="button" [disabled]="!sendSmsEmailTicketForm.controls['pnr_no'].valid"
+                                                     class="btn btn-primary  sml_input"
+                                                        (click)="search_pnr()" title="search">
+                                                        <i class="fas fa-search"> </i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-10 offset-1">
+                                                <span class="text-danger"
+                                                    *ngIf="sendSmsEmailTicketForm.controls['pnr_no'].touched && sendSmsEmailTicketForm.controls['pnr_no'].hasError('required')">
+                                                    Pnr required! </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="pnrDetails.length > 0">
+                                    
+                                    <div class="col-md-6">
+                                      
+                                        <h3>ACTION </h3>
+                                        <hr>  
+                                        <div class="row" *ngIf="pnrDetails[0].status==1">
+                                            <div class="col-6">
+                                                <div class="from-group" >
+                                                    <label for="name" class="col-sm-12 col-form-label">
+                                                        <input type="radio" formControlName="smsToCustomer" value="1">  Sms To Customer
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                                    <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==2 && contact.status==1  && contact.booking_sms_send == 1">
+                                                        <input type="radio" formControlName="smsToConductor" value="1">  Sms To Conductor
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                                    <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==1 && contact.status==1  && contact.booking_sms_send == 1">
+                                                        <input type="radio" formControlName="smsToManager" value="1">  Sms To Manager
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                                    <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==0 && contact.status==1   && contact.booking_sms_send == 1">
+                                                        <input type="radio" formControlName="smsToOwner" value="1">  Sms To Owner
+                                                    </label>                                         
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="from-group">
+                                                    <label for="name" class="col-sm-12 col-form-label">
+                                                        <input type="radio" formControlName="emailToCustomer" value="1">  Email To Customer
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group">
+                                                    <label for="name" class="col-sm-12 col-form-label">
+                                                        <input type="radio" formControlName="emailToBooking" value="1">  Email To booking@odbus.in
+                                                    </label>                                         
+                                                </div>
+                                            </div>
+                                        </div>  
+                                     
+                                        
+                                      
+                                        
+                                        <div class="row" *ngIf="pnrDetails[0].status==2">
+                                            <div class="col-6">
+                                                <div class="from-group" >
+                                                    <label for="name" class="col-sm-12 col-form-label">
+                                                        <input type="radio" formControlName="cancelsmsToCustomer" value="1"> Cancel Sms To Customer
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                                    <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==2 && contact.status==1  && contact.booking_sms_send == 1">
+                                                        <input type="radio" formControlName="cancelsmsToConductor" value="1"> Cancel Sms To Conductor
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                                    <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==1 && contact.status==1  && contact.booking_sms_send == 1">
+                                                        <input type="radio" formControlName="cancelsmsToManager" value="1"> Cancel Sms To Manager
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                                    <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==0 && contact.status==1   && contact.booking_sms_send == 1">
+                                                        <input type="radio" formControlName="cancelsmsToOwner" value="1"> Cancel Sms To Owner
+                                                    </label>                                         
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="from-group">
+                                                    <label for="name" class="col-sm-12 col-form-label">
+                                                        <input type="radio" formControlName="cancelemailToCustomer" value="1"> Cancel Email To Customer
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group">
+                                                    <label for="name" class="col-sm-12 col-form-label">
+                                                        <input type="radio" formControlName="cancelemailToSupport" value="1"> Cancel Email To support@odbus.in
+                                                    </label>                                         
+                                                </div>
+                                                <div class="from-group">
+                                                    <label for="name" class="col-sm-12 col-form-label">
+                                                        <button class="btn btn-info" (click)="ResetAttributes();OpenModal(content)">Preview Cancel Email</button>
+                                                        <!-- <input type="button" formControlName="emailToCustomer"> Preview Cancel Email -->
+                                                    </label>                                         
+                                                </div>
+                                            </div>
+
+                                        </div> 
+                                       
+                                        <div class="col-8 offset-2 mt-3">
+                                            <button type="button" [disabled]="!sendSmsEmailTicketForm.valid"
+                                            (click)="sendTicket()" class="btn btn-danger"
+                                            ngbAutofocus>{{ModalBtn}}</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3 class="text-center">Booking Details</h3>
+                                        <table class="table">
+                                            <tr>
+                                                <td>
+                                                    <table class="table-secondary">
+                                                        <tr>
+                                                            <th colspan="4">
+                                                                <strong>Passanger Details</strong>
+                                                            </th>                                                          
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Gender</th>
+                                                            <th>Seat no</th>
+                                                            <th>Age</th>
+                                                        </tr>
+                                                        <tr
+                                                            *ngFor="let passanger of pnrDetails[0].booking_detail">
+                                                            <td>{{passanger.passenger_name}}</td>
+                                                            <td>{{passanger.passenger_gender}}</td>
+                                                            <td>{{passanger.bus_seats.seats.seatText}}</td>
+                                                            <td>{{passanger.passenger_age}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total Fare </td>
+                                                            <td colspan="3" class="text-center text-danger">
+                                                                <i class="fas fa-rupee-sign"></i>
+                                                                <b>{{pnrDetails[0].total_fare}}</b>
+                                                            </td>
+
+                                                        </tr>
+
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td><small>From- To</small></td>
+                                                            <td><strong>{{pnrDetails[0].from_location[0].name}}
+                                                                    >>
+                                                                    {{pnrDetails[0].to_location[0].name}}</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>D.O.B</small></td>
+                                                            <td><strong
+                                                                    class="text-danger">{{pnrDetails[0].created_at
+                                                                    | date: 'dd-MM-yyyy'}}</strong></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>D.O.J</small></td>
+                                                            <td><strong
+                                                                    class="text-danger">{{pnrDetails[0].journey_dt
+                                                                    | date: 'dd-MM-yyyy'}}</strong></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>Boarding At :</small></td>
+                                                            <td><strong>{{pnrDetails[0].boarding_point}},
+                                                                    {{pnrDetails[0].boarding_time }}
+                                                                </strong> </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>Bus :</small></td>
+                                                            <td><strong>{{ pnrDetails[0].bus.name
+                                                                    }}</strong><br>
+                                                                <strong>{{ pnrDetails[0].bus.bus_number
+                                                                    }}</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="pnrDetails.length == 0">
+                                    <h4 class="text-center">{{msg}}</h4>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-card-footer">
+                <ng-template #content let-modal>
+                    <div class="modal-header">
+                        <h5 class="ng-tns-c116-5"> Cancellation Details</h5>
+                        <button type="button" class="close" aria-label="Close"
+                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-material">
+                                    <div class="right-icon-control">
+                                      <table class="table table-border">
+                                          <tr class="bg-warning">
+                                             <th colspan="2">Call Us: +91 9583918888</th>
+                                             <th colspan="2" class="text-right">Email: support@odbus.in</th>
+                                          </tr>
+                                          <tr>
+                                              <th>Preview Will be Here</th>
+                                            <!-- <table class="table-bordered">
+                                              <tr>
+                                                  <td> PNR no :</td>
+                                                  <td>{{pnrDetails[0].pnr}}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>Email :</td>
+                                                  <td> {{pnrDetails[0].users.email}}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>Contact no :</td>
+                                                  <td>{{pnrDetails[0].users.phone}}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+                                              <tr>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+                                              <tr>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+  
+                                            </table> -->
+                                          </tr>                                          
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                            (click)="modal.dismiss('Cross click')">Close</button>
+                    </div>
+                </ng-template>
+            </div>
+        </app-card>
+    </div>
+</div>

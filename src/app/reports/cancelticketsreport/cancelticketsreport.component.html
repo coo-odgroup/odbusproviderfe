@@ -503,12 +503,12 @@
                             {{complete.odbus_charges}}
                         </td>
                         <td>
-                            <!-- {{complete.payable_amount - complete.agent_commission }} -->
+                            
                             {{ complete.refund_amount }}
                         </td>
                         <td>
                             {{(complete.payable_amount + complete.agent_commission)-complete.refund_amount }}
-                            <!-- {{ complete.refund_amount }} -->
+                            
                         </td>
                         <td>
                             <span *ngIf="complete.customer_payment">
