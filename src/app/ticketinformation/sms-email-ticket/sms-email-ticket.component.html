@@ -47,22 +47,22 @@
                                             <div class="col-6">
                                                 <div class="from-group" >
                                                     <label for="name" class="col-sm-12 col-form-label">
-                                                        <input type="radio" formControlName="smsToCustomer" value="1">  Sms To Customer
+                                                        <input type="radio" formControlName="action" value="smsToCustomer">  Sms To Customer
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
                                                     <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==2 && contact.status==1  && contact.booking_sms_send == 1">
-                                                        <input type="radio" formControlName="smsToConductor" value="1">  Sms To Conductor
+                                                        <input type="radio" formControlName="action" value="smsToConductor">  Sms To Conductor
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
                                                     <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==1 && contact.status==1  && contact.booking_sms_send == 1">
-                                                        <input type="radio" formControlName="smsToManager" value="1">  Sms To Manager
+                                                        <input type="radio" formControlName="action" value="smsToManager">  Sms To Manager
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
                                                     <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==0 && contact.status==1   && contact.booking_sms_send == 1">
-                                                        <input type="radio" formControlName="smsToOwner" value="1">  Sms To Owner
+                                                        <input type="radio" formControlName="action" value="smsToOwner">  Sms To Owner
                                                     </label>                                         
                                                 </div>
                                             </div>
@@ -70,12 +70,12 @@
                                             <div class="col-6">
                                                 <div class="from-group">
                                                     <label for="name" class="col-sm-12 col-form-label">
-                                                        <input type="radio" formControlName="emailToCustomer" value="1">  Email To Customer
+                                                        <input type="radio" formControlName="action" value="emailToCustomer">  Email To Customer
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group">
                                                     <label for="name" class="col-sm-12 col-form-label">
-                                                        <input type="radio" formControlName="emailToBooking" value="1">  Email To booking@odbus.in
+                                                        <input type="radio" formControlName="action" value="emailToBooking">  Email To booking@odbus.in
                                                     </label>                                         
                                                 </div>
                                             </div>
@@ -88,22 +88,22 @@
                                             <div class="col-6">
                                                 <div class="from-group" >
                                                     <label for="name" class="col-sm-12 col-form-label">
-                                                        <input type="radio" formControlName="cancelsmsToCustomer" value="1"> Cancel Sms To Customer
+                                                        <input type="radio" formControlName="action" value="cancelsmsToCustomer"> Cancel Sms To Customer
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
                                                     <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==2 && contact.status==1  && contact.booking_sms_send == 1">
-                                                        <input type="radio" formControlName="cancelsmsToConductor" value="1"> Cancel Sms To Conductor
+                                                        <input type="radio" formControlName="action" value="cancelsmsToConductor"> Cancel Sms To Conductor
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
                                                     <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==1 && contact.status==1  && contact.booking_sms_send == 1">
-                                                        <input type="radio" formControlName="cancelsmsToManager" value="1"> Cancel Sms To Manager
+                                                        <input type="radio" formControlName="action" value="cancelsmsToManager"> Cancel Sms To Manager
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
                                                     <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==0 && contact.status==1   && contact.booking_sms_send == 1">
-                                                        <input type="radio" formControlName="cancelsmsToOwner" value="1"> Cancel Sms To Owner
+                                                        <input type="radio" formControlName="action" value="cancelsmsToOwner"> Cancel Sms To Owner
                                                     </label>                                         
                                                 </div>
                                             </div>
@@ -111,12 +111,12 @@
                                             <div class="col-6">
                                                 <div class="from-group">
                                                     <label for="name" class="col-sm-12 col-form-label">
-                                                        <input type="radio" formControlName="cancelemailToCustomer" value="1"> Cancel Email To Customer
+                                                        <input type="radio" formControlName="action" value="cancelemailToCustomer"> Cancel Email To Customer
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group">
                                                     <label for="name" class="col-sm-12 col-form-label">
-                                                        <input type="radio" formControlName="cancelemailToSupport" value="1"> Cancel Email To support@odbus.in
+                                                        <input type="radio" formControlName="action" value="cancelemailToSupport"> Cancel Email To support@odbus.in
                                                     </label>                                         
                                                 </div>
                                                 <div class="from-group">

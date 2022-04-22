@@ -58,18 +58,7 @@ export class SmsEmailTicketComponent implements OnInit {
     // this.spinner.show();
     this.sendSmsEmailTicketForm = this.fb.group({
         pnr_no:[null],
-        smsToCustomer:[0],
-        smsToConductor:[0], 
-        smsToManager:[0],
-        smsToOwner:[0],
-        emailToCustomer:[0],
-        emailToBooking:[0], 
-        cancelsmsToCustomer:[0],
-        cancelsmsToConductor:[0],
-        cancelsmsToManager:[0],
-        cancelsmsToOwner:[0],
-        cancelemailToCustomer:[0],
-        cancelemailToSupport:[0],
+        action:[null]
     });
     this.formConfirm=this.fb.group({
       id:[null]
@@ -118,10 +107,7 @@ export class SmsEmailTicketComponent implements OnInit {
 
   sendTicket()
   {
-    if(this.sendSmsEmailTicketForm.value.smsToCustomer==1 || this.sendSmsEmailTicketForm.value.smsToConductor==1 || this.sendSmsEmailTicketForm.value.smsToManager==1
-      || this.sendSmsEmailTicketForm.value.smsToOwner==1 || this.sendSmsEmailTicketForm.value.emailToCustomer==1 || this.sendSmsEmailTicketForm.value.emailToBooking==1
-      || this.sendSmsEmailTicketForm.value.cancelsmsToCustomer==1 || this.sendSmsEmailTicketForm.value.cancelsmsToConductor==1  || this.sendSmsEmailTicketForm.value.cancelsmsToManager==1 
-      || this.sendSmsEmailTicketForm.value.cancelsmsToOwner==1 || this.sendSmsEmailTicketForm.value.cancelemailToCustomer==1 || this.sendSmsEmailTicketForm.value.cancelemailToSupport==1)
+    if(this.sendSmsEmailTicketForm.value.action!=null )
       {
         console.log(this.sendSmsEmailTicketForm.value);
       }else{
@@ -140,18 +126,7 @@ export class SmsEmailTicketComponent implements OnInit {
     // this.pnrDetails=[];
     this.sendSmsEmailTicketForm = this.fb.group({
         // pnr_no:[null],
-        smsToCustomer:[0],
-        smsToConductor:[0], 
-        smsToManager:[0],
-        smsToOwner:[0],
-        emailToCustomer:[0],
-        emailToBooking:[0], 
-        cancelsmsToCustomer:[0],
-        cancelsmsToConductor:[0],
-        cancelsmsToManager:[0],
-        cancelsmsToOwner:[0],
-        cancelemailToCustomer:[0],
-        cancelemailToSupport:[0],
+        action:[null]
   });
     this.ModalHeading = "Send Sms nad Email ";
     this.ModalBtn = "Send"; 
