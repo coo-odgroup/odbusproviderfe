@@ -132,7 +132,7 @@ export class CouponComponent implements OnInit {
       destination_id: [null],  
       coupon_type: [null],  
       status: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: 100,
     });
 
     this.formConfirm=this.fb.group({
@@ -410,7 +410,7 @@ export class CouponComponent implements OnInit {
       destination_id: [null],  
       coupon_type: [null],  
       status: [null],  
-      rows_number: Constants.RecordLimit,
+      rows_number: 100,
     });
 
      this.search();

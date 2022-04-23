@@ -15,7 +15,7 @@
           <div class="col-12">
             <form [formGroup]="searchForm">
               <div class="row">          
-                <div class="col-4">
+                <div class="col-7">
                   <div class="row">  
                       <div class="form-group col-6">
                           <div class="form-group row">
@@ -33,15 +33,32 @@
               </div>
                
 
-                <div class="col-2">
+                <div class="col-4">
                   <ng-select [items]="allagent" bindLabel="agentData"  bindValue="id" placeholder="Select Agent"  
                     formControlName="user_id" [clearable]="false" >
                   </ng-select>
                 </div>
 
-                <div class="col-2">
-                  <div class="form-group row">
+                
   
+  
+  
+                <div class="col-1">
+                  <div class="dropdown float-right">
+                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                      <option value=10>10</option>
+                      <option value=25>25</option>
+                      <option value=50>50</option>
+                      <option value=100>100</option>
+                      <option value='all'>All</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-4">
+                  <div class="form-group row">  
                     <div class="col-sm-12">
                       <input type="text" class="form-control sml_input" placeholder="Search" required
                         formControlName="name" />
@@ -49,6 +66,19 @@
                   </div>
                 </div>
 
+                <div class="col-4">
+                  <div class="form-group row">  
+                    <div class="col-sm-12">
+                     <select class="form-control sml_input" formControlName="tranType" >
+                      <option value="all_transaction">All Transaction</option>
+                       <option  value="wallet_recharge">Wallet Recharge</option>
+                       <option value="commission_received">	Commission Received</option>
+                       <option value="pnr_booking">Pnr Booking</option>
+                       <option value="cancel_ticket">Cancel Ticket</option>
+                     </select>
+                    </div>
+                  </div>
+                </div>
                
   
   
@@ -67,20 +97,6 @@
                       <i class="fas fa-print"> </i> Print
                   </button> -->
                 
-                </div>
-  
-  
-  
-                <div class="col-1">
-                  <div class="dropdown float-right">
-                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
-                      <option value=10>10</option>
-                      <option value=25>25</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                      <option value='all'>All</option>
-                    </select>
-                  </div>
                 </div>
               </div>
             </form>

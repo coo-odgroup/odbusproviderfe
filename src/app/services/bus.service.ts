@@ -216,10 +216,17 @@ export class BusService {
 
 ]; 
 
-  GetBusTypeList(): Observable<any> 
-  {    
-      return of(this.List);   
+  // GetBusTypeList(): Observable<any> 
+  // {    
+  //     return of(this.List);   
+  // }
+
+  GetBusTypeList():Observable<any>{
+    return this.httpClient.get<any>(this.apiURL+'/busDisplayInfo/',this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    );
   }
+
 
   errorHandler(error) {
     let errorMessage = '';

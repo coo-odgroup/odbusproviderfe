@@ -69,7 +69,7 @@ export class AgentalltransactionComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.spinner.show();
+    this.spinner.show();
     this.form = this.fb.group({
       id: [null],
       otp: [null, Validators.compose([Validators.required])]
@@ -83,6 +83,7 @@ export class AgentalltransactionComponent implements OnInit {
       rangeFromDate:[null],
       rangeToDate:[null],
       user_id:[null],
+      tranType:['all_transaction'],
       rows_number: Constants.RecordLimit,
     });
 
@@ -116,7 +117,7 @@ export class AgentalltransactionComponent implements OnInit {
 
 
   search(pageurl = "") {
-    // this.spinner.show();
+    this.spinner.show();
     // console.log(this.searchForm.value);
   
     const data = {
@@ -125,6 +126,7 @@ export class AgentalltransactionComponent implements OnInit {
       rows_number: this.searchForm.value.rows_number,
       rangeFromDate:this.searchForm.value.rangeFromDate,
       rangeToDate :this.searchForm.value.rangeToDate,
+      tranType :this.searchForm.value.tranType,
       user_id:this.searchForm.value.user_id
     };
     // console.log(data);
@@ -170,6 +172,7 @@ export class AgentalltransactionComponent implements OnInit {
       rangeFromDate:[null],
       rangeToDate:[null],
       user_id:[null],
+      tranType:['all_transaction'],
       rows_number: Constants.RecordLimit,
     });
     this.search();

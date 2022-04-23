@@ -304,7 +304,7 @@ export class BusComponent implements OnInit {
 
     this.busService.GetBusTypeList().subscribe(
       res => {
-        this.GetBusTypeList=res;
+        this.GetBusTypeList=res.data;
       }
     );
 
