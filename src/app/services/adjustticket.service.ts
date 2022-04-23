@@ -9,7 +9,7 @@ import { Constants} from '../constant/constant';
 })
 export class AdjustticketService {
 
-  private consumerURL = "https://consumer.odbus.co.in/api/";
+  private consumerURL = Constants.CONSUMER_API_URL;
   private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({

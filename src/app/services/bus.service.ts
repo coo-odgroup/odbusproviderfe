@@ -222,7 +222,7 @@ export class BusService {
   // }
 
   GetBusTypeList():Observable<any>{
-    return this.httpClient.get<any>(this.apiURL+'/busDisplayInfo/',this.httpOptions).pipe(
+    return this.httpClient.get<any>(this.apiURL+'/busDisplayInfo',this.httpOptions).pipe(
       catchError(this.errorHandler)
     );
   }

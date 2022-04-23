@@ -114,7 +114,7 @@
                                     {{seat.bus_seats.seats.seatText}},
                                 </span>
                             </td>
-                            <td>{{ cancelTkt.cancel_by }}</td>                      
+                            <td>{{ cancelTkt.created_by }}</td>                      
                         </tr>
                     </tbody>
                     <tbody *ngIf="cancelTickets?.length == 0">
@@ -430,37 +430,37 @@
                                                         </strong> 
                                                        <table class="table ">
                                                             <tr *ngIf='seatFareDetails[0].ownerFare!= 0'>
-                                                                <td><strong>Owner Fare</strong></td>
+                                                                <td><strong>Base Fare</strong></td>
                                                                 <td class="text-danger ">
                                                                     <strong>
-                                                                        {{seatFareDetails[0].ownerFare}}
+                                                                        {{seatFareDetails[0].odbus_charges_ownerFare}}
                                                                     </strong>
                                                                 </td>
                                                             </tr>
-                                                            <tr *ngIf='seatFareDetails[0].specialFare!= 0'>
+                                                            <!-- <tr *ngIf='seatFareDetails[0].specialFare!= 0'>
                                                                 <td><strong>Special Fare</strong></td>
                                                                 <td class="text-danger ">
                                                                     <strong>
                                                                         {{seatFareDetails[0].specialFare}}
                                                                     </strong>
                                                                 </td>
-                                                            </tr>
-                                                            <tr *ngIf='seatFareDetails[0].festiveFare!= 0'>
+                                                            </tr> -->
+                                                            <!-- <tr *ngIf='seatFareDetails[0].festiveFare!= 0'>
                                                                 <td><strong>Festival Fare</strong></td>
                                                                 <td class="text-danger ">
                                                                     <strong>
                                                                         {{seatFareDetails[0].festiveFare}}
                                                                     </strong> 
                                                                 </td>
-                                                            </tr>
-                                                            <tr *ngIf='seatFareDetails[0].odbusServiceCharges!= 0'>
+                                                            </tr> -->
+                                                            <!-- <tr *ngIf='seatFareDetails[0].odbusServiceCharges!= 0'>
                                                                 <td><strong>Odbus Service Charges</strong></td>
                                                                 <td class="text-danger">
                                                                     <strong>
                                                                         {{seatFareDetails[0].odbusServiceCharges}}
                                                                     </strong>
                                                                 </td>
-                                                            </tr>
+                                                            </tr> -->
                                                             <tr *ngIf='seatFareDetails[0].transactionFee!= 0'>
                                                                 <td><strong>Transaction Fee</strong></td>
                                                                 <td class="text-danger ">

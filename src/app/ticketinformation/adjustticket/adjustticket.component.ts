@@ -123,7 +123,7 @@ export class AdjustticketComponent implements OnInit {
           this.cancelTickets = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          // console.log(this.cancelTickets);
+           //console.log(this.cancelTickets);
           this.spinner.hide();
         }
       );
@@ -450,6 +450,8 @@ export class AdjustticketComponent implements OnInit {
   {
     // console.log(this.pnrDetails[0]);
 
+    this.spinner.show(); 
+
     this.seatIDs=[];
     this.seatNames=[];
     
@@ -570,6 +572,7 @@ export class AdjustticketComponent implements OnInit {
           "owner_fare": this.seatFareDetails[0].ownerFare,
           "odbus_service_Charges": this.seatFareDetails[0].odbusServiceCharges,
           "odbus_gst":this.seatFareDetails[0].transactionFee, 
+          "payable_amount":this.pnrDetails[0].payable_amount, 
           "reason": this.adjustTicketForm.value.reason,
           "adj_note": this.adjustTicketForm.value.adj_note,
           "created_by": localStorage.getItem('USERNAME'),
@@ -581,12 +584,12 @@ export class AdjustticketComponent implements OnInit {
         },
     };
     
-    // console.log(data);
-    // return;
+     //console.log(data);
+     //return;
 
       this.acts.adjustTicket(data).subscribe(
         res =>{
-          console.log(res);
+         // console.log(res);
           if (res.status == 1) {
              if(res.data=='SEAT NOT AVAIL'){
               this.notificationService.addToast({ title: 'Error', msg:"Seat(s) are not available at the moment.Please select other..", type: 'error' });
@@ -598,12 +601,19 @@ export class AdjustticketComponent implements OnInit {
                this.modalReference.close();
                this.refresh();
              }
+
+             this.spinner.hide();
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
             this.spinner.hide();
             
           }
+        },
+        error => {
+          this.notificationService.addToast({ title: 'Error', msg: error, type: 'error' });
+          this.spinner.hide();   
+    
         }
       );   
 

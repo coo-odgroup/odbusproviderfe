@@ -28,7 +28,7 @@ export class AuthService {
   constructor(private httpClient: HttpClient) { }
 
   getToken(): Observable<any> { 
-     return this.httpClient.post<any>(this.apiURL + '/ClientLogin' , JSON.stringify(this.params) ,this.httpOptions)
+     return this.httpClient.post<any>(this.apiURL + 'ClientLogin' , JSON.stringify(this.params) ,this.httpOptions)
      .pipe(
        catchError(this.errorHandler)
      )
