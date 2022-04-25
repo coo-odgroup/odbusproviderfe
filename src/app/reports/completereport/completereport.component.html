@@ -369,6 +369,22 @@
     
                                 </td>
                             </tr>
+                            <tr >
+                                <th colspan="7" style="text-align: right;">
+                                    <strong placement="top"
+                                    ngbTooltip="Sum of Owner fare"><i class="fas fa-rupee-sign"></i> {{completedata?.owner_fare}}</strong>
+                                </th>
+                                <td> 
+                                    <strong placement="top"
+                                    ngbTooltip="Sum of Total fare"> <i class="fas fa-rupee-sign"></i> <b  class="text-danger">{{completedata?.totalfare}}</b></strong>
+                                </td>
+
+                                <th colspan="2"> &nbsp;</th>
+                                <td colspan="2">
+                                    <strong placement="top"
+                                    ngbTooltip="Sum of Amount Received"> <i class="fas fa-rupee-sign"></i> <b class="text-danger">{{completedata?.totalPayableAmount}}</b></strong>
+                                </td>
+                            </tr>
                         </tbody>
                         <tbody *ngIf="completedata?.length == 0">
                             <tr>
