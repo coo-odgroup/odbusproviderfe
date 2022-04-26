@@ -26,6 +26,10 @@ const routes: Routes = [
         loadChildren: () => import('./cancelticketsreport/cancelticketsreport.module').then(module => module.CancleTicketsReportModule)
       },
       {
+        path: 'pendingpnrreport',
+        loadChildren: () => import('./pendingpnrreport/pendingpnrreport.module').then(module => module.PendingPNRReportModule)
+      },
+      {
         path: 'failedtransactionreport',
         loadChildren: () => import('./failedtransactionreport/failedtransactionreport.module').then(module => module.FailedTransactionReportModule)
       },

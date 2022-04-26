@@ -587,6 +587,13 @@ const NavigationItems = [
             url: 'reports/cancleticketsReport'
           },
           {
+            id: 'pendingpnrreport',
+            title: 'Pending PNR Report',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'reports/pendingpnrreport'
+          },
+          {
             id: 'failedtransactionreport',
             title: 'Failed Transaction Report',
             type: 'item',

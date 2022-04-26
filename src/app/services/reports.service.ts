@@ -91,6 +91,19 @@ export class ReportsService {
     )
   }
 
+  pendingpnrReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/pendingpnrreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  pendingpnrpaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   // completeReport(): Observable<any> {
   //   return this.httpClient.get(this.apiURL + '/completereport').pipe(
   //     catchError(this.errorHandler)
