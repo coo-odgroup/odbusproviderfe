@@ -784,12 +784,11 @@ export class SeatblockComponent implements OnInit {
   }
 
 
-  openConfirmDialog(content, id: any,tkt_id: any,date: any) {
+  openConfirmDialog(content, id: any,date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.seatBlockRecord = this.seatBlock[id];
     this.deletedata = {     
       bus_id: id ,
-      ticketPriceId: tkt_id,   
       operationDate: date,
       type: "2"      
     };

@@ -119,6 +119,7 @@
               <th>Bus</th>
               <th>Operator</th>
               <th>Bus Route</th>
+              <th>Block Details</th>
               <th>View Details</th>
             </tr>
           </thead>
@@ -133,6 +134,63 @@
               <td>
                 {{sblock[0][0].value[0].bus_source[0]?.name}}  >>  {{sblock[0][0].value[0].bus_destination[0]?.name}}
               </td>
+
+              <td>
+                <table>
+                  <!-- <tr>
+                    <th><small> #</small> </th>
+                    <th><small> Block Date</small> </th>
+                     <th> <small>Route </small> </th> 
+                    <th> <small>Block Seats</small> </th>
+                     <th> <small> Reason</small> </th>
+                    <th> <small> Created On</small> </th>
+                    <th><small> Created By</small></th> 
+                    <th class="hide_print">Action</th>
+                  </tr> -->
+                  <tr  *ngFor="let opendate of sblock;let dateIndex= index ">
+                    <!-- <td>
+                      {{dateIndex+1}}
+                    </td> -->
+                    <td>
+                      {{opendate[0].value[0].operation_date}}
+                    </td>
+                    <!-- <td>
+                      {{opendate[0].value[0].source[0].name}} >> {{opendate[0].value[0].destination[0].name}}
+                    </td> -->
+                    <td>
+                      <span *ngFor="let seat of opendate[0].value; let seatIndex= index ">
+                        {{seat.seats.seatText}},
+                      </span>
+                    </td>
+                    <!-- <td>
+                      {{opendate[0].value[0].reason}} <br> {{opendate[0].value[0].other_reason}}
+                    </td>
+
+                    <td>
+                      {{opendate[0].value[0].created_at | date: 'dd/MM/yyyy-- H:mm:ss'}}
+                    </td>
+                    <td>
+                      {{opendate[0].value[0].created_by}}
+                    </td> -->
+
+                    <td class="hide_print">
+                      <div class="overlay-edit">
+                        <button type="button" (click)="openConfirmDialog (confirmDialog,
+                                        opendate[0].value[0].bus.id ,
+                                        opendate[0].value[0].operation_date)" class="btn btn-icon btn-danger">
+                          <i class="feather icon-trash-2"></i>
+                        </button>
+                      </div>
+                    </td>
+
+                  </tr>
+                </table>
+              </td>
+
+
+
+
+
               <td>
                 <button (click)="OpenModal(details);viewDetails(i);" class="btn btn-info"> <i class="fas fa-eye">
                   </i></button>
@@ -492,52 +550,51 @@
             <div class="row">
               <div class="col-sm-12">
                 <table class="col-sm-12">
-                  <tr *ngFor="let opendate of seatBlockDetails;let dateIndex= index ">
+                  <tr>
                     <td>
                       <!-- {{opendate |json}} -->
                       <table class="table table-striped">
                         <tr>
                           <th><small> #</small> </th>
                           <th><small> Date</small> </th>
-                          <th> <small>Route </small> </th>
+                          <!-- <th> <small>Route </small> </th> -->
                           <th> <small>Block Seats</small> </th>
                           <th> <small> Reason</small> </th>
                           <th> <small> Created On</small> </th>
                           <th><small> Created By</small></th>
                           <th class="hide_print">Action</th>
                         </tr>
-                        <tr *ngFor="let routdate of opendate;let routIndex= index ">
+                        <tr  *ngFor="let opendate of seatBlockDetails;let dateIndex= index ">
                           <td>
-                            {{routIndex+1}}
+                            {{dateIndex+1}}
                           </td>
                           <td>
-                            {{routdate.value[0].operation_date}}
+                            {{opendate[0].value[0].operation_date}}
                           </td>
+                          <!-- <td>
+                            {{opendate[0].value[0].source[0].name}} >> {{opendate[0].value[0].destination[0].name}}
+                          </td> -->
                           <td>
-                            {{routdate.value[0].source[0].name}} >> {{routdate.value[0].destination[0].name}}
-                          </td>
-                          <td>
-                            <span *ngFor="let seat of routdate.value; let seatIndex= index ">
+                            <span *ngFor="let seat of opendate[0].value; let seatIndex= index ">
                               {{seat.seats.seatText}},
                             </span>
                           </td>
                           <td>
-                            {{routdate.value[0].reason}} <br> {{routdate.value[0].other_reason}}
+                            {{opendate[0].value[0].reason}} <br> {{opendate[0].value[0].other_reason}}
                           </td>
 
                           <td>
-                            {{routdate.value[0].created_at | date: 'dd/MM/yyyy-- H:mm:ss'}}
+                            {{opendate[0].value[0].created_at | date: 'dd/MM/yyyy-- H:mm:ss'}}
                           </td>
                           <td>
-                            {{routdate.value[0].created_by}}
+                            {{opendate[0].value[0].created_by}}
                           </td>
 
                           <td class="hide_print">
                             <div class="overlay-edit">
                               <button type="button" (click)="openConfirmDialog (confirmDialog,
                                               opendate[0].value[0].bus.id ,
-                                              routdate.value[0].ticket_price_id,
-                                              routdate.value[0].operation_date)" class="btn btn-icon btn-danger">
+                                              opendate[0].value[0].operation_date)" class="btn btn-icon btn-danger">
                                 <i class="feather icon-trash-2"></i>
                               </button>
                             </div>
