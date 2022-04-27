@@ -55,6 +55,7 @@ export class BuscancellationComponent implements OnInit {
   public DatesRecord: any;
   dateformate: string;
   locations: any;
+  url: string;
 
   //getter for form array buses
   get busesFormGroup() {
@@ -154,9 +155,10 @@ export class BuscancellationComponent implements OnInit {
         res => {
           this.busCancellations = res.data.data.data;
           this.pagination = res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all = res.data;
           this.spinner.hide();
-          console.log( this.busCancellations);
+
         }
       );
     }
@@ -165,10 +167,10 @@ export class BuscancellationComponent implements OnInit {
         res => {
           this.busCancellations = res.data.data.data;
           this.pagination = res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all = res.data;
           this.spinner.hide();
-          // console.log(this.busCancellations);
-          // console.log( this.busCancellations);  
+       
         }
       );
     }
@@ -362,7 +364,7 @@ export class BuscancellationComponent implements OnInit {
               if (existingDate) {
                 let newDatesgroup: FormGroup = this.fb.group({
                   entryDates: [eDate.entry_date],
-                  datechecked: [{ value: false, disabled: true }],
+                  datechecked: [{ value: false, disabled: true ,class:'text-danger' }],
                 })
                 this.DatesRecord.insert(arraylen, newDatesgroup);
               }       
@@ -494,7 +496,8 @@ export class BuscancellationComponent implements OnInit {
       }
 
   });
-  
+  //  console.log(data);
+  //  return;
   if(counter == 0)
   {
     this.notificationService.addToast({ title: Constants.ErrorTitle, msg:'Please Select a Date', type: Constants.ErrorType });
@@ -512,7 +515,7 @@ export class BuscancellationComponent implements OnInit {
             });
             this.modalReference.close();
             this.ResetAttributes();
-            this.refresh();
+            this.search(this.url);
           }
           else {
             this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
@@ -528,7 +531,8 @@ export class BuscancellationComponent implements OnInit {
             this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
             this.modalReference.close();
             this.ResetAttributes();
-            this.refresh();
+            // this.refresh();
+            this.search(this.url);
           }
           else {
             this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
@@ -586,7 +590,8 @@ export class BuscancellationComponent implements OnInit {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
           this.confirmDialogReference.close();
-          this.refresh();
+          // this.refresh();
+          this.search(this.url);
         }
         else {
 
@@ -607,7 +612,8 @@ export class BuscancellationComponent implements OnInit {
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.refresh();
+          // this.refresh();
+          this.search(this.url);
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });

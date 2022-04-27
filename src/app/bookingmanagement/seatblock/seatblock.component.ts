@@ -104,6 +104,7 @@ export class SeatblockComponent implements OnInit {
   deletedata: any;
   page_no=1;
   busSchedule: any;
+  lastUrl: any;
   constructor(
     calendar: NgbCalendar,
     private seatblockService: SeatblockService,
@@ -174,9 +175,11 @@ export class SeatblockComponent implements OnInit {
 
   set_page(url:any)
   {
+    this.lastUrl = '';
     // console.log(url);
     this.page_no = url.replace('/api/seatblockData?page=','');
    this.search();
+   this.lastUrl = url;
   
   }
  
@@ -189,7 +192,7 @@ export class SeatblockComponent implements OnInit {
    
   search(pageurl="")
   {        
-    // console.log("hi");
+    // console.log(pageurl);
     this.spinner.show();
     this.seatBlock = [];
     const data = { 
@@ -298,7 +301,8 @@ export class SeatblockComponent implements OnInit {
 
 
   refresh()
-   {     
+   {    
+    this.lastUrl = ''; 
      this.spinner.show();
      this.searchForm = this.fb.group({
       name: [null],
@@ -737,7 +741,7 @@ export class SeatblockComponent implements OnInit {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
-            this.refresh();
+            this.set_page(this.lastUrl);
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -753,7 +757,7 @@ export class SeatblockComponent implements OnInit {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
-            this.refresh();
+            this.set_page(this.lastUrl);
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -773,7 +777,7 @@ export class SeatblockComponent implements OnInit {
 
         if (resp.status == 1) {
           this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.refresh();
+          this.set_page(this.lastUrl);
         }
         else {
           this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -803,9 +807,9 @@ export class SeatblockComponent implements OnInit {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
           this.confirmDialogReference.close();
-          this.modalReference.close();
+          // this.modalReference.close();
 
-          this.refresh();
+          this.set_page(this.lastUrl);
         }
         else {
 

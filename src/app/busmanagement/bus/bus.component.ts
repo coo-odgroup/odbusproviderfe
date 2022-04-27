@@ -101,6 +101,7 @@ export class BusComponent implements OnInit {
   public seatLayoutCol:any;
   pagination: any;
   all: any;
+  url: any;
   getSeatLayout($event:any)
   {
     this.seatLayoutData = (<FormArray>this.busForm.controls['bus_seat_layout_data']) as FormArray;
@@ -208,7 +209,8 @@ export class BusComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.refresh();
+                // this.refresh();
+                this.search(this.url);
             }
             else{               
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -414,9 +416,6 @@ export class BusComponent implements OnInit {
    }
   search(pageurl="")
   { 
-    
-
-    
     this.spinner.show();
     const data = { 
       name: this.searchForm.value.name,
@@ -437,6 +436,7 @@ export class BusComponent implements OnInit {
         res => {
           this.buses= res.data.data.data;
           this.pagination= res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all =res.data;
           this.spinner.hide();
         }
@@ -447,15 +447,16 @@ export class BusComponent implements OnInit {
       this.busService.getAllData(data).subscribe(
         res => {
           this.buses= res.data.data.data;
-         // console.log(this.buses);
           this.pagination= res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all =res.data;
           this.spinner.hide();
-          
         }
       );
     }
   }
+
+  
   refresh()
    {
     this.spinner.show();
@@ -521,7 +522,7 @@ export class BusComponent implements OnInit {
       route_status:["true"]
     });
 
-}
+  }
   createDestinationDropping(): FormGroup {
     return this.fb.group({
       destination_dropping: [null], 
@@ -835,7 +836,8 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.refresh();
+              // this.refresh();
+              this.search(this.url);
           }
           else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -872,7 +874,8 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.refresh();
+              // this.refresh();
+              this.search(this.url);
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -1034,7 +1037,8 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.refresh();
+              // this.refresh();
+              this.search(this.url);
               this.ResetAttributes();
           }
           else{
@@ -1057,7 +1061,8 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.refresh();
+              // this.refresh();
+              this.search(this.url);
           }
           else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -1728,7 +1733,8 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.refresh();
+              // this.refresh();
+              this.search(this.url);
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -2788,7 +2794,7 @@ export class BusComponent implements OnInit {
           {                 
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.refresh();
+              this.search(this.url);
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -2818,7 +2824,7 @@ export class BusComponent implements OnInit {
               
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
-              this.refresh();
+              this.search(this.url);
           }
           else{
               this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -3421,7 +3427,8 @@ export class BusComponent implements OnInit {
         {
             this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-            this.refresh();
+            // this.refresh();
+            this.search(this.url);
         }
         else{
             this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
@@ -3441,7 +3448,8 @@ export class BusComponent implements OnInit {
         {
             //this.closebutton.nativeElement.click();
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.refresh();
+            // this.refresh();
+            this.search(this.url);
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});

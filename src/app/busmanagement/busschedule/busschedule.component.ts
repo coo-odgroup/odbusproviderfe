@@ -55,6 +55,7 @@ export class BusscheduleComponent implements OnInit {
   cancelDates: any;
   unSubscribeData: any;
   locations: any;
+  url: string;
   constructor(  private locationService:LocationService,private buscanCellationService: BuscancellationService,private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
     this.isSubmit = false;
@@ -112,6 +113,7 @@ export class BusscheduleComponent implements OnInit {
         res => {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all =res.data;
           this.spinner.hide();
         }
@@ -123,6 +125,7 @@ export class BusscheduleComponent implements OnInit {
         res => {
           this.busSchedules= res.data.data.data;
           this.pagination= res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all =res.data;
           this.spinner.hide();
            //console.log(this.busSchedules);
@@ -278,7 +281,7 @@ export class BusscheduleComponent implements OnInit {
           this.modalReference.close();
           this.ResetAttributes();
           this.loadServices();
-          this.refresh();  
+          this.search( this.url);  
        }
        else
        { 
@@ -295,7 +298,7 @@ export class BusscheduleComponent implements OnInit {
               this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
               this.modalReference.close();
               this.ResetAttributes();
-              this.refresh();
+              this.search( this.url); 
             }
             else
             {                
@@ -376,7 +379,7 @@ export class BusscheduleComponent implements OnInit {
                 this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                 this.confirmDialogReference.close();
 
-                this.refresh();
+                this.search( this.url); 
             }
             else{
                
@@ -403,7 +406,7 @@ export class BusscheduleComponent implements OnInit {
         if(resp.status==1)
         {
             this.notificationService.addToast({title:'Success',msg:resp.message, type:'success'});
-            this.refresh();
+            this.search( this.url); 
         }
         else{
             this.notificationService.addToast({title:'Error',msg:resp.message, type:'error'});
