@@ -34,6 +34,7 @@ export class AdjustticketService {
   }
 
   getBusList(post){
+    // console.log(this.consumerURL + 'Listing?source='+post['source']+'&destination='+post['destination']+'&entry_date='+post['journey_dt']);
     return this.httpClient.get<any>(this.consumerURL + 'Listing?source='+post['source']+'&destination='+post['destination']+'&entry_date='+post['journey_dt'], this.httpOptions)
     .pipe(
       catchError(this.errorHandler)

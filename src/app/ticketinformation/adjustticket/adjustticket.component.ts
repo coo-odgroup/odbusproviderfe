@@ -64,6 +64,11 @@ export class AdjustticketComponent implements OnInit {
   droppingPoints: any;
   boardingData: any;
   droppingData: any;
+  customer_payment_id: any;
+  razorpay_id: any;
+  customer_payment_order_id: any;
+  customer_payment_razorpay_signature: any;
+  user: any;
 
 
   constructor(private datePipe: DatePipe, private acts: AdjustticketService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busService: BusService, private busOperatorService: BusOperatorService, private locationService: LocationService, private spinner: NgxSpinnerService,) {
@@ -104,6 +109,10 @@ export class AdjustticketComponent implements OnInit {
     this.pnrDetails = [];
     this.seaterRecord='';
     this.seatFareDetails=[];
+    this.customer_payment_id = "" ;
+      this.razorpay_id ="" ;
+      this.customer_payment_order_id = "" ;
+      this.customer_payment_razorpay_signature = ""  ;
   }
 
   page(label: any) {
@@ -402,6 +411,33 @@ export class AdjustticketComponent implements OnInit {
       }   
   }
 
+  dateWiseBusListing() {
+    this.spinner.show();
+    this.busList =[];
+    this.boardingPoints = [];
+    this.droppingPoints = [];
+    // console.log(this.busList);
+    this.adjustTicketForm.controls.bus.setValue('');
+    const data =
+    {
+      journey_dt: this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
+      source: this.pnrDetails[0].from_location[0].name,
+      destination: this.pnrDetails[0].to_location[0].name,
+    }
+    // this.adjustTicketForm.controls.j_date.setValue(this.pnrDetails[0].journey_dt);
+    // console.log(data);
+    this.acts.getBusList(data).subscribe(
+      res => {
+        this.busList = res.data;
+        this.busList.map((i: any) => { i.testing = i.busName + ' - ' + i.busNumber; return i; });
+        this.spinner.hide();
+        // console.log(res.data);
+      }
+    );
+
+  }
+  
+
 
 
   title = 'angular-app';
@@ -501,6 +537,7 @@ export class AdjustticketComponent implements OnInit {
     if( bookingDetailarr.length== 0)
     {
       this.notificationService.addToast({ title: 'Error', msg: "Please Select Seat ", type: 'error' });
+      this.spinner.hide(); 
       return false;
   
     }
@@ -508,6 +545,7 @@ export class AdjustticketComponent implements OnInit {
     if(bookingDetailarr.length < this.maxAllowedSeat)
     {
       this.notificationService.addToast({ title: 'Error', msg: "You must select "+this.maxAllowedSeat+" seat(s)", type: 'error' });
+      this.spinner.hide(); 
       return false;
   
     }
@@ -515,6 +553,7 @@ export class AdjustticketComponent implements OnInit {
     if(bookingDetailarr.length > this.maxAllowedSeat)
     {
       this.notificationService.addToast({ title: 'Error', msg: "You are allowed to select "+this.maxAllowedSeat+" seat(s) only ", type: 'error' });
+      this.spinner.hide(); 
       return false;
   
     }
@@ -531,7 +570,29 @@ export class AdjustticketComponent implements OnInit {
       
       });
     }
+    if(this.pnrDetails[0].customer_payment!= null)
+    {
+      this.customer_payment_id = this.pnrDetails[0].customer_payment.id ;
+      this.razorpay_id = this.pnrDetails[0].customer_payment.razorpay_id ;
+      this.customer_payment_order_id = this.pnrDetails[0].customer_payment.order_id ;
+      this.customer_payment_razorpay_signature = this.pnrDetails[0].customer_payment.razorpay_signature  ;
+    }
+    if(this.pnrDetails[0].customer_payment!= null)
+    {
+      this.customer_payment_id = this.pnrDetails[0].customer_payment.id ;
+      this.razorpay_id = this.pnrDetails[0].customer_payment.razorpay_id ;
+      this.customer_payment_order_id = this.pnrDetails[0].customer_payment.order_id ;
+      this.customer_payment_razorpay_signature = this.pnrDetails[0].customer_payment.razorpay_signature  ;
+    }
 
+    if(this.pnrDetails[0].user!= null)
+    {
+      this.user = this.pnrDetails[0].user.id ;
+      
+    }
+    // console.log(this.pnrDetails[0]);
+    // this.spinner.hide(); 
+    // return;
     
     // console.log(this.busData);
     // return;
@@ -543,6 +604,7 @@ export class AdjustticketComponent implements OnInit {
         },
         "bookingInfo":{
           "id": this.pnrDetails[0].id,
+          "user_id": this.user,
           "pnr": this.pnrDetails[0].pnr,
           "bus_id": this.adjustTicketForm.value.bus,
           "busname": this.busData.busName,
@@ -576,10 +638,10 @@ export class AdjustticketComponent implements OnInit {
           "reason": this.adjustTicketForm.value.reason,
           "adj_note": this.adjustTicketForm.value.adj_note,
           "created_by": localStorage.getItem('USERNAME'),
-          "customer_payment_id" : this.pnrDetails[0].customer_payment.id,
-          "razorpay_payment_id" : this.pnrDetails[0].customer_payment.razorpay_id,
-          "razorpay_order_id" : this.pnrDetails[0].customer_payment.order_id,
-          "razorpay_signature" :this.pnrDetails[0].customer_payment.razorpay_signature , 
+          "customer_payment_id" : this.customer_payment_id,
+          "razorpay_payment_id" : this.razorpay_id,
+          "razorpay_order_id" : this.customer_payment_order_id,
+          "razorpay_signature" :this.customer_payment_razorpay_signature, 
           "bookingDetail": bookingDetailarr 
         },
     };

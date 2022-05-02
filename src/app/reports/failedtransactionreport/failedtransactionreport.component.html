@@ -10,7 +10,7 @@
                     <div class="col-12">
                         <form [formGroup]="searchFrom">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-md-3">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
@@ -20,7 +20,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-md-4">
                                     <div class="row">  
                                         <div class="form-group col-6">
                                             <div class="form-group row">
@@ -36,7 +36,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-md-2">
 
                                     <div class="dropdown">
                                         <select class="form-control sml_input" formControlName="date_type">
@@ -47,7 +47,7 @@
 
                                 </div>
 
-                                <div class="col-2">
+                                <div class="col-md-2">
                                     <div class="col-sm-12">
                                         <div class="dropdown float-right">
                                             <input type="text" class="form-control sml_input" placeholder="Payment/Order Id"
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-1">
+                                <div class="col-md-1">
                                     <div class="dropdown float-right">
                                         <select class="form-control sml_input" formControlName="rows_number"
                                             (change)=search()>
@@ -71,7 +71,7 @@
 
                             </div>
                             <div class="row ">
-                                <div class="col-5 p-0">
+                                <div class="col-md-5 p-0">
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group ">
@@ -106,7 +106,7 @@
                                         </div>
                                     </div>
                                 </div> -->
-                                <div class="col-5">
+                                <div class="col-md-5">
                                     <button type="button" class="btn btn-success  sml_input" (click)="search()"
                                         title="search">
                                         <i class="fas fa-search"> </i> Search

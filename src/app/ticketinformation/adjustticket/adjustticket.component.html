@@ -203,7 +203,7 @@
                                                         <div class="col-sm-12">
                                                             <input type="date" class="form-control" ngbAutofocus
                                                                 formControlName="j_date"
-                                                                placeholder="Enter Journey Date" required />
+                                                                placeholder="Enter Journey Date" required  (change)="dateWiseBusListing()"/>
                                                             <span class="text-danger"
                                                                 *ngIf="adjustTicketForm.controls['j_date'].touched && adjustTicketForm.controls['j_date'].hasError('required')">                       
                                                                 Journey Date required! </span>
@@ -220,7 +220,7 @@
                                                                 placeholder="Select Bus"
                                                                 formControlName="bus"
                                                                 (change)="getSeatLayout();getBoardingDropping()" 
-                                                                [clearable]="false">
+                                                                [clearable]="false" required>
                                                             </ng-select>
                                                           </div>
                                                     </div>
@@ -235,7 +235,7 @@
                                                                         bindValue="id"
                                                                         placeholder="Select Boarding Point"
                                                                         formControlName="boarding_id"      
-                                                                        [clearable]="false">
+                                                                        [clearable]="false" required>
                                                                     </ng-select>
                                                                   </div>
                                                             </div>
@@ -250,7 +250,7 @@
                                                                         bindValue="id"
                                                                         placeholder="Select Dropping Point"
                                                                         formControlName="dropping_id"
-                                                                        [clearable]="false">
+                                                                        [clearable]="false" required>
                                                                     </ng-select>
                                                                   </div>
                                                             </div>
