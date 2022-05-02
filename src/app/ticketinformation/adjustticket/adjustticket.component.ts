@@ -577,17 +577,9 @@ export class AdjustticketComponent implements OnInit {
       this.customer_payment_order_id = this.pnrDetails[0].customer_payment.order_id ;
       this.customer_payment_razorpay_signature = this.pnrDetails[0].customer_payment.razorpay_signature  ;
     }
-    if(this.pnrDetails[0].customer_payment!= null)
+    if(this.pnrDetails[0].user_id>0)
     {
-      this.customer_payment_id = this.pnrDetails[0].customer_payment.id ;
-      this.razorpay_id = this.pnrDetails[0].customer_payment.razorpay_id ;
-      this.customer_payment_order_id = this.pnrDetails[0].customer_payment.order_id ;
-      this.customer_payment_razorpay_signature = this.pnrDetails[0].customer_payment.razorpay_signature  ;
-    }
-
-    if(this.pnrDetails[0].user!= null)
-    {
-      this.user = this.pnrDetails[0].user.id ;
+      this.user = this.pnrDetails[0].user_id;
       
     }
     // console.log(this.pnrDetails[0]);
@@ -646,8 +638,8 @@ export class AdjustticketComponent implements OnInit {
         },
     };
     
-     //console.log(data);
-     //return;
+    //  console.log(data);
+    //  return;
 
       this.acts.adjustTicket(data).subscribe(
         res =>{
