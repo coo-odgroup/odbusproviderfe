@@ -152,6 +152,7 @@ export class AdjustticketComponent implements OnInit {
 
   search_pnr() {
     this.spinner.show();
+    this.user='';
     let pnr = this.adjustTicketForm.value.pnr_no;
     if (pnr != null) {
       this.acts.getPnrDetails(pnr).subscribe(
@@ -465,6 +466,7 @@ export class AdjustticketComponent implements OnInit {
     this.seatFareDetails=[];
     this.boardingPoints = [];
     this.droppingPoints = [];
+    this.user='';
 
     
     // this.festivalFareRecord = {} as Festivalfare;

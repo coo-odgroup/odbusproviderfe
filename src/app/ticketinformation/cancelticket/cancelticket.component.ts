@@ -46,6 +46,7 @@ export class CancelticketComponent implements OnInit {
   all: any;
   pnrDetails: any[];
   msg: any;
+  user: any;
   
 
   constructor(private acts: AdmincancelticketService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService , private spinner: NgxSpinnerService,) { 
@@ -89,7 +90,7 @@ export class CancelticketComponent implements OnInit {
   search(pageurl="")
   {     
       this.spinner.show(); 
-    const data = { 
+      const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
     };
@@ -122,6 +123,11 @@ export class CancelticketComponent implements OnInit {
   search_pnr()
   {
     this.spinner.show(); 
+    this.user='';
+    this.cancelTicketForm.controls.refundAmount.setValue('');
+    this.cancelTicketForm.controls.percentage_deduct.setValue('');
+    this.cancelTicketForm.controls.reason.setValue('');
+ 
 
     let pnr = this.cancelTicketForm.value.pnr_no;
     if(pnr!=null)
@@ -130,6 +136,7 @@ export class CancelticketComponent implements OnInit {
         res => {
           this.pnrDetails= res.data;
           this.spinner.hide();
+          console.log(this.pnrDetails);
        
           if(this.pnrDetails.length == 0)
           {
@@ -142,6 +149,7 @@ export class CancelticketComponent implements OnInit {
 
   calculate()
   {
+    this.cancelTicketForm.controls.refundAmount.setValue('');
     let percentage = this.cancelTicketForm.value.percentage_deduct;
     // console.log(percentage);
     let totalFare  = this.pnrDetails[0].total_fare;
@@ -158,9 +166,14 @@ export class CancelticketComponent implements OnInit {
 
   cancelTicket()
   {
+    if(this.pnrDetails[0].user_id>0)
+    {
+      this.user = this.pnrDetails[0].user_id;
+    }
     // console.log(this.cancelTicketForm.value);
     const data={
       id: this.pnrDetails[0].id , 
+      user_id:this.user,
       email:this.pnrDetails[0].users.email,
       pnr:this.cancelTicketForm.value.pnr_no,
       percentage_deduct:this.cancelTicketForm.value.percentage_deduct,
@@ -218,6 +231,7 @@ export class CancelticketComponent implements OnInit {
   }
   ResetAttributes()
   {
+    this.user='';
     this.msg ='';
     this.pnrDetails=[];
     // this.festivalFareRecord = {} as Festivalfare;
