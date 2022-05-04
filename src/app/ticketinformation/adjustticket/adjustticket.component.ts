@@ -68,7 +68,6 @@ export class AdjustticketComponent implements OnInit {
   razorpay_id: any;
   customer_payment_order_id: any;
   customer_payment_razorpay_signature: any;
-  user: any=null;
 
 
   constructor(private datePipe: DatePipe, private acts: AdjustticketService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busService: BusService, private busOperatorService: BusOperatorService, private locationService: LocationService, private spinner: NgxSpinnerService,) {
@@ -152,7 +151,6 @@ export class AdjustticketComponent implements OnInit {
 
   search_pnr() {
     this.spinner.show();
-    this.user='';
     let pnr = this.adjustTicketForm.value.pnr_no;
     if (pnr != null) {
       this.acts.getPnrDetails(pnr).subscribe(
@@ -466,9 +464,7 @@ export class AdjustticketComponent implements OnInit {
     this.seatFareDetails=[];
     this.boardingPoints = [];
     this.droppingPoints = [];
-    this.user='';
-
-    
+      
     // this.festivalFareRecord = {} as Festivalfare;
     this.adjustTicketForm = this.fb.group({
       pnr_no: [null],
@@ -579,17 +575,27 @@ export class AdjustticketComponent implements OnInit {
       this.customer_payment_order_id = this.pnrDetails[0].customer_payment.order_id ;
       this.customer_payment_razorpay_signature = this.pnrDetails[0].customer_payment.razorpay_signature  ;
     }
-    if(this.pnrDetails[0].user_id>0)
-    {
-      this.user = this.pnrDetails[0].user_id;
-      
-    }
+    
     // console.log(this.pnrDetails[0]);
     // this.spinner.hide(); 
     // return;
     
     // console.log(this.busData);
     // return;
+    let agent_number = null;
+    let agent_email=null;
+    let agent_name=null;
+
+    console.log(this.pnrDetails[0]);
+
+    if(this.pnrDetails[0].user){
+      agent_number=this.pnrDetails[0].user.phone;
+      agent_email=this.pnrDetails[0].user.email;
+      agent_name=this.pnrDetails[0].user.name;
+    }
+
+    
+
     const data = { 
         "customerInfo":{
           "email": this.pnrDetails[0].users.email,
@@ -598,7 +604,11 @@ export class AdjustticketComponent implements OnInit {
         },
         "bookingInfo":{
           "id": this.pnrDetails[0].id,
-          "user_id": this.user,
+          "user_id": this.pnrDetails[0].user_id,
+          "agent_number": agent_number,
+          "agent_email": agent_email,
+          "agent_name": agent_name,
+          "customer_comission": this.pnrDetails[0].customer_comission,
           "pnr": this.pnrDetails[0].pnr,
           "bus_id": this.adjustTicketForm.value.bus,
           "busname": this.busData.busName,
@@ -640,8 +650,8 @@ export class AdjustticketComponent implements OnInit {
         },
     };
     
-    //  console.log(data);
-    //  return;
+      console.log(data);
+      //return;
 
       this.acts.adjustTicket(data).subscribe(
         res =>{
