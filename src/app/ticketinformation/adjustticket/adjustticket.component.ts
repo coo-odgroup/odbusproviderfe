@@ -68,7 +68,7 @@ export class AdjustticketComponent implements OnInit {
   razorpay_id: any;
   customer_payment_order_id: any;
   customer_payment_razorpay_signature: any;
-  user: any;
+  user: any=null;
 
 
   constructor(private datePipe: DatePipe, private acts: AdjustticketService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busService: BusService, private busOperatorService: BusOperatorService, private locationService: LocationService, private spinner: NgxSpinnerService,) {
