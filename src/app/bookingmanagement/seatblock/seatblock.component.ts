@@ -178,8 +178,8 @@ export class SeatblockComponent implements OnInit {
     this.lastUrl = '';
     // console.log(url);
     this.page_no = url.replace('/api/seatblockData?page=','');
-   this.search();
-   this.lastUrl = url;
+    this.search();
+    this.lastUrl = url;
   
   }
  
@@ -189,7 +189,8 @@ export class SeatblockComponent implements OnInit {
 
    
 
-   
+  //  this.url= this.pagination.path+'?page='+this.pagination.current_page ;
+
   search(pageurl="")
   {        
     // console.log(pageurl);
@@ -206,7 +207,7 @@ export class SeatblockComponent implements OnInit {
       destination_id:this.searchForm.value.destination_id,
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID') 
     };   
- 
+
     if(pageurl!="")
     {
       this.seatblockService.getAllaginationData(pageurl,data).subscribe(
@@ -215,9 +216,8 @@ export class SeatblockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          console.log(mainArray);
+          this.lastUrl="/api/seatblockData?page="+this.all.current_page ;
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
-          // console.log(mainArray);
           if(mainArray.length >0)
           {
             for (var bus of mainArray) {
@@ -261,8 +261,8 @@ export class SeatblockComponent implements OnInit {
           this.all = res.data;
           this.spinner.hide();
           // console.log(this.all);
+          this.lastUrl="/api/seatblockData?page="+this.all.current_page ;
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
-          // console.log(mainArray);
           if(mainArray.length >0)
           {
             for (var bus of mainArray) {
@@ -757,6 +757,7 @@ export class SeatblockComponent implements OnInit {
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
+            this.lastUrl=
             this.set_page(this.lastUrl);
           }
           else {

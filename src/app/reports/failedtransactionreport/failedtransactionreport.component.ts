@@ -6,7 +6,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {FailedtransactionReport} from '../../model/failedtransactionreport';
 import { LocationService } from '../../services/location.service';
 import { BusService} from '../../services/bus.service';
+import { NotificationService } from '../../services/notification.service';
+import { GenerateFailledTransactionService} from '../../services/generate-failled-transaction.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -19,7 +22,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 })
 export class FailedtransactionreportComponent implements OnInit {
   public searchFrom: FormGroup;
-
+  modalReference: NgbModalRef;
   failedtransactionReport: FailedtransactionReport[];
   failedtransactionReportRecord: FailedtransactionReport;
 
@@ -33,6 +36,10 @@ export class FailedtransactionreportComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  comData: any;
+  bus_seats: any;
+  seatIDs: any=[];
+  seatStatu: any;
 
 
   constructor(
@@ -42,12 +49,16 @@ export class FailedtransactionreportComponent implements OnInit {
     private busOperatorService: BusOperatorService, 
     private fb: FormBuilder,
     private locationService:LocationService,
-    private busService:BusService,  
+    private busService:BusService,  private notificationService: NotificationService,
+    private gfts:GenerateFailledTransactionService,  
     private calendar: NgbCalendar, 
-    public formatter: NgbDateParserFormatter 
+    public formatter: NgbDateParserFormatter ,
+    private modalService: NgbModal, config: NgbModalConfig
     ) {
       this.fromDate = calendar.getToday();
       this.toDate = calendar.getToday();
+      config.backdrop = 'static';
+      config.keyboard = false;
      }
 
      title = 'angular-app';
@@ -72,6 +83,9 @@ export class FailedtransactionreportComponent implements OnInit {
     this.loadServices();
   }
 
+  OpenModal(content) {
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+  }
 
   page(label:any){
     return label;
@@ -211,6 +225,38 @@ export class FailedtransactionreportComponent implements OnInit {
   }
 }
 
+generateTicket(id)
+{
+  this.seatIDs=[];
+  this.seatStatu =null;
+  this.comData=this.completedata.data.data[id];
+
+for (let items of this.comData.booking_detail) {
+ 
+  this.seatIDs.push(items.bus_seats.seats.id);
+} 
+
+  const data=
+  {
+    'entry_date' : this.comData.journey_dt,
+	  'busId' : this.comData.bus_id,
+	  'sourceId' : this.comData.source_id,
+	  'destinationId' :this.comData.destination_id,
+	  'seatIds' :this.seatIDs
+  }
+  this.gfts.CheckSeat(data).subscribe(
+    res=>{
+     this.seatStatu = res.data;
+     if(res.data=='SEAT AVAIL'){
+      this.notificationService.addToast({ title: Constants.SuccessTitle, msg: "Ticket has been generated", type: Constants.SuccessType });
+     }else{
+      this.notificationService.addToast({ title: Constants.ErrorTitle, msg: "Seat has already Booked", type: Constants.ErrorType });
+     }
+
+    
+    }
+  );
+}
 
 
 }

@@ -150,7 +150,7 @@
                                 <th scope="col">Owner Price</th>
                                 <!-- <th scope="col">Total Fare</th> -->
                                 <!-- <th scope="col">Odbus Received</th> -->
-                                <!-- <th scope="col">Action</th> -->
+                                <th scope="col">Action</th>
     
                             </tr>
                         </thead>
@@ -312,19 +312,16 @@
                                         ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
                                         <i class="far fa-envelope"></i>
                                     </button>
-
-    
-                                  
-    
                                 </td>
 
                                 <td> <b>{{complete.owner_fare}}</b></td>
                                 <!-- <td>
                                     <b>{{complete.odbus_charges}}</b>
                                 </td> -->
-                                <!-- <td>
-                                    <button class="btn btn-success btn-sm">GENERATE</button>
-                                </td> -->
+                                <td>
+                                    <button class="btn btn-success btn-sm" (click)="generateTicket(i);">GENERATE</button>
+                                    <!-- <button class="btn btn-success btn-sm" (click)="generateTicket(i);OpenModal(content);">GENERATE</button> -->
+                                </td>
                             </tr>
                         </tbody>
     
@@ -479,5 +476,42 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- <ng-template #content let-modal>
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5">Generate Ticket</h5>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-material">
+                    <div class="right-icon-control">
+                       <div *ngIf="seatStatu=='SEAT AVAIL'">
+                                    <h4>{{seatStatu}}</h4><br>
+                                    <b>DO You Sure Want To Generate The Ticket</b> <br>
+                                    <button type="button" (click)="generatePnr()"
+                                    class="btn btn-primary" ngbAutofocus>
+                                  Generate
+                                  </button>
+                       </div>
+                       <div *ngIf="seatStatu!=null && seatStatu!='SEAT AVAIL'">
+                                    Seat Already Booked
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+            
+              <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                (click)="modal.dismiss('Cross click')">
+                Close
+              </button>
+            </div>
+          </ng-template> -->
     </div>
 </div>

@@ -1623,7 +1623,6 @@ export class BusComponent implements OnInit {
 
   UpdateRoutes()
   {
-
     ////////// check for boarding dropping point checkbox at least 1 item 
     let FinalRoute=[];
 
