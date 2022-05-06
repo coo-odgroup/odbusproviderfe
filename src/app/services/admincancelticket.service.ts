@@ -18,12 +18,35 @@ export class AdmincancelticketService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getSmsDetails(post){
+    return this.httpClient.post<any>(this.apiURL + '/getDetailsSms', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getBookingID(post){
+      return this.httpClient.post<any>(this.apiURL + '/getBookingID', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  save_customSMS(post){
+      return this.httpClient.post<any>(this.apiURL + '/save_customSMS', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
   getPnrDetails(post){
     return this.httpClient.post<any>(this.apiURL + '/getPnrDetailsForSms', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+ 
 
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/cancelticketdata', JSON.stringify(post), this.httpOptions)

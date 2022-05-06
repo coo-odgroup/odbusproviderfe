@@ -26,6 +26,15 @@ export class SmsEmailTicketComponent implements OnInit {
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
 
+  public SmsToCustomerForm: FormGroup;
+  public SmsToConductorForm: FormGroup;
+  public EmailToBookingForm: FormGroup;
+  public EmailToCustomerForm: FormGroup;
+  public CancelSmsToCustomerForm: FormGroup;
+  public CancelSmsToConductorForm: FormGroup;
+  public CancelEmailToCustomerForm: FormGroup;
+  public CancelEmailToSupportForm: FormGroup;
+
   public searchForm: FormGroup;
   pagination: any;
   buses :any;
@@ -38,6 +47,8 @@ export class SmsEmailTicketComponent implements OnInit {
   public searchBy:any;
   all: any;
   pnrDetails: any[];
+  SMSDetails: any[];
+  BookingID: any[];
   msg: any;
   
 
@@ -47,20 +58,70 @@ export class SmsEmailTicketComponent implements OnInit {
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Send Sms and Email ";
-    this.ModalBtn = "Send"; 
+    this.ModalBtn = "Submit"; 
     
   }
 
   OpenModal(content) {
-    this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
+     this.modalReference = this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
+
   ngOnInit(): void {
     // this.spinner.show();
     this.sendSmsEmailTicketForm = this.fb.group({
         pnr_no:[null],
-        action:[null]
+        action: [null]       
     });
-    this.formConfirm=this.fb.group({
+
+    this.SmsToCustomerForm = this.fb.group({
+        customer_mob:[null],
+        sms_to_customer:[null],
+        reason:[null]
+    });
+
+    this.SmsToConductorForm = this.fb.group({
+        cmo_mob:[null],       
+        sms_to_cmo:[null],
+        cmo_reason:[null]
+    });
+
+    this.EmailToCustomerForm = this.fb.group({
+      customer_eml:[null],     
+      ceml_reason:[null]
+    });
+
+    this.EmailToBookingForm = this.fb.group({
+      booking_eml:[null],
+      eml_msg:[null],
+      eml_reason:[null]
+    });
+
+    this.CancelSmsToCustomerForm = this.fb.group({
+      ccustomer_mob:[null],
+      csms_to_customer:[null],
+      creason:[null]
+    });
+
+    this.CancelSmsToConductorForm = this.fb.group({
+        cconductor_mob:[null],
+        cmanager_mob:[null],
+        coperator_mob:[null],
+        csms_to_cmo:[null],
+        ccmo_reason:[null]
+    });
+
+   this.CancelEmailToCustomerForm = this.fb.group({
+      ccustomer_eml:[null],     
+      cceml_reason:[null]
+   });
+
+   this.CancelEmailToSupportForm = this.fb.group({
+        support_eml:[null],
+        seml_msg:[null],
+        seml_reason:[null]
+   });
+
+   this.formConfirm=this.fb.group({
       id:[null]
     });
     this.searchForm = this.fb.group({  
@@ -75,13 +136,129 @@ export class SmsEmailTicketComponent implements OnInit {
     return label;
    }
 
-   
+  Sms_details()
+  {     
+      const data = {
+          pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+          action:this.sendSmsEmailTicketForm.value.action
+      };    
+
+      if(data != null)
+      {
+          this.acts.getSmsDetails(data).subscribe(
+            res => {
+
+                this.SMSDetails = res.data;  
+
+                if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer')
+                {                   
+                    this.SmsToCustomerForm.controls['customer_mob'].setValue(this.SMSDetails[0].to);
+                    this.SmsToCustomerForm.controls['sms_to_customer'].setValue(this.SMSDetails[0].contents);
+                }  
+                
+                if(this.sendSmsEmailTicketForm.value.action == 'smsToConductor')
+                {                   
+                    let cmo_mob = this.SMSDetails[0].to;
+                    cmo_mob = cmo_mob.replace('[',''); 
+                    cmo_mob = cmo_mob.replace(']',''); 
+                    this.SmsToConductorForm.controls['cmo_mob'].setValue(cmo_mob);
+                    this.SmsToConductorForm.controls['sms_to_cmo'].setValue(this.SMSDetails[0].contents);
+                }
+                
+                // if(this.sendSmsEmailTicketForm.value.action == 'cancelsmsToCustomer')
+                // {                   
+                //     this.CancelSmsToCustomerForm.controls['ccustomer_mob'].setValue(this.SMSDetails[0].to);
+                //     this.CancelSmsToCustomerForm.controls['csms_to_customer'].setValue(this.SMSDetails[0].contents);
+                // }
+                
+                
+               
+            }
+          );
+      }
+  } 
+
+  //Save Customer SMS Data to custom_sms table
+  SaveCustomerSMS(){
+
+      let type = this.sendSmsEmailTicketForm.value.action;
+     
+      const pnr = {
+          pnr:this.sendSmsEmailTicketForm.value.pnr_no         
+      }; 
+
+      if(pnr != null)
+      {
+            this.acts.getBookingID(pnr).subscribe(
+              res => {
+                  
+                  this.BookingID = res.data;
+
+                  if(type == 'smsToCustomer')
+                  {
+                      const data = {
+                            pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                            booking_id:this.BookingID[0].id,
+                            type:this.sendSmsEmailTicketForm.value.action,
+                            mobile_no:this.SmsToCustomerForm.value.customer_mob,
+                            contents:this.SmsToCustomerForm.value.sms_to_customer,
+                            reason:this.SmsToCustomerForm.value.reason,
+                            added_by:localStorage.getItem('USERID')
+                      };
+
+                      if(data != null)
+                      {
+                          //Save data
+                          this.acts.save_customSMS(data).subscribe(
+                              resp => {
+                                if(resp.status==1)
+                                {
+                                    this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+                                    this.ResetAttributes();
+                                }
+                          });   
+                      }
+                  }
+                  else if(type == 'smsToConductor')
+                  {
+                      const data = {
+                            pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                            booking_id:this.BookingID[0].id,
+                            type:this.sendSmsEmailTicketForm.value.action,
+                            mobile_no:this.SmsToConductorForm.value.cmo_mob,
+                            contents:this.SmsToConductorForm.value.sms_to_cmo,
+                            reason:this.SmsToConductorForm.value.cmo_reason,
+                            added_by:localStorage.getItem('USERID')
+                      };
+
+                      console.log(data);
+
+                      if(data != null)
+                      {
+                          //Save data
+                          this.acts.save_customSMS(data).subscribe(
+                              resp => {
+                                if(resp.status==1)
+                                {
+                                    this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+                                    this.ResetAttributes();
+                                }
+                          });   
+                      }
+                  }                  
+
+                 
+              }
+            );      
+      }
+  }
 
   search_pnr()
   {
     this.spinner.show(); 
 
     let pnr = this.sendSmsEmailTicketForm.value.pnr_no;
+
     if(pnr!=null)
     {
       this.acts.getPnrDetails(pnr).subscribe(
@@ -107,33 +284,24 @@ export class SmsEmailTicketComponent implements OnInit {
 
   sendTicket()
   {
-    if(this.sendSmsEmailTicketForm.value.action!=null )
+      if(this.sendSmsEmailTicketForm.value.action!=null )
       {
-        console.log(this.sendSmsEmailTicketForm.value);
+          console.log(this.sendSmsEmailTicketForm.value);
+          
       }else{
-        this.notificationService.addToast({ title: 'Error', msg: "You must select at least one button", type: 'error' });
-         return false;
-      }
-    
+          this.notificationService.addToast({ title: 'Error', msg: "You must select at least one button", type: 'error' });
+          return false;
+      }    
   }
-  
-  
 
 
   ResetAttributes()
   {
-    this.msg ='';
-    // this.pnrDetails=[];
-    this.sendSmsEmailTicketForm = this.fb.group({
-        // pnr_no:[null],
-        action:[null]
-  });
-    this.ModalHeading = "Send Sms nad Email ";
-    this.ModalBtn = "Send"; 
+      this.msg ='';
+      this.pnrDetails=[];
+      this.sendSmsEmailTicketForm = this.fb.group({
+          pnr_no:[null],
+          action:[null]
+      });    
   }
-
-
-
-
-
 }
