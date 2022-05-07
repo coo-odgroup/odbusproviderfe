@@ -254,7 +254,7 @@ export class FailedtransactionreportComponent implements OnInit {
                 this.search();
               }
               else {
-                this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.data, type: Constants.ErrorType });
+                this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
               }
             }
           );
