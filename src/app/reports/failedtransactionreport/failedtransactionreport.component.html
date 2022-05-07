@@ -169,7 +169,7 @@
                                         <strong class="text-danger">(A)&nbsp;</strong>
                                     </span>
                                     <strong>{{complete.pnr}}</strong> (DOB - {{complete.created_at | date:
-                                    'dd-MM-yyyy'}} )
+                                    'dd-MM-yyyy | h:mm:ss'}} )
 
                                     <br>
                                     <span *ngFor="let frlocation of complete.from_location">

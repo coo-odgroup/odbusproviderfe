@@ -26,6 +26,15 @@ export class GenerateFailledTransactionService {
   }
 
 
+  generateTicket(post): Observable<any> {
+    return this.httpClient.post<any>(Constants.CONSUMER_API_URL+'GenerateFailedTicket', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+
 
   errorHandler(error:any) {
     let errorMessage = '';
@@ -33,7 +42,6 @@ export class GenerateFailledTransactionService {
       errorMessage = error.error.message;
     } else {
       errorMessage = error;
-     // `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(errorMessage);
  }
