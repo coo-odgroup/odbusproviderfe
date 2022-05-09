@@ -139,6 +139,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Transaction ID</th>
+                                <th>Razor pay Data</th>
                                 <th scope="col">BusName/No </th>
                                 <th scope="col">Seat Booked</th>
                                 <th scope="col">Src -> Dest</th>
@@ -176,17 +177,23 @@
                                         {{frlocation.name}}
                                     </span> -
                                     ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
-                                    <br>
-                                    <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
-                                    <br>
-                                    <strong
-                                        style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
-
-
                                 </td>
-    
-    
-                           
+                                <td>
+                                    <strong  style="color: darkgoldenrod;" *ngIf ="complete.razerPayPaymentId">
+                                        {{complete.razerPayPaymentId}}
+                                    </strong>
+                                    <br>
+                                    <strong style="color: brown;" >
+                                        {{complete.customer_payment.order_id}}
+                                    </strong>
+                                    <br>
+                                    <strong class="btn btn-success"  style="color: white; background: greem;" *ngIf ="complete.razerPayStatus">
+                                        {{complete.razerPayStatus}}
+                                    </strong>
+                                    
+                               
+                                    
+                                </td>                          
                                 <td>
                                     <strong>{{ complete.bus.name }}</strong><br>
                                     {{ complete.bus.bus_number }}
@@ -319,8 +326,11 @@
                                     <b>{{complete.odbus_charges}}</b>
                                 </td> -->
                                 <td>
-                                    <button class="btn btn-success btn-sm" (click)="generateTicket(i);">GENERATE</button>
-                                    <!-- <button class="btn btn-success btn-sm" (click)="generateTicket(i);OpenModal(content);">GENERATE</button> -->
+                                    <span *ngIf ="complete.razerPayStatus">
+                                        <button class="btn btn-success btn-sm" (click)="generateTicket(i);" *ngIf ="complete.razerPayStatus == 'captured'">GENERATE</button>
+                                    </span>
+                                    
+                                  
                                 </td>
                             </tr>
                         </tbody>
