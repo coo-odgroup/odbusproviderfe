@@ -75,7 +75,7 @@ export class AgentbookingreportComponent implements OnInit {
   {
     
     /* pass here the table id */
-    let element = document.getElementById('print-section');
+    let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
  
     /* generate workbook and add the worksheet */

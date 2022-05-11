@@ -70,7 +70,7 @@ export class FailedtransactionreportComponent implements OnInit {
       bus_operator_id: [null],
       payment_id: [null], pnr: [null],
       date_type: ['booking'],
-      rows_number: 50,
+      rows_number: 10,
       source_id: [null],
       destination_id: [null],
       rangeFromDate: [null],
@@ -118,6 +118,7 @@ export class FailedtransactionreportComponent implements OnInit {
       this.rs.failledtransactionReport(data).subscribe(
         res => {
           this.completedata = res.data;
+          console.log(res.data.data);
           this.spinner.hide();
         }
       );
@@ -169,7 +170,7 @@ export class FailedtransactionreportComponent implements OnInit {
       bus_operator_id: [null],
       payment_id: [null], pnr: [null],
       date_type: ['booking'],
-      rows_number: 50,
+      rows_number: 10,
       source_id: [null],
       destination_id: [null],
       rangeFromDate: [null],
@@ -218,7 +219,7 @@ export class FailedtransactionreportComponent implements OnInit {
   }
 
   generateTicket(id) {
-
+    this.spinner.show();
     this.comData = [];
     this.seatIDs = [];
     this.seatStatu = null;
@@ -252,15 +253,19 @@ export class FailedtransactionreportComponent implements OnInit {
               if (resp.status == 1) {
                 this.notificationService.addToast({ title: Constants.SuccessTitle, msg: "Ticket has been generated", type: Constants.SuccessType });
                 this.search();
+                this.spinner.hide();
+
               }
               else {
                 this.notificationService.addToast({ title: Constants.ErrorTitle, msg: resp.message, type: Constants.ErrorType });
+                this.spinner.hide();
               }
             }
           );
         }
         else {
           this.notificationService.addToast({ title: Constants.ErrorTitle, msg: res.data, type: Constants.ErrorType });
+          this.spinner.hide();
         }
       }
     );

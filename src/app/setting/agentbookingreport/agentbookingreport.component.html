@@ -354,6 +354,99 @@
                 </div>
             </div>
         </app-card>
+        <div style="display: none;" id="export-section">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th>Pnr No</th>
+                        <th>Seat No</th>
+                        <th>Sleeper No</th>
+                        <th>Bus Number</th>
+                        <th>Bus Name</th>
+                        <!-- <th>From- To</th> -->
+                        <th>Source- Destination</th>
+                        <th>Journey Date</th>
+                        <th>Passenger Details</th>
+                        <th>User Name</th>
+                        <th>User Phone</th>
+                        <th>User Email</th>
+                        <th>Total Fare</th>
+                        <th>Seater Fare</th>
+                        <th>Sleeper Fare</th>
+                        <td>Agent Commission</td>
+                        <td>Agent Fee</td>                      
+                    </tr>
+                </thead>
+
+              
+
+
+                <tbody *ngIf="completedata?.length != 0">
+                    <tr *ngFor="let complete of completedata?.data.data; let i = index">
+                        <td>{{complete.pnr}}</td>
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
+
+                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngFor="let seat of complete.booking_detail;">
+
+                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span> 
+                            </span>
+                        </td>
+                        <td>{{ complete.bus.bus_number }}</td>
+
+                        <td>{{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ] </td>
+                        <!-- <td>
+                            {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
+                        </td> -->
+                        <td>
+                            <span *ngFor="let boarding of complete.from_location;">
+                                {{boarding.name}}
+                            </span> -
+                            <span *ngFor="let dropping of complete.to_location;">
+                                {{dropping.name}}
+                            </span>
+                        </td>
+                        <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
+                        <td>
+                            <p *ngFor="let passanger of complete.booking_detail;">
+                                {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                {{passanger.bus_seats.seats.seatText}}] ,
+                            </p>
+                        </td>
+
+                        <td>
+                            {{complete.users.name}}
+                        </td>
+                        <td>
+                            {{complete.users.phone}}
+                        </td>
+                        <td>
+                            {{complete.users.email}}
+                        </td>
+
+                        <td>
+                            {{complete.total_fare}}
+                        </td>
+                        <td>
+                            {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
+                        </td>
+                        <td>
+                            {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
+                        </td>
+                        <td>
+                            {{complete.agent_commission }}
+                        </td>
+                        <td>
+                            {{complete.customer_comission }}
+                        </td>                      
+                    </tr>
+                </tbody>
+            </table>
+        </div>
        
     </div>
 </div>
