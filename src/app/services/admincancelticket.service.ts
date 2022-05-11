@@ -37,6 +37,36 @@ export class AdmincancelticketService {
       .pipe(
         catchError(this.errorHandler)
       )
+  }  
+
+  //Get Cancel Message to customer
+  GetCancelSmsToCustomer(post){
+      return this.httpClient.post<any>(this.apiURL + '/GetCancelSmsToCustomer', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  //Get Cancel Message to CMO
+  GetCancelSmsToCMO(post){
+      return this.httpClient.post<any>(this.apiURL + '/GetCancelSmsToCMO', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  save_CancelcustomSMSCustomer(post){
+    return this.httpClient.post<any>(this.apiURL + '/save_CancelcustomSMSToCustomer', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  save_CancelcustomSMSToCMO(post){
+    return this.httpClient.post<any>(this.apiURL + '/save_CancelcustomSMSToCMO', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
   }
 
   getPnrDetails(post){

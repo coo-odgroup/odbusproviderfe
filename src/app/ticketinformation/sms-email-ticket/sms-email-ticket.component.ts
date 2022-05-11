@@ -49,6 +49,7 @@ export class SmsEmailTicketComponent implements OnInit {
   pnrDetails: any[];
   SMSDetails: any[];
   BookingID: any[];
+  CancelMsg: any[];
   msg: any;
   
 
@@ -103,9 +104,7 @@ export class SmsEmailTicketComponent implements OnInit {
     });
 
     this.CancelSmsToConductorForm = this.fb.group({
-        cconductor_mob:[null],
-        cmanager_mob:[null],
-        coperator_mob:[null],
+        ccmo_mob:[null],
         csms_to_cmo:[null],
         ccmo_reason:[null]
     });
@@ -134,7 +133,42 @@ export class SmsEmailTicketComponent implements OnInit {
 
   page(label:any){
     return label;
-   }
+  }
+
+  CancelSms_details()
+  {
+      if(this.sendSmsEmailTicketForm.value.action == 'cancelsmsToCustomer')
+      {
+          const pnr = {
+                         pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
+                      };
+         
+          this.acts.GetCancelSmsToCustomer(pnr).subscribe(
+              res => {                          
+                  this.CancelMsg = res.data;
+                  //console.log(this.CancelMsg);
+                  this.CancelSmsToCustomerForm.controls['ccustomer_mob'].setValue(this.CancelMsg[0].Phone);
+                  this.CancelSmsToCustomerForm.controls['csms_to_customer'].setValue(this.CancelMsg[0].Message);
+              }
+           );   
+      } 
+
+      if(this.sendSmsEmailTicketForm.value.action == 'cancelsmsToConductor')
+      {
+          const pnr = {
+                         pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
+                      };
+         
+          this.acts.GetCancelSmsToCMO(pnr).subscribe(
+              res => {                          
+                  this.CancelMsg = res.data;
+                  //console.log(this.CancelMsg);
+                  this.CancelSmsToConductorForm.controls['ccmo_mob'].setValue(this.CancelMsg[0].Phone);
+                  this.CancelSmsToConductorForm.controls['csms_to_cmo'].setValue(this.CancelMsg[0].Message);
+              }
+           );   
+      }
+  }
 
   Sms_details()
   {     
@@ -148,7 +182,9 @@ export class SmsEmailTicketComponent implements OnInit {
           this.acts.getSmsDetails(data).subscribe(
             res => {
 
-                this.SMSDetails = res.data;  
+                this.SMSDetails = res.data; 
+                
+                console.log(this.SMSDetails); 
 
                 if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer')
                 {                   
@@ -163,16 +199,7 @@ export class SmsEmailTicketComponent implements OnInit {
                     cmo_mob = cmo_mob.replace(']',''); 
                     this.SmsToConductorForm.controls['cmo_mob'].setValue(cmo_mob);
                     this.SmsToConductorForm.controls['sms_to_cmo'].setValue(this.SMSDetails[0].contents);
-                }
-                
-                // if(this.sendSmsEmailTicketForm.value.action == 'cancelsmsToCustomer')
-                // {                   
-                //     this.CancelSmsToCustomerForm.controls['ccustomer_mob'].setValue(this.SMSDetails[0].to);
-                //     this.CancelSmsToCustomerForm.controls['csms_to_customer'].setValue(this.SMSDetails[0].contents);
-                // }
-                
-                
-               
+                }                                
             }
           );
       }
@@ -231,7 +258,7 @@ export class SmsEmailTicketComponent implements OnInit {
                             added_by:localStorage.getItem('USERID')
                       };
 
-                      console.log(data);
+                      //console.log(data);
 
                       if(data != null)
                       {
@@ -245,9 +272,63 @@ export class SmsEmailTicketComponent implements OnInit {
                                 }
                           });   
                       }
-                  }                  
+                  }  
+                  else if(type == 'cancelsmsToCustomer')
+                  {
+                      const data = {
+                            pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                            booking_id:this.BookingID[0].id,
+                            type:this.sendSmsEmailTicketForm.value.action,
+                            mobile_no:this.CancelSmsToCustomerForm.value.ccustomer_mob,
+                            contents:this.CancelSmsToCustomerForm.value.csms_to_customer,
+                            reason:this.CancelSmsToCustomerForm.value.creason,
+                            added_by:localStorage.getItem('USERID')
+                      };
 
-                 
+                      //console.log(data); 
+
+                      if(data != null)
+                      {
+                          //Save data
+                          this.acts.save_CancelcustomSMSCustomer(data).subscribe(
+                              resp => {
+                                if(resp.status==1)
+                                {
+                                    this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+                                    this.ResetAttributes();
+                                }
+                          });   
+                      }
+                  }
+                  else if(type == 'cancelsmsToConductor')
+                  {
+                      const data = {
+                            pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                            booking_id:this.BookingID[0].id,
+                            type:this.sendSmsEmailTicketForm.value.action,
+                            mobile_no:this.CancelSmsToConductorForm.value.ccmo_mob,
+                            contents:this.CancelSmsToConductorForm.value.csms_to_cmo,
+                            reason:this.CancelSmsToConductorForm.value.ccmo_reason,
+                            added_by:localStorage.getItem('USERID')
+                      };
+
+                      //console.log(data); 
+
+                      if(data != null)
+                      {
+                          //Save data
+                          this.acts.save_CancelcustomSMSToCMO(data).subscribe(
+                              resp => {
+                                if(resp.status==1)
+                                {
+                                    this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+                                    this.ResetAttributes();
+                                }
+                          });   
+                      }
+                  }
+                  
+                                 
               }
             );      
       }
@@ -261,7 +342,7 @@ export class SmsEmailTicketComponent implements OnInit {
 
     if(pnr!=null)
     {
-      this.acts.getPnrDetails(pnr).subscribe(
+        this.acts.getPnrDetails(pnr).subscribe(
         res => {
           this.pnrDetails= res.data;
           // console.log(this.pnrDetails);
