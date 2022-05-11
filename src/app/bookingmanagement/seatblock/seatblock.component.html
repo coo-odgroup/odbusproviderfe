@@ -316,7 +316,7 @@
                                 <div class="col-sm-9">
                                   <ng-select [items]="buses" bindLabel="testing" bindValue="id" placeholder="Select Bus"
                                     formControlName="bus_id" [clearable]="false"
-                                    (change)="getSchedule();checkroute();checkEvent($event);" required>
+                                    (change)="getSchedule();checkroute();checkEvent($event);alreadyBlocks();" required>
                                   </ng-select>
 
                                   <span class="text-danger" *ngIf="
@@ -433,90 +433,114 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="row form-group col-sm-12">
-                          <div class="col-md-12">
-                            <div formArrayName="bus_seat_layout_data" class="col-12">
-                              <div class="row" *ngFor="
-                                  let layoutRow of seatBlockForm.controls
-                                    .bus_seat_layout_data.controls;
-                                  let layout_row = index
-                                " [formGroupName]="layout_row">
-                                <div formArrayName="lowerBerth" class="col-12"
-                                  style="display: flex; justify-content: center">
-                                  <div *ngFor="
-                                      let layoutCol of layoutRow['controls']
-                                        .lowerBerth['controls'];
-                                      let layout_row = index
-                                    " [formGroupName]="layout_row" style="
-                                      width: 50px;
-                                      float: left;
-                                      text-align: center;
-                                    ">
-                                    <!-- (change)="chooseSeat($event.target.checked,layoutCol.controls.seatType.value,layoutCol.controls.seatText.value,1)" -->
-                                    <label class="seatHolder">
-                                      <input type="checkbox" formControlName="seatChecked" *ngIf="
-                                          layoutCol.controls.seatType.value != 4
-                                        " />
-                                      <span class="seaterImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 1
-                                        "></span>
-                                      <span class="sleeperImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 2
-                                        "></span>
-                                      <span class="verticalImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 3
-                                        "></span>
-                                      <span class="blankImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 4
-                                        "></span>
-                                      <span *ngIf="
-                                          layoutCol.controls.seatType.value != 4
-                                        ">{{
-                                        layoutCol.controls.seatText.value
-                                        }}</span>
-                                    </label>
-                                  </div>
+                        <div class="col-md-9">
+                          <div formArrayName="bus_seat_layout_data" class="col-12">
+                            <div class="row" *ngFor="
+                                let layoutRow of seatBlockForm.controls
+                                  .bus_seat_layout_data.controls;
+                                let layout_row = index
+                              " [formGroupName]="layout_row">
+                              <div formArrayName="lowerBerth" class="col-12"
+                                style="display: flex; justify-content: center">
+                                <div *ngFor="
+                                    let layoutCol of layoutRow['controls']
+                                      .lowerBerth['controls'];
+                                    let layout_row = index
+                                  " [formGroupName]="layout_row" style="
+                                    width: 50px;
+                                    float: left;
+                                    text-align: center;
+                                  ">
+                                  <!-- (change)="chooseSeat($event.target.checked,layoutCol.controls.seatType.value,layoutCol.controls.seatText.value,1)" -->
+                                  <label class="seatHolder">
+                                    <input type="checkbox" formControlName="seatChecked" *ngIf="
+                                        layoutCol.controls.seatType.value != 4
+                                      " />
+                                    <span class="seaterImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 1
+                                      "></span>
+                                    <span class="sleeperImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 2
+                                      "></span>
+                                    <span class="verticalImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 3
+                                      "></span>
+                                    <span class="blankImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 4
+                                      "></span>
+                                    <span *ngIf="
+                                        layoutCol.controls.seatType.value != 4
+                                      ">{{
+                                      layoutCol.controls.seatText.value
+                                      }}</span>
+                                  </label>
                                 </div>
+                              </div>
 
-                                <div formArrayName="upperBerth" class="col-12"
-                                  style="display: flex; justify-content: center">
-                                  <div *ngFor="
-                                      let layoutCol of layoutRow['controls']
-                                        .upperBerth['controls'];
-                                      let layout_row = index
-                                    " [formGroupName]="layout_row" style="
-                                      width: 50px;
-                                      float: left;
-                                      text-align: center;
-                                    ">
-                                    <label class="seatHolder">
-                                      <input type="checkbox" formControlName="seatChecked" *ngIf="
-                                          layoutCol.controls.seatType.value != 4
-                                        " />
-                                      <span class="seaterImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 1
-                                        "></span>
-                                      <span class="sleeperImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 2
-                                        "></span>
-                                      <span class="verticalImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 3
-                                        "></span>
-                                      <span class="blankImage" *ngIf="
-                                          layoutCol.controls.seatType.value == 4
-                                        "></span>
-                                      <span *ngIf="
-                                          layoutCol.controls.seatType.value != 4
-                                        ">{{
-                                        layoutCol.controls.seatText.value
-                                        }}</span>
-                                    </label>
-                                  </div>
+                              <div formArrayName="upperBerth" class="col-12"
+                                style="display: flex; justify-content: center">
+                                <div *ngFor="
+                                    let layoutCol of layoutRow['controls']
+                                      .upperBerth['controls'];
+                                    let layout_row = index
+                                  " [formGroupName]="layout_row" style="
+                                    width: 50px;
+                                    float: left;
+                                    text-align: center;
+                                  ">
+                                  <label class="seatHolder">
+                                    <input type="checkbox" formControlName="seatChecked" *ngIf="
+                                        layoutCol.controls.seatType.value != 4
+                                      " />
+                                    <span class="seaterImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 1
+                                      "></span>
+                                    <span class="sleeperImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 2
+                                      "></span>
+                                    <span class="verticalImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 3
+                                      "></span>
+                                    <span class="blankImage" *ngIf="
+                                        layoutCol.controls.seatType.value == 4
+                                      "></span>
+                                    <span *ngIf="
+                                        layoutCol.controls.seatType.value != 4
+                                      ">{{
+                                      layoutCol.controls.seatText.value
+                                      }}</span>
+                                  </label>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
+                        <div class="col-md-3">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <table class="table" border="1" *ngIf="alreadyBlocksData.length > 0">
+                                <thead>
+                                  <tr>
+                                    <th> Date</th>
+                                    <th> Block Seats</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let aldBlock of alreadyBlocksData">
+                                    <td>
+                                        {{aldBlock.value[0].operation_date}}
+                                    </td>
+                                    <td>
+                                      <span *ngFor="let seat of aldBlock.value">
+                                          {{seat.seats.seatText}} ,
+                                      </span>
+                                    </td>
+                                  </tr>
+                                </tbody>                                
+                              </table>
+                            </div>
+                          </div>
+                        </div>                      
                       </div>
                     </form>
                   </div>
