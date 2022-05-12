@@ -50,6 +50,7 @@ export class SmsEmailTicketComponent implements OnInit {
   SMSDetails: any[];
   BookingID: any[];
   CancelMsg: any[];
+  EmailDetails:any[];
   msg: any;
   
 
@@ -179,31 +180,75 @@ export class SmsEmailTicketComponent implements OnInit {
 
       if(data != null)
       {
-          this.acts.getSmsDetails(data).subscribe(
-            res => {
+        if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer' || this.sendSmsEmailTicketForm.value.action == 'smsToConductor')
+        {
+            this.acts.getSmsDetails(data).subscribe(
+                res => {
 
-                this.SMSDetails = res.data; 
-                
-                console.log(this.SMSDetails); 
+                    this.SMSDetails = res.data; 
+                    
+                    console.log(this.SMSDetails); 
 
-                if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer')
-                {                   
-                    this.SmsToCustomerForm.controls['customer_mob'].setValue(this.SMSDetails[0].to);
-                    this.SmsToCustomerForm.controls['sms_to_customer'].setValue(this.SMSDetails[0].contents);
-                }  
+                    if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer')
+                    {                   
+                        this.SmsToCustomerForm.controls['customer_mob'].setValue(this.SMSDetails[0].to);
+                        this.SmsToCustomerForm.controls['sms_to_customer'].setValue(this.SMSDetails[0].contents);
+                    }  
+                    
+                    if(this.sendSmsEmailTicketForm.value.action == 'smsToConductor')
+                    {                   
+                        let cmo_mob = this.SMSDetails[0].to;
+                        cmo_mob = cmo_mob.replace('[',''); 
+                        cmo_mob = cmo_mob.replace(']',''); 
+                        this.SmsToConductorForm.controls['cmo_mob'].setValue(cmo_mob);
+                        this.SmsToConductorForm.controls['sms_to_cmo'].setValue(this.SMSDetails[0].contents);
+                    }                                
+                }
+            );
+        }   
+        
+        if(this.sendSmsEmailTicketForm.value.action == 'emailToCustomer' || this.sendSmsEmailTicketForm.value.action == 'emailToBooking')
+        {            
+                const data = {
+                    pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                    action:this.sendSmsEmailTicketForm.value.action
+                };
                 
-                if(this.sendSmsEmailTicketForm.value.action == 'smsToConductor')
-                {                   
-                    let cmo_mob = this.SMSDetails[0].to;
-                    cmo_mob = cmo_mob.replace('[',''); 
-                    cmo_mob = cmo_mob.replace(']',''); 
-                    this.SmsToConductorForm.controls['cmo_mob'].setValue(cmo_mob);
-                    this.SmsToConductorForm.controls['sms_to_cmo'].setValue(this.SMSDetails[0].contents);
-                }                                
-            }
-          );
+                if(this.sendSmsEmailTicketForm.value.action == 'emailToCustomer')
+                {
+                    this.acts.getEmailID(data).subscribe(
+                        res => {
+                            this.EmailDetails = res.data;
+                            console.log(this.EmailDetails[0].users.email);  
+                            this.EmailToCustomerForm.controls['customer_eml'].setValue(this.EmailDetails[0].users.email);
+                        }
+                    )
+                }   
+                
+                if(this.sendSmsEmailTicketForm.value.action == 'emailToBooking')
+                {
+                    this.acts.getEmailID(data).subscribe(
+                        res => {
+                            this.EmailDetails = res.data;
+                            console.log(this.EmailDetails);  
+                            this.EmailToBookingForm.controls['booking_eml'].setValue(this.EmailDetails[0].Booking_email);
+                            this.EmailToBookingForm.controls['eml_msg'].setValue(this.EmailDetails[0].Message);
+                        }
+                    )
+                }
+        }        
+
       }
   } 
+
+  SendEmailToBooking(){
+        const data = {
+            pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+            action:this.sendSmsEmailTicketForm.value.action
+        };
+
+
+  }
 
   //Save Customer SMS Data to custom_sms table
   SaveCustomerSMS(){

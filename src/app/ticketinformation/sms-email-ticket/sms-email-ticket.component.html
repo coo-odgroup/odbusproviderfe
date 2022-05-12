@@ -355,7 +355,7 @@
                         <div class="form-group row">
                             <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
                             <div class="col-sm-10">
-                                <button type="button" class="btn btn-danger btn-sm">Submit</button>
+                                <button type="button" class="btn btn-danger btn-sm" (click)="SendEmailToBooking()">Submit</button>
                             </div>
                          </div>  
                     </div>
@@ -379,7 +379,7 @@
                           <label for="name" class="col-sm-2 col-form-label">Email ID<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Email ID: booking@odbus.in" value="booking@odbus.in" formControlName="booking_eml">
+                            <input type="text" class="form-control" placeholder="Email ID: booking@odbus.in" formControlName="booking_eml">
                           </div>
                         </div>
                       </div>

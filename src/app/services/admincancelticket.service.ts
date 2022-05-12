@@ -99,6 +99,13 @@ export class AdmincancelticketService {
     )
   }
 
+  getEmailID(post){
+      return this.httpClient.post<any>(this.apiURL + '/getEmailID', JSON.stringify(post), this.httpOptions)
+      .pipe(
+          catchError(this.errorHandler)
+      )
+  }
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
