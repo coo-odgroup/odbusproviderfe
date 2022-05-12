@@ -30,6 +30,20 @@ export class BusscheduleService {
   }
 
 
+  alreadyBlocks(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/alreadyBlocks', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  alreadyOpen(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/alreadyOpen', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL+ '/busSchedulerData', JSON.stringify(post), this.httpOptions)
     .pipe(

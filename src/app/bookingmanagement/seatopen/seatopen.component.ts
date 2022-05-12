@@ -101,6 +101,7 @@ export class SeatopenComponent implements OnInit {
   page_no=1;
   busSchedule: any;
   seatOpenDetails: any;
+  alreadyOpenData: any = [];
   constructor(
     calendar: NgbCalendar,
     private seatopenService: SeatopenService,
@@ -246,7 +247,7 @@ export class SeatopenComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          console.log(mainArray);
+          // console.log(mainArray);
 
 
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
@@ -333,18 +334,41 @@ export class SeatopenComponent implements OnInit {
 
   }
 
+alreadyOpen() 
+{
+  this.alreadyOpenData = [];
+  const data = {
+    bus_id: this.seatOpenForm.value.bus_id
+  };
+
+  this.bss.alreadyOpen(data).subscribe(
+    seatData => {
+      let opensData = seatData.data ;
+      // console.log(opensData );
+      opensData = Object.keys(opensData).map(k1 => ({ value: opensData[k1] }));
+      if(opensData.length >0)
+      {
+        for (var bus of opensData) {
+          this.alreadyOpenData.push(bus);
+         
+       }
+      }
+    }
+  );
+  }
+
   checkEvent(event: any) {
     this.spinner.show();
     const data = {
       bus_id: this.seatOpenForm.value.bus_id
     };
-    console.log(data);
+    // console.log(data);
 
     this.busService.getSelectedSeat(data.bus_id).subscribe(
       seatData => {
-        console.log('get seat layout');
+        // console.log('get seat layout');
         this.selectedSeats = seatData.data['seat'];
-        console.log(this.selectedSeats);
+        // console.log(this.selectedSeats);
         this.seatlayoutService.seatsBus(data).subscribe(
           resp => {            
             let counter = 0;

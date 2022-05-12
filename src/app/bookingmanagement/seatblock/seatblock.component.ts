@@ -105,6 +105,7 @@ export class SeatblockComponent implements OnInit {
   page_no=1;
   busSchedule: any;
   lastUrl: any;
+  alreadyBlocksData: any=[];
   constructor(
     calendar: NgbCalendar,
     private seatblockService: SeatblockService,
@@ -346,7 +347,30 @@ export class SeatblockComponent implements OnInit {
   }
 
 
+alreadyBlocks() 
+{
+  this.alreadyBlocksData = [];
+  const data = {
+    bus_id: this.seatBlockForm.value.bus_id
+  };
 
+  this.bss.alreadyBlocks(data).subscribe(
+    seatData => {
+      let BlocksData = seatData.data ;
+      // console.log(this.alreadyBlocksData);
+
+
+      BlocksData = Object.keys(BlocksData).map(k1 => ({ value: BlocksData[k1] }));
+      if(BlocksData.length >0)
+      {
+        for (var bus of BlocksData) {
+          this.alreadyBlocksData.push(bus);
+         
+       }
+      }
+    }
+  );
+  }
 
   checkEvent(event: any) {
     this.spinner.show();
