@@ -270,7 +270,8 @@ export class SmsEmailTicketComponent implements OnInit {
     {    
         const data = {
             pnr:this.sendSmsEmailTicketForm.value.pnr_no,
-            mobile:this.EmailToCustomerForm.value.customer_mobile
+            mobile:this.EmailToCustomerForm.value.customer_mobile,
+            email:this.EmailToCustomerForm.value.customer_eml
         };
 
         this.acts.sendEmailToCustomer(data).subscribe(
