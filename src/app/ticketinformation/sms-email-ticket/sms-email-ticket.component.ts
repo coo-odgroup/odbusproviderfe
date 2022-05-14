@@ -51,6 +51,7 @@ export class SmsEmailTicketComponent implements OnInit {
   BookingID: any[];
   CancelMsg: any[];
   EmailDetails:any[];
+  EmailToBooking:any[];
   msg: any;
   
 
@@ -88,20 +89,22 @@ export class SmsEmailTicketComponent implements OnInit {
     });
 
     this.EmailToCustomerForm = this.fb.group({
+      customer_mobile:[null],       
       customer_eml:[null],     
       ceml_reason:[null]
     });
 
     this.EmailToBookingForm = this.fb.group({
-      booking_eml:[null],
-      eml_msg:[null],
-      eml_reason:[null]
+        Email_PNR:[null],  
+        booking_eml:[null],
+        eml_msg:[null],
+        eml_reason:[null]
     });
 
     this.CancelSmsToCustomerForm = this.fb.group({
-      ccustomer_mob:[null],
-      csms_to_customer:[null],
-      creason:[null]
+        ccustomer_mob:[null],
+        csms_to_customer:[null],
+        creason:[null]
     });
 
     this.CancelSmsToConductorForm = this.fb.group({
@@ -111,8 +114,8 @@ export class SmsEmailTicketComponent implements OnInit {
     });
 
    this.CancelEmailToCustomerForm = this.fb.group({
-      ccustomer_eml:[null],     
-      cceml_reason:[null]
+        ccustomer_eml:[null],     
+        cceml_reason:[null]
    });
 
    this.CancelEmailToSupportForm = this.fb.group({
@@ -221,6 +224,7 @@ export class SmsEmailTicketComponent implements OnInit {
                             this.EmailDetails = res.data;
                             console.log(this.EmailDetails[0].users.email);  
                             this.EmailToCustomerForm.controls['customer_eml'].setValue(this.EmailDetails[0].users.email);
+                            this.EmailToCustomerForm.controls['customer_mobile'].setValue(this.EmailDetails[0].users.phone);
                         }
                     )
                 }   
@@ -231,6 +235,7 @@ export class SmsEmailTicketComponent implements OnInit {
                         res => {
                             this.EmailDetails = res.data;
                             console.log(this.EmailDetails);  
+                            this.EmailToBookingForm.controls['Email_PNR'].setValue(this.EmailDetails[0].PNR);
                             this.EmailToBookingForm.controls['booking_eml'].setValue(this.EmailDetails[0].Booking_email);
                             this.EmailToBookingForm.controls['eml_msg'].setValue(this.EmailDetails[0].Message);
                         }
@@ -241,14 +246,42 @@ export class SmsEmailTicketComponent implements OnInit {
       }
   } 
 
-  SendEmailToBooking(){
+  SendEmailToBooking()
+  {   
+       const data = {
+            pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+            action:this.sendSmsEmailTicketForm.value.action,
+            Booking_Email:this.EmailToBookingForm.value.booking_eml,
+            Booking_Msg:this.EmailToBookingForm.value.eml_msg,
+            Booking_Reason:this.EmailToBookingForm.value.eml_reason,
+        };
+        
+        this.acts.sendEmailToBooking(data).subscribe(
+            res => {                    
+                if(res.status==1)
+                {
+                    this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
+                    this.ResetAttributes();
+                }                 
+        });  
+  }
+
+    sendEmailToCustomer()
+    {    
         const data = {
             pnr:this.sendSmsEmailTicketForm.value.pnr_no,
-            action:this.sendSmsEmailTicketForm.value.action
+            mobile:this.EmailToCustomerForm.value.customer_mobile
         };
 
-
-  }
+        this.acts.sendEmailToCustomer(data).subscribe(
+            res => {                    
+                if(res.status==1)
+                {
+                    this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
+                    this.ResetAttributes();
+                }                 
+         });  
+    }
 
   //Save Customer SMS Data to custom_sms table
   SaveCustomerSMS(){

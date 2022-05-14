@@ -106,6 +106,20 @@ export class AdmincancelticketService {
       )
   }
 
+  sendEmailToBooking(post){
+    return this.httpClient.post<any>(this.apiURL + '/sendEmailToBooking', JSON.stringify(post), this.httpOptions)
+    .pipe(
+        catchError(this.errorHandler)
+    )
+  } 
+
+  sendEmailToCustomer(post){
+    return this.httpClient.post<any>(this.apiURL + '/sendEmailToCustomer', JSON.stringify(post), this.httpOptions)
+    .pipe(
+        catchError(this.errorHandler)
+    )
+  } 
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

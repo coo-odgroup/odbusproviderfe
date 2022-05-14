@@ -325,7 +325,8 @@
                 [options]="false" cardClass=" table-border-style user-profile-list">
               <div class="form-material">
                 <div class="right-icon-control">
-                  <form [formGroup]="EmailToCustomerForm" class="editForm" novalidate>                   
+                  <form [formGroup]="EmailToCustomerForm" class="editForm" novalidate>                         
+                    <input type="hidden" formControlName="customer_mobile">              
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group row">
@@ -354,8 +355,8 @@
                     <div class="col-12 mt-3">
                         <div class="form-group row">
                             <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
-                            <div class="col-sm-10">
-                                <button type="button" class="btn btn-danger btn-sm" (click)="SendEmailToBooking()">Submit</button>
+                            <div class="col-sm-10"> 
+                                <button type="button" class="btn btn-danger btn-sm" (click)="sendEmailToCustomer()">Submit</button>
                             </div>
                          </div>  
                     </div>
@@ -372,7 +373,8 @@
                 [options]="false" cardClass=" table-border-style user-profile-list">
               <div class="form-material">
                 <div class="right-icon-control">
-                  <form [formGroup]="EmailToBookingForm" class="editForm" novalidate>                   
+                  <form [formGroup]="EmailToBookingForm" class="editForm" novalidate>   
+                    <input type="hidden"  formControlName="Email_PNR" >               
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group row">
@@ -408,7 +410,7 @@
                         <div class="form-group row">
                             <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
                             <div class="col-sm-10">
-                                <button type="button" class="btn btn-danger btn-sm">Submit</button>
+                                <button type="button" class="btn btn-danger btn-sm" (click)="SendEmailToBooking()">Submit</button>
                             </div>
                          </div>  
                     </div>
