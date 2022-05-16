@@ -40,12 +40,13 @@ export class SmsEmailTicketComponent implements OnInit {
   buses :any;
   busoperators: any;
   locations: any;
+  
   public isSubmit: boolean;
   public mesgdata:any;
   public ModalHeading:any;
   public ModalBtn:any;
   public searchBy:any;
-  all: any;
+  all: any;  
   pnrDetails: any[];
   SMSDetails: any[];
   BookingID: any[];
@@ -119,9 +120,8 @@ export class SmsEmailTicketComponent implements OnInit {
    });
 
    this.CancelEmailToSupportForm = this.fb.group({
-        support_eml:[null],
-        seml_msg:[null],
-        seml_reason:[null]
+        cnclsupport_eml:[null],       
+        cncleml_reason:[null]
    });
 
    this.formConfirm=this.fb.group({
@@ -171,6 +171,27 @@ export class SmsEmailTicketComponent implements OnInit {
                   this.CancelSmsToConductorForm.controls['csms_to_cmo'].setValue(this.CancelMsg[0].Message);
               }
            );   
+      }
+
+      if(this.sendSmsEmailTicketForm.value.action == 'cancelemailToSupport')
+      {
+           this.CancelEmailToSupportForm.controls['cnclsupport_eml'].setValue('support@odbus.in');
+      }
+
+      if(this.sendSmsEmailTicketForm.value.action == 'cancelemailToCustomer')
+      {
+            const data = {
+                pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                action:this.sendSmsEmailTicketForm.value.action
+            };
+
+            this.acts.getEmailID(data).subscribe(
+                res => {
+                    this.EmailDetails = res.data;
+                    //console.log(this.EmailDetails);  
+                    this.CancelEmailToCustomerForm.controls['ccustomer_eml'].setValue(this.EmailDetails[0].users.email);                   
+                }
+            )
       }
   }
 
@@ -281,8 +302,78 @@ export class SmsEmailTicketComponent implements OnInit {
                     this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
                     this.ResetAttributes();
                 }                 
-         });  
+            });  
     }
+
+    sendCancelEmailToSupport()
+    {
+        const pnr = {
+            pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
+         };
+
+        this.acts.GetCancelSmsToCustomer(pnr).subscribe(
+            res => {                          
+                this.CancelMsg = res.data;
+
+                const data = {
+                    pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                    mobile:this.CancelMsg[0].Phone,
+                    email:this.CancelEmailToSupportForm.value.cnclsupport_eml
+                };
+
+                this.acts.sendCancelEmailToSupport(data).subscribe(
+                    res => {
+                        if(res.status == 1)
+                        {
+                            this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
+                            this.ResetAttributes();
+                        } 
+                    }
+                );  
+            }
+        ); 
+    }
+
+    sendCancelEmailToCustomer()
+    {
+        const pnr = {
+            pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
+         };
+
+        this.acts.GetCancelSmsToCustomer(pnr).subscribe(
+            res => {                          
+                this.CancelMsg = res.data;                
+                const data = {
+                    pnr:this.sendSmsEmailTicketForm.value.pnr_no,
+                    mobile:this.CancelMsg[0].Phone,
+                    email:this.CancelEmailToCustomerForm.value.ccustomer_eml
+                };
+
+                //console.log(data); 
+
+                this.acts.sendCancelEmailToSupport(data).subscribe(
+                    res => {
+                        if(res.status == 1)
+                        {
+                            this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
+                            this.ResetAttributes();
+                        } 
+                    }
+                );  
+            }
+        ); 
+    }
+
+    previewTicket()
+    {          
+       let pnr = this.sendSmsEmailTicketForm.value.pnr_no;       
+       let url = 'https://www.odbus.in/pnr/'+pnr;       
+       let myWindow = window.open(url,"_blank");
+       myWindow.focus();
+       
+    }
+
+
 
   //Save Customer SMS Data to custom_sms table
   SaveCustomerSMS(){
@@ -436,11 +527,7 @@ export class SmsEmailTicketComponent implements OnInit {
     }
   }
 
- 
-  previewCancelTicket()
-  {
-    // console.log(this.sendSmsEmailTicketForm.value);
-  }
+
 
   sendTicket()
   {
@@ -453,7 +540,6 @@ export class SmsEmailTicketComponent implements OnInit {
           return false;
       }    
   }
-
 
   ResetAttributes()
   {

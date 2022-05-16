@@ -70,33 +70,31 @@ export class AdmincancelticketService {
   }
 
   getPnrDetails(post){
-    return this.httpClient.post<any>(this.apiURL + '/getPnrDetailsForSms', JSON.stringify(post), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
-  }
-
- 
+      return this.httpClient.post<any>(this.apiURL + '/getPnrDetailsForSms', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  } 
 
   getAllData(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/cancelticketdata', JSON.stringify(post), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
+      return this.httpClient.post<any>(this.apiURL + '/cancelticketdata', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
   }
 
   getAllaginationData(url,post): Observable<any> {
-    return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
+      return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
   }
 
   cancelTicket(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/cancelticket', JSON.stringify(post), this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    )
+      return this.httpClient.post<any>(this.apiURL + '/cancelticket', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
   }
 
   getEmailID(post){
@@ -119,6 +117,13 @@ export class AdmincancelticketService {
         catchError(this.errorHandler)
     )
   } 
+
+  sendCancelEmailToSupport(post){
+    return this.httpClient.post<any>(this.apiURL + '/sendCancelEmailToSupport', JSON.stringify(post), this.httpOptions)
+    .pipe(
+        catchError(this.errorHandler)
+    )
+  }
 
   errorHandler(error) {
     let errorMessage = '';

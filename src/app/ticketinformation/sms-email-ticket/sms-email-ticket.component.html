@@ -64,19 +64,9 @@
                                         </div>
                                         <div class="from-group">
                                             <label for="name" class="col-sm-12 col-form-label">
-                                                <button class="btn btn-info" (click)="ResetAttributes();OpenModal(content)">Preview Ticket</button>
+                                                <button class="btn btn-info" (click)="previewTicket()">Preview Ticket</button>
                                             </label>                                         
-                                        </div>
-                                        <!-- <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
-                                            <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==1 && contact.status==1  && contact.booking_sms_send == 1">
-                                                <input type="radio" formControlName="action" value="smsToManager">  Sms To Manager
-                                            </label>                                         
-                                        </div>
-                                        <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
-                                            <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==0 && contact.status==1   && contact.booking_sms_send == 1">
-                                                <input type="radio" formControlName="action" value="smsToOwner">  Sms To Owner
-                                            </label>                                         
-                                        </div> -->
+                                        </div>                                     
                                     </div>
                                 </div>
                                 
@@ -91,33 +81,17 @@
                                             <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==2 && contact.status==1  && contact.booking_sms_send == 1">
                                                 <input type="radio" formControlName="action" value="cancelsmsToConductor" (change)="CancelSms_details();"> Cancel Sms To Conductor/Manager/Owner
                                             </label>                                         
-                                        </div>
-                                        <!-- <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
-                                            <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==1 && contact.status==1  && contact.booking_sms_send == 1">
-                                                <input type="radio" formControlName="action" value="cancelsmsToManager"> Cancel Sms To Manager
-                                            </label>                                         
-                                        </div>
-                                        <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
-                                            <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==0 && contact.status==1   && contact.booking_sms_send == 1">
-                                                <input type="radio" formControlName="action" value="cancelsmsToOwner"> Cancel Sms To Owner
-                                            </label>                                         
-                                        </div> -->
+                                        </div>                                      
                                         <div class="from-group">
                                             <label for="name" class="col-sm-12 col-form-label">
-                                                <input type="radio" formControlName="action" value="cancelemailToCustomer" (change)="Sms_details();"> Cancel Email To Customer
+                                                <input type="radio" formControlName="action" value="cancelemailToCustomer" (change)="CancelSms_details                                                                            ();"> Cancel Email To Customer
                                             </label>                                         
                                         </div>
                                         <div class="from-group">
                                             <label for="name" class="col-sm-12 col-form-label">
-                                                <input type="radio" formControlName="action" value="cancelemailToSupport" (change)="Sms_details();"> Cancel Email To support@odbus.in
+                                                <input type="radio" formControlName="action" value="cancelemailToSupport" (change)="CancelSms_details();"> Cancel Email To support@odbus.in
                                             </label>                                         
-                                        </div>
-                                        <div class="from-group">
-                                            <label for="name" class="col-sm-12 col-form-label">
-                                                <button class="btn btn-info" (click)="ResetAttributes();OpenModal(content)">Preview Cancel Email</button>
-                                                <!-- <input type="button" formControlName="emailToCustomer"> Preview Cancel Email -->
-                                            </label>                                         
-                                        </div>
+                                        </div>                                       
                                     </div>
                                 </div> 
                                 
@@ -530,6 +504,7 @@
              </app-card> 
             </div>
         </div>
+
         <!-- Cancel Email To Customer -->    
         <div class="row">
             <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='cancelemailToCustomer'">
@@ -567,7 +542,7 @@
                         <div class="form-group row">
                             <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
                             <div class="col-sm-10">
-                                <button type="button" class="btn btn-danger btn-sm">Submit</button>
+                                <button type="button" class="btn btn-danger btn-sm" (click)="sendCancelEmailToCustomer()">Submit</button>
                             </div>
                          </div>  
                     </div>
@@ -580,7 +555,7 @@
         <!-- Cancel Email To support@odbus.in -->    
         <div class="row">
             <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='cancelemailToSupport'">
-             <app-card [hidHeader]="false" cardTitle="Email To booking@odbus.in" cardClass="card-datatable"
+             <app-card [hidHeader]="false" cardTitle="Email To support@odbus.in" cardClass="card-datatable"
                 [options]="false" cardClass=" table-border-style user-profile-list">
               <div class="form-material">
                 <div class="right-icon-control">
@@ -591,26 +566,17 @@
                           <label for="name" class="col-sm-2 col-form-label">Email ID<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Email ID: support@odbus.in" formControlName="support_eml">
+                            <input type="text" class="form-control" placeholder="support@odbus.in" formControlName="cnclsupport_eml" [readonly]="true">
                           </div>
                         </div>
                       </div>
-
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label for="email" class="col-sm-2 col-form-label">Email Message<span
-                              class="text-danger">*</span></label>
-                          <div class="col-sm-10">
-                             <textarea class="form-control" placeholder="Email Message" rows="5" formControlName="seml_msg"></textarea>                             
-                          </div>
-                        </div>
-                      </div>
+               
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label for="phone" class="col-sm-2 col-form-label">Reason<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control"  placeholder="Reason" formControlName="seml_reason">                            
+                            <input type="text" class="form-control"  placeholder="Reason" formControlName="cncleml_reason">                            
                           </div>
                         </div>
                       </div>
@@ -620,7 +586,7 @@
                         <div class="form-group row">
                             <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
                             <div class="col-sm-10">
-                                <button type="button" class="btn btn-danger btn-sm">Submit</button>
+                                <button type="button" class="btn btn-danger btn-sm" (click)="sendCancelEmailToSupport()">Submit</button>
                             </div>
                          </div>  
                     </div>
