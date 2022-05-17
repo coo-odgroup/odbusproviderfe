@@ -243,7 +243,7 @@ export class SmsEmailTicketComponent implements OnInit {
                     this.acts.getEmailID(data).subscribe(
                         res => {
                             this.EmailDetails = res.data;
-                            console.log(this.EmailDetails[0].users.email);  
+                            //console.log(this.EmailDetails[0].users.email);  
                             this.EmailToCustomerForm.controls['customer_eml'].setValue(this.EmailDetails[0].users.email);
                             this.EmailToCustomerForm.controls['customer_mobile'].setValue(this.EmailDetails[0].users.phone);
                         }
@@ -255,7 +255,7 @@ export class SmsEmailTicketComponent implements OnInit {
                     this.acts.getEmailID(data).subscribe(
                         res => {
                             this.EmailDetails = res.data;
-                            console.log(this.EmailDetails);  
+                            //console.log(this.EmailDetails);  
                             this.EmailToBookingForm.controls['Email_PNR'].setValue(this.EmailDetails[0].PNR);
                             this.EmailToBookingForm.controls['booking_eml'].setValue(this.EmailDetails[0].Booking_email);
                             this.EmailToBookingForm.controls['eml_msg'].setValue(this.EmailDetails[0].Message);
