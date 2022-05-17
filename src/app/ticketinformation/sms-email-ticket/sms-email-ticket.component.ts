@@ -196,7 +196,8 @@ export class SmsEmailTicketComponent implements OnInit {
   }
 
   Sms_details()
-  {     
+  {  
+         
       const data = {
           pnr:this.sendSmsEmailTicketForm.value.pnr_no,
           action:this.sendSmsEmailTicketForm.value.action
@@ -211,7 +212,7 @@ export class SmsEmailTicketComponent implements OnInit {
 
                     this.SMSDetails = res.data; 
                     
-                    console.log(this.SMSDetails); 
+                    //console.log(this.SMSDetails); 
 
                     if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer')
                     {                   
@@ -269,6 +270,7 @@ export class SmsEmailTicketComponent implements OnInit {
 
   SendEmailToBooking()
   {   
+    this.spinner.show(); 
        const data = {
             pnr:this.sendSmsEmailTicketForm.value.pnr_no,
             action:this.sendSmsEmailTicketForm.value.action,
@@ -281,6 +283,7 @@ export class SmsEmailTicketComponent implements OnInit {
             res => {                    
                 if(res.status==1)
                 {
+                    this.spinner.hide(); 
                     this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
                     this.ResetAttributes();
                 }                 
@@ -288,7 +291,8 @@ export class SmsEmailTicketComponent implements OnInit {
   }
 
     sendEmailToCustomer()
-    {    
+    {  
+        this.spinner.show();   
         const data = {
             pnr:this.sendSmsEmailTicketForm.value.pnr_no,
             mobile:this.EmailToCustomerForm.value.customer_mobile,
@@ -299,6 +303,7 @@ export class SmsEmailTicketComponent implements OnInit {
             res => {                    
                 if(res.status==1)
                 {
+                    this.spinner.hide(); 
                     this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
                     this.ResetAttributes();
                 }                 
@@ -307,6 +312,7 @@ export class SmsEmailTicketComponent implements OnInit {
 
     sendCancelEmailToSupport()
     {
+        this.spinner.show(); 
         const pnr = {
             pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
          };
@@ -325,6 +331,7 @@ export class SmsEmailTicketComponent implements OnInit {
                     res => {
                         if(res.status == 1)
                         {
+                            this.spinner.hide(); 
                             this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
                             this.ResetAttributes();
                         } 
@@ -336,6 +343,7 @@ export class SmsEmailTicketComponent implements OnInit {
 
     sendCancelEmailToCustomer()
     {
+        this.spinner.show(); 
         const pnr = {
             pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
          };
@@ -355,6 +363,7 @@ export class SmsEmailTicketComponent implements OnInit {
                     res => {
                         if(res.status == 1)
                         {
+                            this.spinner.hide(); 
                             this.notificationService.addToast({title:Constants.SuccessTitle,msg:res.message, type:Constants.SuccessType});
                             this.ResetAttributes();
                         } 
@@ -376,8 +385,9 @@ export class SmsEmailTicketComponent implements OnInit {
 
 
   //Save Customer SMS Data to custom_sms table
-  SaveCustomerSMS(){
-
+  SaveCustomerSMS()
+  {
+      this.spinner.show();   
       let type = this.sendSmsEmailTicketForm.value.action;
      
       const pnr = {
@@ -410,6 +420,7 @@ export class SmsEmailTicketComponent implements OnInit {
                               resp => {
                                 if(resp.status==1)
                                 {
+                                    this.spinner.hide(); 
                                     this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                                     this.ResetAttributes();
                                 }
@@ -437,6 +448,7 @@ export class SmsEmailTicketComponent implements OnInit {
                               resp => {
                                 if(resp.status==1)
                                 {
+                                    this.spinner.hide(); 
                                     this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                                     this.ResetAttributes();
                                 }
@@ -464,6 +476,7 @@ export class SmsEmailTicketComponent implements OnInit {
                               resp => {
                                 if(resp.status==1)
                                 {
+                                    this.spinner.hide(); 
                                     this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                                     this.ResetAttributes();
                                 }
@@ -491,13 +504,13 @@ export class SmsEmailTicketComponent implements OnInit {
                               resp => {
                                 if(resp.status==1)
                                 {
+                                    this.spinner.hide(); 
                                     this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
                                     this.ResetAttributes();
                                 }
                           });   
                       }
-                  }
-                  
+                  }               
                                  
               }
             );      
@@ -520,14 +533,12 @@ export class SmsEmailTicketComponent implements OnInit {
        
           if(this.pnrDetails.length == 0)
           {
-            this.msg = "No Pnr Found"
+                 this.msg = "No Pnr Found"
           }
         }
       );
     }
   }
-
-
 
   sendTicket()
   {
