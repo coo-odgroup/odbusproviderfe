@@ -977,6 +977,64 @@ const NavigationItems = [
          
         ]
       },
+      {
+        // id: 'ticketinformation',
+        title: 'Manage API Clients',
+        type: 'collapse',
+        icon: 'feather icon-cloud',
+        children: [         
+          {
+            id: 'allapiclients',
+            title: 'All API Client',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/allapiclients'
+          },
+          {
+            id: 'apiclientwalletrequest',
+            title: 'API Client Wallet Request',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/apiclientwalletrequest'
+          },
+          {
+            id: 'apclientwalletbalance',
+            title: 'API Client Wallet Balance',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/apclientwalletbalance'
+          },
+          {
+            id: 'apiclientcommissionslab',
+            title: 'API Client CommissionSlab',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/apiclientcommissionslab'
+          },
+          {
+            id: 'apibookingstickets',
+            title: 'API Bookings Tickets',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/apibookingstickets'
+          },
+          {
+            id: 'apicanceltickets',
+            title: 'API Cancel Tickets',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/apicanceltickets'
+          },
+          {
+            id: 'apipnrdisputes',
+            title: 'API Pnr Disputes',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/apipnrdisputes'
+          },
+                
+        ]
+      },
 
     ]
   }

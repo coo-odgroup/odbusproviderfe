@@ -101,6 +101,10 @@ const routes: Routes = [
         path: 'useracessmanagement',
         loadChildren: () => import('./useraccessmanagement/useraccessmanagement.module').then(module =>module.UserAccessManagementModule)
       },
+      {
+        path: 'manageapiclients',
+        loadChildren: () => import('./manageapiclients/manageapiclients.module').then(module =>module.ManageApiClientsModule)
+      }
     ]
   }
 ];
