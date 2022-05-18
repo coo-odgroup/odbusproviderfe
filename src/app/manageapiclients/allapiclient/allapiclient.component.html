@@ -1,1 +1,405 @@
-<p>allapiclient works!</p>
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
+<div class="row">
+    <div class="col-sm-12">
+      <app-card [hidHeader]="false" cardTitle="API User List" cardClass="card-datatable" [options]="false"
+        cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
+        <div class="row">
+          <div class="col-2">
+            <div class="from-group ">
+              <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                Add API User
+              </button>
+            </div>
+          </div>
+          <div class="col-10">
+            <form [formGroup]="searchForm">
+              <div class="row">
+                <!-- <div class="col-2">
+                  <div class="form-group row">            
+                    <div class="dropdown">
+                      <div class="col-sm-12">
+                        <select class="form-control sml_input" formControlName="status">
+                          <option value='1'>Active</option>
+                          <option value='0'>Panding</option>
+                      </select>
+                      </div>                    
+                      
+                  </div>              
+                  </div>              
+                </div>   -->
+                <div class="col-4">
+                  <div class="row">  
+                      <div class="form-group col-6">
+                          <div class="form-group row">
+                              <input type="date" class="form-control sml_input" placeholder="Start Date"
+                              required formControlName="rangeFromDate" />
+                          </div> 
+                      </div>
+                      <div class="form-group col-6">
+                          <div class="form-group row">
+                              <input type="date" class="form-control sml_input" placeholder="End Daate"
+                              required formControlName="rangeToDate" />
+                          </div>                                            
+                      </div>
+                  </div>
+              </div>
+                
+                <div class="col-4">
+                  <div class="form-group row">
+  
+                    <div class="col-sm-12">
+                      <div class="input-group">
+                        <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                          formControlName="name" (keyup.enter)="search()">
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                            <i class="fas fa-search"> </i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+                <div class="col-2">
+                  <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
+                    <i class="fas fa-sync-alt"> </i> Refresh
+                  </button>
+                </div>          
+                
+                <div class="col-2">
+                  <div class="dropdown float-right">
+                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                      <option value=10>10</option>
+                      <option value=25>25</option>
+                      <option value=50>50</option>
+                      <option value=100>100</option>
+                      <option value='all'>All</option>
+                    </select>
+                  </div>
+                </div>
+  
+              </div>
+            </form>
+  
+  
+          </div>
+  
+        </div>
+  
+        <div class="table-responsive" id="print-section">
+          <table class="table table-striped ">
+            <thead>
+              <tr>
+                <th>SL</th>
+                <th>Org Name</th>
+                <th>Name/Email/Mobile/Location</th>
+                <th>Address</th>               
+                <th scope="col">Created/Updated On</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Status</th>
+                <!-- <th width="100" class="hide_print" >&nbsp; </th> -->
+              </tr>
+            </thead>
+            <tbody *ngIf="apiuser?.length != 0">
+              <tr *ngFor="let apiuser of apiuser; let i=index;">
+                <td>{{ i+1}}</td>
+                <td>{{ apiuser.organization_name }}</td>
+                <td>{{ apiuser.name }} <br> <strong>{{ apiuser.email }} <br> {{ apiuser.phone }}</strong><br>{{apiuser.location}}</td>                
+                <td> 
+                  <span title="orgination" *ngIf="apiuser.organization_name!=null">{{apiuser.organization_name  }}</span> <br>  
+                   <span title="address" *ngIf="apiuser.address!=null">{{apiuser.address}}</span> <br> 
+                 <span title="landmark" *ngIf="apiuser.landmark!=null">{{apiuser.landmark}}</span>
+                </td>              
+                <td>{{ apiuser.updated_at| date: 'dd/MM/yyyy H:mm:ss' }}</td>
+                <td>{{ apiuser.created_by }}</td>
+                <td>
+                  <div >
+                    <label *ngIf="apiuser.status==1" class="badge badge-light-primary pointer text-dark"
+                    (click)="changeStatus($event, apiuser.id);">Active</label>
+                    <label *ngIf="apiuser.status==0" class="badge badge-light-danger pointer text-dark"
+                    (click)="changeStatus($event, apiuser.id);">Pending</label>
+                  </div>
+                </td>
+               
+                <td class="hide_print">
+                  <div class="overlay-edit">
+                      <button type="button" (click)="editAgent($event, i); OpenModal(content);"
+                          class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  </div>
+              </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div *ngIf="pagination?.length!= 0" class="hide_print container">
+            <div class="row">
+              <div class="col-6">
+               
+                  <div class="col-12">
+                    <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                  </div> 
+              </div>
+              <div class="col-6">
+                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                  <nav class="my-1 pt-1 ">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                      <li (click)="search(pagination.first_page_url,statusLabel)"
+                        class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                        <a class="page-link">First</a>
+                      </li>
+                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                        <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                          (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                      </li>
+                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
+                        (click)="search(pagination.last_page_url,statusLabel)">
+                        <a class="page-link">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+    
+              </div>
+    
+            </div>
+          </div>   -->
+  
+        </div>
+  
+  
+        <div class="app-card-footer">
+          <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+            (click)="ResetAttributes();OpenModal(content)">Add </button>
+          <ng-template #content let-modal>
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                  aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-material">
+                    <div class="right-icon-control">
+                      <form [formGroup]="form" class="editForm" novalidate>
+                        <div class="row">
+                          <div class="col-md-12 text-center"><span class="heading_label">Personal Details</span></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group row">
+                              <label for="name" class="col-sm-4 col-form-label">Name<span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Enter Your Name" formControlName="name">
+                                <span class="text-danger"
+                                  *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
+                                  API User Name is required! </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group row">
+                              <label for="email" class="col-sm-4 col-form-label">Email<span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Login Email id" formControlName="email" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*">
+
+                                <span class="text-danger row col-12" *ngIf="form.controls['email'].errors?.pattern">
+                                  Email Id not valid.
+                                 </span>
+                                <span class="text-danger"
+                                  *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
+                                  Email is required! </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group row">
+                              <label for="phone" class="col-sm-4 col-form-label">Phone<span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" oninput="this.value=this.value.replace(/[^\d]/,'')"  placeholder="Contact Phone Number" formControlName="phone" minlength="10" maxlength="10">
+                                <span class="text-danger"
+                                  *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('required')">
+                                  Phone is required! </span>
+
+                                <span class="text-danger"
+                                *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('minlength')">
+                                Minimum 10 Characters Required
+                              </span>
+                              <span class="text-danger"
+                              *ngIf="form.controls['phone'].touched && form.controls['phone'].hasError('maxlength')">
+                              Maximum 10 Characters Allowed
+                            </span>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row">
+                            <!-- <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="password" class="col-sm-4 col-form-label">Password<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Password" formControlName="password" minlength="6">
+
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['password'].touched && form.controls['password'].hasError('minlength')">
+                                    Minimum 6 Characters Required
+                                  </span>
+
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')" >
+                                    Password is required! </span>
+                                </div>
+                              </div>
+                            </div> -->
+                            <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="location" class="col-sm-4 col-form-label">Location<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Business Location" formControlName="location">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['location'].touched && form.controls['location'].hasError('required')">
+                                    Location is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="organization_name" class="col-sm-4 col-form-label">Organization<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Orgaization/Shop Name" formControlName="organization_name">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['organization_name'].touched && form.controls['organization_name'].hasError('required')">
+                                    Organization is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            
+  
+                        </div>
+                        <div class="row">
+                      
+                            <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="pancard_no" class="col-sm-4 col-form-label">Pan Card<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Valid Pan Number" formControlName="pancard_no" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$">
+                                  <span class="text-danger row col-12" *ngIf="form.controls['pancard_no'].errors?.pattern">
+                                   Pan Card not valid.
+                                  </span>
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['pancard_no'].touched && form.controls['pancard_no'].hasError('required')">
+                                    Pan Card is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="pincode" class="col-sm-4 col-form-label">Pincode<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" placeholder="Zip Code / Pin Code" formControlName="pincode" minlength="6" maxlength="6" oninput="this.value=this.value.replace(/[^\d]/,'')">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('required')">
+                                    Pincode is required! </span>
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('minlength')">
+                                    Pincode is of 6 character required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="address" class="col-sm-3 col-form-label">Address<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-9 m-0 p-0">
+                                  <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['address'].touched && form.controls['address'].hasError('required')">
+                                    Address is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">     
+                              <div class="row">
+                                <label for="Name"
+                                class="col-sm-3 col-form-label">Area,Colony,Street,Sector,Village<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" formControlName="street" id="street"
+                                        placeholder="Area,Colony,Street,Sector,Village" />
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['street'].touched && form.controls['street'].hasError('required')">
+                                        Area,Colony,Street,Sector,Village </span>
+                                </div>
+                              </div>                      
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="landmark" class="col-sm-3 col-form-label">Landmark<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" placeholder="Landmark" formControlName="landmark">
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['landmark'].touched && form.controls['landmark'].hasError('required')">
+                                    Landmark is required! </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label for="Name" class="col-sm-3 col-form-label">Town/City<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" formControlName="city" id="city"
+                                        placeholder="Town/City" />
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['city'].touched && form.controls['city'].hasError('required')">
+                                        Town/city is required! </span>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="Name" class="col-sm-4 col-form-label">PinCode<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" formControlName="pincode"
+                                        id="pincode" placeholder="PinCode" minlength="6" maxlength="6"
+                                        oninput="this.value=this.value.replace(/[^\d]/,'')" />
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('required')">
+                                        Pincode is required! </span>
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['pincode'].touched && form.controls['pincode'].hasError('minlength')">
+                                        Pincode is of 6 character required! </span>
+                                </div>
+                            </div>
+                            </div> -->  
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" [disabled]="!form.valid" (click)='addAgent()' class="btn btn-primary"
+                ngbAutofocus>{{ModalBtn}}</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                (click)="modal.dismiss('Cross click')">Close</button>
+            </div>
+          </ng-template>
+        </div>
+      </app-card>
+    </div>
+  </div>
