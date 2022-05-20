@@ -1,34 +1,35 @@
-
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
 <div class="row">
     <div class="col-sm-12">
       <app-card [hidHeader]="false" cardTitle="API User List" cardClass="card-datatable" [options]="false"
         cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
+        <button class="btn input-sm btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+          Add API User
+        </button>
         <div class="row">
-          <div class="col-2">
+          <!-- <div class="col-1">
             <div class="from-group ">
-              <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+              <button class="btn input-sm btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
                 Add API User
               </button>
             </div>
-          </div>
-          <div class="col-10">
+          </div> -->
+          <div class="col-12">
             <form [formGroup]="searchForm">
               <div class="row">
-                <!-- <div class="col-2">
+                <div class="col-2">
                   <div class="form-group row">            
                     <div class="dropdown">
                       <div class="col-sm-12">
                         <select class="form-control sml_input" formControlName="status">
                           <option value='1'>Active</option>
-                          <option value='0'>Panding</option>
+                          <option value='0'>Pending</option>
                       </select>
-                      </div>                    
-                      
+                      </div>
                   </div>              
                   </div>              
-                </div>   -->
+                </div>  
                 <div class="col-4">
                   <div class="row">  
                       <div class="form-group col-6">
@@ -44,11 +45,10 @@
                           </div>                                            
                       </div>
                   </div>
-              </div>
+                </div>
                 
-                <div class="col-4">
-                  <div class="form-group row">
-  
+                <div class="col-3">
+                  <div class="form-group row">  
                     <div class="col-sm-12">
                       <div class="input-group">
                         <input type="text" class="form-control sml_input" placeholder="Search Here " required
@@ -62,15 +62,15 @@
                     </div>
                   </div>
                 </div> 
-                <div class="col-2">
-                  <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                    <i class="fas fa-sync-alt"> </i> Refresh
+                <div class="col-1">
+                  <button type="button" class="btn btn-danger input-sm" (click)="refresh()" title="refresh">
+                    <i class="fas fa-sync-alt"> </i>
                   </button>
                 </div>          
                 
                 <div class="col-2">
                   <div class="dropdown float-right">
-                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                    <select class="form-control input-sm" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
                       <option value=25>25</option>
                       <option value=50>50</option>
@@ -78,14 +78,10 @@
                       <option value='all'>All</option>
                     </select>
                   </div>
-                </div>
-  
+                </div>  
               </div>
             </form>
-  
-  
-          </div>
-  
+          </div>  
         </div>
   
         <div class="table-responsive" id="print-section">
@@ -96,7 +92,7 @@
                 <th>Org Name</th>
                 <th>Name/Email/Mobile/Location</th>
                 <th>Address</th>               
-                <th scope="col">Created/Updated On</th>
+                <th scope="col">Created On</th>
                 <th scope="col">Created By</th>
                 <th scope="col">Status</th>
                 <!-- <th width="100" class="hide_print" >&nbsp; </th> -->
@@ -106,13 +102,13 @@
               <tr *ngFor="let apiuser of apiuser; let i=index;">
                 <td>{{ i+1}}</td>
                 <td>{{ apiuser.organization_name }}</td>
-                <td>{{ apiuser.name }} <br> <strong>{{ apiuser.email }} <br> {{ apiuser.phone }}</strong><br>{{apiuser.location}}</td>                
+                <td>{{ apiuser.name }} <br> <strong>{{ apiuser.email }} <br> {{ apiuser.phone }}</strong><br>{{apiuser.location}}<br>{{apiuser.pincode}}</td>                
                 <td> 
                   <span title="orgination" *ngIf="apiuser.organization_name!=null">{{apiuser.organization_name  }}</span> <br>  
                    <span title="address" *ngIf="apiuser.address!=null">{{apiuser.address}}</span> <br> 
                  <span title="landmark" *ngIf="apiuser.landmark!=null">{{apiuser.landmark}}</span>
                 </td>              
-                <td>{{ apiuser.updated_at| date: 'dd/MM/yyyy H:mm:ss' }}</td>
+                <td>{{ apiuser.created_at| date: 'dd/MM/yyyy H:mm:ss' }}</td>
                 <td>{{ apiuser.created_by }}</td>
                 <td>
                   <div >
