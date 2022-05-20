@@ -110,7 +110,7 @@ export class AllapiclientComponent implements OnInit {
                 this.apiuser= res.data.data.data;
                 this.pagination= res.data.data;
                 this.all= res.data;
-                console.log(this.apiuser);
+                //console.log(this.apiuser);
                 this.spinner.hide();
             }
         );
@@ -184,8 +184,7 @@ export class AllapiclientComponent implements OnInit {
       city:this.form.value.city,
       street:this.form.value.street,
       pincode:this.form.value.pincode,
-      created_by: localStorage.getItem('USERNAME') 
-      
+      created_by: localStorage.getItem('USERNAME')       
     };
     // console.log(data);
     if(id==null)
@@ -193,19 +192,19 @@ export class AllapiclientComponent implements OnInit {
       this.ApiuserserviceService.create(data).subscribe(
         resp => {
           if(resp.status==1)
-       {
-          this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
-          this.modalReference.close();
-          //this.closebutton.nativeElement.click();
-          this.ResetAttributes();
-          this.search();
-          
-       }
-       else
-       {
-          this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
-          this.spinner.hide();
-       }
+          {
+              this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+              this.modalReference.close();
+              //this.closebutton.nativeElement.click();
+              this.ResetAttributes();
+              this.search();
+              
+          }
+          else
+          {
+              this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+              this.spinner.hide();
+          }
       });    
     }
     else{     
@@ -230,23 +229,22 @@ export class AllapiclientComponent implements OnInit {
   }
   editAgent(event : Event, id : any)
   {
-    this.apiuserRecord=this.apiuser[id] ;
+    this.apiuserRecord=this.apiuser[id];
     this.form = this.fb.group({
-      id:[this.apiuserRecord.id],
-      name: [this.apiuserRecord.name, Validators.compose([Validators.required])],
-      email: [this.apiuserRecord.email,Validators.compose([Validators.required])],
-      phone: [this.apiuserRecord.phone,Validators.compose([Validators.required])],
-      password: [this.apiuserRecord.password,Validators.compose([Validators.required])],
-      user_type: [this.apiuserRecord.user_type,Validators.compose([Validators.required])],
-      location: [this.apiuserRecord.location,Validators.compose([Validators.required])],
-      pancard_no: [this.apiuserRecord.pancard_no,Validators.compose([Validators.required])],
-      organization_name: [this.apiuserRecord.organization_name,Validators.compose([Validators.required])],
-      address: [this.apiuserRecord.address,Validators.compose([Validators.required])],
-      landmark: [this.apiuserRecord.landmark,Validators.compose([Validators.required])],
-      pincode: [this.apiuserRecord.pincode,Validators.compose([Validators.required])],
-      street: [this.apiuserRecord.street,Validators.compose([Validators.required])],
-      city: [this.apiuserRecord.city,Validators.compose([Validators.required])],
-      
+          id:[this.apiuserRecord.id],
+          name: [this.apiuserRecord.name, Validators.compose([Validators.required])],
+          email: [this.apiuserRecord.email,Validators.compose([Validators.required])],
+          phone: [this.apiuserRecord.phone,Validators.compose([Validators.required])],
+          password: [this.apiuserRecord.password,Validators.compose([Validators.required])],
+          user_type: [this.apiuserRecord.user_type,Validators.compose([Validators.required])],
+          location: [this.apiuserRecord.location,Validators.compose([Validators.required])],
+          pancard_no: [this.apiuserRecord.pancard_no,Validators.compose([Validators.required])],
+          organization_name: [this.apiuserRecord.organization_name,Validators.compose([Validators.required])],
+          address: [this.apiuserRecord.address,Validators.compose([Validators.required])],
+          landmark: [this.apiuserRecord.landmark,Validators.compose([Validators.required])],
+          pincode: [this.apiuserRecord.pincode,Validators.compose([Validators.required])],
+          street: [this.apiuserRecord.street,Validators.compose([Validators.required])],
+          city: [this.apiuserRecord.city,Validators.compose([Validators.required])]      
     });
     this.ModalHeading = "Edit ApiUser";
     this.ModalBtn = "Update";
@@ -285,18 +283,17 @@ export class AllapiclientComponent implements OnInit {
   fileName= 'Agent-Agent.xlsx';
 
   exportexcel(): void
-  {
-    
-    /* pass here the table id */
-    let element = document.getElementById('print-section');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
-    XLSX.writeFile(wb, this.fileName);
+  {    
+      /* pass here the table id */
+      let element = document.getElementById('print-section');
+      const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+  
+      /* generate workbook and add the worksheet */
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+      /* save to file */  
+      XLSX.writeFile(wb, this.fileName);
   }
 
 }

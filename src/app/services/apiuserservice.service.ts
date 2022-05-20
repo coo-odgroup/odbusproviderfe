@@ -59,12 +59,10 @@ export class ApiuserserviceService {
     .pipe(
       catchError(this.errorHandler)
     )
-  }
-
-  
+  }  
 
   update(id,post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/Agent/'+id , JSON.stringify(post), this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/ApiUser/'+id , JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

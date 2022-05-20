@@ -196,8 +196,7 @@ export class SmsEmailTicketComponent implements OnInit {
   }
 
   Sms_details()
-  {  
-         
+  {           
       const data = {
           pnr:this.sendSmsEmailTicketForm.value.pnr_no,
           action:this.sendSmsEmailTicketForm.value.action
@@ -209,11 +208,8 @@ export class SmsEmailTicketComponent implements OnInit {
         {
             this.acts.getSmsDetails(data).subscribe(
                 res => {
-
-                    this.SMSDetails = res.data; 
-                    
+                    this.SMSDetails = res.data;                     
                     //console.log(this.SMSDetails); 
-
                     if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer')
                     {                   
                         this.SmsToCustomerForm.controls['customer_mob'].setValue(this.SMSDetails[0].to);
@@ -518,26 +514,31 @@ export class SmsEmailTicketComponent implements OnInit {
   }
 
   search_pnr()
-  {
-    this.spinner.show(); 
+  {      
+        this.msg ='';
+        this.pnrDetails=[];
+        this.sendSmsEmailTicketForm.value.action = ''; 
+        this.sendSmsEmailTicketForm.controls.action.value == ''; 
+        
+        this.spinner.show(); 
 
-    let pnr = this.sendSmsEmailTicketForm.value.pnr_no;
+        let pnr = this.sendSmsEmailTicketForm.value.pnr_no;
 
-    if(pnr!=null)
-    {
-        this.acts.getPnrDetails(pnr).subscribe(
-        res => {
-          this.pnrDetails= res.data;
-          // console.log(this.pnrDetails);
-          this.spinner.hide();
-       
-          if(this.pnrDetails.length == 0)
-          {
-                 this.msg = "No Pnr Found"
-          }
+        if(pnr!=null)
+        {
+            this.acts.getPnrDetails(pnr).subscribe(
+            res => {
+                this.pnrDetails = res.data;
+                // console.log(this.pnrDetails);
+                this.spinner.hide();
+
+                if(this.pnrDetails.length == 0)
+                {
+                      this.msg = "No Pnr Found"
+                }
+            }
+        );
         }
-      );
-    }
   }
 
   sendTicket()
@@ -560,5 +561,12 @@ export class SmsEmailTicketComponent implements OnInit {
           pnr_no:[null],
           action:[null]
       });    
+  }
+
+  refresh() 
+  {
+        this.spinner.show();
+        this.ResetAttributes();
+        this.spinner.hide();       
   }
 }
