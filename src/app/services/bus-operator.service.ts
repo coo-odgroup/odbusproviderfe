@@ -57,6 +57,12 @@ export class BusOperatorService {
     )
   }
 
+  getApiClient(): Observable<any> {
+    return this.httpClient.get(this.endPoint+'/allApiClient').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   readuseroperator(): Observable<any> {
     return this.httpClient.get(this.endPoint+'/allUserOperator').pipe(
       catchError(this.errorHandler)
