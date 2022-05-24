@@ -1,10 +1,8 @@
 
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
-
-
 <div class="row">
     <div class="col-sm-12">
-      <app-card [hidHeader]="false" cardTitle="Agent Commission Slab" cardClass="card-datatable" [options]="false"
+      <app-card [hidHeader]="false" cardTitle="API User Commission Slab" cardClass="card-datatable" [options]="false"
         cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
         <div class="row">
           <div class="col-4">
@@ -16,8 +14,7 @@
           </div>
           <div class="col-8">
             <form [formGroup]="searchForm">
-              <div class="row">
-                
+              <div class="row">                
                 <div class="col-12">
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
@@ -28,14 +25,10 @@
                       <option value='all'>All</option>
                     </select>
                   </div>
-                </div>
-  
+                </div>  
               </div>
-            </form>
-  
-  
-          </div>
-  
+            </form>  
+          </div>  
         </div>
   
         <div class="table-responsive" id="print-section">
@@ -43,23 +36,24 @@
             <thead>
               <tr>
                 <th>SL.NO</th>
+                <th>API User</th>
                 <th>Range From</th>
                 <th>Range To</th>
                 <th>Commission</th>
                 <th scope="col">Created/Updated On</th>
-                <th scope="col">Created By</th>
-                
-                <th width="100" class="hide_print" >&nbsp; </th>
+                <th scope="col">Created By</th>                
+                <th width="100" class="hide_print">&nbsp;</th>
               </tr>
             </thead>
-            <tbody *ngIf="agentCommissionSlabs?.length != 0">
-              <tr *ngFor="let commissionSlab of agentCommissionSlabs; let i=index;">
+            <tbody *ngIf="apiusercommissionslab?.length != 0">
+              <tr *ngFor="let cm of apiusercommissionslab; let i=index;">
                 <td>{{ i+1}}</td>
-                <td>{{ commissionSlab.range_from }}</td>
-                <td>{{ commissionSlab.range_to }}</td>
-                <td>{{ commissionSlab.comission_per_seat }}</td>
-                <td>{{ commissionSlab.updated_at| date: 'yyyy-MM-dd hh:mm:ss' }}</td>
-                <td>{{ commissionSlab.created_by }}</td>
+                <td>{{ cm.user_id }}</td>
+                <td>{{ cm.starting_fare }}</td>
+                <td>{{ cm.upto_fare }}</td>
+                <td>{{ cm.commision }}</td>
+                <td>{{ cm.updated_at| date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                <td>{{ cm.created_by }}</td>
                 <td class="hide_print">
                   <div class="overlay-edit">
                       <button type="button" (click)="editAgentCommission($event, i); OpenModal(content);"
@@ -73,8 +67,7 @@
           </table>
           <div *ngIf="pagination?.length!= 0" class="hide_print container">
             <div class="row">
-              <div class="col-6">
-               
+              <div class="col-6">               
                   <div class="col-12">
                     <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
                   </div> 
@@ -97,13 +90,10 @@
                       </li>
                     </ul>
                   </nav>
-                </div>
-    
-              </div>
-    
+                </div>    
+              </div>    
             </div>
           </div> 
-
         </div>
   
   
@@ -155,9 +145,9 @@
                               <label for="range_from" class="col-sm-4 col-form-label">Range From<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="range_from">
+                                <input type="text" class="form-control" formControlName="starting_fare">
                                 <span class="text-danger"
-                                  *ngIf="form.controls['range_from'].touched && form.controls['range_from'].hasError('required')">
+                                  *ngIf="form.controls['starting_fare'].touched && form.controls['starting_fare'].hasError('required')">
                                   Range from is required! </span>
                               </div>
                             </div>
@@ -167,9 +157,9 @@
                               <label for="range_to" class="col-sm-4 col-form-label">Range To<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="range_to">
+                                <input type="text" class="form-control" formControlName="upto_fare">
                                 <span class="text-danger"
-                                  *ngIf="form.controls['range_to'].touched && form.controls['range_to'].hasError('required')">
+                                  *ngIf="form.controls['upto_fare'].touched && form.controls['upto_fare'].hasError('required')">
                                   Range to is required! </span>
                               </div>
                             </div>
@@ -179,9 +169,9 @@
                               <label for="comission_per_seat" class="col-sm-4 col-form-label">Commission<span
                                   class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="comission_per_seat">
+                                <input type="text" class="form-control" formControlName="commision">
                                 <span class="text-danger"
-                                  *ngIf="form.controls['comission_per_seat'].touched && form.controls['comission_per_seat'].hasError('required')">
+                                  *ngIf="form.controls['commision'].touched && form.controls['commision'].hasError('required')">
                                   Commission to is required! </span>
                               </div>
                             </div>

@@ -172,19 +172,19 @@ export class AllapiclientComponent implements OnInit {
     this.spinner.show();
     let id:any=this.apiuserRecord.id;  
     const data = {
-      name:this.form.value.name,
-      email:this.form.value.email,
-      phone:this.form.value.phone,
-      password:this.form.value.password,
-      location:this.form.value.location,
-      pancard_no:this.form.value.pancard_no,
-      organization_name:this.form.value.organization_name,
-      address:this.form.value.address,
-      landmark:this.form.value.landmark,
-      city:this.form.value.city,
-      street:this.form.value.street,
-      pincode:this.form.value.pincode,
-      created_by: localStorage.getItem('USERNAME')       
+        name:this.form.value.name,
+        email:this.form.value.email,
+        phone:this.form.value.phone,
+        password:this.form.value.password,
+        location:this.form.value.location,
+        pancard_no:this.form.value.pancard_no,
+        organization_name:this.form.value.organization_name,
+        address:this.form.value.address,
+        landmark:this.form.value.landmark,
+        city:this.form.value.city,
+        street:this.form.value.street,
+        pincode:this.form.value.pincode,
+        created_by: localStorage.getItem('USERNAME')       
     };
     // console.log(data);
     if(id==null)
@@ -197,8 +197,7 @@ export class AllapiclientComponent implements OnInit {
               this.modalReference.close();
               //this.closebutton.nativeElement.click();
               this.ResetAttributes();
-              this.search();
-              
+              this.search();              
           }
           else
           {
@@ -280,20 +279,20 @@ export class AllapiclientComponent implements OnInit {
   
 
   title = 'angular-app';
-  fileName= 'Agent-Agent.xlsx';
+  fileName = 'Agent-Agent.xlsx';
 
   exportexcel(): void
   {    
-      /* pass here the table id */
-      let element = document.getElementById('print-section');
-      const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
-  
-      /* generate workbook and add the worksheet */
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  
-      /* save to file */  
-      XLSX.writeFile(wb, this.fileName);
+        /* pass here the table id */
+        let element = document.getElementById('print-section');
+        const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+    
+        /* generate workbook and add the worksheet */
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    
+        /* save to file */  
+        XLSX.writeFile(wb, this.fileName);
   }
 
 }

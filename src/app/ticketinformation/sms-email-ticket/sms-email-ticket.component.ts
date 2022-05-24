@@ -143,6 +143,7 @@ export class SmsEmailTicketComponent implements OnInit {
   {
       if(this.sendSmsEmailTicketForm.value.action == 'cancelsmsToCustomer')
       {
+         this.spinner.show(); 
           const pnr = {
                          pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
                       };
@@ -153,12 +154,14 @@ export class SmsEmailTicketComponent implements OnInit {
                   //console.log(this.CancelMsg);
                   this.CancelSmsToCustomerForm.controls['ccustomer_mob'].setValue(this.CancelMsg[0].Phone);
                   this.CancelSmsToCustomerForm.controls['csms_to_customer'].setValue(this.CancelMsg[0].Message);
+                  this.spinner.hide(); 
               }
            );   
       } 
 
       if(this.sendSmsEmailTicketForm.value.action == 'cancelsmsToConductor')
       {
+         this.spinner.show(); 
           const pnr = {
                          pnr:this.sendSmsEmailTicketForm.value.pnr_no                       
                       };
@@ -169,6 +172,7 @@ export class SmsEmailTicketComponent implements OnInit {
                   //console.log(this.CancelMsg);
                   this.CancelSmsToConductorForm.controls['ccmo_mob'].setValue(this.CancelMsg[0].Phone);
                   this.CancelSmsToConductorForm.controls['csms_to_cmo'].setValue(this.CancelMsg[0].Message);
+                  this.spinner.hide(); 
               }
            );   
       }
@@ -180,6 +184,7 @@ export class SmsEmailTicketComponent implements OnInit {
 
       if(this.sendSmsEmailTicketForm.value.action == 'cancelemailToCustomer')
       {
+            this.spinner.show(); 
             const data = {
                 pnr:this.sendSmsEmailTicketForm.value.pnr_no,
                 action:this.sendSmsEmailTicketForm.value.action
@@ -189,7 +194,8 @@ export class SmsEmailTicketComponent implements OnInit {
                 res => {
                     this.EmailDetails = res.data;
                     //console.log(this.EmailDetails);  
-                    this.CancelEmailToCustomerForm.controls['ccustomer_eml'].setValue(this.EmailDetails[0].users.email);                   
+                    this.CancelEmailToCustomerForm.controls['ccustomer_eml'].setValue(this.EmailDetails[0].users.email); 
+                    this.spinner.hide();                   
                 }
             )
       }
@@ -206,6 +212,7 @@ export class SmsEmailTicketComponent implements OnInit {
       {
         if(this.sendSmsEmailTicketForm.value.action == 'smsToCustomer' || this.sendSmsEmailTicketForm.value.action == 'smsToConductor')
         {
+            this.spinner.show();  
             this.acts.getSmsDetails(data).subscribe(
                 res => {
                     this.SMSDetails = res.data;                     
@@ -214,6 +221,7 @@ export class SmsEmailTicketComponent implements OnInit {
                     {                   
                         this.SmsToCustomerForm.controls['customer_mob'].setValue(this.SMSDetails[0].to);
                         this.SmsToCustomerForm.controls['sms_to_customer'].setValue(this.SMSDetails[0].contents);
+                        this.spinner.hide();  
                     }  
                     
                     if(this.sendSmsEmailTicketForm.value.action == 'smsToConductor')
@@ -223,6 +231,7 @@ export class SmsEmailTicketComponent implements OnInit {
                         cmo_mob = cmo_mob.replace(']',''); 
                         this.SmsToConductorForm.controls['cmo_mob'].setValue(cmo_mob);
                         this.SmsToConductorForm.controls['sms_to_cmo'].setValue(this.SMSDetails[0].contents);
+                        this.spinner.hide(); 
                     }                                
                 }
             );
@@ -237,18 +246,21 @@ export class SmsEmailTicketComponent implements OnInit {
                 
                 if(this.sendSmsEmailTicketForm.value.action == 'emailToCustomer')
                 {
+                    this.spinner.show();  
                     this.acts.getEmailID(data).subscribe(
                         res => {
                             this.EmailDetails = res.data;
                             //console.log(this.EmailDetails[0].users.email);  
                             this.EmailToCustomerForm.controls['customer_eml'].setValue(this.EmailDetails[0].users.email);
                             this.EmailToCustomerForm.controls['customer_mobile'].setValue(this.EmailDetails[0].users.phone);
+                            this.spinner.hide(); 
                         }
                     )
                 }   
                 
                 if(this.sendSmsEmailTicketForm.value.action == 'emailToBooking')
                 {
+                    this.spinner.show();  
                     this.acts.getEmailID(data).subscribe(
                         res => {
                             this.EmailDetails = res.data;
@@ -256,6 +268,7 @@ export class SmsEmailTicketComponent implements OnInit {
                             this.EmailToBookingForm.controls['Email_PNR'].setValue(this.EmailDetails[0].PNR);
                             this.EmailToBookingForm.controls['booking_eml'].setValue(this.EmailDetails[0].Booking_email);
                             this.EmailToBookingForm.controls['eml_msg'].setValue(this.EmailDetails[0].Message);
+                            this.spinner.hide();
                         }
                     )
                 }

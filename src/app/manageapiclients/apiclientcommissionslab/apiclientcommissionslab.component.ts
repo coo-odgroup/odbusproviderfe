@@ -1,9 +1,9 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
-import { AgentCommissionServiceService } from '../../services/agent-commission-service.service';
+import { ApiUserCommissionService } from '../../services/apiuser-commission-service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { AgentCommissionSlab} from '../../model/agent-commission-slab';
+import { Apiusercommissionslab} from '../../model/apiusercommissionslab';
 import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -25,8 +25,8 @@ export class ApiclientcommissionslabComponent implements OnInit {
     @ViewChild("addnew") addnew;
     modalReference: NgbModalRef;
     confirmDialogReference: NgbModalRef;
-    agentCommissionSlabs: AgentCommissionSlab[];
-    agentCommissionSlabRecord: AgentCommissionSlab;
+    apiusercommissionslab: Apiusercommissionslab[];
+    aapiusercommissionslabRecord: Apiusercommissionslab;
     public isSubmit: boolean;
 
     public ModalHeading:any;
@@ -35,9 +35,9 @@ export class ApiclientcommissionslabComponent implements OnInit {
     all: any;
   
 
-  constructor(private spinner: NgxSpinnerService,private AgentCommissionServiceService: AgentCommissionServiceService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor(private spinner: NgxSpinnerService,private ApiUserCommissionService: ApiUserCommissionService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
         this.isSubmit = false;
-        this.agentCommissionSlabRecord= {} as AgentCommissionSlab;
+        this.aapiusercommissionslabRecord= {} as Apiusercommissionslab;
         config.backdrop = 'static';
         config.keyboard = false;
         this.ModalHeading = "Add Agent Commission Slab";
@@ -53,9 +53,10 @@ export class ApiclientcommissionslabComponent implements OnInit {
       this.spinner.show();
       this.form = this.fb.group({
         id:[null],
-        range_from: [null, Validators.compose([Validators.required])],
-        range_to: [null, Validators.compose([Validators.required])],
-        comission_per_seat: [null, Validators.compose([Validators.required])],
+        user_id: [null, Validators.compose([Validators.required])],
+        starting_fare: [null, Validators.compose([Validators.required])],
+        upto_fare: [null, Validators.compose([Validators.required])],
+        commision: [null, Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });  
       this.formConfirm=this.fb.group({
@@ -78,17 +79,17 @@ export class ApiclientcommissionslabComponent implements OnInit {
     this.spinner.show();
       
     const data = { 
-        range_from: this.searchForm.value.range_from,
-        range_to: this.searchForm.value.range_to,
-        comission_per_seat:this.searchForm.value.comission_per_seat, 
+      starting_fare: this.searchForm.value.starting_fare,
+      upto_fare: this.searchForm.value.upto_fare,
+      commision:this.searchForm.value.commision, 
     };
    
     // console.log(data);
     if(pageurl!="")
     {
-      this.AgentCommissionServiceService.getAllaginationData(pageurl,data).subscribe(
+      this.ApiUserCommissionService.getAllaginationData(pageurl,data).subscribe(
         res => {
-          this.agentCommissionSlabs= res.data.data.data;
+          this.apiusercommissionslab= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
           this.spinner.hide();
@@ -97,9 +98,10 @@ export class ApiclientcommissionslabComponent implements OnInit {
     }
     else
     {
-      this.AgentCommissionServiceService.getAllData(data).subscribe(
+      this.ApiUserCommissionService.getAllData(data).subscribe(
         res => {
-          this.agentCommissionSlabs= res.data.data.data;
+          this.apiusercommissionslab= res.data.data.data;
+          console.log(this.apiusercommissionslab);
           this.pagination= res.data.data;
           this.all= res.data;
           this.spinner.hide();
@@ -113,24 +115,25 @@ export class ApiclientcommissionslabComponent implements OnInit {
       this.spinner.show();
 
       this.searchForm = this.fb.group({  
-        range_from: [null], 
-        range_to: [null],  
-        comission_per_seat: Constants.RecordLimit,
+        starting_fare: [null], 
+        upto_fare: [null],  
+        commision: Constants.RecordLimit,
       });
       this.search();
   }  
   ResetAttributes()
   {
-      this.agentCommissionSlabRecord = {
-        range_from:'',
-        range_to:'',
-        comission_per_seat:''
-      } as AgentCommissionSlab;
+      this.aapiusercommissionslabRecord = {
+        starting_fare:'',
+        upto_fare:'',
+        commision:''
+      } as Apiusercommissionslab;
       this.form = this.fb.group({
         id:[null],
-        range_from: ['', Validators.compose([Validators.required])],
-        range_to: ['', Validators.compose([Validators.required])],
-        comission_per_seat: ['', Validators.compose([Validators.required])],
+        user_id: ['', Validators.compose([Validators.required])],
+        starting_fare: ['', Validators.compose([Validators.required])],
+        upto_fare: ['', Validators.compose([Validators.required])],
+        commision: ['', Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Add Commission Slab";
@@ -142,17 +145,20 @@ export class ApiclientcommissionslabComponent implements OnInit {
 
     this.spinner.show();
 
-    let id:any=this.agentCommissionSlabRecord.id;  
+    let id:any=this.aapiusercommissionslabRecord.id;  
     const data = {
-        range_from:this.form.value.range_from,
-        range_to:this.form.value.range_to,
-        comission_per_seat:this.form.value.comission_per_seat,
+        user_id: this.form.value.user_id,
+        starting_fare:this.form.value.starting_fare,
+        upto_fare:this.form.value.upto_fare,
+        commision:this.form.value.commision,
         user_name : localStorage.getItem('USERNAME'),     
     };
+
+    console.log(data);
     
     if(id==null)
     {
-      this.AgentCommissionServiceService.create(data).subscribe(
+      this.ApiUserCommissionService.create(data).subscribe(
         resp => {
        if(resp.status==1)
        {
@@ -171,7 +177,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
     }
     else{     
      
-      this.AgentCommissionServiceService.update(id,data).subscribe(
+      this.ApiUserCommissionService.update(id,data).subscribe(
         resp => {
           if(resp.status==1)
             {
@@ -192,12 +198,13 @@ export class ApiclientcommissionslabComponent implements OnInit {
 
   editAgentCommission(event : Event, id : any)
   {
-      this.agentCommissionSlabRecord=this.agentCommissionSlabs[id] ;
+      this.aapiusercommissionslabRecord=this.apiusercommissionslab[id] ;
       this.form = this.fb.group({
-        id:[this.agentCommissionSlabRecord.id],
-        range_from: [this.agentCommissionSlabRecord.range_from, Validators.compose([Validators.required])],
-        range_to: [this.agentCommissionSlabRecord.range_to,Validators.compose([Validators.required])],
-        comission_per_seat: [this.agentCommissionSlabRecord.comission_per_seat,Validators.compose([Validators.required])],
+        id:[this.aapiusercommissionslabRecord.id],
+        user_id: [this.aapiusercommissionslabRecord.user_id, Validators.compose([Validators.required])],
+        starting_fare: [this.aapiusercommissionslabRecord.starting_fare, Validators.compose([Validators.required])],
+        upto_fare: [this.aapiusercommissionslabRecord.upto_fare,Validators.compose([Validators.required])],
+        commision: [this.aapiusercommissionslabRecord.commision,Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Edit Agent Commission Slab";
