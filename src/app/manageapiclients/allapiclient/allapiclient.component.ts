@@ -186,7 +186,7 @@ export class AllapiclientComponent implements OnInit {
         pincode:this.form.value.pincode,
         created_by: localStorage.getItem('USERNAME')       
     };
-    // console.log(data);
+     console.log(data);
     if(id==null)
     {
       this.ApiuserserviceService.create(data).subscribe(

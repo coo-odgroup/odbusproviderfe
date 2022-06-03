@@ -22,7 +22,7 @@ export class AdmincancelticketService {
     return this.httpClient.post<any>(this.apiURL + '/getDetailsSms', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
-    )
+    ) 
   }
 
   getBookingID(post){

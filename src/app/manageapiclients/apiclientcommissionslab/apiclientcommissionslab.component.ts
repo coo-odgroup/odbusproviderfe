@@ -73,6 +73,17 @@ export class ApiclientcommissionslabComponent implements OnInit {
   page(label:any){
     return label;
    }
+  
+  //  loadServices() {
+    
+  //     this.busOperatorService.userOperators(UserInfo).subscribe(
+  //       record=>{
+  //       this.busoperators=record.data;
+  //       this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
+  //       }
+  //     );
+  //  }
 
   search(pageurl="")
   {
