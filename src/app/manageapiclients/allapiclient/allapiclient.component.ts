@@ -186,7 +186,7 @@ export class AllapiclientComponent implements OnInit {
         pincode:this.form.value.pincode,
         created_by: localStorage.getItem('USERNAME')       
     };
-     console.log(data);
+    
     if(id==null)
     {
       this.ApiuserserviceService.create(data).subscribe(
@@ -208,6 +208,7 @@ export class AllapiclientComponent implements OnInit {
     }
     else{     
      
+      //console.log(data);
       this.ApiuserserviceService.update(id,data).subscribe(
         resp => {
           if(resp.status==1)
@@ -229,6 +230,7 @@ export class AllapiclientComponent implements OnInit {
   editAgent(event : Event, id : any)
   {
     this.apiuserRecord=this.apiuser[id];
+
     this.form = this.fb.group({
           id:[this.apiuserRecord.id],
           name: [this.apiuserRecord.name, Validators.compose([Validators.required])],
