@@ -89,6 +89,7 @@
             <thead>
               <tr>
                 <th>SL</th>
+                <th>API UserID</th>
                 <th>Org Name</th>
                 <th>Name/Email/Mobile/Location</th>
                 <th>Address</th>               
@@ -101,6 +102,7 @@
             <tbody *ngIf="apiuser?.length != 0">
               <tr *ngFor="let apiuser of apiuser; let i=index;">
                 <td>{{ i+1}}</td>
+                <td>{{ apiuser.client_id }}</td>
                 <td>{{ apiuser.organization_name }}</td>
                 <td>{{ apiuser.name }} <br> <strong>{{ apiuser.email }} <br> {{ apiuser.phone }}</strong><br>{{apiuser.location}}<br>{{apiuser.pincode}}</td>                
                 <td> 

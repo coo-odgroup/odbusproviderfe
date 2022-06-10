@@ -11,9 +11,6 @@ import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 
-
-
-
 @Component({
   selector: 'app-completereport',
   templateUrl: './completereport.component.html',
@@ -63,7 +60,7 @@ export class CompletereportComponent implements OnInit {
       payment_id : [null],
       date_type:['journey'],
       pnr:[null],
-      rows_number:50,
+      rows_number:100,
       source_id:[null],
       destination_id:[null]
     })  
@@ -165,7 +162,7 @@ export class CompletereportComponent implements OnInit {
       payment_id : [null],
       pnr:[null],
       date_type:['journey'],
-      rows_number: 50,
+      rows_number: 100,
       // rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null]

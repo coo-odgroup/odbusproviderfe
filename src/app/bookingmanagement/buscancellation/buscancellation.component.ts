@@ -166,6 +166,7 @@ export class BuscancellationComponent implements OnInit {
       this.buscanCellationService.getAllData(data).subscribe(
         res => {
           this.busCancellations = res.data.data.data;
+          console.log(this.busCancellations);
           this.pagination = res.data.data;
           this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all = res.data;
