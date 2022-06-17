@@ -794,34 +794,34 @@ const NavigationItems = [
           //   icon:'feather icon-users',
           //   url: 'operator/assignoperator'
           // }, 
-          {
-            id: 'assignoperatorbus',
-            title: 'Assign OperatorsBus',
-            type: 'item',
-            icon:'feather icon-users',
-            url: 'operator/assignoperatorbus'
-          }, 
-          {
-            id: 'assignagent',
-            title: 'Assign Agent',
-            type: 'item',
-            icon:'feather icon-users',
-            url: 'operator/assignagent'
-          }, 
-          {
-            id: 'operatorbookingreport',
-            title: 'OperatorBookingReport',
-            type: 'item',
-            icon:'feather icon-users',
-            url: 'operator/operatorbookingreport'
-          },
-          {
-            id: 'operatorcancelreport',
-            title: 'OperatorCancelReport',
-            type: 'item',
-            icon:'feather icon-users',
-            url: 'operator/operatorcancelreport'
-          },
+          // {
+          //   id: 'assignoperatorbus',
+          //   title: 'Assign OperatorsBus',
+          //   type: 'item',
+          //   icon:'feather icon-users',
+          //   url: 'operator/assignoperatorbus'
+          // }, 
+          // {
+          //   id: 'assignagent',
+          //   title: 'Assign Agent',
+          //   type: 'item',
+          //   icon:'feather icon-users',
+          //   url: 'operator/assignagent'
+          // }, 
+          // {
+          //   id: 'operatorbookingreport',
+          //   title: 'OperatorBookingReport',
+          //   type: 'item',
+          //   icon:'feather icon-users',
+          //   url: 'operator/operatorbookingreport'
+          // },
+          // {
+          //   id: 'operatorcancelreport',
+          //   title: 'OperatorCancelReport',
+          //   type: 'item',
+          //   icon:'feather icon-users',
+          //   url: 'operator/operatorcancelreport'
+          // },
         ]
       },
       {
