@@ -186,10 +186,10 @@
                                     <strong style="color: brown;" >
                                         {{complete.customer_payment.order_id}}
                                     </strong>
-                                    <br>
-                                    <strong class="btn btn-success"  style="color: white; background: greem;" *ngIf ="complete.razerPayStatus">
+                                    <!-- <br> -->
+                                    <!-- <strong class="btn btn-success"  style="color: white; background: greem;" *ngIf ="complete.razerPayStatus">
                                         {{complete.razerPayStatus}}
-                                    </strong>
+                                    </strong> -->
                                     
                                
                                     
@@ -326,9 +326,9 @@
                                     <b>{{complete.odbus_charges}}</b>
                                 </td> -->
                                 <td>
-                                    <span *ngIf ="complete.razerPayStatus">
-                                        <button class="btn btn-success btn-sm" (click)="generateTicket(i);" *ngIf ="complete.razerPayStatus == 'captured'">GENERATE</button>
-                                    </span>
+                                    
+                                        <button class="btn btn-success btn-sm" (click)="generateTicket(i);" >GENERATE</button>
+                                  
                                 </td>
                             </tr>
                         </tbody>
