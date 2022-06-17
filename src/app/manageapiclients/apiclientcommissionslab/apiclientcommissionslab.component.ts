@@ -10,6 +10,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { BusOperatorService } from './../../services/bus-operator.service';
 
 @Component({
   selector: 'app-apiclientcommissionslab',
@@ -33,9 +34,19 @@ export class ApiclientcommissionslabComponent implements OnInit {
     public ModalBtn:any;
     pagination: any;
     all: any;
+    allagent: any;
   
 
-  constructor(private spinner: NgxSpinnerService,private ApiUserCommissionService: ApiUserCommissionService,private http: HttpClient,private notificationService: NotificationService,private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor(
+    private spinner: NgxSpinnerService,
+    private ApiUserCommissionService: ApiUserCommissionService,
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private fb: FormBuilder,
+    private modalService: NgbModal,
+    config: NgbModalConfig,
+    private busOperatorService: BusOperatorService, ) 
+    {
         this.isSubmit = false;
         this.aapiusercommissionslabRecord= {} as Apiusercommissionslab;
         config.backdrop = 'static';
@@ -64,35 +75,40 @@ export class ApiclientcommissionslabComponent implements OnInit {
       });
 
       this.searchForm = this.fb.group({  
-        name: [null], 
+       // name: [null], 
+        user_id:[null],
         rows_number: Constants.RecordLimit,
       });
+      this.loadServices();
       this.search(); 
   }
 
   page(label:any){
     return label;
    }
-  
-  //  loadServices() {
-    
-  //     this.busOperatorService.userOperators(UserInfo).subscribe(
-  //       record=>{
-  //       this.busoperators=record.data;
-  //       this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
 
-  //       }
-  //     );
-  //  }
+   loadServices() {
+
+    this.busOperatorService.getApiClient().subscribe(
+      res => {
+        this.allagent = res.data;
+        //console.log(this.allagent);
+        // this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
+      }
+    );
+  }  
+  
 
   search(pageurl="")
   {
     this.spinner.show();
       
     const data = { 
-      starting_fare: this.searchForm.value.starting_fare,
-      upto_fare: this.searchForm.value.upto_fare,
-      commision:this.searchForm.value.commision, 
+      user_id: this.searchForm.value.user_id,
+      rows_number: this.searchForm.value.rows_number,
+      // starting_fare: this.searchForm.value.starting_fare,
+      // upto_fare: this.searchForm.value.upto_fare,
+      // commision:this.searchForm.value.commision, 
     };
    
     // console.log(data);
@@ -101,6 +117,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
       this.ApiUserCommissionService.getAllaginationData(pageurl,data).subscribe(
         res => {
           this.apiusercommissionslab= res.data.data.data;
+          console.log(this.apiusercommissionslab);
           this.pagination= res.data.data;
           this.all= res.data;
           this.spinner.hide();
@@ -112,7 +129,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
       this.ApiUserCommissionService.getAllData(data).subscribe(
         res => {
           this.apiusercommissionslab= res.data.data.data;
-          console.log(this.apiusercommissionslab);
+          //console.log(this.apiusercommissionslab);
           this.pagination= res.data.data;
           this.all= res.data;
           this.spinner.hide();
@@ -126,6 +143,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
       this.spinner.show();
 
       this.searchForm = this.fb.group({  
+        user_id: [null],
         starting_fare: [null], 
         upto_fare: [null],  
         commision: Constants.RecordLimit,
@@ -135,6 +153,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
   ResetAttributes()
   {
       this.aapiusercommissionslabRecord = {
+        user_id:'',
         starting_fare:'',
         upto_fare:'',
         commision:''
@@ -162,7 +181,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         starting_fare:this.form.value.starting_fare,
         upto_fare:this.form.value.upto_fare,
         commision:this.form.value.commision,
-        user_name : localStorage.getItem('USERNAME'),     
+        created_by : localStorage.getItem('USERNAME'),     
     };
 
     console.log(data);

@@ -139,6 +139,7 @@ export class ApclientwalletbalanceComponent implements OnInit {
     this.busOperatorService.getApiClient().subscribe(
       res => {
         this.allagent = res.data;
+        console.log(this.allagent);
         // this.allagent.map((i: any) => { i.agentData = i.name + '   -(  ' + i.location  + '  )'; return i; });
       }
     );

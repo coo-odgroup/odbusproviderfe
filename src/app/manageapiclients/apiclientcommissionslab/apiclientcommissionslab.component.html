@@ -14,6 +14,43 @@
           </div>
           <div class="col-8">
             <form [formGroup]="searchForm">
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                              <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
+                                 formControlName="user_id" [clearable]="false" >
+                              </ng-select>                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <button type="button" class="btn btn-success  sml_input" (click)="search()"
+                            title="search">
+                            <i class="fas fa-search"> </i> Search
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
+                            title="refresh">
+                            <i class="fas fa-sync-alt"> </i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="col-2">
+                        <div class="dropdown float-right">
+                            <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                                <option value=10>10</option>
+                                <option value=25>25</option>
+                                <option value=50>50</option>
+                                <option value=100>100</option>
+                                <option value='all'>All</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+          <!-- <div class="col-8">
+            <form [formGroup]="searchForm">
               <div class="row">                
                 <div class="col-12">
                   <div class="dropdown float-right">
@@ -28,7 +65,7 @@
                 </div>  
               </div>
             </form>  
-          </div>  
+          </div>   -->
         </div>
   
         <div class="table-responsive" id="print-section">
@@ -48,7 +85,7 @@
             <tbody *ngIf="apiusercommissionslab?.length != 0">
               <tr *ngFor="let cm of apiusercommissionslab; let i=index;">
                 <td>{{ i+1}}</td>
-                <td>{{ cm.user_id }}</td>
+                <td>{{ cm.user.name }}</td>
                 <td>{{ cm.starting_fare }}</td>
                 <td>{{ cm.upto_fare }}</td>
                 <td>{{ cm.commision }}</td>
@@ -140,42 +177,53 @@
                     <div class="right-icon-control">
                       <form [formGroup]="form" class="editForm" novalidate>
                         <div class="row">
-                          <div class="col-md-4">
-                            <div class="form-group row">
-                              <label for="range_from" class="col-sm-4 col-form-label">Range From<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="starting_fare">
+                          <div class="from-group col-md-3">
+                            <label for="name" class="col-sm-12 col-form-label">Select Bus
+                                Operator :<span class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                              <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
+                                    formControlName="user_id" [clearable]="false" >
+                              </ng-select>
                                 <span class="text-danger"
-                                  *ngIf="form.controls['starting_fare'].touched && form.controls['starting_fare'].hasError('required')">
-                                  Range from is required! </span>
-                              </div>
+                                    *ngIf="form.controls['user_id'].touched && form.controls['user_id'].hasError('required')">
+                                    Select API User
+                                </span>
+                            </div>
+                        </div>
+
+                         
+                          <div class="form-group col-md-3">
+                            <label for="name" class="col-sm-12 col-form-label">Range From
+                              :<span class="text-danger">*</span></label>                            
+                            <div class="col-sm-12">
+                              <input type="text" class="form-control" formControlName="starting_fare">
+                              <span class="text-danger"
+                                *ngIf="form.controls['starting_fare'].touched && form.controls['starting_fare'].hasError('required')">
+                                Range from is required! </span>
                             </div>
                           </div>
-                          <div class="col-md-4">
-                            <div class="form-group row">
-                              <label for="range_to" class="col-sm-4 col-form-label">Range To<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="upto_fare">
-                                <span class="text-danger"
-                                  *ngIf="form.controls['upto_fare'].touched && form.controls['upto_fare'].hasError('required')">
-                                  Range to is required! </span>
-                              </div>
+                         
+                         
+                          <div class="form-group col-md-3">
+                            <label for="name" class="col-sm-12 col-form-label">Range To
+                              :<span class="text-danger">*</span></label>  
+                            <div class="col-sm-12">
+                              <input type="text" class="form-control" formControlName="upto_fare">
+                              <span class="text-danger"
+                                *ngIf="form.controls['upto_fare'].touched && form.controls['upto_fare'].hasError('required')">
+                                Range to is required! </span>
                             </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="form-group row">
-                              <label for="comission_per_seat" class="col-sm-4 col-form-label">Commission<span
-                                  class="text-danger">*</span></label>
-                              <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="commision">
-                                <span class="text-danger"
-                                  *ngIf="form.controls['commision'].touched && form.controls['commision'].hasError('required')">
-                                  Commission to is required! </span>
-                              </div>
+                          </div>                        
+                          
+                          <div class="form-group col-md-3">
+                            <label for="name" class="col-sm-12 col-form-label">Commission:<span class="text-danger">*</span></label>  
+                            <div class="col-sm-12">
+                              <input type="text" class="form-control" formControlName="commision">
+                              <span class="text-danger"
+                                *ngIf="form.controls['commision'].touched && form.controls['commision'].hasError('required')">
+                                Commission to is required! </span>
                             </div>
-                          </div>
+                          </div>                         
                         </div>
                       </form>
                     </div>
