@@ -27,6 +27,7 @@ export class ApicancelticketsComponent implements OnInit {
   busoperators: any;
   locations: any;
   buses: any;
+  allagent: any;
   // completedata: any;
 
   hoveredDate: NgbDate | null = null;
@@ -176,6 +177,12 @@ export class ApicancelticketsComponent implements OnInit {
     this.locationService.readAll().subscribe(
       records=>{
         this.locations=records.data;
+      }
+    );
+
+    this.busOperatorService.getApiClient().subscribe(
+      res => {
+        this.allagent = res.data;       
       }
     );
   }

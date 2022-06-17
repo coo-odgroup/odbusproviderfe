@@ -29,6 +29,7 @@ export class ApibookingsticketsComponent implements OnInit {
   url: any;
   locations: any;
   buses: any;
+  allagent: any;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
@@ -179,6 +180,12 @@ export class ApibookingsticketsComponent implements OnInit {
     this.locationService.readAll().subscribe(
       records=>{
         this.locations=records.data;
+      }
+    );
+
+    this.busOperatorService.getApiClient().subscribe(
+      res => {
+        this.allagent = res.data;       
       }
     );
   }
