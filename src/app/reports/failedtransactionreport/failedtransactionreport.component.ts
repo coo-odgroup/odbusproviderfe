@@ -22,6 +22,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 })
 export class FailedtransactionreportComponent implements OnInit {
   public searchFrom: FormGroup;
+  public generateTicketFrom:FormGroup;
   modalReference: NgbModalRef;
   failedtransactionReport: FailedtransactionReport[];
   failedtransactionReportRecord: FailedtransactionReport;
@@ -78,6 +79,11 @@ export class FailedtransactionreportComponent implements OnInit {
 
     })
 
+    this.generateTicketFrom=this.fb.group({
+      Razorpay_payment_id:[null,Validators.compose([Validators.required])],
+      booking_id:[null]
+    });
+
 
     this.search();
     this.loadServices();
@@ -118,7 +124,7 @@ export class FailedtransactionreportComponent implements OnInit {
       this.rs.failledtransactionReport(data).subscribe(
         res => {
           this.completedata = res.data;
-          console.log(res.data.data);
+          //console.log(res.data.data);
           this.spinner.hide();
         }
       );
@@ -218,12 +224,15 @@ export class FailedtransactionreportComponent implements OnInit {
     }
   }
 
-  generateTicket(id) {
+  OpenGenerateTicket(id:any,content){
+
     this.spinner.show();
     this.comData = [];
     this.seatIDs = [];
     this.seatStatu = null;
     this.comData = this.completedata.data.data[id];
+
+    this.generateTicketFrom.controls.booking_id.setValue(this.comData.id);
 
     for (let items of this.comData.booking_detail) {
 
@@ -241,19 +250,63 @@ export class FailedtransactionreportComponent implements OnInit {
     this.gfts.CheckSeat(data).subscribe(
       res => {
         this.seatStatu = res.data;
-        if (res.data == 'SEAT AVAIL') {
+          if (res.data == 'SEAT AVAIL') {
+          this.modalReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+          this.spinner.hide();
+       
+       
+        }
+      else {
+        this.notificationService.addToast({ title: Constants.ErrorTitle, msg: res.data, type: Constants.ErrorType });
+        this.spinner.hide();
+      }
+  });
+
+  }
+
+  generateTicket() {
+
+    // this.spinner.show();
+    // this.comData = [];
+    // this.seatIDs = [];
+    // this.seatStatu = null;
+    // this.comData = this.completedata.data.data[id];
+
+    // for (let items of this.comData.booking_detail) {
+
+    //   this.seatIDs.push(items.bus_seats.seats.id);
+    // }
+
+    // const data =
+    // {
+    //   'entry_date': this.comData.journey_dt,
+    //   'busId': this.comData.bus_id,
+    //   'sourceId': this.comData.source_id,
+    //   'destinationId': this.comData.destination_id,
+    //   'seatIds': this.seatIDs
+    // }
+    // this.gfts.CheckSeat(data).subscribe(
+    //   res => {
+    //     this.seatStatu = res.data;
+    //     if (res.data == 'SEAT AVAIL') {
           // console.log(this.comData);
+
+          this.spinner.show();
           const bookingData =
           {
-            'booking_id': this.comData.id,
+            'booking_id':  this.generateTicketFrom.value.booking_id,
+            'razorpay_payment_id':  this.generateTicketFrom.value.Razorpay_payment_id,           
             "created_by": localStorage.getItem('USERNAME')
           }
           this.gfts.generateTicket(bookingData).subscribe(
             resp => {
               if (resp.status == 1) {
                 this.notificationService.addToast({ title: Constants.SuccessTitle, msg: "Ticket has been generated", type: Constants.SuccessType });
+
+                this.modalService.dismissAll();
                 this.search();
                 this.spinner.hide();
+
 
               }
               else {
@@ -262,12 +315,12 @@ export class FailedtransactionreportComponent implements OnInit {
               }
             }
           );
-        }
-        else {
-          this.notificationService.addToast({ title: Constants.ErrorTitle, msg: res.data, type: Constants.ErrorType });
-          this.spinner.hide();
-        }
-      }
-    );
+      //   }
+      //   else {
+      //     this.notificationService.addToast({ title: Constants.ErrorTitle, msg: res.data, type: Constants.ErrorType });
+      //     this.spinner.hide();
+      //   }
+      // }
+    //);
   }
 }

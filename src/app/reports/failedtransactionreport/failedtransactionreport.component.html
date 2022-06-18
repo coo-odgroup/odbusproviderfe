@@ -151,7 +151,7 @@
                                 <th scope="col">Owner Price</th>
                                 <!-- <th scope="col">Total Fare</th> -->
                                 <!-- <th scope="col">Odbus Received</th> -->
-                                <th scope="col">Action</th>
+                                <!-- <th scope="col">Action</th> -->
     
                             </tr>
                         </thead>
@@ -159,6 +159,9 @@
                             <tr *ngFor="let complete of completedata?.data.data; let i = index">
                                 <td>{{ i+1 }}</td>
                                 <td>
+
+                                  
+                                  
                                 
                                     <span *ngIf="complete.app_type == 'WEB'">
                                         <strong>(W)&nbsp;</strong>
@@ -191,6 +194,7 @@
                                         {{complete.razerPayStatus}}
                                     </strong> -->
                                     
+                                    <button class="btn btn-success btn-sm" (click)="OpenGenerateTicket(i,GenerateTicket);" >GENERATE TICKET</button>
                                
                                     
                                 </td>                          
@@ -325,11 +329,11 @@
                                 <!-- <td>
                                     <b>{{complete.odbus_charges}}</b>
                                 </td> -->
-                                <td>
+                                <!-- <td>
                                     
-                                        <button class="btn btn-success btn-sm" (click)="generateTicket(i);" >GENERATE</button>
+                                        <button class="btn btn-success btn-sm" (click)="OpenGenerateTicket(i,GenerateTicket);" >GENERATE</button> 
                                   
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
     
@@ -485,7 +489,7 @@
             </table>
         </div>
 
-        <!-- <ng-template #content let-modal>
+        <ng-template #GenerateTicket let-modal>
             <div class="modal-header">
               <h5 class="ng-tns-c116-5">Generate Ticket</h5>
               <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -498,12 +502,16 @@
                   <div class="form-material">
                     <div class="right-icon-control">
                        <div *ngIf="seatStatu=='SEAT AVAIL'">
+                        <form [formGroup]="generateTicketFrom" (ngSubmit)="generateTicket()">                       
                                     <h4>{{seatStatu}}</h4><br>
-                                    <b>DO You Sure Want To Generate The Ticket</b> <br>
-                                    <button type="button" (click)="generatePnr()"
+                                    
+                                    <input type="text" class="form-control" placeholder="Enter Razorpay Payment Id" formControlName="Razorpay_payment_id" >
+                                    <br>
+                                    <button type="submit" [disabled]="generateTicketFrom.invalid"
                                     class="btn btn-primary" ngbAutofocus>
-                                  Generate
-                                  </button>
+                                    Submit
+                                    </button>
+                                </form>          
                        </div>
                        <div *ngIf="seatStatu!=null && seatStatu!='SEAT AVAIL'">
                                     Seat Already Booked
@@ -520,6 +528,6 @@
                 Close
               </button>
             </div>
-          </ng-template> -->
+          </ng-template>
     </div>
 </div>
