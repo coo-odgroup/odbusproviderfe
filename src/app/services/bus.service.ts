@@ -40,10 +40,14 @@ export class BusService {
     )
   }
 
-
+  // getBusScheduleEntryDates(busId):Observable<any> {
+  //   return this.httpClient.get(this.apiURL+'/getBusScheduleEntryDates/' +busId,this.httpOptions).pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
 
   getBusScheduleEntryDates(busId):Observable<any> {
-    return this.httpClient.get(this.apiURL+'/getBusScheduleEntryDates/' +busId,this.httpOptions).pipe(
+    return this.httpClient.get(this.apiURL+'/busScheduleById/' +busId,this.httpOptions).pipe(
       catchError(this.errorHandler)
     )
   }

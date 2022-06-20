@@ -307,14 +307,18 @@
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div class="row" #DsiplayDiv>
                     <div class="col-sm-12">
-                      <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date;" class="col-2">
-                        {{entryDate.entry_date}}
+                      <label *ngFor="let eDate of eDates ;">
+                        <span class="col-2" *ngFor="let  date of eDate.bus_schedule_date ;">
+                          {{date.entry_date}}
+                        </span>
                       </label>
+                      <!-- <label *ngFor="let entryDate of busScheduleRecord.bus_schedule_date;" class="col-2">
+                        {{entryDate.entry_date}}
+                      </label> -->
                     </div>
                   </div>
-
                 </form>
               </div>
             </div>

@@ -56,14 +56,15 @@ export class BusscheduleComponent implements OnInit {
   unSubscribeData: any;
   locations: any;
   url: string;
+
   constructor(  private locationService:LocationService,private buscanCellationService: BuscancellationService,private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {
-    this.isSubmit = false;
-    this.busScheduleRecord= {} as Busschedule;
-    config.backdrop = 'static';
-    config.keyboard = false;
-    this.ModalHeading = "Add Bus Schedule";
-    this.ModalBtn = "Save";
+      this.isSubmit = false;
+      this.busScheduleRecord= {} as Busschedule;
+      config.backdrop = 'static';
+      config.keyboard = false;
+      this.ModalHeading = "Add Bus Schedule";
+      this.ModalBtn = "Save";
   }
   OpenModal(content) {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
@@ -174,6 +175,8 @@ export class BusscheduleComponent implements OnInit {
     this.ModalHeading = "Add BusSchedule";
     this.ModalBtn = "Save"; 
   }
+
+
   getBusbyOperator()
   {   
     if(this.busScheduleForm.get('bus_operator_id').value!="")
@@ -189,41 +192,43 @@ export class BusscheduleComponent implements OnInit {
 
   findOperator(event: any) {
     this.spinner.show();
-
+    this.busScheduleForm.controls.bus_id.setValue('');
     let operatorId = event.id;
-    if (operatorId) {
+    if (operatorId) 
+    {          
       this.busService.getByOperaor(operatorId).subscribe(
         res => {
           this.buses = res.data;
           this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
           this.spinner.hide();
-
         }
       );
     }
-
   }
+
   getBusScheduleEntryDatesByBusId(event)
   { 
-    this.spinner.show();
-    if(event.id!="")
-    {
-    this.busService.getBusScheduleEntryDates(event.id).subscribe(
-      resp=>{
-      this.eDates=resp.data;
-      this.spinner.hide();
-      }); 
-    }
+      this.spinner.show();
+
+      if(event.id!="")
+      {
+          this.busService.getBusScheduleEntryDates(event.id).subscribe(
+              resp=>{
+                this.eDates = resp;
+                //console.log(this.eDates);
+                this.spinner.hide();
+              }); 
+      }
   }
   loadServices(){
 
-    this.busService.all().subscribe(
-      res => {
-        this.buses = res.data;
-        // console.log(this.buses);
-        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
-      }
-    );
+    // this.busService.all().subscribe(
+    //   res => {
+    //     this.buses = res.data;
+    //     // console.log(this.buses);
+    //     this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+    //   }
+    // );
     
     const BusOperator={
       USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
@@ -253,10 +258,7 @@ export class BusscheduleComponent implements OnInit {
       records=>{
         this.locations=records.data;
       }
-    );
-
-
-    
+    );    
   }
 
 
@@ -314,9 +316,7 @@ export class BusscheduleComponent implements OnInit {
     this.loadServices();
     this.busScheduleRecord=this.busSchedules[id];
     this.scheduleRecord=this.busScheduleRecord;
-    // console.log(this.scheduleRecord);
-
-    
+    // console.log(this.scheduleRecord);   
 
     this.busScheduleForm = this.fb.group({
       id:this.busScheduleRecord.id,

@@ -4,6 +4,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BusOperatorService } from './../../services/bus-operator.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {CompleteReport} from '../../model/completereport';
+import { Apipnrdispute } from '../../model/apipnrdispute';
 import { LocationService } from '../../services/location.service';
 import { BusService} from '../../services/bus.service';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
