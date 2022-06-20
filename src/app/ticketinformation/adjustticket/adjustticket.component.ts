@@ -264,14 +264,14 @@ export class AdjustticketComponent implements OnInit {
     const data =
     {
       busId: this.adjustTicketForm.value.bus,
-      journey_dt: this.datePipe.transform(this.pnrDetails[0].journey_dt, 'dd-MM-yyyy'),
+      journey_dt:   this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
       source: this.pnrDetails[0].source_id,
       destination: this.pnrDetails[0].destination_id,
     }
     this.acts.getSeatLayout(data).subscribe(
       resp => {
         this.seatLayout = resp.data;
-        // console.log(this.seatLayout);
+        //console.log(this.seatLayout);
         this.spinner.hide();
       
         
