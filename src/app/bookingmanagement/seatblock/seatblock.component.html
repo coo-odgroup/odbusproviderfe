@@ -2,23 +2,56 @@
   <p style="color: white"> Loading... </p>
 </ngx-spinner>
 
+<style>
+  table {
+         font-size: 12px !important;;
+     }
+
+ @media only screen and (max-width: 600px) {
+     table {
+         font-size: 11px !important;
+         font-weight: bold;
+         
+     }
+     th{
+         padding: 1px !important;
+     }
+     td{
+         padding: 1px !important;
+     }
+     .mob{
+      text-align: center !important;
+     }
+    
+}
+</style>
+
 <div class="row">
   <div class="col-sm-12">
     <app-card [hidHeader]="false" cardTitle="SEAT BLOCK" cardClass="card-datatable" [options]="false"
       cardClass=" table-border-style user-profile-list ">
 
       <div class="row">
-        <div class="col-2">
-          <div class="from-group ">
-            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Seat Block Here
-            </button>
-          </div>
-        </div>
-        <div class="col-10">
+      
+        <div class="col-12">
           <form [formGroup]="searchForm">
             <div class="row">
-              <div class="col-6">
+              <div class="col-md-4">
+                  <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                    Seat Block Here
+                  </button>
+
+                  <div class="dropdown float-right">
+                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                      <option value=10>10</option>
+                      <option value=25>25</option>
+                      <option value=50>50</option>
+                      <option value=100>100</option>
+                      <option value='all'>All</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="col-md-5">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <div class="input-group">
@@ -30,7 +63,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-4">
+              <div class="col-md-3">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <div class="input-group">
@@ -41,20 +74,9 @@
                 </div>
               </div>
 
-              <div class="col-2">
-                <div class="dropdown float-right">
-                  <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
-                    <option value=10>10</option>
-                    <option value=25>25</option>
-                    <option value=50>50</option>
-                    <option value=100>100</option>
-                    <option value='all'>All</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 p-0">
+              <div class="col-12">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-md-4">
                     <div class="form-group row">
                       <div class="col-sm-12">
                         <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
@@ -65,26 +87,29 @@
                     </div>
                   </div>  
 
-                  <div class="col-4">
+                  <div class="col-md-8">
                     <div class="form-group ">
-                      <div class="col-sm-12">
-                        <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Source"
-                          formControlName="source_id" [clearable]="false">
-                        </ng-select>
-                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Source"
+                            formControlName="source_id" [clearable]="false">
+                          </ng-select>
+                        </div>
+                        <div class="col-sm-6">
+                          <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Destination"
+                            formControlName="destination_id" [clearable]="false">
+                          </ng-select>
+                        </div>
+                      </div>                     
                     </div>
                   </div>
 
 
-                  <div class="col-4">
+                  <!-- <div class="col-4">
                     <div class="form-group">
-                      <div class="col-sm-12">
-                        <ng-select [items]="locations" bindLabel="name" bindValue="id" placeholder="Select Destination"
-                          formControlName="destination_id" [clearable]="false">
-                        </ng-select>
-                      </div>
+                     
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -94,17 +119,17 @@
       <div class="row">
         <div class="col-12">
           <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
-            <i class="fas fa-search"> </i> Search
+             Search
           </button>
           <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-            <i class="fas fa-sync-alt"> </i> Refresh
+            Refresh
           </button>
           <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
-            <i class="fas fa-file-export"> </i> Export
+            Export
           </button>
           <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
             [useExistingCss]="true" title="Print">
-            <i class="fas fa-print"> </i> Print
+           Print
           </button>
         </div>
 
@@ -120,7 +145,7 @@
               <th>Operator</th>
               <th>Bus Route</th>
               <th>Block Details</th>
-              <th>View Details</th>
+              <!-- <th>View Details</th> -->
             </tr>
           </thead>
           <tbody *ngIf="seatBlock?.length != 0">
@@ -128,8 +153,7 @@
               <td>{{i+1}}</td>
               <td>{{ sblock[0][0].value[0].bus.name }} <br>{{ sblock[0][0].value[0].bus.bus_number }}</td>
               <td>
-                {{ sblock[0][0].value[0].bus.bus_operator.organisation_name }} <br>
-                [ {{ sblock[0][0].value[0].bus.bus_operator.operator_name }} ]
+                {{ sblock[0][0].value[0].bus.bus_operator.organisation_name }} 
               </td>
               <td>
                 {{sblock[0][0].value[0].bus_source[0]?.name}}  >>  {{sblock[0][0].value[0].bus_destination[0]?.name}}
@@ -152,7 +176,7 @@
                       {{dateIndex+1}}
                     </td> -->
                     <td>
-                      {{opendate[0].value[0].operation_date}}
+                      {{opendate[0].value[0].operation_date | date: 'dd/MM'}}
                     </td>
                     <!-- <td>
                       {{opendate[0].value[0].source[0].name}} >> {{opendate[0].value[0].destination[0].name}}
@@ -174,13 +198,18 @@
                     </td> -->
 
                     <td class="hide_print">
-                      <div class="overlay-edit">
+                      <!-- <div class="overlay-edit">
                         <button type="button" (click)="openConfirmDialog (confirmDialog,
                                         opendate[0].value[0].bus.id ,
                                         opendate[0].value[0].operation_date)" class="btn btn-icon btn-danger">
                           <i class="feather icon-trash-2"></i>
                         </button>
-                      </div>
+                      </div> -->
+                      <span type="button"(click)="openConfirmDialog (confirmDialog,
+                      opendate[0].value[0].bus.id ,
+                      opendate[0].value[0].operation_date)" class="btn   float-right"> 
+                        <i class="fa fa-trash " aria-hidden="true"></i>
+                    </span>
                     </td>
 
                   </tr>
@@ -190,11 +219,11 @@
 
 
 
-
+<!-- 
               <td>
                 <button (click)="OpenModal(details);viewDetails(i);" class="btn btn-info"> <i class="fas fa-eye">
                   </i></button>
-              </td>
+              </td> -->
 
 
             </tr>

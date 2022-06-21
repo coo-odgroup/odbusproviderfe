@@ -104,6 +104,7 @@ export class ExtraseablockComponent implements OnInit {
   busSchedule: any[];
   cancelDates: any;
   extraSeatBlockDetails: any;
+  lastUrl: string;
   constructor(
     private buscanCellationService: BuscancellationService,
     private seatopenService: ExtraseatblockService,
@@ -170,17 +171,33 @@ export class ExtraseablockComponent implements OnInit {
 
   }
 
-  page(label: any) {
+  // page(label: any) {
+  //   return label;
+  // }
+  // set_page(url:any)
+  // {  
+  //   this.page_no = url.replace('/api/seatopenData?&page=','');
+  //   // console.log(url)
+  //  this.search();
+  
+  // }
+
+  page(label:any){
     return label;
-  }
+   }
+
+
   set_page(url:any)
-  {  
-    this.page_no = url.replace('/api/seatopenData?&page=','');
-    // console.log(url)
-   this.search();
+  {
+    this.lastUrl = '';
+    // console.log(url);
+    this.page_no = url.replace('/api/extraSeatBlockData?page=','');
+    this.search();
+    this.lastUrl = url;
   
   }
-
+ 
+  
 
   search(pageurl = "") {
     this.spinner.show();
@@ -203,6 +220,7 @@ export class ExtraseablockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
+          this.lastUrl="/api/extraSeatBlockData?page="+this.all.current_page ;
           // console.log( this.BusOperators);
           
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
@@ -247,6 +265,7 @@ export class ExtraseablockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
+          this.lastUrl="/api/extraSeatBlockData?page="+this.all.current_page ;
 
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
           // console.log(mainArray);
@@ -288,6 +307,7 @@ export class ExtraseablockComponent implements OnInit {
 
   refresh() {
     this.spinner.show();
+    this.lastUrl = ''; 
     this.searchForm = this.fb.group({
       name: [null],
       rows_number: Constants.RecordLimit,
@@ -722,7 +742,8 @@ export class ExtraseablockComponent implements OnInit {
             if (resp.status == 1) {
               this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
               this.modalReference.close();
-              this.refresh();
+              this.lastUrl='';
+              this.set_page(this.lastUrl);
             }
             else {
               this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -739,13 +760,13 @@ export class ExtraseablockComponent implements OnInit {
 
  
 
-  openConfirmDialog(content, id: any, tkt_id: any, date: any) {
+  openConfirmDialog(content, id: any, date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     // this.seatOpenRecord = this.seatOpen[id];
 
     this.deletedata = {
       bus_id: id,
-      ticketPriceId: tkt_id,
+      // ticketPriceId: tkt_id,
       operationDate: date
     };
     // console.log(this.deletedata);
@@ -762,8 +783,8 @@ export class ExtraseablockComponent implements OnInit {
       resp => {
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
-          this.confirmDialogReference.close();this.modalReference.close();
-          this.refresh();
+          this.confirmDialogReference.close();
+          this.set_page(this.lastUrl);
         }
         else {
 

@@ -1,6 +1,20 @@
 <div class="container" *ngIf="this.flatConfig.layout === 'horizontal' && this.flatConfig.subLayout === 'horizontal-2'; else mainHeader">
   <ng-container *ngTemplateOutlet="mainHeader"></ng-container>
 </div>
+
+<style>
+  table {
+         font-size: 12px !important;;
+     }
+
+ @media only screen and (max-width: 600px) {
+  img#main-logo{
+      width: 35% !important;
+    margin-left: 10px;
+    }
+}
+</style>
+
 <ng-template #mainHeader>
   <div class="m-header">
     <a href="javascript:" class="mobile-menu" id="mobile-collapse" (click)="navCollapse()"><span></span></a>

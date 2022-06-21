@@ -365,7 +365,7 @@ export class BuscancellationComponent implements OnInit {
               if (existingDate) {
                 let newDatesgroup: FormGroup = this.fb.group({
                   entryDates: [eDate.entry_date],
-                  datechecked: [{ value: false, disabled: true ,class:'text-danger' }],
+                  datechecked: [{ value: false, disabled: true}],
                 })
                 this.DatesRecord.insert(arraylen, newDatesgroup);
               }       

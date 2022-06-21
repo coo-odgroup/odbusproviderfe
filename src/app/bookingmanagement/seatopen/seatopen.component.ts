@@ -102,6 +102,7 @@ export class SeatopenComponent implements OnInit {
   busSchedule: any;
   seatOpenDetails: any;
   alreadyOpenData: any = [];
+  lastUrl: string;
   constructor(
     calendar: NgbCalendar,
     private seatopenService: SeatopenService,
@@ -169,16 +170,17 @@ export class SeatopenComponent implements OnInit {
 
   }
 
+  set_page(url:any)
+  {
+    this.lastUrl = '';
+    this.page_no = url.replace('/api/seatopenData?page=','');
+    this.search();
+    this.lastUrl = url;
+  
+  }
   page(label: any) {
     return label;
   }
-  set_page(url:any)
-  {  
-    this.page_no = url.replace('/api/seatopenData?&page=','');
-    this.search();
-  
-  }
-
 
   search(pageurl = "") {
     this.spinner.show();
@@ -203,6 +205,7 @@ export class SeatopenComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
+          this.lastUrl="/api/seatopenData?page="+this.all.current_page ;
           // console.log( this.BusOperators);
           
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
@@ -247,6 +250,7 @@ export class SeatopenComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
+          this.lastUrl="/api/seatopenData?page="+this.all.current_page ;
           // console.log(mainArray);
 
 
@@ -350,7 +354,6 @@ alreadyOpen()
       {
         for (var bus of opensData) {
           this.alreadyOpenData.push(bus);
-         
        }
       }
     }
@@ -731,7 +734,7 @@ alreadyOpen()
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
-            this.refresh();
+            this.set_page(this.lastUrl);
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -747,7 +750,7 @@ alreadyOpen()
           if (resp.status == 1) {
             this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
             this.modalReference.close();
-            this.refresh();
+            this.set_page(this.lastUrl);
           }
           else {
             this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
@@ -778,13 +781,13 @@ alreadyOpen()
     );
   }
 
-  openConfirmDialog(content, id: any, tkt_id: any, date: any) {
+  openConfirmDialog(content, id: any, date: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     // this.seatOpenRecord = this.seatOpen[id];
 
     this.deletedata = {
       bus_id: id,
-      ticketPriceId: tkt_id,
+      // ticketPriceId: tkt_id,
       operationDate: date,
       type: "1"
     };
@@ -803,8 +806,8 @@ alreadyOpen()
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
           this.confirmDialogReference.close();
-          this.modalReference.close();
-          this.refresh();
+          // this.modalReference.close();
+          this.set_page(this.lastUrl);
         }
         else {
 
