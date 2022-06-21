@@ -52,7 +52,7 @@ export class BuscancellationreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],   
-      rows_number: Constants.RecordLimit,
+      rows_number: 100,
       rangeFromDate:[null],
       rangeToDate:[null]     
     })  
@@ -127,7 +127,7 @@ export class BuscancellationreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       bus_id: [null],   
-      rows_number: Constants.RecordLimit,
+      rows_number: 100,
       rangeFromDate:[null],
       rangeToDate:[null]     
     })  

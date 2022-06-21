@@ -57,7 +57,7 @@ export class CouponuseduserreportComponent implements OnInit {
       bus_operator_id: [null],
       payment_id : [null],
       date_type:['booking'],
-      rows_number: Constants.RecordLimit,
+      rows_number: 100,
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
@@ -111,10 +111,7 @@ export class CouponuseduserreportComponent implements OnInit {
           this.spinner.hide();
         }
       );
-    }
-
-
-    
+    }    
   }
 
 
@@ -126,7 +123,7 @@ export class CouponuseduserreportComponent implements OnInit {
       bus_operator_id: [null],
       payment_id : [null],
       date_type:['booking'],
-      rows_number: Constants.RecordLimit,
+      rows_number: 100,
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
@@ -163,7 +160,6 @@ export class CouponuseduserreportComponent implements OnInit {
       res => {
         this.busoperators = res.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
       }
     );
     this.locationService.readAll().subscribe(
@@ -196,6 +192,4 @@ export class CouponuseduserreportComponent implements OnInit {
       );
     }
   }
-
-
 }

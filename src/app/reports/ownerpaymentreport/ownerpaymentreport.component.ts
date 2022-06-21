@@ -47,7 +47,7 @@ export class OwnerpaymentreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       date_range: [null],
-      rows_number: Constants.RecordLimit,
+      rows_number: 50,
       rangeFromDate:[null],
       rangeToDate :[null]
 
@@ -112,7 +112,7 @@ export class OwnerpaymentreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       date_range: [null],
-      rows_number: Constants.RecordLimit,
+      rows_number: 50,
       rangeFromDate:[null],
       rangeToDate :[null]
 
