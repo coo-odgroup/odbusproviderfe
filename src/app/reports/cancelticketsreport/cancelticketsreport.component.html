@@ -296,9 +296,7 @@
                                         ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
                                         <i class="far fa-envelope"></i>
                                     </button>
-
-                                </td>
-                              
+                                </td>                              
     
                                 <td>
                                     <div *ngIf="complete.booking_detail?.length != 0">
@@ -309,50 +307,37 @@
                                             ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
                                     </div>
                                 </td>
-                                <td>
-    
+                                <td>    
                                     <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
                                 </td>
-                                <td>
-    
+                                <td>    
                                     <p>
-                                        <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->
-    
+                                        <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->    
                                     </p>
                                     <h5>Rs {{ complete.refund_amount }} <br>
-
                                         <span *ngIf="complete.user_id > 0" style="color:red;font-size: 12px;">(Refund to Agent)</span>
-                                        <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>
-                                    
-                                    </h5>
-    
+                                        <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>                                    
+                                    </h5>    
                                 </td>
-
                                 <td>
-                                    <h5> {{ (complete.user_id > 0) ? 'Agent' : 'Customer'  }} </h5>
-    
+                                    <h5> {{ (complete.user_id > 0) ? 'Agent' : 'Customer'  }} </h5>    
                                 </td>
-
                                 <td>
                                     <b>{{complete.created_by}}</b>
                                 </td>
                             </tr>
-                        </tbody>
-    
+                        </tbody>    
                         <tbody *ngIf="cancelticketdata?.data.data?.length == 0">
                             <tr>
                               <td colspan="11" class="no-data-available">No data!</td>
                             </tr>
-                        <tbody>
-    
+                        <tbody>    
                     </table>
-                </div>
-              
+                </div>             
 
                 <div *ngIf="cancelticketdata?.data.data?.length != 0" class="hide_print container">
                     <div class="row">
-                      <div class="col-6">
-                       
+                      <div class="col-6">                       
                           <div class="col-12">
                             <p class=" row mt-3 ml-1"> Showing {{cancelticketdata?.count}} of {{cancelticketdata?.total}} records. </p>
                           </div> 
@@ -375,14 +360,10 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
-            
-                      </div>
-            
+                        </div>            
+                      </div>            
                     </div>
-                  </div> 
-
-              
+                  </div>               
             </div>
         </app-card>
         <div style="display: none;" id="export-section">
@@ -394,7 +375,6 @@
                         <th>Sleeper No</th>
                         <th>Bus Number</th>
                         <th>Bus Name</th>
-                        <!-- <th>From- To</th> -->
                         <th>Source- Destination</th>
                         <th>Journey Date</th>
                         <th>Passenger Details</th>
@@ -408,7 +388,6 @@
                         <td>Additionl Festival Fare</td>
                         <td>Additional Owner Fare</td>
                         <td>Additional Special Fare</td>
-                       
                         <th>Odbus GST</th>
                         <th>Owner GST</th>
                         <th>Odbus Received</th>
@@ -416,10 +395,7 @@
                         <th>Profit</th>
                         <th>Transaction Id</th>
                         <th>Order Id</th>
-
                         <th>App Type</th>
-                       
-
                     </tr>
                 </thead>
 
@@ -428,13 +404,11 @@
                         <td>{{complete.pnr}}</td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
-
                                <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
                             </span>
                         </td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
-
                                <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span> 
                             </span>
                         </td>
@@ -452,64 +426,28 @@
                                 {{dropping.name}}
                             </span>
                         </td>
-                        <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{complete.journey_dt | date: 'dd-MM-YYYY'}}</td>
                         <td>
                             <p *ngFor="let passanger of complete.booking_detail;">
                                 {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
                                 {{passanger.bus_seats.seats.seatText}}] ,
                             </p>
                         </td>
-
-                        <td>
-                            {{complete.users.name}}
-                        </td>
-                        <td>
-                            {{complete.users.phone}}
-                        </td>
-                        <td>
-                            {{complete.users.email}}
-                        </td>
-
-                        <td>
-                            {{complete.total_fare}}
-                        </td>
-                       
-                        <td>
-                            {{complete.owner_fare}}
-                        </td>
-                        <td>
-                            {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
-                        </td>
-                        <td>
-                            {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
-                        </td>
-                        <td>
-                            {{complete.additional_festival_fare}}
-                        </td>
-                        <td>
-                            {{complete.additional_owner_fare}}
-                        </td>
-                        <td>
-                            {{complete.additional_special_fare}}
-                        </td>
-                        
-                        <td>
-                            {{complete.odbus_gst_amount}}
-                        </td>
-                        <td>
-                            {{complete.owner_gst_amount}}
-                        </td>
-                        <td>
-                            {{complete.odbus_charges}}
-                        </td>
-                        <td>
-                            
-                            {{ complete.refund_amount }}
-                        </td>
-                        <td>
-                            {{(complete.payable_amount + complete.agent_commission)-complete.refund_amount }}
-                            
-                        </td>
+                        <td>{{complete.users.name}}</td>
+                        <td>{{complete.users.phone}}</td>
+                        <td>{{complete.users.email}}</td>
+                        <td>{{complete.total_fare}}</td>
+                        <td>{{complete.owner_fare}}</td>
+                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</td>
+                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</td>
+                        <td>{{complete.additional_festival_fare}}</td>
+                        <td>{{complete.additional_owner_fare}}</td>
+                        <td>{{complete.additional_special_fare}}</td>                        
+                        <td>{{complete.odbus_gst_amount}}</td>
+                        <td>{{complete.owner_gst_amount}}</td>
+                        <td>{{complete.odbus_charges}}</td>
+                        <td>{{ complete.refund_amount }}</td>
+                        <td>{{(complete.payable_amount + complete.agent_commission)-complete.refund_amount }}</td>
                         <td>
                             <span *ngIf="complete.customer_payment">
                                 {{complete.customer_payment.razorpay_id}} 
@@ -520,10 +458,7 @@
                                 {{complete.customer_payment.order_id}}
                             </span>
                         </td>
-
-
-                        <td>{{complete.app_type}}</td>
-                       
+                        <td>{{complete.app_type}}</td>                       
                     </tr>
                 </tbody>
             </table>

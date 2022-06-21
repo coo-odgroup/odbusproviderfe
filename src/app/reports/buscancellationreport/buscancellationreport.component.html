@@ -18,7 +18,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-3">
                                     <div class="form-group row">
 
@@ -29,7 +28,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-4">
                                     <div class="row">  
                                         <div class="form-group col-6">
@@ -46,8 +44,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-
                                 <div class="col-2">
                                     <div class="dropdown float-right">
                                         <select class="form-control sml_input" formControlName="rows_number"
@@ -60,7 +56,6 @@
                                         </select>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="row ">
                                 <div class="col-12">
@@ -81,7 +76,6 @@
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
             <div class="table-responsive" id="print-section">
@@ -95,7 +89,6 @@
                             <th scope="col">Cancelled Date</th>
                             <th scope="col">Reason</th>
                             <th scope="col">Cancelled By</th>
-                            
                         </tr>
                     </thead>
                     <tbody *ngIf="buscancellationdata?.data.data?.length != 0">
@@ -110,10 +103,8 @@
                                 </ng-template>
                                 <span [ngbTooltip]="tipContent1" >
                                     {{cancel.bus.bus_operator.operator_name}}
-                                </span>
-                                
+                                </span>                                
                             </td>
-
                             <td>
                                 <ng-template #tipContent>
                                     <h5 class="text-white">Bus Details</h5>
@@ -127,22 +118,17 @@
                                     {{cancel.bus.bus_number}}
                                 </span>                               
                             </td>
-
                             <td>
                                 {{cancel.from_location[0].name}} >> 
                                 {{cancel.to_location[0].name}}
                             </td>
                             <td>
                                 <span *ngFor="let date of cancel.bus_cancelled_date;">
-                                    <strong>{{date.cancelled_date}} , </strong><br>
+                                    <strong>{{date.cancelled_date | date: 'dd-MM-YYYY'}} , </strong><br>
                                 </span>
                             </td>
-                            <td>
-                                {{cancel.reason}}
-                            </td>
-                            <td>
-                                {{cancel.created_by}}
-                            </td>
+                            <td>{{cancel.reason}}</td>
+                            <td>{{cancel.created_by}}</td>
                         </tr>
                     </tbody>
                     <tbody *ngIf="buscancellationdata?.data.data?.length == 0">
@@ -180,16 +166,11 @@
                                 </ul>
                             </nav>
                         </div>
-            
-                      </div>
-            
+                      </div>            
                     </div>
                   </div>   
-
-                 <div *ngIf="buscancellationdata?.data.data?.length != 0" class="hide_print">
-                   
+                 <div *ngIf="buscancellationdata?.data.data?.length != 0" class="hide_print">                   
                 </div> 
-
             </div>
         </app-card>
     </div>

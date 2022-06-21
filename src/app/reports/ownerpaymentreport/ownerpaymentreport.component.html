@@ -102,29 +102,13 @@
                                 <span [ngbTooltip]="tipContent1">
                                     {{payment.bus_operator.operator_name}}
                                 </span>
-
                             </td>
-
-                            <td>
-
-                                {{payment.transaction_id}}
-
-                            </td>
-
-                            <td>
-
-                                {{payment.payment_date}}
-                            </td>
-                            <td>
-                                {{payment.amount}}
-                            </td>
-                            <td>
-                                {{payment.remark}}
-                            </td>
-
+                            <td>{{payment.transaction_id}}</td>
+                            <td>{{payment.payment_date | date: 'dd-MM-YYYY'}}</td>
+                            <td>{{payment.amount}}</td>
+                            <td>{{payment.remark}}</td>
                         </tr>
                     </tbody>
-
                     <tbody *ngIf="completedata?.data.data?.length == 0">
                         <tr>
                           <td colspan="6" class="no-data-available">No data!</td>
@@ -134,8 +118,7 @@
 
                 <div *ngIf="completedata?.length != 0" class="hide_print container">
                     <div class="row">
-                      <div class="col-6">
-                       
+                      <div class="col-6">                       
                           <div class="col-12">
                             <p class=" row mt-3 ml-1"> Showing {{completedata?.count}} of {{completedata?.total}} records. </p>
                           </div> 
@@ -158,16 +141,10 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
-            
-                      </div>
-            
+                        </div>            
+                      </div>            
                     </div>
                   </div> 
-                  
-
-             
-
             </div>
         </app-card>
     </div>
