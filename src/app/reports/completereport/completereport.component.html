@@ -251,7 +251,6 @@
 
                                 <td>
                                     <span *ngFor="let seat of complete.booking_detail;">
-
                                         {{seat.bus_seats.seats.seatText}},
                                     </span>
                                 </td>
@@ -279,7 +278,6 @@
                                         {{complete.users.name}}
                                     </strong> <br>
 
-                                   
                                     [<b>{{complete.booking_detail[0].passenger_name}}</b>] -
                                     <span *ngFor="let passanger of complete.booking_detail;">
                                         <b>{{passanger.passenger_gender}}</b>,
@@ -298,10 +296,7 @@
                                     </button>
 
                                 </td>
-
-
                                 <td>
-
                                     <strong placement="top"
                                         ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
                                     /
@@ -317,7 +312,6 @@
                                 </td>
                                 <td>
                                     <ng-template #tipContent2>
-
                                         <table>
                                             <tr *ngIf="complete.odbus_gst_amount != 0  ">
                                                 <td>ODBUS GST</td>
@@ -370,10 +364,15 @@
                                 </td>
                             </tr>
                             <tr >
-                                <th colspan="7" style="text-align: right;">
+                                <td colspan="4" style="text-align: right;">
+                                    <strong placement="top" ngbTooltip="Total Seats">
+                                        {{completedata?.totalSeats}}
+                                    </strong>
+                                </td>
+                                <td colspan="3" style="text-align: right;">
                                     <strong placement="top"
                                     ngbTooltip="Sum of Owner fare"><i class="fas fa-rupee-sign"></i> {{completedata?.owner_fare}}</strong>
-                                </th>
+                                </td>
                                 <td> 
                                     <strong placement="top"
                                     ngbTooltip="Sum of Total fare"> <i class="fas fa-rupee-sign"></i> <b  class="text-danger">{{completedata?.totalfare}}</b></strong>
