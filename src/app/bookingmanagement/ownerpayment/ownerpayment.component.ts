@@ -1,21 +1,14 @@
 import { BusOperatorService } from './../../services/bus-operator.service';
-import { Busoperator } from './../../model/busoperator';
-import { BusstoppageService } from '../../services/busstoppage.service';
-import { Busstoppage } from '../../model/busstoppage';
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Ownerfare } from '../../model/ownerfare';
 import { NotificationService } from '../../services/notification.service';
 import { OwnerpaymentService } from '../../services/ownerpayment.service';
 import { Ownerpayment} from '../../model/ownerpayment';
 import { BusService} from '../../services/bus.service';
 import { FormArray,FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { LocationService } from '../../services/location.service';
-import { Location } from '../../model/location';
-import {IOption} from 'ng-select';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -53,10 +46,20 @@ export class OwnerpaymentComponent implements OnInit {
   public searchBy:any;
   all: any;
 
-  constructor(private ownerpaymentservice: OwnerpaymentService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService, private spinner: NgxSpinnerService,) { 
+  constructor(
+    private ownerpaymentservice: OwnerpaymentService,
+    private http: HttpClient,
+    private notificationService: NotificationService, 
+    private fb: FormBuilder,
+    config: NgbModalConfig, 
+    private modalService: NgbModal,
+    private busService:BusService,
+    private busOperatorService:BusOperatorService,
+    private locationService:LocationService, 
+    private spinner: NgxSpinnerService,) 
+    { 
     this.isSubmit = false;
     this.ownerpaymentRecord= {} as Ownerpayment;
-    //this.busstoppageRecord= {} as Busstoppage;
     config.backdrop = 'static';
     config.keyboard = false;
     this.ModalHeading = "Add Owner Payment";
@@ -80,6 +83,8 @@ export class OwnerpaymentComponent implements OnInit {
     });
     this.searchForm = this.fb.group({  
       name: [null],  
+      fromDate:[null],
+      toDate:[null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -101,7 +106,6 @@ export class OwnerpaymentComponent implements OnInit {
       rows_number:this.searchForm.value.rows_number, 
     };
    
-    // console.log(data);
     if(pageurl!="")
     {
       this.ownerpaymentservice.getAllaginationData(pageurl,data).subscribe(
@@ -109,7 +113,6 @@ export class OwnerpaymentComponent implements OnInit {
           this.ownerpayments= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-          // console.log( this.BusOperators);
           this.spinner.hide();
         }
       );
@@ -121,7 +124,6 @@ export class OwnerpaymentComponent implements OnInit {
           this.ownerpayments= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-          // console.log( res.data);
           this.spinner.hide();
         }
       );
@@ -133,7 +135,9 @@ export class OwnerpaymentComponent implements OnInit {
    {  
     this.spinner.show();
     this.searchForm = this.fb.group({  
-      name: [null],  
+      name: [null], 
+      fromDate:[null],
+      toDate:[null], 
       rows_number: Constants.RecordLimit,
     });
      this.search();
@@ -165,7 +169,6 @@ export class OwnerpaymentComponent implements OnInit {
   ResetAttributes()
   {
     this.ownerpaymentRecord = {} as Ownerpayment;
-    //this.busstoppageRecord= {} as Busstoppage;
     this.ownerpaymentForm = this.fb.group({
       bus_operator_id: [null],      
       date: [null],
@@ -235,8 +238,6 @@ findSource()
       remark: this.ownerpaymentForm.value.remark,
       created_by:localStorage.getItem('USERNAME'),
     };
-  //  console.log(data);
-  //  return false;
    this.ownerpaymentservice.create(data).subscribe(
      resp => {
       if(resp.status==1)

@@ -151,6 +151,7 @@ export class AdjustticketComponent implements OnInit {
 
   search_pnr() {
     this.spinner.show();
+    this.seatNames=[];
     let pnr = this.adjustTicketForm.value.pnr_no;
     if (pnr != null) {
       this.acts.getPnrDetails(pnr).subscribe(
@@ -158,6 +159,7 @@ export class AdjustticketComponent implements OnInit {
 
          
           this.pnrDetails = res.data; 
+          
 
           if (this.pnrDetails.length == 0) {
             this.msg = "No Pnr Found";
@@ -168,7 +170,10 @@ export class AdjustticketComponent implements OnInit {
             {
               this.maxAllowedSeat= this.pnrDetails[0].booking_detail.length;
             }
-                 
+            this.pnrDetails[0].booking_detail.forEach(b => {
+              this.seatNames.push(b.bus_seats.seats.seatText); 
+            });
+                //  console.log(this.seatNames);
             this.busListing();
           }         
           
@@ -487,7 +492,6 @@ export class AdjustticketComponent implements OnInit {
     this.spinner.show(); 
 
     this.seatIDs=[];
-    this.seatNames=[];
     
 
     let bookingDetailarr=[];
@@ -505,8 +509,7 @@ export class AdjustticketComponent implements OnInit {
           "created_by": localStorage.getItem('USERNAME')
           };  
           bookingDetailarr.push(booking_dtl);
-          this.seatIDs.push(b.seatId);
-          this.seatNames.push(b.seatText);          
+          this.seatIDs.push(b.seatId);        
           i++;
       }
     });
@@ -586,7 +589,7 @@ export class AdjustticketComponent implements OnInit {
     let agent_email=null;
     let agent_name=null;
 
-    console.log(this.pnrDetails[0]);
+    // console.log(this.pnrDetails[0]);
 
     if(this.pnrDetails[0].user){
       agent_number=this.pnrDetails[0].user.phone;
@@ -650,8 +653,8 @@ export class AdjustticketComponent implements OnInit {
         },
     };
     
-      console.log(data);
-      //return;
+      // console.log(data);
+      // return;
 
       this.acts.adjustTicket(data).subscribe(
         res =>{
