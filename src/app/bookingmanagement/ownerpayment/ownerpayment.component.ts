@@ -45,6 +45,7 @@ export class OwnerpaymentComponent implements OnInit {
   public ModalBtn:any;
   public searchBy:any;
   all: any;
+  paymentDetails: any;
 
   constructor(
     private ownerpaymentservice: OwnerpaymentService,
@@ -56,7 +57,7 @@ export class OwnerpaymentComponent implements OnInit {
     private busService:BusService,
     private busOperatorService:BusOperatorService,
     private locationService:LocationService, 
-    private spinner: NgxSpinnerService,) 
+    private spinner: NgxSpinnerService ) 
     { 
     this.isSubmit = false;
     this.ownerpaymentRecord= {} as Ownerpayment;
@@ -74,15 +75,19 @@ export class OwnerpaymentComponent implements OnInit {
     this.ownerpaymentForm = this.fb.group({     
       bus_operator_id: [null],
       transaction_id:[null],      
-      date: [null],
+      startDate: [null],
+      endDate: [null],
+      noSeat: [null],
+      noPnr: [null],
       amount: [null],
-      remark: [null]
+      remark: [null],
+      paymentNote: [null],
     });
     this.formConfirm=this.fb.group({
       id:[null]
     });
     this.searchForm = this.fb.group({  
-      name: [null],  
+      bus_operator_id: [null],  
       fromDate:[null],
       toDate:[null],
       rows_number: Constants.RecordLimit,
@@ -102,8 +107,10 @@ export class OwnerpaymentComponent implements OnInit {
   {      
     this.spinner.show();
     const data = { 
-      name: this.searchForm.value.name,
+      bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number:this.searchForm.value.rows_number, 
+      fromDate:this.searchForm.value.fromDate, 
+      toDate:this.searchForm.value.toDate, 
     };
    
     if(pageurl!="")
@@ -124,6 +131,7 @@ export class OwnerpaymentComponent implements OnInit {
           this.ownerpayments= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
+          // console.log(this.ownerpayments);
           this.spinner.hide();
         }
       );
@@ -135,7 +143,7 @@ export class OwnerpaymentComponent implements OnInit {
    {  
     this.spinner.show();
     this.searchForm = this.fb.group({  
-      name: [null], 
+      bus_operator_id: [null], 
       fromDate:[null],
       toDate:[null], 
       rows_number: Constants.RecordLimit,
@@ -171,10 +179,14 @@ export class OwnerpaymentComponent implements OnInit {
     this.ownerpaymentRecord = {} as Ownerpayment;
     this.ownerpaymentForm = this.fb.group({
       bus_operator_id: [null],      
-      date: [null],
+      startDate: [null],
+      endDate: [null],
+      noSeat: [null],
+      noPnr: [null],
       transaction_id:[null],
       amount: [null],
-      remark: [null]
+      remark: [null],
+      paymentNote: [null],
       
     });
     this.ModalHeading = "Add Owner Payment";
@@ -202,6 +214,32 @@ export class OwnerpaymentComponent implements OnInit {
   }
 
 
+  getPaymentDetails()
+  {
+    if(this.ownerpaymentForm.value.bus_operator_id == null || this.ownerpaymentForm.value.startDate == null || this.ownerpaymentForm.value.endDate == null)
+    {
+       return ;
+    }else{
+    this.paymentDetails = [];
+
+      this.spinner.show();
+      const data = { 
+        operatorId: this.ownerpaymentForm.value.bus_operator_id, 
+        startDate: this.ownerpaymentForm.value.startDate, 
+        endDate: this.ownerpaymentForm.value.endDate, 
+      };
+    this.ownerpaymentservice.getPaymentDetails(data).subscribe(
+      resp => {
+       console.log(resp);
+       this.paymentDetails= resp.data;
+       this.ownerpaymentForm.controls['noSeat'].setValue(this.paymentDetails.totalSeats);
+       this.ownerpaymentForm.controls['amount'].setValue(this.paymentDetails.owner_fare);
+       this.ownerpaymentForm.controls['noPnr'].setValue(this.paymentDetails.count);
+       this.spinner.hide();
+      }
+    )    
+    }
+  }
 
 findSource()
 {
@@ -230,19 +268,25 @@ findSource()
   addOwnerFare()
   {
     this.spinner.show();
+
     const data ={
       bus_operator_id: this.ownerpaymentForm.value.bus_operator_id,      
-      date: this.ownerpaymentForm.value.date,
+      startDate: this.ownerpaymentForm.value.startDate,
+      endDate: this.ownerpaymentForm.value.endDate,
+      noSeat: this.ownerpaymentForm.value.noSeat,
+      noPnr: this.ownerpaymentForm.value.noPnr,
       transaction_id:this.ownerpaymentForm.value.transaction_id,
       amount: this.ownerpaymentForm.value.amount,
+      paymentNote: this.ownerpaymentForm.value.paymentNote,
       remark: this.ownerpaymentForm.value.remark,
       created_by:localStorage.getItem('USERNAME'),
     };
+
    this.ownerpaymentservice.create(data).subscribe(
      resp => {
       if(resp.status==1)
          { 
-      this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+          this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
           this.modalReference.close();
           this.ResetAttributes();
           this.loadServices();

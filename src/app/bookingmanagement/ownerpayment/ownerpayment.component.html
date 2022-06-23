@@ -1,5 +1,28 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
+<style>
+  table {
+         font-size: 12px !important;;
+     }
+
+ @media only screen and (max-width: 600px) {
+     table {
+         font-size: 11px !important;
+         font-weight: bold;
+         
+     }
+     th{
+         padding: 1px !important;
+     }
+     td{
+         padding: 1px !important;
+     }
+     .mob{
+      text-align: center !important;
+     }
+    
+}
+</style>
 
 <div class="row">
   <div class="col-sm-12">
@@ -44,20 +67,9 @@
               </div>
 
               <div class="col-md-3">
-                <div class="form-group row">
-
-                  <div class="col-sm-12">
-                    <div class="input-group">
-                      <input type="text" class="form-control sml_input" placeholder="Search Here " required
-                        formControlName="name" (keyup.enter)="search()">
-                      <div class="input-group-append">
-                        <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
-                          <i class="fas fa-search"> </i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false" (change)="getPaymentDetails();">
+              </ng-select>
               </div>
               <div class="col-md-5">
                 <div class="form-group row">
@@ -106,11 +118,12 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Operator Name</th>
-              <th>Payment Date</th>
+              <th>Operator</th>
+              <th>Payment Date Range</th>
               <th>Transaction Id</th>
               <th>Amount</th>
               <th> Remark</th>
+              <th> Payment Note</th>
               <th>Created/Updated On</th>
               <th>Created By</th>
             </tr>
@@ -119,13 +132,14 @@
             <tr *ngFor="let ownerFare of ownerpayments; let i=index; ">
               <td>{{ ownerFare.id }}</td>
               <td>
-                {{ownerFare.bus_operator.operator_name}}
+                {{ownerFare.bus_operator.organisation_name}}
 
               </td>
-              <td>{{ ownerFare.payment_date }}</td>
+              <td>{{ ownerFare.start_date  | date: 'dd/MM/yyyy' }} >> {{ ownerFare.end_date  | date: 'dd/MM/yyyy' }}</td>
               <td>{{ ownerFare.transaction_id}}</td>
               <td>{{ ownerFare.amount }}</td>
               <td>{{ ownerFare.remark }}</td>
+              <td>{{ ownerFare.payment_note }}</td>
               <td>{{ ownerFare.updated_at | date: 'dd/MM/yyyy' }}</td>
               <td>{{ ownerFare.created_by }}</td>
 
@@ -219,37 +233,48 @@
                     <form [formGroup]="ownerpaymentForm" class="editForm" novalidate>
 
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group row">
                             <label for="bus" class="col-sm-4 col-form-label">Operator<span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-8">
                               <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                                placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false">
+                                placeholder="Select Operator" formControlName="bus_operator_id" [clearable]="false" (change)="getPaymentDetails();">
                               </ng-select>
-
-
                             </div>
                           </div>
                         </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group row">
-                            <label for="date" class="col-sm-3 col-form-label">Date<span
+                            <label for="date" class="col-sm-3 col-form-label">From Date<span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-9">
                               <input type="date" class="form-control" placeholder="Enter Date" required
-                                formControlName="date" />
+                                formControlName="startDate" (change)="getPaymentDetails();"/>
                               <span class="text-danger"
-                                *ngIf="ownerpaymentForm.controls['date'].touched && ownerpaymentForm.controls['date'].hasError('required')">
-                                Date of owner fare required! </span>
+                                *ngIf="ownerpaymentForm.controls['startDate'].touched && ownerpaymentForm.controls['startDate'].hasError('required')">
+                                Start Date of owner fare required! </span>
+                            </div>
+                          </div>
+                        </div>
+                                                
+
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label for="date" class="col-sm-3 col-form-label">To Date<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                              <input type="date" class="form-control" placeholder="Enter Date" required
+                                formControlName="endDate"  (change)="getPaymentDetails();"/>
+                              <span class="text-danger"
+                                *ngIf="ownerpaymentForm.controls['endDate'].touched && ownerpaymentForm.controls['endDate'].hasError('required')">
+                                End Date of owner fare required! </span>
                             </div>
                           </div>
                         </div>
                       </div>
-
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group row">
                             <label for="seaterprice" class="col-sm-4 col-form-label">Payment Amount<span
                                 class="text-danger">*</span></label>
@@ -263,27 +288,64 @@
                           </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group row">
-                            <label for="remark" class="col-sm-3 col-form-label">Transaction Id<span
+                            <label class="col-sm-3 col-form-label">Number Seat<span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-9">
+                              <input type="text" class="form-control" placeholder="Enter Number Seat" required
+                                formControlName="noSeat" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Total Pnr<span
+                              class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" placeholder=" Total PNR" required
+                              formControlName="noPnr" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label for="remark" class="col-sm-4 col-form-label">Transaction Id<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-8">
                               <input type="text" class="form-control" placeholder="Enter transaction Id" required
                                 formControlName="transaction_id" />
-
+                      
                               <span class="text-danger"
                                 *ngIf="ownerpaymentForm.controls['transaction_id'].touched && ownerpaymentForm.controls['transaction_id'].hasError('required')">
                                 Transaction is required! </span>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                           <div class="form-group row">
-                            <label for="remark" class="col-sm-2 col-form-label">Remark<span
+                            <label for="remark" class="col-sm-3 col-form-label">Payment Note<span
                                 class="text-danger">*</span></label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
+                              <!-- <input type="text" class="form-control" placeholder="Enter Reason" required formControlName="reason" [value]="ownerFareRecord.reason" /> -->
+                              <textarea class="form-control" placeholder="Enter Payment Note" required
+                                formControlName="paymentNote">
+
+                                  </textarea>
+                              <span class="text-danger"
+                                *ngIf="ownerpaymentForm.controls['paymentNote'].touched && ownerpaymentForm.controls['paymentNote'].hasError('required')">
+                                Payment Note is required! </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label for="remark" class="col-sm-3 col-form-label">Remark<span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-9">
                               <!-- <input type="text" class="form-control" placeholder="Enter Reason" required formControlName="reason" [value]="ownerFareRecord.reason" /> -->
                               <textarea class="form-control" placeholder="Enter Remark" required
                                 formControlName="remark">

@@ -38,6 +38,14 @@ export class OwnerpaymentService {
     )
   }
 
+  getPaymentDetails(post):Observable<any>
+  {
+    return this.httpClient.post<any>(this.apiURL + '/getPaymentDetails', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
 
 
 
