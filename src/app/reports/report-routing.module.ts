@@ -72,6 +72,10 @@ const routes: Routes = [
       {
         path: 'assignoperatorreport',
         loadChildren: () => import('./assignoperatorreport/assignoperatorreport.module').then(module => module.AssignoperatorreportReportModule)
+      },                 
+      {
+        path: 'busseatfarereport',
+        loadChildren: () => import('./busseatfarereport/busseatfarereport.module').then(module => module.BusSeatFareReportModule)
       }                  
     ]
   }

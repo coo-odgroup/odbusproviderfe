@@ -78,6 +78,19 @@ export class ReportsService {
 
 
 
+  seatFareReport(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/busseatfarereport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  seatFarepaginationReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   completeReport(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/completereport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)

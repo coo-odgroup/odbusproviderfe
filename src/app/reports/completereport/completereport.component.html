@@ -155,9 +155,6 @@
                                 <th scope="col">Coupon Amount</th>
                                 <th scope="col">Amount Received</th>
                                 <th scope="col">Book By</th>
-
-                               
-
                             </tr>
                         </thead>
                         <!-- style="height: 100px !important; overflow: scroll; " -->
@@ -355,7 +352,7 @@
 
                                 <td>
                                     <p>
-                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.payable_amount - complete.agent_commission }}</b>
+                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.payable_amount - complete.agent_commission  | number : '1.2-2'}}</b>
                                     </p>
                                 </td>
                                 <td>

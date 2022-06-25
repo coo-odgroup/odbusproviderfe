@@ -100,7 +100,7 @@ export class SeatfareComponent implements OnInit {
     this.busSeatsService.readAll(this.busRecord.id).subscribe(records => {
 
       // console.log(records);
-      console.log(records);
+      // console.log(records);
       this.ticketPrice = records.result;
       let baseSeaterFare = "";
       let baseSleeperFare = "";

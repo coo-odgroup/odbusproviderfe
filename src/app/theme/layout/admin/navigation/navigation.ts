@@ -551,13 +551,13 @@ const NavigationItems = [
         icon: 'feather icon-file-text',
         children: [
           
-          // {
-          //   id: 'seatopenreport',
-          //   title: 'Seat Open Report',
-          //   type: 'item',
-          //   icon:'feather icon-pie-chart',
-          //   url: 'reports/seatopenReport'
-          // },
+          {
+            id: 'busseatfarereport',
+            title: 'Bus Seat Fare Report',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'reports/busseatfarereport'
+          },
           {
             id: 'extraseatopenreport',
             title: 'Extra Seat Open Report',
