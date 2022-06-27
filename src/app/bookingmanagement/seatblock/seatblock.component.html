@@ -68,7 +68,7 @@
                   <div class="col-sm-12">
                     <div class="input-group">
                       <input type="text" class="form-control sml_input" placeholder="Search Bus Here "
-                        formControlName="name" (keyup.enter)="search()">
+                        formControlName="name" >
                     </div>
                   </div>
                 </div>
@@ -186,6 +186,11 @@
                         {{seat.seats.seatText}},
                       </span>
                     </td>
+                    <td>
+                      {{opendate[0].value[0].reason}}
+                    </td>
+                 
+
                     <!-- <td>
                       {{opendate[0].value[0].reason}} <br> {{opendate[0].value[0].other_reason}}
                     </td>

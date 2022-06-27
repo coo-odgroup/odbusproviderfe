@@ -65,7 +65,7 @@
               <div class="form-group row">                
                   <div class="col-sm-12">
                     <div class="input-group">
-                      <input type="text" class="form-control sml_input" placeholder="Search Bus Here "formControlName="name" (keyup.enter)="search()">
+                      <input type="text" class="form-control sml_input" placeholder="Search Bus Here "formControlName="name" >
                     </div>
                   </div>
               </div>
@@ -81,8 +81,7 @@
                           bindValue="id"
                           placeholder="Select Source"                                       
                           formControlName="source_id"
-                          [clearable]="false" 
-                          >
+                          [clearable]="false" >
                           </ng-select>                                                
                         </div>                      
                       </div> 
@@ -98,8 +97,7 @@
                           bindValue="id"
                           placeholder="Select Destination"                                       
                           formControlName="destination_id"
-                          [clearable]="false"                         
-                          >
+                          [clearable]="false" >
                           </ng-select>                        
                         </div>                      
                       </div> 
@@ -251,6 +249,10 @@
                         {{seat.seats.seatText}},
                       </span>
                     </td>
+                    <td>
+                      {{opendate[0].value[0].reason}}
+                    </td>
+                 
                     <!-- <td>
                       {{opendate[0].value[0].reason}} <br> {{opendate[0].value[0].other_reason}}
                     </td>
