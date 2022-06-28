@@ -6,38 +6,13 @@
         <app-card [hidHeader]="false" cardTitle="Operators" cardClass="card-datatable" [options]="false"
             cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
             <div class="row">
-                <div class="col-2">
-                    <div class="from-group ">
-                        <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                            Add Operator
-                        </button>
-                    </div>
-                </div>
-                <div class="col-10">
+                <div class="col-12">
                     <form [formGroup]="searchForm">
                         <div class="row">
-                            <div class="col-5">
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                                            placeholder="Select Operator" formControlName="bus_operator_id"
-                                            [clearable]="false" >
-                                        </ng-select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-5">
-                                <button type="button" class="btn btn-success  sml_input" (click)="search()"
-                                    title="search">
-                                    <i class="fas fa-search"> </i> Search
+                            <div class="col-md-4">
+                                <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                                    Add Operator
                                 </button>
-                                <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
-                                    title="refresh">
-                                    <i class="fas fa-sync-alt"> </i> Refresh
-                                </button>
-                            </div>
-                            
-                            <div class="col-2">
                                 <div class="dropdown float-right">
                                     <select class="form-control sml_input" formControlName="rows_number"
                                         (change)=search()>
@@ -48,6 +23,26 @@
                                         <option value='all'>All</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                                            placeholder="Select Operator" formControlName="bus_operator_id"
+                                            [clearable]="false" >
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-success  sml_input" (click)="search()"
+                                    title="search">
+                                    <i class="fas fa-search"> </i> Search
+                                </button>
+                                <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
+                                    title="refresh">
+                                    <i class="fas fa-sync-alt"> </i> Refresh
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -61,6 +56,7 @@
                             <!-- <th scope="col">Operator</th> -->
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Org Name</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Status</th>
 
@@ -73,6 +69,7 @@
                             <!-- <td><strong>{{page.bus_operator.operator_name}}</strong></td> -->
                             <td>{{page.name}}</td>
                             <td>{{page.email}}</td>
+                            <td>[{{page.bus_operator.organisation_name}}]<br>{{page.bus_operator.operator_name}}</td>
                             <td>{{page.phone}}</td>
 
                             <td>

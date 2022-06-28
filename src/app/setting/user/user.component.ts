@@ -140,7 +140,7 @@ export class UserComponent implements OnInit {
         res => {
           this.user = res.data.data.data;
           this.pagination = res.data.data;
-          // console.log( res.data);
+          console.log( res.data);
           this.spinner.hide();
         }
       );
