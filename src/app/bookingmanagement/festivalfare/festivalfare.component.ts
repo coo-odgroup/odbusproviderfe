@@ -177,7 +177,6 @@ export class FestivalfareComponent implements OnInit {
           this.festivalFares= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-          // console.log( this.BusOperators);
           this.spinner.hide();
         }
       );
@@ -189,7 +188,6 @@ export class FestivalfareComponent implements OnInit {
           this.festivalFares= res.data.data.data;
           this.pagination= res.data.data;
           this.all= res.data;
-          // console.log( res.data);
           this.spinner.hide();
         }
       );

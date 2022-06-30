@@ -390,7 +390,7 @@ export class CouponComponent implements OnInit {
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
           this.all =res.data;
-          console.log( this.coupons);
+          // console.log( this.coupons);
           this.spinner.hide();
         }
       );

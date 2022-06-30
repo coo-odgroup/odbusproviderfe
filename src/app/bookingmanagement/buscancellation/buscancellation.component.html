@@ -96,21 +96,19 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <div class="col-6">
             <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
-              <i class="fas fa-search"> </i> Search
+              Search
             </button>
             <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-              <i class="fas fa-sync-alt"> </i> Refresh
+              Refresh
             </button>
             <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
-              <i class="fas fa-file-export"> </i> Export
+              Export
             </button>
             <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
               [useExistingCss]="true" title="Print">
-              <i class="fas fa-print"> </i> Print
+              Print
             </button>
-          </div>
         </div>
       </div>
 
@@ -331,10 +329,10 @@
                           <strong>{{busesitem.controls.busName.value}}</strong>
                         </div>
                       
-                      <div class="row col-md-12" formArrayName="dateLists">
+                      <!-- <div class="row col-md-12 datelist" formArrayName="dateLists"> -->
                         <!-- {{busesitem['controls'].dateLists}} -->
-                        <label *ngFor="let busesFormGroup of busesitem['controls'].dateLists['controls']; let i=index"
-                          class="col-2" [formGroupName]="i">
+                        <!-- <label *ngFor="let busesFormGroup of busesitem['controls'].dateLists['controls']; let i=index"
+                          class="col-2" [formGroupName]="i"> -->
 
                            <!-- <span *ngIf=" !busesFormGroup.controls.datechecked">
                           <input type="checkbox" formControlName="datechecked"  class="text-danger"/>
@@ -346,11 +344,24 @@
                         </span>  -->
                         
 
-                        <input type="checkbox" formControlName="datechecked" />
+                        <!-- <input type="checkbox" formControlName="datechecked" />
                         {{busesFormGroup.controls.entryDates.value}}
 
                      
                         
+                        </label> -->
+                        <!-- <label *ngFor="let busesFormGroup of busesitem['controls'].dateLists['controls']; let i=index"
+                        class="col-6 col-sm-4 col-md-3 " [formGroupName]="i">
+                          <input type="checkbox" class="filled-in" formControlName="datechecked" />
+                          <span>{{busesFormGroup.controls.entryDates.value | date: 'dd-MMM'}}</span>
+                      </label>
+                      </div> -->
+
+                      <div class="row col-md-12 datelist" formArrayName="dateLists">
+                        <label *ngFor="let busesFormGroup of busesitem['controls'].dateLists['controls']; let i=index"
+                          class="col-6 col-sm-4 col-md-3 " [formGroupName]="i">
+                            <input type="checkbox" class="filled-in" formControlName="datechecked" />
+                            <span>{{busesFormGroup.controls.entryDates.value | date: 'dd-MMM'}}</span>
                         </label>
                       </div>
                       </div>

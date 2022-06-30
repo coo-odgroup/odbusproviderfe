@@ -6,22 +6,34 @@
     <app-card [hidHeader]="false" cardTitle="LOCATIONS" cardClass="card-datatable table-border-style user-profile-list"
       [options]="false">
       <div class="row">
-        <div class="col-2">
-          <div class="from-group ">
-            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Location
-            </button>
-          </div>
-        </div>
-        <div class="col-10">
+        
+        <div class="col-12">
           <form [formGroup]="searchForm">
             <div class="row">
-              <div class="col-4">
+              <div class="col-md-3">
+                <div class="from-group ">
+                  <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                    Add Location
+                  </button>
+
+                  <div class="dropdown float-right">
+                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
+                      <option value=10>10</option>
+                      <option value=25>25</option>
+                      <option value=50>50</option>
+                      <option value=100>100</option>
+                      <option value='all'>All</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-md-4">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <div class="input-group">
                       <input type="text" class="form-control sml_input" placeholder="Search Here " required
-                        formControlName="name" (keyup.enter)="search()">
+                        formControlName="name" >
                       <div class="input-group-append">
                         <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                           <i class="fas fa-search"> </i>
@@ -31,7 +43,8 @@
                   </div>
                 </div>
               </div>
-              <div class="col-6">
+             
+              <div class="col-md-5">
                 <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                   <i class="fas fa-search"> </i> Search
                 </button> -->
@@ -45,17 +58,6 @@
                   [useExistingCss]="true" title="Print">
                   <i class="fas fa-print"> </i> Print
                 </button>
-              </div>
-              <div class="col-2">
-                <div class="dropdown float-right">
-                  <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
-                    <option value=10>10</option>
-                    <option value=25>25</option>
-                    <option value=50>50</option>
-                    <option value=100>100</option>
-                    <option value='all'>All</option>
-                  </select>
-                </div>
               </div>
             </div>
           </form>

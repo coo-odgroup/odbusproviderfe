@@ -12,29 +12,27 @@
                         <form [formGroup]="searchFrom">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <div class="col-sm-12">
+                                    <div class="form-group ">
                                             <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                                 placeholder="Select Operator" formControlName="bus_operator_id"
                                                 [clearable]="false">
                                             </ng-select>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="row">  
                                         <div class="form-group col-6">
-                                            <div class="form-group row">
+                                            
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeFromDate" />
-                                            </div> 
+                                            
                                         </div>
                                         <div class="form-group col-6">
-                                            <div class="form-group row">
+                                            
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeToDate" />
-                                            </div>                                            
+                                                                                     
                                         </div>
                                     </div>
                                 </div>
@@ -48,33 +46,13 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-2">
-                                    <div class="col-sm-12">
-                              
-                                            <input type="text" class="form-control sml_input"
-                                                placeholder="Payment/Order Id" required formControlName="payment_id" />
-                                       
-                                    </div>
+                                <div class="col-md-3">
+                                   <div class="form-group ">
+                                    <input type="text" class="form-control sml_input"
+                                    placeholder="Payment/Order Id" required formControlName="payment_id" />
+                                   </div>
                                 </div>
 
-
-
-
-                                <div class="col-md-1 p-0">
-                                    <div class="dropdown float-right">
-                                        <select class="form-control sml_input" formControlName="rows_number"
-                                            (change)=search()>
-                                            <option value=10>10</option>
-                                            <option value=25>25</option>
-                                            <option value=50>50</option>
-                                            <option value=100>100</option>
-                                            <option value='all'>All</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row ">
                                 <div class="col-md-5 p-0">
                                     <div class="row">
                                         <div class="col-6">
@@ -88,7 +66,6 @@
                                             </div>
                                         </div>
 
-
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="col-sm-12">
@@ -97,43 +74,50 @@
                                                         formControlName="destination_id" [clearable]="false"
                                                         (change)="findSource($event)">
                                                     </ng-select>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <div class="col-sm-12">
-                                        <div class="dropdown float-right">
-                                            <input type="text" class="form-control sml_input" placeholder="Enter pnr"
-                                                required formControlName="pnr" />
-                                        </div>
-                                    </div>
+                                    <div class="form-group ">
+                                        <input type="text" class="form-control sml_input" placeholder="Enter pnr"
+                                        required formControlName="pnr" />
+                                   </div>
                                 </div>
-                                <div class="col-md-5">
+
+                                <div class="col-md-5  p-0">
                                     <button type="button" class="btn btn-success  sml_input" (click)="search()"
                                         title="search">
-                                        <i class="fas fa-search"> </i> Search
+                                         Search
                                     </button>
                                     <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
                                         title="refresh">
-                                        <i class="fas fa-sync-alt"> </i> Refresh
+                                        Refresh
                                     </button>
                                     <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
                                         title="Export">
-                                        <i class="fas fa-file-export"> </i> Export
+                                        Export
                                     </button>
                                     <button type="button" printSectionId="print-section" ngxPrint
                                         class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
-                                        <i class="fas fa-print"> </i> Print
+                                         Print
                                     </button>
-                                </div>
 
+                                    <div class="dropdown float-right">
+                                        <select class="form-control sml_input" formControlName="rows_number"
+                                            (change)=search()>
+                                            <option value=10>10</option>
+                                            <option value=25>25</option>
+                                            <option value=50>50</option>
+                                            <option value=100>100</option>
+                                            <option value='all'>All</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
 

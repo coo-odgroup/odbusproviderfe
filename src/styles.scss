@@ -43,3 +43,31 @@ a.active.page-link {
   z-index: 999999 !important;
 }
 
+
+.datelist [type="checkbox"]:not(:checked):disabled+span:not(.lever):before {
+  border: none;
+  background-color: red;
+  width: 15px;
+  height: 15px;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+}
+.datelist [type="checkbox"]:not(:checked):disabled{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.datelist [type="checkbox"]:not(:checked):disabled+span{
+margin-left: 1px;
+}
+
+
+.pcoded-header .m-header .mobile-menu {
+  right: auto;
+  left: 10px;
+  z-index: 999999 !important;
+}

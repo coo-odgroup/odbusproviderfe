@@ -6,17 +6,19 @@
       <app-card [hidHeader]="false" cardTitle="SEAT LAYOUT" cardClass="card-datatable" [options]="false"
       cardClass=" table-border-style user-profile-list " > 
       <div class="row">
-        <div class="col-2">
-          <div class="from-group ">
-            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)" >
-                Add Seat Layout
-            </button>
-          </div>
-        </div>
-        <div class="col-10">
+    
+        <div class="col-12">
           <form [formGroup]="searchForm">
             <div class="row">  
-              <div class="col-4">
+              <div class="col-md-3">
+                <div class="from-group ">
+                  <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)" >
+                      Add Seat Layout
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-md-4">
                 <div class="form-group row">
                   
                     <div class="col-sm-12">
@@ -32,33 +34,33 @@
                     </div>
                 </div>
             </div>                
-            <div class="col-6">
+            <div class="col-md-5">
               <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                 <i class="fas fa-search"> </i> Search
               </button> -->
               <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
-                <i class="fas fa-sync-alt"> </i> Refresh
+                 Refresh
               </button>
               <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
-                <i class="fas fa-file-export"> </i> Export
+                 Export
               </button>
               <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
                 [useExistingCss]="true" title="Print">
-                <i class="fas fa-print"> </i> Print
+                Print
               </button>
+
+              <div class="dropdown float-right">
+                <select class="form-control sml_input" formControlName="rows_number"
+                    (change)=search()>
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                    <option value='all'>All</option>
+                </select>
             </div>
-            <div class="col-2">                 
-                <div class="dropdown float-right">
-                    <select class="form-control sml_input" formControlName="rows_number"
-                        (change)=search()>
-                        <option value=10>10</option>
-                        <option value=25>25</option>
-                        <option value=50>50</option>
-                        <option value=100>100</option>
-                        <option value='all'>All</option>
-                    </select>
-                </div>
-            </div>               
+            </div>
+                     
         
             </div>
         </form>
@@ -216,7 +218,7 @@
                             <span class="text-danger" *ngIf="SeatLayoutForm.controls['rowNumber'].touched && SeatLayoutForm.controls['rowNumber'].hasError('required')">
                               Rows Required </span>
                           </div>
-                          <div class="col-3">
+                          <div class="col-md-3">
                             <label for="">Layout Name <span class="text-danger">*</span></label>
                             <input type="text" formControlName="SeatLayoutName" class="form-control" placeholder="Enter Seat Layout Name">
                             <span class="text-danger" *ngIf="SeatLayoutForm.controls['SeatLayoutName'].touched && SeatLayoutForm.controls['SeatLayoutName'].hasError('required')">
@@ -331,7 +333,7 @@
               <div class="col-sm-12">
                 <div class="form-material">
                   <div class="right-icon-control">
-                    <div class="col-4">
+                    <div class="col-md-4">
                      
                     <input type="text" name="SeatLayoutName" class="form-control" required placeholder="Enter Seat Layout Name" ngModel="{{SeatLayoutRecord.name}}">
                     </div>
@@ -384,7 +386,7 @@
               <div class="col-sm-12">
                 <div class="form-material">
                   <div class="right-icon-control">
-                    <div class="col-4">
+                    <div class="col-md-4">
                      
                     <input type="text" readonly name="SeatLayoutName" class="form-control" required placeholder="Enter Seat Layout Name" ngModel="{{SeatLayoutRecord.name}}">
                     </div>

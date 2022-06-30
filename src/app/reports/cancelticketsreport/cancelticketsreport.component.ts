@@ -92,7 +92,6 @@ export class CancelticketsreportComponent implements OnInit {
             
     };
    
-    // console.log(data);
     if(pageurl!="")
     {
       this.rs.cancelticketpaginationReport(pageurl,data).subscribe(
@@ -107,8 +106,6 @@ export class CancelticketsreportComponent implements OnInit {
       this.rs.cancelticketReport(data).subscribe(
         res => {
           this.cancelticketdata= res.data;
-          console.log( this.cancelticketdata);
-          // console.log( this.cancelticketdata);
           this.spinner.hide();
         }
       );

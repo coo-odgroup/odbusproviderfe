@@ -9,7 +9,7 @@
                     <div class="col-12">
                         <form [formGroup]="searchFrom">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-md-6">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
@@ -19,24 +19,43 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-md-6">
                                     <div class="row">  
                                         <div class="form-group col-6">
-                                            <div class="form-group row">
+                                           
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeFromDate" />
-                                            </div> 
+
                                         </div>
                                         <div class="form-group col-6">
-                                            <div class="form-group row">
+                                           
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeToDate" />
-                                            </div>                                            
+                                                                                    
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row ">
 
-                                <div class="col-4">
+                                <div class="col-12 p-0">
+                                    <button type="button" class="btn btn-success  sml_input" (click)="search()"
+                                        title="search">
+                                       Search
+                                    </button>
+                                    <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
+                                        title="refresh">
+                                        Refresh
+                                    </button>
+                                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                                        title="Export">
+                                       Export
+                                    </button>
+                                    <button type="button" printSectionId="print-section" ngxPrint
+                                        class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
+                                     Print
+                                    </button>
+
                                     <div class="dropdown float-right">
                                         <select class="form-control sml_input" formControlName="rows_number"
                                             (change)=search()>
@@ -47,28 +66,6 @@
                                             <option value='all'>All</option>
                                         </select>
                                     </div>
-                                </div>
-
-                            </div>
-                            <div class="row ">
-
-                                <div class="col-12">
-                                    <button type="button" class="btn btn-success  sml_input" (click)="search()"
-                                        title="search">
-                                        <i class="fas fa-search"> </i> Search
-                                    </button>
-                                    <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
-                                        title="refresh">
-                                        <i class="fas fa-sync-alt"> </i> Refresh
-                                    </button>
-                                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
-                                        title="Export">
-                                        <i class="fas fa-file-export"> </i> Export
-                                    </button>
-                                    <button type="button" printSectionId="print-section" ngxPrint
-                                        class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
-                                        <i class="fas fa-print"> </i> Print
-                                    </button>
                                 </div>
 
                             </div>
