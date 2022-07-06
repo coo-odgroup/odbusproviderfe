@@ -6,29 +6,30 @@
       <app-card [hidHeader]="false" cardTitle="Special Slider" cardClass="card-datatable" [options]="false"
       cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
       <div class="row  mb-2">
-        <div class="col-2">
-          <div class="from-group text-left">
-            <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-              Add Special Slider
-            </button>
-          </div>
-        </div>
-        <div class="col-10">
+        
+        <div class="col-12">
           <form [formGroup]="searchForm" class="editForm" novalidate>
             <div class="row">
+              <div class="col-md-2">
+                <div class="from-group text-left">
+                  <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                    Add Special Slider
+                  </button>
+                </div>
+              </div>
              
-              <div class="from-group col-3">
+              <div class="from-group col-md-3">
                 <select class="form-control sml_input" formControlName="status" *ngIf="role_id==1">
                   <option [value]="" [selected]="true">-Status-</option>
                   <option value=1>Active</option>
                   <option value=0>Block</option>
                 </select>
               </div>
-              <div class="from-group col-3">
+              <div class="from-group col-md-3">
                 <!-- <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By"> -->
                 <div class="input-group" *ngIf="role_id==1">
                   <input type="text" class="form-control sml_input" placeholder="Search Here " required
-                    formControlName="searchBy" (keyup.enter)="getAll()">
+                    formControlName="searchBy" >
                     
                   <div class="input-group-append">
                     <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
@@ -37,23 +38,20 @@
                   </div>
                 </div>
               </div>
-              <div class="from-group col-4">
+              <div class="from-group col-md-4">
                 <!-- <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i>Search</button> -->
-                <button class="btn sml_input btn-danger ml-2" (click)="refresh()" *ngIf="role_id==1"> <i
-                    class="fas fa-sync-alt"></i>Refresh</button>
+                <button class="btn sml_input btn-danger ml-2" (click)="refresh()" *ngIf="role_id==1">Refresh</button>
+                    <div class="dropdown float-right">
+                      <select class="form-control sml_input" formControlName="per_page" (change)="getAll()">
+                        <option value=10>10</option>
+                        <option value=25>25</option>
+                        <option value=50>50</option>
+                        <option value=100>100</option>
+                        <option value='all'>All</option>
+                      </select>
+                    </div>
               </div>
-      
-              <div class="col-2">
-                <div class="dropdown float-right">
-                  <select class="form-control sml_input" formControlName="per_page" (change)="getAll()">
-                    <option value=10>10</option>
-                    <option value=25>25</option>
-                    <option value=50>50</option>
-                    <option value=100>100</option>
-                    <option value='all'>All</option>
-                  </select>
-                </div>
-              </div>
+     
             </div>
           </form>
         </div>

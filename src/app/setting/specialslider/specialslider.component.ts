@@ -86,7 +86,7 @@ export class SpecialsliderComponent implements OnInit {
               this.sliders= res.data.data.data; 
               this.pagination = res.data.data;
               this.all = res.data;
-              console.log(res.data.data.data);
+              // console.log(res.data.data.data);
               this.spinner.hide();
             },
     );

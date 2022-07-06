@@ -7,33 +7,31 @@
         <app-card [hidHeader]="false" cardTitle="Assign Bus Operator to Association" cardClass="card-datatable"
             [options]="false" cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
             <div class="row">
-                <div class="col-2">
-                    <div class="from-group ">
-                        <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                            Assign Bus Operator
-                        </button>
-                    </div>
-                </div>
-                <div class="col-10">
+                <div class="col-12">
                     <form [formGroup]="searchForm">
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-md-4">
+                                <div class="from-group ">
+                                    <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                                        Assign Bus Operator
+                                    </button>
+                                    <div class="dropdown float-right">
+                                        <select class="form-control sml_input" formControlName="rows_number"
+                                            (change)=search()>
+                                            <option value=10>10</option>
+                                            <option value=25>25</option>
+                                            <option value=50>50</option>
+                                            <option value=100>100</option>
+                                            <option value='all'>All</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
                                 <ng-select [items]="allAssoc" bindLabel="name" bindValue="id"
                                     placeholder="Select Association" formControlName="assoc_id"
                                     [clearable]="false"  (change)=search()>
                                 </ng-select>
-                            </div>
-                            <div class="col-4">
-                                <div class="dropdown float-right">
-                                    <select class="form-control sml_input" formControlName="rows_number"
-                                        (change)=search()>
-                                        <option value=10>10</option>
-                                        <option value=25>25</option>
-                                        <option value=50>50</option>
-                                        <option value=100>100</option>
-                                        <option value='all'>All</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
                     </form>

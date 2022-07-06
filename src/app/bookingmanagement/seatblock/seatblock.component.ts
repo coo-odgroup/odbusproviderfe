@@ -261,7 +261,7 @@ export class SeatblockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          // console.log(this.all);
+          console.log(this.all);
           this.lastUrl="/api/seatblockData?page="+this.all.current_page ;
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
           if(mainArray.length >0)
@@ -347,7 +347,7 @@ export class SeatblockComponent implements OnInit {
   }
 
 
-alreadyBlocks() 
+  alreadyBlocks() 
 {
   this.alreadyBlocksData = [];
   const data = {

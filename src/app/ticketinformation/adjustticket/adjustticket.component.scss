@@ -29,3 +29,10 @@ ol {
           padding: 0px 2px;
           position: relative;
         }
+
+        ::ng-deep .sml_input
+        {
+        height: calc(1.5em + 1rem);
+        padding:0px 9px;
+        margin-left: 2px;
+        }

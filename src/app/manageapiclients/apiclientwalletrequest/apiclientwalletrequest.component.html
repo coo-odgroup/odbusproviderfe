@@ -16,7 +16,7 @@
             <form [formGroup]="searchForm">
               <div class="row">
 
-                <div class="col-1">
+                <div class="col-md-1">
                   <select class="form-control sml_input" formControlName="status">
                     <option>Status</option>
                     <option value='0'>Pending</option>
@@ -25,30 +25,30 @@
                   </select>
                 </div> 
 
-                <div class="col-3">
+                <div class="col-md-3">
                   <div class="row">  
                       <div class="col-6">
-                          <div class="row">
+                         
                               <input type="date" class="form-control sml_input" placeholder="Start Date"
                               required formControlName="rangeFromDate" />
-                          </div> 
+                          
                       </div>
-                      <div class="form-group col-6">
-                          <div class="form-group row">
+                      <div class="col-6">
+                          
                               <input type="date" class="form-control sml_input" placeholder="End Date"
                               required formControlName="rangeToDate" />
-                          </div>                                            
+                                                                   
                       </div>
                   </div>
                 </div>
   
-                <div class="col-3">
+                <div class="col-md-3">
                   <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
                     formControlName="user_id" [clearable]="false" >
                   </ng-select>
                 </div>
   
-                <div class="col-2">
+                <div class="col-md-2">
                   <div class="form-group row">
   
                     <div class="col-sm-12">
@@ -59,19 +59,14 @@
                 </div>
   
   
-                <div class="col-2">
+                <div class="col-md-3">
                   <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                     <i class="fas fa-search"> </i> Search
                   </button>
                   <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                     <i class="fas fa-sync-alt"> </i> Refresh
                   </button>
-                
-                </div>
-  
-  
-  
-                <div class="col-1">
+
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
@@ -81,7 +76,12 @@
                       <option value='all'>All</option>
                     </select>
                   </div>
+                
                 </div>
+  
+  
+  
+             
               </div>
             </form>
   

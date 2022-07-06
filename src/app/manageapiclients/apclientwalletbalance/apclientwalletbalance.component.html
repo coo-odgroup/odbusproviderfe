@@ -16,7 +16,7 @@
             <form [formGroup]="searchForm">
               <div class="row">
   
-                <div class="col-4">
+                <div class="col-md-4">
                   <div class="row">  
                       <div class="col-6">                          
                               <input type="date" class="form-control btn-sm" placeholder="Start Date"
@@ -31,7 +31,7 @@
                   </div>
                 </div>
               
-              <div class="col-3">                                    
+              <div class="col-md-3">                                    
                 <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
                     formControlName="user_id" [clearable]="false" >
                 </ng-select>
@@ -49,25 +49,23 @@
                 
                 
   
-                <div class="col-4">
+                <div class="col-md-5">
                   <button type="button" class="btn btn-success btn-sm" (click)="search()" title="search">
-                    <i class="fas fa-search"> </i> Search
+                   Search
                   </button>&nbsp;
                   <button type="button" class="btn btn-danger btn-sm" (click)="refresh()" title="refresh">
-                    <i class="fas fa-sync-alt"> </i> Refresh
+                     Refresh
                   </button>&nbsp;
                   <button type="button" (click)="exportexcel()" class="btn btn-warning btn-sm"
                       title="Export">
-                      <i class="fas fa-file-export"> </i> Export
+                       Export
                   </button>
                   <!-- <button type="button" printSectionId="print-section" ngxPrint
                       class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
                       <i class="fas fa-print"> </i> Print
                   </button> -->
-                </div>
-                <div class="col-1">
-                  <div class="dropdown">
-                    <select class="form-control" formControlName="rows_number" (change)=search()>
+                  <div class="dropdown float-right ">
+                    <select class="form-control input-sm" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
                       <option value=25>25</option>
                       <option value=50>50</option>
@@ -76,6 +74,7 @@
                     </select>
                   </div>
                 </div>
+              
               </div>
             </form> 
           </div>  

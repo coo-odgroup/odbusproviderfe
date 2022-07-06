@@ -12,9 +12,9 @@
              <div class="right-icon-control">
                  <form [formGroup]="sendSmsEmailTicketForm" class="editForm" novalidate>
                         <div class="row">
-                            <div class="col-md-10">
+                            <div class="col-md-10 col-10">
                                 <div class="form-group row">
-                                    <div class="input-group col-10 offset-1">
+                                    <div class="input-group col-11 ">
                                         <input type="text" class="form-control sml_input"
                                             placeholder="Enter Pnr No" required
                                             formControlName="pnr_no">
@@ -35,10 +35,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                              <button type="button" class="btn btn-success  sml_input"
+                            <div class="col-md-2 col-2">
+                              <button type="button" class="btn btn-danger  sml_input"
                                                 (click)="refresh()" title="Refresh">
-                                                <i class="fas fa-sync-alt"> </i> Refresh
+                                                <i class="fas fa-sync-alt"> </i>
                                             </button>
                             </div>
                         </div>

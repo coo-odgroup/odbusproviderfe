@@ -6,30 +6,22 @@
       <app-card [hidHeader]="false" cardTitle="Our Agent " cardClass="card-datatable" [options]="false"
         cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
         <div class="row">
-          <!-- <div class="col-2">
-            <div class="from-group ">
-              <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                Add Agent
-              </button>
-            </div>
-          </div> -->
           <div class="col-12">
             <form [formGroup]="searchForm">
               <div class="row">
-                <div class="col-2">
-                  <div class="form-group row">            
+                <div class="col-md-2">
+                  <div class="form-group ">            
                     <div class="dropdown">
-                      <div class="col-sm-12">
+                
                         <select class="form-control sml_input" formControlName="status">
                           <option value='1'>Active</option>
                           <option value='3'>Block</option>
-                      </select>
-                      </div>                    
-                      
+                        </select>
+                                      
                   </div>              
                   </div>              
                 </div>  
-                <div class="col-6">
+                <div class="col-md-6">
                   <div class="form-group row">
   
                     <div class="col-sm-12">
@@ -45,13 +37,10 @@
                     </div>
                   </div>
                 </div> 
-                <div class="col-2">
+                <div class="col-md-4">
                   <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                     <i class="fas fa-sync-alt"> </i> Refresh
                   </button>
-                </div>          
-                
-                <div class="col-2">
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
@@ -61,8 +50,8 @@
                       <option value='all'>All</option>
                     </select>
                   </div>
-                </div>
-  
+                </div>          
+
               </div>
             </form>
   
