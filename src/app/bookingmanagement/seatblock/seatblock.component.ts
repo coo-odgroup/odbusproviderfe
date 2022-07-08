@@ -106,6 +106,7 @@ export class SeatblockComponent implements OnInit {
   busSchedule: any;
   lastUrl: any;
   alreadyBlocksData: any=[];
+  exportSeatBlock: any[];
   constructor(
     calendar: NgbCalendar,
     private seatblockService: SeatblockService,
@@ -261,7 +262,7 @@ export class SeatblockComponent implements OnInit {
           this.pagination = res.data;
           this.all = res.data;
           this.spinner.hide();
-          console.log(this.all);
+          // console.log(this.all);
           this.lastUrl="/api/seatblockData?page="+this.all.current_page ;
           mainArray = Object.keys(mainArray).map(k1 => ({ value: mainArray[k1] }));
           if(mainArray.length >0)
@@ -334,7 +335,7 @@ export class SeatblockComponent implements OnInit {
   {
     
     /* pass here the table id */
-    let element = document.getElementById('print-section');
+    let element = document.getElementById('excel-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
  
     /* generate workbook and add the worksheet */
@@ -842,8 +843,7 @@ export class SeatblockComponent implements OnInit {
         }
       });
   }
- 
-
+  
 
   editsblock(index: any) {
 

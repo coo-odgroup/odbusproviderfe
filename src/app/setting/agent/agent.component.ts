@@ -149,8 +149,6 @@ export class AgentComponent implements OnInit {
         }
       );
     }
-
-
   }
 
 

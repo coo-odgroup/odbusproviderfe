@@ -127,6 +127,9 @@
           <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
             Export
           </button>
+          <!-- <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+            Export
+          </button> -->
           <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
             [useExistingCss]="true" title="Print">
            Print
@@ -136,7 +139,7 @@
       </div>
 
 
-      <div class="table-responsive" id="print-section">
+      <div class="table-responsive" id="print-section" >
         <table class="table table-striped">
           <thead>
             <tr>
@@ -271,6 +274,50 @@
 
           </div>
         </div>
+      </div>
+
+      <div class="table-responsive" id="excel-section" style="display: none;">
+        <table class="table table-striped">
+          <thead>
+            
+          </thead>
+          <tbody *ngIf="seatBlock?.length != 0">
+            <div  *ngFor="let sblock of seatBlock; let i = index">
+              <tr>
+                <!-- <th>#</th> -->
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+              </tr>
+            <tr  *ngFor="let opendate of sblock;let dateIndex= index ">
+              <!-- <td>{{i+1}}</td> -->
+              <td>{{ opendate[0].value[0].bus.name }} <br>{{ opendate[0].value[0].bus.bus_number }}</td>
+              <td>
+                {{ opendate[0].value[0].bus.bus_operator.organisation_name }} 
+              </td>
+              <td>
+                {{opendate[0].value[0].bus_source[0]?.name}}  >>  {{opendate[0].value[0].bus_destination[0]?.name}}
+              </td>
+
+              <td>
+                {{opendate[0].value[0].operation_date | date: 'dd/MM'}}
+              </td>
+              <td>
+                <span *ngFor="let seat of opendate[0].value; let seatIndex= index ">
+                  {{seat.seats.seatText}},
+                </span>
+              </td>
+              <td>
+                {{opendate[0].value[0].reason}}
+              </td>
+            </tr>
+          </div>
+          </tbody>
+        </table>
+
       </div>
       
       <div class="app-card-footer">
