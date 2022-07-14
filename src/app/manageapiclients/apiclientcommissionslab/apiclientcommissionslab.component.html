@@ -171,7 +171,7 @@
               <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
                   aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height: 300px;">
               <div class="row">
                 <div class="col-sm-12">
                   <div class="form-material">
@@ -179,8 +179,7 @@
                       <form [formGroup]="form" class="editForm" novalidate>
                         <div class="row">
                           <div class="from-group col-md-3">
-                            <label for="name" class="col-sm-12 col-form-label">Select Bus
-                                Operator :<span class="text-danger">*</span></label>
+                            <label for="name" class="col-sm-12 col-form-label">Select API User :<span class="text-danger">*</span></label>
                             <div class="col-sm-12">
                               <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
                                     formControlName="user_id" [clearable]="false" >
