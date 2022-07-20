@@ -215,7 +215,7 @@
               <th>Bus</th>
               <th>Operator</th>
               <th>Bus Route</th>
-              <th>Block Details</th>
+              <th>Seat Open Details</th>
               <!-- <th>View Details</th> -->
             </tr>
           </thead>
@@ -230,26 +230,30 @@
                 {{sblock[0][0].value[0].bus_source[0]?.name}}  >>  {{sblock[0][0].value[0].bus_destination[0]?.name}}
               </td>
 
-              <td>
+              <td style="width:700px ;">
                 <table>
                  
                   <tr  *ngFor="let opendate of sblock;let dateIndex= index ">
-                    <td>
+                    <td style="width:100px;">
                       {{opendate[0].value[0].operation_date | date: 'dd/MM'}}
-                    </td>
+                    </td >
                
-                    <td>
+                    <td style="width:300px;">
                       <span *ngFor="let seat of opendate[0].value; let seatIndex= index ">
                         {{seat.seats.seatText}},
                       </span>
                     </td>
 
-                    <td>
+                    <td style="width:150px;">
+                        {{opendate[0].value[0].reason}}
+                    </td>
+
+                    <td style="width:100px;">
                         {{opendate[0].value[0].reason}}
                     </td>
                    
 
-                    <td class="hide_print">
+                    <td class="hide_print" style="width:50px;">
                       <!-- <div class="overlay-edit"> -->
                         <!-- <button type="button"  class="btn btn-icon btn-danger">
                           <i class="feather icon-trash-2"></i>

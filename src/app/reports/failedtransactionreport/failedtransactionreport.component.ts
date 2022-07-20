@@ -124,7 +124,7 @@ export class FailedtransactionreportComponent implements OnInit {
       this.rs.failledtransactionReport(data).subscribe(
         res => {
           this.completedata = res.data;
-          //console.log(res.data.data);
+          console.log(res.data.data);
           this.spinner.hide();
         }
       );

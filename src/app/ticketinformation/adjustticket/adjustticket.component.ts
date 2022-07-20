@@ -159,6 +159,7 @@ export class AdjustticketComponent implements OnInit {
 
          
           this.pnrDetails = res.data; 
+          // console.log(this.pnrDetails);
           
 
           if (this.pnrDetails.length == 0) {
@@ -178,9 +179,6 @@ export class AdjustticketComponent implements OnInit {
           }         
           
           this.spinner.hide();
-         
-
-         
         }
       );
     }

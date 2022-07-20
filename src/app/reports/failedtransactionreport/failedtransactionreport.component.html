@@ -175,7 +175,7 @@
                                     </strong>
                                     <br>
                                     <strong style="color: brown;" >
-                                        {{complete.customer_payment.order_id}}
+                                        {{complete.customer_payment_data.order_id}}
                                     </strong>
                                     <!-- <br> -->
                                     <!-- <strong class="btn btn-success"  style="color: white; background: greem;" *ngIf ="complete.razerPayStatus">
@@ -427,8 +427,8 @@
                         <td>{{complete.odbus_gst_amount}}</td>
                         <td>{{complete.owner_gst_amount}}</td>
                         <td>{{complete.odbus_charges}}</td>
-                        <td>{{complete.customer_payment.razorpay_id}} </td>
-                        <td>{{complete.customer_payment.order_id}}</td>
+                        <td>{{complete.customer_payment_data.razorpay_id}} </td>
+                        <td>{{complete.customer_payment_data.order_id}}</td>
                         <!-- <td>{{complete.created_at | date: 'dd/MM/yyyy  HH:mm:ss'}}</td> -->
                         <td>{{complete.users.name}}</td>
                         <td>{{complete.users.phone}}</td>
