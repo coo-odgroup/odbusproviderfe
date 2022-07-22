@@ -68,6 +68,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         starting_fare: [null, Validators.compose([Validators.required])],
         upto_fare: [null, Validators.compose([Validators.required])],
         commision: [null, Validators.compose([Validators.required])],
+        addationalCharges: [null, Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });  
       this.formConfirm=this.fb.group({
@@ -162,6 +163,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         starting_fare: ['', Validators.compose([Validators.required])],
         upto_fare: ['', Validators.compose([Validators.required])],
         commision: ['', Validators.compose([Validators.required])],
+        addationalCharges: ['', Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Add Commission Slab";
@@ -179,10 +181,11 @@ export class ApiclientcommissionslabComponent implements OnInit {
         starting_fare:this.form.value.starting_fare,
         upto_fare:this.form.value.upto_fare,
         commision:this.form.value.commision,
+        addationalCharges:this.form.value.addationalCharges,
         created_by : localStorage.getItem('USERNAME'),     
     };
 
-    console.log(data);
+    // console.log(data);
     
     if(id==null)
     {
@@ -233,6 +236,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         starting_fare: [this.aapiusercommissionslabRecord.starting_fare, Validators.compose([Validators.required])],
         upto_fare: [this.aapiusercommissionslabRecord.upto_fare,Validators.compose([Validators.required])],
         commision: [this.aapiusercommissionslabRecord.commision,Validators.compose([Validators.required])],
+        addationalCharges: [this.aapiusercommissionslabRecord.addationalcharges,Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Edit Agent Commission Slab";

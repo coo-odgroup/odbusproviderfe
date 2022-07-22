@@ -78,6 +78,7 @@
                 <th>Range From</th>
                 <th>Range To</th>
                 <th>Commission</th>
+                <th>Additional Charges</th>
                 <th scope="col">Created/Updated On</th>
                 <th scope="col">Created By</th>                
                 <th width="100" class="hide_print">&nbsp;</th>
@@ -90,6 +91,7 @@
                 <td>{{ cm.starting_fare }}</td>
                 <td>{{ cm.upto_fare }}</td>
                 <td>{{ cm.commision }}</td>
+                <td>{{ cm.addationalcharges }}</td>
                 <td>{{ cm.updated_at| date: 'yyyy-MM-dd hh:mm:ss' }}</td>
                 <td>{{ cm.created_by }}</td>
                 <td class="hide_print">
@@ -178,7 +180,7 @@
                     <div class="right-icon-control">
                       <form [formGroup]="form" class="editForm" novalidate>
                         <div class="row">
-                          <div class="from-group col-md-3">
+                          <div class="from-group col-md-4">
                             <label for="name" class="col-sm-12 col-form-label">Select API User :<span class="text-danger">*</span></label>
                             <div class="col-sm-12">
                               <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
@@ -192,7 +194,7 @@
                         </div>
 
                          
-                          <div class="form-group col-md-3">
+                          <div class="form-group col-md-4">
                             <label for="name" class="col-sm-12 col-form-label">Range From
                               :<span class="text-danger">*</span></label>                            
                             <div class="col-sm-12">
@@ -204,7 +206,7 @@
                           </div>
                          
                          
-                          <div class="form-group col-md-3">
+                          <div class="form-group col-md-4">
                             <label for="name" class="col-sm-12 col-form-label">Range To
                               :<span class="text-danger">*</span></label>  
                             <div class="col-sm-12">
@@ -215,13 +217,23 @@
                             </div>
                           </div>                        
                           
-                          <div class="form-group col-md-3">
-                            <label for="name" class="col-sm-12 col-form-label">Commission:<span class="text-danger">*</span></label>  
+                          <div class="form-group col-md-6">
+                            <label for="name" class="col-sm-12 col-form-label">Commission:<span class="text-danger">*</span>(%)</label>  
                             <div class="col-sm-12">
                               <input type="text" class="form-control" formControlName="commision">
                               <span class="text-danger"
                                 *ngIf="form.controls['commision'].touched && form.controls['commision'].hasError('required')">
-                                Commission to is required! </span>
+                                Commission  is required! </span>
+                            </div>
+                          </div>   
+
+                          <div class="form-group col-md-6">
+                            <label for="name" class="col-sm-12 col-form-label">Additional Charges:<span class="text-danger">*</span>(%)</label>  
+                            <div class="col-sm-12">
+                              <input type="text" class="form-control" formControlName="addationalCharges">
+                              <span class="text-danger"
+                                *ngIf="form.controls['addationalCharges'].touched && form.controls['addationalCharges'].hasError('required')">
+                                Additional Charges is required! </span>
                             </div>
                           </div>                         
                         </div>

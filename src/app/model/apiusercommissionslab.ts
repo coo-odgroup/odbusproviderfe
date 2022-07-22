@@ -4,4 +4,5 @@ export interface Apiusercommissionslab {
     starting_fare:any;
     upto_fare:any;
     commision:any;
+    addationalcharges:any;
 }
