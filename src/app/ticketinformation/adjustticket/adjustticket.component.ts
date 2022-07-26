@@ -250,9 +250,10 @@ export class AdjustticketComponent implements OnInit {
       destination: this.pnrDetails[0].to_location[0].name,
     }
     this.adjustTicketForm.controls.j_date.setValue(this.pnrDetails[0].journey_dt);
-
+    console.log(data);
     this.acts.getBusList(data).subscribe(
       res => {
+        console.log(res);
         this.busList = res.data;
         this.busList.map((i: any) => { i.testing = i.busName + ' - ' + i.busNumber; return i; });
         this.spinner.hide();
@@ -267,9 +268,9 @@ export class AdjustticketComponent implements OnInit {
     const data =
     {
       busId: this.adjustTicketForm.value.bus,
-      journey_dt:   this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
-      source: this.pnrDetails[0].source_id,
-      destination: this.pnrDetails[0].destination_id,
+      entry_date:   this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
+      sourceId: this.pnrDetails[0].source_id,
+      destinationId: this.pnrDetails[0].destination_id,
     }
     this.acts.getSeatLayout(data).subscribe(
       resp => {
@@ -344,8 +345,8 @@ export class AdjustticketComponent implements OnInit {
     const data =
     {
       busId: this.adjustTicketForm.value.bus,
-      source: this.pnrDetails[0].source_id,
-      destination: this.pnrDetails[0].destination_id,
+      sourceId: this.pnrDetails[0].source_id,
+      destinationId: this.pnrDetails[0].destination_id,
     }    
     this.acts.getBoardingDropping(data).subscribe(
       res => {
@@ -358,7 +359,6 @@ export class AdjustticketComponent implements OnInit {
       }
     );
   }
-
   getSeatFare()
   {
     this.seatFareDetails=[];
@@ -366,6 +366,11 @@ export class AdjustticketComponent implements OnInit {
    
     this.selectedSeats='';
     this.seaterRecord='';
+
+    let seater= [];
+    let sleeper= [];
+
+
     for (let selectedSeat of this.adjustTicketForm.value.bus_seat_layout_data) {
       if (selectedSeat.seatChecked == true)
       {
@@ -375,11 +380,11 @@ export class AdjustticketComponent implements OnInit {
      
         if (selectedSeat.berthType == 1)
         {
-        this.seaterRecord = this.seaterRecord+"&seater[]="+selectedSeat.seatId;
+          seater.push(selectedSeat.seatId);
         }
         if (selectedSeat.berthType == 2)
         {
-        this.seaterRecord = this.seaterRecord+"&sleeper[]="+selectedSeat.seatId;
+          sleeper.push(selectedSeat.seatId);
         }
       }
     }
@@ -394,15 +399,15 @@ export class AdjustticketComponent implements OnInit {
     this.selectedSeats =this.selectedSeats.slice(0, -1)
     // console.log(this.selectedSeats);
 
-      if(this.seaterRecord!='undefined')
-      {
+     
         const data =
         {
-          journey_dt: this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
+          entry_date: this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
           busId: this.adjustTicketForm.value.bus,
-          source: this.pnrDetails[0].source_id,
-          destination: this.pnrDetails[0].destination_id,
-          seat:this.seaterRecord,
+          sourceId: this.pnrDetails[0].source_id,
+          destinationId: this.pnrDetails[0].destination_id,
+          seater:seater,
+          sleeper:sleeper
         }
         // console.log(data);
         this.acts.getSeatFare(data).subscribe(
@@ -410,7 +415,7 @@ export class AdjustticketComponent implements OnInit {
           this.seatFareDetails=resp.data;
           // console.log(this.seatFareDetails);
         });
-      }   
+        
   }
 
   dateWiseBusListing() {

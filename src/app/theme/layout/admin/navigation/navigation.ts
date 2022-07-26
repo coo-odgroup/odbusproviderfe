@@ -502,7 +502,7 @@ const NavigationItems = [
           },
           {
             id: 'bookingseized',
-            title: 'Booking Seized',
+            title: 'Extend Closing Hour',// title: 'Booking Seized',
             type: 'item',
             icon:'feather icon-command',
             url: 'bookingmanagement/bookingseized'

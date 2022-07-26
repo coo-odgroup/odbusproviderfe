@@ -26,32 +26,30 @@ export class AdjustticketService {
     )
   }
 
-  getBoardingDropping(post){
-    return this.httpClient.get<any>(this.consumerURL + 'BoardingDroppingPoints?busId='+post['busId']+'&sourceId='+post['source']+'&destinationId='+post['destination'], this.httpOptions)
+  getBoardingDropping(post): Observable<any>{
+    return this.httpClient.post<any>(this.consumerURL + 'BoardingDroppingPoints',JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
   getBusList(post){
-    // console.log(this.consumerURL + 'Listing?source='+post['source']+'&destination='+post['destination']+'&entry_date='+post['journey_dt']);
+    console.log(this.consumerURL + 'Listing?source='+post['source']+'&destination='+post['destination']+'&entry_date='+post['journey_dt']);
     return this.httpClient.get<any>(this.consumerURL + 'Listing?source='+post['source']+'&destination='+post['destination']+'&entry_date='+post['journey_dt'], this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
-  getSeatLayout(post){
-      return this.httpClient.get<any>(this.consumerURL + 'viewSeats?entry_date='+post['journey_dt']+'&busId='+post['busId']+'&sourceId='+post['source']+'&destinationId='+post['destination'], this.httpOptions)
+  getSeatLayout(post): Observable<any>{
+      return this.httpClient.post<any>(this.consumerURL + 'viewSeats',JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
-  getSeatFare(post){
-    //  console.log(this.consumerURL + 'PriceOnSeatsSelection?busId='+post['busId'] +'&sourceId='+post['source']+'&destinationId='+post['destination']+post['seat']);
-
-      return this.httpClient.get<any>(this.consumerURL + 'PriceOnSeatsSelection?busId='+post['busId'] +'&sourceId='+post['source']+'&destinationId='+post['destination']+post['seat']+'&entry_date='+post['journey_dt'], this.httpOptions)
+  getSeatFare(post): Observable<any>{
+      return this.httpClient.post<any>(this.consumerURL + 'PriceOnSeatsSelection', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

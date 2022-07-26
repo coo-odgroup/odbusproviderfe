@@ -1,7 +1,7 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <div class="row">
   <div class="col-sm-12">
-    <app-card [hidHeader]="false" cardTitle="Datewise Booking Seized "
+    <app-card [hidHeader]="false" cardTitle="Extend Closing Hour  (Datewise Booking Seized) "
       cardClass="card-datatable" [options]="false" cardClass=" table-border-style user-profile-list ">
       <div class="row">
         <div class="col-12">
@@ -11,7 +11,8 @@
                 <div class="from-group ">
                   <button class="btn sml_input btn-success mb-2 " 
                   (click)="ResetAttributes();OpenModal(content)"  >
-                  Bus Seized Here
+                  <!-- Bus Seized Here -->
+                   Extend Closing Hour
                   </button>
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
@@ -22,7 +23,6 @@
                       <option value='all'>All</option>
                     </select>
                   </div>
-
                 </div>
               </div>
 
