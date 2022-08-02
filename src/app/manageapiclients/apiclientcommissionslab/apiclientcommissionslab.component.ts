@@ -69,6 +69,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare: [null, Validators.compose([Validators.required])],
         commision: [null, Validators.compose([Validators.required])],
         addationalCharges: [null, Validators.compose([Validators.required])],
+        cancelCommission: [null, Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });  
       this.formConfirm=this.fb.group({
@@ -164,6 +165,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare: ['', Validators.compose([Validators.required])],
         commision: ['', Validators.compose([Validators.required])],
         addationalCharges: ['', Validators.compose([Validators.required])],
+        cancelCommission: ['', Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Add Commission Slab";
@@ -182,6 +184,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare:this.form.value.upto_fare,
         commision:this.form.value.commision,
         addationalCharges:this.form.value.addationalCharges,
+        cancelCommission:this.form.value.cancelCommission,
         created_by : localStorage.getItem('USERNAME'),     
     };
 
@@ -230,6 +233,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
   editAgentCommission(event : Event, id : any)
   {
       this.aapiusercommissionslabRecord=this.apiusercommissionslab[id] ;
+      console.log(this.aapiusercommissionslabRecord);
       this.form = this.fb.group({
         id:[this.aapiusercommissionslabRecord.id],
         user_id: [this.aapiusercommissionslabRecord.user_id, Validators.compose([Validators.required])],
@@ -237,6 +241,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare: [this.aapiusercommissionslabRecord.upto_fare,Validators.compose([Validators.required])],
         commision: [this.aapiusercommissionslabRecord.commision,Validators.compose([Validators.required])],
         addationalCharges: [this.aapiusercommissionslabRecord.addationalcharges,Validators.compose([Validators.required])],
+        cancelCommission: [this.aapiusercommissionslabRecord.cancellation_commission,Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Edit Agent Commission Slab";
