@@ -490,6 +490,25 @@ export class AdjustticketComponent implements OnInit {
 
   adjustTicket()
   {
+
+    let rest_bal=0;
+    let agent_wallet_balance=0;
+
+    if(this.pnrDetails[0].agent_wallet_balance)
+    {
+
+       rest_bal=this.pnrDetails[0].payable_amount - this.seatFareDetails[0].totalFare ;
+
+       agent_wallet_balance= this.pnrDetails[0].agent_wallet_balance['balance'];
+
+      if(rest_bal < 0 && Math.abs(rest_bal) > this.pnrDetails[0].agent_wallet_balance['balance']){
+
+        this.notificationService.addToast({ title: 'Error', msg: "The Agent has low balance: Rs. "+ this.pnrDetails[0].agent_wallet_balance['balance']+". So the extra amount can't be deducted from agent wallet ", type: 'error' });
+        return false;
+
+      }
+    }
+
     // console.log(this.pnrDetails[0]);
 
     this.spinner.show(); 
@@ -652,11 +671,13 @@ export class AdjustticketComponent implements OnInit {
           "razorpay_payment_id" : this.razorpay_id,
           "razorpay_order_id" : this.customer_payment_order_id,
           "razorpay_signature" :this.customer_payment_razorpay_signature, 
+          "rest_bal": rest_bal,
+          "agent_wallet_balance": agent_wallet_balance,
           "bookingDetail": bookingDetailarr 
         },
     };
     
-      // console.log(data);
+      //console.log(data);
       // return;
 
       this.acts.adjustTicket(data).subscribe(

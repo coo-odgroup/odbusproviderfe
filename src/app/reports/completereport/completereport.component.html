@@ -53,7 +53,7 @@
                                    </div>
                                 </div>
 
-                                <div class="col-md-5 p-0">
+                                <div class="col-md-4 p-0">
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group ">
@@ -79,11 +79,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        <input type="text" class="form-control sml_input" placeholder="Enter pnr"
-                                        required formControlName="pnr" />
-                                   </div>
+                                <div class="col-md-3">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="form-group ">
+                                                <input type="text" class="form-control sml_input" placeholder="Enter pnr"
+                                                required formControlName="pnr" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group ">
+                                                <input type="checkbox" class="sml_input" 
+                                                required formControlName="hasGst" />Has GST
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-5  p-0">
@@ -139,6 +149,7 @@
                                 <th scope="col">Coupon Amount</th>
                                 <th scope="col">Amount Received</th>
                                 <th scope="col">Book By</th>
+                                <th scope="col">GST Details</th>
                             </tr>
                         </thead>
                         <!-- style="height: 100px !important; overflow: scroll; " -->
@@ -341,7 +352,17 @@
                                 </td>
                                 <td>
                                     <p> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer'  }} </p>
-    
+                                </td>
+                                
+                                <td>
+                                    <!-- <p> {{ (complete.customer_gst_number != null) ? complete.customer_gst_number: "<i class='fa fa-times text-danger' aria-hidden='true'></i>"  }} </p> -->
+                                        <span *ngIf= "complete.customer_gst_number != null">
+                                                <strong class=" btn btn-info text-light">{{complete.customer_gst_number}}</strong>
+                                        </span>
+                                        <span *ngIf= "complete.customer_gst_number == null">
+                                            <i class='fa fa-times text-light btn btn-sm btn-danger ' aria-hidden='true'></i>
+                                        </span>
+
                                 </td>
                             </tr>
                             <tr >
@@ -360,7 +381,7 @@
                                 </td>
 
                                 <th colspan="2"> &nbsp;</th>
-                                <td colspan="2">
+                                <td colspan="3">
                                     <strong placement="top"
                                     ngbTooltip="Sum of Amount Received"> <i class="fas fa-rupee-sign"></i> <b class="text-danger">{{completedata?.totalPayableAmount}}</b></strong>
                                 </td>
@@ -368,7 +389,7 @@
                         </tbody>
                         <tbody *ngIf="completedata?.length == 0">
                             <tr>
-                                <td colspan="10" class="no-data-available">No data!</td>
+                                <td colspan="11" class="no-data-available">No data!</td>
                             </tr>
                         <tbody>
                     </table>
@@ -440,6 +461,11 @@
                         <th>Transaction Id</th>
                         <th>Order Id</th>
                         <th>App Type</th>
+                        <th>Customer GST Number</th>
+                        <th>Customer GST Business Name</th>
+                        <th>Customer GST Business Email</th>
+                        <th>Customer GST Business Address</th>
+                        <th>Customer GST Amount</th>
                     </tr>
                 </thead>
 
@@ -500,7 +526,12 @@
                                 {{complete.customer_payment.order_id}}
                             </span>
                         </td>
-                        <td>{{complete.app_type}}</td>                        
+                        <td>{{complete.app_type}}</td>   
+                        <td>{{ complete.customer_gst_number}}</td>
+                        <td>{{ complete.customer_gst_business_name }}</td>
+                        <td>{{ complete.customer_gst_business_email }}</td>
+                        <td>{{ complete.customer_gst_business_address }}</td>
+                        <td>{{ complete.customer_gst_amount }}</td>                     
                     </tr>
                 </tbody>
             </table>

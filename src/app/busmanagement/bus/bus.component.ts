@@ -2776,6 +2776,12 @@ export class BusComponent implements OnInit {
   updateExtraSeatLayout()
   {
     this.spinner.show();
+    
+    if(this.busForm.value.duration_minuties < 1){
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Duration should not be ZERO or Blank", type:Constants.ErrorType});
+      this.spinner.hide();
+      return;
+    }
     const data ={
       id:this.busRecord.id,
       user_id :localStorage.getItem('USERID'),
@@ -2784,7 +2790,9 @@ export class BusComponent implements OnInit {
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
       created_by:localStorage.getItem('USERNAME'),
     };
-
+   
+    // console.log(data);
+    // return;
     if(data.id!=null)
     {
       this.busService.updateExtraSeat(data.id,data).subscribe(
@@ -3140,7 +3148,7 @@ export class BusComponent implements OnInit {
                   {
                     if(selectedSeat.seats_id==seatData.id && selectedSeat.type==null && selectedSeat.operation_date==null)
                     {
-                      console.log(selectedSeat);
+                      // console.log(selectedSeat);
                       checkedval="1";
                       seatId=selectedSeat.id;
                       durationCheck=selectedSeat.duration;

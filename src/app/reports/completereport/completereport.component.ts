@@ -62,7 +62,9 @@ export class CompletereportComponent implements OnInit {
       pnr:[null],
       rows_number:100,
       source_id:[null],
-      destination_id:[null]
+      destination_id:[null],
+      hasGst:[null],
+
     })  
    
 
@@ -104,11 +106,13 @@ export class CompletereportComponent implements OnInit {
       source_id:this.completeReportRecord.source_id,
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
-      rangeToDate :this.completeReportRecord.rangeToDate
+      rangeToDate :this.completeReportRecord.rangeToDate,
+      hasGst :this.completeReportRecord.hasGst,
             
     };
        
     // console.log(data);
+
     
     if(pageurl!="")
     {
@@ -165,7 +169,8 @@ export class CompletereportComponent implements OnInit {
       rows_number: 100,
       // rows_number: Constants.RecordLimit,
       source_id:[null],
-      destination_id:[null]
+      destination_id:[null],
+      hasGst:[null],
 
     })
     this.search();

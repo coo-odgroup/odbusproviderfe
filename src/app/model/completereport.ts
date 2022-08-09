@@ -10,5 +10,6 @@ export interface CompleteReport {
     rangeFromDate:any;
     rangeToDate:any;
     user_id:any;
+    hasGst:any;
 
 }
