@@ -17,9 +17,9 @@
                   <input ngbButton type="radio" class="dateRange" name="dateRange" value="large-view" id="option3" (click)="getall('This Month')"> <i class="feather icon-grid m-0"></i>
                 </label>
                 
-                <label ngbButtonLabel class="btn btn-info">Custom Range
+                <!-- <label ngbButtonLabel class="btn btn-info">Custom Range
                     <input ngbButton type="radio" name="dateRange" value="large-view" id="option4"> <i class="feather icon-plus m-0"></i>
-                </label>
+                </label> -->
               </div>             
           </app-card>    
     </div> 
@@ -63,31 +63,16 @@
                 <h6 class="text-white">PNR Upcoming Booking</h6>
                 <i class="feather icon-file-text"></i>
               </app-card>
-          
         </div>
-      
-    
-      <!-- <div class="col-xl-12">
-          <app-card cardTitle="{{RangeText}} Ticket Statistics" [options]="false">
-            <lib-highcharts-angular [Highcharts]="Highcharts" [options]="barBasicChartOptions" style="width: 100%; height: 450px; display: block;"></lib-highcharts-angular>
-          </app-card>
-        </div> -->
-   
+
         <div class="col-md-6">
             <app-card class="booking_device_height" cardTitle="Booking By Device All" [options]="false">
               <app-apex-chart chartID="pie-chart-2-cac" [chartConfig]="this.pie2CAC" style="height:200px; padding-top: 6px;"></app-apex-chart>
             </app-card>
           </div>
           <div class="col-md-6">
-            <!-- <app-card cardTitle="Weekly PNR Statistics" [options]="false">
-              <div #barBasicChart>
-                <chart id="bar_basic_chart" [type]="'bar'" [data]="barBasicChartData" [options]="barBasicChartOption"></chart>
-              </div>
-            </app-card> -->
             <div class="row">
-
-              <div class="col-md-12 col-xl-12">
-
+              <div class="col-md-6 col-xl-6">
                 <app-card [hidHeader]="true" cardClass="bg-c-blue card-body22 order-card borderless">
                   <h6 class="text-white">Sales {{RangeText}}</h6>
                   <h2 class="text-white">
@@ -97,14 +82,24 @@
                   </h2>             
                   <i class="card-icon feather icon-filter"></i>
                 </app-card>
-    
-                <!-- {{ number | number : '1.2-2'}} -->
               </div>
-              
-            </div>
-            <div class="row">
-              <div class="col-md-12 col-xl-12">
+
+              <div class="col-md-6 col-xl-6">
                 <app-card [hidHeader]="true" cardClass="bg-c-blue card-body22 order-card borderless">
+                  <h6 class="text-white"> Total Profit {{RangeText}}</h6>
+                  <h2 class="text-white">
+                    <span *ngFor="let book_pft of dashboarddata.booking_profit;">
+                      <i class="fas fa-rupee-sign"></i> {{book_pft.odbus_amount  + dashboarddata.cancellation_profit |number : '1.2-2'}}
+                    </span>
+                  </h2>             
+                  <i class="card-icon feather icon-filter"></i>
+                </app-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 col-xl-6">
+                <app-card [hidHeader]="true" cardClass="bg-c-green card-body22 order-card borderless">
                   <h6 class="text-white">Booking Profit {{RangeText}}</h6>
                   <h2 class="text-white">
                     <span *ngFor="let book_pft of dashboarddata.booking_profit;">
@@ -114,23 +109,19 @@
                   <i class="card-icon feather icon-users"></i>
                 </app-card>
               </div>
-            </div>
-            <!-- <div class="row">             
-              <div class="col-md-12 col-xl-12">
-                <app-card [hidHeader]="true" cardClass="bg-c-green order-card borderless">
+
+              <div class="col-md-6 col-xl-6">
+                <app-card [hidHeader]="true" cardClass="bg-c-red card-body22 order-card borderless">
                   <h6 class="text-white">Cancellation Profit {{RangeText}}</h6>
-                  <h2 class="text-white">{{dashboarddata.cancellation_profit || "0"}}</h2>             
-                  <i class="card-icon feather icon-radio"></i>
+                  <h2 class="text-white">
+                        <i class="fas fa-rupee-sign"></i> {{dashboarddata.cancellation_profit |number : '1.2-2'}}
+                  </h2>             
+                  <i class="card-icon feather icon-users"></i>
                 </app-card>
               </div>
-            </div> -->
+            </div>
           </div>
-          
-          <!-- <div class="container"  *ngIf="RoleType==1">
-        
-          </div>
-           -->
-            
+
           <div class="col-xl-6 col-md-12">
             <app-card cardTitle="TOP ROUTES BOOKINGS {{RangeText}}" cardClass="table-card" blockClass="p-0">
               <div class="table-responsive">

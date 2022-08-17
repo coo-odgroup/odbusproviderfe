@@ -458,6 +458,7 @@
                         <th>Owner GST</th>
                         <th>Odbus Received</th>
                         <th>Amount Received</th>
+                        <th>Transaction Fee</th>
                         <th>Transaction Id</th>
                         <th>Order Id</th>
                         <th>App Type</th>
@@ -516,6 +517,7 @@
                         <td>{{complete.owner_gst_amount}}</td>
                         <td>{{complete.odbus_charges}}</td>
                         <td>{{complete.payable_amount - complete.agent_commission }}</td>
+                        <td>{{complete.transactionFee}}</td>
                         <td>
                             <span *ngIf="complete.customer_payment">
                                 {{complete.customer_payment.razorpay_id}} 
