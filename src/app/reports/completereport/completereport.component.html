@@ -121,7 +121,8 @@
                                             <option value=25>25</option>
                                             <option value=50>50</option>
                                             <option value=100>100</option>
-                                            <option value='all'>All</option>
+                                            <!-- <option value=500>500</option> -->
+                                            <!-- <option value='all'>All</option> -->
                                         </select>
                                     </div>
                                 </div>
@@ -432,7 +433,7 @@
                 </div>
             </div>
         </app-card>
-        <div style="display: none;" id="export-section">
+        <div style="display: none;"  id="export-section">
             <table class="table table-striped ">
                 <thead>
                     <tr>
@@ -469,9 +470,9 @@
                         <th>Customer GST Amount</th>
                     </tr>
                 </thead>
-
-                <tbody *ngIf="completedata?.length != 0">
-                    <tr *ngFor="let complete of completedata?.data.data; let i = index">
+                    {{completExportdata?.data?.data?.length | json}}
+                <tbody *ngIf="completExportdata?.data?.data?.length != 0">
+                    <tr *ngFor="let complete of completExportdata?.data?.data; let i = index">
                         <td>{{complete.pnr}}</td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">

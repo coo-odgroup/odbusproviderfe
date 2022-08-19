@@ -33,6 +33,7 @@ export class CompletereportComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  completExportdata: any ;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -75,20 +76,53 @@ export class CompletereportComponent implements OnInit {
 
   exportexcel(): void
   {
-    
-    /* pass here the table id */
+    this.spinner.show();
+    // this.completeReportRecord = this.searchFrom.value ; 
+    this.completExportdata= '';
+
+        const data = {
+          bus_operator_id: this.searchFrom.value.bus_operator_id,
+          payment_id:this.searchFrom.value.payment_id,
+          date_type :this.searchFrom.value.date_type,
+          pnr :this.searchFrom.value.pnr,
+          rows_number:'all',
+          source_id:this.searchFrom.value.source_id,
+          destination_id:this.searchFrom.value.destination_id,
+          rangeFromDate:this.searchFrom.value.rangeFromDate,
+          rangeToDate :this.searchFrom.value.rangeToDate,
+          hasGst :this.searchFrom.value.hasGst   
+        };
+
+        this.rs.completeReport(data).subscribe(
+          res => {
+            this.completExportdata = res.data;
+            let length = this.completExportdata.data.data.length;
+            console.log(length);
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
+  exportdata(): void
+  {
     let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
+
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
- 
-  }
 
+    this.spinner.hide();
+  }
+  
   page(label:any){
     return label;
    }
@@ -107,8 +141,7 @@ export class CompletereportComponent implements OnInit {
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate,
-      hasGst :this.completeReportRecord.hasGst,
-            
+      hasGst :this.completeReportRecord.hasGst     
     };
        
     // console.log(data);
@@ -119,7 +152,6 @@ export class CompletereportComponent implements OnInit {
       this.rs.completepaginationReport(pageurl,data).subscribe(
         res => {
           this.completedata= res.data;
-          // console.log( this.completedata);
           this.spinner.hide();
         }
       );
@@ -129,7 +161,6 @@ export class CompletereportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata = res.data;
-          // console.log(this.completedata);
           this.spinner.hide();
         }
       );
