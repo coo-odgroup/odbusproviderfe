@@ -22,7 +22,7 @@
                       <option value=25>25</option>
                       <option value=50>50</option>
                       <option value=100>100</option>
-                      <option value='all'>All</option>
+                      <!-- <option value='all'>All</option> -->
                     </select>
                   </div>
                 </div>
@@ -2649,7 +2649,23 @@
                           <td>{{busRecord.bus_type.name}} </td>
                         </tr>                   
                     </table>  
-                    
+
+                    <table  class="table table-striped ">
+                      <h5 >Operator Bank Details</h5>
+                        <tr class="bg-warning text-dark">
+                          <th>Bank Acc Name </th>
+                          <th>Bank Name</th> 
+                          <th>Bank Acc No </th> 
+                          <th>IFSC CODE </th> 
+                        </tr>
+                        <tr>
+                          <td> {{busRecord.bus_operator.bank_account_name}}</td>
+                          <td>{{busRecord.bus_operator.bank_name}}</td>
+                          <td>{{busRecord.bus_operator.bank_account_number}}</td>
+                          <td>{{busRecord.bus_operator.bank_ifsc}} </td>
+                        </tr>                   
+                    </table> 
+
                     <table  class="table table-striped ">
                   
                         <tr class="bg-success text-white">
