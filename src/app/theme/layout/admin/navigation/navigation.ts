@@ -1032,6 +1032,13 @@ const NavigationItems = [
             icon:'feather icon-pie-chart',
             url: 'manageapiclients/apipnrdisputes'
           },
+          {
+            id: 'manageclientsoperator',
+            title: 'Restrict Operator',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/manageclientsoperator'
+          },
                 
         ]
       },

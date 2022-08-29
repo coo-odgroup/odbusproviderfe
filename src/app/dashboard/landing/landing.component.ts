@@ -47,6 +47,7 @@ export class LandingComponent implements OnInit {
 
     pnr_date: any;
     pnr_label: any;
+  searchfor: string;
 
 
     constructor(private http: HttpClient , private ds:DashboardService,private spinner: NgxSpinnerService) {
@@ -117,7 +118,6 @@ export class LandingComponent implements OnInit {
     }
     pieChart()
     {
-      //console.log(this.dashboarddata.web_booking.length);
       this.pie2CAC = {
         chart: {
           height: 270,
@@ -174,7 +174,10 @@ export class LandingComponent implements OnInit {
             }
           }
         }]
+        
       };
+      this.spinner.hide();
+     
     }
     ngAfterViewInit()
     {
@@ -190,23 +193,29 @@ export class LandingComponent implements OnInit {
         rangeFrom:"",
         rangeTo:""
       };
-      this.getall("All");
+      this.getall("Today");
       this.toproute();
       this.operatordata();
-      this.pnrstaticsdata("All"); 
+      this.pnrstaticsdata("Today"); 
+      this.searchfor='Today';
     }
 
-    hideSpinner()
-    {
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 1000);
+    // hideSpinner()
+    // {
+    //   setTimeout(() => {
+    //     /** spinner ends after 5 seconds */
+    //     this.spinner.hide();
+    //   }, 1000);
       
-    }
+    // }
 
    
     getall(range:any) {
+
+      this.spinner.show();
+
+      this.searchfor = range ;
+      this.dashboarddata="";
       this.RangeText=range;
       const data={
         rangeFor:range,
@@ -219,15 +228,9 @@ export class LandingComponent implements OnInit {
       this.ds.dashboard(data).subscribe(
         res => {
           this.dashboarddata= res.data;
-          console.log(this.dashboarddata);
-          this.pieChart();
-
-          
-          // var chart = new ApexCharts(document.querySelector("#pie-chart-2-cac"),this.pie2CAC);
-         // this.pie2CAC.render();
-         
-         this.hideSpinner();
-          
+          // console.log(this.dashboarddata);
+          this.pieChart();  
+             
         }
       );
     }
@@ -250,7 +253,7 @@ export class LandingComponent implements OnInit {
       this.ds.operatordata().subscribe(
         res => {
           this.oprdata= res.data;
-          //console.log(res.data);
+          console.log(res.data);
         }
       );
     }

@@ -9,15 +9,11 @@ import { ApiclientcommissionslabComponent } from './apiclientcommissionslab/apic
 import { ApibookingsticketsComponent } from './apibookingstickets/apibookingstickets.component';
 import { ApicancelticketsComponent } from './apicanceltickets/apicanceltickets.component';
 import { ApipnrdisputesComponent } from './apipnrdisputes/apipnrdisputes.component';
+import { ManageclientsoperatorComponent } from './manageclientsoperator/manageclientsoperator.component';
 
 
 @NgModule({
   declarations: [
-  
-  
-   
-  
-  
   ],
   imports: [
     CommonModule,

@@ -3,6 +3,11 @@
 <div class="row"> 
     <div class="col-xl-12 ">
         <app-card   [hidHeader]="true" [options]="false">
+            <div class="float-left">
+                <label > 
+                  <h2>Showing {{searchfor}} Data</h2>   
+                </label>               
+              </div>             
             <div class="btn-group btn-group-toggle float-right" ngbRadioGroup name="ticketSize" data-toggle="buttons">
                 <label ngbButtonLabel class="btn btn-info">All
                   <input ngbButton type="radio" class="dateRange" name="dateRange" value="large-view" id="option5" (click)="getall('ALL')"> <i class="feather icon-award m-0"></i>
@@ -66,7 +71,7 @@
         </div>
 
         <div class="col-md-6">
-            <app-card class="booking_device_height" cardTitle="Booking By Device All" [options]="false">
+            <app-card class="booking_device_height" cardTitle="Booking By Device {{searchfor}}" [options]="false">
               <app-apex-chart chartID="pie-chart-2-cac" [chartConfig]="this.pie2CAC" style="height:200px; padding-top: 6px;"></app-apex-chart>
             </app-card>
           </div>
@@ -163,7 +168,7 @@
                   <tbody>
                   <tr *ngFor="let Operator of oprdata; let i = index">
                     <td>{{i+1}}</td>
-                    <td> {{Operator.operatorName[0].bus_operator.organisation_name}} <strong>[  {{Operator.operatorName[0].bus_operator.operator_name}} ]</strong></td>
+                    <td> <span *ngIf="Operator.operatorName.length > 0">{{Operator.operatorName[0].bus_operator.organisation_name}} <strong>[  {{Operator.operatorName[0].bus_operator.operator_name}} ]</strong></span></td>
                     <td> {{Operator.count}} PNR</td>
                     <td><i class="fas fa-rupee-sign"></i> {{Operator.amount |number : '1.2-2'}}</td>                   
                   </tr>

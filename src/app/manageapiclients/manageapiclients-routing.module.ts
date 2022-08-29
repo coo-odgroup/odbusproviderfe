@@ -33,6 +33,10 @@ const routes: Routes = [
         path: 'apipnrdisputes',
         loadChildren: () => import('./apipnrdisputes/apipnrdisputes.module').then(module => module.ApiPnrDisputesModule)
       },     
+      {
+        path: 'manageclientsoperator',
+        loadChildren: () => import('./manageclientsoperator/manageclientsoperator.module').then(module => module.ManageClientsOperatorModule)
+      },     
     ]
   }
 ];
