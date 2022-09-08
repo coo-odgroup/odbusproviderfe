@@ -147,7 +147,7 @@ export class BusscheduleComponent implements OnInit {
      this.spinner.hide();
    }
    title = 'angular-app';
-  fileName= 'Bus-Schedule.xlsx';
+  fileName= 'Bus-Schedule.csv';
 
   exportexcel(): void
   {  

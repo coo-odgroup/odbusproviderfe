@@ -232,7 +232,7 @@ export class SeatfareComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName = 'Seat-Fare.xlsx';
+  fileName = 'Seat-Fare.csv';
 
   exportexcel(): void {
 

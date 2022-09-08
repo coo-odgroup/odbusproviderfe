@@ -330,7 +330,7 @@ export class ExtraseablockComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName = 'Seat-Open.xlsx';
+  fileName = 'Seat-Open.csv';
 
   exportexcel(): void {
 

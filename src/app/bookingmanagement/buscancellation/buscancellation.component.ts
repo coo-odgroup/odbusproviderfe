@@ -195,7 +195,7 @@ export class BuscancellationComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName = 'Bus-Cancellation.xlsx';
+  fileName = 'Bus-Cancellation.csv';
 
   exportexcel(): void {
 

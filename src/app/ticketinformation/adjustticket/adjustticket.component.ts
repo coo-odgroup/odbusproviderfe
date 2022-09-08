@@ -171,10 +171,18 @@ export class AdjustticketComponent implements OnInit {
             {
               this.maxAllowedSeat= this.pnrDetails[0].booking_detail.length;
             }
-            this.pnrDetails[0].booking_detail.forEach(b => {
-              this.seatNames.push(b.bus_seats.seats.seatText); 
-            });
-                //  console.log(this.seatNames);
+            if(this.pnrDetails[0].origin != 'DOLPHIN')
+            {
+              this.pnrDetails[0].booking_detail.forEach(b => {
+                this.seatNames.push(b.bus_seats.seats.seatText); 
+              });
+            }
+            else if(this.pnrDetails[0].origin == 'DOLPHIN')
+            {
+              this.pnrDetails[0].booking_detail.forEach(b => {
+                this.seatNames.push(b.seat_name); 
+              });
+            }
             this.busListing();
           }         
           
@@ -448,7 +456,7 @@ export class AdjustticketComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName = 'Adjust-ticket.xlsx';
+  fileName = 'Adjust-ticket.csv';
 
   exportexcel(): void {
 
@@ -677,7 +685,7 @@ export class AdjustticketComponent implements OnInit {
         },
     };
     
-      //console.log(data);
+      // console.log(data);
       // return;
 
       this.acts.adjustTicket(data).subscribe(

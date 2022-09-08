@@ -136,7 +136,7 @@ export class AmenitiesComponent implements OnInit {
 
   }
   title = 'angular-app';
-  fileName = 'Amenities.xlsx';
+  fileName = 'Amenities.csv';
 
   exportexcel(): void {
 

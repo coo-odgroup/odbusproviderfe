@@ -48,7 +48,7 @@ export class SeatblockreportComponent implements OnInit {
       }
 
       title = 'angular-app';
-      fileName= 'Seat-Block-Report.xlsx';
+      fileName= 'Seat-Block-Report.csv';
  
   ngOnInit(): void {
     this.spinner.show();

@@ -135,7 +135,7 @@ export class LocationComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Location.xlsx';
+  fileName= 'Location.csv';
 
   exportexcel(): void
   {

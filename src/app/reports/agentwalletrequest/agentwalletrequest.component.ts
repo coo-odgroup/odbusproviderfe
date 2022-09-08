@@ -249,7 +249,7 @@ export class AgentwalletrequestComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName = 'Seo-Setting.xlsx';
+  fileName = 'Seo-Setting.csv';
 
   exportexcel(): void {
 

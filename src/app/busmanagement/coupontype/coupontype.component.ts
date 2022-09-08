@@ -246,7 +246,7 @@ export class CoupontypeComponent implements OnInit {
   }  
 
   title = 'angular-app';
-  fileName= 'Seating-Type.xlsx';
+  fileName= 'Seating-Type.csv';
 
   exportexcel(): void
   {

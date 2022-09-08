@@ -310,7 +310,7 @@
                                     <h5> {{ (complete.user_id > 0) ? 'Agent' : 'Customer'  }} </h5>    
                                 </td>
                                 <td>
-                                    <b>{{complete.created_by}}</b>
+                                    <b>{{ (complete.cancel_by == null) ? 'Customer' : complete.cancel_by  }}</b>
                                 </td>
                             </tr>
                         </tbody>    

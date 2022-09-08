@@ -45,7 +45,7 @@ export class BuscancellationreportComponent implements OnInit {
         this.toDate = calendar.getToday();
       }
       title = 'angular-app';
-      fileName= 'Bus-Cancellation-Report.xlsx';
+      fileName= 'Bus-Cancellation-Report.csv';
 
   ngOnInit(): void {
     this.spinner.show();

@@ -177,7 +177,7 @@
                         <tr *ngFor="let complete of completedata?.data.data; let i = index">
                             <td>{{ i+1 }}</td>
                             <td>
-                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt}} )                                
+                                <strong>{{complete.pnr}}</strong> ( {{complete.journey_dt | date: 'dd/MM/yyyy'}} )                                
                                 <br>
                                 <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
                                 <br>

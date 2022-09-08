@@ -250,7 +250,7 @@ export class ManageroleComponent implements OnInit {
   }  
 
   title = 'angular-app';
-  fileName= 'Seating-Type.xlsx';
+  fileName= 'Seating-Type.csv';
 
   exportexcel(): void
   {

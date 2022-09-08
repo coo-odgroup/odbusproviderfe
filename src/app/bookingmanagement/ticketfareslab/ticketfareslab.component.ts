@@ -216,7 +216,7 @@ export class TicketfareslabComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName = 'ticketfareslab.xlsx';
+  fileName = 'ticketfareslab.csv';
 
   exportexcel(): void {
 

@@ -46,7 +46,7 @@ export class ExtraseatopenreportComponent implements OnInit {
         this.toDate = calendar.getToday();
       }
       title = 'angular-app';
-      fileName= 'Seat-Open-Report.xlsx';
+      fileName= 'Seat-Open-Report.csv';
   ngOnInit(): void {
     this.spinner.show();
     this.searchFrom = this.fb.group({

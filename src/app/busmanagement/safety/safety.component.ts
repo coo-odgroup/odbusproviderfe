@@ -530,7 +530,7 @@ export class SafetyComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Safety.xlsx';
+  fileName= 'Safety.csv';
 
   exportexcel(): void
   {

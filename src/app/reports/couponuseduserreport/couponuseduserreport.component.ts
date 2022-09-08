@@ -136,7 +136,7 @@ export class CouponuseduserreportComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName= 'Coupan-USed-User-Report.xlsx';
+  fileName= 'Coupan-USed-User-Report.csv';
   exportexcel(): void
   {
     

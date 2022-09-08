@@ -47,7 +47,7 @@ export class AgentcompletereportComponent implements OnInit {
       this.toDate = calendar.getToday();
     }
     title = 'angular-app';
-    fileName= 'Agent-Complete-Report.xlsx';
+    fileName= 'Agent-Complete-Report.csv';
   ngOnInit(): void {
 
     this.searchFrom = this.fb.group({

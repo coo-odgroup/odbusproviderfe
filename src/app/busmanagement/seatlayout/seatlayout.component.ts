@@ -523,7 +523,7 @@ export class SeatlayoutComponent implements OnInit {
 
 
    title = 'angular-app';
-  fileName= 'Seat-layout.xlsx';
+  fileName= 'Seat-layout.csv';
 
   exportexcel(): void
   {

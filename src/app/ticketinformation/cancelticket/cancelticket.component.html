@@ -347,7 +347,15 @@
                                                                         *ngFor="let passanger of pnrDetails[0].booking_detail">
                                                                         <td>{{passanger.passenger_name}}</td>
                                                                         <td>{{passanger.passenger_gender}}</td>
-                                                                        <td>{{passanger.bus_seats.seats.seatText}}</td>
+                                                                        <td>  
+                                                                            <span *ngIf="pnrDetails[0].origin != 'DOLPHIN' ">
+                                                                                {{passanger.bus_seats.seats.seatText}}
+                                                                             </span>
+                                                                            <span *ngIf="pnrDetails[0].origin == 'DOLPHIN' ">
+                                                                                {{passanger.seat_name}}
+                                                                             </span>
+                                                                            
+                                                                        </td>
                                                                         <td>{{passanger.passenger_age}}</td>
                                                                     </tr>
                                                                     <tr>
@@ -388,10 +396,16 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><small>Bus :</small></td>
-                                                                        <td><strong>{{ pnrDetails[0].bus.name
-                                                                                }}</strong><br>
-                                                                            <strong>{{ pnrDetails[0].bus.bus_number
-                                                                                }}</strong>
+                                                                        <td>
+                                                                            <span *ngIf="pnrDetails[0].origin != 'DOLPHIN' ">
+                                                                                <strong>{{ pnrDetails[0].bus.name}}</strong><br>
+                                                                                <strong>{{ pnrDetails[0].bus.bus_number}}</strong>
+                                                                            </span>
+                                                                            <span *ngIf="pnrDetails[0].origin == 'DOLPHIN' ">
+                                                                                <strong>{{ pnrDetails[0].bus_name}}</strong><br>
+                                                                                <strong>{{ pnrDetails[0].bus_bus_number}}</strong>
+                                                                            </span>
+                                                                            
                                                                         </td>
                                                                     </tr>
                                                                 </table>

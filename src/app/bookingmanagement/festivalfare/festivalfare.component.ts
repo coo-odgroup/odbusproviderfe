@@ -213,7 +213,7 @@ export class FestivalfareComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Owner-Fare.xlsx';
+  fileName= 'Owner-Fare.csv';
 
   exportexcel(): void
   {

@@ -133,7 +133,7 @@ export class PushnotificationComponent implements OnInit {
     this.search();
   }
   title = 'angular-app';
-  fileName = 'Push-Notification.xlsx';
+  fileName = 'Push-Notification.csv';
   exportexcel(): void {
 
     /* pass here the table id */

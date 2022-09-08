@@ -474,7 +474,7 @@ export class BusComponent implements OnInit {
      this.LoadAllService();
    }
    title = 'angular-app';
-   fileName= 'Bus.xlsx';
+   fileName= 'Bus.csv';
    exportexcel(): void
    {
      

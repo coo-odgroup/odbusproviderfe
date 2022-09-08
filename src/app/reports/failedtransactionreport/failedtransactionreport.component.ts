@@ -63,7 +63,7 @@ export class FailedtransactionreportComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName = 'Failled-Transaction-Report.xlsx';
+  fileName = 'Failled-Transaction-Report.csv';
 
   ngOnInit(): void {
     this.spinner.show();

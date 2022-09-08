@@ -49,7 +49,7 @@ export class AgentticketcancellationreportComponent implements OnInit {
      }
 
      title = 'angular-app';
-     fileName= 'Cancel-Ticket-Report.xlsx';
+     fileName= 'Cancel-Ticket-Report.csv';
 
   ngOnInit(): void {
 

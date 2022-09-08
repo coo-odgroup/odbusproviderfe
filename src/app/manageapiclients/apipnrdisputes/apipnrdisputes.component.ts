@@ -52,7 +52,7 @@ export class ApipnrdisputesComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName= 'API-PNR-Issue.xlsx';
+  fileName= 'API-PNR-Issue.csv';
 
   ngOnInit(): void {
     this.spinner.show();

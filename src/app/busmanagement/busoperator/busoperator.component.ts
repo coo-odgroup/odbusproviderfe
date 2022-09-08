@@ -151,7 +151,7 @@ export class BusoperatorComponent implements OnInit {
 
 
    title = 'angular-app';
-  fileName= 'Seat-layout.xlsx';
+  fileName= 'Bus-Operator.csv';
 
   exportexcel(): void
   {

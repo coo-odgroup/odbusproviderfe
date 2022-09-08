@@ -51,7 +51,7 @@ export class ApibookingsticketsComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName= 'Complete-Report.xlsx';
+  fileName= 'Complete-Report.csv';
 
   ngOnInit(): void {
     this.spinner.show();

@@ -213,7 +213,7 @@ export class SpecialfareComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Special-Fare.xlsx';
+  fileName= 'Special-Fare.csv';
 
   exportexcel(): void
   {

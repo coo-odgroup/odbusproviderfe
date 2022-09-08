@@ -329,7 +329,7 @@ export class SeatblockComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Seat-Block.xlsx';
+  fileName= 'Seat-Block.csv';
 
   exportexcel(): void
   {

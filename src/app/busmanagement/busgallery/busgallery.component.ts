@@ -80,7 +80,7 @@ export class BusgalleryComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName = 'Bus-Gallery.xlsx';
+  fileName = 'Bus-Gallery.csv';
 
   buses: Bus[];
   busRecord: Bus;

@@ -232,7 +232,7 @@ export class CancellationslabComponent implements OnInit {
 
   }
   title = 'angular-app';
-  fileName= 'Cancellation-Slab.xlsx';
+  fileName= 'Cancellation-Slab.csv';
 
   exportexcel(): void
   {

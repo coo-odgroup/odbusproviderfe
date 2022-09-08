@@ -163,7 +163,7 @@ export class ApclientwalletbalanceComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName = 'API-Client-Wallet-Balance.xlsx';
+  fileName = 'API-Client-Wallet-Balance.csv';
 
   exportexcel(): void {
 

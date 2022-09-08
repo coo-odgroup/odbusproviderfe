@@ -180,6 +180,7 @@ export class CancelticketComponent implements OnInit {
       refund_amount:this.cancelTicketForm.value.refundAmount,
       reason:this.cancelTicketForm.value.reason,
       cancelled_by:localStorage.getItem('USERNAME'),
+      created_by:localStorage.getItem('USERNAME'),
       status:2,
     };
 
@@ -212,7 +213,7 @@ export class CancelticketComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Cancel-ticket.xlsx';
+  fileName= 'Cancel-ticket.csv';
 
   exportexcel(): void
   {

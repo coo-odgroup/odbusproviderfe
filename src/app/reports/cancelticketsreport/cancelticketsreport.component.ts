@@ -50,7 +50,7 @@ export class CancelticketsreportComponent implements OnInit {
      }
 
      title = 'angular-app';
-     fileName= 'Cancel-Ticket-Report.xlsx';
+     fileName= 'Cancel-Ticket-Report.csv';
 
   ngOnInit(): void {
     this.spinner.show();
@@ -106,6 +106,7 @@ export class CancelticketsreportComponent implements OnInit {
       this.rs.cancelticketReport(data).subscribe(
         res => {
           this.cancelticketdata= res.data;
+          console.log(this.cancelticketdata);
           this.spinner.hide();
         }
       );

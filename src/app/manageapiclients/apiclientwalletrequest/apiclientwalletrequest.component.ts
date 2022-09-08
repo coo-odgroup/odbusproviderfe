@@ -249,7 +249,7 @@ export class ApiclientwalletrequestComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName = 'API-CLIENT-WALLET-REQUEST.xlsx';
+  fileName = 'API-CLIENT-WALLET-REQUEST.csv';
 
   exportexcel(): void {
 

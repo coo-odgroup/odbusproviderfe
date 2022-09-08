@@ -221,7 +221,8 @@
                             </td>
                             <td>
                                 <!-- {{couponData.status}} -->
-                                <span *ngIf="couponData.from_date <= todayDate && todayDate <=couponData.to_date">
+                                <!-- <span *ngIf="couponData.from_date <= todayDate && todayDate <=couponData.to_date"> -->
+                                <span *ngIf=" todayDate <=couponData.to_date">
                                     <label *ngIf="couponData.status==1" class="badge badge-light-primary pointer text-dark"
                                     (click)="changeStatus($event, couponData.id);">Active</label>
                                     </span>

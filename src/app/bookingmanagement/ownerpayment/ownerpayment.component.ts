@@ -154,7 +154,7 @@ export class OwnerpaymentComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Owner-Payment.xlsx';
+  fileName= 'Owner-Payment.csv';
 
   exportexcel(): void
   {

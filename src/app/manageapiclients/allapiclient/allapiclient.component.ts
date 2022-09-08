@@ -281,7 +281,7 @@ export class AllapiclientComponent implements OnInit {
   
 
   title = 'angular-app';
-  fileName = 'Agent-Agent.xlsx';
+  fileName = 'Agent-Agent.csv';
 
   exportexcel(): void
   {    

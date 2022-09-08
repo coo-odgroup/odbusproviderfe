@@ -298,7 +298,7 @@ export class BustypeComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName= 'Bus-Type.xlsx';
+  fileName= 'Bus-Type.csv';
 
   exportexcel(): void
   {

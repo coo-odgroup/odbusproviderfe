@@ -153,7 +153,7 @@ export class BoardingdropingComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName = 'Boarding-Droping.xlsx';
+  fileName = 'Boarding-Droping.csv';
 
   exportexcel(): void {
 

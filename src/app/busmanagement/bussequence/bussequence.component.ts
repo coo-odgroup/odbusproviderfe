@@ -127,7 +127,7 @@ export class BussequenceComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Bus-Sequence.xlsx';
+  fileName= 'Bus-Sequence.csv';
 
   exportexcel(): void
   {

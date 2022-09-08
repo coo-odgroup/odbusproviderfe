@@ -13,26 +13,26 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group ">
-                                            <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                                                placeholder="Select Operator" formControlName="bus_operator_id"
-                                                [clearable]="false">
-                                            </ng-select>
+                                        <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                                            placeholder="Select Operator" formControlName="bus_operator_id"
+                                            [clearable]="false">
+                                        </ng-select>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <div class="row">  
+                                    <div class="row">
                                         <div class="form-group col-6">
-                                            
-                                                <input type="date" class="form-control sml_input" placeholder="Enter pnr"
+
+                                            <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeFromDate" />
-                                            
+
                                         </div>
                                         <div class="form-group col-6">
-                                            
-                                                <input type="date" class="form-control sml_input" placeholder="Enter pnr"
+
+                                            <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeToDate" />
-                                                                                     
+
                                         </div>
                                     </div>
                                 </div>
@@ -45,12 +45,12 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-3">
-                                   <div class="form-group ">
-                                    <input type="text" class="form-control sml_input"
-                                    placeholder="Payment/Order Id" required formControlName="payment_id" />
-                                   </div>
+                                    <div class="form-group ">
+                                        <input type="text" class="form-control sml_input" placeholder="Payment/Order Id"
+                                            required formControlName="payment_id" />
+                                    </div>
                                 </div>
 
                                 <div class="col-md-4 p-0">
@@ -83,14 +83,14 @@
                                     <div class="row">
                                         <div class="col-8">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control sml_input" placeholder="Enter pnr"
-                                                required formControlName="pnr" />
+                                                <input type="text" class="form-control sml_input"
+                                                    placeholder="Enter pnr" required formControlName="pnr" />
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="form-group ">
-                                                <input type="checkbox" class="sml_input" 
-                                                required formControlName="hasGst" />Has GST
+                                                <input type="checkbox" class="sml_input" required
+                                                    formControlName="hasGst" />Has GST
                                             </div>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                 <div class="col-md-5  p-0">
                                     <button type="button" class="btn btn-success  sml_input" (click)="search()"
                                         title="search">
-                                         Search
+                                        Search
                                     </button>
                                     <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
                                         title="refresh">
@@ -111,7 +111,7 @@
                                     </button>
                                     <button type="button" printSectionId="print-section" ngxPrint
                                         class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
-                                         Print
+                                        Print
                                     </button>
 
                                     <div class="dropdown float-right">
@@ -154,7 +154,7 @@
                             </tr>
                         </thead>
                         <!-- style="height: 100px !important; overflow: scroll; " -->
-                        <tbody *ngIf="completedata?.length != 0" >
+                        <tbody *ngIf="completedata?.length != 0">
                             <tr *ngFor="let complete of completedata?.data.data; let i = index">
                                 <td>{{ i+1 }}</td>
                                 <td>
@@ -168,9 +168,10 @@
                                     <span *ngIf="complete.app_type == 'ANDROID'">
                                         <strong class="text-danger">(A)&nbsp;</strong>
                                     </span>
-                                    <strong>{{complete.pnr}}</strong><br> (DOB - {{complete.updated_at | date:
+                                    <strong>{{complete.pnr}}</strong> &nbsp;&nbsp;
+                                    <span *ngIf="complete.origin == 'DOLPHIN' " class="text-danger"><strong>[ DOLPHIN PNR -  {{complete.api_pnr}} ]</strong></span>
+                                    <br> (DOB - {{complete.updated_at | date:
                                     'dd-MM-yyyy | H:mm:ss'}} )
-
                                     <br>
                                     <span *ngFor="let frlocation of complete.from_location">
                                         {{frlocation.name}}
@@ -178,71 +179,97 @@
                                     ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
                                     <br>
                                     <span *ngIf="complete.customer_payment">
-                                        <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>                                    
-                                    <br>
-                                    <strong
-                                        style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
+                                        <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
+                                        <br>
+                                        <strong
+                                            style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
 
                                     </span>
                                 </td>
 
 
                                 <td>
-                                    <strong>{{ complete.bus.name }}</strong><br>
-                                    {{ complete.bus.bus_number }}<br>
-                                    <ng-template #tipContent1>
-                                        <table style="width: 350px;">
-                                            <tr>
-                                                <td style="text-align: left;" colspan="2">
-                                                    Start
-                                                </td>
-                                                <td style="text-align: left;" colspan="2">
-                                                    End
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left;">
+                                    <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                        <strong>{{ complete.bus.name }}</strong><br>
+                                        {{ complete.bus.bus_number }}<br>
+                                        <ng-template #tipContent1>
+                                            <table style="width: 350px;">
+                                                <tr>
+                                                    <td style="text-align: left;" colspan="2">
+                                                        Start
+                                                    </td>
+                                                    <td style="text-align: left;" colspan="2">
+                                                        End
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left;">
 
-                                                    <span *ngFor="let frlocation of complete.source">
-                                                        {{frlocation[0].name}}<br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
+                                                        <span *ngFor="let frlocation of complete.source">
+                                                            {{frlocation[0].name}}<br />
+                                                        </span>
+                                                    </td>
+                                                    <td style="text-align: left;">
 
-                                                    <span *ngFor="let frTime of complete.bus.busstoppage">
-                                                        {{frTime.dep_time  | date: 'H:mm'}}<br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <span *ngFor="let tolocation of complete.destination">
-                                                        {{tolocation[0].name}} <br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
+                                                        <span *ngFor="let frTime of complete.bus.busstoppage">
+                                                            {{frTime.dep_time | date: 'H:mm'}}<br />
+                                                        </span>
+                                                    </td>
+                                                    <td style="text-align: left;">
+                                                        <span *ngFor="let tolocation of complete.destination">
+                                                            {{tolocation[0].name}} <br />
+                                                        </span>
+                                                    </td>
+                                                    <td style="text-align: left;">
 
-                                                    <span *ngFor="let toTime of complete.bus.busstoppage">
-                                                        {{toTime.arr_time  | date: 'H:mm'}}<br />
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
+                                                        <span *ngFor="let toTime of complete.bus.busstoppage">
+                                                            {{toTime.arr_time | date: 'H:mm'}}<br />
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </ng-template>
 
-                                    <span [ngbTooltip]="tipContent1">
-
-                                        <span *ngFor="let boarding of complete.from_location;">
-                                            {{boarding.name}}
-                                        </span> -
-                                        <span *ngFor="let dropping of complete.to_location;">
-                                            {{dropping.name}}
+                                        <span [ngbTooltip]="tipContent1">
+                                            <span *ngFor="let boarding of complete.from_location;">
+                                                {{boarding.name}}
+                                            </span> -
+                                            <span *ngFor="let dropping of complete.to_location;">
+                                                {{dropping.name}}
+                                            </span>
                                         </span>
-                                    </span> <br>
+                                    </span>
+
+                                    <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                        <strong>{{ complete.bus_name }}</strong>
+                                        <br>
+                                        {{ complete.bus_number }}
+                                        <br>
+                                        <span [ngbTooltip]="tipContent1">
+                                            <span *ngFor="let boarding of complete.from_location;">
+                                                {{boarding.name}}
+                                            </span> -
+                                            <span *ngFor="let dropping of complete.to_location;">
+                                                {{dropping.name}}
+                                            </span>
+                                        </span>
+                                    </span>
+                                   
+                                    <br>
                                     <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
                                 </td>
 
                                 <td>
-                                    <span *ngFor="let seat of complete.booking_detail;">
-                                        {{seat.bus_seats.seats.seatText}},
+                                    <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                        <span *ngFor="let seat of complete.booking_detail;">
+                                            {{seat.bus_seats.seats.seatText}},
+                                        </span>
+                                    </span>
+
+                                    <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                        <span *ngFor="let seat of complete.booking_detail;">
+                                            {{seat.seat_name}},
+                                        </span>
                                     </span>
                                 </td>
                                 <td class="text-capitalize">
@@ -260,7 +287,11 @@
                                             <tr *ngFor="let passanger of complete.booking_detail;">
                                                 <td><b>{{passanger.passenger_name}}</b></td>
                                                 <td><b>{{passanger.passenger_gender}}</b></td>
-                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
+                                                <td><b>
+                                                    <span *ngIf="complete.origin != 'DOLPHIN' ">{{passanger.bus_seats.seats.seatText}}</span>
+                                                    <span *ngIf="complete.origin == 'DOLPHIN' ">{{passanger.seat_name}}</span>
+                                                   </b>
+                                                </td>
                                                 <td><b>{{passanger.passenger_age}}</b></td>
                                             </tr>
                                         </table>
@@ -282,18 +313,20 @@
                                     </button>
 
                                     <button class="btn btn-sm btn-danger text-light mt-2 hide_print" placement="bottom"
-                                        ngbTooltip=" Email -- {{complete.users.email}}" (click)="copyMessage(complete.users.email)">
+                                        ngbTooltip=" Email -- {{complete.users.email}}"
+                                        (click)="copyMessage(complete.users.email)">
                                         <i class="far fa-envelope"></i>
                                     </button>
 
                                 </td>
                                 <td>
-                                    <strong placement="top"
-                                        ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
-                                    /
-                                    <strong placement="top"
-                                        ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
-
+                                    <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                        <strong placement="top"
+                                            ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
+                                        /
+                                        <strong placement="top"
+                                            ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
+                                    </span>
                                 </td>
                                 <td>
                                     <!-- <p *ngFor="let fare of complete.booking_detail;" >
@@ -346,43 +379,47 @@
 
                                 <td>
                                     <p>
-                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.payable_amount - complete.agent_commission  | number : '1.2-2'}}</b>
+                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.payable_amount -
+                                            complete.agent_commission | number : '1.2-2'}}</b>
                                     </p>
                                 </td>
                                 <td>
-                                    <p> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer'  }} </p>
+                                    <p> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer' }} </p>
                                 </td>
-                                
+
                                 <td>
                                     <!-- <p> {{ (complete.customer_gst_number != null) ? complete.customer_gst_number: "<i class='fa fa-times text-danger' aria-hidden='true'></i>"  }} </p> -->
-                                        <span *ngIf= "complete.customer_gst_number != null">
-                                                <strong class=" btn btn-info text-light">{{complete.customer_gst_number}}</strong>
-                                        </span>
-                                        <span *ngIf= "complete.customer_gst_number == null">
-                                            <i class='fa fa-times text-light btn btn-sm btn-danger ' aria-hidden='true'></i>
-                                        </span>
+                                    <span *ngIf="complete.customer_gst_number != null">
+                                        <strong
+                                            class=" btn btn-info text-light">{{complete.customer_gst_number}}</strong>
+                                    </span>
+                                    <span *ngIf="complete.customer_gst_number == null">
+                                        <i class='fa fa-times text-light btn btn-sm btn-danger ' aria-hidden='true'></i>
+                                    </span>
 
                                 </td>
                             </tr>
-                            <tr >
+                            <tr>
                                 <td colspan="4" style="text-align: right;">
                                     <strong placement="top" ngbTooltip="Total Seats">
                                         {{completedata?.totalSeats}}
                                     </strong>
                                 </td>
                                 <td colspan="3" style="text-align: right;">
-                                    <strong placement="top"
-                                    ngbTooltip="Sum of Owner fare"><i class="fas fa-rupee-sign"></i> {{completedata?.owner_fare}}</strong>
+                                    <strong placement="top" ngbTooltip="Sum of Owner fare"><i
+                                            class="fas fa-rupee-sign"></i> {{completedata?.owner_fare}}</strong>
                                 </td>
-                                <td> 
-                                    <strong placement="top"
-                                    ngbTooltip="Sum of Total fare"> <i class="fas fa-rupee-sign"></i> <b  class="text-danger">{{completedata?.totalfare}}</b></strong>
+                                <td>
+                                    <strong placement="top" ngbTooltip="Sum of Total fare"> <i
+                                            class="fas fa-rupee-sign"></i> <b
+                                            class="text-danger">{{completedata?.totalfare}}</b></strong>
                                 </td>
 
                                 <th colspan="2"> &nbsp;</th>
                                 <td colspan="3">
-                                    <strong placement="top"
-                                    ngbTooltip="Sum of Amount Received"> <i class="fas fa-rupee-sign"></i> <b class="text-danger">{{completedata?.totalPayableAmount}}</b></strong>
+                                    <strong placement="top" ngbTooltip="Sum of Amount Received"> <i
+                                            class="fas fa-rupee-sign"></i> <b
+                                            class="text-danger">{{completedata?.totalPayableAmount}}</b></strong>
                                 </td>
                             </tr>
                         </tbody>
@@ -431,11 +468,12 @@
                 </div>
             </div>
         </app-card>
-        <div style="display: none;"  id="export-section">
+        <div style="display: none;" id="export-section">
             <table class="table table-striped ">
                 <thead>
                     <tr>
                         <th>Pnr No</th>
+                        <th>Dolphin Pnr</th>
                         <th>Seat No</th>
                         <th>Sleeper No</th>
                         <th>Bus Number</th>
@@ -452,7 +490,7 @@
                         <th>Sleeper Fare</th>
                         <td>Additionl Festival Fare</td>
                         <td>Additional Owner Fare</td>
-                        <td>Additional Special Fare</td>                       
+                        <td>Additional Special Fare</td>
                         <th>Odbus GST</th>
                         <th>Owner GST</th>
                         <th>Odbus Received</th>
@@ -468,22 +506,50 @@
                         <th>Customer GST Amount</th>
                     </tr>
                 </thead>
-                    {{completExportdata?.data?.data?.length | json}}
+                {{completExportdata?.data?.data?.length | json}}
                 <tbody *ngIf="completExportdata?.data?.data?.length != 0">
                     <tr *ngFor="let complete of completExportdata?.data?.data; let i = index">
                         <td>{{complete.pnr}}</td>
+                        <td><span *ngIf="complete.origin == 'DOLPHIN' "> {{complete.api_pnr}}  </span></td>
                         <td>
-                            <span *ngFor="let seat of complete.booking_detail;">
-                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                <span *ngFor="let seat of complete.booking_detail;">
+                                    <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} ||
+                                    </span>
+                                </span>
+                            </span>
+                            
+                            <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                <span *ngFor="let seat of complete.booking_detail;">
+                                    {{seat.seat_name}}
+                                </span>
                             </span>
                         </td>
                         <td>
-                            <span *ngFor="let seat of complete.booking_detail;">
-                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span> 
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                <span *ngFor="let seat of complete.booking_detail;">
+                                    <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}}
+                                        ||</span>
+                                </span>
                             </span>
                         </td>
-                        <td>{{ complete.bus.bus_number }}</td>
-                        <td>{{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ] </td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                {{ complete.bus.bus_number }}
+                            </span>
+                            <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                {{ complete.bus_number }}
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                {{ complete.bus.name }} [ {{complete.source[0][0].name}} >>
+                                {{complete.destination[0][0].name}} ]
+                            </span>
+                            <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                {{ complete.bus_name }}
+                            </span>
+                        </td>
                         <!-- <td>
                             {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
                         </td> -->
@@ -497,18 +563,36 @@
                         </td>
                         <td>{{complete.journey_dt | date: 'dd-MM-YYYY'}}</td>
                         <td>
-                            <p *ngFor="let passanger of complete.booking_detail;">
-                                {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
-                                {{passanger.bus_seats.seats.seatText}}] ,
-                            </p>
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                <p *ngFor="let passanger of complete.booking_detail;">
+                                    {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                    {{passanger.bus_seats.seats.seatText}}] ,
+                                </p>
+                            </span>
+
+                            <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                <p *ngFor="let passanger of complete.booking_detail;">
+                                    {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                    {{passanger.seat_name}}] ,
+                                </p>
+                            </span>
+                           
                         </td>
                         <td>{{complete.users.name}}</td>
                         <td>{{complete.users.phone}}</td>
                         <td>{{complete.users.email}}</td>
                         <td>{{complete.total_fare}}</td>
                         <td>{{complete.owner_fare}}</td>
-                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</td>
-                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
+                            </span>
+                        </td>
                         <td>{{complete.additional_festival_fare}}</td>
                         <td>{{complete.additional_owner_fare}}</td>
                         <td>{{complete.additional_special_fare}}</td>
@@ -519,7 +603,7 @@
                         <td>{{complete.transactionFee}}</td>
                         <td>
                             <span *ngIf="complete.customer_payment">
-                                {{complete.customer_payment.razorpay_id}} 
+                                {{complete.customer_payment.razorpay_id}}
                             </span>
                         </td>
                         <td>
@@ -527,12 +611,12 @@
                                 {{complete.customer_payment.order_id}}
                             </span>
                         </td>
-                        <td>{{complete.app_type}}</td>   
+                        <td>{{complete.app_type}}</td>
                         <td>{{ complete.customer_gst_number}}</td>
                         <td>{{ complete.customer_gst_business_name }}</td>
                         <td>{{ complete.customer_gst_business_email }}</td>
                         <td>{{ complete.customer_gst_business_address }}</td>
-                        <td>{{ complete.customer_gst_amount }}</td>                     
+                        <td>{{ complete.customer_gst_amount }}</td>
                     </tr>
                 </tbody>
             </table>

@@ -60,7 +60,7 @@ export class AssignbusreportComponent implements OnInit {
     this.loadServices();
   }
      title = 'angular-app';
-     fileName= 'Owner-Payment-Report.xlsx';
+     fileName= 'Owner-Payment-Report.csv';
 
   page(label:any){
     return label;
