@@ -53,7 +53,7 @@ export class BookingreportComponent implements OnInit {
       this.toDate = calendar.getToday();
     }
     title = 'angular-app';
-    fileName= 'Complete-Report.xlsx';
+    fileName= 'Complete-Report.csv';
   ngOnInit(): void {
     this.spinner.show();
 

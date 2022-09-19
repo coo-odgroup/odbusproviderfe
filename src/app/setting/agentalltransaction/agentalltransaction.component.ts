@@ -181,7 +181,7 @@ export class AgentalltransactionComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName = 'Agent-All-Transaction.xlsx';
+  fileName = 'Agent-All-Transaction.csv';
 
   exportexcel(): void {
 

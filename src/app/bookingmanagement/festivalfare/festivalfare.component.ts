@@ -266,13 +266,14 @@ export class FestivalfareComponent implements OnInit {
   }
 
   loadServices(){
-    this.busService.all().subscribe(
-      res=>{
-        this.buses=res.data;
-        // console.log(this.buses);
-        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
-      }
-    );
+
+    // this.busService.all().subscribe(
+    //   res=>{
+    //     this.buses=res.data;
+    //     // console.log(this.buses);
+    //     this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+    //   }
+    // );
     this.busOperatorService.readAll().subscribe(
     res=>{
       this.busoperators=res.data;
@@ -289,6 +290,7 @@ export class FestivalfareComponent implements OnInit {
 
 findOperator(event:any)
 {
+  this.buses="";
   let operatorId=event.id;
   if(operatorId)
   {
@@ -306,10 +308,12 @@ findOperator(event:any)
 
 findSource()
 {
+  this.buses="";
   let source_id=this.festivalFareForm.controls.source_id.value;
   let destination_id=this.festivalFareForm.controls.destination_id.value;
 
-
+  console.log(source_id);
+  console.log(destination_id);
   if(source_id!=null && destination_id!=null)
   {
     this.spinner.show();
@@ -321,16 +325,17 @@ findSource()
       }
     );
   }
-  else
-  {
-    this.busService.all().subscribe(
-      res=>{
-        this.buses=res.data;
-        this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
+  // else
+  // {
+  //   this.busService.all().subscribe(
+  //     res=>{
+  //       console.log('hi');
+  //       this.buses=res.data;
+  //       this.buses.map((i:any) => { i.testing = i.name + ' - ' + i.bus_number +'('+i.from_location[0].name +'>>'+i.to_location[0].name+')' ; return i; });
 
-      }
-    );
-  }
+  //     }
+  //   );
+  // }
 }
 
 addfestivalFare()

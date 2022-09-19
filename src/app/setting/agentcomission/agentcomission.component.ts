@@ -217,7 +217,7 @@ export class AgentcomissionComponent implements OnInit {
   
 
   title = 'angular-app';
-  fileName= 'Agent-Commission.xlsx';
+  fileName= 'Agent-Commission.csv';
 
   exportexcel(): void
   {

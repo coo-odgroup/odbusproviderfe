@@ -68,6 +68,10 @@ export class AdjustticketComponent implements OnInit {
   razorpay_id: any;
   customer_payment_order_id: any;
   customer_payment_razorpay_signature: any;
+  orgn: any;
+  reff: any;
+  cmpId: any;
+  routTime: any;
 
 
   constructor(private datePipe: DatePipe, private acts: AdjustticketService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busService: BusService, private busOperatorService: BusOperatorService, private locationService: LocationService, private spinner: NgxSpinnerService,) {
@@ -257,12 +261,14 @@ export class AdjustticketComponent implements OnInit {
       source: this.pnrDetails[0].from_location[0].name,
       destination: this.pnrDetails[0].to_location[0].name,
     }
+
     this.adjustTicketForm.controls.j_date.setValue(this.pnrDetails[0].journey_dt);
-    console.log(data);
+    // console.log(data);
     this.acts.getBusList(data).subscribe(
       res => {
-        console.log(res);
+        
         this.busList = res.data;
+        // console.log(this.busList);
         this.busList.map((i: any) => { i.testing = i.busName + ' - ' + i.busNumber; return i; });
         this.spinner.hide();
       }
@@ -271,19 +277,33 @@ export class AdjustticketComponent implements OnInit {
   }
 
   getSeatLayout() {
+    this.spinner.show();
     this.seatFareDetails=[];
     // console.log(this.adjustTicketForm.value.bus);
+    this.reff="";
+    this.orgn="";
+
+    this.busList.forEach(item => {
+      // console.log(item);
+      if(this.adjustTicketForm.value.bus == item.busId)
+      {
+        this.orgn =  item.origin;
+        this.reff =  item.ReferenceNumber;
+      }
+    });
     const data =
     {
       busId: this.adjustTicketForm.value.bus,
       entry_date:   this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
       sourceId: this.pnrDetails[0].source_id,
       destinationId: this.pnrDetails[0].destination_id,
+      ReferenceNumber:this.reff ,
+      origin:this.orgn,
     }
     this.acts.getSeatLayout(data).subscribe(
       resp => {
         this.seatLayout = resp.data;
-        //console.log(this.seatLayout);
+        // console.log(this.seatLayout);
         this.spinner.hide();
       
         
@@ -350,17 +370,35 @@ export class AdjustticketComponent implements OnInit {
   }
   getBoardingDropping()
   {
+    this.reff="";
+    this.orgn="";
+
+    this.busList.forEach(item => {
+      // console.log(item);
+      if(this.adjustTicketForm.value.bus == item.busId)
+      {
+        this.orgn =  item.origin;
+        this.reff =  item.ReferenceNumber;
+      }
+    });
+
+
     const data =
     {
       busId: this.adjustTicketForm.value.bus,
       sourceId: this.pnrDetails[0].source_id,
       destinationId: this.pnrDetails[0].destination_id,
-    }    
+      journey_date:   this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
+      ReferenceNumber:this.reff,
+      origin:this.orgn ,
+    }   
+    // console.log(data); 
     this.acts.getBoardingDropping(data).subscribe(
       res => {
         this.boardingDropping = res.data;
         this.boardingPoints = res.data[0].boardingPoints;
         this.droppingPoints = res.data[0].droppingPoints;
+        // console.log(this.boardingDropping );
         this.boardingPoints.map((i: any) => { i.boarding = i.boardingPoints + ' - ' + i.boardingTimes; return i; });
         this.droppingPoints.map((i: any) => { i.dropping = i.droppingPoints + ' - ' + i.droppingTimes; return i; });
         this.spinner.hide();
@@ -406,6 +444,17 @@ export class AdjustticketComponent implements OnInit {
 
     this.selectedSeats =this.selectedSeats.slice(0, -1)
     // console.log(this.selectedSeats);
+    this.reff="";
+    this.orgn="";
+
+    this.busList.forEach(item => {
+      // console.log(item);
+      if(this.adjustTicketForm.value.bus == item.busId)
+      {
+        this.orgn =  item.origin;
+        this.reff =  item.ReferenceNumber;
+      }
+    });
 
      
         const data =
@@ -415,7 +464,9 @@ export class AdjustticketComponent implements OnInit {
           sourceId: this.pnrDetails[0].source_id,
           destinationId: this.pnrDetails[0].destination_id,
           seater:seater,
-          sleeper:sleeper
+          sleeper:sleeper,
+          ReferenceNumber:this.reff,
+          origin:this.orgn
         }
         // console.log(data);
         this.acts.getSeatFare(data).subscribe(
@@ -554,16 +605,11 @@ export class AdjustticketComponent implements OnInit {
       }
     });
 
-// console.log(this.boardingData);
-// console.log(this.droppingData);
-// return;
     this.busList.forEach(b => {
       if(b.busId==  this.adjustTicketForm.value.bus){
         this.busData= b;     
       }
     });
-
-    // console.log(this.busData[0].busNumber);
 
     if( bookingDetailarr.length== 0)
     {
@@ -591,7 +637,7 @@ export class AdjustticketComponent implements OnInit {
 
 
     let conductor_number='';
-
+    if(this.pnrDetails[0].origin != 'DOLPHIN'){
     if(this.pnrDetails[0].bus.bus_contacts.length>0){
       this.pnrDetails[0].bus.bus_contacts.forEach(c => {
 
@@ -601,6 +647,7 @@ export class AdjustticketComponent implements OnInit {
       
       });
     }
+  }
     if(this.pnrDetails[0].customer_payment!= null)
     {
       this.customer_payment_id = this.pnrDetails[0].customer_payment.id ;
@@ -627,6 +674,21 @@ export class AdjustticketComponent implements OnInit {
       agent_name=this.pnrDetails[0].user.name;
     }
 
+    this.reff="";
+    this.orgn="";
+    this.cmpId ="";
+    this.routTime ="";
+
+    this.busList.forEach(item => {
+      // console.log(item);
+      if(this.adjustTicketForm.value.bus == item.busId)
+      {
+        this.cmpId =  item.CompanyID;
+        this.orgn =  item.origin;
+        this.reff =  item.ReferenceNumber;
+        this.routTime =  item.RouteTimeID;
+      }
+    });
     
 
     const data = { 
@@ -655,13 +717,13 @@ export class AdjustticketComponent implements OnInit {
           "destination_id": this.pnrDetails[0].destination_id,
           "destination_name": this.pnrDetails[0].to_location[0].name,
           "seat_ids":this.seatIDs,
-          "seat_names":this.seatNames,
+          "seat_names":this.seatNames, //this is only for cancellation email and sms
           "journey_dt": this.adjustTicketForm.value.j_date,
           "boarding_point":  this.boardingData.boardingPoints,
           "dropping_point":  this.droppingData.droppingPoints,
           "boarding_time": this.boardingData.boardingTimes,
           "dropping_time": this.droppingData.droppingTimes,
-          "origin": this.pnrDetails[0].origin,
+          // "origin": this.pnrDetails[0].origin,
           "app_type": this.pnrDetails[0].app_type,
           "typ_id": this.pnrDetails[0].typ_id,
           "total_fare": this.seatFareDetails[0].totalFare,
@@ -681,7 +743,13 @@ export class AdjustticketComponent implements OnInit {
           "razorpay_signature" :this.customer_payment_razorpay_signature, 
           "rest_bal": rest_bal,
           "agent_wallet_balance": agent_wallet_balance,
-          "bookingDetail": bookingDetailarr 
+          "bookingDetail": bookingDetailarr,
+          "CompanyID": this.cmpId,
+          "PickupID": this.boardingData.id,
+          "DropID": this.droppingData.id,
+          "origin":  this.orgn,
+          "ReferenceNumber":this.reff,
+          "RouteTimeID": this.routTime,
         },
     };
     
@@ -692,10 +760,14 @@ export class AdjustticketComponent implements OnInit {
         res =>{
          // console.log(res);
           if (res.status == 1) {
-             if(res.data=='SEAT NOT AVAIL'){
+             if(res.data=='SEAT NOT AVAIL')
+             {
               this.notificationService.addToast({ title: 'Error', msg:"Seat(s) are not available at the moment.Please select other..", type: 'error' });
              
-             }else{
+             }else if(res.data.status==0){
+              this.notificationService.addToast({ title: 'Error', msg:res.data.Message, type: 'error' });
+             }
+             else{
 
               this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
           

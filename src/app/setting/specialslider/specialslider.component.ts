@@ -40,7 +40,7 @@ export class SpecialsliderComponent implements OnInit {
   path = Constants.PATHURL;
   base64result:any;
   finalJson = {};
-  fileName= 'Special-Slider.xlsx';
+  fileName= 'Special-Slider.csv';
   sliderDefinations = [
     { id: 1, name: 'Bus Offers'},
     { id: 2, name: 'Festive Offers'},

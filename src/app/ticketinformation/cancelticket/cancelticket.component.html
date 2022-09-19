@@ -87,8 +87,14 @@
                             <td>{{ i+1 }}</td>
                             <td>{{cancelTkt.pnr}}</td>
                             <td>
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
                                 {{cancelTkt.bus.name}}<br>
                                 {{cancelTkt.bus.bus_number}}
+                                </span>
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    {{cancelTkt.bus_name}}<br>
+                                    {{cancelTkt.bus_number}}
+                                </span>
                             </td>
                             <td>
                                 {{cancelTkt.from_location[0].name}} >>
@@ -103,8 +109,15 @@
 
                             <td>{{ cancelTkt.updated_at | date: 'dd/MM/yyyy' }}</td>
                             <td>
-                                <span *ngFor="let seat of cancelTkt.booking_detail;">
-                                    {{seat.bus_seats.seats.seatText}},
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    <span *ngFor="let seat of cancelTkt.booking_detail;">
+                                        {{seat.bus_seats.seats.seatText}},
+                                    </span>
+                                </span>
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    <span *ngFor="let seat of cancelTkt.booking_detail;">
+                                        {{seat.seat_name}},
+                                    </span>
                                 </span>
                             </td>
                             <td>{{ cancelTkt.cancel_by }}</td>
@@ -173,10 +186,22 @@
                             <td>{{ i+1 }}</td>
                             <td>{{cancelTkt.pnr}}</td>
                             <td>
-                                {{cancelTkt.bus.name}}
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    {{cancelTkt.bus.name}}
+                                </span>
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    {{cancelTkt.bus_name}}
+                                </span>
+                               
                             </td>
                             <td>
-                                {{cancelTkt.bus.bus_number}}
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    {{cancelTkt.bus.bus_number}}
+                                </span>
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    {{cancelTkt.bus_number}}
+                                </span>
+                               
                             </td>
                             <td>
                                 {{cancelTkt.from_location[0].name}}
@@ -194,9 +219,17 @@
 
                             <td>{{ cancelTkt.updated_at | date: 'dd/MM/yyyy' }}</td>
                             <td>
-                                <span *ngFor="let seat of cancelTkt.booking_detail;">
-                                    {{seat.bus_seats.seats.seatText}},
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    <span *ngFor="let seat of cancelTkt.booking_detail;">
+                                        {{seat.bus_seats.seats.seatText}},
+                                    </span>
                                 </span>
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    <span *ngFor="let seat of cancelTkt.booking_detail;">
+                                        {{seat.seatName}},
+                                    </span>
+                                </span>
+                                
                             </td>
                             <td>{{ cancelTkt.cancel_by }}</td>
                             <td>{{ cancelTkt.cancel_reason }}</td>                      

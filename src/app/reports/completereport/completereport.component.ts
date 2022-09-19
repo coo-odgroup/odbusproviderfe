@@ -35,6 +35,11 @@ export class CompletereportComponent implements OnInit {
   toDate: NgbDate | null;
   completExportdata: any ;
 
+  apiProvider = [
+    {  name: 'DOLPHIN'}
+  ];
+
+  
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient , 
@@ -65,6 +70,7 @@ export class CompletereportComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       hasGst:[null],
+      apiUser:[null]
 
     })  
    
@@ -90,7 +96,8 @@ export class CompletereportComponent implements OnInit {
           destination_id:this.searchFrom.value.destination_id,
           rangeFromDate:this.searchFrom.value.rangeFromDate,
           rangeToDate :this.searchFrom.value.rangeToDate,
-          hasGst :this.searchFrom.value.hasGst   
+          hasGst :this.searchFrom.value.hasGst,   
+          apiUser :this.searchFrom.value.apiUser,   
         };
 
         this.rs.completeReport(data).subscribe(
@@ -141,7 +148,8 @@ export class CompletereportComponent implements OnInit {
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate,
-      hasGst :this.completeReportRecord.hasGst     
+      hasGst :this.completeReportRecord.hasGst,
+      apiUser :this.searchFrom.value.apiUser,       
     };
        
     // console.log(data);
@@ -202,6 +210,7 @@ export class CompletereportComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       hasGst:[null],
+      apiUser :[null],  
 
     })
     this.search();
@@ -215,7 +224,6 @@ export class CompletereportComponent implements OnInit {
       res => {
         this.busoperators = res.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
       }
     );
     this.locationService.readAll().subscribe(

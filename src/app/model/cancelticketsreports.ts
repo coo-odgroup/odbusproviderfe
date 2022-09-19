@@ -8,4 +8,5 @@ export interface CancelTicketsReport {
     destination_id:any ;
     rangeFromDate:any ;
     rangeToDate :any ;
+    apiUser :any ;
 }

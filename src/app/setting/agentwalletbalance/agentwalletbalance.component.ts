@@ -163,7 +163,7 @@ export class AgentwalletbalanceComponent implements OnInit {
   }
 
   title = 'angular-app';
-  fileName = 'Agent-Wallet-Balance.xlsx';
+  fileName = 'Agent-Wallet-Balance.csv';
 
   exportexcel(): void {
 

@@ -52,7 +52,7 @@ export class AgentcancellationreportComponent implements OnInit {
       this.toDate = calendar.getToday();
     }
     title = 'angular-app';
-    fileName= 'Agent-Booking-Report.xlsx';
+    fileName= 'Agent-Booking-Report.csv';
   ngOnInit(): void {
     this.spinner.show();
 

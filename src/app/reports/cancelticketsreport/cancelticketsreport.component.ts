@@ -32,6 +32,9 @@ export class CancelticketsreportComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  apiProvider = [
+    {  name: 'DOLPHIN'}
+  ];
 
 
   constructor(
@@ -62,7 +65,8 @@ export class CancelticketsreportComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
-      rangeToDate :[null]
+      rangeToDate :[null],
+      apiUser:[null]
 
     })  
     this.search(); 
@@ -88,6 +92,7 @@ export class CancelticketsreportComponent implements OnInit {
       destination_id:this.cancelTicketsReportRecord.destination_id,
       rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
       rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
+      apiUser:this.cancelTicketsReportRecord.apiUser,
       USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
             
     };
@@ -159,7 +164,8 @@ export class CancelticketsreportComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
-      rangeToDate :[null]
+      rangeToDate :[null],
+      apiUser:[null]
 
     })  
     this.loadServices();

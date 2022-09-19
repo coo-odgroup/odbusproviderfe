@@ -46,7 +46,7 @@ export class BannermanagementComponent implements OnInit {
 
   base64result:any;
   finalJson = {};
-  fileName= 'Banner.xlsx';
+  fileName= 'Banner.csv';
   public isSubmit: boolean;
   public mesgdata:any;
   public ModalHeading:any;
