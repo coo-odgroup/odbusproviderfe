@@ -59,6 +59,7 @@ export class CompletereportComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
 
+  
     this.searchFrom = this.fb.group({
       bus_operator_id: [null],
       rangeFromDate:[null],
@@ -169,6 +170,7 @@ export class CompletereportComponent implements OnInit {
       this.rs.completeReport(data).subscribe(
         res => {
           this.completedata = res.data;
+          // console.log(this.completedata.data.data);
           this.spinner.hide();
         }
       );

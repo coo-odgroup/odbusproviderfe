@@ -180,6 +180,7 @@ export class SeatblockComponent implements OnInit {
     this.lastUrl = '';
     // console.log(url);
     this.page_no = url.replace('/api/seatblockData?page=','');
+ 
     this.search();
     this.lastUrl = url;
   

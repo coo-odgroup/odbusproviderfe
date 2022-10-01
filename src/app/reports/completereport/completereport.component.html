@@ -265,6 +265,15 @@
                                    
                                     <br>
                                     <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
+                                    <br>
+                                    <span *ngIf="complete.journey!='' ">
+                                        <span *ngIf="complete.journey=='Over' ">
+                                            <sapn class="badge badge-danger">{{complete.journey}}</sapn>
+                                        </span>
+                                        <span *ngIf="complete.journey=='Upcoming' ">
+                                            <sapn class="badge badge-info">{{complete.journey}}</sapn>
+                                        </span>
+                                    </span>
                                 </td>
 
                                 <td>
@@ -480,6 +489,7 @@
             <table class="table table-striped ">
                 <thead>
                     <tr>
+                        <th>Journey Status</th>
                         <th>Pnr No</th>
                         <th>Dolphin Pnr</th>
                         <th>Seat No</th>
@@ -517,6 +527,14 @@
                 {{completExportdata?.data?.data?.length | json}}
                 <tbody *ngIf="completExportdata?.data?.data?.length != 0">
                     <tr *ngFor="let complete of completExportdata?.data?.data; let i = index">
+                        <td>
+                            <span *ngIf="complete.journey=='Over' ">
+                                {{complete.journey}}
+                            </span>
+                            <span *ngIf="complete.journey=='Upcoming' ">
+                                {{complete.journey}}
+                            </span>
+                        </td>
                         <td>{{complete.pnr}}</td>
                         <td><span *ngIf="complete.origin == 'DOLPHIN' "> {{complete.api_pnr}}  </span></td>
                         <td>
@@ -529,7 +547,7 @@
                             
                             <span *ngIf="complete.origin == 'DOLPHIN' ">
                                 <span *ngFor="let seat of complete.booking_detail;">
-                                    {{seat.seat_name}}
+                                    {{seat.seat_name}} ||
                                 </span>
                             </span>
                         </td>
