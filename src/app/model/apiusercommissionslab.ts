@@ -5,5 +5,6 @@ export interface Apiusercommissionslab {
     upto_fare:any;
     commision:any;
     addationalcharges:any;
+    dolphinaddationalCharges:any;
     cancellation_commission:any;
 }

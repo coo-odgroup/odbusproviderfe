@@ -402,14 +402,21 @@ export class BusComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
      this.search(); 
-     this.LoadAllService(); 
+    //  this.LoadAllService(); 
 
-    //  this.busOperartorService.readAll().subscribe(
-    //   record=>{
-    //   this.operators=record.data;
-    //   this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-    //   }
-    // );
+     this.busOperartorService.readAll().subscribe(
+      record=>{
+      this.operators=record.data;
+      this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+      }
+    );
+    this.locationService.readAll().subscribe(
+      records=>{
+      this.locations=records.data;
+      
+      }
+    );
+    
   }
   page(label:any){
     return label;

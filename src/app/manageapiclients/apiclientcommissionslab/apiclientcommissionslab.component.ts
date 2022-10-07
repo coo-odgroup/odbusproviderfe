@@ -69,6 +69,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare: [null, Validators.compose([Validators.required])],
         commision: [null, Validators.compose([Validators.required])],
         addationalCharges: [null, Validators.compose([Validators.required])],
+        dolphinaddationalCharges: [null, Validators.compose([Validators.required])],
         cancelCommission: [null, Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });  
@@ -165,6 +166,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare: ['', Validators.compose([Validators.required])],
         commision: ['', Validators.compose([Validators.required])],
         addationalCharges: ['', Validators.compose([Validators.required])],
+        dolphinaddationalCharges: ['', Validators.compose([Validators.required])],
         cancelCommission: ['', Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
@@ -184,6 +186,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare:this.form.value.upto_fare,
         commision:this.form.value.commision,
         addationalCharges:this.form.value.addationalCharges,
+        dolphinaddationalCharges:this.form.value.dolphinaddationalCharges,
         cancelCommission:this.form.value.cancelCommission,
         created_by : localStorage.getItem('USERNAME'),     
     };
@@ -241,6 +244,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         upto_fare: [this.aapiusercommissionslabRecord.upto_fare,Validators.compose([Validators.required])],
         commision: [this.aapiusercommissionslabRecord.commision,Validators.compose([Validators.required])],
         addationalCharges: [this.aapiusercommissionslabRecord.addationalcharges,Validators.compose([Validators.required])],
+        dolphinaddationalCharges: [this.aapiusercommissionslabRecord.dolphinaddationalCharges,Validators.compose([Validators.required])],
         cancelCommission: [this.aapiusercommissionslabRecord.cancellation_commission,Validators.compose([Validators.required])],
         user_name : localStorage.getItem('USERNAME'),   
       });
