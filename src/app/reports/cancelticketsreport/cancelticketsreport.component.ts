@@ -36,6 +36,7 @@ export class CancelticketsreportComponent implements OnInit {
     {  name: 'DOLPHIN'}
   ];
 
+  completExportdata: any ;
 
   constructor(
      private spinner: NgxSpinnerService,
@@ -137,21 +138,71 @@ export class CancelticketsreportComponent implements OnInit {
     document.body.removeChild(selBox);
   }
   
+  // exportexcel(): void
+  // {
+    
+  //   /* pass here the table id */
+  //   let element = document.getElementById('export-section');
+  //   const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+  //   /* generate workbook and add the worksheet */
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+  //   /* save to file */  
+  //   XLSX.writeFile(wb, this.fileName);
+ 
+  // }
   exportexcel(): void
   {
-    
-    /* pass here the table id */
+    this.spinner.show();
+    // this.completeReportRecord = this.searchFrom.value ; 
+    this.completExportdata= '';
+
+        const data = {
+          bus_operator_id: this.searchFrom.value.bus_operator_id,
+          payment_id:this.searchFrom.value.payment_id,
+          date_type :this.searchFrom.value.date_type,
+          pnr :this.searchFrom.value.pnr,
+          rows_number:'all',
+          source_id:this.searchFrom.value.source_id,
+          destination_id:this.searchFrom.value.destination_id,
+          rangeFromDate:this.searchFrom.value.rangeFromDate,
+          rangeToDate :this.searchFrom.value.rangeToDate,
+          hasGst :this.searchFrom.value.hasGst,   
+          apiUser :this.searchFrom.value.apiUser,   
+        };
+
+        this.rs.cancelticketReport(data).subscribe(
+          res => {
+            this.completExportdata = res.data;
+            let length = this.completExportdata.data.data.length;
+            console.log(length);
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
+  exportdata(): void
+  {
     let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
+
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
- 
+
+    this.spinner.hide();
   }
+  
 
   refresh()
   {

@@ -415,8 +415,8 @@
                     </tr>
                 </thead>
 
-                <tbody *ngIf="cancelticketdata?.length != 0">
-                    <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
+                <tbody *ngIf="completExportdata?.length != 0">
+                    <tr *ngFor="let complete of completExportdata?.data.data; let i = index">
                         <td>{{complete.pnr}}</td>
                         <td><span *ngIf="complete.origin == 'DOLPHIN'" >{{complete.api_pnr}}</span></td>
                         <td>
