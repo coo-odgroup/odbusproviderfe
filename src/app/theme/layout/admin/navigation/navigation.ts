@@ -692,6 +692,13 @@ const NavigationItems = [
             url: 'setting/specialslider'
           },
           {
+            id: 'faq',
+            title: 'FAQ',
+            type: 'item',
+            icon:'icon feather icon-help-circle',
+            url: 'setting/faq'
+          },
+          {
             id: 'mastersetting',
             title: 'Master Setting',
             type: 'item',

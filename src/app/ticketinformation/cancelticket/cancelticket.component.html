@@ -101,7 +101,7 @@
                                 {{cancelTkt.to_location[0].name}} 
                             </td>
                             <td>
-                               Total fare: {{cancelTkt.total_fare}}<br>
+                               Total fare: {{cancelTkt.payable_amount}}<br>
                                Deduction Percent: <b class="text-danger">{{cancelTkt.deduction_percent }} %</b><br>
                                Refund Amount : <b class="text-danger">{{cancelTkt.refund_amount }}</b>
 
@@ -210,7 +210,7 @@
                                 {{cancelTkt.to_location[0].name}} 
                             </td>
                             <td>
-                              {{cancelTkt.total_fare}}
+                              {{cancelTkt.payable_amount}}
                             </td>
                             <td>
                                 {{cancelTkt.deduction_percent }} %
@@ -395,7 +395,7 @@
                                                                         <td>Total Fare </td>
                                                                         <td colspan="3" class="text-center text-danger">
                                                                             <i class="fas fa-rupee-sign"></i>
-                                                                            <b>{{pnrDetails[0].total_fare}}</b>
+                                                                            <b>{{pnrDetails[0].payable_amount}}</b>
                                                                         </td>
                                                                     </tr>
                                                                 </table>

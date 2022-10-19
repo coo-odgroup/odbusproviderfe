@@ -21,13 +21,11 @@ import { AgentfeedbackComponent } from './agentfeedback/agentfeedback.component'
 import { AgentbookingreportComponent } from './agentbookingreport/agentbookingreport.component';
 import { AgentcommissionreportComponent } from './agentcommissionreport/agentcommissionreport.component';
 import { AgentcancellationreportComponent } from './agentcancellationreport/agentcancellationreport.component';
+import { FaqComponent } from './faq/faq.component';
 
 
 @NgModule({
   declarations: [
-
-  
-  
   ],
   imports: [
     CommonModule,

@@ -85,6 +85,10 @@ const routes: Routes = [
         path: 'agentcommissionreport',
         loadChildren: () => import('./agentcommissionreport/agentcommissionreport.module').then(module => module.AgentcommissionreportModule)
       },
+      {
+        path: 'faq',
+        loadChildren: () => import('./faq/faq.module').then(module => module.FaqModule)
+      },
     
     
       

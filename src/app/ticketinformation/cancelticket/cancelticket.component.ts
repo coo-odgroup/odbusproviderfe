@@ -152,7 +152,7 @@ export class CancelticketComponent implements OnInit {
     this.cancelTicketForm.controls.refundAmount.setValue('');
     let percentage = this.cancelTicketForm.value.percentage_deduct;
     // console.log(percentage);
-    let totalFare  = this.pnrDetails[0].total_fare;
+    let totalFare  = this.pnrDetails[0].payable_amount;
     // console.log(((totalFare/100)*(100-percentage)).toFixed(2));
     this.cancelTicketForm.controls['refundAmount'].setValue(((totalFare/100)*(100-percentage)).toFixed(2));
     
@@ -185,6 +185,8 @@ export class CancelticketComponent implements OnInit {
     };
 
     // console.log(data);
+    // return;
+
     this.acts.cancelTicket(data).subscribe(
       res =>{
         if (res.status == 1) {

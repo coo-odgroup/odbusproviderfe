@@ -71,7 +71,8 @@ export class CompletereportComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       hasGst:[null],
-      apiUser:[null]
+      apiUser:[null],
+      device_type:[null]
 
     })  
    
@@ -99,13 +100,14 @@ export class CompletereportComponent implements OnInit {
           rangeToDate :this.searchFrom.value.rangeToDate,
           hasGst :this.searchFrom.value.hasGst,   
           apiUser :this.searchFrom.value.apiUser,   
+          device_type :this.searchFrom.value.device_type,   
         };
 
         this.rs.completeReport(data).subscribe(
           res => {
             this.completExportdata = res.data;
             let length = this.completExportdata.data.data.length;
-            console.log(length);
+            // console.log(length);
             if(length != 0)
             {
               setTimeout(() => {
@@ -151,6 +153,7 @@ export class CompletereportComponent implements OnInit {
       rangeToDate :this.completeReportRecord.rangeToDate,
       hasGst :this.completeReportRecord.hasGst,
       apiUser :this.searchFrom.value.apiUser,       
+      device_type :this.searchFrom.value.device_type,       
     };
        
     // console.log(data);
@@ -213,6 +216,7 @@ export class CompletereportComponent implements OnInit {
       destination_id:[null],
       hasGst:[null],
       apiUser :[null],  
+      device_type :[null],  
 
     })
     this.search();

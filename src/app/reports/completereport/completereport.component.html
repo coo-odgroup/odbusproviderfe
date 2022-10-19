@@ -37,19 +37,30 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <div class="dropdown">
-                                        <select class="form-control sml_input" formControlName="date_type">
+                                        <select class="form-control sml_input" formControlName="date_type" style="font-size: 12px;">
                                             <option value='journey'>Journey Date</option>
                                             <option value='booking'>Booking Date</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group ">
                                         <input type="text" class="form-control sml_input" placeholder="Payment/Order Id"
                                             required formControlName="payment_id" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="dropdown">
+                                        <select class="form-control sml_input" formControlName="device_type" style="font-size: 13px;">
+                                            <option value=null>Select Booking From</option>
+                                            <option value='ANDROID'>ANDROID</option>
+                                            <option value='WEB'>WEB</option>
+                                            <option value='MOB'>MOBILE</option>
+                                            <option value='AGENT'>AGENT</option>
+                                        </select>
                                     </div>
                                 </div>
 

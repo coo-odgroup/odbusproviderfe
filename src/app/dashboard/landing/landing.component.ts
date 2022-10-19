@@ -228,7 +228,7 @@ export class LandingComponent implements OnInit {
       this.ds.dashboard(data).subscribe(
         res => {
           this.dashboarddata= res.data;
-          // console.log(this.dashboarddata);
+          console.log(this.dashboarddata);
           this.pieChart();  
              
         }

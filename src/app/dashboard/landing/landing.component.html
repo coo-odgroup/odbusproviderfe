@@ -34,7 +34,7 @@
     
         <div class="col-md-3" *ngIf="RoleType==1">
             <app-card [hidHeader]="true" cardClass="bg-c-blue text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">{{dashboarddata.active_operator}}</h2>
+                <h3 class="text-white">{{dashboarddata.active_operator}}</h3>
                 <h6 class="text-white">Total Bus Operators</h6>
                 <i class="feather icon-file-text"></i>
               </app-card>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-3" *ngIf="RoleType==4">
           <app-card [hidHeader]="true" cardClass="bg-c-blue text-white widget-visitor-card" blockClass="text-center">
-              <h2 class="text-white">{{dashboarddata.sales_data[0].today_amount || "0"}}</h2>
+              <h3 class="text-white">{{dashboarddata.sales_data[0].today_amount || "0"}}</h3>
               <h6 class="text-white">Sales {{RangeText}}</h6>
               <i class="feather icon-file-text"></i>
             </app-card>
@@ -50,14 +50,14 @@
         </div>
         <div class="col-md-3">
           <app-card [hidHeader]="true" cardClass="bg-c-green text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">{{dashboarddata.active_bus}}</h2>
+                <h3 class="text-white">{{dashboarddata.active_bus}}</h3>
                 <h6 class="text-white">Active Buses</h6>
                 <i class="feather icon-file-text"></i>
               </app-card>      
         </div>
         <div class="col-md-3">
             <app-card [hidHeader]="true" cardClass="bg-c-red text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">{{dashboarddata.today_pnr}}</h2>
+                <h3 class="text-white">{{dashboarddata.today_pnr}}</h3>
                 <h6 class="text-white">PNR Booked</h6>
                 <i class="feather icon-award"></i>
               </app-card>
@@ -65,7 +65,7 @@
         </div>
         <div class="col-md-3">
             <app-card [hidHeader]="true" cardClass="bg-c-yellow text-white widget-visitor-card" blockClass="text-center">
-                <h2 class="text-white">{{dashboarddata.upcoming_pnr}}</h2>
+                <h3 class="text-white">{{dashboarddata.upcoming_pnr}}</h3>
                 <h6 class="text-white">PNR Upcoming Booking</h6>
                 <i class="feather icon-file-text"></i>
               </app-card>
@@ -81,11 +81,11 @@
               <div class="col-md-6 col-xl-6">
                 <app-card [hidHeader]="true" cardClass="bg-c-blue card-body22 order-card borderless">
                   <h6 class="text-white">Sales {{RangeText}}</h6>
-                  <h2 class="text-white">
+                  <h3 class="text-white">
                     <span *ngFor="let book_pft of dashboarddata.booking_profit;">
                       <i class="fas fa-rupee-sign"></i> {{dashboarddata.sales_data[0].today_amount |number : '1.2-2'}}
                     </span>
-                  </h2>             
+                  </h3>             
                   <i class="card-icon feather icon-filter"></i>
                 </app-card>
               </div>
@@ -93,11 +93,11 @@
               <div class="col-md-6 col-xl-6">
                 <app-card [hidHeader]="true" cardClass="bg-c-blue card-body22 order-card borderless">
                   <h6 class="text-white"> Total Profit {{RangeText}}</h6>
-                  <h2 class="text-white">
+                  <h3 class="text-white">
                     <span *ngFor="let book_pft of dashboarddata.booking_profit;">
                       <i class="fas fa-rupee-sign"></i> {{book_pft.odbus_amount  + dashboarddata.cancellation_profit |number : '1.2-2'}}
                     </span>
-                  </h2>             
+                  </h3>             
                   <i class="card-icon feather icon-filter"></i>
                 </app-card>
               </div>
@@ -107,11 +107,11 @@
               <div class="col-md-6 col-xl-6">
                 <app-card [hidHeader]="true" cardClass="bg-c-green card-body22 order-card borderless">
                   <h6 class="text-white">Booking Profit {{RangeText}}</h6>
-                  <h2 class="text-white">
+                  <h3 class="text-white">
                     <span *ngFor="let book_pft of dashboarddata.booking_profit;">
                         <i class="fas fa-rupee-sign"></i> {{book_pft.odbus_amount |number : '1.2-2'}}
                     </span>
-                  </h2>             
+                  </h3>             
                   <i class="card-icon feather icon-users"></i>
                 </app-card>
               </div>
@@ -119,9 +119,9 @@
               <div class="col-md-6 col-xl-6">
                 <app-card [hidHeader]="true" cardClass="bg-c-red card-body22 order-card borderless">
                   <h6 class="text-white">Cancellation Profit {{RangeText}}</h6>
-                  <h2 class="text-white">
+                  <h3 class="text-white">
                         <i class="fas fa-rupee-sign"></i> {{dashboarddata.cancellation_profit |number : '1.2-2'}}
-                  </h2>             
+                  </h3>             
                   <i class="card-icon feather icon-users"></i>
                 </app-card>
               </div>
@@ -129,7 +129,7 @@
           </div>
 
           <div class="col-xl-6 col-md-12">
-            <app-card cardTitle="TOP ROUTES BOOKINGS {{RangeText}}" cardClass="table-card" blockClass="p-0">
+            <app-card cardTitle="TOP ROUTES BOOKINGS IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
               <div class="table-responsive">
                 <table class="table table-hover mb-0">
                   <thead>
@@ -155,7 +155,7 @@
             </app-card>
           </div>
           <div class="col-xl-6 col-md-12">
-            <app-card cardTitle="BUS OPERATORS BOOKINGS {{RangeText}}" cardClass="table-card" blockClass="p-0">
+            <app-card cardTitle="BUS OPERATORS BOOKINGS  IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
               <div class="table-responsive">
                 <table class="table table-hover mb-0">
                   <thead>
