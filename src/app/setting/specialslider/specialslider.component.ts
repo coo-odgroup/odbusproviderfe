@@ -59,6 +59,9 @@ export class SpecialsliderComponent implements OnInit {
 
   role_id: any;
   usre_name:any ;
+  favError: string;
+  favURL: any;
+  finalFavIcon: any;
 
 
     
@@ -109,7 +112,7 @@ export class SpecialsliderComponent implements OnInit {
   }
   ngOnInit(): void {
     this.spinner.show();
-
+    
     this.role_id= localStorage.getItem('ROLE_ID');
     this.usre_name= localStorage.getItem('USERNAME');
 
@@ -126,12 +129,14 @@ export class SpecialsliderComponent implements OnInit {
       coupon_id:[null],
       slider_description:[null],
       slider_img:[null, Validators.compose([Validators.required])],
+      android_image:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
       alt_tag: [null, Validators.compose([Validators.required])],
       end_date: [null, Validators.compose([Validators.required])],
       end_time: [null, Validators.compose([Validators.required])],
-      iconSrc:[null]
+      iconSrc:[null],
+      favSrc:[null],
     });
     this.formConfirm=this.fb.group({
       id:[null],
@@ -244,6 +249,120 @@ export class SpecialsliderComponent implements OnInit {
     }
 
   }
+
+
+
+  getImagepath(logo :any){
+    let objectURL = 'data:image/*;base64,'+logo;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+   }
+
+  public pickedfav(event:any) {
+
+    this.favError = null;
+            const max_size = 102400;
+            const allowed_types = ['image/png','image/png','image/gif','image/jpeg','image/jpg','image/svg+xml'];
+            const max_height = 100;
+            const max_width = 200;
+    let fileList: FileList = event.target.files;
+    this.imageSizeFlag = true;
+    if (event.target.files[0].size > max_size) {
+      this.favError =
+          'Maximum size allowed is ' + max_size/1024  + 'Kb';
+          this.sliderForm.value.imagePath = '';
+          this.favURL='';
+          this.imageSizeFlag = false;
+      return false;
+  }
+  if (!_.includes(allowed_types, event.target.files[0].type)) {
+      this.favError = 'Only Images are allowed';
+      this.sliderForm.value.imagePath = '';
+      this.sliderForm.controls.slider_img.setValue('');
+      this.favURL='';
+      return false;
+  }
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+      const image = new Image();
+      image.src = e.target.result;
+
+      image.onload = rs => {
+          const img_height = rs.currentTarget['height'];
+          const img_width = rs.currentTarget['width'];
+
+          if (img_height > max_height && img_width > max_width) {
+            this.favError =
+                'Maximum dimentions allowed ' +
+                max_height +
+                '*' +
+                max_width +
+                'px';
+                this.sliderForm.value.imagePath = '';
+                this.favURL='';
+            return false;
+        } 
+      };
+  };
+    if (fileList.length > 0) {
+
+       const file: File = fileList[0];        
+        this.sliderForm.value.favIcon = file[0];  
+        this.handleInputChangefav(file); //turn into base64 
+        this.previewfav(fileList); 
+    }
+    else {
+      //alert("No file selected");
+    }
+
+  }
+  handleInputChangefav(files) {
+    let file = files;
+    let pattern = /image-*/;
+    let reader = new FileReader();
+    reader.onloadend = this._handleReaderLoadedfav.bind(this);
+    reader.readAsDataURL(file);
+    
+  }
+  _handleReaderLoadedfav(e) {
+    let reader = e.target;
+    this.base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+    this.imageSrc = this.base64result;
+    this.sliderForm.value.favSrc=this.base64result;
+    this.sliderForm.controls.favSrc.setValue(this.base64result); 
+  }
+  previewfav(files) {   
+    if (files.length === 0)
+    
+      return;
+    let mimeType = files[0].type;
+    
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = "Only images are supported.";
+      return;
+    }
+    let reader = new FileReader();
+    this.sliderForm.value.favIcon = files;
+    reader.readAsDataURL(files[0]); 
+    reader.onload = (_event) => { 
+     
+      this.favURL = reader.result; 
+             
+      this.finalFavIcon=  files[0];
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
   LoadAllService()
   {
     this.busOperartorService.readAll().subscribe(
@@ -285,17 +404,20 @@ export class SpecialsliderComponent implements OnInit {
       coupon_id:[null],
       slider_description:[null],
       slider_img:[null, Validators.compose([Validators.required])],
+      android_image:[null, Validators.compose([Validators.required])],
       start_date: [null, Validators.compose([Validators.required])],
       start_time: [null, Validators.compose([Validators.required])],
       alt_tag: [null, Validators.compose([Validators.required])],
       end_date: [null, Validators.compose([Validators.required])],
       end_time: [null, Validators.compose([Validators.required])],
-      iconSrc:[null]
+      iconSrc:[null],
+      favSrc:[null],
     });
     this.LoadAllService();
     this.ModalHeading = "Add Special Slider";
     this.ModalBtn = "Save";
     this.imgURL="";
+    this.favURL="";
     this.imageSrc="";
     this.sliderRecord.slider_img="";  
   }
@@ -312,6 +434,7 @@ export class SpecialsliderComponent implements OnInit {
     let fd: any = new FormData();
     fd.append("id",this.sliderForm.value.id);
     fd.append("slider_img", this.sliderForm.get('slider_img').value);
+    fd.append("android_image", this.finalFavIcon);
     fd.append("user_id",this.sliderForm.value.user_id);
     fd.append("occassion",this.sliderForm.value.occassion);
     fd.append("url",this.sliderForm.value.url);
@@ -365,6 +488,7 @@ export class SpecialsliderComponent implements OnInit {
   }
   editSlider(id)
   { 
+    this.favURL="";
     this.sliderRecord = this.sliders[id];   
     // console.log(this.sliderRecord);
     //this.imgURL =this.sanitizer.bypassSecurityTrustResourceUrl(this.sliderRecord.slider_img); 
@@ -387,7 +511,9 @@ export class SpecialsliderComponent implements OnInit {
       slider_description:[this.sliderRecord.slider_description],
       coupon_id:[this.sliderRecord.coupon_id],
       slider_img: [],
-      iconSrc:[this.sliderRecord.slider_img]
+      iconSrc:[this.sliderRecord.slider_img],
+      android_image: [],
+      favSrc:[this.sliderRecord.android_image]
     });
     this.LoadAllService();
     this.ModalHeading = "Edit Special slider";

@@ -155,13 +155,13 @@
             </app-card>
           </div>
           <div class="col-xl-6 col-md-12">
-            <app-card cardTitle="BUS OPERATORS BOOKINGS  IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
+            <app-card cardTitle="TOP BUSES AS PER BOOKINGS IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
               <div class="table-responsive">
                 <table class="table table-hover mb-0">
                   <thead>
                   <tr>   
                     <th>#</th>                      
-                    <th>OPERATORS</th>
+                    <th>Bus</th>
                     <th>PNR</th>
                     <th>PRICE</th>                    
                   </tr>
@@ -169,7 +169,7 @@
                   <tbody>
                   <tr *ngFor="let Operator of oprdata; let i = index">
                     <td>{{i+1}}</td>
-                    <td> <span *ngIf="Operator.operatorName.length > 0">{{Operator.operatorName[0].bus_operator.organisation_name}} <strong>[  {{Operator.operatorName[0].bus_operator.operator_name}} ]</strong></span></td>
+                    <td> <span *ngIf="Operator.operatorName.length > 0">{{Operator.operatorName[0].name}} <strong>[  {{Operator.operatorName[0].bus_number}} ]</strong></span></td>
                     <td> {{Operator.count}} PNR</td>
                     <td><i class="fas fa-rupee-sign"></i> {{Operator.amount |number : '1.2-2'}}</td>                   
                   </tr>

@@ -15,4 +15,6 @@ export interface SpecialSlider {
     status: 1;
     coupon_id;
     slider_description;
+    favicon_image:any;
+    android_image:any;
 }

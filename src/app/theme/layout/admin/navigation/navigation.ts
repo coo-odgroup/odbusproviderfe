@@ -579,6 +579,13 @@ const NavigationItems = [
           //   icon:'feather icon-pie-chart',
           //   url: 'reports/seatblockReport'
           // },
+          // {
+          //   id: 'seatopenreport',
+          //   title: 'Seat Open Report',
+          //   type: 'item',
+          //   icon:'feather icon-pie-chart',
+          //   url: 'reports/seatopenReport'
+          // },
           {
             id: 'cancleticketsReport',
             title: 'Cancel Tickets Report',

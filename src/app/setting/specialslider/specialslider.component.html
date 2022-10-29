@@ -362,13 +362,43 @@
                             </div>
                           </div>
                         </div> 
-                        <!-- <div class="col-md-12">                     
-                        <div class="form-group row">
-                          <label for="Type" class="col-sm-3 col-form-label">URL(if any)</label>
-                          <div class="col-sm-9">
-                         
-                          </div>
-                        </div> </div> -->
+
+                        <div class="col-md-6">
+                             <div class="form-group row">
+                                  <label for="android_image" class="col-sm-5 col-form-label"><strong>Android Image</strong> <span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-7">
+                                    <div>      
+                                        <input  type="file" accept='image/*' (change)="pickedfav($event);"
+                                        class="form-control" id="android_image" placeholder="Drop android_image image here"
+                                        formControlName="android_image" />
+      
+                                    </div>
+                                    <span class="text-info">Max file size 100Kb</span><br>
+                                    <span class="text-danger">{{favError}}</span>
+                                    <span class="text-danger"
+                                      *ngIf="sliderForm.controls['android_image'].touched && sliderForm.controls['android_image'].hasError('required')">
+                                      Image file is required! </span>
+      
+                                      <div class="col-12">
+                                        <div class="row">
+                                          <div class="col-md-6" *ngIf="sliderRecord.android_image">
+                                            <span><b>Existing Image</b></span> <br>                       
+                                            <img class="bg-info sliderImage"  src="{{path}}slider_photos/{{sliderRecord.android_image}}" height="70"/>
+            
+                                          </div>
+                                          <div class="col-md-6" *ngIf="favURL">
+                                            <span ><b>New image</b></span><br>
+                                            <img  class="sliderImage-edit bg-info"
+                                             [attr.src]="getImagepath(sliderForm.value['favSrc'])" height="70">
+            
+                                          </div>
+                                        </div>
+                                      </div>                             
+                                  </div>
+                                </div>
+                        </div> 
+                       
                       </div>
                     </form>
                   </div>
