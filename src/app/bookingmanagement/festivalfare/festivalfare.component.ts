@@ -93,6 +93,7 @@ export class FestivalfareComponent implements OnInit {
   public ModalBtn:any;
   public searchBy:any;
   all: any;
+  completExportdata: string;
   
 
   constructor(private festivalfareService: FestivalfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService , private spinner: NgxSpinnerService,) { 
@@ -213,23 +214,53 @@ export class FestivalfareComponent implements OnInit {
 
 
   title = 'angular-app';
-  fileName= 'Owner-Fare.csv';
+  fileName= 'Festival-Fare.csv';
 
   exportexcel(): void
   {
-    
-    /* pass here the table id */
-    let element = document.getElementById('print-section');
+    this.spinner.show();
+    // this.completeReportRecord = this.searchFrom.value ; 
+    this.completExportdata= '';
+
+        const data = {
+          rows_number:'all',
+          name: this.searchForm.value.name,
+          fromDate:this.searchForm.value.fromDate,
+          toDate:this.searchForm.value.toDate,
+          bus_operator_id:this.searchForm.value.bus_operator_id,
+        };
+
+        this.festivalfareService.getAllData(data).subscribe(
+          res => {
+            this.completExportdata = res.data.data.data;
+
+            let length = this.completExportdata.length;
+            // console.log( length);return;
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
+  exportdata(): void
+  {
+    let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
+
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
- 
+
+    this.spinner.hide();
   }
+
   ResetAttributes()
   {
     this.datesSelected=[];

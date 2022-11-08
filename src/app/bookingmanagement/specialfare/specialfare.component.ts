@@ -95,6 +95,7 @@ export class SpecialfareComponent implements OnInit {
   pricePattern = "^-?[0-9]*$";
   pagination: any;
   all: any;
+  completExportdata: any;
   constructor(private specialfareService: SpecialfareService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busService:BusService,private busOperatorService:BusOperatorService,private locationService:LocationService,private busstoppageService:BusstoppageService,private spinner: NgxSpinnerService) { 
     this.isSubmit = false;
     this.specialFareRecord= {} as Specialfare;
@@ -215,21 +216,67 @@ export class SpecialfareComponent implements OnInit {
   title = 'angular-app';
   fileName= 'Special-Fare.csv';
 
+  // exportexcel(): void
+  // {
+    
+  //   /* pass here the table id */
+  //   let element = document.getElementById('print-section');
+  //   const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+  //   /* generate workbook and add the worksheet */
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+  //   /* save to file */  
+  //   XLSX.writeFile(wb, this.fileName);
+ 
+  // }
+
   exportexcel(): void
   {
-    
-    /* pass here the table id */
-    let element = document.getElementById('print-section');
+    this.spinner.show();
+    // this.completeReportRecord = this.searchFrom.value ; 
+    this.completExportdata= '';
+
+        const data = {
+          rows_number:'all',
+          name: this.searchForm.value.name,
+          fromDate:this.searchForm.value.fromDate,
+          toDate:this.searchForm.value.toDate,
+          bus_operator_id:this.searchForm.value.bus_operator_id,
+        };
+
+        this.specialfareService.getAllData(data).subscribe( 
+          res => {
+            this.completExportdata = res.data.data.data;
+
+            let length = this.completExportdata.length;
+            // console.log( length);return;
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
+  exportdata(): void
+  {
+    let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
+
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
- 
+
+    this.spinner.hide();
   }
+
 
 
 

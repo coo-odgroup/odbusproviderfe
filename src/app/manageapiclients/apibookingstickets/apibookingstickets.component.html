@@ -168,45 +168,54 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <strong>{{ complete.bus.name }}</strong><br>
-                                    {{ complete.bus.bus_number }}<br>
-                                    <ng-template #tipContent1>
-                                        <table style="width: 350px;">
-                                            <tr>
-                                                <td style="text-align: left;" colspan="2">
-                                                    Start
-                                                </td>
-                                                <td style="text-align: left;" colspan="2">
-                                                    End
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left;">
+                                    <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                        <strong>{{ complete.bus_name }}</strong><br>
+                                        {{ complete.bus_number }}
 
-                                                    <span *ngFor="let frlocation of complete.source">
-                                                        {{frlocation[0].name}}<br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
-
-                                                    <span *ngFor="let frTime of complete.bus.busstoppage">
-                                                        {{frTime.dep_time  | date: 'H:mm'}}<br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <span *ngFor="let tolocation of complete.destination">
-                                                        {{tolocation[0].name}} <br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
-
-                                                    <span *ngFor="let toTime of complete.bus.busstoppage">
-                                                        {{toTime.arr_time  | date: 'H:mm'}}<br />
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
+                                    </span>
+                                    <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                        <strong>{{ complete.bus.name }}</strong><br>
+                                        {{ complete.bus.bus_number }}
+                                        <ng-template #tipContent1>
+                                            <table style="width: 350px;">
+                                                <tr>
+                                                    <td style="text-align: left;" colspan="2">
+                                                        Start
+                                                    </td>
+                                                    <td style="text-align: left;" colspan="2">
+                                                        End
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left;">
+    
+                                                        <span *ngFor="let frlocation of complete.source">
+                                                            {{frlocation[0].name}}<br />
+                                                        </span>
+                                                    </td>
+                                                    <td style="text-align: left;">
+    
+                                                        <span *ngFor="let frTime of complete.bus.busstoppage">
+                                                            {{frTime.dep_time  | date: 'H:mm'}}<br />
+                                                        </span>
+                                                    </td>
+                                                    <td style="text-align: left;">
+                                                        <span *ngFor="let tolocation of complete.destination">
+                                                            {{tolocation[0].name}} <br />
+                                                        </span>
+                                                    </td>
+                                                    <td style="text-align: left;">
+    
+                                                        <span *ngFor="let toTime of complete.bus.busstoppage">
+                                                            {{toTime.arr_time  | date: 'H:mm'}}<br />
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </ng-template>
+                                    </span>
+                                   <br>
+                                 
 
                                     <span [ngbTooltip]="tipContent1">
 
@@ -221,8 +230,13 @@
                                 </td>
                                 <td>
                                     <span *ngFor="let seat of complete.booking_detail;">
-
+                                        <span *ngIf="complete.origin != 'DOLPHIN' ">
                                         {{seat.bus_seats.seats.seatText}},
+                                        </span>
+
+                                        <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                        {{seat.seat_name}},
+                                        </span>
                                     </span>
                                 </td>
                                 <td class="text-capitalize">
@@ -240,7 +254,10 @@
                                             <tr *ngFor="let passanger of complete.booking_detail;">
                                                 <td><b>{{passanger.passenger_name}}</b></td>
                                                 <td><b>{{passanger.passenger_gender}}</b></td>
-                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
+                                                <td>
+                                                    <b *ngIf="complete.origin == 'DOLPHIN' ">{{passanger.seat_name}}</b>
+                                                    <b *ngIf="complete.origin != 'DOLPHIN' ">{{passanger.bus_seats.seats.seatText}}</b>
+                                                </td>
                                                 <td><b>{{passanger.passenger_age}}</b></td>
                                             </tr>
                                         </table>
@@ -265,11 +282,13 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <strong placement="top"
+                                    <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                        <strong placement="top"
                                         ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
                                     /
                                     <strong placement="top"
                                         ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
+                                    </span>                                    
                                 </td>
                                 <td>
                                     <!-- <p *ngFor="let fare of complete.booking_detail;" >
@@ -420,18 +439,41 @@
                         <td>{{complete.pnr}}</td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
-                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
+                                <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                    <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
+                                </span>
+                                <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                    <span >{{seat.seat_name}} || </span> 
+                                </span>
                             </span>
                         </td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">
-
-                               <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span> 
+                                <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                    <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span>
+                                </span>                              
                             </span>
                         </td>
-                        <td>{{ complete.bus.bus_number }}</td>
+                        <td> 
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                            {{ complete.bus.bus_number }}
+                            </span>
 
-                        <td>{{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ] </td>
+                            <span *ngIf="complete.origin == 'DOLPHIN' ">
+                            {{ complete.bus_number }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                {{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ] 
+                            </span>
+
+                            <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                {{ complete.bus_name }} 
+                            </span>
+                           
+                        </td>
                         <!-- <td>
                             {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
                         </td> -->
@@ -446,8 +488,15 @@
                         <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
                         <td>
                             <p *ngFor="let passanger of complete.booking_detail;">
-                                {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                    {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
                                 {{passanger.bus_seats.seats.seatText}}] ,
+                                </span>
+                                <span *ngIf="complete.origin == 'DOLPHIN' ">
+                                    {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                {{passanger.seat_name}}] ,
+                                </span>
+                                
                             </p>
                         </td>
                         <td>{{complete.users.name}}</td>
@@ -455,8 +504,8 @@
                         <td>{{complete.users.email}}</td>
                         <td>{{complete.total_fare}}</td>
                         <td>{{complete.owner_fare}}</td>
-                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</td>
-                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</td>
+                        <td><span *ngIf="complete.origin != 'DOLPHIN' ">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</span></td>
+                        <td><span *ngIf="complete.origin != 'DOLPHIN' ">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</span></td>
                         <td>{{complete.additional_festival_fare}}</td>
                         <td>{{complete.additional_owner_fare}}</td>
                         <td>{{complete.additional_special_fare}}</td>

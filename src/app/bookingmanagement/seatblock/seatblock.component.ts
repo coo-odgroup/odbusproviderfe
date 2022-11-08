@@ -15,6 +15,7 @@ import { SeatlayoutService } from '../../services/seatlayout.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 import { replace } from 'lodash';
+import { DatePipe } from '@angular/common';
 
 import {Input,Output,EventEmitter} from '@angular/core';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
@@ -107,6 +108,11 @@ export class SeatblockComponent implements OnInit {
   lastUrl: any;
   alreadyBlocksData: any=[];
   exportSeatBlock: any[];
+  datePipe: DatePipe = new DatePipe('en-US');
+  blockSeatsData: any;
+  busDatas: any;
+  public DatesRecord: any;
+  checkedDate: any = [];
   constructor(
     calendar: NgbCalendar,
     private seatblockService: SeatblockService,
@@ -133,6 +139,30 @@ export class SeatblockComponent implements OnInit {
   OpenModal(content) {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
   }
+
+  getFormattedDate(){
+    
+    var date = new Date();
+    var transformDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+    return transformDate;
+  }
+  getcurrentmonths(){
+    
+    var date = new Date();
+    var transformmonth = this.datePipe.transform(date, 'MM');
+    // console.log(transformmonth);
+    return transformmonth;
+  }
+
+  getcurrentyears(){ 
+    var date = new Date();
+    var transformyear = this.datePipe.transform(date, 'yyyy');
+    // console.log(transformyear);
+    return transformyear;
+
+  }
+
+
   ngOnInit(): void {
 
     this.spinner.show();
@@ -144,6 +174,12 @@ export class SeatblockComponent implements OnInit {
       date: [null],
       reason: [null],
       otherReson: [null],
+      dateLists: this.fb.array([
+        this.fb.group({
+          entryDates: [null],
+          datechecked: [''],
+        })
+      ]),
       bus_seat_layout_id: [null],
       bus_seat_layout_data: this.fb.array([
         this.fb.group({
@@ -588,7 +624,7 @@ export class SeatblockComponent implements OnInit {
     
   }
 
-  checkroute(event: any) {
+  checkroute() {
     
     this.seatBlockForm.controls.busRoute.setValue('');
     const data = {
@@ -628,7 +664,10 @@ export class SeatblockComponent implements OnInit {
 
 
   ResetAttributes() {
+
     this.datesSelected=[];
+    this.DatesRecord="";
+    this.alreadyBlocksData=[];
     this.route = [];
     this.buses ="";
     this.loadServices();
@@ -642,6 +681,12 @@ export class SeatblockComponent implements OnInit {
       date: [null],
       reason: [null],
       otherReson: [null],
+      dateLists: this.fb.array([
+        this.fb.group({
+          entryDates: [null],
+          datechecked: [''],
+        })
+      ]),
       bus_seat_layout_data: this.fb.array([
         this.fb.group({
           upperBerth: this.fb.array([
@@ -741,7 +786,18 @@ export class SeatblockComponent implements OnInit {
 
   addBlockseat() {
     this.spinner.show();
-    if(this.seatBlockForm.value.date == null)
+
+    this.checkedDate;
+    let i=0;
+    for(let checked of this.seatBlockForm.value.dateLists){
+      if(checked.datechecked==true){
+        this.checkedDate[i] = checked.entryDates;
+        i++;
+      } 
+    }
+
+    
+    if(this.checkedDate.length<1)
     {
       this.notificationService.addToast({ title: 'Error', msg: 'Please Select Date', type: 'error' });
       this.spinner.hide();
@@ -753,7 +809,7 @@ export class SeatblockComponent implements OnInit {
       busRoute: this.seatBlockForm.value.busRoute,
       reason: this.seatBlockForm.value.reason,
       other_reson: this.seatBlockForm.value.otherReson,
-      date: this.seatBlockForm.value.date,
+      date: this.checkedDate,
       bus_seat_layout_data: this.seatBlockForm.value.bus_seat_layout_data,
       created_by: localStorage.getItem('USERNAME'),
       type: "2"
@@ -844,25 +900,78 @@ export class SeatblockComponent implements OnInit {
         }
       });
   }
+
+
+  getBusScheduleEntryDatesFilter() {
+    if (this.seatBlockForm.value.bus_id==null)
+      return false;
+
+
+    const arr = <FormArray>this.seatBlockForm.controls.dateLists;
+    arr.controls = [];
+
+    const data={
+      busLists: this.seatBlockForm.value.bus_id,
+      month:this.getcurrentmonths(),
+      year:this.getcurrentyears(),
+    }
+
+    this.spinner.show();
+    this.busService.getBusScheduleEntry(data).subscribe(
+      response => {
+        // console.log(response.data.busDatas);
+        this.busDatas = response.data.busDatas;
+        let counter = 0;
+        for (let bData of this.busDatas) {
+          this.DatesRecord = (<FormArray>this.seatBlockForm.controls['dateLists']) as FormArray;
+          let arraylen = this.DatesRecord.length;
+          for (let eDate of bData.entryDates) {    
+            if(this.ModalBtn=="Save")
+            {
+                let newDatesgroup: FormGroup = this.fb.group({
+                  entryDates: [eDate.entry_date],
+                  datechecked: [null],
+                })
+                this.DatesRecord.insert(arraylen, newDatesgroup);
+                // console.log(this.DatesRecord);
+                // return
+            }           
+          }
+          counter++;
+        }
+        response = [];
+        this.spinner.hide();
+      }
+    );
+  }
   
 
-  editsblock(index: any) {
-
-    this.seatBlockRecord = this.seatBlock[index];
-
-    // console.log(this.seatBlockRecord);
+  editsblock(bus_id:any,operation_date:any,ticket_price_id:any) {
+    this.spinner.show();
     this.loadServices();
 
-    var d = new Date(this.seatBlockRecord.date_applied);
-    let date = [d.getFullYear(), ('0' + (d.getMonth() + 1)).slice(-2), ('0' + d.getDate()).slice(-2)].join('-');
+    this.busService.all().subscribe(
+      res => {
+        this.buses = res.data;
+        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+      }
+    );
+
+    const data = {
+      bus_id: bus_id,
+      operation_date: operation_date,
+      ticket_price_id:ticket_price_id,
+      type:2
+    };
 
     this.seatBlockForm = this.fb.group({
-      bus_operator_id: [JSON.parse(this.seatBlockRecord.bus.bus_operator_id)],
-      id: [JSON.parse(this.seatBlockRecord.id)],
-      bus_id: [JSON.parse(this.seatBlockRecord.bus_id)],
-      date: date,
-      reason: [this.seatBlockRecord.reason],
-
+      bus_operator_id:  localStorage.getItem('OPERATOR_ID'),
+      id: [null],
+      bus_id: bus_id,  
+      busRoute: [null],
+      date:operation_date,
+      reason: "Blocked By Owner",
+      otherReson: [null],
       bus_seat_layout_id: [null],
       bus_seat_layout_data: this.fb.array([
         this.fb.group({
@@ -873,10 +982,260 @@ export class SeatblockComponent implements OnInit {
         })
       ]),
     });
+    
     this.ModalHeading = "Edit Seat Block";
     this.ModalBtn = "Update";
-    this.checkEvent(this.seatBlockRecord.bus_id);
+
+    this.seatblockService.edit(data).subscribe(
+      res => {
+        this.blockSeatsData= res.data;
+        if(this.blockSeatsData.length>0)
+        {
+          this.checkEditEvent(bus_id);
+        }
+      }
+    );
+    this.checkroute();    
   }
+
+  checkEditEvent(event: any) {
+    this.spinner.show();
+    const data = {
+      bus_id: this.seatBlockForm.value.bus_id
+    };
+    // console.log(data);
+    this.busService.getSelectedSeat(data.bus_id).subscribe(
+      seatData => {
+        // this.selectedSeats = seatData.data['seat'];
+        this.selectedSeats = seatData.data['seat'];
+        // console.log(this.selectedSeats);
+        this.seatlayoutService.seatsBus(data).subscribe(
+      resp => {
+        // console.log(resp);
+       
+        let counter = 0;
+        this.seatLayoutData = (<FormArray>this.seatBlockForm.controls['bus_seat_layout_data']) as FormArray;
+        this.seatLayoutData.clear();
+        if (resp.data.lowerBerth != undefined) {
+          for (let lowerData of resp.data.lowerBerth) {
+
+            let arraylen = this.seatLayoutData.length;
+            let berthData: FormGroup = this.fb.group({
+              lowerBerth: this.fb.array([
+              ]),
+              upperBerth: this.fb.array([
+              ])
+            });
+            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+            this.seatLayoutCol = (<FormArray>this.seatBlockForm.controls['bus_seat_layout_data']).at(counter).get('lowerBerth') as FormArray;
+            for (let seatData of lowerData) {
+              let checkedval = "";
+              let seatId = "";
+              let desiabled_seats = "";
+              for (let selectedSeat of this.selectedSeats) {
+                if (selectedSeat.seats_id == seatData.id) {
+                  if(selectedSeat.type== null){ 
+                    if(selectedSeat.duration == '0' && selectedSeat.operation_date==null)    
+                    {
+                      // console.log(seatData);
+                      checkedval = "true";
+                      seatId = selectedSeat.id;
+                      desiabled_seats = "true";
+
+                    }                 
+                  }
+                }
+              }
+              let collen = this.seatLayoutCol.length;
+
+              if (checkedval == "true") {
+                if (!this.seatBlockRecord.seat_block_seats) 
+                {
+                  var isPresent = this.blockSeatsData.some(function (el) { 
+                    
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
+                  });
+                  if (isPresent) {
+                    let columnData: FormGroup = this.fb.group({
+                      seatText: [seatData.seatText],
+                      seatType: [seatData.seat_class_id],
+                      berthType: [seatData.berthType],
+                      seatChecked: [true],
+                      category: ['0'],
+                      seatId: [seatData.id],
+                      busId: [data.bus_id]
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+
+                  }
+                  else
+                  {
+                    let columnData: FormGroup = this.fb.group({
+                      seatText: [seatData.seatText],
+                      seatType: [seatData.seat_class_id],
+                      berthType: [seatData.berthType],
+                      seatChecked: [],
+                      category: ['0'],
+                      seatId: [seatData.id],
+                      busId: [data.bus_id]
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+                  }
+                }
+              }
+              else {        
+                let columnData: FormGroup = this.fb.group({
+                  seatText: [seatData.seatText],
+                  seatType: [seatData.seat_class_id],
+                  berthType: [seatData.berthType],
+                  seatChecked: [{ value: false, disabled: true }],
+                  category: ['0'],
+                  seatId: [seatData.id],
+                  busId: [data.bus_id]
+                });
+                this.seatLayoutCol.insert(collen, columnData);
+              }
+            }
+            counter++;
+          }
+        }
+        if (resp.data.upperBerth != undefined) {
+          for (let upperData of resp.data.upperBerth) {
+            let arraylen = this.seatLayoutData.length;
+            let berthData: FormGroup = this.fb.group({
+              lowerBerth: this.fb.array([
+              ]),
+              upperBerth: this.fb.array([
+              ])
+            });
+            this.seatLayoutData.insert(arraylen, berthData); //PUSH BLANK LOWER BETH ARRAY TO seatLayoutData
+            this.seatLayoutCol = (<FormArray>this.seatBlockForm.controls['bus_seat_layout_data']).at(counter).get('upperBerth') as FormArray;
+            for (let seatData of upperData) {
+              let checkedval = "";
+              let seatId = "";
+              let desiabled_seats = "";
+              for (let selectedSeat of this.selectedSeats) {
+                if (selectedSeat.seats_id == seatData.id) {
+                  if(selectedSeat.type== null){ 
+                    if(selectedSeat.duration == '0' && selectedSeat.operation_date==null)    
+                    {
+                  checkedval = "true";
+                  seatId = selectedSeat.id;
+                  // desiabled_seats = "true";
+                    }
+                  }
+                }
+              }
+              let collen = this.seatLayoutCol.length;
+
+              if (checkedval == "true") {
+                if (!this.seatBlockRecord.seat_block_seats) {
+                  var isPresent = this.blockSeatsData.some(function (el) { 
+                    
+                    return JSON.parse(el.seats_id) === JSON.parse(seatData.id); 
+                  });
+                  if (isPresent) {
+                    let columnData: FormGroup = this.fb.group({
+                      seatText: [seatData.seatText],
+                      seatType: [seatData.seat_class_id],
+                      berthType: [seatData.berthType],
+                      seatChecked: [true],
+                      category: ['0'],
+                      seatId: [seatData.id],
+                      busId: [data.bus_id]
+                    });
+                    this.seatLayoutCol.insert(collen, columnData);
+
+                  }
+                  else
+                  {
+                  let columnData: FormGroup = this.fb.group({
+                    seatText: [seatData.seatText],
+                    seatType: [seatData.seat_class_id],
+                    berthType: [seatData.berthType],
+                    seatChecked: [],
+                    category: ['0'],
+                    seatId: [seatData.id],
+                    busId: [data.bus_id]
+                  });
+                  this.seatLayoutCol.insert(collen, columnData);
+                 }
+                }
+              }
+              else {
+                // console.log(this.seatBlockRecord.seat_block_seats);            
+
+                let columnData: FormGroup = this.fb.group({
+                  seatText: [seatData.seatText],
+                  seatType: [seatData.seat_class_id],
+                  berthType: [seatData.berthType],
+                  seatChecked: [{ value: false, disabled: true }],
+                  category: ['0'],
+                  seatId: [seatData.id],
+                  busId: [data.bus_id]
+                });
+                this.seatLayoutCol.insert(collen, columnData);
+              }
+            }
+            counter++;
+          }
+        }
+        // console.log(this.seatBlockForm.value);
+        this.spinner.hide();
+        
+      }
+    );
+      }
+    );
+
+    
+  }
+
+  updateBlockseat() {
+    this.spinner.show();
+    // this.checkroute();
+    this.onSelectAll();
+    // console.log(this.seatBlockForm.value.bus_id);
+
+    if(this.seatBlockForm.value.date == null)
+    {
+      this.notificationService.addToast({ title: 'Error', msg: 'Please Select Date', type: 'error' });
+      this.spinner.hide();
+      return;
+    }else{
+    const data = {
+      bus_operator_id: this.seatBlockForm.value.bus_operator_id,
+      bus_id: this.seatBlockForm.value.bus_id,
+      busRoute: this.seatBlockForm.value.busRoute,
+      reason: this.blockSeatsData[0].reason,
+      other_reson: this.blockSeatsData[0].otherReson,
+      date: this.seatBlockForm.value.date,
+      bus_seat_layout_data: this.seatBlockForm.value.bus_seat_layout_data,
+      created_by: localStorage.getItem('USERNAME'),
+      type: "2"
+    };
+
+      this.seatblockService.updateSeatBlock(data).subscribe(
+        resp => {
+          if (resp.status == 1) {
+            // console.log(resp);
+            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+            this.modalReference.close();
+            this.lastUrl=
+            this.set_page(this.lastUrl);
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+            this.spinner.hide();
+          }
+        }
+      );
+
+  }
+  }
+
+
+
 
 
   

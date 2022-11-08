@@ -15,6 +15,7 @@ export interface Agent {
     city:any;
     pincode:any;
     name_on_bank_account:any;
+    agent_type:any;
     bank_name:any;
     ifsc_code:any;
     bank_account_no:any;

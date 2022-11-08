@@ -139,11 +139,13 @@
                   (click)="changeStatus($event, specialFare.id);">Active</label>
                 <label *ngIf="specialFare.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, specialFare.id);">Pending</label>
+                  <label *ngIf="specialFare.status==2" class="badge badge-danger pointer text-dark"
+                  >Deleted</label>
               </td>
               
 
               <td class="hide_print">
-                <div class="overlay-edit">
+                <div class="overlay-edit" *ngIf="specialFare.status !=2">
                   <button type="button" (click)="editSpecialFare($event, i); OpenModal(editcontent);"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                   <button type="button" (click)="deleteSpecialFare(confirmDialog,specialFare.id)" class="btn btn-icon btn-danger"><i
@@ -193,6 +195,80 @@
         </div>
 
       </div>
+
+      <table style="display: none;" id="export-section">
+        <thead>
+          <tr>
+            <th>Id</th>
+             <th>Operator</th>
+            <th>Bus Name</th>
+            <th>Date</th>
+            <th>Seater Price</th>
+            <th>Sleeper Price</th>
+            <th>Created/Updated On</th>
+            <th>Created By</th>
+            <th>Status</th>
+            <th width="100" class="hide_print">&nbsp; </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="completExportdata?.length != 0">
+          <tr *ngFor="let specialFare of completExportdata; let i=index; ">
+            <td>{{ specialFare.id }}</td>
+           
+            <td>
+              <span *ngIf="specialFare.bus?.length != 0">
+                <b>{{specialFare.bus[0].bus_operator.organisation_name}}</b><br>
+                [ {{specialFare.bus[0].bus_operator.operator_name}} ]
+              </span>
+              <span *ngIf="specialFare.bus?.length == 0">
+               --No Operator--
+              </span>
+            </td>
+            <td>
+              <div *ngIf="specialFare.bus?.length != 0">
+                <span *ngFor="let busName of specialFare.bus; let nameIndex=index;"> 
+                  {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  [<strong>{{busName.source[0][0].name}} >> {{busName.destination[0][0].name}}</strong>]  ,<br>
+                </span>
+              </div>
+
+              <div *ngIf="specialFare.bus?.length == 0">
+                -- No Bus --
+              </div>
+            </td>
+            
+            <td>{{ specialFare.date }}</td>
+            <td>{{ specialFare.seater_price }}</td>
+            <td>{{ specialFare.sleeper_price }}</td>
+            <td>{{ specialFare.updated_at | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ specialFare.created_by }}</td>
+
+
+            <td >
+              <label *ngIf="specialFare.status==1" class="badge badge-light-primary pointer text-dark"
+                (click)="changeStatus($event, specialFare.id);">Active</label>
+              <label *ngIf="specialFare.status==0" class="badge badge-light-danger pointer text-dark"
+                (click)="changeStatus($event, specialFare.id);">Pending</label>
+                <label *ngIf="specialFare.status==2" class="badge badge-danger pointer text-dark"
+                >Deleted</label>
+            </td>
+            
+
+            <td class="hide_print">
+              <div class="overlay-edit" *ngIf="specialFare.status !=2">
+                <button type="button" (click)="editSpecialFare($event, i); OpenModal(editcontent);"
+                  class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                <button type="button" (click)="deleteSpecialFare(confirmDialog,specialFare.id)" class="btn btn-icon btn-danger"><i
+                    class="feather icon-trash-2"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="specialFares?.length == 0">
+          <tr>
+            <td colspan="10" class="no-data-available">No data!</td>
+          </tr>
+        <tbody>
+      </table>
     
       <div class="app-card-footer">
         <ng-template #confirmDialog let-modal>

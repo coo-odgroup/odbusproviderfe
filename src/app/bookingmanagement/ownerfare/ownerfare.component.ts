@@ -90,6 +90,7 @@ export class OwnerfareComponent implements OnInit {
   public searchForm: FormGroup;
   pagination: any;
   all: any;
+  completExportdata: string;
 
 
   constructor(private ownerfareService: OwnerfareService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busService: BusService, private busOperatorService: BusOperatorService, private locationService: LocationService, private spinner: NgxSpinnerService) {
@@ -209,21 +210,50 @@ export class OwnerfareComponent implements OnInit {
   title = 'angular-app';
   fileName = 'Owner-Fare.csv';
 
-  exportexcel(): void {
+  exportexcel(): void
+  {
+    this.spinner.show();
+    // this.completeReportRecord = this.searchFrom.value ; 
+    this.completExportdata= '';
 
-    /* pass here the table id */
-    let element = document.getElementById('print-section');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+        const data = {
+          rows_number:'all',
+          name: this.searchForm.value.name,
+          fromDate:this.searchForm.value.fromDate,
+          toDate:this.searchForm.value.toDate,
+          bus_operator_id:this.searchForm.value.bus_operator_id,
+        };
+
+        this.ownerfareService.getAllData(data).subscribe(
+          res => {
+            this.completExportdata = res.data.data.data;
+
+            let length = this.completExportdata.length;
+            // console.log( length);return;
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
+  exportdata(): void
+  {
+    let element = document.getElementById('export-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
 
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    /* save to file */
+    /* save to file */  
     XLSX.writeFile(wb, this.fileName);
 
+    this.spinner.hide();
   }
-
 
   ResetAttributes() {
     this.datesSelected=[];

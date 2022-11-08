@@ -135,10 +135,12 @@
                   (click)="changeStatus($event, festivalFare.id);">Active</label>
                 <label *ngIf="festivalFare.status==0" class="badge badge-light-danger pointer text-dark"
                   (click)="changeStatus($event, festivalFare.id);">Pending</label>
+                <label *ngIf="festivalFare.status==2" class="badge badge-danger pointer text-dark"
+                  >Deleted</label>
               </td>
 
               <td class="hide_print">
-                <div class="overlay-edit">
+                <div class="overlay-edit" *ngIf="festivalFare.status !=2" >
                   <button type="button" (click)="ResetAttributes();editfestivalFare($event, i); OpenModal(editcontent);"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                   <button type="button" (click)="deletefestivalFare(confirmDialog,festivalFare.id)"
@@ -187,6 +189,76 @@
           </div>
         </div>     
       </div>
+
+      <div style="display: none;" id="export-section">
+        <table class="table table-striped ">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Operator</th>
+              <th>Bus Name</th>
+              <th>Date</th>
+              <th>Seater Price</th>
+              <th>Sleeper Price</th>
+              <th>Created/Updated On</th>
+              <th>Created By</th>
+              <th>Status</th>
+              <th width="100" class="hide_print">&nbsp; </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="completExportdata?.length != 0">
+            <tr *ngFor="let festivalFare of completExportdata; let i=index; ">
+              <td>{{ festivalFare.id }}</td>
+              <!--  -->
+
+              <td>
+                <span *ngIf="festivalFare.bus?.length != 0">
+                  <b> {{festivalFare.bus[0].bus_operator.organisation_name}} </b><br>
+                  [ {{festivalFare.bus[0].bus_operator.operator_name}} ]
+                </span>
+                <span *ngIf="festivalFare.bus?.length == 0">
+                 --No Operator--
+                </span> 
+              </td>
+              <td>
+                <div *ngIf="festivalFare.bus?.length != 0">
+                  <span *ngFor="let busName of festivalFare.bus; let nameIndex=index;"> 
+                    {{busName.name}}  <strong> [ {{busName.bus_number}} ] </strong>  [<strong *ngIf="busName.source">{{busName.source[0][0].name}} >> {{busName.destination[0][0].name}}</strong>]  ,<br>
+                  </span>
+                </div>
+
+                <div *ngIf="festivalFare.bus?.length == 0">
+                  -- No Bus --
+                </div>
+              </td>
+
+              <td>{{ festivalFare.date | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ festivalFare.seater_price }}</td>
+              <td>{{ festivalFare.sleeper_price }}</td>
+              <td>{{ festivalFare.updated_at | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ festivalFare.created_by }}</td>
+              <td>
+                <label *ngIf="festivalFare.status==1" class="badge badge-light-primary pointer text-dark"
+                  (click)="changeStatus($event, festivalFare.id);">Active</label>
+                <label *ngIf="festivalFare.status==0" class="badge badge-light-danger pointer text-dark"
+                  (click)="changeStatus($event, festivalFare.id);">Pending</label>
+                <label *ngIf="festivalFare.status==2" class="badge badge-danger pointer text-dark"
+                  >Deleted</label>
+              </td>
+
+              <td class="hide_print">
+                <div class="overlay-edit" *ngIf="festivalFare.status !=2" >
+                  <button type="button" (click)="ResetAttributes();editfestivalFare($event, i); OpenModal(editcontent);"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="deletefestivalFare(confirmDialog,festivalFare.id)"
+                    class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table> 
+      </div>
+
       <div class="app-card-footer">
         <ng-template #confirmDialog let-modal>
           <div class="modal-header">

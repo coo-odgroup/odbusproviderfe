@@ -51,6 +51,19 @@ export class SeatblockService {
       catchError(this.errorHandler)
     )
   }
+  updateSeatBlock(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/updateSeatBlock', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  edit(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/editseatblock', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  
 
   update(id, post): Observable<any> {
     return this.httpClient.put<any>(this.apiURL + '/seatblock/' + id, JSON.stringify(post), this.httpOptions)
@@ -58,6 +71,7 @@ export class SeatblockService {
       catchError(this.errorHandler)
     )
   }
+
   delete(post){
     return this.httpClient.post<any>(this.apiURL + '/deleteSeatblock',JSON.stringify(post), this.httpOptions)
     .pipe(

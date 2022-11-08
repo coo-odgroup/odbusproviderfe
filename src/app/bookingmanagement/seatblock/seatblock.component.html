@@ -210,13 +210,13 @@
                     </td> -->
 
                     <td class="hide_print" style="width: 50px;">
-                      <!-- <div class="overlay-edit">
-                        <button type="button" (click)="openConfirmDialog (confirmDialog,
-                                        opendate[0].value[0].bus.id ,
-                                        opendate[0].value[0].operation_date)" class="btn btn-icon btn-danger">
-                          <i class="feather icon-trash-2"></i>
-                        </button>
-                      </div> -->
+                      <span *ngIf="opendate[0].value[0].operation_date >= getFormattedDate()">
+                        <span type="button" (click)="ResetAttributes();editsblock(opendate[0].value[0].bus.id ,
+                        opendate[0].value[0].operation_date,opendate[0].value[0].ticket_price_id);OpenModal(editSeat)" class="btn btn-sm">
+                          <i class="fa fa-edit " aria-hidden="true"></i>
+                        </span>
+                      </span>
+
                       <span type="button"(click)="openConfirmDialog (confirmDialog,
                       opendate[0].value[0].bus.id ,
                       opendate[0].value[0].operation_date)" class="btn   float-right"> 
@@ -371,7 +371,7 @@
                   <div class="right-icon-control">
                     <form [formGroup]="seatBlockForm" class="editForm" novalidate>
                       <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-7">
                           <div class="row">
                             <div class="col-12">
                               <div class="form-group row">
@@ -401,7 +401,7 @@
                                 <div class="col-sm-9">
                                   <ng-select [items]="buses" bindLabel="testing" bindValue="id" placeholder="Select Bus"
                                     formControlName="bus_id" [clearable]="false"
-                                    (change)="getSchedule();checkroute();checkEvent($event);alreadyBlocks();" required>
+                                    (change)="getSchedule();checkroute();checkEvent($event);alreadyBlocks();getBusScheduleEntryDatesFilter();" required>
                                   </ng-select>
 
                                   <span class="text-danger" *ngIf="
@@ -479,13 +479,13 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-5">
                           <div class="form-group row">
                             <!-- <label for="date" class="col-sm-4 col-form-label">Date<span
                                 class="text-danger">*</span></label> -->
-                            <div class="col-sm-8">
+                            <div class="col-sm-12">
 
-                              <ngb-datepicker #dp (datesSelectedChange)="change($event)" [displayMonths]="1"
+                              <!-- <ngb-datepicker #dp (datesSelectedChange)="change($event)" [displayMonths]="1"
                                 [dayTemplate]="t">
                               </ngb-datepicker>
 
@@ -498,16 +498,25 @@
                                   (mouseleave)="hoveredDate = null">
                                   {{ date.day }}
                                 </span>
-                              </ng-template>
+                              </ng-template> -->
                               <!-- <hr> -->
                               <!-- <pre>DateSelected: {{ datesSelected | json }} </pre> -->
+                              <div class="row col-md-12 datelist" formArrayName="dateLists">
+                                <span *ngIf="this.DatesRecord">
+                                 <label *ngFor="let busesFormGroup of seatBlockForm['controls'].dateLists['controls']; let i=index"
+                                 class="col-6 col-sm-4 col-md-3  text-center" [formGroupName]="i" >
+                                   <input type="checkbox" class="filled-in" formControlName="datechecked" />
+                                   <span>{{busesFormGroup.controls.entryDates.value | date: 'dd-MMM'}}</span>
+                               </label>
+                                </span>
+                               </div>
 
                             </div>
                           </div>
 
                         </div>
                       </div>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-sm-12">
                           <label *ngFor="let eDate of busSchedule ;">
                             <span class="col-2" *ngFor="let  date of eDate.bus_schedule_date ;">
@@ -516,7 +525,7 @@
 
                           </label>
                         </div>
-                      </div>
+                      </div> -->
                       <div class="row">
                         <div class="col-md-9">
                           <div formArrayName="bus_seat_layout_data" class="col-12">
@@ -726,10 +735,10 @@
           </div>
         </ng-template>
 
-        <!-- <ng-template #editSeat let-modal>
+        <ng-template #editSeat let-modal>
           <div class="modal-header">
             <h5 class="ng-tns-c116-5">
-              {{ busRecord.name }} [{{ busRecord.bus_number }}]
+              <!-- {{ busRecord.name }} [{{ busRecord.bus_number }}] -->
             </h5>
             <button
               type="button"
@@ -740,110 +749,111 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form [formGroup]="seatBlockForm" class="editForm" novalidate>
+          <form [formGroup]="seatBlockForm" class="editForm" novalidate style="overflow-y: scroll;">
             <div class="modal-body">
               <div class="row">
-                <div class="row form-group col-sm-12">
-                  <div class="col-md-9">
-                    <div formArrayName="bus_seat_layout_data" class="col-12">
-                      <div
-                        class="row"
-                        *ngFor="
-                          let layoutRow of busForm.controls.bus_seat_layout_data
-                            .controls;
-                          let layout_row = index
-                        "
-                        [formGroupName]="layout_row"
-                      >
-                        <div
-                          formArrayName="lowerBerth"
-                          class="col-12"
-                          style="display: flex; justify-content: center"
-                        >
-                          <div
-                            *ngFor="
-                              let layoutCol of layoutRow['controls'].lowerBerth[
-                                'controls'
-                              ];
-                              let layout_row = index
-                            "
-                            [formGroupName]="layout_row"
-                            style="width: 50px; float: left; text-align: center"
-                          >
-                           
-                            <label class="seatHolder">
-                              <input
-                                type="checkbox"
-                                formControlName="seatChecked"
-                                *ngIf="layoutCol.controls.seatType.value != 4"
-                              />
-                              <span
-                                class="seaterImage"
-                                *ngIf="layoutCol.controls.seatType.value == 1"
-                              ></span>
-                              <span
-                                class="sleeperImage"
-                                *ngIf="layoutCol.controls.seatType.value == 2"
-                              ></span>
-                              <span
-                                class="verticalImage"
-                                *ngIf="layoutCol.controls.seatType.value == 3"
-                              ></span>
-                              <span
-                                class="blankImage"
-                                *ngIf="layoutCol.controls.seatType.value == 4"
-                              ></span>
-                              <span
-                                *ngIf="layoutCol.controls.seatType.value != 4"
-                                >{{ layoutCol.controls.seatText.value }}</span
-                              >
-                            </label>
-                          </div>
-                        </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label for="busname" class="col-sm-3 col-form-label">Bus Name/Number<span
+                        class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                      <ng-select [items]="buses" bindLabel="testing" bindValue="id" placeholder="Select Bus"
+                        formControlName="bus_id"  [clearable]="false" required  [readonly]="true">
+                      </ng-select>
 
-                        <div
-                          formArrayName="upperBerth"
-                          class="col-12"
-                          style="display: flex; justify-content: center"
-                        >
-                          <div
-                            *ngFor="
-                              let layoutCol of layoutRow['controls'].upperBerth[
-                                'controls'
-                              ];
-                              let layout_row = index
-                            "
-                            [formGroupName]="layout_row"
-                            style="width: 50px; float: left; text-align: center"
-                          >
-                            <label class="seatHolder">
-                              <input
-                                type="checkbox"
-                                formControlName="seatChecked"
-                                *ngIf="layoutCol.controls.seatType.value != 4"
-                              />
-                              <span
-                                class="seaterImage"
-                                *ngIf="layoutCol.controls.seatType.value == 1"
-                              ></span>
-                              <span
-                                class="sleeperImage"
-                                *ngIf="layoutCol.controls.seatType.value == 2"
-                              ></span>
-                              <span
-                                class="verticalImage"
-                                *ngIf="layoutCol.controls.seatType.value == 3"
-                              ></span>
-                              <span
-                                class="blankImage"
-                                *ngIf="layoutCol.controls.seatType.value == 4"
-                              ></span>
-                              <span
-                                *ngIf="layoutCol.controls.seatType.value != 4"
-                                >{{ layoutCol.controls.seatText.value }}</span
-                              >
-                            </label>
-                          </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Date<span
+                      class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                      {{seatBlockForm.controls.date.value}}
+                    </div>
+                  </div>
+                   <!-- Date :{{seatBlockForm.controls.date.value}} -->
+                  
+              </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div formArrayName="bus_seat_layout_data" class="col-12">
+                    <div class="row" *ngFor="
+                        let layoutRow of seatBlockForm.controls
+                          .bus_seat_layout_data.controls;
+                        let layout_row = index
+                      " [formGroupName]="layout_row">
+                      <div formArrayName="lowerBerth" class="col-12"
+                        style="display: flex; justify-content: center">
+                        <div *ngFor="
+                            let layoutCol of layoutRow['controls']
+                              .lowerBerth['controls'];
+                            let layout_row = index
+                          " [formGroupName]="layout_row" style="
+                            width: 50px;
+                            float: left;
+                            text-align: center;
+                          ">
+                          <!-- (change)="chooseSeat($event.target.checked,layoutCol.controls.seatType.value,layoutCol.controls.seatText.value,1)" -->
+                          <label class="seatHolder">
+                            <input type="checkbox" formControlName="seatChecked" *ngIf="
+                                layoutCol.controls.seatType.value != 4
+                              " />
+                            <span class="seaterImage" *ngIf="
+                                layoutCol.controls.seatType.value == 1
+                              "></span>
+                            <span class="sleeperImage" *ngIf="
+                                layoutCol.controls.seatType.value == 2
+                              "></span>
+                            <span class="verticalImage" *ngIf="
+                                layoutCol.controls.seatType.value == 3
+                              "></span>
+                            <span class="blankImage" *ngIf="
+                                layoutCol.controls.seatType.value == 4
+                              "></span>
+                            <span *ngIf="
+                                layoutCol.controls.seatType.value != 4
+                              ">{{
+                              layoutCol.controls.seatText.value
+                              }}</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div formArrayName="upperBerth" class="col-12"
+                        style="display: flex; justify-content: center">
+                        <div *ngFor="
+                            let layoutCol of layoutRow['controls']
+                              .upperBerth['controls'];
+                            let layout_row = index
+                          " [formGroupName]="layout_row" style="
+                            width: 50px;
+                            float: left;
+                            text-align: center;
+                          ">
+                          <label class="seatHolder">
+                            <input type="checkbox" formControlName="seatChecked" *ngIf="
+                                layoutCol.controls.seatType.value != 4
+                              " />
+                            <span class="seaterImage" *ngIf="
+                                layoutCol.controls.seatType.value == 1
+                              "></span>
+                            <span class="sleeperImage" *ngIf="
+                                layoutCol.controls.seatType.value == 2
+                              "></span>
+                            <span class="verticalImage" *ngIf="
+                                layoutCol.controls.seatType.value == 3
+                              "></span>
+                            <span class="blankImage" *ngIf="
+                                layoutCol.controls.seatType.value == 4
+                              "></span>
+                            <span *ngIf="
+                                layoutCol.controls.seatType.value != 4
+                              ">{{
+                              layoutCol.controls.seatText.value
+                              }}</span>
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -856,9 +866,10 @@
             <button
               type="button"
               class="btn btn-primary"
-              (click)="updateSeatLayout()"
+              (click)="checkroute();updateBlockseat()"
               ngbAutofocus
             >
+    
               Update Seat Layout
             </button>
             <button
@@ -871,7 +882,7 @@
               Cancel
             </button>
           </div>
-        </ng-template> -->
+        </ng-template>
       </div>
     </app-card>
   </div>

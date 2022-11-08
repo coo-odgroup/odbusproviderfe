@@ -67,6 +67,7 @@ export class AgentComponent implements OnInit {
       pincode: [null, Validators.compose([Validators.required])],
       street: [null, Validators.compose([Validators.required])],
       city: [null, Validators.compose([Validators.required])],
+      agentType: [null, Validators.compose([Validators.required])],
       name_on_bank_account: [null],
       bank_name: [null],
       ifsc_code: [null],
@@ -181,6 +182,7 @@ export class AgentComponent implements OnInit {
       organization_name:'',
       address:'',
       landmark:'',
+      agent_type:'',
       pincode:'',
       name_on_bank_account:'',
       bank_name:'',
@@ -203,6 +205,7 @@ export class AgentComponent implements OnInit {
       pincode: [null, Validators.compose([Validators.required])],
       street: [null, Validators.compose([Validators.required])],
       city: [null, Validators.compose([Validators.required])],
+      agentType: [null, Validators.compose([Validators.required])],
       name_on_bank_account: [null],
       bank_name: [null],
       ifsc_code: [null],
@@ -229,6 +232,7 @@ export class AgentComponent implements OnInit {
       address:this.form.value.address,
       landmark:this.form.value.landmark,
       city:this.form.value.city,
+      agentType:this.form.value.agentType,
       street:this.form.value.street,
       pincode:this.form.value.pincode,
       name_on_bank_account:this.form.value.name_on_bank_account,
@@ -298,6 +302,7 @@ export class AgentComponent implements OnInit {
       pincode: [this.agentRecord.pincode,Validators.compose([Validators.required])],
       street: [this.agentRecord.street,Validators.compose([Validators.required])],
       city: [this.agentRecord.city,Validators.compose([Validators.required])],
+      agentType: [this.agentRecord.agent_type,Validators.compose([Validators.required])],
       name_on_bank_account: [this.agentRecord.name_on_bank_account],
       bank_name: [this.agentRecord.bank_name],
       ifsc_code: [this.agentRecord.ifsc_code],
@@ -317,9 +322,6 @@ export class AgentComponent implements OnInit {
       created_by: localStorage.getItem('USERNAME'),
       id:stsitem
     }
-    // console.log(data);
-    // return;
-
     this.spinner.show();
     this.AgentserviceService.chngsts(data).subscribe(
       resp => {

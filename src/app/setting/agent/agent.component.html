@@ -362,7 +362,7 @@
                                 </div>
                               </div>                      
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                               <div class="form-group row">
                                 <label for="landmark" class="col-sm-3 col-form-label">Landmark<span
                                     class="text-danger">*</span></label>
@@ -374,7 +374,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                               <div class="form-group row">
                                 <label for="Name" class="col-sm-3 col-form-label">Town/City<span
                                         class="text-danger">*</span></label>
@@ -386,6 +386,25 @@
                                         Town/city is required! </span>
                                 </div>
                             </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group row">
+                                <label for="Name" class="col-sm-3 col-form-label">Agent Type<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                  <select class="form-control" formControlName="agentType">
+                                   
+                                    <option value="1">Our Agent</option>
+                                    <option value="2">Corporate</option>
+                                  </select>
+                                    <!-- <input type="text" class="form-control" formControlName="city" id="city"
+                                        placeholder="Town/City" /> -->
+                                    <span class="text-danger"
+                                        *ngIf="form.controls['agentType'].touched && form.controls['agentType'].hasError('required')">
+                                        Agent Type is required! </span>
+                                </div>
+                              </div>
                             </div>
                             <!-- <div class="col-md-4">
                               <div class="form-group row">

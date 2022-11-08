@@ -72,6 +72,7 @@ export class AdjustticketComponent implements OnInit {
   reff: any;
   cmpId: any;
   routTime: any;
+  completExportdata: any;
 
 
   constructor(private datePipe: DatePipe, private acts: AdjustticketService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busService: BusService, private busOperatorService: BusOperatorService, private locationService: LocationService, private spinner: NgxSpinnerService,) {
@@ -105,6 +106,8 @@ export class AdjustticketComponent implements OnInit {
     });
     this.searchForm = this.fb.group({
       name: [null],
+      rangeFromDate: [null],
+      rangeToDate: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -128,6 +131,8 @@ export class AdjustticketComponent implements OnInit {
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
+      rangeFromDate:this.searchForm.value.rangeFromDate,
+      rangeToDate :this.searchForm.value.rangeToDate,
     };
     if (pageurl != "") {
       this.acts.getAllaginationData(pageurl, data).subscribe(
@@ -135,7 +140,7 @@ export class AdjustticketComponent implements OnInit {
           this.cancelTickets = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-           //console.log(this.cancelTickets);
+          //  console.log(this.cancelTickets);
           this.spinner.hide();
         }
       );
@@ -245,6 +250,8 @@ export class AdjustticketComponent implements OnInit {
     this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
+      rangeFromDate: [null],
+      rangeToDate: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -509,20 +516,53 @@ export class AdjustticketComponent implements OnInit {
   title = 'angular-app';
   fileName = 'Adjust-ticket.csv';
 
-  exportexcel(): void {
+  exportexcel(): void
+  {
+    this.spinner.show();
+    // this.completeReportRecord = this.searchFrom.value ; 
+    this.completExportdata= '';
 
-    /* pass here the table id */
-    let element = document.getElementById('print-section');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+        const data = {
+          rows_number:'all',
+          name: this.searchForm.value.name,
+          rangeFromDate:this.searchForm.value.rangeFromDate,
+          rangeToDate :this.searchForm.value.rangeToDate,
+        };
+
+        this.acts.getAllData(data).subscribe(
+          res => {
+            this.completExportdata = res.data.data.data;
+
+            let length = this.completExportdata.length;
+            // console.log( length);return;
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
+  exportdata(): void
+  {
+    let element = document.getElementById('export-section');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
 
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    /* save to file */
+    /* save to file */  
     XLSX.writeFile(wb, this.fileName);
 
+    this.spinner.hide();
   }
+  
+
+
+
   ResetAttributes() {
     this.busList = [];
     this.seatLayout = [];

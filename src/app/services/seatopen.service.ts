@@ -69,6 +69,20 @@ export class SeatopenService {
       catchError(this.errorHandler)
     )
   }
+
+  edit(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/editseatOpen', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  updateSeatOpen(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/updateSeatOpen', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   
   errorHandler(error) {
     let errorMessage = '';
