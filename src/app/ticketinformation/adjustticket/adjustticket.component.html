@@ -114,11 +114,11 @@
                                 <b *ngIf="cancelTkt.new_pnr!=''" class="text-danger">{{cancelTkt.new_pnr[0].pnr}}</b>
                             </td>
                             <td>
-                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                     {{cancelTkt.bus.name}}<br>
                                     {{cancelTkt.bus.bus_number}}
                                 </span>
-                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                     {{cancelTkt.bus_name}}<br>
                                     {{cancelTkt.bus_number}}
                                 </span>
@@ -126,11 +126,11 @@
 
                             <td>
                                 <b *ngIf="cancelTkt.new_pnr!=''" class="text-danger">
-                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                         {{cancelTkt.new_pnr[0].bus.name}}<br>
                                         {{cancelTkt.new_pnr[0].bus.bus_number}}
                                     </span>
-                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                         {{cancelTkt.new_pnr[0].bus_name}}<br>
                                         {{cancelTkt.new_pnr[0].bus_number}}
                                     </span>
@@ -156,10 +156,10 @@
                             </td>
                             <td>
                                 <span *ngFor="let seat of cancelTkt.booking_detail;">
-                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                        {{seat.bus_seats.seats.seatText}},
                                     </span>
-                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                        {{seat.seat_name}},
                                     </span>
                                 </span>
@@ -255,11 +255,11 @@
                                 <b *ngIf="cancelTkt.new_pnr!=''" class="text-danger">{{cancelTkt.new_pnr[0].pnr}}</b>
                             </td>
                             <td>
-                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                     {{cancelTkt.bus.name}}<br>
                                     {{cancelTkt.bus.bus_number}}
                                 </span>
-                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                     {{cancelTkt.bus_name}}<br>
                                     {{cancelTkt.bus_number}}
                                 </span>
@@ -267,11 +267,11 @@
 
                             <td>
                                 <b *ngIf="cancelTkt.new_pnr!=''" class="text-danger">
-                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                         {{cancelTkt.new_pnr[0].bus.name}}<br>
                                         {{cancelTkt.new_pnr[0].bus.bus_number}}
                                     </span>
-                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                         {{cancelTkt.new_pnr[0].bus_name}}<br>
                                         {{cancelTkt.new_pnr[0].bus_number}}
                                     </span>
@@ -297,10 +297,10 @@
                             </td>
                             <td>
                                 <span *ngFor="let seat of cancelTkt.booking_detail;">
-                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                        {{seat.bus_seats.seats.seatText}} || 
                                     </span>
-                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                    <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                        {{seat.seat_name}} || 
                                     </span>
                                 </span>

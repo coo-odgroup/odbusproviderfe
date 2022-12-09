@@ -87,11 +87,11 @@
                             <td>{{ i+1 }}</td>
                             <td>{{cancelTkt.pnr}}</td>
                             <td>
-                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                 {{cancelTkt.bus.name}}<br>
                                 {{cancelTkt.bus.bus_number}}
                                 </span>
-                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                     {{cancelTkt.bus_name}}<br>
                                     {{cancelTkt.bus_number}}
                                 </span>
@@ -109,12 +109,12 @@
 
                             <td>{{ cancelTkt.updated_at | date: 'dd/MM/yyyy' }}</td>
                             <td>
-                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                     <span *ngFor="let seat of cancelTkt.booking_detail;">
                                         {{seat.bus_seats.seats.seatText}},
                                     </span>
                                 </span>
-                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                     <span *ngFor="let seat of cancelTkt.booking_detail;">
                                         {{seat.seat_name}},
                                     </span>
@@ -186,19 +186,19 @@
                             <td>{{ i+1 }}</td>
                             <td>{{cancelTkt.pnr}}</td>
                             <td>
-                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                     {{cancelTkt.bus.name}}
                                 </span>
-                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                     {{cancelTkt.bus_name}}
                                 </span>
                                
                             </td>
                             <td>
-                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                     {{cancelTkt.bus.bus_number}}
                                 </span>
-                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                     {{cancelTkt.bus_number}}
                                 </span>
                                
@@ -219,12 +219,12 @@
 
                             <td>{{ cancelTkt.updated_at | date: 'dd/MM/yyyy' }}</td>
                             <td>
-                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin != 'DOLPHIN' && cancelTkt.origin != 'MANTIS' ">
                                     <span *ngFor="let seat of cancelTkt.booking_detail;">
                                         {{seat.bus_seats.seats.seatText}},
                                     </span>
                                 </span>
-                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' ">
+                                <span *ngIf="cancelTkt.origin == 'DOLPHIN' || cancelTkt.origin == 'MANTIS' ">
                                     <span *ngFor="let seat of cancelTkt.booking_detail;">
                                         {{seat.seatName}},
                                     </span>
