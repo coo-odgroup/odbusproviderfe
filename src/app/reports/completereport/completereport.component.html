@@ -325,7 +325,7 @@
                                         </table>
                                     </ng-template>
                                     <strong [ngbTooltip]="tipContent" class="text-danger">
-                                        {{complete.users.name}}
+                                        <span *ngIf="complete.users != null">{{complete.users.name}}</span>
                                     </strong> <br>
 
                                     [<b>{{complete.booking_detail[0].passenger_name}}</b>] -
@@ -334,7 +334,8 @@
                                     </span>
                                     <br>
 
-                                    <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
+                                    <span *ngIf="complete.users != null">
+                                        <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
                                         placement="bottom" ngbTooltip="Phone no {{complete.users.phone}}"
                                         (click)="copyMessage(complete.users.phone)">
                                         <i class="fas fa-mobile-alt"></i>
@@ -345,6 +346,8 @@
                                         (click)="copyMessage(complete.users.email)">
                                         <i class="far fa-envelope"></i>
                                     </button>
+                                    </span>
+                                   
 
                                 </td>
                                 <td>
@@ -616,9 +619,9 @@
                             </span>
                            
                         </td>
-                        <td>{{complete.users.name}}</td>
-                        <td>{{complete.users.phone}}</td>
-                        <td>{{complete.users.email}}</td>
+                        <td><span *ngIf="complete.users != null">{{complete.users.name}}</span></td>
+                        <td><span *ngIf="complete.users != null">{{complete.users.phone}}</span></td>
+                        <td><span *ngIf="complete.users != null">{{complete.users.email}}</span></td>
                         <td>{{complete.total_fare}}</td>
                         <td>{{complete.owner_fare}}</td>
                         <td>
