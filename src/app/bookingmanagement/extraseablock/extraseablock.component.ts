@@ -209,7 +209,7 @@ export class ExtraseablockComponent implements OnInit {
       date:this.searchForm.value.date,
       source_id:this.searchForm.value.source_id,
       destination_id:this.searchForm.value.destination_id,
-      USER_BUS_OPERATOR_ID: localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID: localStorage.getItem('BUS_OPERATOR_ID')
     };
 
     // console.log(data);
@@ -621,33 +621,35 @@ export class ExtraseablockComponent implements OnInit {
   }
 
   loadServices() {
-    this.busService.all().subscribe(
-      res => {
-        this.buses = res.data;
-        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
-      }
-    );
-    const BusOperator = {
-      USER_BUS_OPERATOR_ID: localStorage.getItem("USER_BUS_OPERATOR_ID")
+    // this.busService.all().subscribe(
+    //   res => {
+    //     this.buses = res.data;
+    //     this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+    //   }
+    // );
+
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
     };
-    if (BusOperator.USER_BUS_OPERATOR_ID == "") {
-      this.busOperatorService.readAll().subscribe(
-        record => {
-          this.busoperators = record.data;
-          this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
-
-        }
-      );
-    }
-    else {
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
-        record => {
-          this.busoperators = record.data;
-          this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
-
+        record=>{
+        this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
         }
       );
     }
+    else
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      ); 
+    }
+
     this.locationService.readAll().subscribe(
       records => {
         this.locations = records.data;

@@ -47,6 +47,7 @@ export class CouponComponent implements OnInit {
   busList:any=[];
   allBus:any=[];
   todayDate:any;
+  local_operator:any=[];
 
   constructor(
     private datePipe: DatePipe,
@@ -159,14 +160,26 @@ export class CouponComponent implements OnInit {
     this.spinner.show();
 
       /////// get all routes
+      const Bus_Operator={
+        USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      };
 
-      this.busstoppageService.AllRoutes().subscribe(
-      res => {
-        //console.log(res);
-        this.allRoutes=res.data;
-        this.spinner.hide();
+      if(Bus_Operator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')== '4'){
+        this.busstoppageService.AllRoutes(Bus_Operator).subscribe(
+          res => {
+            this.allRoutes=res.data;
+            this.spinner.hide();
+          }
+        ); 
+      }else{
+        this.busstoppageService.AllRoutes().subscribe(
+          res => {
+            this.allRoutes=res.data;
+            this.spinner.hide();
+          }
+        ); 
       }
-    ); 
+     
       
     }
 
@@ -182,8 +195,6 @@ export class CouponComponent implements OnInit {
     let typ=this.form.controls.coupon_type.value;
 
     let bus_operator_id=this.form.controls.bus_operator_id.value;
-
-   
     this.form.controls.bus_id.setValue(null);
 
     if(typ==3){
@@ -191,9 +202,9 @@ export class CouponComponent implements OnInit {
       this.form.controls.route.setValue(null);
 
     const param={
-      "bus_operator_id": bus_operator_id
+      "USER_BUS_OPERATOR_ID": bus_operator_id
     }
-    
+    // console.log(param);return
         this.spinner.show();
         /////// get all routes
 
@@ -221,9 +232,6 @@ export class CouponComponent implements OnInit {
     
         this.busstoppageService.GetBusList(param).subscribe(
           res => {
-            
-            // console.log("opr");
-            // console.log(res.data);
            this.busList=res.data;
             this.spinner.hide();
           }
@@ -249,12 +257,7 @@ export class CouponComponent implements OnInit {
     let route=this.form.controls.route.value;
 
     if(typ==3){
-
-      let bus_operator_id=this.form.controls.bus_operator_id.value;
-
-       /////////// get bus List     
-    
-
+    let bus_operator_id=this.form.controls.bus_operator_id.value;
      if(bus_operator_id.length>0 && route.length>0){    
    
          const param={
@@ -264,37 +267,42 @@ export class CouponComponent implements OnInit {
      
          this.busstoppageService.GetBusList(param).subscribe(
            res => {
-          //  console.log("opr_route");              
-          //    console.log(res.data);
             this.busList=res.data;
              this.spinner.hide();
            }
-         );
-   
+         );   
        }
-
     }
-
     else{
       if(route.length>0){
-
-        const param={
-          "route":route
-        };
-    
-        this.busstoppageService.GetBusList(param).subscribe(
-          res => {
-            // console.log("route");
-            // console.log(res.data);
-           this.busList=res.data;
-            this.spinner.hide();
-          }
-        );
-  
+        if(localStorage.getItem('ROLE_ID') != '1'){
+          // console.log('hello');
+          this.local_operator[0] = localStorage.getItem('BUS_OPERATOR_ID');
+          const param={
+            "route":route,
+            "bus_operator_id":this.local_operator,
+            // "bus_operator_id":localStorage.getItem('BUS_OPERATOR_ID').split(''),
+          };  
+          this.busstoppageService.GetBusList(param).subscribe(
+            res => {
+             this.busList=res.data;
+              this.spinner.hide();
+            }
+          ); 
+        }
+        else{
+          const param={
+            "route":route
+          };  
+          this.busstoppageService.GetBusList(param).subscribe(
+            res => {
+             this.busList=res.data;
+              this.spinner.hide();
+            }
+          ); 
+        }         
       }
-
     }
-
   }
 
   loadElements(index:any)
@@ -354,7 +362,8 @@ export class CouponComponent implements OnInit {
 
 
   search(pageurl="")
-  {      this.spinner.show();
+  {      
+    this.spinner.show();
     const data = {
       name:this.searchForm.value.name,  
       bus_operator_id:this.searchForm.value.bus_operator_id,  
@@ -365,7 +374,9 @@ export class CouponComponent implements OnInit {
       coupon_type:this.searchForm.value.coupon_type,  
       status:this.searchForm.value.status,  
       rows_number:this.searchForm.value.rows_number,
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      // USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      user_role:localStorage.getItem('ROLE_ID'),
+      user_id:localStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -538,7 +549,8 @@ export class CouponComponent implements OnInit {
       from_date:this.form.value.from_date,
       to_date:this.form.value.to_date,
       bus_operator_id:this.form.value.bus_operator_id,
-      created_by:localStorage.getItem('USERNAME') 
+      created_by:localStorage.getItem('USERNAME') ,
+      user_id:localStorage.getItem('USERID')
     };
 
    
@@ -587,28 +599,27 @@ export class CouponComponent implements OnInit {
 
 
   loadServices() {
+    
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID=="")
-    {
-      this.busOperatorService.readAll().subscribe(
-        record=>{
-        this.busoperators=record.data;
-        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
-        }
-      );
-    }
-    else
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')== '4')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
         }
       );
+    }
+    else
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      ); 
     }
 
     this.locationService.readAll().subscribe(
@@ -629,9 +640,11 @@ export class CouponComponent implements OnInit {
   onSelectAll() {
     const selected = this.busoperators.map(item => item.id);
     this.form.get('bus_operator_id').patchValue(selected);
+    
   }
   onClearAll() {
     this.form.get('bus_operator_id').patchValue([]);
+ 
   }
 
 
@@ -644,11 +657,16 @@ export class CouponComponent implements OnInit {
   }
 
   onSelectAllRoute() {
+    
     const selected = this.allRoutes.map(item => item.id);
     this.form.get('route').patchValue(selected);
+    this.GetBusList();
+
   }
   onClearAllRoute() {
+   
     this.form.get('route').patchValue([]);
+    this.GetBusList();
   }
 
 

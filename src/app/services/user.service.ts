@@ -31,6 +31,13 @@ export class UserService {
   }
 
   
+  specifieUser(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/specifieUser', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   getAllData(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL+ '/BusOperatorData', JSON.stringify(post), this.httpOptions)
     .pipe(

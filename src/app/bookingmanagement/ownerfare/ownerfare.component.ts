@@ -166,6 +166,7 @@ export class OwnerfareComponent implements OnInit {
       fromDate:this.searchForm.value.fromDate,
       toDate:this.searchForm.value.toDate,
       bus_operator_id:this.searchForm.value.bus_operator_id,
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
     };
 
     if (pageurl != "") {
@@ -292,19 +293,51 @@ export class OwnerfareComponent implements OnInit {
   }
 
   loadServices() {
-    this.busService.all().subscribe(
-      res => {
-        this.buses = res.data;
-        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '  (' + i.from_location[0].name + ' >> ' + i.to_location[0].name + ')'; return i; });
-      }
-    );
-    this.busOperatorService.readAll().subscribe(
-      res => {
-        this.busoperators = res.data;
-        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
+    if(localStorage.getItem('ROLE_ID')== '1'){
+      this.busService.all().subscribe(
+        res => {
+          this.buses = res.data;
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+        }
+      );
+    }
+    else {
+      let operatorId=localStorage.getItem("BUS_OPERATOR_ID");
+    if(operatorId)
+    {
+      this.busService.getByOperaor(operatorId).subscribe(
+        res=>{
+          this.buses=res.data;
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
 
-      }
-    );
+          
+        }
+      );
+    }    
+    }
+
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    {
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+        record=>{
+        this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      );
+    }
+    else
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      ); 
+    }
+
     this.locationService.readAll().subscribe(
       records => {
         this.locations = records.data;
@@ -352,28 +385,49 @@ export class OwnerfareComponent implements OnInit {
   // }
 
   findSource() {
+    this.buses= '';
     let source_id = this.ownerFareForm.controls.source_id.value;
     let destination_id = this.ownerFareForm.controls.destination_id.value;
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID"),
+      source_id:this.ownerFareForm.controls.source_id.value,
+      destination_id : this.ownerFareForm.controls.destination_id.value,      
+    };
 
-    if (source_id != null && destination_id != null) {
-      this.spinner.show();
-      this.busService.findSource(source_id, destination_id).subscribe(
-        res => {
-          this.buses = res.data;
-          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
-          this.spinner.hide();
-          
-        }
-      );
-    }
-    else {
-      this.busService.all().subscribe(
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    {
+      // findbySource
+      this.busService.findbySource(BusOperator).subscribe(
         res => {
           this.buses = res.data;
           this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
         }
       );
+      
     }
+    else
+    {
+      if (source_id != null && destination_id != null) {
+        this.spinner.show();
+        this.busService.findSource(source_id, destination_id).subscribe(
+          res => {
+            this.buses = res.data;
+            this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+            this.spinner.hide();
+            
+          }
+        );
+      }
+      else {
+        this.busService.all().subscribe(
+          res => {
+            this.buses = res.data;
+            this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+          }
+        );
+      }
+    }
+
   }
 
   addOwnerFare() {

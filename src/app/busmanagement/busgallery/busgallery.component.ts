@@ -424,16 +424,17 @@ export class BusgalleryComponent implements OnInit {
   page(label: any) {
     return label;
   }
+
   search(pageurl = "") {
     this.spinner.show();
     const data = {
       bus_id: this.searchForm.value.bus_id,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID')
     };
 
-    // console.log(data);
+    console.log(data);
     if (pageurl != "") {
       this.busgalleryService.getAllaginationData(pageurl, data).subscribe(
         res => {
@@ -472,35 +473,50 @@ export class BusgalleryComponent implements OnInit {
   }
 
   loadServices() {
-
-    this.busService.all().subscribe(
-      res => {
-        this.buses = res.data;
-        this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
-      }
-    );
-    const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
-    };
-    if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    if(localStorage.getItem('ROLE_ID')== '1'){
+      this.busService.all().subscribe(
+        res => {
+          this.buses = res.data;
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+        }
+      );
+    }
+    else if(localStorage.getItem('ROLE_ID')== '4'){
+      let operatorId=localStorage.getItem("BUS_OPERATOR_ID");
+    if(operatorId)
     {
-      this.busOperatorService.readAll().subscribe(
+      this.busService.getByOperaor(operatorId).subscribe(
+        res=>{
+          this.buses=res.data;
+          this.buses.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+
+          
+        }
+      );
+    }
+    
+    }
+
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    {
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
         this.busoperators=record.data;
-        // console.log(this.busoperators);
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
         }
       );
     }
     else
     {
-      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+      this.busOperatorService.readAll().subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-        
         }
-      );
+      ); 
     }
 
     

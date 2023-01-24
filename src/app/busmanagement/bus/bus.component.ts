@@ -404,12 +404,32 @@ export class BusComponent implements OnInit {
      this.search(); 
     //  this.LoadAllService(); 
 
-     this.busOperartorService.readAll().subscribe(
-      record=>{
-      this.operators=record.data;
-      this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-      }
-    );
+     
+
+    if(localStorage.getItem("BUS_OPERATOR_ID")!='' && localStorage.getItem('ROLE_ID')!= '1')
+    {
+      this.busOperartorService.readOne(localStorage.getItem("BUS_OPERATOR_ID")).subscribe(
+        record=>{
+        this.operators=record.data;
+        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      );
+    }else{
+      this.busOperartorService.readAll().subscribe(
+        record=>{
+        this.operators=record.data;
+        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      );
+    }
+
+
+
+
+
+
+
+
     this.locationService.readAll().subscribe(
       records=>{
       this.locations=records.data;
@@ -431,12 +451,11 @@ export class BusComponent implements OnInit {
       source_id: this.searchForm.value.source_id,
       destination_id: this.searchForm.value.destination_id,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
+      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID'),
       user_role:localStorage.getItem('ROLE_ID'),
       user_id:localStorage.getItem('USERID')
     };
 
-    
     if(pageurl!="")
     {
       this.busService.getAllaginationData(pageurl,data).subscribe(
@@ -600,84 +619,128 @@ export class BusComponent implements OnInit {
   LoadAllService()
   {
     const UserInfo={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID"),
       user_role:localStorage.getItem('ROLE_ID'),
       user_id:localStorage.getItem('USERID')
     };
-    if(UserInfo.USER_BUS_OPERATOR_ID=="")
+    // if(UserInfo.USER_BUS_OPERATOR_ID=="")
+    // {
+    //   this.busOperartorService.userOperators(UserInfo).subscribe(
+    //     record=>{
+    //     this.operators=record.data;
+        
+    //     this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
+    //     }
+    //   );
+    //   this.busTypeService.readAll().subscribe(
+    //     rec=>{
+    //     this.busTypes=rec.data;
+
+    //     }
+    //   );
+    //   this.amenitiesService.all().subscribe(
+    //     res=>{
+    //       this.amenities=res.data;
+    //     }
+    //   );
+    //   this.safetyService.readAll().subscribe(res=>{
+    //     this.safetyies=res.data;
+        
+    //   });
+    //   this.cancellationslabService.readAllUserData(UserInfo).subscribe(
+    //     resp=>{
+    //     this.cancellationslabs=resp.data;
+    //     }
+    //   );
+    //   this.seatlayoutService.readAllUserData(UserInfo).subscribe(
+    //     resp=>{
+    //     this.seatLayouts=resp.data;
+    //     }
+    //   );
+    //   this.safetyService.readAll().subscribe(res=>{
+    //   this.safetyies=res.data;
+    // });
+    // }
+    // else
+    // {
+    //   this.busOperartorService.readOne(UserInfo.USER_BUS_OPERATOR_ID).subscribe(
+    //     record=>{
+    //     this.operators=record.data;
+    //     this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+
+    //     }
+    //   );
+    //   this.busTypeService.readAll().subscribe(
+    //     rec=>{
+    //     this.busTypes=rec.data;
+        
+    //     }
+    //   );
+    //   this.cancellationslabService.readAllOperator(UserInfo).subscribe(
+    //     resp=>{
+    //     this.cancellationslabs=resp.data;
+    //     }
+    //   );
+    //   this.seatlayoutService.readAllOperator(UserInfo).subscribe(
+    //     resp=>{
+    //     this.seatLayouts=resp.data;
+    //     }
+    //   );
+    //   this.amenitiesService.all().subscribe(
+    //     res=>{
+    //       this.amenities=res.data;
+    //     }
+    //   );
+    //   this.safetyService.readAll().subscribe(res=>{
+    //     this.safetyies=res.data;
+    //   });
+    // }
+    if(localStorage.getItem("BUS_OPERATOR_ID")!='' && localStorage.getItem('ROLE_ID')!= '1')
     {
-      this.busOperartorService.userOperators(UserInfo).subscribe(
+      this.busOperartorService.readOne(localStorage.getItem("BUS_OPERATOR_ID")).subscribe(
         record=>{
         this.operators=record.data;
-        
         this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      );
+    }else{
+      this.busOperartorService.readAll().subscribe(
+        record=>{
+        this.operators=record.data;
+        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      );
+    }
 
-        }
-      );
-      this.busTypeService.readAll().subscribe(
-        rec=>{
-        this.busTypes=rec.data;
+    this.busTypeService.readAll().subscribe(
+      rec=>{
+      this.busTypes=rec.data;
 
-        }
-      );
-      this.amenitiesService.all().subscribe(
-        res=>{
-          this.amenities=res.data;
-        }
-      );
-      this.safetyService.readAll().subscribe(res=>{
-        this.safetyies=res.data;
-        
-      });
-      this.cancellationslabService.readAllUserData(UserInfo).subscribe(
-        resp=>{
-        this.cancellationslabs=resp.data;
-        }
-      );
-      this.seatlayoutService.readAllUserData(UserInfo).subscribe(
-        resp=>{
-        this.seatLayouts=resp.data;
-        }
-      );
-      this.safetyService.readAll().subscribe(res=>{
+      }
+    );
+    this.amenitiesService.all().subscribe(
+      res=>{
+        this.amenities=res.data;
+      }
+    );
+    this.safetyService.readAll().subscribe(res=>{
       this.safetyies=res.data;
+      
     });
-    }
-    else
-    {
-      this.busOperartorService.readOne(UserInfo.USER_BUS_OPERATOR_ID).subscribe(
-        record=>{
-        this.operators=record.data;
-        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
-        }
-      );
-      this.busTypeService.readAll().subscribe(
-        rec=>{
-        this.busTypes=rec.data;
-        
-        }
-      );
-      this.cancellationslabService.readAllOperator(UserInfo).subscribe(
-        resp=>{
-        this.cancellationslabs=resp.data;
-        }
-      );
-      this.seatlayoutService.readAllOperator(UserInfo).subscribe(
-        resp=>{
-        this.seatLayouts=resp.data;
-        }
-      );
-      this.amenitiesService.all().subscribe(
-        res=>{
-          this.amenities=res.data;
-        }
-      );
-      this.safetyService.readAll().subscribe(res=>{
-        this.safetyies=res.data;
-      });
-    }
-    
+    this.cancellationslabService.readAllUserData(UserInfo).subscribe(
+      resp=>{
+      this.cancellationslabs=resp.data;
+      }
+    );
+    this.seatlayoutService.readAllUserData(UserInfo).subscribe(
+      resp=>{
+      this.seatLayouts=resp.data;
+      }
+    );
+    this.safetyService.readAll().subscribe(res=>{
+    this.safetyies=res.data;
+  });
     
     this.seatingtypeService.readAll().subscribe(
       records=>{
@@ -1223,8 +1286,9 @@ export class BusComponent implements OnInit {
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
         this.selectedSeats=seatData.data['seat']; 
-        //console.log(this.selectedSeats);       
-        //this.spinner.hide();
+        console.log(this.selectedSeats);       
+        // this.spinner.hide();
+        // return
 
 
 
@@ -2887,6 +2951,7 @@ export class BusComponent implements OnInit {
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
         this.selectedSeats=seatData.data['seat'];        
+      
         //this.spinner.hide();
 
         this.seatlayoutService.getByID(this.busRecord.bus_seat_layout_id).subscribe(

@@ -119,13 +119,13 @@ const OperatorItems =[{
           icon:'feather icon-twitter',
           url: 'busmanagement/busschedule'
         },
-        {
-          id: 'Offers',
-          title: 'Offers',
-          type: 'item',
-          icon:'feather icon-watch',
-          url: 'busmanagement/offers'
-        }
+        // {
+        //   id: 'Offers',
+        //   title: 'Offers',
+        //   type: 'item',
+        //   icon:'feather icon-watch',
+        //   url: 'busmanagement/offers'
+        // }
 
 
       ]
@@ -163,7 +163,22 @@ const OperatorItems =[{
           type: 'item',
           icon:'feather icon-shield',
           url: 'bookingmanagement/extraseatblock'
-        }
+        },
+        {
+          id: 'bookingseized',
+          title: 'Extend Closing Hour',// title: 'Booking Seized',
+          type: 'item',
+          icon:'feather icon-command',
+          url: 'bookingmanagement/bookingseized'
+        },
+        
+        {
+          id: 'ownerfare',
+          title: 'Owner Fare',
+          type: 'item',
+          icon:'feather icon-trending-up',
+          url: 'bookingmanagement/ownerfare'
+        },
       ]
     },
     {

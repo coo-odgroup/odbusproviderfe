@@ -77,34 +77,29 @@ export class BustypeComponent implements OnInit {
     
   }
   loadServices() {
-    const UserInfo={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
     };
-
-    if(UserInfo.USER_BUS_OPERATOR_ID=="")
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
     {
-      this.busOperatorService.userOperators(UserInfo).subscribe(
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
         }
       );
     }
     else
     {
-      this.busOperatorService.readOne(UserInfo.USER_BUS_OPERATOR_ID).subscribe(
+      this.busOperatorService.readAll().subscribe(
         record=>{
         this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
         }
-      );
+      ); 
     }
-
   }
+  
   page(label:any){
     return label;
    }
@@ -117,7 +112,7 @@ export class BustypeComponent implements OnInit {
       name: this.searchForm.value.name,
       bus_type: this.searchForm.value.bus_type,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID'),
+      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID'),
       user_role:localStorage.getItem('ROLE_ID'),
       user_id:localStorage.getItem('USERID')
     };

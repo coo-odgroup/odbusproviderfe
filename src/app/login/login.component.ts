@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
                  
         if(res.status==1){ 
           this.loginRecord=res.data;
+          // console.log(this.loginRecord);
           localStorage.setItem("USERRECORDS",JSON.stringify(this.loginRecord));
           localStorage.setItem("USERID",JSON.stringify(this.loginRecord.id)); 
           localStorage.setItem("ROLE_ID",JSON.stringify(this.loginRecord.role_id)); 
@@ -70,7 +71,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("USER_BUS_OPERATOR_ID",''); 
           if(this.loginRecord.role_id==4)
           {
-            localStorage.setItem("USER_BUS_OPERATOR_ID",this.loginRecord.user_bus_operator.bus_operator.id); 
+            localStorage.setItem("BUS_OPERATOR_ID",this.loginRecord.bus_operator_id); 
           }
           // var ROLE_ID = localStorage.getItem("ROLE_ID");
           // var USERID = localStorage.getItem("USERID");

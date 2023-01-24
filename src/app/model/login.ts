@@ -9,6 +9,7 @@ export interface Login {
     user_type:any;
     role_id:any;
     user_bus_operator:user_bus_operator;
+    bus_operator_id:any;
 }
 export interface Role{
     id:any,

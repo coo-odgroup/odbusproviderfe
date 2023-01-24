@@ -140,40 +140,48 @@ export class CancellationslabComponent implements OnInit {
     this.loadServices();
   }
   loadServices() {
+
+    // if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    // {
+    //   this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+    //     record=>{
+    //     this.busoperators=record.data;
+    //     this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+    //     }
+    //   );
+    // }
+    // else
+    // {
+    //   this.busOperatorService.readAll().subscribe(
+    //     record=>{
+    //     this.busoperators=record.data;
+    //     this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+    //     }
+    //   ); 
+    // }
+
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      user_id:localStorage.getItem("USERID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID=="")
-    {
-      this.busOperatorService.userOperators(BusOperator).subscribe(
-        record=>{
-        this.busoperators=record.data;
-        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
-        }
-      );
-    }
-    else
-    {
-      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
-        record=>{
-        this.busoperators=record.data;
-        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-
-        }
-      );
-    }
-
      ////// get all user list
+    if(localStorage.getItem("USERID")!="" && localStorage.getItem('ROLE_ID')!= '1'){
 
-     this.userService.getAllUser().subscribe(
-      record=>{
-      this.users=record.data;
-      this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
-      }
-    );
+      this.userService.specifieUser(BusOperator).subscribe(
+        record=>{
+        this.users=record.data;
+        this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+        }
+      );
+
+    }else{
+      this.userService.getAllUser().subscribe(
+        record=>{
+        this.users=record.data;
+        this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
+        }
+      );
+    }
+     
 
   }
   page(label:any){
