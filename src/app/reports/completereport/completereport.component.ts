@@ -36,9 +36,10 @@ export class CompletereportComponent implements OnInit {
   completExportdata: any ;
 
   apiProvider = [
-    {  name: 'DOLPHIN'}
+    {  name: 'DOLPHIN'},
+    {  name: 'MANTIS'}
   ];
-
+  role =localStorage.getItem('ROLE_ID');
   
   constructor(
     private spinner: NgxSpinnerService,
@@ -153,7 +154,8 @@ export class CompletereportComponent implements OnInit {
       rangeToDate :this.completeReportRecord.rangeToDate,
       hasGst :this.completeReportRecord.hasGst,
       apiUser :this.searchFrom.value.apiUser,       
-      device_type :this.searchFrom.value.device_type,       
+      device_type :this.searchFrom.value.device_type,   
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")    
     };
        
     // console.log(data);
@@ -225,13 +227,29 @@ export class CompletereportComponent implements OnInit {
 
 
   loadServices() {
-
-    this.busOperatorService.readAll().subscribe(
-      res => {
-        this.busoperators = res.data;
+    const BusOperator={
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+    };
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    {
+      this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+        record=>{
+        this.busoperators=record.data;
         this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-      }
-    );
+        }
+      );
+    }
+    else
+    {
+      this.busOperatorService.readAll().subscribe(
+        record=>{
+        this.busoperators=record.data;
+        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+        }
+      ); 
+    }
+
+
     this.locationService.readAll().subscribe(
       records=>{
         this.locations=records.data;

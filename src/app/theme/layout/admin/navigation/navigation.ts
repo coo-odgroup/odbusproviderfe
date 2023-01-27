@@ -186,7 +186,14 @@ const OperatorItems =[{
       title: 'Reports',
       type: 'collapse',
       icon: 'feather icon-file-text',
-      children: [   
+      children: [
+        {
+          id: 'completereport',
+          title: 'Complete Report',
+          type: 'item',
+          icon:'feather icon-pie-chart',
+          url: 'reports/completeReport'
+        },   
         // {
         //   id: 'seatopenreport',
         //   title: 'Seat Open Report',
@@ -194,13 +201,13 @@ const OperatorItems =[{
         //   icon:'feather icon-pie-chart',
         //   url: 'reports/seatopenReport'
         // },
-        {
-          id: 'extraseatopenreport',
-          title: 'Extra Seat Open Report',
-          type: 'item',
-          icon:'feather icon-pie-chart',
-          url: 'reports/extraseatopenReport'
-        },
+        // {
+        //   id: 'extraseatopenreport',
+        //   title: 'Extra Seat Open Report',
+        //   type: 'item',
+        //   icon:'feather icon-pie-chart',
+        //   url: 'reports/extraseatopenReport'
+        // },
         // {
         //   id: 'seatblockreport',
         //   title: 'Seat Block Report',
@@ -215,13 +222,13 @@ const OperatorItems =[{
           icon:'feather icon-pie-chart',
           url: 'reports/cancleticketsReport'
         },
-        {
-          id: 'buscancellationreport',
-          title: 'Bus Cancellation Report',
-          type: 'item',
-          icon:'feather icon-pie-chart',
-          url: 'reports/buscancellationreport'
-        }
+        // {
+        //   id: 'buscancellationreport',
+        //   title: 'Bus Cancellation Report',
+        //   type: 'item',
+        //   icon:'feather icon-pie-chart',
+        //   url: 'reports/buscancellationreport'
+        // }
       ]
     },
     {
@@ -230,6 +237,77 @@ const OperatorItems =[{
       type: 'item',
       icon: 'feather icon-droplet',
       url: 'howtouse'
+    },
+    {
+      id: 'setting',
+      title: 'Website CMS Setting',
+      type: 'collapse',
+      icon: 'feather icon-layers',
+      children: [
+        {
+          id: 'pagecontent',
+          title: 'Page Content',
+          type: 'item',
+          icon:'feather icon-github',
+          url: 'setting/pagecontent'
+        }, 
+        {
+          id: 'socialmedia',
+          title: 'Social Media',
+          type: 'item',
+          icon:'feather icon-award',
+          url: 'setting/socialmedia'
+        },
+        {
+          id: 'userreview',
+          title: 'User Review',
+          type: 'item',
+          icon:'feather icon-message-circle',
+          url: 'setting/userreview'
+        },
+        {
+          id: 'testimonial',
+          title: 'Testimonial',
+          type: 'item',
+          icon:'feather icon-mail',
+          url: 'setting/testimonial'
+        },
+        {
+          id: 'bannermanagement',
+          title: 'Banner Management',
+          type: 'item',
+          icon:'feather icon-package',
+          url: 'setting/bannermanagement'
+        },
+        {
+          id: 'seosetting',
+          title: 'SEO Setting',
+          type: 'item',
+          icon:'feather icon-link',
+          url: 'setting/seosetting'
+        },
+        {
+          id: 'specialslider',
+          title: 'Special Slider',
+          type: 'item',
+          icon:'feather icon-speaker',
+          url: 'setting/specialslider'
+        },
+        {
+          id: 'faq',
+          title: 'FAQ',
+          type: 'item',
+          icon:'icon feather icon-help-circle',
+          url: 'setting/faq'
+        },
+        {
+          id: 'mastersetting',
+          title: 'Master Setting',
+          type: 'item',
+          icon:'icon feather icon-target',
+          url: 'setting/mastersetting'
+        }
+      ]
     },
 
   ]

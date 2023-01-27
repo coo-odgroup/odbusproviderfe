@@ -497,12 +497,14 @@ export class OwnerfareComponent implements OnInit {
   editOwnerFare(event: Event, id: any) {
     this.spinner.show();
     this.ownerFareRecord = this.ownerFares[id];
-    this.busOperatorService.readAll().subscribe(
-      res => {
-        this.busoperators = res.data;
-        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
-      }
-    );
+    
+    // this.busOperatorService.readAll().subscribe(
+    //   res => {
+    //     this.busoperators = res.data;
+    //     this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
+    //   }
+    // );
+
     this.locationService.readAll().subscribe(
       records => {
         this.locations = records.data;

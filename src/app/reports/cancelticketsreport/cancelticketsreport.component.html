@@ -76,14 +76,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                             
-                                        <div class="form-group">
-                                            <input type="text" class="form-control sml_input" placeholder="Enter pnr"
-                                                required formControlName="pnr" />
-                                        </div>
+                                <div class="col-md-2">                             
+                                    <div class="form-group">
+                                        <input type="text" class="form-control sml_input" placeholder="Enter pnr"
+                                            required formControlName="pnr" />
+                                    </div>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-1"  *ngIf="role == '1'">
                                     <div class="form-group">
                                         <ng-select [items]="apiProvider" bindLabel="name" bindValue="name"
                                         placeholder="Api Provider"
