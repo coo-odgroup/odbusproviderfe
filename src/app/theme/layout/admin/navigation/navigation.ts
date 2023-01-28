@@ -231,13 +231,13 @@ const OperatorItems =[{
         // }
       ]
     },
-    {
-      id: 'howtouse',
-      title: 'How to Use',
-      type: 'item',
-      icon: 'feather icon-droplet',
-      url: 'howtouse'
-    },
+    // {
+    //   id: 'howtouse',
+    //   title: 'How to Use',
+    //   type: 'item',
+    //   icon: 'feather icon-droplet',
+    //   url: 'howtouse'
+    // },
     {
       id: 'setting',
       title: 'Website CMS Setting',

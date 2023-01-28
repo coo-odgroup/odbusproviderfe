@@ -55,6 +55,8 @@ export class BusscheduleComponent implements OnInit {
   unSubscribeData: any;
   locations: any;
   url: string;
+  role=localStorage.getItem('ROLE_ID');
+
 
   constructor(  private locationService:LocationService,private buscanCellationService: BuscancellationService,private spinner: NgxSpinnerService,private busscheduleService: BusscheduleService,private http: HttpClient,private notificationService: NotificationService, private fb: FormBuilder,config: NgbModalConfig, private modalService: NgbModal,private busOperatorService:BusOperatorService,private busService:BusService)
    {

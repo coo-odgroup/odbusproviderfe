@@ -90,7 +90,7 @@
             [useExistingCss]="true" title="Print">
             <i class="fas fa-print"> </i> Print
           </button>
-          <button type="button" class="btn btn-primary  sml_input" (click)="unschedulebuslist();OpenModal(unschedule);"
+          <button *ngIf="role=='1'" type="button" class="btn btn-primary  sml_input" (click)="unschedulebuslist();OpenModal(unschedule);"
             title="search">
             <i class="fas fa-list"> </i> UNSCHEDULED BUS LIST
           </button>
