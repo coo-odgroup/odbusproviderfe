@@ -10,10 +10,12 @@ import { ApibookingsticketsComponent } from './apibookingstickets/apibookingstic
 import { ApicancelticketsComponent } from './apicanceltickets/apicanceltickets.component';
 import { ApipnrdisputesComponent } from './apipnrdisputes/apipnrdisputes.component';
 import { ManageclientsoperatorComponent } from './manageclientsoperator/manageclientsoperator.component';
+import { AlltransactionreportComponent } from './alltransactionreport/alltransactionreport.component';
 
 
 @NgModule({
   declarations: [
+  
   ],
   imports: [
     CommonModule,

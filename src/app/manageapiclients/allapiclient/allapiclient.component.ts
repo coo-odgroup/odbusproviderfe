@@ -58,13 +58,13 @@ export class AllapiclientComponent implements OnInit {
         location: [null, Validators.compose([Validators.required])],
         pancard_no: [null, Validators.compose([Validators.required])],
         organization_name: [null],
+        has_gst: [null],
         address: [null, Validators.compose([Validators.required])],
         landmark: [null, Validators.compose([Validators.required])],
         pincode: [null, Validators.compose([Validators.required])],
         street: [null, Validators.compose([Validators.required])],
         city: [null, Validators.compose([Validators.required])]      
     });  
-
     this.formConfirm=this.fb.group({
         id:[null]
     });
@@ -144,6 +144,7 @@ export class AllapiclientComponent implements OnInit {
       location:'',     
       pancard_no:'',
       organization_name:'',
+      has_gst:'',
       address:'',
       landmark:'',
       pincode:''
@@ -157,6 +158,7 @@ export class AllapiclientComponent implements OnInit {
       location: [null, Validators.compose([Validators.required])],     
       pancard_no: [null, Validators.compose([Validators.required])],
       organization_name: [null],
+      has_gst: [null],
       address: [null, Validators.compose([Validators.required])],
       landmark: [null, Validators.compose([Validators.required])],
       pincode: [null, Validators.compose([Validators.required])],
@@ -171,6 +173,8 @@ export class AllapiclientComponent implements OnInit {
 
     this.spinner.show();
     let id:any=this.apiuserRecord.id;  
+    // console.log(this.form.value);
+    // return
     const data = {
         name:this.form.value.name,
         email:this.form.value.email,
@@ -179,6 +183,7 @@ export class AllapiclientComponent implements OnInit {
         location:this.form.value.location,
         pancard_no:this.form.value.pancard_no,
         organization_name:this.form.value.organization_name,
+        has_gst:this.form.value.has_gst,
         address:this.form.value.address,
         landmark:this.form.value.landmark,
         city:this.form.value.city,
@@ -241,6 +246,7 @@ export class AllapiclientComponent implements OnInit {
           location: [this.apiuserRecord.location,Validators.compose([Validators.required])],
           pancard_no: [this.apiuserRecord.pancard_no,Validators.compose([Validators.required])],
           organization_name: [this.apiuserRecord.organization_name,Validators.compose([Validators.required])],
+          has_gst: [this.apiuserRecord.has_gst],
           address: [this.apiuserRecord.address,Validators.compose([Validators.required])],
           landmark: [this.apiuserRecord.landmark,Validators.compose([Validators.required])],
           pincode: [this.apiuserRecord.pincode,Validators.compose([Validators.required])],

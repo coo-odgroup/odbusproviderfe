@@ -236,7 +236,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
   editAgentCommission(event : Event, id : any)
   {
       this.aapiusercommissionslabRecord=this.apiusercommissionslab[id] ;
-      console.log(this.aapiusercommissionslabRecord);
+      // console.log(this.aapiusercommissionslabRecord);
       this.form = this.fb.group({
         id:[this.aapiusercommissionslabRecord.id],
         user_id: [this.aapiusercommissionslabRecord.user_id, Validators.compose([Validators.required])],

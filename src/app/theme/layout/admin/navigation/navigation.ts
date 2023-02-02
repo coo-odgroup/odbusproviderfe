@@ -1112,6 +1112,13 @@ const NavigationItems = [
             url: 'manageapiclients/apclientwalletbalance'
           },
           {
+            id: 'alltransactionreport',
+            title: 'All transaction report',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'manageapiclients/alltransactionreport'
+          },
+          {
             id: 'apiclientcommissionslab',
             title: 'API Client CommissionSlab',
             type: 'item',

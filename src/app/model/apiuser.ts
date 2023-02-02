@@ -8,6 +8,7 @@ export interface Apiuser {
     location:any;    
     pancard_no:any;
     organization_name:any;
+    has_gst:any;
     address:any;
     street:any;
     landmark:any;

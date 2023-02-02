@@ -37,6 +37,10 @@ const routes: Routes = [
         path: 'manageclientsoperator',
         loadChildren: () => import('./manageclientsoperator/manageclientsoperator.module').then(module => module.ManageClientsOperatorModule)
       },     
+      {
+        path: 'alltransactionreport',
+        loadChildren: () => import('./alltransactionreport/alltransactionreport.model').then(module => module.AlltransactionreportModule)
+      },     
     ]
   }
 ];
