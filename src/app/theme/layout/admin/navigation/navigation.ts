@@ -48,20 +48,20 @@ const OperatorItems =[{
       type: 'collapse',
       icon: 'feather icon-tv',
       children: [
-        {
-          id: 'managelocation',
-          title: 'Location',
-          type: 'item',
-          icon: 'feather icon-map-pin',
-          url: 'busmanagement/managelocation'
-        },
-        {
-          id: 'BoardingDropping',
-          title: 'Boarding/Dropping',
-          type: 'item',
-          icon:'feather icon-minimize-2',
-          url: 'busmanagement/BoardingDropping'
-        },
+        // {
+        //   id: 'managelocation',
+        //   title: 'Location',
+        //   type: 'item',
+        //   icon: 'feather icon-map-pin',
+        //   url: 'busmanagement/managelocation'
+        // },
+        // {
+        //   id: 'BoardingDropping',
+        //   title: 'Boarding/Dropping',
+        //   type: 'item',
+        //   icon:'feather icon-minimize-2',
+        //   url: 'busmanagement/BoardingDropping'
+        // },
         {
           id: 'manageus',
           title: 'Bus',
@@ -84,34 +84,34 @@ const OperatorItems =[{
           icon:'feather icon-image',
           url: 'busmanagement/busgallery'
         },
-        {
-          id: 'seatfare',
-          title: 'Seat Fare',
-          type: 'item',
-          icon:'feather icon-hash',
-          url: 'busmanagement/seatfare'
-        },
-        {
-          id: 'bustype',
-          title: 'Bus Type',
-          type: 'item',
-          icon:'feather icon-share-2',
-          url: 'busmanagement/bustype'
-        },
-        {
-          id: 'SeatLayout ',
-          title: 'Seat Layout',
-          type: 'item',
-          icon:'feather icon-server',
-          url: 'busmanagement/SeatLayout'
-        },
-        {
-          id: 'CancellationSlab',
-          title: 'Cancellation Slab',
-          type: 'item',
-          icon:'feather icon-sidebar',
-          url: 'busmanagement/cancellationslab'
-        },
+        // {
+        //   id: 'seatfare',
+        //   title: 'Seat Fare',
+        //   type: 'item',
+        //   icon:'feather icon-hash',
+        //   url: 'busmanagement/seatfare'
+        // },
+        // {
+        //   id: 'bustype',
+        //   title: 'Bus Type',
+        //   type: 'item',
+        //   icon:'feather icon-share-2',
+        //   url: 'busmanagement/bustype'
+        // },
+        // {
+        //   id: 'SeatLayout ',
+        //   title: 'Seat Layout',
+        //   type: 'item',
+        //   icon:'feather icon-server',
+        //   url: 'busmanagement/SeatLayout'
+        // },
+        // {
+        //   id: 'CancellationSlab',
+        //   title: 'Cancellation Slab',
+        //   type: 'item',
+        //   icon:'feather icon-sidebar',
+        //   url: 'busmanagement/cancellationslab'
+        // },
         {
           id: 'BusSchedule',
           title: 'Bus Schedule',
@@ -157,20 +157,20 @@ const OperatorItems =[{
           icon:'feather icon-shield',
           url: 'bookingmanagement/seatopen'
         },
-        {
-          id: 'extraseatblock',
-          title: 'Extra Seat Block',
-          type: 'item',
-          icon:'feather icon-shield',
-          url: 'bookingmanagement/extraseatblock'
-        },
-        {
-          id: 'bookingseized',
-          title: 'Extend Closing Hour',// title: 'Booking Seized',
-          type: 'item',
-          icon:'feather icon-command',
-          url: 'bookingmanagement/bookingseized'
-        },
+        // {
+        //   id: 'extraseatblock',
+        //   title: 'Extra Seat Block',
+        //   type: 'item',
+        //   icon:'feather icon-shield',
+        //   url: 'bookingmanagement/extraseatblock'
+        // },
+        // {
+        //   id: 'bookingseized',
+        //   title: 'Extend Closing Hour',// title: 'Booking Seized',
+        //   type: 'item',
+        //   icon:'feather icon-command',
+        //   url: 'bookingmanagement/bookingseized'
+        // },
         
         {
           id: 'ownerfare',
@@ -238,77 +238,77 @@ const OperatorItems =[{
     //   icon: 'feather icon-droplet',
     //   url: 'howtouse'
     // },
-    {
-      id: 'setting',
-      title: 'Website CMS Setting',
-      type: 'collapse',
-      icon: 'feather icon-layers',
-      children: [
-        {
-          id: 'pagecontent',
-          title: 'Page Content',
-          type: 'item',
-          icon:'feather icon-github',
-          url: 'setting/pagecontent'
-        }, 
-        {
-          id: 'socialmedia',
-          title: 'Social Media',
-          type: 'item',
-          icon:'feather icon-award',
-          url: 'setting/socialmedia'
-        },
-        {
-          id: 'userreview',
-          title: 'User Review',
-          type: 'item',
-          icon:'feather icon-message-circle',
-          url: 'setting/userreview'
-        },
-        {
-          id: 'testimonial',
-          title: 'Testimonial',
-          type: 'item',
-          icon:'feather icon-mail',
-          url: 'setting/testimonial'
-        },
-        {
-          id: 'bannermanagement',
-          title: 'Banner Management',
-          type: 'item',
-          icon:'feather icon-package',
-          url: 'setting/bannermanagement'
-        },
-        {
-          id: 'seosetting',
-          title: 'SEO Setting',
-          type: 'item',
-          icon:'feather icon-link',
-          url: 'setting/seosetting'
-        },
-        {
-          id: 'specialslider',
-          title: 'Special Slider',
-          type: 'item',
-          icon:'feather icon-speaker',
-          url: 'setting/specialslider'
-        },
-        {
-          id: 'faq',
-          title: 'FAQ',
-          type: 'item',
-          icon:'icon feather icon-help-circle',
-          url: 'setting/faq'
-        },
-        {
-          id: 'mastersetting',
-          title: 'Master Setting',
-          type: 'item',
-          icon:'icon feather icon-target',
-          url: 'setting/mastersetting'
-        }
-      ]
-    },
+    // {
+    //   id: 'setting',
+    //   title: 'Website CMS Setting',
+    //   type: 'collapse',
+    //   icon: 'feather icon-layers',
+    //   children: [
+    //     {
+    //       id: 'pagecontent',
+    //       title: 'Page Content',
+    //       type: 'item',
+    //       icon:'feather icon-github',
+    //       url: 'setting/pagecontent'
+    //     }, 
+    //     {
+    //       id: 'socialmedia',
+    //       title: 'Social Media',
+    //       type: 'item',
+    //       icon:'feather icon-award',
+    //       url: 'setting/socialmedia'
+    //     },
+    //     {
+    //       id: 'userreview',
+    //       title: 'User Review',
+    //       type: 'item',
+    //       icon:'feather icon-message-circle',
+    //       url: 'setting/userreview'
+    //     },
+    //     {
+    //       id: 'testimonial',
+    //       title: 'Testimonial',
+    //       type: 'item',
+    //       icon:'feather icon-mail',
+    //       url: 'setting/testimonial'
+    //     },
+    //     {
+    //       id: 'bannermanagement',
+    //       title: 'Banner Management',
+    //       type: 'item',
+    //       icon:'feather icon-package',
+    //       url: 'setting/bannermanagement'
+    //     },
+    //     {
+    //       id: 'seosetting',
+    //       title: 'SEO Setting',
+    //       type: 'item',
+    //       icon:'feather icon-link',
+    //       url: 'setting/seosetting'
+    //     },
+    //     {
+    //       id: 'specialslider',
+    //       title: 'Special Slider',
+    //       type: 'item',
+    //       icon:'feather icon-speaker',
+    //       url: 'setting/specialslider'
+    //     },
+    //     {
+    //       id: 'faq',
+    //       title: 'FAQ',
+    //       type: 'item',
+    //       icon:'icon feather icon-help-circle',
+    //       url: 'setting/faq'
+    //     },
+    //     {
+    //       id: 'mastersetting',
+    //       title: 'Master Setting',
+    //       type: 'item',
+    //       icon:'icon feather icon-target',
+    //       url: 'setting/mastersetting'
+    //     }
+    //   ]
+    // },
 
   ]
 }];
@@ -418,6 +418,13 @@ const NavigationItems = [
             type: 'item',
             icon: 'feather icon-map-pin',
             url: 'busmanagement/managelocation'
+          },
+          {
+            id: 'managestate',
+            title: 'Manage State',
+            type: 'item',
+            icon: 'feather icon-map-pin',
+            url: 'busmanagement/managestate'
           },
           {
             id: 'BoardingDropping',

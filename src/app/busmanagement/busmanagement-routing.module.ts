@@ -99,6 +99,11 @@ const routes: Routes = [
         path:'offers',
         loadChildren: () => import('./offers/offers.module').then(module => module.OfferModule)
       }
+      ,
+      {
+        path:'managestate',
+        loadChildren: () => import('./managestate/managestate.module').then(module => module.ManageStateModule)
+      }
     ]
   }
 ];

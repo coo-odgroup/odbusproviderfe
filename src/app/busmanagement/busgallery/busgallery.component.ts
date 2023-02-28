@@ -58,6 +58,8 @@ export class BusgalleryComponent implements OnInit {
   img_3: any;
   img_5: any;
   img_4: any;
+
+  role =localStorage.getItem('ROLE_ID');
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,

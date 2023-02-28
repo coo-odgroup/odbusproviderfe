@@ -248,6 +248,8 @@ export class BusComponent implements OnInit {
   safetyRecord: Safety;
   safetyies:Safety[];
 
+  role =localStorage.getItem('ROLE_ID');
+
   
   cancellationslabs: Cancellationslab[];
   cancellationslabRecord: Cancellationslab;
@@ -3381,7 +3383,7 @@ export class BusComponent implements OnInit {
   {
     this.spinner.show();
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
     };
     if(BusOperator.USER_BUS_OPERATOR_ID=="")
     {
@@ -3416,12 +3418,18 @@ export class BusComponent implements OnInit {
               this.busTypes=rec.data;
               }
             );    
-      this.cancellationslabService.readAllOperator(BusOperator).subscribe(
-              resp=>{
-              this.cancellationslabs=resp.data;
-              this.spinner.hide();
-              }
-            );  
+      // this.cancellationslabService.readAllOperator(BusOperator).subscribe(
+      //         resp=>{
+      //         this.cancellationslabs=resp.data;
+      //         this.spinner.hide();
+      //         }
+      //       );  
+      this.cancellationslabService.readAll().subscribe(
+        resp=>{
+        this.cancellationslabs=resp.data;
+        this.spinner.hide();
+        }
+      );
     }
     
     

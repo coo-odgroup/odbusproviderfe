@@ -8,9 +8,10 @@
                     <div class="col-12">
                         <form [formGroup]="searchFrom">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-3" *ngIf="role == '1'">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
+                                            <label>&nbsp; </label>
                                             <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                                 placeholder="Select Operator" formControlName="bus_operator_id"
                                                 [clearable]="false">
@@ -22,10 +23,12 @@
                                 <div class="col-md-4">
                                     <div class="row">  
                                         <div class="form-group col-6">
+                                            <label>From Date</label>
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeFromDate" />  
                                         </div>
                                         <div class="form-group col-6">
+                                            <label>To Date</label>
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeToDate" />                                     
                                         </div>
@@ -34,6 +37,7 @@
 
                                 <div class="col-md-3">
                                     <div class="dropdown">
+                                        <label>Please Select</label>
                                         <select class="form-control sml_input" formControlName="date_type">
                                             <option value='booking'>Booking Date</option>
                                             <option value='journey'>Journey Date</option>
@@ -41,8 +45,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-2" *ngIf="role == '1'">
                                     <div class="form-group">
+                                        <label>&nbsp; </label>
                                         <input type="text" class="form-control sml_input" placeholder="Payment/Order Id"
                                             required formControlName="payment_id" />
                                     </div>
@@ -53,6 +58,7 @@
                                         <div class="col-6">
                                             <div class="form-group ">
                                                 <div class="col-sm-12">
+                                                    <label>Source</label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Source" formControlName="source_id"
                                                         [clearable]="false" (change)="findSource($event)">
@@ -65,6 +71,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="col-sm-12">
+                                                    <label>Destination </label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Destination"
                                                         formControlName="destination_id" [clearable]="false"
@@ -78,12 +85,14 @@
                                 </div>
                                 <div class="col-md-2">                             
                                     <div class="form-group">
+                                        <label>&nbsp; </label>
                                         <input type="text" class="form-control sml_input" placeholder="Enter pnr"
                                             required formControlName="pnr" />
                                     </div>
                                 </div>
                                 <div class="col-md-1"  *ngIf="role == '1'">
                                     <div class="form-group">
+                                        <label>&nbsp; </label>
                                         <ng-select [items]="apiProvider" bindLabel="name" bindValue="name"
                                         placeholder="Api Provider"
                                         formControlName="apiUser" [clearable]="false">
@@ -91,7 +100,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 p-0">
+                                <div class="col-md-4 pt-4">
                                     <button type="button" class="btn btn-success  sml_input" (click)="search()"
                                         title="search">
                                          Search

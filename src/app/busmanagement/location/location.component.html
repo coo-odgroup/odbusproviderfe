@@ -100,7 +100,7 @@
               </td>
               <td class="hide_print" *ngIf="userType==1">
                 <div class="overlay-edit ">
-                  <button type="button" (click)="editLocation($event, i); OpenModal(content);"
+                  <button type="button" (click)="ResetAttributes();editLocation($event, i); OpenModal(content);"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
                   <!-- <button type="button" (click)="deleteLocation(confirmDialog, location.id)"
                     class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button> -->
@@ -180,7 +180,7 @@
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
                 aria-hidden="true">&times;</span></button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="height:400px;">
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-material">
@@ -223,6 +223,21 @@
                               </span>
                             </div>
                           </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="from-group row">
+                            <label for="name" class="col-sm-3 col-form-label">State
+                                :<span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <ng-select [items]="states" bindLabel="state_name" bindValue="id"
+                                placeholder="Select State" formControlName="state_id"
+                                [clearable]="false" >
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf="form.controls['state_id'].touched && form.controls['state_id'].hasError('required')">
+                                    State Type is required! </span>
+                            </div>
+                        </div>
                         </div>
                       </div>
                     </form>

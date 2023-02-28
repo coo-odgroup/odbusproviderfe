@@ -11,11 +11,11 @@
               <div class="col-md-3">
                 <div class="from-group ">
                   <button class="btn btn-sm btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                    Add Gallery Image
+                    Click to Add BusImage
                   </button>
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3" *ngIf=" role=='1'">
                 <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id" placeholder="Select Operator"
                   formControlName="bus_operator_id" [clearable]="false" (change)="findOperator($event)">
                 </ng-select>

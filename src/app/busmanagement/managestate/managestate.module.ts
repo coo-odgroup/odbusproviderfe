@@ -1,27 +1,25 @@
 import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CommonModule } from '@angular/common';
-import { LocationRoutingModule } from './location-routing.module';
+import { ManageStateRoutingModule } from './managestate-routing.module';
 import {SharedModule} from '../../theme/shared/shared.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { LocationComponent } from './location.component';
+import { ManagestateComponent } from './managestate.component';
 import { NotificationService } from '../../services/notification.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgSelectModule } from '@ng-select/ng-select';
 import {NgxPrintModule} from 'ngx-print';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    LocationRoutingModule,
+    ManageStateRoutingModule,
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
     NgxPrintModule,
-    NgxSpinnerModule,NgbModule,NgSelectModule
+    NgxSpinnerModule
   ],
-  declarations: [ LocationComponent],
+  declarations: [ ManagestateComponent],
   providers: [NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class LocationModule { }
+export class ManageStateModule { }

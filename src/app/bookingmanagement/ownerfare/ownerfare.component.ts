@@ -86,7 +86,8 @@ export class OwnerfareComponent implements OnInit {
   public ModalBtn: any;
   public searchBy: any;
 
-
+  role=localStorage.getItem('ROLE_ID');
+  
   public searchForm: FormGroup;
   pagination: any;
   all: any;

@@ -2,6 +2,7 @@ export interface Location {
         id: any;
         name: any;
         synonym: any;
+        state_id: any;
         created_at: any;
         updated_at: any;
         created_by: any;

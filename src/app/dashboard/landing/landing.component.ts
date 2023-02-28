@@ -49,6 +49,8 @@ export class LandingComponent implements OnInit {
     pnr_label: any;
   searchfor: string;
 
+    user_role:any = localStorage.getItem("ROLE_ID");
+
 
     constructor(private http: HttpClient , private ds:DashboardService,private spinner: NgxSpinnerService) {
 

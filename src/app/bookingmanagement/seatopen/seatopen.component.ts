@@ -108,6 +108,8 @@ export class SeatopenComponent implements OnInit {
   checkedDate: any = [];
   DatesRecord: FormArray;
   busDatas: any;
+  role=localStorage.getItem('ROLE_ID');
+
   constructor(
     calendar: NgbCalendar,
     private seatopenService: SeatopenService,

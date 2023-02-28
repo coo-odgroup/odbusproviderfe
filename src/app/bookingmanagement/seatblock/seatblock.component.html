@@ -63,7 +63,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3" *ngIf="role=='1'">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <div class="input-group">
@@ -74,7 +74,7 @@
                 </div>
               </div>
 
-              <div class="col-12">
+              <div class="col-12" *ngIf="role=='1'">
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group row">
@@ -124,13 +124,13 @@
           <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
             Refresh
           </button>
-          <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+          <button *ngIf="role=='1'" type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
             Export
           </button>
           <!-- <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
             Export
           </button> -->
-          <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+          <button *ngIf="role=='1'" type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
             [useExistingCss]="true" title="Print">
            Print
           </button>

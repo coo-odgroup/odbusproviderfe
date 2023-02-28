@@ -1,7 +1,7 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <div class="row">
   <div class="col-sm-12">
-      <app-card [hidHeader]="false" cardTitle="OWNER FARES" cardClass="card-datatable"  [options]="false"
+      <app-card [hidHeader]="false" cardTitle="FARE Increase/Decrease" cardClass="card-datatable"  [options]="false"
       cardClass=" table-border-style user-profile-list " >
       <div class="row">
         <div class="col-12">
@@ -25,7 +25,7 @@
                 </div>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4" *ngIf="role == '1'">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <div class="input-group">
@@ -40,7 +40,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" *ngIf="role == '1'">
                 <div class="form-group row">
                   <div class="col-sm-12">
                     <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
@@ -72,10 +72,10 @@
                 <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                    Refresh
                 </button>
-                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                <button *ngIf="role == '1'" type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
                   Export
                 </button>
-                <button type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
+                <button *ngIf="role == '1'" type="button" printSectionId="print-section" ngxPrint class="btn btn-info sml_input"
                   [useExistingCss]="true" title="Print">
                   Print
                 </button>

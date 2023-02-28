@@ -3,12 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {  Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {Constants} from '../constant/constant';
+
 @Injectable({
   providedIn: 'root'
 })
+export class StateService {
 
-
-export class LocationService {
   private apiURL = Constants.BASE_URL;
   httpOptions = {
     headers: new HttpHeaders({
@@ -25,7 +25,7 @@ export class LocationService {
   }
 
   getAllData(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/locationsData', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/states', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -39,21 +39,14 @@ export class LocationService {
   }
 
   
-  statelist(): Observable<any> {
-    return this.httpClient.get(this.apiURL + '/statelist').pipe(
-      catchError(this.errorHandler)
-    )
-  }
-
-  
   create(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL + '/addlocation', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL + '/addstates', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
   update(id, post): Observable<any> {
-    return this.httpClient.put<any>(this.apiURL + '/editlocation/' + id, JSON.stringify(post), this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/updatestates/' + id, JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -65,7 +58,7 @@ export class LocationService {
     )
   }
   chngsts(id){
-    return this.httpClient.put<any>(this.apiURL + '/changeStatusLocations/' + id, this.httpOptions)
+    return this.httpClient.put<any>(this.apiURL + '/changeStateStatus/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

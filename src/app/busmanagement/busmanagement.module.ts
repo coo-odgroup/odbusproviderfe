@@ -22,14 +22,13 @@ import { SettingsComponent } from './settings/settings.component';
 import { OffersComponent } from './offers/offers.component';
 import { CouponComponent } from './coupon/coupon.component';
 import { CoupontypeComponent } from './coupontype/coupontype.component';
+import { ManagestateComponent } from './managestate/managestate.component';
 
 
 
 
 @NgModule({
   declarations: [  
-  
-   
   ],
   imports: [
     CommonModule,

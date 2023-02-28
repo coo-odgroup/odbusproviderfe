@@ -1,8 +1,8 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Location, LocationCode } from '../../model/location';
+import { State } from '../../model/state';
 import { NotificationService } from '../../services/notification.service';
-import {LocationService} from '../../services/location.service';
+import {StateService} from '../../services/state.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import {Constants} from '../../constant/constant';
@@ -11,13 +11,14 @@ import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: 'app-location',
-  templateUrl: './location.component.html',
-  styleUrls: ['./location.component.scss'],
+  selector: 'app-managestate',
+  templateUrl: './managestate.component.html',
+  styleUrls: ['./managestate.component.scss'],
   providers: [NgbModalConfig, NgbModal]
 })
-export class LocationComponent implements OnInit {  
+export class ManagestateComponent implements OnInit {
 
+  
   public form: FormGroup;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
@@ -29,24 +30,23 @@ export class LocationComponent implements OnInit {
   @ViewChild("addnew") addnew;
   modalReference: NgbModalRef;
   confirmDialogReference: NgbModalRef;
-  locations: Location[];
-  locationRecord: Location;
-  locationCodes: LocationCode[];
-  locationcodeRecord: LocationCode;
+  locations: State[];
+  locationRecord: State;
+  // locationCodes: LocationCode[];
+  // locationcodeRecord: LocationCode;
  
   public isSubmit: boolean;
   public ModalHeading:any;
   public ModalBtn:any;
   all: any;
-  states: any;
  
-  constructor(private spinner: NgxSpinnerService,private http: HttpClient, private notificationService: NotificationService, private LocationService: LocationService,  private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
+  constructor(private spinner: NgxSpinnerService,private http: HttpClient, private notificationService: NotificationService, private stateService: StateService,  private fb: FormBuilder,private modalService: NgbModal,config: NgbModalConfig) {
     this.isSubmit = false;
-    this.locationRecord= {} as Location;
-    this.locationcodeRecord= {} as LocationCode;
+    // this.locationRecord= {} as State;
+    // this.locationcodeRecord= {} as LocationCode;
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Add New Location";
+    this.ModalHeading = "Add New State";
     this.ModalBtn = "Save"; 
     this.userType=localStorage.getItem('ROLE_ID');
     // console.log(this.userType);
@@ -60,10 +60,8 @@ export class LocationComponent implements OnInit {
     this.spinner.show();
     this.form = this.fb.group({
       id:[null],
-      name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
-      state_id : [null, Validators.compose([Validators.required])],
-      synonym: [null, Validators.compose([Validators.maxLength(15)])],
-      
+      state_name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
+      // synonym: [null, Validators.compose([Validators.maxLength(15)])]
     });
     this.formConfirm=this.fb.group({
       id:[null]
@@ -77,8 +75,7 @@ export class LocationComponent implements OnInit {
     });
 
     this.search();
-    // statelist
-   
+
   }
 
   page(label:any){
@@ -97,7 +94,7 @@ export class LocationComponent implements OnInit {
     // console.log(data);
     if(pageurl!="")
     {
-      this.LocationService.getAllaginationData(pageurl,data).subscribe(
+      this.stateService.getAllaginationData(pageurl,data).subscribe(
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
@@ -110,7 +107,7 @@ export class LocationComponent implements OnInit {
     }
     else
     {
-      this.LocationService.getAllData(data).subscribe(
+      this.stateService.getAllData(data).subscribe(
         res => {
           this.locations= res.data.data.data;
           this.pagination= res.data.data;
@@ -162,23 +159,14 @@ export class LocationComponent implements OnInit {
 
   ResetAttributes()
   {
-    this.locationRecord = {} as Location;
+    this.locationRecord = {} as State;
     this.form = this.fb.group({
       id:[null],
-      name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
-      state_id : [null, Validators.compose([Validators.required])],
-      synonym: [null, Validators.compose([Validators.maxLength(50)])]
+      state_name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
+      // synonym: [null, Validators.compose([Validators.maxLength(50)])]
     });
-    this.ModalHeading = "Add Location";
+    this.ModalHeading = "Add State";
     this.ModalBtn = "Save";
-
-    this.LocationService.statelist().subscribe(
-      res => {        
-        this.states= res.data;
-      }
-    );
-
-
   }
   addLocation()
   {
@@ -186,15 +174,13 @@ export class LocationComponent implements OnInit {
     let id:any=this.form.value.id; 
     const data ={
       id:this.form.value.id,
-      name:this.form.value.name,
-      synonym:this.form.value.synonym,
-      state_id:this.form.value.state_id,
+      state_name:this.form.value.state_name,
       status:'1',
       created_by:localStorage.getItem('USERNAME') 
     };
     if(id==null)
     {
-      this.LocationService.create(data).subscribe(
+      this.stateService.create(data).subscribe(
         resp => {
           if(resp.status==1)
           {
@@ -212,7 +198,7 @@ export class LocationComponent implements OnInit {
       );
     }
     else{     
-      this.LocationService.update(id,data).subscribe(
+      this.stateService.update(id,data).subscribe(
         resp => {
           if(resp.status==1)
           {
@@ -236,11 +222,9 @@ export class LocationComponent implements OnInit {
     this.locationRecord=this.locations[id] ;
     this.form = this.fb.group({
       id:[this.locationRecord.id],
-      name: [this.locationRecord.name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
-      state_id: [this.locationRecord.state_id, Validators.compose([Validators.required])],
-      synonym: [this.locationRecord.synonym, Validators.compose([Validators.maxLength(50)])],
+      state_name: [this.locationRecord.state_name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
     });
-    this.ModalHeading = "Edit Location";
+    this.ModalHeading = "Edit State";
     this.ModalBtn = "Update";
   }
   openConfirmDialog(content)
@@ -252,7 +236,7 @@ export class LocationComponent implements OnInit {
   {
   
     let delitem=this.formConfirm.value.id;
-     this.LocationService.delete(delitem).subscribe(
+     this.stateService.delete(delitem).subscribe(
       resp => {
         if(resp.status==1)
             {
@@ -280,7 +264,7 @@ export class LocationComponent implements OnInit {
   changeStatus(event : Event, stsitem:any)
   {
     this.spinner.show();
-    this.LocationService.chngsts(stsitem).subscribe(
+    this.stateService.chngsts(stsitem).subscribe(
       resp => {
         if(resp.status==1)
         {
@@ -295,5 +279,5 @@ export class LocationComponent implements OnInit {
       }
     );
   }
-  
+
 }

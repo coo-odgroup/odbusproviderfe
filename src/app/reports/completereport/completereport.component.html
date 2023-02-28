@@ -11,7 +11,7 @@
                     <div class="col-12">
                         <form [formGroup]="searchFrom">
                             <div class="row">
-                                <div class="col-md-3" >
+                                <div class="col-md-3" *ngIf="role == '1'">
                                     <div class="form-group ">
                                         <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                             placeholder="Select Operator" formControlName="bus_operator_id"
@@ -23,13 +23,13 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <div class="form-group col-6">
-
+                                            <label>From Date</label>
                                             <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeFromDate" />
 
                                         </div>
                                         <div class="form-group col-6">
-
+                                            <label>From Date</label>
                                             <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeToDate" />
 
@@ -39,6 +39,7 @@
 
                                 <div class="col-md-1">
                                     <div class="dropdown">
+                                        <label>Please Select </label>
                                         <select class="form-control sml_input" formControlName="date_type" style="font-size: 12px;">
                                             <option value='journey'>Journey Date</option>
                                             <option value='booking'>Booking Date</option>
@@ -46,14 +47,16 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-2" *ngIf="role == '1'">
                                     <div class="form-group ">
+                                        <label>&nbsp; </label>
                                         <input type="text" class="form-control sml_input" placeholder="Order Id"
                                             required formControlName="payment_id" />
                                     </div>
                                 </div>
                                 <div class="col-md-2" *ngIf="role == '1'">
                                     <div class="dropdown">
+                                        <label>&nbsp; </label>
                                         <select class="form-control sml_input" formControlName="device_type" style="font-size: 13px;">
                                             <option value=null>Select Booking From</option>
                                             <option value='ANDROID'>ANDROID</option>
@@ -69,6 +72,7 @@
                                         <div class="col-6">
                                             <div class="form-group ">
                                                 <div class="col-sm-12">
+                                                    <label>&nbsp; </label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Source" formControlName="source_id"
                                                         [clearable]="false" (change)="findSource($event)">
@@ -80,6 +84,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="col-sm-12">
+                                                    <label>&nbsp; </label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Destination"
                                                         formControlName="destination_id" [clearable]="false"
@@ -94,11 +99,12 @@
                                     <div class="row">
                                         <div class="col-8">
                                             <div class="form-group ">
+                                                <label>&nbsp; </label>
                                                 <input type="text" class="form-control sml_input"
                                                     placeholder="Enter pnr" required formControlName="pnr" />
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-4" *ngIf="role == '1'">
                                             <div class="form-group ">
                                                 <input type="checkbox" class="sml_input" required
                                                     formControlName="hasGst" />Has GST

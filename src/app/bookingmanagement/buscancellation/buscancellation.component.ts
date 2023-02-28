@@ -56,6 +56,7 @@ export class BuscancellationComponent implements OnInit {
   dateformate: string;
   locations: any;
   url: string;
+  role=localStorage.getItem('ROLE_ID');
 
   //getter for form array buses
   get busesFormGroup() {
