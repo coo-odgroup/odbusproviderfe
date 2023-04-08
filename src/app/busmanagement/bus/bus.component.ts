@@ -1320,6 +1320,7 @@ export class BusComponent implements OnInit {
                   let durationCheck=0;
                   let operation_date='';
                   let type ='';
+                  
     
                   if(this.selectedSeats.length > 0){
     
@@ -1337,6 +1338,9 @@ export class BusComponent implements OnInit {
     
                   }
                  
+                //  console.log(seatData.seatText + '-'+ checkedval + '-' + seatData.id);
+                 
+
                   let collen=this.seatLayoutCol.length;
                   
                   if(checkedval=="1")
@@ -1416,7 +1420,8 @@ export class BusComponent implements OnInit {
                       
                     });
                     this.seatLayoutCol.insert(collen, columnData);
-                  }           
+                  } 
+                  // console.log(seatData.seatText + '-'+ checkedval);          
                 }
                 counter++;
               }
@@ -1559,6 +1564,9 @@ export class BusComponent implements OnInit {
     
           }
         ); 
+
+
+        console.log(this.seatLayoutData);
 
 
 

@@ -40,7 +40,8 @@ const routes: Routes = [
       {
         path: 'alltransactionreport',
         loadChildren: () => import('./alltransactionreport/alltransactionreport.model').then(module => module.AlltransactionreportModule)
-      },     
+      }    
+      
     ]
   }
 ];

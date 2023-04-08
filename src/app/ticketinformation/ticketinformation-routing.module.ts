@@ -17,6 +17,10 @@ const routes: Routes = [
         path: 'smsemailticket',
         loadChildren: () => import('./sms-email-ticket/sms-email-ticket.module').then(module => module.smsEmailTicketModule)
       },  
+      {
+        path: 'failedticketadjust',
+        loadChildren: () => import('./failedticketadjust/failedticketadjust.module').then(module => module.FailedticketadjustModule)
+      },  
     ]
   }
 ];

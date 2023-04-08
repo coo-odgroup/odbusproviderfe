@@ -13,6 +13,7 @@
                             <div class="row">
                                 <div class="col-md-3" *ngIf="role == '1'">
                                     <div class="form-group ">
+                                        <label>&nbsp; </label>
                                         <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                             placeholder="Select Operator" formControlName="bus_operator_id"
                                             [clearable]="false">
@@ -72,7 +73,7 @@
                                         <div class="col-6">
                                             <div class="form-group ">
                                                 <div class="col-sm-12">
-                                                    <label>&nbsp; </label>
+                                                    <!-- <label>&nbsp; </label> -->
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Source" formControlName="source_id"
                                                         [clearable]="false" (change)="findSource($event)">
@@ -84,7 +85,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="col-sm-12">
-                                                    <label>&nbsp; </label>
+                                                    <!-- <label>&nbsp; </label> -->
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Destination"
                                                         formControlName="destination_id" [clearable]="false"
@@ -99,7 +100,7 @@
                                     <div class="row">
                                         <div class="col-8">
                                             <div class="form-group ">
-                                                <label>&nbsp; </label>
+                                                <!-- <label>&nbsp; </label> -->
                                                 <input type="text" class="form-control sml_input"
                                                     placeholder="Enter pnr" required formControlName="pnr" />
                                             </div>

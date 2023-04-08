@@ -7,6 +7,13 @@
                     <div class="col-12">
                         <form [formGroup]="searchFrom">
                             <div class="row">
+                                <div class="col-md-2">
+                                    <div class="from-group ">
+                                        <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                                            Cancel A PNR
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="col-md-3">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
@@ -38,7 +45,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="dropdown">
                                         <select class="form-control sml_input" formControlName="date_type">
                                             <option value='booking'>Booking Date</option>
@@ -139,7 +146,7 @@
                                 <th scope="col">Seater / Sleeper </th>
                                 <th scope="col">ODBUS Fare</th>
                                 <th scope="col">Refund Price</th>
-                                <th scope="col">Booked By</th>
+                                <!-- <th scope="col">Booked By</th> -->
                                 <th scope="col">Cancel By</th>
                             </tr>
                         </thead>
@@ -330,9 +337,9 @@
                                         <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>                                    
                                     </h5>    
                                 </td>
-                                <td>
-                                    <h5> {{ (complete.user_id > 0) ? 'Agent' : 'Customer'  }} </h5>    
-                                </td>
+                                <!-- <td>
+                                    <h5> {{ (complete.user_id > 0) ? 'Api Client' : 'Customer'  }} </h5>    
+                                </td> -->
                                 <td>
                                     <b>{{complete.created_by}}</b>
                                 </td>
@@ -377,6 +384,247 @@
                     </div>
                   </div> 
             </div>
+
+            <div class="app-card-footer">
+                <ng-template #content let-modal>
+                    <div class="modal-header">
+                        <h5 class="ng-tns-c116-5"> {{ModalHeading}}</h5>
+                        <button type="button" class="close" aria-label="Close"
+                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-material">
+                                    <div class="right-icon-control">
+                                        <form [formGroup]="cancelTicketForm" class="editForm" novalidate>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <div class="input-group col-10 offset-1">
+                                                            <input type="text" class="form-control sml_input"
+                                                                placeholder="Enter Pnr No" required
+                                                                formControlName="pnr_no">
+                                                            <div class="input-group-append">
+                                                                <button type="button" [disabled]="!cancelTicketForm.controls['pnr_no'].valid"
+                                                                 class="btn btn-primary  sml_input"
+                                                                    (click)="search_pnr()" title="search">
+                                                                    <i class="fas fa-search"> </i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-10 offset-1">
+                                                            <span class="text-danger"
+                                                                *ngIf="cancelTicketForm.controls['pnr_no'].touched && cancelTicketForm.controls['pnr_no'].hasError('required')">
+                                                                Pnr required! </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="pnrDetails.length > 0">
+                                                <div class="col-md-4">
+                                                    <h3>Cancel Details</h3>
+                                                    <div class="from-group">
+                                                        <label for="name" class="col-sm-6 col-form-label">Refund Amount<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-12">
+                                                            <input type="number" class="form-control" ngbAutofocus
+                                                                formControlName="refundAmount"
+                                                                placeholder="Enter Refund Amount"  required />
+                                                            <span class="text-danger"
+                                                                *ngIf="cancelTicketForm.controls['refundAmount'].touched && cancelTicketForm.controls['refundAmount'].hasError('required')">                                                            
+                                                            Refund Amount is required! </span>
+                                                        </div>
+                                                    </div>
+
+                                                
+                                                    <div class="from-group">
+                                                        <label for="name" class="col-sm-10 col-form-label">Reason:<span class="text-danger">*</span></label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" ngbAutofocus
+                                                                formControlName="reason"
+                                                                placeholder="Enter Reason Here" required />
+
+                                                                <span class="text-danger"
+                                                                *ngIf="cancelTicketForm.controls['reason'].touched && cancelTicketForm.controls['reason'].hasError('required')">
+                                                                Reason required! </span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-8 offset-2 mt-3">
+                                                        <button type="button" [disabled]="!cancelTicketForm.valid"
+                                                        (click)="cancelTicket()" class="btn btn-danger"
+                                                        ngbAutofocus>{{ModalBtn}}</button>
+<!-- 
+                                                        <button type="button" 
+                                                            *ngIf="cancelTicketForm.controls.refundAmount.value!=null && cancelTicketForm.controls.reason.value!=null" (click)="OpenModal(cancelticket);previewCancelTicket()" class="btn btn-warning ml-2"
+                                                            ngbAutofocus title="cancel ticket Preview">
+                                                            <small> <i class="fa fa-eye" aria-hidden="true"></i></small>
+                                                         </button> -->
+                                                    </div>
+                                                 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h3 class="text-center">Booking Details</h3>
+                                                    <table class="table">
+                                                        <tr>
+                                                            <td>
+                                                                <table class="table-secondary">
+                                                                    <strong>Passanger Details</strong>
+                                                                    <tr>
+                                                                        <th>Name</th>
+                                                                        <th>Gender</th>
+                                                                        <th>Seat no</th>
+                                                                        <th>Age</th>
+                                                                    </tr>
+                                                                    <tr
+                                                                        *ngFor="let passanger of pnrDetails[0].booking_detail">
+                                                                        <td>{{passanger.passenger_name}}</td>
+                                                                        <td>{{passanger.passenger_gender}}</td>
+                                                                        <td>  
+                                                                            <span *ngIf="pnrDetails[0].origin != 'DOLPHIN' ">
+                                                                                {{passanger.bus_seats.seats.seatText}}
+                                                                             </span>
+                                                                            <span *ngIf="pnrDetails[0].origin == 'DOLPHIN' ">
+                                                                                {{passanger.seat_name}}
+                                                                             </span>
+                                                                            
+                                                                        </td>
+                                                                        <td>{{passanger.passenger_age}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Total Fare </td>
+                                                                        <td colspan="3" class="text-center text-danger">
+                                                                            <i class="fas fa-rupee-sign"></i>
+                                                                            <b>{{pnrDetails[0].payable_amount}}</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><small>From- To</small></td>
+                                                                        <td><strong>{{pnrDetails[0].from_location[0].name}}
+                                                                                >>
+                                                                                {{pnrDetails[0].to_location[0].name}}</strong>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><small>D.O.B</small></td>
+                                                                        <td><strong
+                                                                                class="text-danger">{{pnrDetails[0].created_at
+                                                                                | date: 'dd-MM-yyyy'}}</strong></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><small>D.O.J</small></td>
+                                                                        <td><strong
+                                                                                class="text-danger">{{pnrDetails[0].journey_dt
+                                                                                | date: 'dd-MM-yyyy'}}</strong></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><small>Boarding At :</small></td>
+                                                                        <td><strong>{{pnrDetails[0].boarding_point}},
+                                                                                {{pnrDetails[0].boarding_time }}
+                                                                            </strong> </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><small>Bus :</small></td>
+                                                                        <td>
+                                                                            <span *ngIf="pnrDetails[0].origin != 'DOLPHIN' ">
+                                                                                <strong>{{ pnrDetails[0].bus.name}}</strong><br>
+                                                                                <strong>{{ pnrDetails[0].bus.bus_number}}</strong>
+                                                                            </span>
+                                                                            <span *ngIf="pnrDetails[0].origin == 'DOLPHIN' ">
+                                                                                <strong>{{ pnrDetails[0].bus_name}}</strong><br>
+                                                                                <strong>{{ pnrDetails[0].bus_bus_number}}</strong>
+                                                                            </span>
+                                                                            
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="pnrDetails.length == 0">
+                                                <h4 class="text-center">{{msg}}</h4>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                            (click)="modal.dismiss('Cross click')">Close</button>
+                    </div>
+                </ng-template>
+
+
+                <ng-template #cancelticket let-modal>
+                    <div class="modal-header">
+                        <h5 class="ng-tns-c116-5"> Cancellation Details</h5>
+                        <button type="button" class="close" aria-label="Close"
+                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-material">
+                                    <div class="right-icon-control">
+                                      <table class="table table-border">
+                                          <tr class="bg-warning">
+                                             <th colspan="2">Call Us: +91 9583918888</th>
+                                             <th colspan="2" class="text-right">Email: support@odbus.in</th>
+                                          </tr>
+                                          <tr>
+                                              <th>Preview Will be Here</th>
+                                            <!-- <table class="table-bordered">
+                                              <tr>
+                                                  <td> PNR no :</td>
+                                                  <td>{{pnrDetails[0].pnr}}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>Email :</td>
+                                                  <td> {{pnrDetails[0].users.email}}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>Contact no :</td>
+                                                  <td>{{pnrDetails[0].users.phone}}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+                                              <tr>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+                                              <tr>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+  
+                                            </table> -->
+                                          </tr>                                          
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                            (click)="modal.dismiss('Cross click')">Close</button>
+                    </div>
+                </ng-template>
+            </div>
+
         </app-card>
         <div style="display: none;" id="export-section">
             <table class="table table-striped ">

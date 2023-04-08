@@ -76,6 +76,13 @@ export class AdmincancelticketService {
       )
   } 
 
+  getApiPnrDetails(post){
+      return this.httpClient.post<any>(this.apiURL + '/getApiPnrDetails', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  } 
+
   getAllData(post): Observable<any> {
       return this.httpClient.post<any>(this.apiURL + '/cancelticketdata', JSON.stringify(post), this.httpOptions)
       .pipe(
@@ -90,13 +97,19 @@ export class AdmincancelticketService {
       )
   }
 
+  ApicancelTicket(post): Observable<any> {
+      return this.httpClient.post<any>(this.apiURL + '/apicancelticket', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
   cancelTicket(post): Observable<any> {
       return this.httpClient.post<any>(this.apiURL + '/cancelticket', JSON.stringify(post), this.httpOptions)
       .pipe(
         catchError(this.errorHandler)
       )
   }
-
   getEmailID(post){
       return this.httpClient.post<any>(this.apiURL + '/getEmailID', JSON.stringify(post), this.httpOptions)
       .pipe(

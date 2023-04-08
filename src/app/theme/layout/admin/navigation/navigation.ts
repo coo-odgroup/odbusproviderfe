@@ -1057,6 +1057,13 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-wind',
             url: 'ticketinformation/smsemailticket'
+          },
+          {
+            id: 'failedticketadjust',
+            title: 'Failed Ticket Adjust',
+            type: 'item',
+            icon:'feather icon-wind',
+            url: 'ticketinformation/failedticketadjust'
           }
         ]
       },
@@ -1159,8 +1166,7 @@ const NavigationItems = [
             type: 'item',
             icon:'feather icon-pie-chart',
             url: 'manageapiclients/manageclientsoperator'
-          },
-                
+          },                
         ]
       },
 
