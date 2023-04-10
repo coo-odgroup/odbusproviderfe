@@ -8,84 +8,18 @@
                 <div class="row p-0">
                     <div class="col-12">
                         <form [formGroup]="searchFrom">
-                            <div class="row">
-                                <div class="col-md-3">
+                            <div class="row ">  
+                                <div class="col-md-6">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
-                                            <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
-                                                placeholder="Select Operator" formControlName="bus_operator_id"
-                                                [clearable]="false">
-                                            </ng-select>
+                                            <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
+                                                    formControlName="user_id" [clearable]="false" >
+                                             </ng-select> 
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="row">  
-                                        <div class="form-group col-6">
-                                           
-                                                <input type="date" class="form-control sml_input" placeholder="Enter pnr"
-                                                required formControlName="rangeFromDate" />
-                                            
-                                        </div>
-                                        <div class="form-group col-6">
-                                           
-                                                <input type="date" class="form-control sml_input" placeholder="Enter pnr"
-                                                required formControlName="rangeToDate" />
-                                                                                       
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="dropdown">
-                                        <select class="form-control sml_input" formControlName="date_type">
-                                            <option value='journey'>Journey Date</option>
-                                            <option value='booking'>Booking Date</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-3">
-                                                               
-                                       <input type="text" class="form-control sml_input" placeholder="Payment/Order Id" required formControlName="payment_id" />                                       
-                                   
-                                </div>
-                            </div>
-                            <div class="row ">
-                                <div class="col-md-5 p-0">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="form-group ">
-                                                <div class="col-sm-12">
-                                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                                        placeholder="Select Source" formControlName="source_id"
-                                                        [clearable]="false" (change)="findSource($event)">
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <div class="col-sm-12">
-                                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
-                                                        placeholder="Select Destination"
-                                                        formControlName="destination_id" [clearable]="false"
-                                                        (change)="findSource($event)">
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        <input type="text" class="form-control sml_input" placeholder="Enter pnr"
-                                            required formControlName="pnr" />
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
+                                </div>                              
+                          
+                                <div class="col-md-6">
                                     <button type="button" class="btn btn-success  sml_input" (click)="search()"
                                         title="search">
                                          Search
@@ -125,221 +59,53 @@
                     <table class="table table-striped  header-fixed" style="font-size: 11px !important;">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">CreatedOn</th>
-                                <th scope="col">API User</th>
-                                <th scope="col">Type / SubType</th>
-                                <th scope="col">Reference ID</th>
-                                <th scope="col">Operator</th>
-                                <th scope="col">Bus Name/No</th>
-                                <th scope="col">Src-Dest</th>
-                                <th scope="col">Info</th>
-                                <th scope="col">Status</th>
-                            </tr>
+                                <th scope="col" width="80px" style="text-align: center;">#</th>
+                                <th scope="col">Request Date</th>
+                                <th scope="col">Issue Type</th>
+                                <th scope="col" style="width: 500px;">Message</th>
+                                <th scope="col">Status </th>           
+                                <th scope="col">Updated By </th>           
+                                <th scope="col" [width]="200">Update Status </th>           
+                              </tr>
                         </thead>
                         <!-- style="height: 100px !important; overflow: scroll; " -->
                         <tbody *ngIf="completedata?.length != 0" >
-                            <tr *ngFor="let complete of completedata?.data.data; let i = index">
-                                <td>{{ i+1 }}</td>
+                            <tr *ngFor="let page of completedata?.data.data; let i=index;">
+                                <td style="text-align: center;">{{i+1}}</td>
+                                <td>{{page.created_at | date: 'dd/MM/yyyy'}}</td>
+                                <td >
+                                      {{page.apiclientissuetype.name}}<br>
+                                      <b class="text-danger">{{page.apiclientissuesubtype.name}} </b>
+                                </td>
+                                <td >
+                                    {{page.message}}
+                                </td>
+                                
+                                <td>                                   
+                                  <label *ngIf="page.status==0" class="btn btn-sm bg-warning  text-light"
+                                    ><strong>Pending</strong></label>
+                                  <label *ngIf="page.status==1" class="btn btn-sm  bg-success  text-light"
+                                   ><strong>Solved</strong></label>
+                                  <label *ngIf="page.status==2" class="btn btn-sm bg-danger  text-light"
+                                    ><strong>Rejected</strong></label>
+                                  <label *ngIf="page.status==3" class="btn btn-sm bg-info  text-light"
+                                    ><strong>Under Progress</strong></label>
+                                </td>
+                                <td>{{page.created_by}}</td>
                                 <td>
-                                    <!-- {{complete.app_type}} -->
-                                    <span *ngIf="complete.app_type == 'WEB'">
-                                        <strong>(W)&nbsp;</strong>
-                                    </span>
-                                    <span *ngIf="complete.app_type == 'MOB'">
-                                        <strong>(M)&nbsp;</strong>
-                                    </span>
-                                    <span *ngIf="complete.app_type == 'ANDROID'">
-                                        <strong class="text-danger">(A)&nbsp;</strong>
-                                    </span>
-                                    <strong>{{complete.pnr}}</strong><br> (DOB - {{complete.created_at | date:
-                                    'dd-MM-yyyy | H:mm:ss'}} )
-                                    <br>
-                                    <span *ngFor="let frlocation of complete.from_location">
-                                        {{frlocation.name}}
-                                    </span> -
-                                    ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
-                                    <br>
-                                    <span *ngIf="complete.customer_payment">
-                                        <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
-                                    <br>
-                                    <strong style="color: darkgoldenrod;">{{complete.customer_payment.razorpay_id}}</strong>
-                                    </span>
+                                    <select class="form-control sml_input input-sm"  (change)=update_status($event.target.value,page.id)>
+                                        <option value="">Update Status</option>
+                                        <option value="0">Pending</option>
+                                        <option value="1">Solved</option>
+                                        <option value="2">Rejected</option>
+                                        <option value="3">Under Progress</option>
+                                    </select>
                                 </td>
-
-                                <td>
-                                    <strong>{{ complete.bus.name }}</strong><br>
-                                    {{ complete.bus.bus_number }}<br>
-                                    <ng-template #tipContent1>
-                                        <table style="width: 350px;">
-                                            <tr>
-                                                <td style="text-align: left;" colspan="2">
-                                                    Start
-                                                </td>
-                                                <td style="text-align: left;" colspan="2">
-                                                    End
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left;">
-                                                    <span *ngFor="let frlocation of complete.source">
-                                                        {{frlocation[0].name}}<br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <span *ngFor="let frTime of complete.bus.busstoppage">
-                                                        {{frTime.dep_time  | date: 'H:mm'}}<br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <span *ngFor="let tolocation of complete.destination">
-                                                        {{tolocation[0].name}} <br />
-                                                    </span>
-                                                </td>
-                                                <td style="text-align: left;">
-                                                    <span *ngFor="let toTime of complete.bus.busstoppage">
-                                                        {{toTime.arr_time  | date: 'H:mm'}}<br />
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
-
-                                    <span [ngbTooltip]="tipContent1">
-                                        <span *ngFor="let boarding of complete.from_location;">
-                                            {{boarding.name}}
-                                        </span> -
-                                        <span *ngFor="let dropping of complete.to_location;">
-                                            {{dropping.name}}
-                                        </span>
-                                    </span> <br>
-                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
-                                </td>
-
-                                <td>
-                                    <span *ngFor="let seat of complete.booking_detail;">
-                                        {{seat.bus_seats.seats.seatText}},
-                                    </span>
-                                </td>
-                                <td class="text-capitalize">
-                                    <ng-template #tipContent>
-                                        <table>
-                                            <tr class="text-center">
-                                                <h5 class="text-danger">Passanger Details</h5>
-                                            </tr>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Gender</td>
-                                                <td>Seat No</td>
-                                                <td>Age</td>
-                                            </tr>
-                                            <tr *ngFor="let passanger of complete.booking_detail;">
-                                                <td><b>{{passanger.passenger_name}}</b></td>
-                                                <td><b>{{passanger.passenger_gender}}</b></td>
-                                                <td><b>{{passanger.bus_seats.seats.seatText}}</b></td>
-                                                <td><b>{{passanger.passenger_age}}</b></td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
-                                    <strong [ngbTooltip]="tipContent" class="text-danger">
-                                        {{complete.users.name}}
-                                    </strong> <br>                                   
-                                    [<b>{{complete.booking_detail[0].passenger_name}}</b>] -
-                                    <span *ngFor="let passanger of complete.booking_detail;">
-                                        <b>{{passanger.passenger_gender}}</b>,
-                                    </span>
-                                    <br>
-                                    <button class="btn btn-sm btn-info text-light  mr-3 ml-2 mt-2 hide_print"
-                                        placement="bottom" ngbTooltip="Phone no {{complete.users.phone}}"
-                                        (click)="copyMessage(complete.users.phone)">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger text-light mt-2 hide_print" placement="bottom"
-                                        ngbTooltip=" Email -- {{complete.users.email}}" (click)="copyMessage(complete.users.email)">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <strong placement="top"
-                                        ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
-                                    /
-                                    <strong placement="top"
-                                        ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
-                                </td>
-                                <td>
-                                    <!-- <p *ngFor="let fare of complete.booking_detail;" >
-                                        {{fare.owner_fare}}
-                                   </p>   -->
-                                    <i class="fas fa-rupee-sign"></i> <b>{{complete.owner_fare}}</b>
-                                </td>
-                                <td>
-                                    <ng-template #tipContent2>
-                                        <table>
-                                            <tr *ngIf="complete.odbus_gst_amount != 0  ">
-                                                <td>ODBUS GST</td>
-                                                <td><b>{{complete.odbus_gst_amount}}</b></td>
-                                            </tr>
-                                            <tr *ngIf="complete.owner_gst_amount != 0  ">
-                                                <td>OWNER GST</td>
-                                                <td>{{complete.owner_gst_amount}}</td>
-                                            </tr>
-                                            <tr *ngIf="complete.additional_festival_fare != 0  ">
-                                                <td>Additionl Festival Fare</td>
-                                                <td><b>{{complete.additional_festival_fare}}</b></td>
-                                            </tr>
-                                            <tr *ngIf="complete.additional_owner_fare != 0  ">
-                                                <td>Additional Owner Fare</td>
-                                                <td><b>{{complete.additional_owner_fare}}</b></td>
-                                            </tr>
-                                            <tr *ngIf="complete.additional_special_fare != 0  ">
-                                                <td>Additional Special Fare</td>
-                                                <td><b>{{complete.additional_special_fare}}</b></td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
-                                    <p [ngbTooltip]="tipContent2">
-                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.total_fare}}</b>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.odbus_charges}}</b>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.coupon_discount }}</b>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <i class="fas fa-rupee-sign"></i> <b>{{complete.payable_amount - complete.agent_commission }}</b>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer'  }} </p>    
-                                </td>
-                            </tr>
-                            <tr >
-                                <th colspan="7" style="text-align: right;">
-                                    <strong placement="top"
-                                    ngbTooltip="Sum of Owner fare"><i class="fas fa-rupee-sign"></i> {{completedata?.owner_fare}}</strong>
-                                </th>
-                                <td> 
-                                    <strong placement="top"
-                                    ngbTooltip="Sum of Total fare"> <i class="fas fa-rupee-sign"></i> <b  class="text-danger">{{completedata?.totalfare}}</b></strong>
-                                </td>
-
-                                <th colspan="2"> &nbsp;</th>
-                                <td colspan="2">
-                                    <strong placement="top"
-                                    ngbTooltip="Sum of Amount Received"> <i class="fas fa-rupee-sign"></i> <b class="text-danger">{{completedata?.totalPayableAmount}}</b></strong>
-                                </td>
-                            </tr>
+                              </tr>
                         </tbody>
                         <tbody *ngIf="completedata?.length == 0">
                             <tr>
-                                <td colspan="10" class="no-data-available">No data!</td>
+                                <td colspan="5" class="no-data-available">No data!</td>
                             </tr>
                         <tbody>
                     </table>
@@ -378,100 +144,6 @@
                 </div>
             </div>
         </app-card>
-        <div style="display: none;" id="export-section">
-            <table class="table table-striped ">
-                <thead>
-                    <tr>
-                        <th>Pnr No</th>
-                        <th>Seat No</th>
-                        <th>Sleeper No</th>
-                        <th>Bus Number</th>
-                        <th>Bus Name</th>
-                        <th>Source- Destination</th>
-                        <th>Journey Date</th>
-                        <th>Passenger Details</th>
-                        <th>User Name</th>
-                        <th>User Phone</th>
-                        <th>User Email</th>
-                        <th>Total Fare</th>
-                        <th>Owner Fare</th>
-                        <th>Seater Fare</th>
-                        <th>Sleeper Fare</th>
-                        <td>Additionl Festival Fare</td>
-                        <td>Additional Owner Fare</td>
-                        <td>Additional Special Fare</td>
-                        <th>Odbus GST</th>
-                        <th>Owner GST</th>
-                        <th>Odbus Received</th>
-                        <th>Amount Received</th>
-                        <th>Transaction Id</th>
-                        <th>Order Id</th>
-                        <th>App Type</th>
-                    </tr>
-                </thead>
-
-                <tbody *ngIf="completedata?.length != 0">
-                    <tr *ngFor="let complete of completedata?.data.data; let i = index">
-                        <td>{{complete.pnr}}</td>
-                        <td>
-                            <span *ngFor="let seat of complete.booking_detail;">
-                               <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} || </span> 
-                            </span>
-                        </td>
-                        <td>
-                            <span *ngFor="let seat of complete.booking_detail;">
-                            <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}} ||</span> 
-                            </span>
-                        </td>
-                        <td>{{ complete.bus.bus_number }}</td>
-                        <td>{{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ] </td>
-                        <!-- <td>
-                            {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
-                        </td> -->
-                        <td>
-                            <span *ngFor="let boarding of complete.from_location;">
-                                {{boarding.name}}
-                            </span> -
-                            <span *ngFor="let dropping of complete.to_location;">
-                                {{dropping.name}}
-                            </span>
-                        </td>
-                        <td>{{complete.journey_dt | date: 'dd/MM/yyyy'}}</td>
-                        <td>
-                            <p *ngFor="let passanger of complete.booking_detail;">
-                                {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
-                                {{passanger.bus_seats.seats.seatText}}] ,
-                            </p>
-                        </td>
-
-                        <td>{{complete.users.name}}</td>
-                        <td>{{complete.users.phone}}</td>
-                        <td>{{complete.users.email}}</td>
-                        <td>{{complete.total_fare}}</td>                       
-                        <td>{{complete.owner_fare}}</td>
-                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</td>
-                        <td>{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</td>
-                        <td>{{complete.additional_festival_fare}}</td>
-                        <td>{{complete.additional_owner_fare}}</td>
-                        <td>{{complete.additional_special_fare}}</td>                      
-                        <td>{{complete.odbus_gst_amount}}</td>
-                        <td>{{complete.owner_gst_amount}}</td>
-                        <td>{{complete.odbus_charges}}</td>
-                        <td>{{complete.payable_amount - complete.agent_commission }}</td>
-                        <td>
-                            <span *ngIf="complete.customer_payment">
-                                {{complete.customer_payment.razorpay_id}} 
-                            </span>
-                        </td>
-                        <td>
-                            <span *ngIf="complete.customer_payment">
-                                {{complete.customer_payment.order_id}}
-                            </span>
-                        </td>
-                        <td>{{complete.app_type}}</td>                        
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        
     </div>
 </div>

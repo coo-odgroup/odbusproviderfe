@@ -11,6 +11,7 @@ import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-boo
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
     selector: 'app-apipnrdisputes',
@@ -35,10 +36,11 @@ export class ApipnrdisputesComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  allagent: any;
 
   constructor(
     private spinner: NgxSpinnerService,
-    private http: HttpClient , 
+    private http: HttpClient , private notificationService: NotificationService,
     private rs:ReportsService, 
     private busOperatorService: BusOperatorService, 
     private fb: FormBuilder,
@@ -58,15 +60,9 @@ export class ApipnrdisputesComponent implements OnInit {
     this.spinner.show();
 
     this.searchFrom = this.fb.group({
-      bus_operator_id: [null],
-      rangeFromDate:[null],
-      rangeToDate:[null],
-      payment_id : [null],
-      date_type:['journey'],
-      pnr:[null],
+      user_id: [null],
       rows_number:10,
-      source_id:[null],
-      destination_id:[null]
+     
     })   
 
     this.search();
@@ -96,22 +92,16 @@ export class ApipnrdisputesComponent implements OnInit {
      this.completeReportRecord = this.searchFrom.value ; 
      
     const data = {
-      bus_operator_id: this.completeReportRecord.bus_operator_id,
-      payment_id:this.completeReportRecord.payment_id,
-      date_type :this.completeReportRecord.date_type,
-      pnr :this.completeReportRecord.pnr,
+      user_id: this.completeReportRecord.user_id,   
       rows_number:this.completeReportRecord.rows_number,
-      source_id:this.completeReportRecord.source_id,
-      destination_id:this.completeReportRecord.destination_id,
-      rangeFromDate:this.completeReportRecord.rangeFromDate,
-      rangeToDate :this.completeReportRecord.rangeToDate            
+                 
     };
        
     // console.log(data);
     
     if(pageurl!="")
     {
-      this.rs.completepaginationReport(pageurl,data).subscribe(
+      this.rs.allapiclientissuedataReport(pageurl,data).subscribe(
         res => {
           this.completedata= res.data;
           // console.log( this.completedata);
@@ -121,7 +111,7 @@ export class ApipnrdisputesComponent implements OnInit {
     }
     else
     {
-      this.rs.completeReport(data).subscribe(
+      this.rs.allapiclientissuedata(data).subscribe(
         res => {
           this.completedata= res.data;
           // console.log( this.completedata);
@@ -129,6 +119,37 @@ export class ApipnrdisputesComponent implements OnInit {
         }
       );
     }    
+  }
+
+  update_status(event,id){
+    // console.log(event);
+    // console.log(id);
+
+    if(event== ''){
+      return
+    }
+    else{
+      const data= {
+        id:id,
+        status:event,
+        created_by:localStorage.getItem('USERNAME')
+      };
+
+      this.rs.apiclientissuestatue(data).subscribe(
+        res =>{
+          if (res.status == 1) {
+            this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
+            // this.modalReference.close();
+            this.refresh();
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
+            this.spinner.hide();
+          }
+        }
+      );
+
+    }
   }
 
   ///////////////Function to Copy data to Clipboard/////////////////
@@ -151,57 +172,44 @@ export class ApipnrdisputesComponent implements OnInit {
   {
     this.spinner.show();
     this.searchFrom = this.fb.group({
-      bus_operator_id: [null],
-      rangeFromDate:[null],
-      rangeToDate:[null],
-      payment_id : [null],
-      pnr:[null],
-      date_type:['journey'],
+      user_id: [null],   
       rows_number: 10,
-      // rows_number: Constants.RecordLimit,
-      source_id:[null],
-      destination_id:[null]
+    
     })
     this.search();
   }
 
   loadServices() 
   {
-      this.busOperatorService.readAll().subscribe(
-        res => {
-          this.busoperators = res.data;
-          this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-        }
-      );
-      this.locationService.readAll().subscribe(
-        records=>{
-          this.locations=records.data;
-        }
-      );
+    this.busOperatorService.getApiClient().subscribe(
+      res => {
+        this.allagent = res.data;       
+      }
+    );
   }
 
-  findSource(event:any)
-  {
-      let source_id=this.searchFrom.controls.source_id.value;
-      let destination_id=this.searchFrom.controls.destination_id.value;
+  // findSource(event:any)
+  // {
+  //     let source_id=this.searchFrom.controls.source_id.value;
+  //     let destination_id=this.searchFrom.controls.destination_id.value;
 
-      if(source_id!="" && destination_id!="")
-      {
-        this.busService.findSource(source_id,destination_id).subscribe(
-          res=>{
-            this.buses=res.data;
-          }
-        );
-      }
-      else
-      {
-        this.busService.all().subscribe(
-          res=>{
-            this.buses=res.data;
-          }
-        );
-      }
-  }
+  //     if(source_id!="" && destination_id!="")
+  //     {
+  //       this.busService.findSource(source_id,destination_id).subscribe(
+  //         res=>{
+  //           this.buses=res.data;
+  //         }
+  //       );
+  //     }
+  //     else
+  //     {
+  //       this.busService.all().subscribe(
+  //         res=>{
+  //           this.buses=res.data;
+  //         }
+  //       );
+  //     }
+  // }
 
 
 }

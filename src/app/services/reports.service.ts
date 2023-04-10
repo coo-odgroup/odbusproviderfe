@@ -104,6 +104,26 @@ export class ReportsService {
     )
   }
 
+
+  allapiclientissuedata(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/allapiclientissuedata',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
+  allapiclientissuedataReport(url,data): Observable<any> {
+    return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  apiclientissuestatue(data):Observable<any>{
+    return this.httpClient.post<any>(this.apiURL + '/apiclientissuestatue',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   pendingpnrReport(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/pendingpnrreport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)

@@ -96,7 +96,8 @@ export class ApicancelticketsComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
-      rangeToDate :[null]
+      rangeToDate :[null],
+      user_id:[null]
 
     })  
     this.search(); 
@@ -145,20 +146,27 @@ export class ApicancelticketsComponent implements OnInit {
       created_by:localStorage.getItem('USERNAME'),
       status:2,
     };
-    this.acts.ApicancelTicket(data).subscribe(
-      res =>{
-        if (res.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
-          this.modalReference.close();
-          this.refresh();
+    if(this.cancelTicketForm.value.refundAmount >  this.pnrDetails[0].payable_amount)
+    {
+        this.notificationService.addToast({ title: 'Error', msg:"Refund amount can't be graeter then total fare", type: 'error' });
+        this.spinner.hide();
+    }
+    else
+    {
+      this.acts.ApicancelTicket(data).subscribe(
+        res =>{
+          if (res.status == 1) {
+            this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
+            this.modalReference.close();
+            this.refresh();
+          }
+          else {
+            this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
+            this.spinner.hide();
+          }
         }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
-          this.spinner.hide();
-        }
-      }
-    );
-
+      );
+    }
   }
 
 
@@ -251,7 +259,7 @@ export class ApicancelticketsComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
-      rangeToDate :[null]
+      rangeToDate :[null],user_id:[null]
 
     })  
     this.loadServices();
