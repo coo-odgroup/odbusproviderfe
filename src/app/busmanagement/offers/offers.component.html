@@ -1,8 +1,862 @@
-<div class="row">  
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<div class="row">
     <div class="col-sm-12">
-        <app-card cardTitle="Offers" cardClass="card-datatable" [options]="false"  >
-            
-        <h1>Coming Soon</h1>
+        <app-card [hidHeader]="false" cardTitle="Coupon Listing" cardClass="card-datatable" [options]="false"
+            cardClass=" table-border-style user-profile-list ">
+            <div class="row">
+               
+                <div class="col-12">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="from-group ">
+                                    <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                                        Add Coupon
+                                    </button>
+                                    <div class="dropdown float-right">
+                                        <select class="form-control sml_input" formControlName="rows_number"
+                                            (change)=search()>
+                                            <option value=10>10</option>
+                                            <option value=25>25</option>
+                                            <option value=50>50</option>
+                                            <option value=100>100</option>
+                                            <!-- <option value='all'>All</option> -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control sml_input" placeholder="Search Here "
+                                                required formControlName="name" >
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-success  sml_input"
+                                                    (click)="search()" title="search">
+                                                    <i class="fas fa-search"> </i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                  <div class="col-sm-12">
+                                    <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
+                                            placeholder="Select Operator" formControlName="bus_operator_id" 
+                                            [clearable]="false">
+                                    </ng-select>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                  <div class="col-sm-12">
+                                    <div class="input-group">
+                                      <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                                        formControlName="fromDate">
+                                        <input type="date" class="form-control sml_input" placeholder="Search Date Here " required
+                                        formControlName="toDate">
+                                    </div>
+                                  </div>                
+                                </div>
+                              </div>  
+                            
+                           
+                            <div class="col-md-3">
+                                <div class="form-group ">
+                                    
+                                        <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                            placeholder="Select Source" formControlName="source_id"
+                                            [clearable]="false" >
+                                        </ng-select>
+                                   
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                  <div class="form-group">
+                                     
+                                          <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                              placeholder="Select Destination"
+                                              formControlName="destination_id" [clearable]="false"
+                                              >
+                                          </ng-select>
+                
+                                      
+                                  </div>
+                              </div> 
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                    
+                                        <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
+                                            placeholder="Select Coupon Type" formControlName="coupon_type"
+                                            [clearable]="false" >
+                                        </ng-select>
+              
+                                  
+                                </div>
+                            </div> 
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="dropdown">
+                                 
+                                          <select class="form-control sml_input" formControlName="status">
+                                            <option value='1'>Active</option>
+                                            <option value='0'>Panding</option>
+                                            <option value='3'>Deactive</option>
+                                        </select>
+                                        <small>Status</small>
+                          
+                                    </div>   
+                                </div>
+                            </div> 
+
+
+                           
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <button type="button" class="btn btn-success  sml_input" (click)="search()"
+                        title="search">
+                         Search
+                    </button>
+                    <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
+                        title="refresh">
+                         Refresh
+                    </button>
+                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                        title="Export">
+                        Export
+                    </button>
+                    <button type="button" printSectionId="print-section" ngxPrint
+                        class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
+                       Print
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive" id="print-section">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th >Coupan type</th>
+                            <th >Bus Details</th>
+                            <th>Operator</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>Valid From</th>
+                            <th>Valid Till</th>
+                            <th>Coupon Title</th>
+                            <th>Coupon Code</th>
+                            <th>Max Redeem</th>
+                            <th width="180">Created/Updated On</th>
+                            <th>Created_By</th>
+                            <th>Status</th>
+                            <th width="100" class="hide_print">&nbsp; </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="coupons?.length != 0">
+                        <tr *ngFor="let couponData of coupons; let i=index;">
+                            <td>{{i+1}}</td>
+                            <td>
+                                <label *ngIf="couponData.coupon_type_id ==1" class="badge badge-primary pointer text-white">{{couponData.coupon_type.coupon_type_name}}</label>
+                                <label *ngIf="couponData.coupon_type_id ==2" class="badge badge-info pointer text-dark">{{couponData.coupon_type.coupon_type_name}}</label>
+                                <label *ngIf="couponData.coupon_type_id ==3" class="badge badge-warning pointer text-dark">{{couponData.coupon_type.coupon_type_name}}</label>
+                            
+                            
+                            </td>
+
+                            <td>
+                                <p>{{couponData.bus.name}}</p>
+                                <p>{{couponData.bus.bus_number}}</p>                            
+                            </td>
+
+                            <td>
+                                <!-- {{couponData|json}} -->
+                                <span *ngIf='couponData.bus_operator!=null '>
+                                    {{ couponData.bus_operator.organisation_name }} [{{
+                                        couponData.bus_operator.operator_name }}]
+                                </span>
+                                <span *ngIf='couponData.bus_operator==null '>
+                                    ----
+                                </span>
+                            </td>
+                            <td>
+                                <span *ngIf="couponData.from_location!=null">
+                                    {{couponData.from_location[0].name}} 
+                                </span>
+                                <span *ngIf="couponData.from_location==null">
+                                    ----
+                                </span> 
+                            </td>
+                            <td>
+                                <span *ngIf="couponData.to_location!=null">
+                                    {{couponData.to_location[0].name}}
+                                </span>
+                                <span *ngIf="couponData.to_location==null">
+                                    ----
+                                </span>
+                            </td>
+                            <td>{{couponData.from_date  }}</td>
+                            <td>{{couponData.to_date }} </td>
+                            <td>{{couponData.coupon_title}}</td>
+                            <td>{{couponData.coupon_code}}</td>
+                            <td>
+                                {{couponData.max_redeem}}
+                            </td>
+                            <td>
+                                {{couponData.updated_at | date: 'dd/MM/yyyy' }}
+                            </td>
+                            <td>
+                                {{couponData.created_by}}
+                            </td>
+                            <td>
+                                <!-- {{couponData.status}} -->
+                                <!-- <span *ngIf="couponData.from_date <= todayDate && todayDate <=couponData.to_date"> -->
+                                <span *ngIf=" todayDate <=couponData.to_date">
+                                    <label *ngIf="couponData.status==1" class="badge badge-light-primary pointer text-dark"
+                                    (click)="changeStatus($event, couponData.id);">Active</label>
+                                    </span>
+                                <span>
+                                <label *ngIf="couponData.status==0" class="badge badge-light-danger pointer text-dark"
+                                    (click)="changeStatus($event, couponData.id);">Pending</label>
+                                </span>
+                                <span>
+                                <label *ngIf="couponData.status==3" class="badge  pointer text-white" style="background-color: rgb(76, 24, 124);"
+                                    (click)="changeStatus($event, couponData.id);">Deactive</label>
+                                </span>
+
+                                <span *ngIf="todayDate > couponData.to_date" class="text-danger">  
+                                  <b>Coupon Expeired</b>
+                                </span>
+                            </td>
+                            <td class="hide_print">
+                                <div class="overlay-edit">
+                                    <button type="button" (click)="edit_coupon(i,editCoupon)"
+                                        class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                                    <!-- <button type="button" (click)="openConfirmDialog(confirmDialog, i)"
+                                        class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button> -->
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="coupons?.length == 0">
+                        <tr>
+                            <td colspan="10" class="no-data-available">No data!</td>
+                        </tr>
+                    <tbody>
+                </table>
+                <div *ngIf="pagination?.length!= 0" class="hide_print container">
+                    <div class="row">
+                        <div class="col-6">
+
+                            <div class="col-12">
+                                <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                                <nav class="my-1 pt-1 ">
+                                    <ul class="pagination pagination-circle pg-blue mb-0">
+                                        <li (click)="search(pagination.first_page_url,statusLabel)"
+                                            class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                                            <a class="page-link">First</a>
+                                        </li>
+                                        <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                                            <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                                                (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                                        </li>
+                                        <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                                            (click)="search(pagination.last_page_url,statusLabel)">
+                                            <a class="page-link">Last</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-card-footer">
+                <ng-template #confirmDialog let-modal>
+                    <div class="modal-header">
+                        <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+                        <button type="button" class="close" aria-label="Close"
+                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-material">
+                                    <div class="right-icon-control">
+                                        Would you Like to Delete the Record
+                                        <form [formGroup]="formConfirm" class="editForm" novalidate>
+                                            <input type="hidden" formControlName="id">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm
+                            Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                            (click)="modal.dismiss('Cross click')">Cancel</button>
+                    </div>
+                </ng-template>
+                <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+                    (click)="ResetAttributes();OpenModal(content)">Add </button>
+                <ng-template #content let-modal>
+                    <div class="modal-header">
+                        <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+                        <button type="button" class="close" aria-label="Close"
+                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-material">
+                        <div class="right-icon-control">
+                            <form [formGroup]="form" class="editForm" novalidate>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Coupon Basic Info</h5>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-5 col-form-label">Coupon Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
+                                                placeholder="Select Coupon Type" formControlName="coupon_type"
+                                                [clearable]="false" (change)="coupon_type()">
+                                                </ng-select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_type'].touched && form.controls['coupon_type'].hasError('required')">
+                                                    Coupon Type is required! </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="from-group"  *ngIf="form.controls.coupon_type.value=='1' || form.controls.coupon_type.value=='3' ">
+                                            <label for="bus"
+                                                class="col-sm-5  col-form-label">Bus Operator</label>
+                                            <div class="col-sm-12">
+                                                <ng-select [items]="busoperators" [multiple]="true" bindLabel="operatorData"
+                                                    bindValue="id" placeholder="Select Bus Operator"
+                                                    formControlName="bus_operator_id" [clearable]="false" (change)="getBusoperatorRoute()">
+
+                                                    <ng-template ng-header-tmp *ngIf="busoperators?.length > 0">
+                                                        <div>
+                                                          <button class="btn btn-link" (click)="onSelectAll()">Select All</button>
+                                                          <button class="btn btn-link" (click)="onClearAll()">Clear All</button>
+                                                        </div>
+                                                      </ng-template>
+                                                </ng-select>
+
+                                            </div>
+                                        </div>
+                                        <div class="from-group" *ngIf="form.controls.coupon_type.value=='2' || form.controls.coupon_type.value=='3' ">
+                                            <label for="bus" class="col-sm-5  col-form-label">Routes</label>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <ng-select id="route" [multiple]="true"  [items]="allRoutes"
+                                                            bindLabel="route" bindValue="id"
+                                                            placeholder="Select Route"
+                                                            formControlName="route" [clearable]="false" (change)="GetBusList()">
+
+                                                            <ng-template ng-header-tmp *ngIf="allRoutes?.length > 0">
+                                                                <div>
+                                                                  <button class="btn btn-link" (click)="onSelectAllRoute()">Select All</button>
+                                                                  <button class="btn btn-link" (click)="onClearAllRoute()">Clear All</button>
+                                                                </div>
+                                                              </ng-template>
+                                                        </ng-select>
+                                                    </div>                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="from-group">
+                                            <label for="bus" class="col-sm-5  col-form-label">Bus</label>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <ng-select  id="bus_id" [multiple]="true"  [items]="busList"
+                                                            bindLabel="bus_name" bindValue="id"
+                                                            placeholder="Select Bus"
+                                                            formControlName="bus_id" [clearable]="false">
+
+                                                            <ng-template ng-header-tmp *ngIf="busList?.length > 0">
+                                                                <div>
+                                                                  <button class="btn btn-link" (click)="onSelectAllBus()">Select All</button>
+                                                                  <button class="btn btn-link" (click)="onClearAllBus()">Clear All</button>
+                                                                </div>
+                                                              </ng-template>
+                                                        </ng-select>
+
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-3 col-form-label">Coupon
+                                                Title:<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="coupon_title"
+                                                    placeholder="Coupon Title" required />
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_title'].touched && form.controls['coupon_title'].hasError('required')">
+                                                    Coupon Title is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <!-- <label>Page name :</label> -->
+                                            <label for="name" class="col-sm-3 col-form-label">Coupon
+                                                Code:<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control text-uppercase"
+                                                    ngbAutofocus formControlName="coupon_code"
+                                                    placeholder="Coupon Code" required />
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_code'].touched && form.controls['coupon_code'].hasError('required')">
+                                                    Coupon Code is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <!-- <label>Page name :</label> -->
+                                            <label for="name" class="col-sm-12 col-form-label">Short
+                                                Description:</label>
+                                            <div class="col-sm-12">
+                                                <textarea class="form-control"
+                                                    formControlName="short_description" ngbAutofocus
+                                                    placeholder="Short Description" rows="8"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h5>Coupon Discount Type And Validity</h5>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-5 col-form-label">Coupon
+                                                Discount Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control"
+                                                    formControlName="coupon_discount_type" required>                                                            
+                                                    <option value="1">Percentage %</option>
+                                                    <option value="2">Cut Off</option>
+                                                </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_discount_type'].touched && form.controls['coupon_discount_type'].hasError('required')">
+                                                    Coupon Discount Type is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='1'">
+                                            <label for="name" class="col-sm-3 col-form-label">Percentage
+                                                :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="percentage" placeholder="Percentage">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='1'">
+                                            <label for="name" class="col-sm-4 col-form-label">Max Discount
+                                                :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="max_discount_price"
+                                                    placeholder="Max Discount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='2'">
+                                            <label for="name" class="col-sm-12 col-form-label">Cut Off
+                                                Amount :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="amount" placeholder="Cut Off Amount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_discount_type.value=='2'">
+                                            <label for="name" class="col-sm-12 col-form-label">Min
+                                                Transaction Amount :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="min_tran_amount"
+                                                    placeholder="Min Transaction Amount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Valid By
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" formControlName="valid_by"
+                                                    required>
+                                                    <option value="1">Journey Date</option>
+                                                    <option value="2">Booking Date</option>
+                                                </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['valid_by'].touched && form.controls['valid_by'].hasError('required')">
+                                                    Valid By is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">From Date
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="date" class="form-control" ngbAutofocus
+                                                    formControlName="from_date" placeholder="From Date"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['from_date'].touched && form.controls['from_date'].hasError('required')">
+                                                    From Date is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">To Date
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="date" class="form-control" ngbAutofocus
+                                                    formControlName="to_date" placeholder="To Date"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['to_date'].touched && form.controls['to_date'].hasError('required')">
+                                                    To Date is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Max Redeem
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" ngbAutofocus
+                                                    formControlName="max_redeem" placeholder="Max Redeem"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['max_redeem'].touched && form.controls['max_redeem'].hasError('required')">
+                                                    Max Redeem is required! </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Auto Apply
+                                                : <input type="checkbox" formControlName="auto_apply" [value]="1"
+                                                ></label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
+                                            <label for="name" class="col-sm-5 col-form-label">About Coupon
+                                                :</label>
+                                            <angular-editor class="col-sm-12"
+                                                formControlName="full_description" [config]="editorConfig">
+                                            </angular-editor>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="addData()" [disabled]="!form.valid"
+                            class="btn btn-primary">{{ModalBtn}}</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                            (click)="modal.dismiss('Cross click')">Close</button>
+                    </div>
+                </ng-template>
+
+
+                <ng-template #editCoupon let-modal>
+                    <div class="modal-header">
+                        <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+                        <button type="button" class="close" aria-label="Close"
+                            (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-material">
+                        <div class="right-icon-control">
+                            <form [formGroup]="editform" class="editForm" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Coupon Basic Info</h5>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-5 col-form-label">Coupon Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <ng-select [items]="couponType" bindLabel="coupon_type_name" bindValue="id"
+                                                placeholder="Select Coupon Type" formControlName="coupon_type"
+                                                [clearable]="false" (change)="coupon_type()" [readonly]="true">
+                                            </ng-select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_type'].touched && form.controls['coupon_type'].hasError('required')">
+                                                    Coupon Type is required! </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="from-group"  *ngIf="editform.controls.coupon_type.value=='1' || editform.controls.coupon_type.value=='3' ">
+                                            <label for="bus"
+                                                class="col-sm-5  col-form-label">Bus Operator</label>
+                                            <div class="col-sm-12">
+                                                <ng-select [items]="busoperators" [readonly]="true"  bindLabel="operatorData"
+                                                    bindValue="id" placeholder="Select Bus Operator"
+                                                    formControlName="bus_operator_id" [clearable]="false" (change)="getBusoperatorRoute()">
+                                                </ng-select>
+
+                                            </div>
+                                        </div>
+                                        <div class="from-group" *ngIf="editform.controls.coupon_type.value=='2' || editform.controls.coupon_type.value=='3' ">
+                                            <label for="bus" class="col-sm-5  col-form-label">Routes</label>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6">
+
+                                                        <ng-select [readonly]="true" id="source_id" [items]="locations"
+                                                        bindLabel="name" bindValue="id"
+                                                        placeholder="Select Source"
+                                                        formControlName="source_id"
+                                                        [clearable]="false">
+                                                    </ng-select>
+                                                       
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <ng-select [readonly]="true" id="destination_id" [items]="locations"
+                                                            bindLabel="name" bindValue="id"
+                                                            placeholder="Select Destination"
+                                                            formControlName="destination_id"
+                                                            [clearable]="false">
+                                                        </ng-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="from-group">
+                                            <label for="bus" class="col-sm-5  col-form-label">Bus</label>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <ng-select id="bus_id" [readonly]="true" [items]="allBus"
+                                                            bindLabel="bus_name" bindValue="id"
+                                                            placeholder="Select Bus"
+                                                            formControlName="bus_id" [clearable]="false">
+                                                        </ng-select>
+
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-3 col-form-label">Coupon
+                                                Title:<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="coupon_title"
+                                                    placeholder="Coupon Title" required />
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_title'].touched && form.controls['coupon_title'].hasError('required')">
+                                                    Coupon Title is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <!-- <label>Page name :</label> -->
+                                            <label for="name" class="col-sm-3 col-form-label">Coupon
+                                                Code:<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" [readonly]="true" class="form-control text-uppercase"
+                                                    ngbAutofocus formControlName="coupon_code"
+                                                    placeholder="Coupon Code" required />
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_code'].touched && form.controls['coupon_code'].hasError('required')">
+                                                    Coupon Code is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <!-- <label>Page name :</label> -->
+                                            <label for="name" class="col-sm-12 col-form-label">Short
+                                                Description:</label>
+                                            <div class="col-sm-12">
+                                                <textarea class="form-control"
+                                                    formControlName="short_description" ngbAutofocus
+                                                    placeholder="Short Description" rows="8"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Coupon Discount Type And Validity</h5>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-5 col-form-label">Coupon
+                                                Discount Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" disabled
+                                                    formControlName="coupon_discount_type" required>                                                            
+                                                    <option value="1">Percentage %</option>
+                                                    <option value="2">Cut Off</option>
+                                                </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['coupon_discount_type'].touched && form.controls['coupon_discount_type'].hasError('required')">
+                                                    Coupon Discount Type is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="editform.controls.coupon_discount_type.value=='1'">
+                                            <label for="name" class="col-sm-3 col-form-label">Percentage
+                                                :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="percentage" placeholder="Percentage">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="editform.controls.coupon_discount_type.value=='1'">
+                                            <label for="name" class="col-sm-4 col-form-label">Max Discount
+                                                :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="max_discount_price"
+                                                    placeholder="Max Discount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="editform.controls.coupon_discount_type.value=='2'">
+                                            <label for="name" class="col-sm-12 col-form-label">Cut Off
+                                                Amount :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="amount" placeholder="Cut Off Amount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group"
+                                            *ngIf="editform.controls.coupon_discount_type.value=='2'">
+                                            <label for="name" class="col-sm-12 col-form-label">Min
+                                                Transaction Amount :</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="min_tran_amount"
+                                                    placeholder="Min Transaction Amount">
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Valid By
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" disabled formControlName="valid_by"
+                                                    required>
+                                                    <option value="1">Journey Date</option>
+                                                    <option value="2">Booking Date</option>
+                                                </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['valid_by'].touched && form.controls['valid_by'].hasError('required')">
+                                                    Valid By is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">From Date
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="date" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="from_date" placeholder="From Date"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['from_date'].touched && form.controls['from_date'].hasError('required')">
+                                                    From Date is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">To Date
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="date" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="to_date" placeholder="To Date"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['to_date'].touched && form.controls['to_date'].hasError('required')">
+                                                    To Date is required! </span>
+                                            </div>
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Max Redeem
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                    formControlName="max_redeem" placeholder="Max Redeem"
+                                                    required>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['max_redeem'].touched && form.controls['max_redeem'].hasError('required')">
+                                                    Max Redeem is required! </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Auto Apply
+                                                : <input type="checkbox" formControlName="auto_apply" [value]="1"
+                                                ></label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
+                                            <label for="name" class="col-sm-5 col-form-label">About Coupon
+                                                :</label>
+                                            <angular-editor class="col-sm-12"
+                                                formControlName="full_description" [config]="editorConfig">
+                                            </angular-editor>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="updateCoupon()" [disabled]="!editform.valid"
+                            class="btn btn-primary">{{ModalBtn}}</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                            (click)="modal.dismiss('Cross click')">Close</button>
+                    </div>
+                </ng-template>
+
+            </div>
         </app-card>
     </div>
-</div>    
+</div>

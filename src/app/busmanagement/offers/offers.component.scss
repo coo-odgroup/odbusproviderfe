@@ -1,7 +1,15 @@
 
-
 @media print {
-    ::ng-deep .hide_print {
-      display: none !important;
-    }
+  ::ng-deep .hide_print {
+    display: none !important;
   }
+}
+
+
+  
+::ng-deep .sml_input
+{
+height: calc(1.5em + 1rem);
+padding:0px 9px;
+margin-left: 2px;
+}

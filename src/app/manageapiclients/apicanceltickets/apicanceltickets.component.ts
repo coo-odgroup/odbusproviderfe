@@ -118,8 +118,12 @@ export class ApicancelticketsComponent implements OnInit {
       this.acts.getApiPnrDetails(pnr).subscribe(
         res => {
           this.pnrDetails= res.data;
+
+          let refAmt=this.pnrDetails[0].payable_amount - this.pnrDetails[0].client_comission ;
+          this.cancelTicketForm.controls.refundAmount.setValue(refAmt);
+
           this.spinner.hide();
-          console.log(this.pnrDetails);
+          // console.log(this.pnrDetails);
        
           if(this.pnrDetails.length == 0)
           {

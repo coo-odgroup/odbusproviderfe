@@ -160,7 +160,11 @@
                     </span>                   
                     <span style="color: #FF0000;" *ngIf="page.payment_via=='' && page.transaction_type =='d'"> 
                      <b>Pnr Booking</b> 
-                    </span>                   
+                    </span>     
+                    <br>
+                    <span *ngIf="page.booking!=null ">
+                      <b>{{page.booking.pnr}}</b>
+                    </span>              
                     
                 </td>
               </tr>

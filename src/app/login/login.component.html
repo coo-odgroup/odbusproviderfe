@@ -19,14 +19,14 @@
                                 *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
                                 Password is required! </span>
                       </div>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <ng-select [items]="usertypes" style="height: 40px;" class="list-display1" bindLabel="name" bindValue="id"
                         placeholder="User Role" formControlName="user_type" [clearable]="false">
                       </ng-select>
                         <span class="text-danger"
                                 *ngIf="form.controls['user_type'].touched && form.controls['user_type'].hasError('required')">
                                 Role  is required! </span>
-                      </div>
+                      </div> -->
                       <!-- <div class="form-group text-left mt-2">
                         <label>
                         <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox" [checked]="saveUsername"

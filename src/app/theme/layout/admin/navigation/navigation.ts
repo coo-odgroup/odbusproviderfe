@@ -814,78 +814,78 @@ const NavigationItems = [
           }
         ]
       },
-      {
-        id: 'association',
-        title: 'Association',
-        type: 'collapse',
-        icon: 'feather icon-command',
-        // icon: 'feather icon-thermometer',
-        children: [  
-          {
-            id: 'association',
-            title: 'Manage Association',
-            type: 'item',
-            icon:'feather icon-user-plus',
-            url: 'setting/association'
-          },
-          {
-            id: 'assignoperator',
-            title: 'Assign Operator',
-            type: 'item',
-            icon:'feather icon-aperture',
-            url: 'association/assignoperator'
-          },
-          {
-            id: 'assignbus',
-            title: 'Assign Bus',
-            type: 'item',
-            icon:'feather icon-bold',
-            url: 'association/assignbus'
-          },
-          {
-            id: 'assignagent',
-            title: 'Assign Agent',
-            type: 'item',
-            icon:'feather icon-aperture',
-            url: 'association/assignagent'
-          },
-          {
-            id: 'bookingreport',
-            title: 'Booking Report',
-            type: 'item',
-            icon:'feather icon-book',
-            url: 'association/bookingreport'
-          },
-          {
-            id: 'cancelreport',
-            title: 'Cancel Report',
-            type: 'item',
-            icon:'feather icon-scissors',
-            url: 'association/cancelreport'
-          },
-          {
-            id: 'assignagentreport',
-            title: 'Assign Agent Report',
-            type: 'item',
-            icon:'feather icon-loader',
-            url: 'reports/assignagentreport'
-          },
-          {
-            id: 'assignbusreport',
-            title: 'Assign Bus Report',
-            type: 'item',
-            icon:'feather icon-briefcase',
-            url: 'reports/assignbusreport'
-          },
-          {
-            id: 'assignoperatorreport',
-            title: 'Assign Operator Report',
-            type: 'item',
-            icon:'feather icon-aperture',
-            url: 'reports/assignoperatorreport'
-          },
-        ]
-      },
+      // {
+      //   id: 'association',
+      //   title: 'Association',
+      //   type: 'collapse',
+      //   icon: 'feather icon-command',
+      //   // icon: 'feather icon-thermometer',
+      //   children: [  
+      //     {
+      //       id: 'association',
+      //       title: 'Manage Association',
+      //       type: 'item',
+      //       icon:'feather icon-user-plus',
+      //       url: 'setting/association'
+      //     },
+      //     {
+      //       id: 'assignoperator',
+      //       title: 'Assign Operator',
+      //       type: 'item',
+      //       icon:'feather icon-aperture',
+      //       url: 'association/assignoperator'
+      //     },
+      //     {
+      //       id: 'assignbus',
+      //       title: 'Assign Bus',
+      //       type: 'item',
+      //       icon:'feather icon-bold',
+      //       url: 'association/assignbus'
+      //     },
+      //     {
+      //       id: 'assignagent',
+      //       title: 'Assign Agent',
+      //       type: 'item',
+      //       icon:'feather icon-aperture',
+      //       url: 'association/assignagent'
+      //     },
+      //     {
+      //       id: 'bookingreport',
+      //       title: 'Booking Report',
+      //       type: 'item',
+      //       icon:'feather icon-book',
+      //       url: 'association/bookingreport'
+      //     },
+      //     {
+      //       id: 'cancelreport',
+      //       title: 'Cancel Report',
+      //       type: 'item',
+      //       icon:'feather icon-scissors',
+      //       url: 'association/cancelreport'
+      //     },
+      //     {
+      //       id: 'assignagentreport',
+      //       title: 'Assign Agent Report',
+      //       type: 'item',
+      //       icon:'feather icon-loader',
+      //       url: 'reports/assignagentreport'
+      //     },
+      //     {
+      //       id: 'assignbusreport',
+      //       title: 'Assign Bus Report',
+      //       type: 'item',
+      //       icon:'feather icon-briefcase',
+      //       url: 'reports/assignbusreport'
+      //     },
+      //     {
+      //       id: 'assignoperatorreport',
+      //       title: 'Assign Operator Report',
+      //       type: 'item',
+      //       icon:'feather icon-aperture',
+      //       url: 'reports/assignoperatorreport'
+      //     },
+      //   ]
+      // },
 
       {
         id: 'operator',
@@ -1068,36 +1068,36 @@ const NavigationItems = [
         ]
       },
       
-      {
-        id: 'useracessmanagement',
-        title: 'Role Management',
-        type: 'collapse',
-        icon: 'feather icon-user',
-        children: [         
-          {
-                id: 'managerole',
-                title: 'Manage Role',
-                type: 'item',
-                icon:'feather icon-user',
-                url: 'useracessmanagement/managerole'
-          },  
-          {
-            id: 'managepermission',
-            title: 'Manage Permission',
-            type: 'item',
-            icon:'feather icon-user',
-            url: 'useracessmanagement/managepermission'
-          },  
-          {
-            id: 'managepermissiontorole',
-            title: 'Permission To Role',
-            type: 'item',
-            icon:'feather icon-user',
-            url: 'useracessmanagement/managepermissiontorole'
-          },                          
+      // {
+      //   id: 'useracessmanagement',
+      //   title: 'Role Management',
+      //   type: 'collapse',
+      //   icon: 'feather icon-user',
+      //   children: [         
+      //     {
+      //           id: 'managerole',
+      //           title: 'Manage Role',
+      //           type: 'item',
+      //           icon:'feather icon-user',
+      //           url: 'useracessmanagement/managerole'
+      //     },  
+      //     {
+      //       id: 'managepermission',
+      //       title: 'Manage Permission',
+      //       type: 'item',
+      //       icon:'feather icon-user',
+      //       url: 'useracessmanagement/managepermission'
+      //     },  
+      //     {
+      //       id: 'managepermissiontorole',
+      //       title: 'Permission To Role',
+      //       type: 'item',
+      //       icon:'feather icon-user',
+      //       url: 'useracessmanagement/managepermissiontorole'
+      //     },                          
          
-        ]
-      },
+      //   ]
+      // },
       {
         // id: 'ticketinformation',
         title: 'Manage API Clients',

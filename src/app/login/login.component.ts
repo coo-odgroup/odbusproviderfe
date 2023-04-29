@@ -15,7 +15,7 @@ import{Constants} from '../constant/constant';
 export class LoginComponent implements OnInit {
   public form: FormGroup;
   public loginRecord:Login;
-  usertypes: [] ;
+  // usertypes: [] ;
 
   public saveUsername:boolean;
   public onSaveUsernameChanged(value:boolean){
@@ -26,19 +26,19 @@ export class LoginComponent implements OnInit {
 
   constructor(public router: Router,protected fb:FormBuilder, private loginService: LoginService, private notificationService: NotificationService,private notify: NotificationService,private roleService: RoleService) {
 
-    this.roleService.getRoles().subscribe(
-      res=>{
-        this.usertypes=res.data;
-        // console.log(this.usertypes);
-      }
-    );
+    // this.roleService.getRoles().subscribe(
+    //   res=>{
+    //     this.usertypes=res.data;
+    //     // console.log(this.usertypes);
+    //   }
+    // );
   }
  
   ngOnInit() {
     this.form = this.fb.group({
       email: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])],
-      user_type: [null, Validators.compose([Validators.required])],
+      // user_type: [null, Validators.compose([Validators.required])],
     });  
   }
   ResetForm()
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     this.form = this.fb.group({
       email: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])],
-      user_type: [null, Validators.compose([Validators.required])],
+      // user_type: [null, Validators.compose([Validators.required])],
     });
   }
   check_credentials()
@@ -54,7 +54,8 @@ export class LoginComponent implements OnInit {
     const data={
       email:this.form.value.email,
       password:this.form.value.password,
-      user_type:this.form.value.user_type, 
+      // user_type:this.form.value.user_type, 
+      user_type:1, 
     };
 
     this.loginService.checkLogin(data).subscribe(

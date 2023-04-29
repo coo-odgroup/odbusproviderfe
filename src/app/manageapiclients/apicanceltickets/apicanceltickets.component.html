@@ -173,7 +173,11 @@
                                     <br>
                                     <strong
                                         style="color: darkgoldenrod;" *ngIf="complete.customer_payment">{{complete.customer_payment.razorpay_id}}</strong>
+
+                                    <br>
+                                    <span *ngIf=" complete.cancel_reason!= null" class="text-danger"><b>{{ complete.cancel_reason }}</b></span>
                                 </td>
+
                                 <td>
                                     {{ complete.updated_at | date: 'dd-MM-yyyy' }}
                                 </td>    
@@ -431,7 +435,7 @@
                                                         <div class="col-sm-12">
                                                             <input type="number" class="form-control" ngbAutofocus
                                                                 formControlName="refundAmount"
-                                                                placeholder="Enter Refund Amount"  required />
+                                                                placeholder="Enter Refund Amount"  required [readOnly]=true />
                                                             <span class="text-danger"
                                                                 *ngIf="cancelTicketForm.controls['refundAmount'].touched && cancelTicketForm.controls['refundAmount'].hasError('required')">                                                            
                                                             Refund Amount is required! </span>
@@ -498,6 +502,13 @@
                                                                         <td colspan="3" class="text-center text-danger">
                                                                             <i class="fas fa-rupee-sign"></i>
                                                                             <b>{{pnrDetails[0].payable_amount}}</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Client Comission</td>
+                                                                        <td colspan="3" class="text-center text-danger">
+                                                                            <i class="fas fa-rupee-sign"></i>
+                                                                            <b>{{pnrDetails[0].client_comission}}</b>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
