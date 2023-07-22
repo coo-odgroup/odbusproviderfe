@@ -70,10 +70,16 @@ export class AgentalltransactionComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
+
     this.form = this.fb.group({
-      id: [null],
-      otp: [null, Validators.compose([Validators.required])]
+      user_id: [null, Validators.compose([Validators.required])],
+      amount: [null, Validators.compose([Validators.required])],
+      remarks: [null, Validators.compose([Validators.required])],
+      transaction_type: [null, Validators.compose([Validators.required])],
+      transaction_id: [null, Validators.compose([Validators.required])],
+      reference_id: [null]
     });
+
     this.formConfirm = this.fb.group({
       id: [null]
     });
@@ -93,20 +99,57 @@ export class AgentalltransactionComponent implements OnInit {
   }
 
 
-  OpenModal(content,id) {
-    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'md' });
-    this.walletRecord =this.wallet[id];
-    // console.log(this.walletRecord);
+  OpenModal(content) {
+    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
   }
   ResetAttributes() {
     this.walletRecord = {} as AgentWallet;
+   
     this.form = this.fb.group({
-      id: [null],
-      otp: [null, Validators.compose([Validators.required])]
+      user_id: [null, Validators.compose([Validators.required])],
+      amount: [null, Validators.compose([Validators.required])],
+      remarks: [null, Validators.compose([Validators.required])],
+      transaction_type: [null, Validators.compose([Validators.required])],
+      transaction_id: [null, Validators.compose([Validators.required])],
+      reference_id: [null]
     });
     this.form.reset();
-    this.ModalHeading = "Enter OTP to Active ";
+    this.ModalHeading = "Add A Transaction";
     this.ModalBtn = "Submit";
+  }
+
+  add(){
+    // this.spinner.show();
+    // console.log(this.searchForm.value);
+  
+    const data = {
+      user_id:this.form.value.user_id,
+      amount:this.form.value.amount,
+      remarks:this.form.value.remarks,
+      transaction_id:this.form.value.transaction_id,
+      reference_id:this.form.value.reference_id,
+      transaction_type:this.form.value.transaction_type,
+      created_by: localStorage.getItem('USERNAME') 
+    };
+    // console.log(data);
+    // return;
+
+    this.ws.agentTransByAdmin(data).subscribe(
+      resp => {
+        if(resp.status==1)
+     {
+        this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+        this.modalReference.close();
+        this.ResetAttributes();
+        this.search();
+        
+     }
+     else
+     {
+        this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+        this.spinner.hide();
+     }
+    }); 
   }
 
 

@@ -75,6 +75,13 @@ export class ApiclientwalletService {
 
 
 
+  clientTransByAdmin(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/clientTransByAdmin', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   create(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/agentWallet', JSON.stringify(data), this.httpOptions)
     .pipe(

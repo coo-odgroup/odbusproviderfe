@@ -5,17 +5,18 @@
       <app-card [hidHeader]="false" cardTitle="API Client All Transaction" cardClass="card-datatable" [options]="false"
         cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
         <div class="row">
-          <!-- <div class="col-2">
-            <div class="from-group ">
-              <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
-                Add Balance
-              </button>
-            </div>
-          </div> -->
+          
           <div class="col-12">
             <form [formGroup]="searchForm">
-              <div class="row">          
-                <div class="col-md-7">
+              <div class="row">     
+                <div class="col-2">
+                  <div class="from-group ">
+                    <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                      Update Balance
+                    </button>
+                  </div>
+                </div>     
+                <div class="col-md-5">
                   <div class="row">  
                       <div class="form-group col-6">
                      
@@ -113,6 +114,7 @@
                 <th scope="col">Tran Type</th>   
                 <th scope="col">Balance</th>               
                 <th scope="col">Tran Status</th>   
+                <th scope="col">Remark</th>   
               </tr>
             </thead>
             <tbody *ngIf="wallet?.length != 0">
@@ -160,13 +162,17 @@
                     </span>                   
                     <span style="color: #FF0000;" *ngIf="page.payment_via=='' && page.transaction_type =='d'"> 
                      <b>Pnr Booking</b> 
-                    </span>     
+                    </span> 
+                    <!-- <span class=" text-dark" *ngIf="page.type==null && page.payment_via==''"> 
+                     
+                    </span>     -->
                     <br>
                     <span *ngIf="page.booking!=null ">
                       <b>{{page.booking.pnr}}</b>
                     </span>              
                     
                 </td>
+                <td> <b>{{page.remarks}}</b></td>
               </tr>
             </tbody>
             <tbody *ngIf="wallet?.length == 0">
@@ -263,47 +269,130 @@
           </ng-template>
           <!-- <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
             (click)="ResetAttributes();OpenModal(content)">Add </button> -->
-          <ng-template #content let-modal>
-            <div class="modal-header">
-              <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
-                  aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-material">
-                    <div class="right-icon-control">
-                      <form [formGroup]="form" class="editForm" novalidate>
-                        <div class="row">
-                          <div class="col">
-                            <div class="from-group">
-                                <label for="name" class="col-sm-4 col-form-label">OTP :<span
+            <ng-template #content let-modal>
+              <div class="modal-header">
+                <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                    aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-material">
+                      <div class="right-icon-control">
+                        <form [formGroup]="form" class="editForm" novalidate>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-4 col-form-label">Select Agent :<span
                                     class="text-danger">*</span></label>
                                 <div class="col-sm-12">
-                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter OTP here" required
-                                    formControlName="otp" />
+                                  <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
+                                      formControlName="user_id" [clearable]="false" >
+                                  </ng-select>
                                   <span class="text-danger"
-                                    *ngIf="form.controls['otp'].touched && form.controls['otp'].hasError('required')">
-                                    OTP is Required
+                                    *ngIf="form.controls['user_id'].touched && form.controls['user_id'].hasError('required')">
+                                    Client is Required
                                   </span>
                                 </div>
                               </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-4 col-form-label">Transaction Type :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <select class="form-control sml_input" formControlName="transaction_type">
+                                    <option value="c">Credit</option>
+                                    <option value="d">Debit</option>
+                                  </select>
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['transaction_type'].touched && form.controls['transaction_type'].hasError('required')">
+                                    Transaction Type is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-4 col-form-label">Remarks :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Remarks here"
+                                    required formControlName="remarks" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['remarks'].touched && form.controls['remarks'].hasError('required')">
+                                    Remarks is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-4 col-form-label">Amount :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Amount here"
+                                    required formControlName="amount" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['amount'].touched && form.controls['amount'].hasError('required')">
+                                    Amount is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+    
+                            <div class="col-md-4">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-4 col-form-label">Pnr :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus
+                                    placeholder="Enter pnr here" required formControlName="pnr" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['pnr'].touched && form.controls['pnr'].hasError('required')">
+                                    Pnr is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-6 col-form-label">Transaction_id :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus
+                                    placeholder="Enter Transaction_id here" required formControlName="transaction_id" />
+                                  <span class="text-danger"
+                                    *ngIf="form.controls['transaction_id'].touched && form.controls['transaction_id'].hasError('required')">
+                                    Transaction_id is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-6 col-form-label">reference_id :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Reference_id here"
+                                    formControlName="reference_id" />
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </form>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" (click)="changeStatus()" [disabled]="!form.valid"
-                class="btn btn-primary">{{ModalBtn}}</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-                (click)="modal.dismiss('Cross click')">Close</button>
-            </div>
-          </ng-template>
+              <div class="modal-footer">
+                <button type="button" (click)="add()" [disabled]="!form.valid" class="btn btn-primary">{{ModalBtn}}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                  (click)="modal.dismiss('Cross click')">Close</button>
+              </div>
+            </ng-template>
   
         </div>
       </app-card>

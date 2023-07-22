@@ -83,6 +83,13 @@ export class WalletService {
     )
   }
 
+  agentTransByAdmin(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/agentTransByAdmin', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
  
   chngsts(id, post): Observable<any> {
     return this.httpClient.put<any>(this.apiURL + '/changeAgentWalletStatus/' + id, JSON.stringify(post), this.httpOptions)
