@@ -329,6 +329,8 @@ export class SeatopenComponent implements OnInit {
         }
       );
     }
+
+    // console.log(this.seatOpen);
   }
 
 

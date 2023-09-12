@@ -227,7 +227,7 @@
                 {{ sblock[0][0].value[0].bus.bus_operator.organisation_name }} 
               </td>
               <td>
-                {{sblock[0][0].value[0].ticket_price.source?.name}}  >>  {{sblock[0][0].value[0].ticket_price.destination?.name}}
+                {{sblock[0][0].value[0].bus_source[0]?.name}}  >>  {{sblock[0][0].value[0].bus_destination[0]?.name}}
               </td>
 
               <td style="width:700px ;">
@@ -353,10 +353,7 @@
                 {{ opendate[0].value[0].bus.bus_operator.organisation_name }} 
               </td>
               <td>
-                {{opendate[0].value[0].ticket_price.source?.name}}  >>  {{opendate[0].value[0].ticket_price.destination?.name}}
-                <td>
-                <!-- {{sblock[0][0].value[0].ticket_price.source?.name}}  >>  {{sblock[0][0].value[0].ticket_price.destination?.name}} -->
-              <!-- </td> -->
+                {{opendate[0].value[0].bus_source[0]?.name}}  >>  {{opendate[0].value[0].bus_destination[0]?.name}}
               </td>
 
               <td>
@@ -368,7 +365,8 @@
                 </span>
               </td>
               <td>
-                {{opendate[0].value[0].reason}}
+                {{opendate[0].value[0].reason}} - 
+                {{opendate[0].value[0]?.other_reason}}
               </td>
             </tr>
           </div>

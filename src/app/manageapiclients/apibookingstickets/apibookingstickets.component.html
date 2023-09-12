@@ -90,7 +90,7 @@
                                         title="refresh">
                                         Refresh
                                     </button>&nbsp;
-                                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                                    <button type="button" (click)="expsearch()" class="btn btn-warning  sml_input"
                                         title="Export">
                                         Export
                                     </button>&nbsp;
@@ -434,8 +434,8 @@
                     </tr>
                 </thead>
 
-                <tbody *ngIf="completedata?.length != 0">
-                    <tr *ngFor="let complete of completedata?.data.data; let i = index">
+                <tbody *ngIf="expcompletedata?.length != 0">
+                    <tr *ngFor="let complete of expcompletedata?.data.data; let i = index">
                         <td>{{complete.pnr}}</td>
                         <td>
                             <span *ngFor="let seat of complete.booking_detail;">

@@ -58,7 +58,7 @@
                                         title="refresh">
                                         <i class="fas fa-sync-alt"> </i> Refresh
                                     </button>
-                                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                                    <button type="button" (click)="exportsearch()" class="btn btn-warning  sml_input"
                                         title="Export">
                                         <i class="fas fa-file-export"> </i> Export
                                     </button>
@@ -397,8 +397,8 @@
               
 
 
-                <tbody *ngIf="completedata?.length != 0">
-                    <tr *ngFor="let complete of completedata?.data.data; let i = index">
+                <tbody *ngIf="expcompletedata?.length != 0">
+                    <tr *ngFor="let complete of expcompletedata?.data.data; let i = index">
                         <td>{{complete.pnr}}</td>
                         <td><span *ngIf="complete.origin == 'DOLPHIN' "> {{complete.api_pnr}} </span></td>
                         <td>

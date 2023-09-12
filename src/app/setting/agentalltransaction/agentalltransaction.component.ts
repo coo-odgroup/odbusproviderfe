@@ -43,6 +43,7 @@ export class AgentalltransactionComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  walletdetails: any;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -196,6 +197,36 @@ export class AgentalltransactionComponent implements OnInit {
     }
   }
 
+
+  exportsearch() {
+
+    this.spinner.show();  
+    const expdata = {
+      name: this.searchForm.value.name,
+      bus_operator_id: this.searchForm.value.bus_operator_id,
+      rows_number: 'all',
+      rangeFromDate:this.searchForm.value.rangeFromDate,
+      rangeToDate :this.searchForm.value.rangeToDate,
+      tranType :this.searchForm.value.tranType,
+      user_id:this.searchForm.value.user_id
+    };
+      this.ws.getAllagentTransaction(expdata).subscribe(
+        res => {
+          this.walletdetails = res.data.data.data;
+          let length = this.walletdetails.length;
+         
+          if(length != 0)
+          {
+            setTimeout(() => {
+              this.exportexcel();
+            }, 3 * 1000);
+            this.spinner.hide();
+          }
+        }
+      );
+   
+  }
+
   loadServices() {
     this.busOperatorService.getAllAgent().subscribe(
       res => {
@@ -229,7 +260,7 @@ export class AgentalltransactionComponent implements OnInit {
   exportexcel(): void {
 
     /* pass here the table id */
-    let element = document.getElementById('print-section');
+    let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
 
     /* generate workbook and add the worksheet */

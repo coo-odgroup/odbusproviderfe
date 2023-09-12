@@ -36,6 +36,7 @@ export class AgentbookingreportComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  expcompletedata: any;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -71,6 +72,75 @@ export class AgentbookingreportComponent implements OnInit {
 
   }
 
+  
+
+  page(label:any){
+    return label;
+   }
+  search(pageurl="")
+  {
+    this.spinner.show();
+    this.completeReportRecord = this.searchFrom.value ; 
+    const data = {
+      date_type :this.completeReportRecord.date_type,
+      pnr :this.completeReportRecord.pnr,
+      user_id :this.completeReportRecord.user_id,
+      rows_number:this.completeReportRecord.rows_number,
+      rangeFromDate:this.completeReportRecord.rangeFromDate,
+      rangeToDate :this.completeReportRecord.rangeToDate
+            
+    };
+    if(pageurl!="")
+    {
+      this.rs.completepaginationReport(pageurl,data).subscribe(
+        res => {
+          this.completedata= res.data;
+          this.spinner.hide();
+        }
+      );
+    }
+    else
+    {
+      this.rs.completeReport(data).subscribe(
+        res => {
+          this.completedata= res.data;
+          this.spinner.hide();
+        }
+      );
+    }
+
+
+    
+  }
+
+  exportsearch()
+  {
+    this.spinner.show();
+    this.completeReportRecord = this.searchFrom.value ; 
+    const data = {
+      date_type :this.completeReportRecord.date_type,
+      pnr :this.completeReportRecord.pnr,
+      user_id :this.completeReportRecord.user_id,
+      rows_number:'all',
+      rangeFromDate:this.completeReportRecord.rangeFromDate,
+      rangeToDate :this.completeReportRecord.rangeToDate
+            
+    };
+    this.rs.completeReport(data).subscribe(
+      res => {
+        this.expcompletedata= res.data;
+        let length = this.expcompletedata.length;         
+          if(length != 0)
+          {
+            setTimeout(() => {
+              this.exportexcel();
+            }, 3 * 1000);
+            this.spinner.hide();
+          }
+      }
+    );    
+  }
+
   exportexcel(): void
   {
     
@@ -87,52 +157,6 @@ export class AgentbookingreportComponent implements OnInit {
  
   }
 
-  page(label:any){
-    return label;
-   }
-  search(pageurl="")
-  {
-    this.spinner.show();
-    this.completeReportRecord = this.searchFrom.value ; 
-    //console.log(this.completeReportRecord);
-
-    const data = {
-      date_type :this.completeReportRecord.date_type,
-      pnr :this.completeReportRecord.pnr,
-      user_id :this.completeReportRecord.user_id,
-      rows_number:this.completeReportRecord.rows_number,
-      rangeFromDate:this.completeReportRecord.rangeFromDate,
-      rangeToDate :this.completeReportRecord.rangeToDate
-            
-    };
-
-    
-    // console.log(data);
-    if(pageurl!="")
-    {
-      this.rs.completepaginationReport(pageurl,data).subscribe(
-        res => {
-          this.completedata= res.data;
-          //console.log( this.completedata);
-          this.spinner.hide();
-        }
-      );
-      // console.log(this.rs);
-    }
-    else
-    {
-      this.rs.completeReport(data).subscribe(
-        res => {
-          this.completedata= res.data;
-          //console.log( this.completedata);
-          this.spinner.hide();
-        }
-      );
-    }
-
-
-    
-  }
 
   
   DisplayAllSeat(seatArr:any){

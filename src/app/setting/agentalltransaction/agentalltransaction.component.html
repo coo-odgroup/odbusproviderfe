@@ -76,7 +76,7 @@
                 <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                   Refresh
                 </button>
-                <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                <button type="button" (click)="exportsearch()" class="btn btn-warning  sml_input" title="Export">
                   Export
                 </button>
                 <!-- <button type="button" printSectionId="print-section" ngxPrint
@@ -111,6 +111,7 @@
               <th scope="col">Tran Date</th>
               <th scope="col">Tran ID</th>
               <th scope="col">Tran Via</th>
+              <!-- <th scope="col">TDS</th> -->
               <th scope="col">Amount</th>
               <th scope="col">Tran Type</th>
               <th scope="col">Balance</th>
@@ -138,6 +139,9 @@
                 </span>
 
               </td>
+              <!-- <td>
+                <span *ngIf="page.payment_via=='' && page.transaction_type =='c'">{{page.amount/95*5}}</span>
+              </td> -->
               <td>{{page.amount}}</td>
               <td>
                 <span class="btn btn-sm bg-success text-white" *ngIf="page.transaction_type =='c'">
@@ -231,6 +235,91 @@
               </nav>
             </div>
           </div> -->
+      </div>
+
+
+
+
+
+      <div class="table-responsive" id="export-section" style="display: none;">
+        <table class="table table-striped ">
+          <thead>
+            <tr>
+              <th scope="col" width="100px">#</th>
+              <th>Agent Name</th>
+              <th>Agent Email</th>
+              <th>Agent Mobile</th>
+              <th scope="col">Tran Date</th>
+              <th scope="col">Tran ID</th>
+              <th scope="col">Tran Via</th>
+              <th scope="col">Total Commission</th>
+              <th scope="col">TDS</th>
+              <th scope="col">Net Amount</th>
+              <th scope="col">Tran Type</th>
+              <th scope="col">Balance</th>
+              <th scope="col">Tran Status</th>
+              <th scope="col">Remarks</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="walletdetails?.length != 0">
+            <tr *ngFor="let page of walletdetails; let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{page.user.name}}</td>
+              <td>{{page.user.email}}</td>
+              <td>{{page.user.phone}}</td>
+              <td>
+                <span class="text-info">
+                  {{page.created_at | date: 'dd/MM/yyyy'}}
+                </span>
+              </td>
+              <td>{{page.transaction_id}}</td>
+              <td>
+                <span class="text-info" *ngIf="page.payment_via!=''">
+                  {{page.payment_via}}
+                </span>
+                <span class="text-info" *ngIf="page.payment_via==''">
+                  ----
+                </span>
+              </td>
+              <td>
+                <span *ngIf="page.payment_via=='' && page.transaction_type =='c'">{{(page.amount/95*5)+ page.amount}}</span>
+              </td>
+              <td>
+                <span *ngIf="page.payment_via=='' && page.transaction_type =='c'">{{page.amount/95*5}}</span>
+              </td>
+              <td>{{page.amount}}</td>
+              <td>
+                <span class="btn btn-sm bg-success text-white" *ngIf="page.transaction_type =='c'">
+                  credit
+                </span>
+                <span class="btn btn-sm bg-danger text-white" *ngIf=" page.transaction_type =='d' ">
+                  Debit
+                </span>
+
+              </td>
+              <td>{{page.balance}} </td>
+
+              <td>
+                <span style="color: #A511ED;" *ngIf="page.payment_via!='' && page.transaction_type =='c'">
+                  <b>Wallet recharge</b>
+                </span>
+                <span style="color: #BC4107  ;" *ngIf="page.type=='Commission'">
+                  <b>Commission Received</b>
+                </span>
+                <span class=" text-dark" *ngIf="page.type=='Refund'">
+                  <b>Ticket Cancel Refund</b>
+                </span>
+                <span style="color: #FF0000;" *ngIf="page.payment_via=='' && page.transaction_type =='d'">
+                  <b>Pnr Booking</b>
+                </span>
+
+              </td>
+              <td>
+                {{page.remarks}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
 

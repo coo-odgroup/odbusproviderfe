@@ -34,6 +34,7 @@ export class ApibookingsticketsComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  expcompletedata: any;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -73,6 +74,42 @@ export class ApibookingsticketsComponent implements OnInit {
     this.loadServices();
   }
 
+
+  expsearch()
+  {
+    this.spinner.show();
+     this.completeReportRecord = this.searchFrom.value ; 
+     
+    const data = {
+        bus_operator_id: this.completeReportRecord.bus_operator_id,
+        payment_id:this.completeReportRecord.payment_id,
+        date_type :this.completeReportRecord.date_type,
+        pnr :this.completeReportRecord.pnr,
+        rows_number:'all',
+        source_id:this.completeReportRecord.source_id,
+        destination_id:this.completeReportRecord.destination_id,
+        rangeFromDate:this.completeReportRecord.rangeFromDate,
+        rangeToDate :this.completeReportRecord.rangeToDate            
+    };
+    
+      this.rs.completeReport(data).subscribe(
+        res => {
+          this.expcompletedata= res.data;
+          let length = this.expcompletedata.length;
+         
+          if(length != 0)
+          {
+            setTimeout(() => {
+              this.exportexcel();
+            }, 3 * 1000);
+            this.spinner.hide();
+          }
+          this.spinner.hide();
+        }
+      );   
+  } 
+
+
   exportexcel(): void
   {
     
@@ -108,9 +145,6 @@ export class ApibookingsticketsComponent implements OnInit {
         rangeFromDate:this.completeReportRecord.rangeFromDate,
         rangeToDate :this.completeReportRecord.rangeToDate            
     };
-       
-    // console.log(data);
-    
     if(pageurl!="")
     {
       this.rs.completepaginationReport(pageurl,data).subscribe(
