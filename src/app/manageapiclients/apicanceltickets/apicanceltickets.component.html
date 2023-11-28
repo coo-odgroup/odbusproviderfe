@@ -747,7 +747,14 @@
                         <td>{{complete.owner_gst_amount}}</td>
                         <td>{{complete.odbus_charges}}</td>
                         <td>{{ complete.refund_amount }}</td>
-                        <td>{{(complete.payable_amount + complete.agent_commission)-complete.refund_amount }}</td>
+                        <td>{{complete.payable_amount - (complete.client_comission+complete.refund_amount) < 0 ? 0 : complete.payable_amount - (complete.client_comission+complete.refund_amount)}}
+                            <!-- {{complete.payable_amount - (complete.client_comission+complete.refund_amount) }} -->
+                        </td>
+                        <!-- <td>
+                            {{complete.payable_amount}},
+                            {{complete.client_comission}},
+                            {{complete.refund_amount }}
+                        </td> -->
                         <td>
                             <span *ngIf="complete.customer_payment">
                                 {{complete.customer_payment.razorpay_id}} 

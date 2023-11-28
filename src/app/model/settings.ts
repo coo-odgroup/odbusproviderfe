@@ -31,5 +31,7 @@ export interface SettingsRecords{
     seo_script: any;
     og_image:any;
     no_script:any;
+    has_issues:any;
+    maintenance:any;
   } 
   

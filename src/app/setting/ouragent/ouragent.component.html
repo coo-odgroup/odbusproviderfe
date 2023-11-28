@@ -41,6 +41,10 @@
                   <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                     <i class="fas fa-sync-alt"> </i> Refresh
                   </button>
+                  <button type="button" (click)="exportdata()" class="btn btn-warning  sml_input"
+                                        title="Export">
+                                        Export
+                                    </button>
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
@@ -152,7 +156,46 @@
           </div>  
   
         </div>
-  
+        
+        <table class="table table-striped "  id="export-section" style="display: none;">
+          <thead>
+            <tr>
+              <th>SL</th>
+              <th>Agent ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Location</th>
+              <th>Address</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="agents?.length != 0">
+            <tr *ngFor="let agent of agents; let i=index;">
+              <td>{{ i+1}}</td>
+              <td>{{ agent.unique_id}}</td>
+              <td>{{ agent.name }} </td>
+              <td>{{ agent.email }}</td>
+              <td>{{ agent.phone }}</td>
+              <td>{{agent.location}}</td>
+              <td> 
+                <span title="orgination" *ngIf="agent.organization_name!=null">{{agent.organization_name  }}</span> <br>  
+                 <span title="address" *ngIf="agent.address!=null">{{agent.address}}</span> <br> 
+               <span title="landmark" *ngIf="agent.landmark!=null">{{agent.landmark}}</span>
+              </td>
+              <td>
+                <div >
+                  <label *ngIf="agent.status==1" class="badge bg-primary pointer text-white"
+                   (click)="ResetAttributes();openConfirmDialog(confirmDialog, agent.id)">Active</label>
+                  <label *ngIf="agent.status==3" class="badge bg-danger pointer text-white"
+                  (click)="ResetAttributes();changeStatus($event, agent.id);">Block</label>
+               
+                </div>
+              </td>
+              
+            </tr>
+          </tbody>
+        </table>
   
         <div class="app-card-footer">
             <ng-template #confirmDialog let-modal>

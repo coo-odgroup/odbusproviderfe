@@ -61,6 +61,10 @@ export class MastersettingComponent implements OnInit {
   all: any;
   role_id: any;
   usre_name:any ;
+  man: boolean;
+  has_is: boolean;
+  man_val: number;
+  has_is_val: string;
 
 
   constructor( private spinner: NgxSpinnerService,private fb: FormBuilder,
@@ -140,6 +144,8 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[null,Validators.compose([Validators.required])],
       mobile_no_3:[null,Validators.compose([Validators.required])],
       mobile_no_4:[],
+      maintenance:[null,Validators.compose([Validators.required])],
+      has_issues:[null,Validators.compose([Validators.required])],
       seo_script:[],
       logo:[null],
       iconSrc:[null],
@@ -507,6 +513,8 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[null,Validators.compose([Validators.required])],
       mobile_no_3:[null,Validators.compose([Validators.required])],
       mobile_no_4:[],
+      maintenance:[null,Validators.compose([Validators.required])],
+      has_issues:[null,Validators.compose([Validators.required])],
       seo_script:[],
       logo:[null],
       iconSrc:[null],
@@ -538,10 +546,21 @@ export class MastersettingComponent implements OnInit {
   addSettings()
   {
     this.spinner.show();
+    
 
     let id = this.settingRecord?.id;
     if(this.role_id!=1){
       this.settingForm.controls.user_id.setValue(localStorage.getItem('USERID'));
+    }
+    if(this.settingForm.value.maintenance == true){
+      this.man_val = 1;
+    }else if(this.settingForm.value.maintenance == false){
+      this.man_val = 0;
+    }
+    if(this.settingForm.value.has_issues == true){
+      this.has_is_val = 'Y';
+    }else if(this.settingForm.value.has_issues == false){
+      this.has_is_val = 'N';
     }
 
     let fd: any = new FormData();
@@ -563,6 +582,8 @@ export class MastersettingComponent implements OnInit {
     fd.append("mobile_no_2",this.settingForm.value.mobile_no_2);
     fd.append("mobile_no_3",this.settingForm.value.mobile_no_3);
     fd.append("mobile_no_4",this.settingForm.value.mobile_no_4);
+    fd.append("has_issues",this.has_is_val);
+    fd.append("maintenance",this.man_val);
     fd.append("seo_script",this.settingForm.value.seo_script);
     fd.append("operator_slogan",this.settingForm.value.operator_slogan);
     fd.append("operator_home_content",this.settingForm.value.operator_home_content);
@@ -575,7 +596,10 @@ export class MastersettingComponent implements OnInit {
     fd.append("og_image",this.og_image);
     fd.append("no_script",this.settingForm.value.no_script);
     fd.append("created_by",localStorage.getItem('USERNAME'));
-
+   
+   
+//     console.log(this.settingForm.value);
+// return
    
     if (id != null) {
 
@@ -629,7 +653,19 @@ export class MastersettingComponent implements OnInit {
   { 
     
     this.settingRecord = this.settings[id]; 
-
+    // console.log(this.settingRecord.has_issues);
+    // console.log(this.settingRecord.maintenance);
+    if(this.settingRecord.maintenance == 1){
+      this.man = true;
+    }else{
+      this.man = false;
+    }
+    if(this.settingRecord.has_issues == 'Y'){
+      this.has_is = true;
+    }else{
+      this.has_is = false;
+    }
+  
     this.imgURL =''; 
     this.favURL =''; 
     this.footerImgURL ='';
@@ -650,6 +686,8 @@ export class MastersettingComponent implements OnInit {
       mobile_no_2:[this.settingRecord.mobile_no_2],
       mobile_no_3:[this.settingRecord.mobile_no_3],
       mobile_no_4:[this.settingRecord.mobile_no_4],
+      maintenance:[this.man],
+      has_issues:[this.has_is],
       seo_script:[this.settingRecord.seo_script],
       logo: [],
       favIcon:[],
