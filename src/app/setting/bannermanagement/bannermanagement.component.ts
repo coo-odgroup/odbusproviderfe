@@ -70,6 +70,27 @@ export class BannermanagementComponent implements OnInit {
         this.ModalHeading = "Add Banner Line";
         this.ModalBtn = "Save";
    }
+
+   search(pageurl = "") {
+    this.spinner.show();
+    const data= {
+      status:this.searchForm.value.status,
+      searchBy:this.searchForm.value.searchBy,
+      per_page:this.searchForm.value.per_page,
+      role_id: localStorage.getItem('ROLE_ID'),
+      userID: localStorage.getItem('USERID'),
+    }; 
+      this.bannerService.bannerDataTable(pageurl,data).subscribe(
+          res=>{    
+            this.banners= res.data.data.data; 
+            this.pagination = res.data.data;
+            this.all = res.data;
+            this.spinner.hide();
+            // console.log(res.data.data.data);
+          },
+      );
+   }
+   
    getAll(url:any=''){
             this.spinner.show();
             const data= {

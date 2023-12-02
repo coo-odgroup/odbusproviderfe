@@ -110,6 +110,7 @@
               <th>Agent Details</th>
               <th scope="col">Tran Date</th>
               <th scope="col">Tran ID</th>
+              <th scope="col">PNR</th>
               <th scope="col">Tran Via</th>
               <!-- <th scope="col">TDS</th> -->
               <th scope="col">Amount</th>
@@ -130,6 +131,7 @@
                 </span>
               </td>
               <td>{{page.transaction_id}}</td>
+              <td>{{ (page.booking) ? page.booking.pnr : '--'}}</td>
               <td>
                 <span class="text-info" *ngIf="page.payment_via!=''">
                   {{page.payment_via}}
@@ -251,6 +253,7 @@
               <th>Agent Mobile</th>
               <th scope="col">Tran Date</th>
               <th scope="col">Tran ID</th>
+              <th scope="col">PNR</th>
               <th scope="col">Tran Via</th>
               <th scope="col">Total Commission</th>
               <th scope="col">TDS</th>
@@ -272,7 +275,8 @@
                   {{page.created_at | date: 'dd/MM/yyyy'}}
                 </span>
               </td>
-              <td>{{page.transaction_id}}</td>
+              <td>{{page.transaction_id}}</td>              
+              <td>{{ (page.booking) ? page.booking.pnr : '--'}}</td>
               <td>
                 <span class="text-info" *ngIf="page.payment_via!=''">
                   {{page.payment_via}}
