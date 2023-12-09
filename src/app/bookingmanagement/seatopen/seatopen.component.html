@@ -232,32 +232,37 @@
 
               <td style="width:700px ;">
                 <table>
-                 
+                  <thead>
+                    <tr *ngIf="i==0">
+                      <th> Created At </th>
+                      <th> Open Date </th>
+                       
+                      <th> Open Seats or Sleeper </th>
+                       <th>  Reason </th>
+                      <th> Created By</th> 
+                      <th class="hide_print">Action</th>
+                    </tr>
+                    </thead>
                   <tr  *ngFor="let opendate of sblock;let dateIndex= index ">
+                    <td style="width:100px;">{{opendate[0].value[0].updated_at | date: 'short'}}</td>
                     <td style="width:100px;">
                       {{opendate[0].value[0].operation_date | date: 'dd/MM'}}
-                    </td >
-               
+                    </td >               
                     <td style="width:300px;">
                       <span *ngFor="let seat of opendate[0].value; let seatIndex= index ">
                         {{seat.seats.seatText}},
                       </span>
                     </td>
-
                     <td style="width:150px;">
-                        {{opendate[0].value[0].reason}}
-                    </td>
-
-                    <td style="width:100px;">
+                        {{opendate[0].value[0].reason}}<br>
                         {{opendate[0].value[0].other_reason}}
                     </td>
-
+                    <!-- <td style="width:100px;">
+                        
+                    </td> -->
                     <td style="width:100px;">
                         {{opendate[0].value[0].created_by}}
                     </td>
-                    
-                    <!-- {{opendate[0].value[0].bus|json}} -->
-
                     <td class="hide_print" style="width:50px;">
                         <span *ngIf="opendate[0].value[0].operation_date >= getFormattedDate()">
                           <span type="button" (click)="ResetAttributes();editsopen(opendate[0].value[0].bus.id ,
@@ -265,13 +270,11 @@
                             <i class="fa fa-edit " aria-hidden="true"></i>
                           </span>
                         </span>
-
                         <span type="button" (click)="openConfirmDialog (confirmDialog,
                         opendate[0].value[0].bus.id ,
                         opendate[0].value[0].operation_date)" class="btn   float-right"> 
                           <i class="fa fa-trash " aria-hidden="true"></i>
                       </span>
-                      <!-- </div> -->
                     </td>
 
                   </tr>

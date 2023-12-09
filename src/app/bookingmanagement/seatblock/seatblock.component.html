@@ -166,26 +166,29 @@
 
               <td style="width:700px ;">
                 <table>
-                  <!-- <tr>
-                    <th><small> #</small> </th>
-                    <th><small> Block Date</small> </th>
-                     <th> <small>Route </small> </th> 
-                    <th> <small>Block Seats</small> </th>
-                     <th> <small> Reason</small> </th>
-                    <th> <small> Created On</small> </th>
-                    <th><small> Created By</small></th> 
+                <thead>
+                  <tr *ngIf="i==0">
+                    <th> Created At </th>
+                    <th> Block Date </th>
+                     
+                    <th> Block Seats or Sleeper </th>
+                     <th>  Reason </th>
+                    <th> Created By</th> 
                     <th class="hide_print">Action</th>
-                  </tr> -->
+                  </tr>
+                  </thead>
                   <tr  *ngFor="let opendate of sblock;let dateIndex= index ">
                     <!-- <td>
-                      {{dateIndex+1}}
+                      {{opendate[0].value[0].updated_at | date: 'dd/MM'}}
                     </td> -->
-                    <td style="width:100px;">
+                    <td style="width:100px;">{{opendate[0].value[0].updated_at | date: 'short'}}</td>
+                    <td style="width:150px;">
                       {{opendate[0].value[0].operation_date | date: 'dd/MM'}}
                     </td>
                     <!-- <td>
                       {{opendate[0].value[0].source[0].name}} >> {{opendate[0].value[0].destination[0].name}}
                     </td> -->
+                    
                     <td style="width:300px;">
                       <span *ngFor="let seat of opendate[0].value; let seatIndex= index ">
                         {{seat.seats.seatText}},
@@ -198,6 +201,8 @@
                     <td style="width:100px;">
                       {{opendate[0].value[0].created_by}}
                     </td>
+                    
+                   
                  
 
                     <!-- <td>
