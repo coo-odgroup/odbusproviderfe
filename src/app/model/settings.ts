@@ -33,5 +33,14 @@ export interface SettingsRecords{
     no_script:any;
     has_issues:any;
     maintenance:any;
+    popup_image:any;
+    popup_status:any,
+    popup_heading:any,
+    popup_url:any,
+    popup_description:any,
+    popup_start_date:any,
+    popup_start_time:any,
+    popup_end_date:any,
+    popup_end_time:any
   } 
   

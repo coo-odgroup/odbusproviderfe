@@ -65,6 +65,9 @@ export class MastersettingComponent implements OnInit {
   has_is: boolean;
   man_val: number;
   has_is_val: string;
+  pop_up_image: any;
+  popup_status: number;
+  pop: boolean;
 
 
   constructor( private spinner: NgxSpinnerService,private fb: FormBuilder,
@@ -126,6 +129,7 @@ export class MastersettingComponent implements OnInit {
     this.finalFavIcon =[null];
     this.finalFootericon =[null];
     this.og_image =[null];
+    this.pop_up_image =[null];
 
 
     this.settingForm=this.fb.group({
@@ -164,7 +168,16 @@ export class MastersettingComponent implements OnInit {
       fb_page_id:[null],
       twitter_page_id:[null],
       no_script:[null],
-      og_image:[null]
+      og_image:[null],
+      pop_up_image:[null],
+      popup_status:[null,Validators.compose([Validators.required])],
+      popup_heading:[null],
+      popup_url:[null],
+      popup_description:[null],
+      popup_start_date:[null],
+      popup_start_time:[null],
+      popup_end_date:[null],
+      popup_end_time:[null]
     });
 
     this.formConfirm=this.fb.group({
@@ -275,6 +288,10 @@ export class MastersettingComponent implements OnInit {
       
     }
 
+
+    Upload_pop_up_image(event:any){
+      this.pop_up_image=event.target.files[0];      
+    }
 
 
     public pickedfav(event:any) {
@@ -496,6 +513,7 @@ export class MastersettingComponent implements OnInit {
     this.finalFavIcon =[null];
     this.finalFootericon =[null];
     this.og_image =[null];
+    this.pop_up_image =[null];
 
     this.settingForm=this.fb.group({
       payment_gateway_charges:[null, Validators.compose([Validators.required])],
@@ -533,8 +551,18 @@ export class MastersettingComponent implements OnInit {
       fb_page_id:[null],
       twitter_page_id:[null],
       no_script:[null],
-      og_image:[null]
+      og_image:[null],
+      pop_up_image:[null],
+      popup_status:[null,Validators.compose([Validators.required])],
+      popup_heading:[null],
+      popup_url:[null],
+      popup_description:[null],
+      popup_start_date:[null],
+      popup_start_time:[null],
+      popup_end_date:[null],
+      popup_end_time:[null]
     });
+
     this.LoadAllService();
     this.ModalHeading = "Add Master Settings";
     this.ModalBtn = "Save";
@@ -561,6 +589,12 @@ export class MastersettingComponent implements OnInit {
       this.has_is_val = 'Y';
     }else if(this.settingForm.value.has_issues == false){
       this.has_is_val = 'N';
+    }
+
+    if(this.settingForm.value.popup_status == true){
+      this.popup_status = 1;
+    }else if(this.settingForm.value.popup_status == false){
+      this.popup_status = 0;
     }
 
     let fd: any = new FormData();
@@ -594,9 +628,19 @@ export class MastersettingComponent implements OnInit {
     fd.append("fb_page_id",this.settingForm.value.fb_page_id);
     fd.append("twitter_page_id",this.settingForm.value.twitter_page_id);
     fd.append("og_image",this.og_image);
+    fd.append("popup_image",this.pop_up_image);
+    fd.append("popup_status",this.popup_status);
+    fd.append("popup_heading",this.settingForm.value.popup_heading);
+    fd.append("popup_url",this.settingForm.value.popup_url);
+    fd.append("popup_description",this.settingForm.value.popup_description);
+    fd.append("popup_start_date",this.settingForm.value.popup_start_date);
+    fd.append("popup_start_time",this.settingForm.value.popup_start_time);
+    fd.append("popup_end_date",this.settingForm.value.popup_end_date);
+    fd.append("popup_end_time",this.settingForm.value.popup_end_time);
+
     fd.append("no_script",this.settingForm.value.no_script);
     fd.append("created_by",localStorage.getItem('USERNAME'));
-   
+ 
    
 //     console.log(this.settingForm.value);
 // return
@@ -653,7 +697,7 @@ export class MastersettingComponent implements OnInit {
   { 
     
     this.settingRecord = this.settings[id]; 
-    // console.log(this.settingRecord.has_issues);
+    // console.log(this.settingRecord);
     // console.log(this.settingRecord.maintenance);
     if(this.settingRecord.maintenance == 1){
       this.man = true;
@@ -664,6 +708,12 @@ export class MastersettingComponent implements OnInit {
       this.has_is = true;
     }else{
       this.has_is = false;
+    }
+
+    if(this.settingRecord.popup_status == 1){
+      this.pop = true;
+    }else{
+      this.pop = false;
     }
   
     this.imgURL =''; 
@@ -703,7 +753,16 @@ export class MastersettingComponent implements OnInit {
       fb_page_id:[this.settingRecord.fb_page_id],
       twitter_page_id:[this.settingRecord.twitter_page_id],
       no_script:[this.settingRecord.no_script],
-      og_image:[]
+      og_image:[],
+      popup_image:[],
+      popup_status:[this.pop],
+      popup_heading:[this.settingRecord.popup_heading],
+      popup_url:[this.settingRecord.popup_url],
+      popup_description:[this.settingRecord.popup_description],
+      popup_start_date:[this.settingRecord.popup_start_date],
+      popup_start_time:[this.settingRecord.popup_start_time],
+      popup_end_date:[this.settingRecord.popup_end_date],
+      popup_end_time:[this.settingRecord.popup_end_time]
 
     });
 
