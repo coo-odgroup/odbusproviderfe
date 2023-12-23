@@ -179,7 +179,7 @@ export class CancelticketsreportComponent implements OnInit {
           res => {
             this.completExportdata = res.data;
             let length = this.completExportdata.data.data.length;
-            console.log(length);
+            //console.log(length);
             if(length != 0)
             {
               setTimeout(() => {

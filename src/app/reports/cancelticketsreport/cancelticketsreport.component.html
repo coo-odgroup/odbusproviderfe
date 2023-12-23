@@ -450,8 +450,10 @@
                         </td>
 
                         <td>
-                            <span *ngIf="complete.origin != 'DOLPHIN' && complete.origin != 'MANTIS'" >{{ complete.bus_name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ]</span>
                             <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'" >{{ complete.bus_name }} </span>
+                            
+                            <span *ngIf="complete.origin == 'ODBUS'">{{ complete.bus.name }} [ {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}} ]</span>
+                           
                         </td>
                         <!-- <td>
                             {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
