@@ -740,12 +740,11 @@
   
                                 <div class="col-12">
                                   <div class="row">
-                                    <div class="col-md-6" *ngIf="settingRecord.popup_image!=''">
+                                    <div class="col-md-6 mt-2" *ngIf="settingRecord.popup_image!=''">
                                                           
                                       <img  class="sliderImage bg-info" src="{{path}}og_image/{{settingRecord.popup_image}}" height="70"/>
-      
+                                      <br><i (click)="removePopup(settingRecord.id)" class="fa fa-times text-danger" title="Delete Image"></i>
                                     </div>
-                                  
                                   </div>
                                 </div>        
                               </div>

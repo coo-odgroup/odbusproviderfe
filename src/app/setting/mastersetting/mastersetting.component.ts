@@ -816,6 +816,26 @@ export class MastersettingComponent implements OnInit {
       }
     );
   }
+
+  removePopup(id){
+    this.spinner.show();
+
+    this.settingsService.removePopup(id).subscribe(
+      resp => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
+          this.modalReference.close();
+          this.ResetAttributes();
+          this.getAll();
+        }
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
+          this.spinner.hide();
+          
+        }
+      }
+    );
+  }
   
 
 }
