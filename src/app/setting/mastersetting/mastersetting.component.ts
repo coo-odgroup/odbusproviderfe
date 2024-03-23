@@ -159,6 +159,8 @@ export class MastersettingComponent implements OnInit {
       logo_image:[null],
       favicon_image:[null],
       operator_slogan:[null],
+      office_address_map:[null],
+      office_address:[null],
       operator_home_content:[null],
       footer_logo:[null],
       google_verification_code:[null],
@@ -542,6 +544,8 @@ export class MastersettingComponent implements OnInit {
       logo_image:[null],
       favicon_image:[null],
       operator_slogan:[null],
+      office_address_map:[null],
+      office_address:[null],
       operator_home_content:[null],
       footer_logo:[null],
       google_verification_code:[null],
@@ -620,6 +624,8 @@ export class MastersettingComponent implements OnInit {
     fd.append("maintenance",this.man_val);
     fd.append("seo_script",this.settingForm.value.seo_script);
     fd.append("operator_slogan",this.settingForm.value.operator_slogan);
+    fd.append("office_address",this.settingForm.value.office_address);
+    fd.append("office_address_map",this.settingForm.value.office_address_map);
     fd.append("operator_home_content",this.settingForm.value.operator_home_content);
     fd.append("google_verification_code",this.settingForm.value.google_verification_code);
     fd.append("bing_verification_code",this.settingForm.value.bing_verification_code);
@@ -744,6 +750,8 @@ export class MastersettingComponent implements OnInit {
       iconSrc:[this.settingRecord.logo],
       favSrc:[this.settingRecord.favIcon],
       operator_slogan:[this.settingRecord.operator_slogan],
+      office_address_map:[this.settingRecord.office_address_map],
+      office_address:[this.settingRecord.office_address],
       operator_home_content:[this.settingRecord.operator_home_content],
       footer_logo:[null],
       google_verification_code:[this.settingRecord.google_verification_code],

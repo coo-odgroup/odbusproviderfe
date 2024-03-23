@@ -20,6 +20,8 @@ export interface SettingsRecords{
     logo_image:any;
     favicon_image:any;
     operator_slogan:any;
+    office_address_map:any;
+    office_address:any;
     operator_home_content:any;
     footer_logo:any;
     google_verification_code:any;
