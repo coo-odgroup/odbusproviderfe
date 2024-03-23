@@ -59,8 +59,15 @@ export class ApiclientwalletService {
     )
   }
 
+  // getAllagentTransaction(post): Observable<any> {
+  //   return this.httpClient.post<any>(this.apiURL+ '/apiClientAllTransaction', JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
+
   getAllagentTransaction(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/apiClientAllTransaction', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/apiClientTotalTransactions', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
