@@ -30,9 +30,6 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
 
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +45,7 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NavSearchComponent,
     NavRightComponent,
     ConfigurationComponent,
-    ToggleFullScreenDirective,
+    ToggleFullScreenDirective
   ],
   imports: [
     BrowserModule,

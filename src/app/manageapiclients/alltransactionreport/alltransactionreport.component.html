@@ -16,7 +16,7 @@
                     </button>
                   </div>
                 </div>     
-                <div class="col-md-5">
+                <!-- <div class="col-md-5">
                   <div class="row">  
                       <div class="form-group col-6">
                      
@@ -38,20 +38,20 @@
                     <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
                     formControlName="user_id" [clearable]="false" >
                 </ng-select>
-                </div>
+                </div> -->
               </div>
 
               <div class="row">
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                   <div class="form-group row">  
                     <div class="col-sm-12">
                       <input type="text" class="form-control sml_input" placeholder="Search" required
                         formControlName="name" />
                     </div>
                   </div>
-                </div>
+                </div> -->
 
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                   <div class="form-group row">  
                     <div class="col-sm-12">
                      <select class="form-control sml_input" formControlName="tranType" >
@@ -63,18 +63,21 @@
                      </select>
                     </div>
                   </div>
-                </div>
+                </div> -->
                
   
   
                 <div class="col-md-5">
-                  <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                     Search
-                  </button>
+                  </button> -->
                   <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                     Refresh
                   </button>
-                  <button type="button" (click)="expsearch()" class="btn btn-warning  sml_input" title="Export">
+                  <!-- <button type="button" (click)="expsearch()" class="btn btn-warning  sml_input" title="Export">
+                      Export
+                  </button> -->
+                  <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
                       Export
                   </button>
                   <!-- <button type="button" printSectionId="print-section" ngxPrint
@@ -82,15 +85,15 @@
                       <i class="fas fa-print"> </i> Print
                   </button> -->
 
-                  <div class="dropdown float-right">
+                  <!-- <div class="dropdown float-right" >
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
                       <option value=25>25</option>
                       <option value=50>50</option>
                       <option value=100>100</option>
-                      <!-- <option value='all'>All</option> -->
+                      <option value='all'>All</option>
                     </select>
-                  </div>
+                  </div> -->
                 
                 </div>
               </div>
@@ -100,7 +103,7 @@
           </div>
   
         </div>
-        <div class="table-responsive" id="print-section">
+        <!-- <div class="table-responsive" id="print-section">
           <table class="table table-striped ">
             <thead>
               <tr>
@@ -163,9 +166,7 @@
                     <span style="color: #FF0000;" *ngIf="page.payment_via=='' && page.transaction_type =='d'"> 
                      <b>Pnr Booking</b> 
                     </span> 
-                    <!-- <span class=" text-dark" *ngIf="page.type==null && page.payment_via==''"> 
-                     
-                    </span>     -->
+                   
                     <br>
                     <span *ngIf="page.booking!=null ">
                       <b>{{page.booking.pnr}}</b>
@@ -217,30 +218,67 @@
             </div>
           </div>   
   
-          <!-- <div *ngIf="pagination?.length!= 0" class="hide_print">
-            <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-              <nav class="my-1 pt-1 ">
-                <ul class="pagination pagination-circle pg-blue mb-0">
-                  <li (click)="search(pagination.first_page_url,statusLabel)"
-                    class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                    <a class="page-link">First</a>
-                  </li>
-                  <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                    <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                      (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
-                  </li>
-                  <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
-                    (click)="search(pagination.last_page_url,statusLabel)">
-                    <a class="page-link">Last</a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div> -->
+          
+        </div> -->
+        
+        <div class="table-responsive" id="export-section">
+          <table class="table table-striped ">
+            <thead>
+              <tr>
+                <th scope="col" width="100px">#</th>
+                <th>Transaction Date</th>
+                <th>PNR Details</th>
+                <th scope="col">Route Name</th>
+                <th scope="col">Jounery Date & Time</th>
+                <th scope="col">Seat</th>
+                <th scope="col">Amount</th>
+                <th scope="col">GST</th>   
+                <th scope="col">Commission</th>               
+                <th scope="col">Opening Balance</th>   
+                <th scope="col">Debit</th>   
+                <th scope="col">Credit</th>   
+                <th scope="col">Closing Balance</th>   
+                <th scope="col">Cancellation(%) </th>   
+                <th scope="col">Cancellation Charges</th>   
+              </tr>
+            </thead>
+            <tbody *ngIf="wallet?.length != 0">
+              <tr *ngFor="let page of wallet; let i=index;">
+                <!-- {{page | json }} -->
+                <td>{{i+1}}</td>
+                <td>{{page.created_at | date: 'dd/MM/yyyy HH:mm a'}}</td>
+                <td><span *ngIf =" page.pnr !=''"> {{page.pnr}}</span></td>
+                <td><span *ngIf =" page.source !=''">{{page.source}}</span> >> 
+                <span *ngIf =" page.destination !=''">{{page.destination}}</span></td>
+                <td><span *ngIf =" page.journey_date !=''">{{page.journey_date}}<br>{{page.journey_time}}</span></td>
+                <td><span *ngIf =" page.seat !=''">{{page.seat}}</span></td>
+                <td><span *ngIf =" page.booking_amount !=''">{{page.booking_amount | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.client_gst !=''">{{page.client_gst | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.Commission !=''">{{page.Commission | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.opening_balance !=''">{{page.opening_balance | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.debit !=''">{{page.debit | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.credit !=''">{{page.credit | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.closing_balance !=''">{{page.closing_balance | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.cancel_percent !=''">{{page.cancel_percent | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.cancel_charges !=''">{{page.cancel_charges | number : '1.2-2'}}</span></td>
+
+                
+              </tr>
+            </tbody>
+            <tbody *ngIf="wallet?.length == 0">
+              <tr>
+              <td colspan="9" class="text-center"> No Record Found</td>
+
+              </tr>
+            </tbody>
+          </table>
+
+          
+          
         </div>
 
 
-        <div class="table-responsive" id="export-section" style="display: none;">
+        <div class="table-responsive" id="" style="display: none;">
           <table class="table table-striped ">
             <thead>
               <tr>

@@ -166,7 +166,7 @@ export class AlltransactionreportComponent implements OnInit {
 
 
   search(pageurl = "") {
-    this.spinner.show();
+    // this.spinner.show();
     // console.log(this.searchForm.value);
   
     const data = {
@@ -177,13 +177,14 @@ export class AlltransactionreportComponent implements OnInit {
       tranType :this.searchForm.value.tranType,
       user_id:this.searchForm.value.user_id
     };
-    // console.log(data);
+    // alert(data);
     if (pageurl != "") {
       this.ws.getAllAgentPaginationTransaction(pageurl, data).subscribe(
         res => {
           this.wallet = res.data.data.data;
-          this.pagination = res.data.data;
-          this.all = res.data;
+          // console.log(this.wallet);
+          // this.pagination = res.data.data;
+          // this.all = res.data;
           this.spinner.hide();
         }
       );
@@ -191,15 +192,16 @@ export class AlltransactionreportComponent implements OnInit {
     else {
       this.ws.getAllagentTransaction(data).subscribe(
         res => {
-          this.wallet = res.data.data.data;
-          this.pagination = res.data.data;
-          this.all = res.data;
+          this.wallet = res.data;
           this.spinner.hide();
+          // console.log(this.wallet);
           //  console.log( this.all);
         }
       );
     }
   }
+
+
 
   loadServices() {
     this.busOperatorService.getApiClient().subscribe(

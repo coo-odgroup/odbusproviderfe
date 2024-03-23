@@ -100,8 +100,9 @@
                                 {{cancelTkt.from_location[0].name}} >>
                                 {{cancelTkt.to_location[0].name}} 
                             </td>
-                            <td>
-                               Total fare: {{cancelTkt.payable_amount}}<br>
+                            <!-- {{cancelTkt | json}} -->
+                            <td style="padding: 0;">
+                               Total fare: {{cancelTkt.payable_amount + cancelTkt.customer_gst_amount}}<br>
                                Deduction Percent: <b class="text-danger">{{cancelTkt.deduction_percent }} %</b><br>
                                Refund Amount : <b class="text-danger">{{cancelTkt.refund_amount }}</b>
 

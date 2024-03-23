@@ -60,6 +60,12 @@ export class SettingsService {
       catchError(this.errorHandler)
     )
   }
+  removePopup(id){
+    return this.httpClient.delete<any>(this.apiURL + '/removePopup/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

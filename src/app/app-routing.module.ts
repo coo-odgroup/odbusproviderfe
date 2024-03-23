@@ -34,6 +34,10 @@ const routes: Routes = [
       {
         path: 'agentDetails',
         loadChildren: () => import('./agent-details/agent-details.module').then(module =>module.AgentDetailsModule)
+      },
+      {
+        path: 'adminchangepassword',
+        loadChildren: () => import('./adminchangepassword/adminchangepassword.module').then(module =>module.AdminchangepasswordModule)
       }
       
     ]
