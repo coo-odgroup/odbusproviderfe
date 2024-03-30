@@ -237,6 +237,8 @@
                 <th scope="col">Opening Balance</th>   
                 <th scope="col">Debit</th>   
                 <th scope="col">Credit</th>   
+                <th scope="col">Refund</th>   
+                <th scope="col">Type</th>   
                 <th scope="col">Closing Balance</th>   
                 <th scope="col">Cancellation(%) </th>   
                 <th scope="col">Cancellation Charges</th>   
@@ -256,8 +258,16 @@
                 <td><span *ngIf =" page.client_gst !=''">{{page.client_gst | number : '1.2-2'}}</span></td>
                 <td><span *ngIf =" page.Commission !=''">{{page.Commission | number : '1.2-2'}}</span></td>
                 <td><span *ngIf =" page.opening_balance !=''">{{page.opening_balance | number : '1.2-2'}}</span></td>
-                <td><span *ngIf =" page.debit !=''">{{page.debit | number : '1.2-2'}}</span></td>
-                <td><span *ngIf =" page.credit !=''">{{page.credit | number : '1.2-2'}}</span></td>
+                <td><span *ngIf =" page.debit !='' &&  page.debit > 0" class="text-danger"> <b>- {{page.debit | number : '1.2-2'}}</b></span></td>
+                <td><span *ngIf =" page.credit !='' && page.credit > 0" class="text-success"><b> + {{page.credit | number : '1.2-2'}}</b></span></td>
+                <td><span *ngIf =" page.Refund !='' && page.Refund >0" class="text-info"><b> +{{page.Refund | number : '1.2-2'}}</b></span></td>
+                <td>
+                  <span *ngIf =" page.Refund !='' && page.Refund >0 && !page.credit" class="text-danger"><b>Cancel</b></span>
+                  <span *ngIf =" !page.Refund && !page.credit" class="text-success"><b>Booking</b></span>
+                  <span *ngIf =" page.credit !='' && page.credit > 0  && !page.Refund " class="text-info"><b> Recharge</b></span>
+                </td>
+                
+                
                 <td><span *ngIf =" page.closing_balance !=''">{{page.closing_balance | number : '1.2-2'}}</span></td>
                 <td><span *ngIf =" page.cancel_percent !=''">{{page.cancel_percent | number : '1.2-2'}}</span></td>
                 <td><span *ngIf =" page.cancel_charges !=''">{{page.cancel_charges | number : '1.2-2'}}</span></td>
