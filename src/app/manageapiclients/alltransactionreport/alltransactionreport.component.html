@@ -16,7 +16,7 @@
                     </button>
                   </div>
                 </div>     
-                <!-- <div class="col-md-5">
+                <div class="col-md-5">
                   <div class="row">  
                       <div class="form-group col-6">
                      
@@ -38,20 +38,20 @@
                     <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
                     formControlName="user_id" [clearable]="false" >
                 </ng-select>
-                </div> -->
+                </div> 
               </div>
 
               <div class="row">
-                <!-- <div class="col-md-4">
+                <div class="col-md-4">
                   <div class="form-group row">  
                     <div class="col-sm-12">
                       <input type="text" class="form-control sml_input" placeholder="Search" required
                         formControlName="name" />
                     </div>
                   </div>
-                </div> -->
+                </div>
 
-                <!-- <div class="col-md-3">
+                <div class="col-md-3">
                   <div class="form-group row">  
                     <div class="col-sm-12">
                      <select class="form-control sml_input" formControlName="tranType" >
@@ -63,29 +63,29 @@
                      </select>
                     </div>
                   </div>
-                </div> -->
+                </div>
                
   
   
                 <div class="col-md-5">
-                  <!-- <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
+                  <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                     Search
-                  </button> -->
+                  </button>
                   <button type="button" class="btn btn-danger sml_input" (click)="refresh()" title="refresh">
                     Refresh
                   </button>
-                  <!-- <button type="button" (click)="expsearch()" class="btn btn-warning  sml_input" title="Export">
-                      Export
-                  </button> -->
-                  <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                  <button type="button" (click)="expsearch()" class="btn btn-warning  sml_input" title="Export">
                       Export
                   </button>
-                  <!-- <button type="button" printSectionId="print-section" ngxPrint
+                  <!-- <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
+                      Export
+                  </button> -->
+                  <button type="button" printSectionId="print-section" ngxPrint
                       class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
                       <i class="fas fa-print"> </i> Print
-                  </button> -->
+                  </button>
 
-                  <!-- <div class="dropdown float-right" >
+                  <div class="dropdown float-right" >
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
                       <option value=10>10</option>
                       <option value=25>25</option>
@@ -93,7 +93,7 @@
                       <option value=100>100</option>
                       <option value='all'>All</option>
                     </select>
-                  </div> -->
+                  </div>
                 
                 </div>
               </div>
@@ -103,7 +103,7 @@
           </div>
   
         </div>
-        <!-- <div class="table-responsive" id="print-section">
+        <div class="table-responsive" id="print-section">
           <table class="table table-striped ">
             <thead>
               <tr>
@@ -118,6 +118,7 @@
                 <th scope="col">Balance</th>               
                 <th scope="col">Tran Status</th>   
                 <th scope="col">Remark</th>   
+                <th scope="col">action</th>   
               </tr>
             </thead>
             <tbody *ngIf="wallet?.length != 0">
@@ -174,6 +175,11 @@
                     
                 </td>
                 <td> <b>{{page.remarks}}</b></td>
+                <td>   
+                  <button style="border-radius: 2rem;" type="button" class="btn btn-danger sml_input" (click)="ResetAttributes();edit(i);OpenModal(editcontent)" title="Edit">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
             <tbody *ngIf="wallet?.length == 0">
@@ -219,13 +225,13 @@
           </div>   
   
           
-        </div> -->
+        </div> 
         
-        <div class="table-responsive" id="export-section">
+        <!-- <div class="table-responsive" id="export-section">
           <table class="table table-striped ">
             <thead>
               <tr>
-                <th scope="col" width="100px">#</th>
+                <th scope="col" width="10px">#</th>
                 <th>Transaction Date</th>
                 <th>PNR Details</th>
                 <th scope="col">Route Name</th>
@@ -246,7 +252,6 @@
             </thead>
             <tbody *ngIf="wallet?.length != 0">
               <tr *ngFor="let page of wallet; let i=index;">
-                <!-- {{page | json }} -->
                 <td>{{i+1}}</td>
                 <td>{{page.created_at | date: 'dd/MM/yyyy HH:mm a'}}</td>
                 <td><span *ngIf =" page.pnr !=''"> {{page.pnr}}</span></td>
@@ -285,10 +290,10 @@
 
           
           
-        </div>
+        </div> -->
 
 
-        <div class="table-responsive" id="" style="display: none;">
+        <!-- <div class="table-responsive" id="" style="display: none;">
           <table class="table table-striped ">
             <thead>
               <tr>
@@ -351,9 +356,7 @@
                     <span style="color: #FF0000;" *ngIf="page.payment_via=='' && page.transaction_type =='d'"> 
                      <b>Pnr Booking</b> 
                     </span> 
-                    <!-- <span class=" text-dark" *ngIf="page.type==null && page.payment_via==''"> 
-                     
-                    </span>     -->
+                    
                     <br>
                     <span *ngIf="page.booking!=null ">
                       <b>{{page.booking.pnr}}</b>
@@ -364,7 +367,7 @@
               </tr>
             </tbody>
           </table>        
-        </div>
+        </div> -->
   
   
         <div class="app-card-footer">
@@ -516,6 +519,66 @@
               </div>
               <div class="modal-footer">
                 <button type="button" (click)="add()" [disabled]="!form.valid" class="btn btn-primary">{{ModalBtn}}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                  (click)="modal.dismiss('Cross click')">Close</button>
+              </div>
+            </ng-template>
+
+            <ng-template #editcontent let-modal>
+              <div class="modal-header">
+                <h5 class="ng-tns-c116-5">Edit Record</h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                    aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-material">
+                      <div class="right-icon-control">
+                        <form [formGroup]="editform" class="editForm" novalidate>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-4 col-form-label">Amount :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Amount here"
+                                    required formControlName="amount" />
+                                  <span class="text-danger"
+                                    *ngIf="editform.controls['amount'].touched && editform.controls['amount'].hasError('required')">
+                                    Amount is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <input type="hidden" class="form-control"  formControlName="id" />
+
+                            <div class="col-md-6">
+                              <div class="from-group">
+                                <label for="name" class="col-sm-4 col-form-label">Balance :<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" ngbAutofocus placeholder="Enter Balance here"
+                                    required formControlName="balance" />
+                                  <span class="text-danger"
+                                    *ngIf="editform.controls['balance'].touched && editform.controls['balance'].hasError('required')">
+                                    Balance is Required
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" (click)="update()" [disabled]="!editform.valid" class="btn btn-primary">{{ModalBtn}}</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
                   (click)="modal.dismiss('Cross click')">Close</button>
               </div>

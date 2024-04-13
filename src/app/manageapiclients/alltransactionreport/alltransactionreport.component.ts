@@ -24,6 +24,7 @@ export class AlltransactionreportComponent implements OnInit {
   model: NgbDateStruct;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
+  public editform: FormGroup;
   pagination: any;
 
   modalReference: NgbModalRef;
@@ -97,6 +98,12 @@ export class AlltransactionreportComponent implements OnInit {
       reference_id: [null]
     });
 
+    this.editform = this.fb.group({      
+      amount: [null, Validators.compose([Validators.required])],
+      balance: [null, Validators.compose([Validators.required])],
+      id:[null]
+    });
+
 
     this.search();
     this.loadServices();
@@ -108,8 +115,7 @@ export class AlltransactionreportComponent implements OnInit {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
   }
   ResetAttributes() {
-    this.walletRecord = {} as AgentWallet;
-   
+    this.walletRecord = {} as AgentWallet;  
 
     this.form = this.fb.group({
       user_id: [null, Validators.compose([Validators.required])],
@@ -119,6 +125,11 @@ export class AlltransactionreportComponent implements OnInit {
       pnr: [null, Validators.compose([Validators.required])],
       transaction_id: [null, Validators.compose([Validators.required])],
       reference_id: [null]
+    });
+    this.editform = this.fb.group({      
+      amount: [null, Validators.compose([Validators.required])],
+      balance: [null, Validators.compose([Validators.required])],
+      id:[null]
     });
 
     this.form.reset();
@@ -157,6 +168,42 @@ export class AlltransactionreportComponent implements OnInit {
     }); 
   }
 
+  edit(id){
+    this.walletRecord = this.wallet[id];
+    // console.log(this.walletRecord);
+    this.editform = this.fb.group({
+      id:[this.walletRecord.id],
+      amount: [this.walletRecord.amount, Validators.compose([Validators.required])],
+      balance: [this.walletRecord.balance, Validators.compose([Validators.required])],
+    });
+
+  }
+  update(){
+  const data = {
+    id:this.editform.value.id,
+    amount:this.editform.value.amount,
+    balance:this.editform.value.balance,
+    created_by: localStorage.getItem('USERNAME') 
+  };
+
+this.ws.clientTransUpdateByAdmin(data).subscribe(
+  resp => {
+  if(resp.status==1)
+  {
+      this.notificationService.addToast({title:Constants.SuccessTitle,msg:resp.message, type:Constants.SuccessType});
+      this.modalReference.close();
+      this.ResetAttributes();
+      this.search();
+      
+  }
+  else
+  {
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:resp.message, type:Constants.ErrorType});
+      this.spinner.hide();
+  }
+});
+
+  }
 
 
 
@@ -166,7 +213,7 @@ export class AlltransactionreportComponent implements OnInit {
 
 
   search(pageurl = "") {
-    // this.spinner.show();
+    this.spinner.show();
     // console.log(this.searchForm.value);
   
     const data = {
@@ -177,14 +224,14 @@ export class AlltransactionreportComponent implements OnInit {
       tranType :this.searchForm.value.tranType,
       user_id:this.searchForm.value.user_id
     };
-    // alert(data);
+
     if (pageurl != "") {
       this.ws.getAllAgentPaginationTransaction(pageurl, data).subscribe(
         res => {
           this.wallet = res.data.data.data;
           // console.log(this.wallet);
-          // this.pagination = res.data.data;
-          // this.all = res.data;
+          this.pagination = res.data.data;
+          this.all = res.data;
           this.spinner.hide();
         }
       );
@@ -192,10 +239,14 @@ export class AlltransactionreportComponent implements OnInit {
     else {
       this.ws.getAllagentTransaction(data).subscribe(
         res => {
-          this.wallet = res.data;
-          this.spinner.hide();
+          // this.wallet = res.data;
+
+          this.wallet = res.data.data.data;
           // console.log(this.wallet);
-          //  console.log( this.all);
+          this.pagination = res.data.data;
+          this.all = res.data;
+          this.spinner.hide();
+          
         }
       );
     }

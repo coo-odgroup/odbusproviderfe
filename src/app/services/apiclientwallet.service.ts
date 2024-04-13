@@ -59,19 +59,19 @@ export class ApiclientwalletService {
     )
   }
 
-  // getAllagentTransaction(post): Observable<any> {
-  //   return this.httpClient.post<any>(this.apiURL+ '/apiClientAllTransaction', JSON.stringify(post), this.httpOptions)
-  //   .pipe(
-  //     catchError(this.errorHandler)
-  //   )
-  // }
-
   getAllagentTransaction(post): Observable<any> {
-    return this.httpClient.post<any>(this.apiURL+ '/apiClientTotalTransactions', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.post<any>(this.apiURL+ '/apiClientAllTransaction', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+  // getAllagentTransaction(post): Observable<any> {
+  //   return this.httpClient.post<any>(this.apiURL+ '/apiClientTotalTransactions', JSON.stringify(post), this.httpOptions)
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
 
   getAllAgentPaginationTransaction(url,post): Observable<any> {
     return this.httpClient.post<any>(url, JSON.stringify(post), this.httpOptions)
@@ -84,6 +84,13 @@ export class ApiclientwalletService {
 
   clientTransByAdmin(data): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/clientTransByAdmin', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  clientTransUpdateByAdmin(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/clientTransUpdateByAdmin', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

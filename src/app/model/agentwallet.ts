@@ -4,6 +4,7 @@ export interface AgentWallet {
     reference_id:any;
     payment_via:any;
     amount:any;
+    balance:any;
     remarks:any;
   
 }
