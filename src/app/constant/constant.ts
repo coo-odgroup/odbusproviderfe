@@ -23,9 +23,9 @@ export class Constants {
     public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
     public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
 
-   // public static BASE_URL:any ='https://testingadminapi.odbus.co.in/api';
-    //  public static CONSUMER_API_URL:any ='https://dolphinapi.odbus.co.in/api/';
-   // public static CONSUMER_API_URL:any ='https://testing.odbus.co.in/api/';
-   // public static PATHURL:any = 'https://testingadminapi.odbus.co.in/public/uploads/'; 
+//    public static BASE_URL:any ='https://testingadminapi.odbus.co.in/api';
+//     //  public static CONSUMER_API_URL:any ='https://dolphinapi.odbus.co.in/api/';
+//    public static CONSUMER_API_URL:any ='https://testing.odbus.co.in/api/';
+//    public static PATHURL:any = 'https://testingadminapi.odbus.co.in/public/uploads/'; 
     
 }

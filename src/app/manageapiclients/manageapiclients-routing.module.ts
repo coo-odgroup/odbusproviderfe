@@ -40,6 +40,10 @@ const routes: Routes = [
       {
         path: 'alltransactionreport',
         loadChildren: () => import('./alltransactionreport/alltransactionreport.model').then(module => module.AlltransactionreportModule)
+      },     
+      {
+        path: 'apitransactionreport',
+        loadChildren: () => import('./apitransactionreport/apitransactionreport.module').then(module => module.ApitransactionreportModule)
       }    
       
     ]

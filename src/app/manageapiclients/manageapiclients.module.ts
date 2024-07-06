@@ -11,11 +11,13 @@ import { ApicancelticketsComponent } from './apicanceltickets/apicanceltickets.c
 import { ApipnrdisputesComponent } from './apipnrdisputes/apipnrdisputes.component';
 import { ManageclientsoperatorComponent } from './manageclientsoperator/manageclientsoperator.component';
 import { AlltransactionreportComponent } from './alltransactionreport/alltransactionreport.component';
+import { ApitransactionreportComponent } from './apitransactionreport/apitransactionreport.component';
 
 
 @NgModule({
   declarations: [
   
+
   ],
   imports: [
     CommonModule,

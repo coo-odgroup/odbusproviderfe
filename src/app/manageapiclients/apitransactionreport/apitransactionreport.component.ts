@@ -14,11 +14,11 @@ import { ExitStatus } from 'typescript';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-alltransactionreport',
-  templateUrl: './alltransactionreport.component.html',
-  styleUrls: ['./alltransactionreport.component.scss']
+  selector: 'app-apitransactionreport',
+  templateUrl: './apitransactionreport.component.html',
+  styleUrls: ['./apitransactionreport.component.scss']
 })
-export class AlltransactionreportComponent implements OnInit {
+export class ApitransactionreportComponent implements OnInit {
 
   public form: FormGroup;
   model: NgbDateStruct;
@@ -237,11 +237,11 @@ this.ws.clientTransUpdateByAdmin(data).subscribe(
       );
     }
     else {
-      this.ws.getAllagentTransaction(data).subscribe(
+      this.ws.getApiTransaction(data).subscribe(
         res => {
-          // this.wallet = res.data;
+          this.wallet = res.data;
 
-          this.wallet = res.data.data.data;
+          // this.wallet = res.data.data.data;
           // console.log(this.wallet);
           this.pagination = res.data.data;
           this.all = res.data;
