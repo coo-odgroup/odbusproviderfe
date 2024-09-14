@@ -75,7 +75,6 @@
                 <th width="180">Created/Updated On</th>
                 <th>Created_By</th>
                 <th>Status</th>
-                <th width="100" class="hide_print">&nbsp; </th>
   
               </tr>
             </thead>
@@ -88,12 +87,25 @@
                        
                         <table class="table-border">
                             <tr>
-                                <th>Starting Fare</th> <th>Upto Fare</th> <th>Odbus Commision in <b>(%)</b></th>
+                                <th>Starting Fare</th> 
+                                <th>Upto Fare</th> 
+                                <th>Odbus Commision in <b>(%)</b></th>
+                                <th>From date</th>
+                                <th>To date</th>
+                                <th>Action</th>
                             </tr>
                             <tr *ngFor="let start of cSlab.ticket_fare_slab;">
                                 <td style="width: 50px;">{{start.starting_fare}}</td>
                                 <td style="width: 50px;">{{start.upto_fare}}</td>
                                 <td style="width: 50px;">{{start.odbus_commision}}</td>
+                                <td style="width: 50px;">{{start.from_date}}</td>
+                                <td style="width: 50px;">{{start.to_date}}</td>
+                                <td class="hide_print">
+                                  <div class="overlay-edit">                  
+                                    <button type="button" (click)="deleteSlab(confirmDialog, start.id)" class="btn btn-icon btn-danger"><i
+                                        class="feather icon-trash-2"></i> {{start.id}}</button>
+                                  </div>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -118,12 +130,7 @@
                   <label *ngIf="cSlab.ticket_fare_slab[0].status==0" class="badge badge-light-danger pointer text-dark"
                     (click)="changeStatus($event, cSlab.id);">Pending</label>
                 </td>
-                <td class="hide_print">
-                  <div class="overlay-edit">                  
-                    <button type="button" (click)="deleteSlab(confirmDialog, cSlab.id)" class="btn btn-icon btn-danger"><i
-                        class="feather icon-trash-2"></i></button>
-                  </div>
-                </td>
+               
               </tr>
             </tbody>
             <tbody *ngIf="cancellationSlabs?.length == 0">
@@ -226,16 +233,22 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-3">
+                          <div class="col-2">
                             <label for="duration" class="col-form-label">Starting Fare</label>
                           </div>
-                          <div class="col-3">
+                          <div class="col-2">
                             <label for="deduction" class="col-form-label">Upto Fare</label>
                           </div>
-                          <div class="col-4">
-                            <label for="deduction" class="col-form-label">Odbus Commision</label>
+                          <div class="col-3">
+                            <label for="deduction" class="col-form-label">From Date</label>
                           </div>
-                          <div class="form-group col-md-2 mt-2 " style="display: flex;justify-content: flex-start;">
+                          <div class="col-2">
+                            <label for="deduction" class="col-form-label">To Date</label>
+                          </div>
+                          <div class="col-2">
+                            <label for="deduction" class="col-form-label">Commision</label>
+                          </div>
+                          <div class="form-group col-md-1 mt-2 " style="display: flex;justify-content: flex-start;">
                             <button (click)="addSlabs()" class="btn btn-info btn-sm addbtn"><i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
                           </div>
@@ -244,7 +257,7 @@
                           <div class="col-md-12">
                             <div class="form-group row" *ngFor="let slab of slabFormGroup.controls; let j=index"
                               [formGroupName]="j">
-                              <div class="col-sm-3">
+                              <div class="col-sm-2">
                                 <input type="text" class="form-control" placeholder="Starting Fare" formControlName="startingFare"
                                    placement="top" ngbTooltip=" Format number-number" />
                                 <span class="text-danger"
@@ -253,7 +266,7 @@
                                 </span>
                             
                               </div>
-                              <div class="col-sm-3">
+                              <div class="col-sm-2">
                                 <input type="text" class="form-control" placeholder="Upto Fare"
                                   formControlName="uptoFare" placement="top"
                                   ngbTooltip="% Symbols not Allowed" />
@@ -263,8 +276,19 @@
                                 </span>
                               
                               </div>
-                              <div class="col-sm-4">
-                                <input type="text" class="form-control" placeholder="Odbus Commision"
+                              <div class="col-sm-3">
+                                <input type="date" class="form-control" placeholder="From Date"
+                                  formControlName="from_date" placement="top"/>                                
+                              </div>
+                             
+                                <div class="col-sm-2">
+                                  <input type="date" class="form-control" placeholder="To Date"
+                                    formControlName="to_date" placement="top"/>
+                                  
+                                </div>
+                             
+                                <div class="col-sm-2">
+                                <input type="text" class="form-control" placeholder="Commision"
                                   formControlName="odbusCommision" placement="top"
                                   ngbTooltip="% Symbols not Allowed" />
                                 <span class="text-danger"

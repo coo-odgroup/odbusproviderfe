@@ -96,6 +96,8 @@ export class TicketfareslabComponent implements OnInit {
   all: any;
   allOdbusCommission: string;
   allstartingFare: string;
+  allfromdate :any;
+  alltodate :any;
   alluptoFare: string;
   // returns all form groups under Cancellation Slab
   get slabFormGroup() {
@@ -250,6 +252,8 @@ export class TicketfareslabComponent implements OnInit {
       startingFare: ['', [Validators.required]],
       uptoFare: ['', [Validators.required]],
       odbusCommision: ['', [Validators.required]],
+      from_date: [''],
+      to_date: ['']
     });
   }
   // add a CancelationSlab form group
@@ -282,6 +286,8 @@ export class TicketfareslabComponent implements OnInit {
   addTicketFareSlab() {
     this.spinner.show();
     this.allstartingFare = "";
+    this.allfromdate = "";
+    this.alltodate = "";
     this.alluptoFare = "";
     this.allOdbusCommission = "";
     let id: any = this.cancellationSlabRecord.id;
