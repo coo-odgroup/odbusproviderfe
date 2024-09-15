@@ -296,6 +296,9 @@ export class TicketfareslabComponent implements OnInit {
       slabs: this.form.value.slabs,
       created_by: localStorage.getItem('USERNAME')
     };
+
+    //console.log(data);
+    //return;
   
     if (id == null) {
       this.cSlabService.create(data).subscribe(
@@ -362,6 +365,15 @@ export class TicketfareslabComponent implements OnInit {
       id: [delitem]
     });
   }
+
+  onSelectAll() {
+    const selected = this.busoperators.map(item => item.id);
+    this.form.get('bus_operator_id').patchValue(selected);
+  }
+  onClearAll() {
+    this.form.get('bus_operator_id').patchValue([]);
+  }
+
 
   changeStatus(event: Event, stsitem: any) {
     this.spinner.show();

@@ -223,7 +223,14 @@
                               <div class="col-sm-9">
                                 <ng-select [items]="busoperators" bindLabel="operatorData"
                                     bindValue="id" placeholder="Select Operator"
-                                    formControlName="bus_operator_id" [clearable]="false">
+                                    formControlName="bus_operator_id" [clearable]="false"
+                                    [multiple]="true">
+                                    <ng-template ng-header-tmp *ngIf="busoperators?.length > 0">
+                                      <div>
+                                        <button class="btn btn-link" (click)="onSelectAll()">Select All</button>
+                                        <button class="btn btn-link" (click)="onClearAll()">Clear All</button>
+                                      </div>
+                                    </ng-template>
                                 </ng-select>
                                 <span class="text-danger"
                                     *ngIf="form.controls['bus_operator_id'].touched && form.controls['bus_operator_id'].hasError('required')">
