@@ -425,13 +425,6 @@ export class BusComponent implements OnInit {
       );
     }
 
-
-
-
-
-
-
-
     this.locationService.readAll().subscribe(
       records=>{
       this.locations=records.data;
@@ -3389,56 +3382,58 @@ export class BusComponent implements OnInit {
   }
   editBus(event : Event, id : any)
   {
-    this.spinner.show();
-    const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
-    };
-    if(BusOperator.USER_BUS_OPERATOR_ID=="")
-    {
-      this.busOperartorService.readAll().subscribe(
-        record=>{
-        this.operators=record.data;
-        this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-        }
-      );
-      this.busTypeService.readAll().subscribe(
-        rec=>{
-        this.busTypes=rec.data;
-        }
-      );
-      this.cancellationslabService.readAll().subscribe(
-        resp=>{
-        this.cancellationslabs=resp.data;
-        this.spinner.hide();
-        }
-      );
-    }
-    else
-    {
-      this.busOperartorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
-              record=>{
-              this.operators=record.data;
-              this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-              }
-            );
-      this.busTypeService.readOperator(BusOperator).subscribe(
-              rec=>{
-              this.busTypes=rec.data;
-              }
-            );    
-      // this.cancellationslabService.readAllOperator(BusOperator).subscribe(
-      //         resp=>{
-      //         this.cancellationslabs=resp.data;
-      //         this.spinner.hide();
-      //         }
-      //       );  
-      this.cancellationslabService.readAll().subscribe(
-        resp=>{
-        this.cancellationslabs=resp.data;
-        this.spinner.hide();
-        }
-      );
-    }
+
+    //// commented by Lima :: 22 Sep,2024  (issue fixed for bus operator changing)
+    //this.spinner.show();
+    // const BusOperator={
+    //   USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+    // };
+    // if(BusOperator.USER_BUS_OPERATOR_ID=="")
+    // {
+    //   this.busOperartorService.readAll().subscribe(
+    //     record=>{
+    //     this.operators=record.data;
+    //     this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
+    //     }
+    //   );
+    //   this.busTypeService.readAll().subscribe(
+    //     rec=>{
+    //     this.busTypes=rec.data;
+    //     }
+    //   );
+    //   this.cancellationslabService.readAll().subscribe(
+    //     resp=>{
+    //     this.cancellationslabs=resp.data;
+    //     this.spinner.hide();
+    //     }
+    //   );
+    // }
+    // else
+    // {
+    //   this.busOperartorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
+    //           record=>{
+    //           this.operators=record.data;
+    //           this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; }); 
+    //           }
+    //         );
+    //   this.busTypeService.readOperator(BusOperator).subscribe(
+    //           rec=>{
+    //           this.busTypes=rec.data;
+    //           }
+    //         );    
+    //   // this.cancellationslabService.readAllOperator(BusOperator).subscribe(
+    //   //         resp=>{
+    //   //         this.cancellationslabs=resp.data;
+    //   //         this.spinner.hide();
+    //   //         }
+    //   //       );  
+    //   this.cancellationslabService.readAll().subscribe(
+    //     resp=>{
+    //     this.cancellationslabs=resp.data;
+    //     this.spinner.hide();
+    //     }
+    //   );
+    // }
     
     
     this.seatingtypeService.readAll().subscribe(
