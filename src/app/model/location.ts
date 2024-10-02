@@ -1,5 +1,6 @@
 export interface Location {
         id: any;
+        url: any;
         name: any;
         synonym: any;
         state_id: any;

@@ -60,6 +60,7 @@ export class LocationComponent implements OnInit {
     this.spinner.show();
     this.form = this.fb.group({
       id:[null],
+      url:[null],
       name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       state_id : [null, Validators.compose([Validators.required])],
       synonym: [null, Validators.compose([Validators.maxLength(15)])],
@@ -165,6 +166,7 @@ export class LocationComponent implements OnInit {
     this.locationRecord = {} as Location;
     this.form = this.fb.group({
       id:[null],
+      url:[null],
       name: ['', Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       state_id : [null, Validators.compose([Validators.required])],
       synonym: [null, Validators.compose([Validators.maxLength(50)])]
@@ -186,6 +188,7 @@ export class LocationComponent implements OnInit {
     let id:any=this.form.value.id; 
     const data ={
       id:this.form.value.id,
+      url:this.form.value.url,
       name:this.form.value.name,
       synonym:this.form.value.synonym,
       state_id:this.form.value.state_id,
@@ -236,6 +239,7 @@ export class LocationComponent implements OnInit {
     this.locationRecord=this.locations[id] ;
     this.form = this.fb.group({
       id:[this.locationRecord.id],
+      url:[this.locationRecord.url],
       name: [this.locationRecord.name, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(50)])],
       state_id: [this.locationRecord.state_id, Validators.compose([Validators.required])],
       synonym: [this.locationRecord.synonym, Validators.compose([Validators.maxLength(50)])],
