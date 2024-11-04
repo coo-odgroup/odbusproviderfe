@@ -32,6 +32,7 @@ export class CouponuseduserreportComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  completExportdata: any;
 
 
   constructor(
@@ -135,13 +136,53 @@ export class CouponuseduserreportComponent implements OnInit {
     this.search();
   }
 
+
+
+
+
+
+  
+  exportexcel(): void
+  {
+    this.spinner.show();
+    // this.completeReportRecord = this.searchFrom.value ; 
+    this.completExportdata= '';
+
+    const data = {
+      bus_operator_id: this.searchFrom.value.bus_operator_id,
+      payment_id:this.searchFrom.value.payment_id,
+      date_type :this.searchFrom.value.date_type,
+      rows_number:'all',
+      source_id:this.searchFrom.value.source_id,
+      destination_id:this.searchFrom.value.destination_id,
+      rangeFromDate:this.searchFrom.value.rangeFromDate,
+      rangeToDate :this.searchFrom.value.rangeToDate,
+      coupon:this.searchFrom.value.coupon
+            
+    };
+
+    this.rs.couponUsedUserReport(data).subscribe(
+          res => {
+            this.completExportdata = res.data;
+            let length = this.completExportdata.data.data.length;
+            console.log(length);
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
   title = 'angular-app';
   fileName= 'Coupan-USed-User-Report.csv';
-  exportexcel(): void
+  exportdata(): void
   {
     
     /* pass here the table id */
-    let element = document.getElementById('print-section');
+    let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
  
     /* generate workbook and add the worksheet */
@@ -150,6 +191,8 @@ export class CouponuseduserreportComponent implements OnInit {
  
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
+
+    this.spinner.hide();
  
   }
 

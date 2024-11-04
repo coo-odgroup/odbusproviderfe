@@ -370,7 +370,7 @@
                                     <!-- <p *ngFor="let fare of complete.booking_detail;" >
                                         {{fare.owner_fare}}
                                    </p>   -->
-                                    <i class="fas fa-rupee-sign"></i> <b>{{complete.owner_fare}}</b>
+                                    <i class="fas fa-rupee-sign"></i> <b>{{complete.owner_fare + complete.additional_owner_fare}}</b>
                                 </td>
                                 <td>
                                     <ng-template #tipContent2>
@@ -630,7 +630,7 @@
                         <td><span *ngIf="complete.users != null">{{complete.users.phone}}</span></td>
                         <td><span *ngIf="complete.users != null">{{complete.users.email}}</span></td>
                         <td>{{complete.total_fare}}</td>
-                        <td>{{complete.owner_fare}}</td>
+                        <td>{{complete.owner_fare + complete.additional_owner_fare}}</td>
                         <td>
                             <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
                                 {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
