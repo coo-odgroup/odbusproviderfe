@@ -283,29 +283,60 @@ this.ws.clientTransUpdateByAdmin(data).subscribe(
 
 
   expsearch() {
-    this.spinner.show();  
-    const data = {
-      name: this.searchForm.value.name,
-      rows_number: 'all',
-      rangeFromDate:this.searchForm.value.rangeFromDate,
-      rangeToDate :this.searchForm.value.rangeToDate,
-      tranType :this.searchForm.value.tranType,
-      user_id:this.searchForm.value.user_id
-    };
-      this.ws.getAllagentTransaction(data).subscribe(
-        res => {
-          this.walletdetails = res.data.data.data;
-          let length = this.walletdetails.length;
-         
-          if(length != 0)
-          {
-            setTimeout(() => {
-              this.exportexcel();
-            }, 3 * 1000);
-            this.spinner.hide();
+    // this.spinner.show(); 
+    
+    const start_date = new Date(this.searchForm.value.rangeFromDate);
+    const end_date = new Date(this.searchForm.value.rangeToDate);
+  
+    const yearsDiff = end_date.getFullYear() - start_date.getFullYear();
+    const offset = yearsDiff * 12;
+      
+    const monthDiff = end_date.getMonth() - start_date.getMonth();
+    
+    const finalDiff = offset + monthDiff;
+    
+    // console.log(finalDiff );
+    // return;
+    if(finalDiff>12){
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Can not export for more than 1 year ", type:Constants.ErrorType});
+      this.spinner.hide();
+    }
+    else if(this.searchForm.value.user_id==null){
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Please select API Client", type:Constants.ErrorType});
+      this.spinner.hide();
+    }
+    else if(this.searchForm.value.rangeFromDate==null ||this.searchForm.value.rangeToDate==null){
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Please select Date Range", type:Constants.ErrorType});
+      this.spinner.hide();
+    }
+    else{
+      const data = {
+        name: this.searchForm.value.name,
+        rows_number: 'all',
+        rangeFromDate:this.searchForm.value.rangeFromDate,
+        rangeToDate :this.searchForm.value.rangeToDate,
+        tranType :'export_transaction',
+        user_id:this.searchForm.value.user_id
+      };
+        this.ws.getApiTransaction(data).subscribe(
+          res => {
+            this.walletdetails = res.data;
+
+            console.log(this.walletdetails)
+            let length = this.walletdetails.length;
+           
+           console.log(length);
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportexcel();
+              }, 3 * 1000);
+              this.spinner.hide();
+            }
           }
-        }
-      );
+        );
+    }
+    
   }
 
   title = 'angular-app';
