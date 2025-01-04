@@ -17,6 +17,7 @@ export interface Bus {
     admin_notes: any;
     amenities:any;
     type:any;
+    lower_sleeper_extra_fare:any;
     safety:any;
     //has_return_bus: any;
     return_bus_id: any;

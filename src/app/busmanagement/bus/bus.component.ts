@@ -336,7 +336,7 @@ export class BusComponent implements OnInit {
       amenities:[null, Validators.compose([Validators.required])],
       safety:[null, Validators.compose([Validators.required])],
       type:[null,Validators.compose([Validators.required])],
-      lower_sleeper_extra_fare:[0],       
+      lower_sleeper_extra_fare:[null],       
       max_seat_book:[6],
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
@@ -797,7 +797,7 @@ export class BusComponent implements OnInit {
       amenities:[null, Validators.compose([Validators.required])],
       safety:[null, Validators.compose([Validators.required])],
       type:[null,Validators.compose([Validators.required])],
-      lower_sleeper_extra_fare:[0],      
+      lower_sleeper_extra_fare:[null],      
       bus_seat_layout_id: [null, Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
 
@@ -879,6 +879,7 @@ export class BusComponent implements OnInit {
       amenities:this.busForm.value.amenities,
       safety:this.busForm.value.safety,
       type:this.busForm.value.type,
+      lower_sleeper_extra_fare:this.busForm.value.lower_sleeper_extra_fare,
       bus_sitting_id:this.busForm.value.bus_sitting_id,
       bus_type_id:this.busForm.value.bus_type_id,
       cancelation_points:this.busForm.value.cancelation_points,
@@ -893,6 +894,7 @@ export class BusComponent implements OnInit {
       bus_description:this.busForm.value.bus_description,
       created_by:localStorage.getItem('USERNAME'),
     };
+
     if(data.id!=null)
     {
       
@@ -1064,6 +1066,7 @@ export class BusComponent implements OnInit {
       amenities:this.busForm.value.amenities,
       safety:this.busForm.value.safety,
       type:this.busForm.value.type,
+      lower_sleeper_extra_fare:this.busForm.value.lower_sleeper_extra_fare,
       bus_seat_layout_id:this.busForm.value.bus_seat_layout_id,
       bus_sitting_id:this.busForm.value.bus_sitting_id,
       bus_type_id:this.busForm.value.bus_type_id,
@@ -1844,7 +1847,7 @@ export class BusComponent implements OnInit {
       amenities:[null],
       safety:[null],
       type:[this.busRecord.type,Validators.compose([Validators.required])],
-      lower_sleeper_extra_fare:[0],      
+      lower_sleeper_extra_fare:[this.busRecord.lower_sleeper_extra_fare],      
       bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
         this.fb.group({
@@ -2372,7 +2375,7 @@ export class BusComponent implements OnInit {
       amenities:[null],
       safety:[null],
       type:[this.busRecord.type,Validators.compose([Validators.required])],
-      lower_sleeper_extra_fare:[0],      
+      lower_sleeper_extra_fare:[this.busRecord.lower_sleeper_extra_fare],        
       bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
         this.fb.group({
@@ -3487,7 +3490,8 @@ export class BusComponent implements OnInit {
       cancelation_points: [this.busRecord.cancelation_points],
       amenities:[],
       safety:[],
-      type:[this.busRecord.type,Validators.compose([Validators.required])]
+      type:[this.busRecord.type,Validators.compose([Validators.required])],
+      lower_sleeper_extra_fare:[this.busRecord.lower_sleeper_extra_fare]
       // destinationDroppings: this.fb.array([]) 
     });
     this.busService.fetchBusAmenities(this.busRecord.id).subscribe(
