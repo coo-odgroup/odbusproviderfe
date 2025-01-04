@@ -336,7 +336,7 @@ export class BusComponent implements OnInit {
       amenities:[null, Validators.compose([Validators.required])],
       safety:[null, Validators.compose([Validators.required])],
       type:[null,Validators.compose([Validators.required])],
-      lower_sleeper_extra_fare:[0],      
+      lower_sleeper_extra_fare:[0],       
       max_seat_book:[6],
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
