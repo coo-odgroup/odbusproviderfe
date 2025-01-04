@@ -336,6 +336,7 @@ export class BusComponent implements OnInit {
       amenities:[null, Validators.compose([Validators.required])],
       safety:[null, Validators.compose([Validators.required])],
       type:[null,Validators.compose([Validators.required])],
+      lower_sleeper_extra_fare:[0],      
       max_seat_book:[6],
       cancellationslabs_id: [null, Validators.compose([Validators.required])],
       cancelation_points: [null],
@@ -796,6 +797,7 @@ export class BusComponent implements OnInit {
       amenities:[null, Validators.compose([Validators.required])],
       safety:[null, Validators.compose([Validators.required])],
       type:[null,Validators.compose([Validators.required])],
+      lower_sleeper_extra_fare:[0],      
       bus_seat_layout_id: [null, Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
 
@@ -1842,6 +1844,7 @@ export class BusComponent implements OnInit {
       amenities:[null],
       safety:[null],
       type:[this.busRecord.type,Validators.compose([Validators.required])],
+      lower_sleeper_extra_fare:[0],      
       bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
         this.fb.group({
@@ -2369,6 +2372,7 @@ export class BusComponent implements OnInit {
       amenities:[null],
       safety:[null],
       type:[this.busRecord.type,Validators.compose([Validators.required])],
+      lower_sleeper_extra_fare:[0],      
       bus_seat_layout_id: [JSON.parse(this.busRecord.bus_seat_layout_id), Validators.compose([Validators.required])],
       bus_seat_layout_data:this.fb.array([
         this.fb.group({
