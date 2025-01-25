@@ -194,7 +194,7 @@
                                     <span *ngIf="complete.app_type == 'ANDROID'">
                                         <strong class="text-danger">(A)&nbsp;</strong>
                                     </span>
-                                    <strong>{{complete.pnr}}</strong> &nbsp;&nbsp;
+                                    <strong>{{complete.pnr}}</strong>&nbsp;&nbsp;
                                     <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'" class="text-danger"><strong>[ {{complete.origin}} PNR -  {{complete.api_pnr}} ]</strong></span>
                                     <br> (DOB - {{complete.created_at | date:
                                     'dd-MM-yyyy | H:mm:ss'}} )
@@ -203,6 +203,7 @@
                                         {{frlocation.name}}
                                     </span> -
                                     ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
+                                    &nbsp; <span><b>{{ (complete.user_id > 0) ? complete.user.name : '' }}</b></span>
                                     <br>
                                     <span *ngIf="complete.customer_payment">
                                         <strong style="color: brown;">{{complete.customer_payment.order_id}}</strong>
@@ -422,7 +423,7 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <p> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer' }} </p>
+                                    <p> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </p>
                                 </td>
 
                                 <td>

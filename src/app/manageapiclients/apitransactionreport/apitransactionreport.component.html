@@ -6,35 +6,43 @@
         cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
         <div class="row">
           
-          <div class="col-12">
+          <div class="col-md-12">
             <form [formGroup]="searchForm">
               <div class="row">     
-                <!-- <div class="col-2">
+                <div class="col-2">
                   <div class="from-group ">
                     <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
                       Add Balance
                     </button>
                   </div>
-                </div>      -->
-                <div class="col-md-5">
+                </div>     
+                <div class="col-md-2">
+                  <div class="form-group row">  
+                    <div class="col-sm-12">
+                     <select class="form-control sml_input" formControlName="tranType" >
+                      <option value="all_transaction">All Transaction</option>
+                       <option  value="wallet_recharge">Wallet Recharge</option>
+                       <option value="pnr_booking">Pnr Booking</option>
+                       <option value="cancel_ticket">Cancel Ticket</option>
+                     </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
                   <div class="row">  
-                      <div class="form-group col-6">
-                     
+                      <div class="form-group col-6">                     
                               <input type="date" class="form-control sml_input" placeholder="Enter pnr"
-                              required formControlName="rangeFromDate" />
-                         
+                              required formControlName="rangeFromDate" />                         
                       </div>
-                      <div class="form-group col-6">
-                     
+                      <div class="form-group col-6">                     
                               <input type="date" class="form-control sml_input" placeholder="Enter pnr"
-                              required formControlName="rangeToDate" />
-                                                                   
+                              required formControlName="rangeToDate" />                                                                  
                       </div>
                   </div>
               </div>
                
 
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <ng-select [items]="allagent" bindLabel="name"  bindValue="id" placeholder="Select API Client"  
                     formControlName="user_id" [clearable]="false" >
                 </ng-select>
@@ -42,31 +50,15 @@
               </div>
 
               <div class="row">
-                <!-- <div class="col-md-4">
+                <div class="col-md-4">
                   <div class="form-group row">  
                     <div class="col-sm-12">
                       <input type="text" class="form-control sml_input" placeholder="Search" required
                         formControlName="name" />
                     </div>
                   </div>
-                </div> -->
+                </div>
 
-                <!-- <div class="col-md-3">
-                  <div class="form-group row">  
-                    <div class="col-sm-12">
-                     <select class="form-control sml_input" formControlName="tranType" >
-                      <option value="all_transaction">All Transaction</option>
-                       <option  value="wallet_recharge">Wallet Recharge</option>
-                       <option value="commission_received">	Commission Received</option>
-                       <option value="pnr_booking">Pnr Booking</option>
-                       <option value="cancel_ticket">Cancel Ticket</option>
-                     </select>
-                    </div>
-                  </div>
-                </div> -->
-               
-  
-  
                 <div class="col-md-5">
                   <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                     Search
@@ -77,31 +69,14 @@
                   <button type="button" (click)="expsearch()" class="btn btn-warning  sml_input" title="Export">
                       Export
                   </button>
-                  <!-- <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input" title="Export">
-                      Export
-                  </button> -->
                   <button type="button" printSectionId="print-section" ngxPrint
                       class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
                       <i class="fas fa-print"> </i> Print
-                  </button>
-
-                  <!-- <div class="dropdown float-right" >
-                    <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
-                      <option value=10>10</option>
-                      <option value=25>25</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                      <option value='all'>All</option>
-                    </select>
-                  </div> -->
-                
+                  </button>                
                 </div>
               </div>
-            </form>
-  
-  
-          </div>
-  
+            </form>  
+          </div>  
         </div>
         <!-- <div class="table-responsive" id="export-section">
           <table class="table table-striped ">

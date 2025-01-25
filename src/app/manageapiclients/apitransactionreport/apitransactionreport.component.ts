@@ -213,9 +213,34 @@ this.ws.clientTransUpdateByAdmin(data).subscribe(
 
 
   search(pageurl = "") {
-    this.spinner.show();
-    // console.log(this.searchForm.value);
+   
+    const start_date = new Date(this.searchForm.value.rangeFromDate);
+    const end_date = new Date(this.searchForm.value.rangeToDate);
   
+    const yearsDiff = end_date.getFullYear() - start_date.getFullYear();
+    const offset = yearsDiff * 12;
+      
+    const monthDiff = end_date.getMonth() - start_date.getMonth();
+    
+    const finalDiff = offset + monthDiff;
+    
+   
+    if(finalDiff>12){
+      this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Can not export for more than 1 year ", type:Constants.ErrorType});
+      this.spinner.hide();
+    }
+    // else if(this.searchForm.value.user_id==null){
+    //   this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Please select API Client", type:Constants.ErrorType});
+    //   this.spinner.hide();
+    // }
+    // else if(this.searchForm.value.rangeFromDate==null ||this.searchForm.value.rangeToDate==null){
+    //   this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Please select Date Range", type:Constants.ErrorType});
+    //   this.spinner.hide();
+    // }
+    else{
+      this.spinner.show();
+      // console.log(this.searchForm.value);
+      
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
@@ -250,6 +275,7 @@ this.ws.clientTransUpdateByAdmin(data).subscribe(
         }
       );
     }
+  }
   }
 
 
@@ -295,8 +321,7 @@ this.ws.clientTransUpdateByAdmin(data).subscribe(
     
     const finalDiff = offset + monthDiff;
     
-    // console.log(finalDiff );
-    // return;
+   
     if(finalDiff>12){
       this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Can not export for more than 1 year ", type:Constants.ErrorType});
       this.spinner.hide();
