@@ -8,6 +8,7 @@ import { LoginService } from '../services/login.service';
 import { SignupService } from '../services/signup.service';
 //import { LoginChecker } from '../helpers/loginChecker';
 import {NgbAlertConfig} from '@ng-bootstrap/ng-bootstrap';
+import { EncryptionService } from '../encrypt.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class OtpComponent implements OnInit {
       //private spinner: NgxSpinnerService,
       public loginService: LoginService,
       private signupService: SignupService,  
+      private enc:EncryptionService,
       private alertConfig: NgbAlertConfig  
   ) { 
 
@@ -63,8 +65,9 @@ export class OtpComponent implements OnInit {
       this.otpService.submit_otp(param).subscribe(
         res=>{ 
           if(res.status==1){
-            //console.log(JSON.stringify(res));
-            localStorage.setItem('user', JSON.stringify(res.data[0]));
+            let data:any=this.enc.decrypt(res.data[0]);
+            data=JSON.parse(data);
+            localStorage.setItem('user', JSON.stringify(data));
 
             this.router.navigate(['agentDetails']);     
           }
@@ -84,7 +87,6 @@ export class OtpComponent implements OnInit {
   ngOnInit(): void {
  
     this.userId = localStorage.getItem('USERID');
-    this.mobileNo = localStorage.getItem('PHONE').replace(/['"]+/g, '');
     if(this.userId=='' || this.userId==null){
       this.router.navigate(['']);
     }
