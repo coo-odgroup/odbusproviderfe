@@ -428,13 +428,15 @@
 
                                 <td>
                                     <!-- <p> {{ (complete.customer_gst_number != null) ? complete.customer_gst_number: "<i class='fa fa-times text-danger' aria-hidden='true'></i>"  }} </p> -->
-                                    <span *ngIf="complete.customer_gst_number != null">
-                                        <strong
-                                            class=" btn btn-info text-light">{{complete.customer_gst_number}}</strong>
+                                    <span *ngIf="complete.customer_gst_status ==1">
+                                        <!-- <strong
+                                            class=" btn btn-info text-light">{{complete.customer_gst_number}}</strong> -->
+                                            <a class="btn-success" [href]="CONSUMER_PUBLIC_URL + 'gst/' + complete.gst_invoice_no" 
+                                            target="_blank">{{complete.gst_invoice_no}}</a>
                                     </span>
-                                    <span *ngIf="complete.customer_gst_number == null">
+                                    <!-- <span *ngIf="complete.customer_gst_number == null">
                                         <i class='fa fa-times text-light btn btn-sm btn-danger ' aria-hidden='true'></i>
-                                    </span>
+                                    </span> -->
 
                                 </td>
                             </tr>
@@ -540,6 +542,7 @@
                         <th>Transaction Id</th>
                         <th>Order Id</th>
                         <th>App Type</th>
+                        <th>GST Invoice No</th>
                         <th>Customer GST Number</th>
                         <th>Customer GST Business Name</th>
                         <th>Customer GST Business Email</th>
@@ -661,6 +664,7 @@
                             </span>
                         </td>
                         <td>{{complete.app_type}}</td>
+                        <td>{{ complete.gst_invoice_no}}</td>
                         <td>{{ complete.customer_gst_number}}</td>
                         <td>{{ complete.customer_gst_business_name }}</td>
                         <td>{{ complete.customer_gst_business_email }}</td>

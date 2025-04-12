@@ -29,6 +29,7 @@ export class CompletereportComponent implements OnInit {
   url: any;
   locations: any;
   buses: any;
+  CONSUMER_PUBLIC_URL = Constants.CONSUMER_PUBLIC_URL;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
@@ -54,6 +55,7 @@ export class CompletereportComponent implements OnInit {
     ) { 
       this.fromDate = calendar.getToday();
       this.toDate = calendar.getToday();
+      
     }
     title = 'angular-app';
     fileName= 'Complete-Report.csv';
