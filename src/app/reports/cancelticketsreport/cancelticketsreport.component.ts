@@ -114,7 +114,7 @@ export class CancelticketsreportComponent implements OnInit {
       this.rs.cancelticketReport(data).subscribe(
         res => {
           this.cancelticketdata= res.data;
-          console.log(this.cancelticketdata);
+          //console.log(this.cancelticketdata);
           this.spinner.hide();
         }
       );
@@ -282,7 +282,14 @@ export class CancelticketsreportComponent implements OnInit {
     }
   }
 
+  calculate_refund(ApiClntwallet:any,refund:any){
+    if(ApiClntwallet.length>0){
+      return  ApiClntwallet.reduce((sum, element) => sum + element.amount, 0);
 
+    }else{
+      return refund;
+    }
+  }
 
   
 

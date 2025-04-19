@@ -415,6 +415,7 @@
                         <th>Odbus GST</th>
                         <th>Owner GST</th>
                         <th>Odbus Received</th>
+                        <th>Deduction Percent</th>
                         <th>Amount Refund</th>
                         <th>Profit</th>
                         <th>Transaction Id</th>
@@ -494,8 +495,9 @@
                         <td>{{complete.odbus_gst_amount}}</td>
                         <td>{{complete.owner_gst_amount}}</td>
                         <td>{{complete.odbus_charges}}</td>
-                        <td>{{ complete.refund_amount }}</td>
-                        <td>{{complete.payable_amount-complete.refund_amount }}</td>
+                        <td>{{complete.deduction_percent}}</td>
+                        <td>{{ calculate_refund(complete.client_wallet,complete.refund_amount) }}</td>
+                        <td>{{complete.payable_amount - calculate_refund(complete.client_wallet,complete.refund_amount) }}</td>
                         <!-- <td>{{(complete.payable_amount + complete.agent_commission)-complete.refund_amount }}</td>  For aswain's Concerns we chnage this on 3/03/23-->
                         <td>
                             <span *ngIf="complete.customer_payment">
