@@ -548,6 +548,7 @@
                         <th>Customer GST Business Email</th>
                         <th>Customer GST Business Address</th>
                         <th>Customer GST Amount</th>
+                        <th>Book By</th>
                     </tr>
                 </thead>
                 {{completExportdata?.data?.data?.length | json}}
@@ -670,6 +671,7 @@
                         <td>{{ complete.customer_gst_business_email }}</td>
                         <td>{{ complete.customer_gst_business_address }}</td>
                         <td>{{ complete.customer_gst_amount }}</td>
+                        <td> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </td>
                     </tr>
                 </tbody>
             </table>

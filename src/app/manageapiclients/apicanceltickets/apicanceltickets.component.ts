@@ -97,7 +97,7 @@ export class ApicancelticketsComponent implements OnInit {
       destination_id:[null],
       rangeFromDate:[null],
       rangeToDate :[null],
-      user_id:[null]
+      apiUser:[null]
 
     })  
     this.search(); 
@@ -195,6 +195,7 @@ export class ApicancelticketsComponent implements OnInit {
           destination_id:this.cancelTicketsReportRecord.destination_id,
           rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
           rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
+          apiUser:this.cancelTicketsReportRecord.apiUser,         
           USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')            
     };
    
@@ -263,7 +264,8 @@ export class ApicancelticketsComponent implements OnInit {
       source_id:[null],
       destination_id:[null],
       rangeFromDate:[null],
-      rangeToDate :[null],user_id:[null]
+      rangeToDate :[null],
+      apiUser:[null]
 
     })  
     this.loadServices();

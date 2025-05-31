@@ -341,7 +341,7 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <p> {{ (complete.user_id > 0) ? complete.user.role.name : 'Customer'  }} </p>    
+                                    <p> {{ (complete.user_id > 0) ? complete.user.name : 'Customer'  }} </p>    
                                 </td>
                             </tr>
                             <tr >
@@ -432,6 +432,7 @@
                         <th>Transaction Id</th>
                         <th>Order Id</th>
                         <th>App Type</th>
+                        <th>Book By</th>
                     </tr>
                 </thead>
 
@@ -526,6 +527,7 @@
                             </span>
                         </td>
                         <td>{{complete.app_type}}</td>
+                        <td>{{ (complete.user_id > 0) ? complete.user.name : 'Customer'  }} </td>
                     </tr>
                 </tbody>
             </table>

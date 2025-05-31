@@ -66,7 +66,8 @@ export class ApibookingsticketsComponent implements OnInit {
       pnr:[null],
       rows_number:50,
       source_id:[null],
-      destination_id:[null]
+      destination_id:[null],
+      user_id:[null]
     })  
    
 
@@ -89,7 +90,8 @@ export class ApibookingsticketsComponent implements OnInit {
         source_id:this.completeReportRecord.source_id,
         destination_id:this.completeReportRecord.destination_id,
         rangeFromDate:this.completeReportRecord.rangeFromDate,
-        rangeToDate :this.completeReportRecord.rangeToDate            
+        rangeToDate :this.completeReportRecord.rangeToDate   ,
+        user_id:this.completeReportRecord.user_id        
     };
     
       this.rs.completeReport(data).subscribe(
@@ -143,7 +145,8 @@ export class ApibookingsticketsComponent implements OnInit {
         source_id:this.completeReportRecord.source_id,
         destination_id:this.completeReportRecord.destination_id,
         rangeFromDate:this.completeReportRecord.rangeFromDate,
-        rangeToDate :this.completeReportRecord.rangeToDate            
+        rangeToDate :this.completeReportRecord.rangeToDate   ,
+        user_id:this.completeReportRecord.user_id         
     };
     if(pageurl!="")
     {
@@ -197,7 +200,8 @@ export class ApibookingsticketsComponent implements OnInit {
           rows_number: 50,
           // rows_number: Constants.RecordLimit,
           source_id:[null],
-          destination_id:[null]
+          destination_id:[null],
+          user_id:[null]
 
         })
         this.search();
