@@ -146,7 +146,7 @@
                                 <th scope="col">Seater / Sleeper </th>
                                 <th scope="col">ODBUS Fare</th>
                                 <th scope="col">Refund Price</th>
-                                <!-- <th scope="col">Booked By</th> -->
+                                <th scope="col">Booked By</th>
                                 <th scope="col">Cancel By</th>
                             </tr>
                         </thead>
@@ -341,9 +341,9 @@
                                         <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>                                     -->
                                     </h5>    
                                 </td>
-                                <!-- <td>
-                                    <h5> {{ (complete.user_id > 0) ? 'Api Client' : 'Customer'  }} </h5>    
-                                </td> -->
+                                <td>
+                                    <h5> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </h5>    
+                                </td>
                                 <td>
                                     <b>{{complete.created_by}}</b>
                                 </td>
@@ -669,6 +669,7 @@
                         <th>Transaction Id</th>
                         <th>Order Id</th>
                         <th>App Type</th>
+                        <th>Booked By</th>
                     </tr>
                 </thead>
 
@@ -767,7 +768,10 @@
                                 {{complete.customer_payment.order_id}}
                             </span>
                         </td>
-                        <td>{{complete.app_type}}</td>                       
+                        <td>{{complete.app_type}}</td>    
+                        <td>{{ (complete.user_id > 0) ? complete.user.name : 'Customer' }}</td>    
+                        
+                        
                     </tr>
                 </tbody>
             </table>
