@@ -243,11 +243,14 @@
                 <td><span *ngIf =" page.Refund !='' && page.Refund >0" class="text-info"><b> +{{page.Refund | number : '1.2-2'}}</b></span></td>
                 <td>
                   <span *ngIf =" page.Refund !='' && page.Refund >0 && !page.credit" class="text-danger"><b>Cancel</b></span>
-                  <span *ngIf =" !page.Refund && !page.credit && page.booking_id" class="text-success"><b>Booking</b></span>
+                 <span *ngIf =" !page.Refund && !page.credit && page.booking_id" class="text-success"><b>Booking</b></span>
 
                   <span *ngIf =" !page.Refund && !page.credit && !page.booking_id" class="text-success"><b>{{page.remarks}}</b></span>
+                 
+                  <span *ngIf =" page.credit !=''  && page.credit > 0  && !page.Refund " class="text-info"><b> {{page.remarks}}</b></span>
 
-                  <span *ngIf =" page.credit !='' && page.credit > 0  && !page.Refund " class="text-info"><b> Recharge</b></span>
+                   <span *ngIf =" page.credit !='' && page.remarks != null && page.credit > 0  && !page.Refund " class="text-info"><b> {{page.remarks}}</b></span>
+
                 </td>
                 
                 
