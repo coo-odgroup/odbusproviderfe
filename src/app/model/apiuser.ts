@@ -2,6 +2,7 @@ export interface Apiuser {
     id:any ;
     name:any;
     email:any;
+    alternate_email:any;
     phone:any;
     password:any;
     user_type:any;
