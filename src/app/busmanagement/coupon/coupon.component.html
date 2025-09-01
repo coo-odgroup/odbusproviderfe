@@ -418,13 +418,18 @@
                                         <h5>Coupon Basic Info</h5> 
                                         
                                          <div class="from-group">
-                                                <label for="name" class="col-form-label">Via</label>
+                                                <label for="name" class="col-form-label">Via:<span class="text-danger">*</span></label>
                                             <div class="col-sm-12">
                                                <select id="via" class="form-control" formControlName="via">
                                                           <option value="1">Website</option>
                                                           <option value="2">App</option>
+                                                          <option value="0">Both</option>
+
 
                                                 </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['via'].touched && form.controls['via'].hasError('required')">
+                                                    Via is required! </span>
                                             </div>
                                             </div>
                                         
@@ -577,6 +582,11 @@
                                                 ></label>
                                         </div>
 
+                                         <div class="from-group">
+                                        <label for="name" class="col-sm-4 col-form-label">Apply Once/User
+                                                : <input type="checkbox" formControlName="apply_once" [value]="1"
+                                                ></label>
+                                            </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -690,7 +700,20 @@
                                             </div>
                                         </div>
 
+                                         <div class="from-group">
+                                                <label for="name" class="col-form-label">Via:<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                               <select id="via" class="form-control" formControlName="via">
+                                                          <option value="1">Website</option>
+                                                          <option value="2">App</option>
+                                                          <option value="0">Both</option>
 
+                                                </select>
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['via'].touched && form.controls['via'].hasError('required')">
+                                                    Via is required! </span>
+                                            </div>
+                                            </div>
 
                                         <div class="from-group">
                                             <label for="name" class="col-sm-3 col-form-label">Coupon
@@ -840,6 +863,13 @@
                                                 : <input type="checkbox" formControlName="auto_apply" [value]="1"
                                                 ></label>
                                         </div>
+
+                                         <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">Apply Once/User
+                                                : <input type="checkbox" formControlName="apply_once" [value]="1"
+                                                ></label>
+                                        </div>
+
 
                                     </div>
                                 </div>

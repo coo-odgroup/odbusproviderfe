@@ -76,7 +76,7 @@ export class CouponComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       coupon_type:  [null, Validators.compose([Validators.required])],
-      via:  [null],
+      via:  [null, Validators.compose([Validators.required])], 
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
@@ -93,7 +93,8 @@ export class CouponComponent implements OnInit {
       bus_operator_id:[null],
       bus_id:[null, Validators.compose([Validators.required])],
       max_redeem: [null],
-      auto_apply: [false]
+      auto_apply: [false],      
+      apply_once:  [false]
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
@@ -102,7 +103,7 @@ export class CouponComponent implements OnInit {
     this.editform= this.fb.group({
       id:[null],
       coupon_type:  [null, Validators.compose([Validators.required])],
-      via:  [null],
+      via:  [null, Validators.compose([Validators.required])], 
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
@@ -120,7 +121,9 @@ export class CouponComponent implements OnInit {
       bus_operator_id:[null],
       bus_id:[null, Validators.compose([Validators.required])],
       max_redeem: [null],
-      auto_apply: [false]
+      auto_apply: [false],
+      apply_once: [false]
+      
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
@@ -332,11 +335,13 @@ export class CouponComponent implements OnInit {
     );
 
 
+    this.editform.controls.via.setValue(this.couponRecord.via);
     this.editform.controls.coupon_title.setValue(this.couponRecord.coupon_title);
     this.editform.controls.coupon_code.setValue(this.couponRecord.coupon_code);
     this.editform.controls.short_description.setValue(this.couponRecord.short_desc);
     this.editform.controls.full_description.setValue(this.couponRecord.full_desc);
     this.editform.controls.auto_apply.setValue(this.couponRecord.auto_apply);   
+    this.editform.controls.apply_once.setValue(this.couponRecord.apply_once);   
     
     this.editform.controls.coupon_discount_type.setValue(this.couponRecord.type);
     this.editform.controls.coupon_type.setValue(this.couponRecord.coupon_type_id);
@@ -444,7 +449,7 @@ export class CouponComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       coupon_type:  [null, Validators.compose([Validators.required])],
-      via:  [null],      
+      via:  [null, Validators.compose([Validators.required])],    
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
@@ -461,7 +466,8 @@ export class CouponComponent implements OnInit {
       bus_operator_id:[null],
       bus_id:[null, Validators.compose([Validators.required])],
       max_redeem: [null],
-      auto_apply: [false]
+      auto_apply: [false],
+      apply_once:[false]
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
@@ -476,6 +482,7 @@ export class CouponComponent implements OnInit {
       via:this.editform.value.via,
       full_description:this.editform.value.full_description,
       auto_apply:this.editform.value.auto_apply,
+      apply_once:this.editform.value.apply_once,
       short_description:this.editform.value.short_description,
       created_by:localStorage.getItem('USERNAME') 
     };
@@ -547,6 +554,7 @@ export class CouponComponent implements OnInit {
       max_discount_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
       auto_apply:this.form.value.auto_apply,
+      apply_once:this.form.value.apply_once,
       min_tran_amount:this.form.value.min_tran_amount,
       percentage:this.form.value.percentage,
       short_description:this.form.value.short_description,

@@ -1,5 +1,7 @@
 export interface Coupon {
     destination_id: any;
+    via: any;
+    apply_once:any;
     source_id: any;
     coupon_type_id: any;
     coupon_discount_type: any;
