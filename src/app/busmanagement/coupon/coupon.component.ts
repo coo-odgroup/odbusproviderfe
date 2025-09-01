@@ -76,6 +76,7 @@ export class CouponComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       coupon_type:  [null, Validators.compose([Validators.required])],
+      via:  [null],
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
@@ -101,6 +102,7 @@ export class CouponComponent implements OnInit {
     this.editform= this.fb.group({
       id:[null],
       coupon_type:  [null, Validators.compose([Validators.required])],
+      via:  [null],
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
@@ -442,6 +444,7 @@ export class CouponComponent implements OnInit {
     this.form = this.fb.group({
       id:[null],
       coupon_type:  [null, Validators.compose([Validators.required])],
+      via:  [null],      
       coupon_title: [null, Validators.compose([Validators.required])],
       coupon_code: [null, Validators.compose([Validators.required])],
       short_description: [null],
@@ -470,6 +473,7 @@ export class CouponComponent implements OnInit {
   updateCoupon(){
 
     const data={
+      via:this.editform.value.via,
       full_description:this.editform.value.full_description,
       auto_apply:this.editform.value.auto_apply,
       short_description:this.editform.value.short_description,
@@ -533,6 +537,7 @@ export class CouponComponent implements OnInit {
       coupon_code:this.form.value.coupon_code,
       coupon_title:this.form.value.coupon_title,
       coupon_type:this.form.value.coupon_type,
+      via:this.form.value.via,
       coupon_discount_type:this.form.value.coupon_discount_type,
       amount:this.form.value.amount,
       route:this.form.value.route,
