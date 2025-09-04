@@ -560,7 +560,43 @@
                                   </div>
                                 </div>
       
-                               
+                                <div class="form-group row">
+                                  <label for="opr_content" class="col-sm-5 col-form-label"><strong>Countdown Status</strong> </label>
+                                  <div class="col-sm-7">
+                                    <div class="custom-control custom-switch">
+                                      <input type="checkbox" class="custom-control-input" id="countdown_status"
+                                        formControlName="countdown_status">
+                                      <label class="custom-control-label" for="countdown_status"></label>
+                                    </div>
+                                  </div> 
+                                </div>
+                                
+                                 <div class="form-group row">
+                                  <label for="opr_content" class="col-sm-5 col-form-label"><strong>Countdown Title</strong> </label>
+                                  <div class="col-sm-7">
+                                    <div>
+                                      <input type="text"  id="countdown_title"
+                                        formControlName="countdown_title" class="form-control" placeholder="Countdown Title">
+                                      <label class="col-sm-5 col-form-label" for="countdown_title"></label>
+                                    </div>
+                                  </div> 
+                                </div> 
+
+                                <div class="form-group row">
+                              <label for="popup_end_date" class="col-sm-5 col-form-label"><strong>Countdown End Date</strong></label>
+                              <div class="col-sm-7">
+                                <div class="row">
+                                    <div class="col-6">
+                                      <input id="countdown_enddate" type="date" class="form-control" ngbAutofocus  
+                                  formControlName="countdown_enddate" />
+                                    </div>
+                                    <div class="col-6">
+                                      <input id="countdown_endtime" type="time" class="form-control" ngbAutofocus 
+                                      formControlName="countdown_endtime" /> 
+                                    </div>
+                                </div>                                                                                   
+                              </div>
+                            </div>
       
                               </div>
                             </div>

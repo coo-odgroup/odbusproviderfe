@@ -43,6 +43,11 @@ export interface SettingsRecords{
     popup_start_date:any,
     popup_start_time:any,
     popup_end_date:any,
-    popup_end_time:any
+    popup_end_time:any,
+    countdown_title:any,
+    countdown_endtime:any,
+    countdown_enddate:any,
+    countdown_status:any,
+    
   } 
   

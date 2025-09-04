@@ -62,6 +62,8 @@ export class MastersettingComponent implements OnInit {
   role_id: any;
   usre_name:any ;
   man: boolean;
+  count: boolean;
+  countdown_status:number;
   has_is: boolean;
   man_val: number;
   has_is_val: string;
@@ -179,7 +181,11 @@ export class MastersettingComponent implements OnInit {
       popup_start_date:[null],
       popup_start_time:[null],
       popup_end_date:[null],
-      popup_end_time:[null]
+      popup_end_time:[null],
+      countdown_title:[null],
+      countdown_endtime:[null],
+      countdown_enddate:[null],
+      countdown_status:[null]
     });
 
     this.formConfirm=this.fb.group({
@@ -564,7 +570,12 @@ export class MastersettingComponent implements OnInit {
       popup_start_date:[null],
       popup_start_time:[null],
       popup_end_date:[null],
-      popup_end_time:[null]
+      popup_end_time:[null],
+      countdown_title:[null],
+      countdown_endtime:[null],
+      countdown_enddate:[null],
+      countdown_status:[null]
+
     });
 
     this.LoadAllService();
@@ -600,6 +611,13 @@ export class MastersettingComponent implements OnInit {
     }else if(this.settingForm.value.popup_status == false){
       this.popup_status = 0;
     }
+
+     if(this.settingForm.value.countdown_status == true){
+      this.countdown_status = 1;
+    }else if(this.settingForm.value.countdown_status == false){
+      this.countdown_status = 0;
+    }
+
 
     let fd: any = new FormData();
     fd.append("favicon_image", this.finalFavIcon);
@@ -643,7 +661,10 @@ export class MastersettingComponent implements OnInit {
     fd.append("popup_start_time",this.settingForm.value.popup_start_time);
     fd.append("popup_end_date",this.settingForm.value.popup_end_date);
     fd.append("popup_end_time",this.settingForm.value.popup_end_time);
-
+    fd.append("countdown_title",this.settingForm.value.countdown_title);
+    fd.append("countdown_status",this.countdown_status);
+    fd.append("countdown_endtime",this.settingForm.value.countdown_endtime);
+    fd.append("countdown_enddate",this.settingForm.value.countdown_enddate);
     fd.append("no_script",this.settingForm.value.no_script);
     fd.append("created_by",localStorage.getItem('USERNAME'));
  
@@ -721,6 +742,15 @@ export class MastersettingComponent implements OnInit {
     }else{
       this.pop = false;
     }
+
+
+     if(this.settingRecord.countdown_status == 1){
+      this.count = true;
+    }else{
+      this.count = false;
+    }
+
+    console.log(this.count);
   
     this.imgURL =''; 
     this.favURL =''; 
@@ -770,8 +800,11 @@ export class MastersettingComponent implements OnInit {
       popup_start_date:[this.settingRecord.popup_start_date],
       popup_start_time:[this.settingRecord.popup_start_time],
       popup_end_date:[this.settingRecord.popup_end_date],
-      popup_end_time:[this.settingRecord.popup_end_time]
-
+      popup_end_time:[this.settingRecord.popup_end_time],
+      countdown_title:[this.settingRecord.countdown_title],
+      countdown_status:[this.count],
+      countdown_endtime:[this.settingRecord.countdown_endtime],
+      countdown_enddate:[this.settingRecord.countdown_enddate]
     });
 
     //console.log(this.settingForm);
