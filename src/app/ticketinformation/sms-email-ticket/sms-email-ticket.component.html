@@ -12,7 +12,7 @@
              <div class="right-icon-control">
                  <form [formGroup]="sendSmsEmailTicketForm" class="editForm" novalidate>
                         <div class="row">
-                            <div class="col-md-10 col-10">
+                            <div class="col-md-8 col-8">
                                 <div class="form-group row">
                                     <div class="input-group col-11 ">
                                         <input type="text" class="form-control sml_input"
@@ -40,6 +40,9 @@
                                                 (click)="refresh()" title="Refresh">
                                                 <i class="fas fa-sync-alt"> </i>
                                             </button>
+                            </div>
+                             <div class="col-md-2 col-2">
+                              <a  (click)="sms_log(smslog)" class="btn btn-primary">View Sms Log Error List</a>
                             </div>
                         </div>
                         <div class="row" *ngIf="pnrDetails.length > 0">                            
@@ -186,6 +189,7 @@
                  </form>
                 </div>
             </div>
+           
         </div>
         </div>       
         </app-card>
@@ -604,3 +608,46 @@
         </div>
     </div>
 </div>
+
+
+ <ng-template #smslog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">SMS Log List</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    
+                    <th>Created On</th>
+                    <th>Via</th>
+                    <th>To</th>                    
+                    <th>Response</th>
+                    <th>Message</th>
+                    <th>Request Body</th>
+                  </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let s of sms_log_list; let i = index">
+                      <td>{{ s.created_on}}</td>
+                      <td>{{ s.via}}</td>
+                      <td>{{ s.phone}}</td>                      
+                      <td>{{ s.response}}</td>
+                      <td>{{ s.sms_body}}</td>
+                      <td>{{ s.req_body}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">           
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>

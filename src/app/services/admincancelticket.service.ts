@@ -138,6 +138,13 @@ export class AdmincancelticketService {
     )
   }
 
+    sms_log(){
+    return this.httpClient.post<any>(this.apiURL + '/sms_log', this.httpOptions)
+    .pipe(
+        catchError(this.errorHandler)
+    )
+  }
+
   errorHandler(error) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

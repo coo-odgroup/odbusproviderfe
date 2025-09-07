@@ -582,4 +582,17 @@ export class SmsEmailTicketComponent implements OnInit {
         this.ResetAttributes();
         this.spinner.hide();       
   }
+
+  sms_log_list:any=[];
+
+  sms_log(content){
+    this.spinner.show();
+      this.acts.sms_log().subscribe(
+              res => {                          
+                  this.sms_log_list = res.data;
+                   this.confirmDialogReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });   
+                  this.spinner.hide(); 
+              }
+           );   
+  }
 }
