@@ -237,20 +237,69 @@ export class ApicancelticketsComponent implements OnInit {
     document.body.removeChild(selBox);
   }
   
+  // exportexcel(): void
+  // {
+    
+  //   /* pass here the table id */
+  //   let element = document.getElementById('export-section');
+  //   const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+  //   /* generate workbook and add the worksheet */
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+  //   /* save to file */  
+  //   XLSX.writeFile(wb, this.fileName);
+ 
+  // }
+
+ completExportdata: any ;
   exportexcel(): void
   {
-    
-    /* pass here the table id */
+    this.spinner.show();
+    this.completExportdata= '';
+
+        const data = {
+          bus_operator_id: this.cancelTicketsReportRecord.bus_operator_id,
+          payment_id:this.cancelTicketsReportRecord.payment_id,
+          pnr:this.cancelTicketsReportRecord.pnr,
+          date_type :this.cancelTicketsReportRecord.date_type,
+          rows_number:'all',
+          source_id:this.cancelTicketsReportRecord.source_id,
+          destination_id:this.cancelTicketsReportRecord.destination_id,
+          rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
+          rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
+          apiUser:this.cancelTicketsReportRecord.apiUser,         
+          USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')            
+    };
+
+        this.rs.cancelticketReport(data).subscribe(
+          res => {
+            this.completExportdata = res.data;
+            let length = this.completExportdata.data.data.length;
+            if(length != 0)
+            {
+              setTimeout(() => {
+                this.exportdata();
+              }, 3 * 1000);
+            }
+          }
+        );
+  }
+
+   exportdata(): void
+  {
     let element = document.getElementById('export-section');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
+
     /* save to file */  
     XLSX.writeFile(wb, this.fileName);
- 
+
+    this.spinner.hide();
   }
 
   refresh()
