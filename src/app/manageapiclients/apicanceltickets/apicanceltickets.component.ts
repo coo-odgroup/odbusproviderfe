@@ -79,6 +79,7 @@ export class ApicancelticketsComponent implements OnInit {
     // this.festivalFareRecord = {} as Festivalfare;
     this.cancelTicketForm = this.fb.group({
       pnr_no:[null],
+      percentage_deduct:[null],
       refundAmount:[null],
       reason:[null]
   });
@@ -103,12 +104,21 @@ export class ApicancelticketsComponent implements OnInit {
     this.search(); 
     this.loadServices();
   }
+   calculate()
+  {
+    this.cancelTicketForm.controls.refundAmount.setValue('');
+    let percentage = this.cancelTicketForm.value.percentage_deduct;
+    let totalFare  = this.pnrDetails[0].payable_amount - this.pnrDetails[0].client_comission ;    
+    this.cancelTicketForm.controls['refundAmount'].setValue(((totalFare/100)*(100-percentage)).toFixed(2));
+
+  }
 
   search_pnr()
   {
     this.spinner.show(); 
     this.user='';
     this.cancelTicketForm.controls.refundAmount.setValue('');
+    this.cancelTicketForm.controls.percentage_deduct.setValue('');
     this.cancelTicketForm.controls.reason.setValue('');
  
 
@@ -144,6 +154,7 @@ export class ApicancelticketsComponent implements OnInit {
     const data={
       id: this.pnrDetails[0].id , 
       pnr:this.cancelTicketForm.value.pnr_no,
+      percentage_deduct:this.cancelTicketForm.value.percentage_deduct,
       refund_amount:this.cancelTicketForm.value.refundAmount,
       reason:this.cancelTicketForm.value.reason,
       cancelled_by:localStorage.getItem('USERNAME'),

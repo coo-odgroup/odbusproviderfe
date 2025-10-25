@@ -67,6 +67,7 @@ export class CancelticketComponent implements OnInit {
     this.cancelTicketForm = this.fb.group({
         pnr_no:[null],
         percentage_deduct:[null],
+        full_refund:[false],
         refundAmount:[null], 
         reason:[null]
     });
@@ -126,6 +127,7 @@ export class CancelticketComponent implements OnInit {
     this.user='';
     this.cancelTicketForm.controls.refundAmount.setValue('');
     this.cancelTicketForm.controls.percentage_deduct.setValue('');
+    this.cancelTicketForm.controls.full_refund.setValue('');    
     this.cancelTicketForm.controls.reason.setValue('');
  
 
@@ -177,6 +179,7 @@ export class CancelticketComponent implements OnInit {
       email:this.pnrDetails[0].users.email,
       pnr:this.cancelTicketForm.value.pnr_no,
       percentage_deduct:this.cancelTicketForm.value.percentage_deduct,
+      full_refund:this.cancelTicketForm.value.full_refund,
       refund_amount:this.cancelTicketForm.value.refundAmount,
       reason:this.cancelTicketForm.value.reason,
       cancelled_by:localStorage.getItem('USERNAME'),
@@ -184,8 +187,8 @@ export class CancelticketComponent implements OnInit {
       status:2,
     };
 
-    // console.log(data);
-    // return;
+    console.log(data);
+   // return;
 
     this.acts.cancelTicket(data).subscribe(
       res =>{
@@ -242,7 +245,8 @@ export class CancelticketComponent implements OnInit {
       pnr_no:[null],
       percentage_deduct:[null],
       refundAmount:[null],
-      reason:[null]
+      reason:[null],
+      full_refund:[false],
   });
     this.ModalHeading = "Cancel Ticket By Admin End";
     this.ModalBtn = "Cancel Ticket"; 
