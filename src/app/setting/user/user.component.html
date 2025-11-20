@@ -69,7 +69,14 @@
                             <!-- <td><strong>{{page.bus_operator.operator_name}}</strong></td> -->
                             <td>{{page.name}}</td>
                             <td>{{page.email}}</td>
-                            <td>[{{page.bus_operator.organisation_name}}]<br>{{page.bus_operator.operator_name}}</td>
+                            <td>
+                                <ng-container *ngIf="page?.bus_operator; else blank">
+                                    [{{ page.bus_operator.organisation_name }}]<br>
+                                    {{ page.bus_operator.operator_name }}
+                                </ng-container>
+
+                                <ng-template #blank></ng-template>
+                            </td>
                             <td>{{page.phone}}</td>
 
                             <td>
