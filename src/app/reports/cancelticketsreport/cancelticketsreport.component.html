@@ -41,6 +41,7 @@
                                         <select class="form-control sml_input" formControlName="date_type">
                                             <option value='booking'>Booking Date</option>
                                             <option value='journey'>Journey Date</option>
+                                            <option value='cancel'>Cancel Date</option>                                            
                                         </select>
                                     </div>
                                 </div>
@@ -157,8 +158,8 @@
                         </thead>
                         <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
                             <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
-                                <td>{{ i+1 }}</td>
-                                <td>
+                                <td class="align-middle">{{ i+1 }}</td>
+                                <td class="align-middle">
                                     
                                     <span *ngIf="complete.app_type == 'WEB'">
                                         <strong>(W)&nbsp;</strong>
@@ -169,8 +170,8 @@
                                     <span *ngIf="complete.app_type == 'ANDROID'">
                                         <strong class="text-danger">(A)&nbsp;</strong>
                                     </span>
-                                    <strong>{{complete.pnr}}</strong> (DOB - {{complete.created_at | date:
-                                    'dd-MM-yyyy'}} )
+                                    <strong>{{complete.pnr}}</strong> ( DOB - {{complete.created_at | date:
+                                    'dd-MMM-yyyy'}} )
                                     <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'" class="text-danger" ><b>[ API pnr - {{complete.api_pnr}} ]</b></span>
                                     <br>
                                     <span > {{ complete.from_location[0].name }} </span> -
@@ -182,7 +183,7 @@
                                         style="color: darkgoldenrod;" *ngIf="complete.customer_payment">{{complete.customer_payment.razorpay_id}}</strong>
                                 </td>
                                 <td>
-                                    {{ complete.updated_at | date: 'dd-MM-yyyy' }}
+                                    {{ complete.updated_at | date: 'dd-MMM-yyyy' }}
                                 </td>
     
     
@@ -233,19 +234,18 @@
                                             {{dropping.name}}
                                         </span>
                                     </span> <br>
-                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
+                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MMM-yyyy'}}
                                 </td>
     
-                                <td>
+                                <td class="align-middle">
                                     <div *ngIf="complete.booking_detail?.length != 0">
-                                        <span *ngFor="let seat of complete.booking_detail;"> 
+                                        <span *ngFor="let seat of complete.booking_detail; let last = last"> 
                                             <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'" >
-                                                {{seat.seat_name}},
+                                                {{seat.seat_name}}<span *ngIf="!last">, </span>
                                             </span>   
                                             <span *ngIf="complete.origin != 'DOLPHIN' && complete.origin != 'MANTIS'" >
-                                                {{seat.bus_seats.seats.seatText}},
-                                            </span>
-                                            
+                                                {{seat.bus_seats.seats.seatText}}<span *ngIf="!last">, </span>
+                                            </span>                                            
                                         </span>
                                     </div>
     
@@ -280,7 +280,7 @@
                                     </button>
     
                                 </td> -->
-                                <td class="text-capitalize">
+                                <td class="text-capitalize align-middle">
                                     <ng-template #tipContent>
                                         <table>
                                             <tr class="text-center">
@@ -319,7 +319,7 @@
                                     </button>
                                 </td>                              
     
-                                <td>
+                                <td class="align-middle">
                                     <div *ngIf="complete.booking_detail?.length != 0">
                                         <span *ngIf="complete.origin != 'DOLPHIN' && complete.origin != 'MANTIS'" >
                                             <strong placement="top"
@@ -330,22 +330,25 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>    
+                                <td class="align-middle">    
                                     <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
                                 </td>
-                                <td>    
+                                <td class="align-middle">    
                                     <p>
                                         <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->    
                                     </p>
-                                    <h5>Rs {{ complete.refund_amount }} <br>
-                                        <span *ngIf="complete.user_id > 0" style="color:red;font-size: 12px;">(Refund to {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }})</span>
-                                        <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>                                    
-                                    </h5>    
+                                    <b>Rs {{ complete.refund_amount }} <br>
+                                        <span *ngIf="complete.user_id > 0" style="color:red;">
+                                            <small>Refund to {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }}</small>
+                                        </span>
+                                        <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);">
+                                            <small>Refund to Customer</small></span>                                    
+                                    </b>    
                                 </td>
-                                <td>
-                                    <h5> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </h5>    
+                                <td class="align-middle">
+                                    <b> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </b>    
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <b>{{ (complete.cancel_by == null) ? 'Customer' : complete.cancel_by  }}</b>
                                 </td>
                             </tr>
