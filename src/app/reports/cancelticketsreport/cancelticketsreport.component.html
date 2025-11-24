@@ -11,7 +11,7 @@
                                 <div class="col-md-3" *ngIf="role == '1'">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
-                                            <label>&nbsp; </label>
+                                            <label for="bus_operator_id">&nbsp; </label>
                                             <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                                 placeholder="Select Operator" formControlName="bus_operator_id"
                                                 [clearable]="false">
@@ -23,12 +23,12 @@
                                 <div class="col-md-4">
                                     <div class="row">  
                                         <div class="form-group col-6">
-                                            <label>From Date</label>
+                                            <label for="">From Date</label>
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeFromDate" />  
                                         </div>
                                         <div class="form-group col-6">
-                                            <label>To Date</label>
+                                            <label for="rangeToDate">To Date</label>
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeToDate" />                                     
                                         </div>
@@ -37,7 +37,7 @@
 
                                 <div class="col-md-3">
                                     <div class="dropdown">
-                                        <label>Please Select</label>
+                                        <label for="date_type">Please Select</label>
                                         <select class="form-control sml_input" formControlName="date_type">
                                             <option value='booking'>Booking Date</option>
                                             <option value='journey'>Journey Date</option>
@@ -48,7 +48,7 @@
 
                                 <div class="col-md-2" *ngIf="role == '1'">
                                     <div class="form-group">
-                                        <label>&nbsp; </label>
+                                        <label for="payment_id">&nbsp; </label>
                                         <input type="text" class="form-control sml_input" placeholder="Payment/Order Id"
                                             required formControlName="payment_id" />
                                     </div>
@@ -59,7 +59,7 @@
                                         <div class="col-6">
                                             <div class="form-group ">
                                                 <div class="col-sm-12">
-                                                    <label>Source</label>
+                                                    <label for="source_id">Source</label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Source" formControlName="source_id"
                                                         [clearable]="false" (change)="findSource($event)">
@@ -72,7 +72,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="col-sm-12">
-                                                    <label>Destination </label>
+                                                    <label for="destination_id">Destination </label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Destination"
                                                         formControlName="destination_id" [clearable]="false"
@@ -86,14 +86,14 @@
                                 </div>
                                 <div class="col-md-2">                             
                                     <div class="form-group">
-                                        <label>&nbsp; </label>
+                                        <label for="pnr">&nbsp; </label>
                                         <input type="text" class="form-control sml_input" placeholder="Enter pnr"
                                             required formControlName="pnr" />
                                     </div>
                                 </div>
                                 <div class="col-md-1"  *ngIf="role == '1'">
                                     <div class="form-group">
-                                        <label>&nbsp; </label>
+                                        <label for="apiUser">&nbsp; </label>
                                         <ng-select [items]="apiProvider" bindLabel="name" bindValue="name"
                                         placeholder="Api Provider"
                                         formControlName="apiUser" [clearable]="false">
@@ -247,39 +247,9 @@
                                                 {{seat.bus_seats.seats.seatText}}<span *ngIf="!last">, </span>
                                             </span>                                            
                                         </span>
-                                    </div>
-    
+                                    </div>    
                                 </td>
-                                <!-- <td class="text-capitalize">
-                                    <ng-template #tipContent>
-    
-                                        <table>
-                                            <tr>
-                                                <td>Phone-</td>
-                                                <td><b>{{complete.users.phone}}</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email-</td>
-                                                <td>{{complete.users.email}}</td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
-    
-                                    <strong [ngbTooltip]="tipContent">
-                                        {{complete.users.name}}
-                                    </strong> <br>
-    
-                                    <button class="btn btn-sm btn-info text-light  mr-1 ml-1 mt-2" placement="bottom"
-                                        ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </button>
-    
-                                    <button class="btn btn-sm btn-danger text-light mt-2" placement="bottom"
-                                        ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-    
-                                </td> -->
+                              
                                 <td class="text-capitalize align-middle">
                                     <ng-template #tipContent>
                                         <table>
@@ -331,13 +301,11 @@
                                     </div>
                                 </td>
                                 <td class="align-middle">    
-                                    <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
+                                    <b>{{complete.total_fare}}</b>
                                 </td>
                                 <td class="align-middle">    
-                                    <p>
-                                        <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->    
-                                    </p>
-                                    <b>Rs {{ complete.refund_amount }} <br>
+                                 
+                                    <b>{{ complete.refund_amount }} <br>
                                         <span *ngIf="complete.user_id > 0" style="color:red;">
                                             <small>Refund to {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }}</small>
                                         </span>
