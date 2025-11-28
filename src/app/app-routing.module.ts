@@ -108,6 +108,10 @@ const routes: Routes = [
       {
         path: 'manageapiclients',
         loadChildren: () => import('./manageapiclients/manageapiclients.module').then(module =>module.ManageApiClientsModule)
+      },
+      {
+        path: 'managescheduler',
+        loadChildren: () => import('./managescheduler/managescheduler.module').then(module =>module.ManageSchedulerModule)
       }
     ]
   }

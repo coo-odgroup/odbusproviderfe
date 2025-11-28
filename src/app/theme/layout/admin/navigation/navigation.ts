@@ -1176,6 +1176,20 @@ const NavigationItems = [
           },                
         ]
       },
+      {
+        title: 'Manage Scheduler',
+        type: 'collapse',
+        icon: 'feather icon-cloud',
+        children: [
+          {
+            id: 'customercancelrefund',
+            title: 'Customer Cancel Refund',
+            type: 'item',
+            icon:'feather icon-pie-chart',
+            url: 'managescheduler/customercancelrefund'
+          }
+        ]
+      },
 
     ]
   }
