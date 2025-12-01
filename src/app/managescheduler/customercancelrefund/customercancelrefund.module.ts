@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPrintModule } from 'ngx-print';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomercancelrefundComponent } from './customercancelrefund.component';
+import { CustomercancelrefundRoutingModule } from './customercancelrefund-routing.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { CustomercancelrefundComponent } from './customercancelrefund.component'
     NgSelectModule,
     NgxPrintModule,
     NgxSpinnerModule,
-    NgbModule
+    NgbModule,
+    CustomercancelrefundRoutingModule
   ],
   declarations: [CustomercancelrefundComponent],
   providers: [NotificationService], schemas: [CUSTOM_ELEMENTS_SCHEMA],
