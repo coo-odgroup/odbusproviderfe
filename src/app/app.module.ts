@@ -21,14 +21,20 @@ import { ConfigurationComponent } from './theme/layout/admin/configuration/confi
 import { ToggleFullScreenDirective } from './theme/shared/full-screen/toggle-full-screen';
 /* Menu Items */
 import { NavigationItem } from './theme/layout/admin/navigation/navigation';
-import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbButtonsModule,
+  NgbDropdownModule,
+  NgbTabsetModule,
+  NgbTooltipModule,
+  NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgSelectModule} from '@ng-select/ng-select';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
-
+import { PushnotificationsComponent } from './managepushnotifications/pushnotifications/pushnotifications.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +51,7 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NavSearchComponent,
     NavRightComponent,
     ConfigurationComponent,
-    ToggleFullScreenDirective
+    ToggleFullScreenDirective,
   ],
   imports: [
     BrowserModule,
@@ -61,13 +67,18 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},NavigationItem, Routeguard,{
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  },],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    NavigationItem,
+    Routeguard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

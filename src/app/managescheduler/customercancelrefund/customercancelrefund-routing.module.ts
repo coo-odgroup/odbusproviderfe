@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {CustomercancelrefundComponent } from './customercancelrefund.component';
+import { CustomercancelrefundComponent } from './customercancelrefund.component';
 const routes: Routes = [
   {
     path: '',
-    component: CustomercancelrefundComponent
-  }
+    component: CustomercancelrefundComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class CustomercancelrefundRoutingModule { }
+export class CustomercancelrefundRoutingModule {}
