@@ -34,13 +34,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
-<<<<<<< HEAD
 import { TopRouteComponent } from './chart/top-route/top-route.component';
 import { HighchartsChartModule } from 'highcharts-angular';
-
-=======
 import { PushnotificationsComponent } from './managepushnotifications/pushnotifications/pushnotifications.component';
->>>>>>> 866f2aef8022627ed0ea762c2f6614c52a7678b5
 
 @NgModule({
   declarations: [
@@ -58,10 +54,7 @@ import { PushnotificationsComponent } from './managepushnotifications/pushnotifi
     NavRightComponent,
     ConfigurationComponent,
     ToggleFullScreenDirective,
-<<<<<<< HEAD
     TopRouteComponent
-=======
->>>>>>> 866f2aef8022627ed0ea762c2f6614c52a7678b5
   ],
   imports: [
     HighchartsChartModule,

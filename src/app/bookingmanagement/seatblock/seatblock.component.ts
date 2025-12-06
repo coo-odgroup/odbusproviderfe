@@ -785,16 +785,52 @@ export class SeatblockComponent implements OnInit {
     }
   }
 
-  addBlockseat() {
-    this.spinner.show();
+  get dateLists(): FormArray {
+  return this.seatBlockForm.get('dateLists') as FormArray;
+}
 
-    this.checkedDate;
-    let i=0;
-    for(let checked of this.seatBlockForm.value.dateLists){
-      if(checked.datechecked==true){
-        this.checkedDate[i] = checked.entryDates;
-        i++;
-      } 
+  addBlockseat() {
+
+    this.checkedDate = [];
+
+    this.dateLists.controls.forEach((row: any, i: number) => {
+      if (row.value.datechecked === true) {
+        this.checkedDate.push(row.value.entryDates);
+      }
+    });
+
+  
+    const checkedSeats: any[] = [];
+
+    this.seatBlockForm.value.bus_seat_layout_data.forEach((block: { lowerBerth: any[]; upperBerth: any[]; }) => {
+
+      // Check lowerBerth
+      block.lowerBerth
+        .filter(seat => seat.seatChecked === true)
+        .forEach(seat => checkedSeats.push(seat));
+
+      // Check upperBerth
+      block.upperBerth
+        .filter(seat => seat.seatChecked === true)
+        .forEach(seat => checkedSeats.push(seat));
+
+    });
+
+    this.spinner.show();
+    this.onSelectAll();
+
+    if(checkedSeats.length>6)
+    {
+      this.notificationService.addToast({ title: 'Error', msg: 'Please Select Max 6 Seats ', type: 'error' });
+      this.spinner.hide();
+      return;
+    }
+
+    if(this.checkedDate.length>3)
+    {
+      this.notificationService.addToast({ title: 'Error', msg: 'Please Select Max 3 Dates', type: 'error' });
+      this.spinner.hide();
+      return;
     }
 
     

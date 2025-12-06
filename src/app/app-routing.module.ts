@@ -152,17 +152,6 @@ const routes: Routes = [
       },
       {
         path: 'manageapiclients',
-<<<<<<< HEAD
-        loadChildren: () => import('./manageapiclients/manageapiclients.module').then(module =>module.ManageApiClientsModule)
-      },
-      {
-        path:"top-route-chart",
-        component:TopRouteComponent
-      }
-    ]
-  },
-  
-=======
         loadChildren: () =>
           import('./manageapiclients/manageapiclients.module').then(
             (module) => module.ManageApiClientsModule
@@ -184,7 +173,6 @@ const routes: Routes = [
       },
     ],
   },
->>>>>>> 866f2aef8022627ed0ea762c2f6614c52a7678b5
 ];
 
 @NgModule({
