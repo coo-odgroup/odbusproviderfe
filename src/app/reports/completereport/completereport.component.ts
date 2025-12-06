@@ -168,6 +168,7 @@ export class CompletereportComponent implements OnInit {
       this.rs.completepaginationReport(pageurl,data).subscribe(
         res => {
           this.completedata= res.data;
+          console.log(this.completedata)
           this.spinner.hide();
         }
       );

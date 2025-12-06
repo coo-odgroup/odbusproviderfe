@@ -4,6 +4,7 @@ import { AdminComponent } from './theme/layout/admin/admin.component';
 import { LoginComponent } from './theme/layout/admin/login/login.component';
 import { AuthComponent } from './theme/layout/auth/auth.component';
 import { Routeguard } from './helpers/routeguard';
+import { TopRouteComponent } from './chart/top-route/top-route.component';
 
 const routes: Routes = [
   {
@@ -151,6 +152,17 @@ const routes: Routes = [
       },
       {
         path: 'manageapiclients',
+<<<<<<< HEAD
+        loadChildren: () => import('./manageapiclients/manageapiclients.module').then(module =>module.ManageApiClientsModule)
+      },
+      {
+        path:"top-route-chart",
+        component:TopRouteComponent
+      }
+    ]
+  },
+  
+=======
         loadChildren: () =>
           import('./manageapiclients/manageapiclients.module').then(
             (module) => module.ManageApiClientsModule
@@ -172,6 +184,7 @@ const routes: Routes = [
       },
     ],
   },
+>>>>>>> 866f2aef8022627ed0ea762c2f6614c52a7678b5
 ];
 
 @NgModule({
