@@ -32,6 +32,7 @@
                                         <select class="form-control sml_input" formControlName="date_type">
                                             <option value='journey'>Journey Date</option>
                                             <option value='booking'>Booking Date</option>
+                                            <option value='cancel'>Cancel Date</option>           
                                         </select>
                                     </div>
 
@@ -94,10 +95,11 @@
             <div class="table-responsive " id="print-section">
                 <div class=" tableFixHead">
                     <table class="table table-striped  header-fixed">
-                        <thead>
+                        <thead *ngIf="completedata?.data.data?.length != 0">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Ticket Details</th>
+                                <th scope="col">Cancel Date</th>
                                 <th scope="col">Bus Details </th>
                                 <th scope="col">User Details </th>
                                 <th scope="col">Seat No</th>
@@ -113,10 +115,10 @@
 
                             </tr>
                         </thead>
-                        <tbody *ngIf="completedata?.length != 0" style="height: 100px !important; overflow: scroll; ">
+                        <tbody *ngIf="completedata?.data.data?.length != 0" style="height: 100px !important; overflow: scroll; ">
                             <tr *ngFor="let complete of completedata?.data.data; let i = index">
-                                <td>{{ i+1 }}</td>
-                                <td>
+                                <td class="align-middle">{{ i+1 }}</td>
+                                <td class="align-middle">
                                     <span *ngIf="complete.app_type == 'WEB'">
                                         <strong>(W)&nbsp;</strong>
                                     </span>
@@ -127,7 +129,7 @@
                                         <strong class="text-danger">(Agent)&nbsp;</strong>
                                     </span>
                                     <strong>{{complete.pnr}}</strong> (DOB - {{complete.created_at | date:
-                                    'dd-MM-yyyy'}} )
+                                    'dd-MMM-yyyy'}} )
 
                                     <br>
                                     <span *ngFor="let frlocation of complete.from_location">
@@ -142,9 +144,10 @@
 
 
                                 </td>
-
-
-                                <td>
+                                <td class="align-middle">
+                                    {{ complete.updated_at | date: 'dd-MMM-yyyy' }}
+                                </td>
+                                <td class="align-middle">
                                     <span *ngIf="complete.origin != 'DOLPHIN' ">
                                         <strong>{{ complete.bus.name }}</strong><br>
                                     {{ complete.bus.bus_number }}
@@ -189,11 +192,11 @@
                                             {{dropping.name}}
                                         </span>
                                     </span> <br>
-                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
+                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MMM-yyyy'}}
                                 </td>
 
 
-                                <td class="text-capitalize">
+                                <td class="text-capitalize align-middle">
                                     <ng-template #tipContent>
                                         <table>
                                             <tr class="text-center">
@@ -233,13 +236,13 @@
 
                                 </td>
                     
-                                <td *ngIf="complete.origin != 'DOLPHIN' " [innerHTML]="DisplayAllSeat(complete.booking_detail)"></td>
-                                <td *ngIf="complete.origin == 'DOLPHIN' ">
+                                <td class="align-middle" *ngIf="complete.origin != 'DOLPHIN' " [innerHTML]="DisplayAllSeat(complete.booking_detail)"></td>
+                                <td class="align-middle" *ngIf="complete.origin == 'DOLPHIN' ">
                                     <span *ngFor = 'let seat of complete.booking_detail'>
                                         {{seat.seat_name}} <br>
                                     </span> 
                                 </td>
-                                <td class="text-capitalize">
+                                <td class="text-capitalize align-middle">
                                     <ng-template #tipContent>
                                         <table>
                                             <tr class="text-center">
@@ -269,19 +272,22 @@
                                         {{complete.user.email}}
                                     </strong> 
                                 </td>
-                                <td>
-                                    <span *ngIf="complete.origin != 'DOLPHIN' ">
+                                <td class="align-middle">
+                                    <ng-container  *ngIf="complete.origin != 'DOLPHIN'; else noSeats">
                                         <strong placement="top"
                                         ngbTooltip="Seat Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}</strong>
                                     /
                                     <strong placement="top"
                                         ngbTooltip="Sleeper Fare">{{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}</strong>
-                                    </span>
+                                    </ng-container>
+                                    <ng-template #noSeats>
+                                        --
+                                    </ng-template>
                                 </td>
                                 <!-- <td>
                                     <i class="fas fa-rupee-sign"></i> <b>{{complete.owner_fare}}</b>
                                 </td> -->
-                                <td>
+                                <td class="align-middle">
                                     <!-- <ng-template #tipContent2>
 
                                         <table>
@@ -305,12 +311,12 @@
                                         <i class="fas fa-rupee-sign"></i> <b>{{complete.odbus_charges}}</b>
                                     </p>
                                 </td> -->
-                                <td>
+                                <td class="align-middle">
                                     <p>
                                         <i class="fas fa-rupee-sign"></i> <b>{{complete.agent_commission }}</b>
                                     </p>
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <p>
                         
                                         <i class="fas fa-rupee-sign"></i> <b>{{complete.refund_amount }}</b>
@@ -322,9 +328,9 @@
                                 </td> -->
                             </tr>
                         </tbody>
-                        <tbody *ngIf="completedata?.length == 0">
+                        <tbody *ngIf="completedata?.data.data?.length == 0">
                             <tr>
-                                <td colspan="8" class="no-data-available">No data!</td>
+                                <td colspan="9" class="no-data-available align-middle text-center">No data Found!</td>
                             </tr>
                         <tbody>
                     </table>

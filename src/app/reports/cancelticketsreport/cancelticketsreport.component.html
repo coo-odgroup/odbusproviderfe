@@ -11,7 +11,7 @@
                                 <div class="col-md-3" *ngIf="role == '1'">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
-                                            <label>&nbsp; </label>
+                                            <label for="bus_operator_id">&nbsp; </label>
                                             <ng-select [items]="busoperators" bindLabel="operatorData" bindValue="id"
                                                 placeholder="Select Operator" formControlName="bus_operator_id"
                                                 [clearable]="false">
@@ -23,12 +23,12 @@
                                 <div class="col-md-4">
                                     <div class="row">  
                                         <div class="form-group col-6">
-                                            <label>From Date</label>
+                                            <label for="">From Date</label>
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeFromDate" />  
                                         </div>
                                         <div class="form-group col-6">
-                                            <label>To Date</label>
+                                            <label for="rangeToDate">To Date</label>
                                                 <input type="date" class="form-control sml_input" placeholder="Enter pnr"
                                                 required formControlName="rangeToDate" />                                     
                                         </div>
@@ -37,17 +37,18 @@
 
                                 <div class="col-md-3">
                                     <div class="dropdown">
-                                        <label>Please Select</label>
+                                        <label for="date_type">Please Select</label>
                                         <select class="form-control sml_input" formControlName="date_type">
                                             <option value='booking'>Booking Date</option>
                                             <option value='journey'>Journey Date</option>
+                                            <option value='cancel'>Cancel Date</option>                                            
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2" *ngIf="role == '1'">
                                     <div class="form-group">
-                                        <label>&nbsp; </label>
+                                        <label for="payment_id">&nbsp; </label>
                                         <input type="text" class="form-control sml_input" placeholder="Payment/Order Id"
                                             required formControlName="payment_id" />
                                     </div>
@@ -58,7 +59,7 @@
                                         <div class="col-6">
                                             <div class="form-group ">
                                                 <div class="col-sm-12">
-                                                    <label>Source</label>
+                                                    <label for="source_id">Source</label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Source" formControlName="source_id"
                                                         [clearable]="false" (change)="findSource($event)">
@@ -71,7 +72,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="col-sm-12">
-                                                    <label>Destination </label>
+                                                    <label for="destination_id">Destination </label>
                                                     <ng-select [items]="locations" bindLabel="name" bindValue="id"
                                                         placeholder="Select Destination"
                                                         formControlName="destination_id" [clearable]="false"
@@ -85,14 +86,14 @@
                                 </div>
                                 <div class="col-md-2">                             
                                     <div class="form-group">
-                                        <label>&nbsp; </label>
+                                        <label for="pnr">&nbsp; </label>
                                         <input type="text" class="form-control sml_input" placeholder="Enter pnr"
                                             required formControlName="pnr" />
                                     </div>
                                 </div>
                                 <div class="col-md-1"  *ngIf="role == '1'">
                                     <div class="form-group">
-                                        <label>&nbsp; </label>
+                                        <label for="apiUser">&nbsp; </label>
                                         <ng-select [items]="apiProvider" bindLabel="name" bindValue="name"
                                         placeholder="Api Provider"
                                         formControlName="apiUser" [clearable]="false">
@@ -157,8 +158,8 @@
                         </thead>
                         <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
                             <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
-                                <td>{{ i+1 }}</td>
-                                <td>
+                                <td class="align-middle">{{ i+1 }}</td>
+                                <td class="align-middle">
                                     
                                     <span *ngIf="complete.app_type == 'WEB'">
                                         <strong>(W)&nbsp;</strong>
@@ -169,8 +170,8 @@
                                     <span *ngIf="complete.app_type == 'ANDROID'">
                                         <strong class="text-danger">(A)&nbsp;</strong>
                                     </span>
-                                    <strong>{{complete.pnr}}</strong> (DOB - {{complete.created_at | date:
-                                    'dd-MM-yyyy'}} )
+                                    <strong>{{complete.pnr}}</strong> ( DOB - {{complete.created_at | date:
+                                    'dd-MMM-yyyy'}} )
                                     <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'" class="text-danger" ><b>[ API pnr - {{complete.api_pnr}} ]</b></span>
                                     <br>
                                     <span > {{ complete.from_location[0].name }} </span> -
@@ -182,7 +183,7 @@
                                         style="color: darkgoldenrod;" *ngIf="complete.customer_payment">{{complete.customer_payment.razorpay_id}}</strong>
                                 </td>
                                 <td>
-                                    {{ complete.updated_at | date: 'dd-MM-yyyy' }}
+                                    {{ complete.updated_at | date: 'dd-MMM-yyyy' }}
                                 </td>
     
     
@@ -233,54 +234,23 @@
                                             {{dropping.name}}
                                         </span>
                                     </span> <br>
-                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
+                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MMM-yyyy'}}
                                 </td>
     
-                                <td>
+                                <td class="align-middle">
                                     <div *ngIf="complete.booking_detail?.length != 0">
-                                        <span *ngFor="let seat of complete.booking_detail;"> 
+                                        <span *ngFor="let seat of complete.booking_detail; let last = last"> 
                                             <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'" >
-                                                {{seat.seat_name}},
+                                                {{seat.seat_name}}<span *ngIf="!last">, </span>
                                             </span>   
                                             <span *ngIf="complete.origin != 'DOLPHIN' && complete.origin != 'MANTIS'" >
-                                                {{seat.bus_seats.seats.seatText}},
-                                            </span>
-                                            
+                                                {{seat.bus_seats.seats.seatText}}<span *ngIf="!last">, </span>
+                                            </span>                                            
                                         </span>
-                                    </div>
-    
+                                    </div>    
                                 </td>
-                                <!-- <td class="text-capitalize">
-                                    <ng-template #tipContent>
-    
-                                        <table>
-                                            <tr>
-                                                <td>Phone-</td>
-                                                <td><b>{{complete.users.phone}}</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email-</td>
-                                                <td>{{complete.users.email}}</td>
-                                            </tr>
-                                        </table>
-                                    </ng-template>
-    
-                                    <strong [ngbTooltip]="tipContent">
-                                        {{complete.users.name}}
-                                    </strong> <br>
-    
-                                    <button class="btn btn-sm btn-info text-light  mr-1 ml-1 mt-2" placement="bottom"
-                                        ngbTooltip="Click to Copy Phone Number" (click)="copyMessage(complete.users.phone)">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </button>
-    
-                                    <button class="btn btn-sm btn-danger text-light mt-2" placement="bottom"
-                                        ngbTooltip=" Click to Copy Email" (click)="copyMessage(complete.users.email)">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-    
-                                </td> -->
-                                <td class="text-capitalize">
+                              
+                                <td class="text-capitalize align-middle">
                                     <ng-template #tipContent>
                                         <table>
                                             <tr class="text-center">
@@ -319,7 +289,7 @@
                                     </button>
                                 </td>                              
     
-                                <td>
+                                <td class="align-middle">
                                     <div *ngIf="complete.booking_detail?.length != 0">
                                         <span *ngIf="complete.origin != 'DOLPHIN' && complete.origin != 'MANTIS'" >
                                             <strong placement="top"
@@ -330,22 +300,23 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>    
-                                    <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
+                                <td class="align-middle">    
+                                    <b>{{complete.total_fare}}</b>
                                 </td>
-                                <td>    
-                                    <p>
-                                        <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->    
-                                    </p>
-                                    <h5>Rs {{ complete.refund_amount }} <br>
-                                        <span *ngIf="complete.user_id > 0" style="color:red;font-size: 12px;">(Refund to {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }})</span>
-                                        <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>                                    
-                                    </h5>    
+                                <td class="align-middle">    
+                                 
+                                    <b>{{ complete.refund_amount }} <br>
+                                        <span *ngIf="complete.user_id > 0" style="color:red;">
+                                            <small>Refund to {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }}</small>
+                                        </span>
+                                        <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);">
+                                            <small>Refund to Customer</small></span>                                    
+                                    </b>    
                                 </td>
-                                <td>
-                                    <h5> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </h5>    
+                                <td class="align-middle">
+                                    <b> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </b>    
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <b>{{ (complete.cancel_by == null) ? 'Customer' : complete.cancel_by  }}</b>
                                 </td>
                             </tr>

@@ -10,6 +10,7 @@ import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-boo
 import {Constants} from '../../constant/constant' ;
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-cancelticketsreport',
@@ -49,7 +50,8 @@ export class CancelticketsreportComponent implements OnInit {
      private rs:ReportsService,
      private busOperatorService: BusOperatorService ,
      private calendar: NgbCalendar, 
-     public formatter: NgbDateParserFormatter 
+     public formatter: NgbDateParserFormatter,
+     private notificationService: NotificationService
     ) {
       this.fromDate = calendar.getToday();
       this.toDate = calendar.getToday();
@@ -71,7 +73,45 @@ export class CancelticketsreportComponent implements OnInit {
       rangeToDate :[null],
       apiUser:[null]
 
-    })  
+    }) 
+    // Validate date range: if To date is earlier than From date, reset To date and show error
+    const fromCtrl = this.searchFrom.get('rangeFromDate');
+    const toCtrl = this.searchFrom.get('rangeToDate');
+
+    if (fromCtrl && toCtrl) {
+      fromCtrl.valueChanges.subscribe((fromVal: any) => {
+        try {
+          if (toCtrl.value && fromVal) {
+            const fromDate = new Date(fromVal);
+            const toDate = new Date(toCtrl.value);
+            if (fromDate > toDate) {
+              // Reset To date and notify user
+              toCtrl.setValue(null, { emitEvent: false });
+              this.notificationService.addToast({ title: 'Validation', msg: 'From date cannot be later than To date.', type: 'error' });
+            }
+          }
+        } catch (e) {
+          // ignore parse errors
+        }
+      });
+
+      toCtrl.valueChanges.subscribe((toVal: any) => {
+        try {
+          if (toVal && fromCtrl.value) {
+            const fromDate = new Date(fromCtrl.value);
+            const toDate = new Date(toVal);
+            if (toDate < fromDate) {
+              // Reset To date and notify user
+              toCtrl.setValue(null, { emitEvent: false });
+              this.notificationService.addToast({ title: 'Validation', msg: 'To date cannot be earlier than From date.', type: 'error' });
+            }
+          }
+        } catch (e) {
+          // ignore parse errors
+        }
+      });
+    } 
+
     this.search(); 
     this.loadServices();
   }

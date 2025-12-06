@@ -50,6 +50,7 @@
                                         <select class="form-control sml_input" formControlName="date_type">
                                             <option value='booking'>Booking Date</option>
                                             <option value='journey'>Journey Date</option>
+                                            <option value='cancel'>Cancel Date</option>  
                                         </select>
                                     </div>
                                 </div>
@@ -152,8 +153,8 @@
                         </thead>
                         <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
                             <tr *ngFor="let complete of cancelticketdata?.data.data; let i = index">
-                                <td>{{ i+1 }}</td>
-                                <td>                                    
+                                <td class="align-middle">{{ i+1 }}</td>
+                                <td class="align-middle">                                    
                                     <span *ngIf="complete.app_type == 'WEB'">
                                         <strong>(W)&nbsp;</strong>
                                     </span>
@@ -164,7 +165,7 @@
                                         <strong class="text-danger">(A)&nbsp;</strong>
                                     </span>
                                     <strong>{{complete.pnr}}</strong> (DOB - {{complete.created_at | date:
-                                    'dd-MM-yyyy'}} )
+                                    'dd-MMM-yyyy'}} )
                                     <br>
                                     <span > {{ complete.from_location[0].name }} </span> -
                                     ( <b>{{complete.boarding_point}}, {{complete.boarding_time }} </b> )
@@ -178,11 +179,11 @@
                                     <span *ngIf=" complete.cancel_reason!= null" class="text-danger"><b>{{ complete.cancel_reason }}</b></span>
                                 </td>
 
-                                <td>
-                                    {{ complete.updated_at | date: 'dd-MM-yyyy' }}
+                                <td class="align-middle">
+                                    {{ complete.updated_at | date: 'dd-MMM-yyyy' }}
                                 </td>    
     
-                                <td>
+                                <td class="align-middle">
                                     <span *ngIf="complete.origin == 'DOLPHIN' ">
                                         <strong>{{ complete.bus_name }}</strong><br>
                                         {{ complete.bus_number }}
@@ -226,19 +227,18 @@
                                             {{dropping.name}}
                                         </span>
                                     </span> <br>
-                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MM-yyyy'}}
+                                    <strong>DOJ</strong> -{{complete.journey_dt | date: 'dd-MMM-yyyy'}}
                                 </td>
     
-                                <td>
+                                <td class="align-middle">
                                     <div *ngIf="complete.booking_detail?.length != 0">
-                                        <span *ngFor="let seat of complete.booking_detail;"> 
+                                        <span *ngFor="let seat of complete.booking_detail; let last = last"> 
                                             <span *ngIf="complete.origin != 'DOLPHIN' ">
-                                                {{seat.bus_seats.seats.seatText}},
+                                                {{seat.bus_seats.seats.seatText}}<span *ngIf="!last">, </span>
                                             </span>   
                                             <span *ngIf="complete.origin == 'DOLPHIN' ">
-                                                {{seat.seat_name}},
-                                            </span>   
-                                            
+                                                {{seat.seat_name}}<span *ngIf="!last">, </span>
+                                            </span>                                        
                                         </span>
                                     </div>
     
@@ -273,17 +273,17 @@
                                     </button>
     
                                 </td> -->
-                                <td class="text-capitalize">
+                                <td class="text-capitalize align-middle">
                                     <ng-template #tipContent>
                                         <table>
                                             <tr class="text-center">
                                                 <h5 class="text-danger">Passanger Details</h5>
                                             </tr>
                                             <tr>
-                                                <td>Name</td>
-                                                <td>Gender</td>
-                                                <td>Seat No</td>
-                                                <td>Age</td>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Seat No</th>
+                                                <th>Age</th>
                                             </tr>
                                             <tr *ngFor="let passanger of complete.booking_detail;">
                                                 <td><b>{{passanger.passenger_name}}</b></td>
@@ -317,7 +317,7 @@
                                     </button>
                                 </td>                             
     
-                                <td>
+                                <td class="align-middle">
                                     <div *ngIf="complete.booking_detail?.length != 0">
                                         <span *ngIf="complete.origin != 'DOLPHIN' ">
                                             <strong placement="top"
@@ -328,23 +328,21 @@
                                         </span>                                        
                                     </div>
                                 </td>
-                                <td>    
-                                    <i class="fas fa-rupee-sign"></i> &nbsp;<b>{{complete.total_fare}}</b>
+                                <td class="align-middle">    
+                                    <b>{{complete.total_fare}}</b>
                                 </td>
-                                <td>    
-                                    <p>
-                                        <!-- <i class="fas fa-rupee-sign"></i> &nbsp; <b>{{complete.total_fare}}</b> -->    
-                                    </p>
-                                    <h5>Rs {{ complete.refund_amount }} <br>
+                                <td class="align-middle">    
+                                  
+                                    <b>{{ complete.refund_amount }}</b>
 
                                         <!-- <span *ngIf="complete.user_id > 0" style="color:red;font-size: 12px;">(Refund to Agent)</span>
                                         <span *ngIf="complete.user_id ==0" style="color:rgb(77, 189, 77);font-size: 12px;">(Refund to Customer)</span>                                     -->
-                                    </h5>    
+                                    
                                 </td>
-                                <td>
-                                    <h5> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </h5>    
+                                <td class="align-middle">
+                                    <b> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </b>    
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <b>{{complete.created_by}}</b>
                                 </td>
                             </tr>
