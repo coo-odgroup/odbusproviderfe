@@ -4,6 +4,7 @@ import { AdminComponent } from './theme/layout/admin/admin.component';
 import { LoginComponent  } from './theme/layout/admin/login/login.component';
 import {AuthComponent} from './theme/layout/auth/auth.component';
 import { Routeguard } from './helpers/routeguard';
+import { TopRouteComponent } from './chart/top-route/top-route.component';
 
 const routes: Routes = [
   {
@@ -108,9 +109,14 @@ const routes: Routes = [
       {
         path: 'manageapiclients',
         loadChildren: () => import('./manageapiclients/manageapiclients.module').then(module =>module.ManageApiClientsModule)
+      },
+      {
+        path:"top-route-chart",
+        component:TopRouteComponent
       }
     ]
-  }
+  },
+  
 ];
 
 @NgModule({

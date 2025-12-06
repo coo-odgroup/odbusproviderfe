@@ -28,6 +28,8 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
+import { TopRouteComponent } from './chart/top-route/top-route.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 
 @NgModule({
@@ -45,9 +47,11 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NavSearchComponent,
     NavRightComponent,
     ConfigurationComponent,
-    ToggleFullScreenDirective
+    ToggleFullScreenDirective,
+    TopRouteComponent
   ],
   imports: [
+    HighchartsChartModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
