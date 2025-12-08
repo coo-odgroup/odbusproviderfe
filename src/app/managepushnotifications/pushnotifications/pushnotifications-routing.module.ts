@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CustomercancelrefundComponent } from './customercancelrefund.component';
+import { PushnotificationsComponent } from './pushnotifications.component';
 const routes: Routes = [
   {
     path: '',
-    component: CustomercancelrefundComponent,
+    component: PushnotificationsComponent,
   },
 ];
 
@@ -12,4 +12,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CustomercancelrefundRoutingModule {}
+export class PushnotificationsRoutingModule {}

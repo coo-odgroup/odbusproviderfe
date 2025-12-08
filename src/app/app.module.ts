@@ -19,15 +19,23 @@ import { NavSearchComponent } from './theme/layout/admin/nav-bar/nav-left/nav-se
 import { NavRightComponent } from './theme/layout/admin/nav-bar/nav-right/nav-right.component';
 import { ConfigurationComponent } from './theme/layout/admin/configuration/configuration.component';
 import { ToggleFullScreenDirective } from './theme/shared/full-screen/toggle-full-screen';
-/* Menu Items */
 import { NavigationItem } from './theme/layout/admin/navigation/navigation';
-import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbButtonsModule,
+  NgbDropdownModule,
+  NgbTabsetModule,
+  NgbTooltipModule,
+  NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgSelectModule} from '@ng-select/ng-select';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
+import { TopRouteComponent } from './chart/top-route/top-route.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -45,10 +53,13 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NavSearchComponent,
     NavRightComponent,
     ConfigurationComponent,
-    ToggleFullScreenDirective
+    ToggleFullScreenDirective,
+    TopRouteComponent
   ],
   imports: [
+    HighchartsChartModule,
     BrowserModule,
+      RouterModule,           
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
@@ -63,11 +74,16 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     ReactiveFormsModule,
     ToastrModule.forRoot()
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},NavigationItem, Routeguard,{
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  },],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    NavigationItem,
+    Routeguard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
