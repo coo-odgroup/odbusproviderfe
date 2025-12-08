@@ -214,37 +214,33 @@
             <div class="row">
               <div class="col-md-6">
                 <label>Notification Type:</label>
- <select
-  formControlName="type_id"
-  class="form-control"
-  [attr.disabled]="isEditMode ? true : null"
-  (click)="onDropdownAttempt()"
-  (change)="onTypeChange($event)"
->
-  <option value="">Select Type</option>
-  <option *ngFor="let t of notificationTypes" [value]="t.id">
-    {{ t.type }}
-  </option>
-</select>
-
-
+                <select
+                  formControlName="type_id"
+                  class="form-control"
+                  [attr.disabled]="isEditMode ? true : null"
+                  (click)="onDropdownAttempt()"
+                  (change)="onTypeChange($event)"
+                >
+                  <option value="">Select Type</option>
+                  <option *ngFor="let t of notificationTypes" [value]="t.id">
+                    {{ t.type }}
+                  </option>
+                </select>
               </div>
 
               <div class="col-md-6">
                 <label>Template Key:</label>
-             <select
-  formControlName="template_key_id"
-  class="form-control"
-  [attr.disabled]="isEditMode ? true : null"
-  (click)="onDropdownAttempt()"
->
-  <option value="">Select Template</option>
-  <option *ngFor="let k of templateKeys" [value]="k.id">
-    {{ k.template_key }}
-  </option>
-</select>
-
-
+                <select
+                  formControlName="template_key_id"
+                  class="form-control"
+                  [attr.disabled]="isEditMode ? true : null"
+                  (click)="onDropdownAttempt()"
+                >
+                  <option value="">Select Template</option>
+                  <option *ngFor="let k of templateKeys" [value]="k.id">
+                    {{ k.template_key }}
+                  </option>
+                </select>
               </div>
 
               <div class="col-md-6 mt-3">

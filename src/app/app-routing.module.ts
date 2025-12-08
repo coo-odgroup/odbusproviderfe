@@ -4,6 +4,7 @@ import { AdminComponent } from './theme/layout/admin/admin.component';
 import { LoginComponent } from './theme/layout/admin/login/login.component';
 import { AuthComponent } from './theme/layout/auth/auth.component';
 import { Routeguard } from './helpers/routeguard';
+import { TopRouteComponent } from './chart/top-route/top-route.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'login',
+        path: 'login', 
         loadChildren: () =>
           import('./login/login.module').then((module) => module.LoginModule),
       },
