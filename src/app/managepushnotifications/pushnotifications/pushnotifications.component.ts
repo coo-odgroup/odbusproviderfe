@@ -30,6 +30,12 @@ export class PushnotificationsComponent implements OnInit {
 
   selectedRecord: any = null;
 
+ 
+  notificationTypes: any[] = [];
+  templateKeys: any[] = [];
+  isEditMode: boolean = false;
+
+
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
@@ -40,8 +46,10 @@ export class PushnotificationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForms();
+    this.loadNotificationTypes();
     this.search();
   }
+
 
   initializeForms() {
     this.searchForm = this.fb.group({
@@ -50,6 +58,8 @@ export class PushnotificationsComponent implements OnInit {
 
     this.form = this.fb.group({
       id: [null],
+      type_id: ['', Validators.required],         
+      template_key_id: ['', Validators.required],  
       title: ['', Validators.required],
       description: ['', Validators.required],
       message: [''],
@@ -59,74 +69,56 @@ export class PushnotificationsComponent implements OnInit {
       id: [null],
     });
   }
-  openStatusConfirm(content, row) {
+
+ 
+  loadNotificationTypes() {
+    this.pc.getNotificationTypes().subscribe((res) => {
+      this.notificationTypes = res.data;
+    });
+  }
+
+
+onTypeChange(event:any) {
+  if (this.isEditMode) {
+    this.blockEditDropdown();
+    return; 
+  }
+
+  const typeId = event.target.value;
+
+  if (!typeId) {
+    this.templateKeys = [];
+    return;
+  }
+
+  this.pc.getTemplateKeys(typeId).subscribe((res) => {
+    this.templateKeys = res.data;
+  });
+}
+
+onDropdownAttempt() {
+  if (this.isEditMode) {
+    this.notify.addToast({
+      title: "Not Allowed",
+      msg: "Changing Notification Type or Template Key is not allowed while editing.",
+      type: "warning"
+    });
+  }
+}
+
+
+  openStatusConfirm(content:any, row:any) {
     this.selectedStatusRow = row;
     this.newStatus = row.status === 1 ? 0 : 1;
     this.modalService.open(content, { centered: true });
   }
+
   confirmStatusChange() {
     this.spinner.show();
 
-    this.pc
-      .updateStatus(this.selectedStatusRow.id, this.newStatus)
-      .subscribe((resp) => {
-        if (resp.status == 1) {
-          this.selectedStatusRow.status = this.newStatus;
-
-          this.notify.addToast({
-            title: 'Success',
-            msg: 'Status updated successfully',
-            type: 'success',
-          });
-        } else {
-          this.notify.addToast({
-            title: 'Error',
-            msg: resp.message,
-            type: 'error',
-          });
-        }
-
-        this.spinner.hide();
-      });
-  }
-
-  search(pageurl = '') {
-    this.spinner.show();
-    const data = {
-      name: this.searchForm.value.name,
-    };
-
-    if (pageurl) {
-      this.pc.getAllPaginationData(pageurl, data).subscribe((res) => {
-        this.setList(res);
-      });
-    } else {
-      this.pc.getAllData(data).subscribe((res) => {
-        this.setList(res);
-      });
-    }
-  }
-
-  setList(res) {
-    this.pagecontent = res.data.data;
-    this.pagination = res.data;
-
-    this.all = {
-      count: res.data.to,
-      total: res.data.total,
-    };
-
-    this.spinner.hide();
-  }
-
-  toggleStatus(row) {
-    const newStatus = row.status == 1 ? 0 : 1;
-
-    this.spinner.show();
-
-    this.pc.updateStatus(row.id, newStatus).subscribe((resp) => {
+    this.pc.updateStatus(this.selectedStatusRow.id, this.newStatus).subscribe((resp) => {
       if (resp.status == 1) {
-        row.status = newStatus;
+        this.selectedStatusRow.status = this.newStatus;
 
         this.notify.addToast({
           title: 'Success',
@@ -145,12 +137,37 @@ export class PushnotificationsComponent implements OnInit {
     });
   }
 
+  search(pageurl = '') {
+    this.spinner.show();
+    const data = { name: this.searchForm.value.name };
+
+    const serviceCall = pageurl
+      ? this.pc.getAllPaginationData(pageurl, data)
+      : this.pc.getAllData(data);
+
+    serviceCall.subscribe((res) => this.setList(res));
+  }
+
+ 
+  setList(res:any) {
+    this.pagecontent = res.data.data;
+    this.pagination = res.data;
+
+    this.all = {
+      count: res.data.to,
+      total: res.data.total,
+    };
+
+    this.spinner.hide();
+  }
+
   refresh() {
     this.searchForm.reset();
     this.search();
   }
 
-  OpenModal(content) {
+  
+  OpenModal(content:any) {
     this.modalReference = this.modalService.open(content, {
       scrollable: true,
       size: 'lg',
@@ -158,21 +175,30 @@ export class PushnotificationsComponent implements OnInit {
   }
 
   ResetForm() {
-    this.form.reset();
-    this.ModalBtn = 'Save';
-    this.ModalHeading = 'Add Notification';
-    this.selectedRecord = null;
-  }
+  this.form.reset();
+  this.templateKeys = [];
+  this.ModalBtn = 'Save';
+  this.ModalHeading = 'Add Notification';
+  this.selectedRecord = null;
+  this.isEditMode = false; 
+}
+
 
   addData() {
     this.spinner.show();
+    
 
-    const data = {
-      title: this.form.value.title,
-      description: this.form.value.description,
-      message: this.form.value.message,
-      user_id: localStorage.getItem('USERID'),
-    };
+   const data = {
+  type_id: this.form.value.type_id,
+  template_key_id: this.form.value.template_key_id,
+  title: this.form.value.title,
+  description: this.form.value.description,
+  message: this.form.value.message,
+  user_id: localStorage.getItem('USERID'),
+};
+
+    console.log("Payload Sent:", data);
+
 
     if (this.selectedRecord) {
       this.pc.update(this.selectedRecord.id, data).subscribe((resp) => {
@@ -185,13 +211,15 @@ export class PushnotificationsComponent implements OnInit {
     }
   }
 
-  handleResponse(resp, msg) {
+  
+  handleResponse(resp:any, msg:any) {
     if (resp.status == 1) {
       this.notify.addToast({
         title: 'Success',
         msg: msg + ' Successfully',
         type: 'success',
       });
+
       this.modalReference.close();
       this.ResetForm();
       this.refresh();
@@ -205,23 +233,48 @@ export class PushnotificationsComponent implements OnInit {
     }
   }
 
-  editData(i, content) {
-    this.selectedRecord = this.pagecontent[i];
+  
+ editData(i:any, content:any) {
+  this.selectedRecord = this.pagecontent[i];
+  this.isEditMode = true;  
 
-    this.form.patchValue({
-      id: this.selectedRecord.id,
-      title: this.selectedRecord.title,
-      description: this.selectedRecord.description,
-      message: this.selectedRecord.message,
+  this.form.patchValue({
+    id: this.selectedRecord.id,
+    type_id: this.selectedRecord.type_id,
+    template_key_id: this.selectedRecord.template_key_id,
+    title: this.selectedRecord.title,
+    description: this.selectedRecord.description,
+    message: this.selectedRecord.message,
+  });
+
+ 
+  this.onTypeChange({ target: { value: this.selectedRecord.type_id } });
+
+  this.ModalHeading = 'Edit Notification';
+  this.ModalBtn = 'Update';
+
+  this.OpenModal(content);
+}
+
+blockEditDropdown() {
+  if (this.isEditMode) {
+    this.notify.addToast({
+      title: "Not Allowed",
+      msg: "You cannot change Notification Type or Template Key while editing.",
+      type: "warning"
     });
-
-    this.ModalHeading = 'Edit Notification';
-    this.ModalBtn = 'Update';
-
-    this.OpenModal(content);
   }
+}
 
-  openConfirmDialog(content, i) {
+preventChange(event:any) {
+  if (this.isEditMode) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+}
+
+
+  openConfirmDialog(content:any, i:any) {
     this.selectedRecord = this.pagecontent[i];
     this.formConfirm.controls.id.setValue(this.selectedRecord.id);
     this.confirmDialogReference = this.modalService.open(content, {
@@ -229,6 +282,7 @@ export class PushnotificationsComponent implements OnInit {
     });
   }
 
+ 
   deleteRecord() {
     this.spinner.show();
 
@@ -256,7 +310,7 @@ export class PushnotificationsComponent implements OnInit {
     });
   }
 
-  page(label) {
+  page(label:any  ) {
     return label;
   }
 }
