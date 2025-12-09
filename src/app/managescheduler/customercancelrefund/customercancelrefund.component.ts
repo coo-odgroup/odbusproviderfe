@@ -134,7 +134,7 @@ export class CustomercancelrefundComponent implements OnInit {
           this.cancelRefund = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          console.log(res);
+          // console.log(res);
           this.spinner.hide();
         }
       );
@@ -318,6 +318,8 @@ export class CustomercancelrefundComponent implements OnInit {
     const param = {
       booking_ids: selectedBookingIds
     };
+
+    this.spinner.show();
 
     this.srs.getRefundSelected(param).subscribe(
       res => {
