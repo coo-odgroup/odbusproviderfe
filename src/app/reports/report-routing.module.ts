@@ -76,7 +76,11 @@ const routes: Routes = [
       {
         path: 'busseatfarereport',
         loadChildren: () => import('./busseatfarereport/busseatfarereport.module').then(module => module.BusSeatFareReportModule)
-      }                  
+      },
+      {
+        path: 'apilogreport',
+        loadChildren: () => import('./apilogreport/apilogreport.module').then(module => module.ApilogreportModule)
+      }
     ]
   }
 ];
