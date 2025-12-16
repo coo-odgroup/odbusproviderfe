@@ -154,6 +154,7 @@
                                 <th scope="col">Refund Price</th>
                                 <th scope="col">Booked By</th>
                                 <th scope="col">Cancel By</th>
+                                <th scope="col">Refund Details</th>
                             </tr>
                         </thead>
                         <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
@@ -319,11 +320,29 @@
                                 <td class="align-middle">
                                     <b>{{ (complete.cancel_by == null) ? 'Customer' : complete.cancel_by  }}</b>
                                 </td>
+                                <td class="align-middle">
+                                    <strong>Date: </strong> <small>{{complete.customer_payment.updated_at | date: 'dd-MMM-yyyy'}}</small><br />
+                                    <strong>Mode: </strong>
+                                    <small *ngIf="complete.customer_payment.refund_mode == '1'">
+                                        Manual
+                                    </small>
+                                    <small *ngIf="complete.customer_payment.refund_mode == '2'">
+                                        Auto
+                                    </small>
+                                    <br />
+                                    <strong>Status: </strong>
+                                    <small *ngIf="complete.customer_payment.payment_done == '2' && complete.customer_payment.refund_id != '0'" style="color: #2ecc71;">
+                                        Refunded
+                                    </small>
+                                    <small *ngIf="complete.status == '2' && complete.customer_payment.payment_done != '2' && complete.customer_payment.refund_id == '0'" style="color: #f00;">
+                                        Pending
+                                    </small>
+                                </td>
                             </tr>
                         </tbody>    
                         <tbody *ngIf="cancelticketdata?.data.data?.length == 0">
                             <tr>
-                              <td colspan="11" class="no-data-available">No data!</td>
+                              <td colspan="12" class="no-data-available text-center">No data!</td>
                             </tr>
                         <tbody>    
                     </table>

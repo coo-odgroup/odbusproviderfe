@@ -15,7 +15,7 @@ export class Constants {
     public static RecordLimit: any = 10 ;
     //public static BUS_OPERATOR_ID: any = 1;
     //FOR LOCAL
-     public static BASE_URL:any ='http://localhost:7001/ODBUS/odbusproviderbe/api';
+    public static BASE_URL:any ='http://localhost:7001/ODBUS/odbusproviderbe/api';
      public static CONSUMER_PUBLIC_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/uploads/';
      public static CONSUMER_API_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/api/';
      public static PATHURL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/public/uploads/';
@@ -27,6 +27,8 @@ export class Constants {
     //  public static CONSUMER_API_URL:any = 'http://192.168.29.141:7001/ODBUS/odbusconsumerbe/api/';
     //  public static PATHURL:any = 'http://192.168.29.141:7001/ODBUS/odbusproviderbe/public/uploads/';
     
+
+     
     // public static BASE_URL:any ='https://provider.odbus.co.in/api';
     // public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
     // public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';

@@ -19,7 +19,6 @@ import { NavSearchComponent } from './theme/layout/admin/nav-bar/nav-left/nav-se
 import { NavRightComponent } from './theme/layout/admin/nav-bar/nav-right/nav-right.component';
 import { ConfigurationComponent } from './theme/layout/admin/configuration/configuration.component';
 import { ToggleFullScreenDirective } from './theme/shared/full-screen/toggle-full-screen';
-/* Menu Items */
 import { NavigationItem } from './theme/layout/admin/navigation/navigation';
 import {
   NgbButtonsModule,
@@ -36,6 +35,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { TopRouteComponent } from './chart/top-route/top-route.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { RouterModule } from '@angular/router';
 
 import { PushnotificationsComponent } from './managepushnotifications/pushnotifications/pushnotifications.component';
 
@@ -60,6 +60,7 @@ import { PushnotificationsComponent } from './managepushnotifications/pushnotifi
   imports: [
     HighchartsChartModule,
     BrowserModule,
+      RouterModule,           
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
@@ -72,7 +73,7 @@ import { PushnotificationsComponent } from './managepushnotifications/pushnotifi
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

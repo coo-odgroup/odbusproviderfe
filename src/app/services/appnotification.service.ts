@@ -14,7 +14,8 @@ export interface ApiResponse {
   providedIn: 'root',
 })
 export class AppNotificationService {
-  private apiURL = Constants.BASE_URL;
+ private apiURL = Constants.BASE_URL;
+
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -47,6 +48,14 @@ export class AppNotificationService {
       .post<ApiResponse>(APIurl, data, this.httpOptions)
       .pipe(catchError(this.errorHandler));
   }
+  getNotificationTypes(): Observable<any> {
+  return this.http.get<any>(`${this.apiURL}/notification-types`);
+}
+
+getTemplateKeys(typeId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiURL}/template-keys/${typeId}`);
+}
+
 
   create(data: any): Observable<ApiResponse> {
     return this.http

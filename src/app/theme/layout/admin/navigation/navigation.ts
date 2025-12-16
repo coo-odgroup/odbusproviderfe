@@ -736,6 +736,13 @@ const NavigationItems = [
             icon: 'feather icon-pie-chart',
             url: 'reports/couponuseduserreport',
           },
+          {
+            id: 'apilogreport',
+            title: 'Api Log Reports',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'reports/apilogreport',
+          }
         ],
       },
       {
