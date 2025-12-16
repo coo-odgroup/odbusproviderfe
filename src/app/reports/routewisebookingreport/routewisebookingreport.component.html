@@ -1,0 +1,348 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Route Wise Booking Reports" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
+
+
+            <div class=" mb-3">
+                <div class="row p-0">
+                    <div class="col-12">
+                        <form [formGroup]="searchFrom">
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group ">
+                                                <div class="col-sm-12">
+                                                    <label>&nbsp; </label>
+                                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                                        placeholder="Select Source" formControlName="source_id"
+                                                        [clearable]="false" (change)="findSource($event)">
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    <label>&nbsp; </label>
+                                                    <ng-select [items]="locations" bindLabel="name" bindValue="id"
+                                                        placeholder="Select Destination"
+                                                        formControlName="destination_id" [clearable]="false"
+                                                        (change)="findSource($event)">
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label>Booking From Date</label>
+                                            <input type="date" class="form-control sml_input" placeholder="Enter pnr"
+                                                required formControlName="fromdate" />
+
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label>Booking To Date</label>
+                                            <input type="date" class="form-control sml_input" placeholder="Enter pnr"
+                                                required formControlName="todate" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>&nbsp; </label>
+                                    <div>
+                                        <button type="button" class="btn btn-success  sml_input" (click)="onSubmit()"
+                                        title="search">
+                                        Submit
+                                    </button>
+                                    <!-- <button type="button" class="btn btn-danger sml_input" (click)="refresh()"
+                                        title="refresh">
+                                        Refresh
+                                    </button>
+                                    <button type="button" (click)="exportexcel()" class="btn btn-warning  sml_input"
+                                        title="Export">
+                                        Export
+                                    </button>
+                                    <button type="button" printSectionId="print-section" ngxPrint
+                                        class="btn btn-info sml_input" [useExistingCss]="true" title="Print">
+                                        Print
+                                    </button> -->
+
+                                    <div class="dropdown float-right">
+                                        <select class="form-control sml_input"
+                                            >
+                                            <option value=10>10</option>
+                                            <option value=25>25</option>
+                                            <option value=50>50</option>
+                                            <option value=100>100</option>
+                                        </select>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="table-responsive " id="print-section">
+                <div class=" tableFixHead">
+                    <table class="table table-striped  header-fixed" style="font-size: 11px !important;">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Source Name</th>
+                                <th scope="col">Destination Name </th>
+                                <th scope="col">From Date</th>
+                                <th scope="col">To Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Download</th>
+                                <!-- <th scope="col">Total Fare</th>
+                                <th scope="col">Odbus Received</th>
+                                <th scope="col">Coupon Amount</th>
+                                <th scope="col">Amount Received</th>
+                                <th scope="col">Book By</th>
+                                <th scope="col">GST Details</th> -->
+                            </tr>
+                        </thead>
+                        <!-- style="height: 100px !important; overflow: scroll; " -->
+                        <tbody *ngIf="RouteData?.length != 0">
+                            <tr *ngFor="let data of RouteData; let i = index">
+                                <td>{{ i+1 }}</td>
+                                <td>{{ data.source_name }}</td>
+                                <td>{{ data.destination_name }}</td>
+                                <td>{{ data.fromdate }}</td>
+                                <td>{{ data.todate }}</td>
+                                <td>{{ data.running_status }}</td>
+                                <!-- <td>{{ data.download_file }}</td> -->
+                                <td>
+                                    <button *ngIf="data.running_status == 0" type="button" class="btn btn-danger sml_input">
+                                        Progress
+                                    </button>
+
+                                    <button *ngIf="data.running_status == 1" type="button" class="btn btn-success sml_input" (click)="downloadCsv(data.download_file)">
+                                        Download
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div *ngIf="completedata?.length != 0" class="hide_print container">
+                    <div class="row">
+                        <div class="col-6">
+
+                            <div class="col-12">
+                                <p class=" row mt-3 ml-1"> Showing {{completedata?.count}} of {{completedata?.total}}
+                                    records. </p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="completedata?.data.links">
+                                <nav class="my-1 pt-1 ">
+                                    <ul class="pagination pagination-circle pg-blue mb-0 hide_print">
+                                        <li (click)="search(completedata.data.first_page_url,statusLabel)"
+                                            class="page-item {{ completedata.data.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                                            <a class="page-link">First</a>
+                                        </li>
+                                        <li class="page-item "
+                                            *ngFor="let b of completedata.data.links ; let i = index ">
+                                            <a class="page-link {{ completedata.data.current_page == b.label ? 'active' : '' }}"
+                                                (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                                        </li>
+                                        <li class="page-item {{ completedata.data.next_page_url == null? 'disabled' : ''}} clearfix d-none d-md-block"
+                                            (click)="search(completedata.data.last_page_url,statusLabel)">
+                                            <a class="page-link">Last</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </app-card>
+        
+        <div style="display: none;" id="export-section">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th>Journey Status</th>
+                        <th>Pnr No</th>
+                        <th>Dolphin Pnr</th>
+                        <th>Seat No</th>
+                        <th>Sleeper No</th>
+                        <th>Bus Number</th>
+                        <th>Bus Name</th>
+                        <th>Source- Destination</th>
+                        <th>Journey Date</th>
+                        <th>Passenger Details</th>
+                        <th>User Name</th>
+                        <th>User Phone</th>
+                        <th>User Email</th>
+                        <th>Total Fare</th>
+                        <th>Owner Fare</th>
+                        <th>Seater Fare</th>
+                        <th>Sleeper Fare</th>
+                        <td>Additionl Festival Fare</td>
+                        <td>Additional Owner Fare</td>
+                        <td>Additional Special Fare</td>
+                        <th>Odbus GST</th>
+                        <th>Owner GST</th>
+                        <th>Odbus Received</th>
+                        <th>Amount Received</th>
+                        <th>Transaction Fee</th>
+                        <th>Transaction Id</th>
+                        <th>Order Id</th>
+                        <th>App Type</th>
+                        <th>GST Invoice No</th>
+                        <th>Customer GST Number</th>
+                        <th>Customer GST Business Name</th>
+                        <th>Customer GST Business Email</th>
+                        <th>Customer GST Business Address</th>
+                        <th>Customer GST Amount</th>
+                        <th>Book By</th>
+                    </tr>
+                </thead>
+                {{completExportdata?.data?.data?.length | json}}
+                <tbody *ngIf="completExportdata?.data?.data?.length != 0">
+                    <tr *ngFor="let complete of completExportdata?.data?.data; let i = index">
+                        <td>
+                            <span *ngIf="complete.journey=='Over' ">
+                                {{complete.journey}}
+                            </span>
+                            <span *ngIf="complete.journey=='Upcoming' ">
+                                {{complete.journey}}
+                            </span>
+                        </td>
+                        <td>{{complete.pnr}}</td>
+                        <td><span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'"> {{complete.api_pnr}}  </span></td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
+                                <span *ngFor="let seat of complete.booking_detail;">
+                                    <span *ngIf="seat.bus_seats.seats.berthType==1">{{seat.bus_seats.seats.seatText}} ||
+                                    </span>
+                                </span>
+                            </span>
+                            
+                            <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'">
+                                <span *ngFor="let seat of complete.booking_detail;">
+                                    {{seat.seat_name}} ||
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
+                                <span *ngFor="let seat of complete.booking_detail;">
+                                    <span *ngIf="seat.bus_seats.seats.berthType==2">{{seat.bus_seats.seats.seatText}}
+                                        ||</span>
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
+                                {{ complete.bus.bus_number }}
+                            </span>
+                            <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'">
+                                {{ complete.bus_number }}
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
+                                {{ complete.bus.name }} [ {{complete.source[0][0].name}} >>
+                                {{complete.destination[0][0].name}} ]
+                            </span>
+                            <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'">
+                                {{ complete.bus_name }}
+                            </span>
+                        </td>
+                        <!-- <td>
+                            {{complete.source[0][0].name}} >> {{complete.destination[0][0].name}}
+                        </td> -->
+                        <td>
+                            <span *ngFor="let boarding of complete.from_location;">
+                                {{boarding.name}}
+                            </span> -
+                            <span *ngFor="let dropping of complete.to_location;">
+                                {{dropping.name}}
+                            </span>
+                        </td>
+                        <td>{{complete.journey_dt | date: 'dd-MM-YYYY'}}</td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
+                                <p *ngFor="let passanger of complete.booking_detail;">
+                                    {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                    {{passanger.bus_seats.seats.seatText}}] ,
+                                </p>
+                            </span>
+
+                            <span *ngIf="complete.origin == 'DOLPHIN' || complete.origin == 'MANTIS'">
+                                <p *ngFor="let passanger of complete.booking_detail;">
+                                    {{passanger.passenger_name}}[ gender - {{passanger.passenger_gender}}, seat no -
+                                    {{passanger.seat_name}}] ,
+                                </p>
+                            </span>
+                           
+                        </td>
+                        <td><span *ngIf="complete.users != null">{{complete.users.name}}</span></td>
+                        <td><span *ngIf="complete.users != null">{{complete.users.phone}}</span></td>
+                        <td><span *ngIf="complete.users != null">{{complete.users.email}}</span></td>
+                        <td>{{complete.total_fare}}</td>
+                        <td>{{complete.owner_fare + complete.additional_owner_fare}}</td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
+                                {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
+                                {{complete.booking_detail[0].bus_seats.ticket_price.base_sleeper_fare}}
+                            </span>
+                        </td>
+                        <td>{{complete.additional_festival_fare}}</td>
+                        <td>{{complete.additional_owner_fare}}</td>
+                        <td>{{complete.additional_special_fare}}</td>
+                        <td>{{complete.odbus_gst_amount}}</td>
+                        <td>{{complete.owner_gst_amount}}</td>
+                        <td>{{complete.odbus_charges}}</td>
+                        <td>{{complete.payable_amount - complete.agent_commission }}</td>
+                        <td>{{complete.transactionFee}}</td>
+                        <td>
+                            <span *ngIf="complete.customer_payment">
+                                {{complete.customer_payment.razorpay_id}}
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="complete.customer_payment">
+                                {{complete.customer_payment.order_id}}
+                            </span>
+                        </td>
+                        <td>{{complete.app_type}}</td>
+                        <td>{{ complete.gst_invoice_no}}</td>
+                        <td>{{ complete.customer_gst_number}}</td>
+                        <td>{{ complete.customer_gst_business_name }}</td>
+                        <td>{{ complete.customer_gst_business_email }}</td>
+                        <td>{{ complete.customer_gst_business_address }}</td>
+                        <td>{{ complete.customer_gst_amount }}</td>
+                        <td> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

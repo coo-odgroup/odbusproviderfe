@@ -76,7 +76,11 @@ const routes: Routes = [
       {
         path: 'busseatfarereport',
         loadChildren: () => import('./busseatfarereport/busseatfarereport.module').then(module => module.BusSeatFareReportModule)
-      }                  
+      }, 
+      {
+        path: 'routewise-bookigreport',
+        loadChildren: () => import('./routewisebookingreport/routewisebookingreport.module').then(module => module.RouteWiseBookingModule)
+      }               
     ]
   }
 ];
