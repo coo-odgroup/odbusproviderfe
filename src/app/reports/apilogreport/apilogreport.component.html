@@ -39,13 +39,15 @@
                   </button>
                   <div class="dropdown float-right">
                     <select class="form-control sml_input" formControlName="rows_number" (change)=search()>
-                      <option value=10>10</option>
-                      <option value=25>25</option>
-                      <option value=50>50</option>
                       <option value=100>100</option>
                       <option value=250>250</option>
                       <option value=500>500</option>
+                      <option value=750>750</option>
                       <option value=1000>1000</option>
+                      <option value=1250>1250</option>
+                      <option value=1500>1500</option>
+                      <option value=1750>1750</option>
+                      <option value=2000>2000</option>
                     </select>
                   </div>
                 </div>
@@ -73,15 +75,32 @@
               <td>{{i+1}}</td>
               <td>{{list.pnr}}</td>
               <td>{{list.transaction_id}}</td>
-              <td>{{list.response_status}}</td>
-              <td>{{list.created_at | date: 'dd/MM/yyyy'}}</td>
+              <td>
+                <ng-template #responseContent>
+                  <table class="tooltip_table">
+                      <tr>
+                        <td style="text-align: left;">
+                          Response Details
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align: left;">
+                          {{list.response_status_arr}}
+                        </td>
+                      </tr>
+                  </table>
+                </ng-template>
+                <span [ngbTooltip]="responseContent" *ngIf="list.response_status == '1'">Success</span>
+                <span [ngbTooltip]="responseContent" *ngIf="list.response_status != '1'">Error</span>
+              </td>
+              <td>{{ list.created_at | date: 'dd MMM yyyy hh:mm a' }}</td>
               <td>{{list.user_name}}</td>
             </tr>
 
           </tbody>
           <tbody *ngIf="apilogreport?.length == 0">
             <tr>
-              <td colspan="6" class="no-data-available">No data!</td>
+              <td colspan="6" class="no-data-available text-center">No data!</td>
             </tr>
           <tbody>
         </table>

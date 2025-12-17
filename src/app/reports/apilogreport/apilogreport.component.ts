@@ -71,7 +71,7 @@ export class ApilogreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       date: [null],
       user: [null],
-      rows_number: Constants.RecordLimit
+      rows_number: 100
     })
 
     this.search();
@@ -90,12 +90,14 @@ export class ApilogreportComponent implements OnInit {
       rows_number: this.searchFrom.value.rows_number,
     };
 
+    console.log(data);
     console.log(pageurl);
 
     if (pageurl != "") {
       this.alrs.ApiLogpaginationReport(pageurl, data).subscribe(
         res => {
           this.apilogreport = res.data;
+          console.log("api search log works");
           this.pagination = res;
           this.spinner.hide();
         }
@@ -120,7 +122,7 @@ export class ApilogreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       date: [null],
       user: [null],
-      rows_number: Constants.RecordLimit
+      rows_number: 100
     });
     this.search();
   }
