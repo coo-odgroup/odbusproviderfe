@@ -71,7 +71,8 @@ export class ApilogreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       date: [null],
       user: [null],
-      rows_number: 100
+      rows_number: 100,
+      status: [null]
     })
 
     this.search();
@@ -88,6 +89,7 @@ export class ApilogreportComponent implements OnInit {
       date: this.searchFrom.value.date,
       user: this.searchFrom.value.user,
       rows_number: this.searchFrom.value.rows_number,
+      status: this.searchFrom.value.status,
     };
 
     console.log(data);
@@ -122,7 +124,8 @@ export class ApilogreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       date: [null],
       user: [null],
-      rows_number: 100
+      rows_number: 100,
+      status: [null]
     });
     this.search();
   }

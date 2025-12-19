@@ -10,20 +10,30 @@
           <div class="col-12">
             <form [formGroup]="searchFrom">
               <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-4">
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
                   <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                       <div class="form-group row">
                         <input type="date" class="form-control sml_input" placeholder="Enter pnr" required
                           formControlName="date" />
                       </div>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                       <div class="dropdown w-100">
                         <select class="form-control sml_input" formControlName="user" (change)=search()>
+                          <option value=null disabled>Select User</option>
                           <option value=486>Paytm</option>
                           <option value=559>Abhi Bus</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group col-4">
+                      <div class="dropdown w-100">
+                        <select class="form-control sml_input" formControlName="status" (change)=search()>
+                          <option value=null disabled>User Status</option>
+                          <option value=1>Success</option>
+                          <option value=0>Error</option>
                         </select>
                       </div>
                     </div>
