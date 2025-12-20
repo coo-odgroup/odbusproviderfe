@@ -158,6 +158,10 @@ const routes: Routes = [
           ),
       },
       {
+        path:"top-route-chart",
+        component:TopRouteComponent
+      },
+      {
         path: 'managescheduler',
         loadChildren: () =>
           import('./managescheduler/managescheduler.module').then(

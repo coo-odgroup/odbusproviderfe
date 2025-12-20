@@ -37,6 +37,7 @@ import { TopRouteComponent } from './chart/top-route/top-route.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { RouterModule } from '@angular/router';
 
+import { PushnotificationsComponent } from './managepushnotifications/pushnotifications/pushnotifications.component';
 
 @NgModule({
   declarations: [

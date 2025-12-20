@@ -17,6 +17,18 @@ export class TopRouteComponent implements OnInit {
   TotalBooking: any[] = [];
   TopCity: any[] = [];
   CitywiseBooking: any[] = [];
+  Hour: any[] = [];
+  odbus: any[] = [];
+  abhibus: any[] = [];
+  paytm: any[] = [];
+
+  totalSeat: any[]=[];
+  totalSlepper: any[]=[];
+  totalSeatbooked: any[]=[];
+  totalSlepperbooked: any[]=[];
+  totalSeatavl: any[]=[];
+  totalSlepperavl: any[]=[];
+
 
   minEndDate: string = '';
   maxEndDate: string = '';
@@ -39,6 +51,13 @@ export class TopRouteComponent implements OnInit {
     limit: new FormControl('10'),
   })
 
+  DayFormData = new FormGroup({
+    start_date: new FormControl(''),
+    end_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+  })
+
   refresh() {
     this.RouteformData.reset();
   }
@@ -47,6 +66,9 @@ export class TopRouteComponent implements OnInit {
     this.CityFormData.reset();
   }
 
+  Dayrefresh(){
+    this.DayFormData.reset();
+  }
   onStartDateChange(event: any) {
     const start = new Date(event.target.value);
 
@@ -113,9 +135,118 @@ export class TopRouteComponent implements OnInit {
     })
   }
 
+  
+
+  getdaywise() {
+    const reqData = this.DayFormData.value;
+
+    this.http.post(this.apiURL + "/day-wise", reqData).subscribe((res: any) => {
+      this.Hour = res.data.map((item: any) => item.cat);
+      this.odbus = res.data.map((item: any) => Number(item.odbus));
+      this.abhibus = res.data.map((item: any) => Number(item.abhibus));
+      this.paytm = res.data.map((item: any) => Number(item.paytm));
+
+
+      // console.log(this.odbus)
+
+      this.chartOptions = {
+        ...this.chartOptions,
+        xAxis: {
+          categories: this.Hour,
+        },
+        series: [
+          {
+            name: 'ODBUS',
+            type: 'line',
+            color: 'red',
+            data: this.odbus
+          },
+          {
+            name: 'Abhibus',
+            type: 'line',
+            color: '#00ff7f',
+            data: this.abhibus  
+          },
+          {
+            name: 'Paytm',
+            type: 'line',
+            color: 'blue',
+            data: this.paytm
+          }
+        ],
+      };
+
+      this.updateFlag = true;
+    });
+  }
+
+  getTotalseat(){
+    this.http.post(this.apiURL + "/total-bus-seat", "").subscribe((res:any)=>{
+      console.log(res);
+      this.totalSeat = res.total_lower_berth;
+      this.totalSlepper = res.total_upper_berth;
+      this.totalSeatbooked = res.total_seat_booked;
+      this.totalSlepperbooked = res.total_slepper_booked;
+      this.totalSeatavl = res.total_seat_avl;
+      this.totalSlepperavl = res.total_slepper_avl;
+
+      console.log(this.totalSeat)
+      this.seatChart = {
+        ...this.seatChart,
+        // xAxis: {
+        //   categories: this.Hour,
+        // },
+        series: [
+          {
+            name: 'Seats Not Booked',
+            type: 'column',
+            data: [this.totalSeatavl],
+            stack: 'Europe'
+          },
+          {
+            name: 'Booked Seats',
+            type: 'column',
+            data: [this.totalSeatbooked],
+            stack: 'Europe'
+          },
+          {
+            name: 'Total Seats',
+            type: 'column',
+            data: [this.totalSeat],
+            stack: 'Europe'
+          },
+          {
+            name: 'Slepper Not Booked',
+            type: 'column',
+            data: [this.totalSlepperavl],
+            stack: 'America'
+          },
+          {
+            name: 'Slepper Booked',
+            type: 'column',
+            data: [this.totalSlepperbooked],
+            stack: 'America'
+          },
+          {
+            name: 'Total Slepper',
+            type: 'column',
+            data: [this.totalSlepper],
+            stack: 'America'
+          },
+          
+        ]
+      };
+
+      this.updateFlag = true;
+    })
+  }
+
+
   ngOnInit(): void {
     this.getRoute();
     this.getCity();
+    this.getdaywise();
+    this.getTotalseat();
   }
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -251,9 +382,7 @@ export class TopRouteComponent implements OnInit {
     //   style: { color: '#000' }
     // },
     xAxis: {
-      categories: [
-        '6 am', '7 am', '8 am', '9 am', '10 am', '11 am','12 pm','1 pm','2 pm','3 pm','4 pm'
-      ],
+      categories: [],
       labels: { style: { color: '#000' } },
       crosshair: true
     },
@@ -279,26 +408,87 @@ export class TopRouteComponent implements OnInit {
         name: 'ODBUS',
         type: 'line',
         color: 'red',
-        data: [
-          40, 42, 45, 43, 38, 35,40, 42, 45, 43, 38
-        ]
+        data: []
       },
       {
         name: 'Abhibus',
         type: 'line',
         color: '#00ff7f',
-        data: [
-          50, 48, 45, 40, 35, 30,40, 48, 50, 43, 30
-        ]
+        data: []
       },
       {
         name: 'Paytm',
         type: 'line',
         color: 'blue',
-        data: [
-          45, 58, 42, 40, 25, 38,45, 50, 53, 48, 25
-        ]
+        data: []
       }
+    ]
+  };
+
+
+
+  seatChart: Highcharts.Options = {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Day wise booked'
+    },
+    xAxis: {
+      categories: ["Odbus"]
+    },
+    yAxis: {
+      min: 0,
+      title: { text: 'Count medals' }
+    },
+    tooltip: {
+      shared: false
+    },
+    plotOptions: {
+      column: {
+        stacking: 'normal',
+        pointPadding: 0.3, 
+        groupPadding: 0.3
+      }
+    },
+    series: [
+      {
+        name: 'Seats Not Booked',
+        type: 'column',
+        data: [],
+        stack: 'Europe'
+      },
+      {
+        name: 'Booked Seats',
+        type: 'column',
+        data: [],
+        stack: 'Europe'
+      },
+      {
+        name: 'Total Seats',
+        type: 'column',
+        data: [],
+        stack: 'Europe'
+      },
+      {
+        name: 'Slepper Not Booked',
+        type: 'column',
+        data: [],
+        stack: 'America'
+      },
+      {
+        name: 'Slepper Booked',
+        type: 'column',
+        data: [],
+        stack: 'America'
+      },
+      {
+        name: 'Total Slepper',
+        type: 'column',
+        data: [],
+        stack: 'America'
+      },
+      
     ]
   };
 }
