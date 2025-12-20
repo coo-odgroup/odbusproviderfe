@@ -276,7 +276,7 @@ export class TicketfareslabComponent implements OnInit {
 
     this.form = this.fb.group({
       id: [null],
-      bus_operator_id: [null, Validators.compose([Validators.required, Validators.minLength(2)])],
+      bus_operator_id: [null, Validators.compose([Validators.required])],
       slabs: this.fb.array([this.createSlab()]),
     });
     this.CancelationSlabList = this.form.get('slabs') as FormArray;
