@@ -59,9 +59,11 @@ export class RouteWiseBookingreport implements OnInit {
   }
 
   getData(){
+    this.spinner.show();
     this.http.post(this.BASE_URL+"/route-wise-search","").subscribe((res:any)=>{
       // console.log(res.status)
       if(res.status == 200){
+        this.spinner.hide();
         this.RouteData =res.data;
         console.log(this.RouteData)
       }
@@ -145,7 +147,7 @@ export class RouteWiseBookingreport implements OnInit {
     return label;
   }
   onSubmit(pageurl = "") {
-    // this.spinner.show();
+    this.spinner.show();
     // this.completeReportRecord = this.searchFrom.value;
 
     // console.log(this.searchFrom.value);
@@ -158,8 +160,11 @@ export class RouteWiseBookingreport implements OnInit {
     }
  
     this.http.post(this.BASE_URL+"/route-wise-booking",data).subscribe((res:any)=>{
-      this.getData()
-      console.log(res);
+      if(res.status == 200){
+        this.getData()
+        console.log(res);
+        this.spinner.hide();
+      }
     })
 
     // console.log(this.BASE_URL);

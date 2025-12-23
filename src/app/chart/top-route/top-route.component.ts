@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HttpClient } from '@angular/common/http';
 import { Constants } from '../../constant/constant';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Drilldown from 'highcharts/modules/drilldown';
+
+
+Drilldown(Highcharts);
 
 @Component({
   selector: 'app-top-route',
@@ -33,7 +37,9 @@ export class TopRouteComponent implements OnInit {
   minEndDate: string = '';
   maxEndDate: string = '';
 
-  constructor(private http: HttpClient, private spinner: NgxSpinnerService) {}
+  form!: FormGroup;
+
+  constructor(private http: HttpClient, private spinner: NgxSpinnerService,private fb: FormBuilder) {}
 
   updateFlag = false;
 
@@ -58,6 +64,23 @@ export class TopRouteComponent implements OnInit {
     limit: new FormControl('10'),
   })
 
+  operatorFormBooking = new FormGroup({
+    from_j_date : new FormControl(''),
+    to_j_date : new FormControl(''),
+    order : new FormControl('DESC'),
+    limit : new FormControl('10'),
+    bus_operator_id: new FormControl([]),
+  })
+
+
+  operatorFormRevenue = new FormGroup({
+    from_j_date : new FormControl(''),
+    to_j_date : new FormControl(''),
+    order : new FormControl('DESC'),
+    limit : new FormControl('10'),
+    bus_operator_id: new FormControl([]),
+  })
+
   refresh() {
     this.RouteformData.reset();
   }
@@ -69,6 +92,11 @@ export class TopRouteComponent implements OnInit {
   Dayrefresh(){
     this.DayFormData.reset();
   }
+
+  opBookingrefresh(){
+    this.operatorFormBooking.reset();
+  }
+
   onStartDateChange(event: any) {
     const start = new Date(event.target.value);
 
@@ -181,7 +209,8 @@ export class TopRouteComponent implements OnInit {
   }
 
   getTotalseat(){
-    this.http.post(this.apiURL + "/total-bus-seat", "").subscribe((res:any)=>{
+    const reqParams = this.operatorFormRevenue.value;
+    this.http.post(this.apiURL + "/total-bus-seat", reqParams).subscribe((res:any)=>{
       console.log(res);
       this.totalSeat = res.total_lower_berth;
       this.totalSlepper = res.total_upper_berth;
@@ -190,7 +219,7 @@ export class TopRouteComponent implements OnInit {
       this.totalSeatavl = res.total_seat_avl;
       this.totalSlepperavl = res.total_slepper_avl;
 
-      console.log(this.totalSeat)
+      // console.log(this.totalSeat)
       this.seatChart = {
         ...this.seatChart,
         // xAxis: {
@@ -241,12 +270,178 @@ export class TopRouteComponent implements OnInit {
     })
   }
 
+  // getOperator(){
+  //   this.http.post(this.apiURL+"/operator-wise-booking","").subscribe((res:any)=>{
+  //     console.log(res)
+  //     const operatorSeries = res.map(item => ({
+  //       name: item.operator_name,
+  //       y: item.total_booking,
+  //       drilldown: item.operator_name
+  //     }));
+
+  //     // 🔹 Drilldown series (Bus level)
+  //     const drilldownSeries = res.map(item => ({
+  //       id: item.operator_name,
+  //       name: item.operator_name + ' - Bus wise booking',
+  //       type: 'column',
+  //       data: item.bus_wise.map((bus: any) => [
+  //         bus.bus_number,
+  //         bus.total_booking
+  //       ])
+  //     }));
+
+  //     this.operatorchart = {
+  //       ...this.operatorchart,
+  //       series: [{
+  //         name: 'Operators',
+  //         type: 'column',
+  //         colorByPoint: true,
+  //         data: operatorSeries
+  //       }],
+  //       drilldown: {
+  //         series: drilldownSeries
+  //       }
+  //     };
+  //   });
+  // }
+
+
+  getOperator() {
+    const reqParams = this.operatorFormBooking.value;
+    console.log(reqParams);
+    this.http.post(this.apiURL + "/operator-wise-booking", reqParams).subscribe((res: any) => {
+      console.log(res);
+
+      const operatorSeries = res.map((item: any) => ({
+        name: item.operator_name,
+        y: item.total_booking,
+        drilldown: item.operator_name
+      }));
+
+      const drilldownSeries = res.map((item: any) => {
+        // Ensure bus_wise is an array
+        const busArray = Array.isArray(item.bus_wise) ? item.bus_wise : [];
+
+        // Aggregate bus-wise bookings
+        const busMap: { [key: string]: number } = {};
+        busArray.forEach((bus: any) => {
+          if (!busMap[bus.bus_number]) {
+            busMap[bus.bus_number] = 0;
+          }
+          busMap[bus.bus_number] += bus.total_booking;
+        });
+
+        const busData = Object.keys(busMap).map(busNumber => [busNumber, busMap[busNumber]]);
+
+        return {
+          id: item.operator_name,
+          name: item.operator_name + ' - Bus wise booking',
+          type: 'column',
+          data: busData
+        };
+      });
+
+      this.operatorchart = {
+        ...this.operatorchart,
+        series: [{
+          name: 'Operators',
+          type: 'column',
+          colorByPoint: true,
+          data: operatorSeries
+        }],
+        drilldown: {
+          series: drilldownSeries
+        }
+      };
+    });
+  }
+
+  getOperatorRevenue() {
+    const reqParams = this.operatorFormRevenue.value;
+    this.http.post(this.apiURL + "/operator-wise-revenue", reqParams).subscribe((res: any) => {
+      console.log(res.data);
+
+      const operatorSeries = res.data.map((item: any) => ({
+        name: item.operator_name,
+        y: item.total_revenue,
+        drilldown: item.operator_name
+      }));
+
+      const drilldownSeries = res.data.map((item: any) => {
+
+        const busArray = Array.isArray(item.bus_wise) ? item.bus_wise : [];
+
+        const busMap: { [key: string]: number } = {};
+        busArray.forEach((bus: any) => {
+          if (!busMap[bus.bus_number]) {
+            busMap[bus.bus_number] = 0;
+          }
+          busMap[bus.bus_number] += bus.total_revenue;
+        });
+
+        const busData = Object.keys(busMap).map(busNumber => [
+          busNumber,
+          busMap[busNumber]
+        ]);
+
+        return {
+          id: item.operator_name,
+          name: item.operator_name + ' - Bus wise revenue',
+          type: 'column',
+          data: busData
+        };
+      });
+
+      this.operatorRevenuechart = {
+        ...this.operatorRevenuechart,
+        series: [{
+          name: 'Operators Revenue',
+          type: 'column',
+          colorByPoint: true,
+          data: operatorSeries
+        }],
+        drilldown: {
+          series: drilldownSeries
+        }
+      };
+    });
+  }
+
+
+  // busOperators = [
+  //   { id: 1, operatorData: 'Operator One' },
+  //   { id: 2, operatorData: 'Operator Two' },
+  //   { id: 3, operatorData: 'Operator Three' }
+  // ];
+
+  busOperators:any;
+
+  alloperator(){
+    this.http.get(this.apiURL+"/busoperator").subscribe((res:any)=>{
+      this.busOperators = res.data;
+    })
+  }
+
+
+  selectAll() {
+    const ids = this.busOperators.map(op => op.id);
+    this.operatorFormBooking.get('bus_operator_id')?.setValue(ids);
+  }
+
+  clearAll() {
+    this.operatorFormBooking.get('bus_operator_id')?.setValue([]);
+  }
+
+  
 
   ngOnInit(): void {
     this.getRoute();
     this.getCity();
     this.getdaywise();
     this.getTotalseat();
+    this.getOperator();
+    this.getOperatorRevenue();
+    this.alloperator();
   }
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -490,5 +685,128 @@ export class TopRouteComponent implements OnInit {
       },
       
     ]
+  };
+
+
+
+  operatorchart: Highcharts.Options = {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Operator wise Booking'
+    },
+    subtitle: {
+      text: ''
+    },
+    xAxis: {
+      type: 'category'
+    },
+    yAxis: {
+      title: {
+        text: 'Total percent market share'
+      }
+    },
+    legend: {
+      enabled: false
+    },
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: '{point.y}'
+        }
+      }
+    },
+
+    series: [
+      {
+        name: 'Browsers',
+        type: 'column',
+        colorByPoint: true,
+        data: [
+        ]
+      }
+    ],
+
+    drilldown: {
+      series: [
+        {
+          id: 'Chrome',
+          name: 'Chrome versions',
+          type: 'column',
+          data: []
+        },
+        {
+          id: 'Safari',
+          name: 'Safari versions',
+          type: 'column',
+          data: []
+        }
+      ]
+    }
+
+  };
+
+
+  operatorRevenuechart: Highcharts.Options = {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Operator wise Revenue'
+    },
+    subtitle: {
+      text: ''
+    },
+    xAxis: {
+      type: 'category'
+    },
+    yAxis: {
+      title: {
+        text: 'Total percent market share'
+      }
+    },
+    legend: {
+      enabled: false
+    },
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: 'Rs {point.y}'
+        }
+      }
+    },
+
+    series: [
+      {
+        name: 'Browsers',
+        type: 'column',
+        colorByPoint: true,
+        data: [
+        ]
+      }
+    ],
+
+    drilldown: {
+      series: [
+        {
+          id: 'Chrome',
+          name: 'Chrome versions',
+          type: 'column',
+          data: []
+        },
+        {
+          id: 'Safari',
+          name: 'Safari versions',
+          type: 'column',
+          data: []
+        }
+      ]
+    }
+
   };
 }
