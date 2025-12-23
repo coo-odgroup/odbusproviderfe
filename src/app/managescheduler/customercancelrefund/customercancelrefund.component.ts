@@ -106,8 +106,6 @@ export class CustomercancelrefundComponent implements OnInit {
           this.cancelRefund = res.data.data.data;
           this.pagination = res.data.data;
           this.all = res.data;
-          // console.log(this.cancelRefund);
-          // console.log("This");
           this.spinner.hide();
         }
       );
@@ -115,17 +113,7 @@ export class CustomercancelrefundComponent implements OnInit {
     else {
 
       const param = {
-        bus_operator_id: null,
-        payment_id: null,
-        pnr: null,
-        date_type: null,
         rows_number: 100,
-        source_id: null,
-        destination_id: null,
-        rangeFromDate: null,
-        rangeToDate: null,
-        apiUser: null,
-        USER_BUS_OPERATOR_ID: null,
         cancel_by: "ODBUS"
       };
 
@@ -138,17 +126,6 @@ export class CustomercancelrefundComponent implements OnInit {
           this.spinner.hide();
         }
       );
-
-      // this.acts.getAllData(data).subscribe(
-      //   res => {
-      //     this.cancelRefund = res.data.data.data;
-      //     this.pagination = res.data.data;
-      //     this.all = res.data;
-      //     // console.log("HEllo this works");
-      //     // console.log( this.cancelRefund);
-      //     this.spinner.hide();
-      //   }
-      // );
     }
   }
 

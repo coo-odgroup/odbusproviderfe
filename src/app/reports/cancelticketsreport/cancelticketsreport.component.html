@@ -331,11 +331,20 @@
                                     </small>
                                     <br />
                                     <strong>Status: </strong>
-                                    <small *ngIf="complete.customer_payment.payment_done == '2' && complete.customer_payment.refund_id != '0'" style="color: #2ecc71;">
-                                        Refunded
+                                    <small *ngIf="complete.customer_payment.refund_status == '0'" class="text-primary">
+                                        INITIATED
                                     </small>
-                                    <small *ngIf="complete.status == '2' && complete.customer_payment.payment_done != '2' && complete.customer_payment.refund_id == '0'" style="color: #f00;">
-                                        Pending
+                                    <small *ngIf="complete.customer_payment.refund_status == '1'" class="text-warning">
+                                        PENDING
+                                    </small>
+                                    <small *ngIf="complete.customer_payment.refund_status == '2'" class="text-info">
+                                        CONFIRMED
+                                    </small>
+                                    <small *ngIf="complete.customer_payment.refund_status == '3'" class="text-success">
+                                        COMPLETED
+                                    </small>
+                                    <small *ngIf="complete.customer_payment.refund_status == '4'" class="text-danger">
+                                        FAILED
                                     </small>
                                 </td>
                             </tr>
