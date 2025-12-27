@@ -2,12 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HttpClient } from '@angular/common/http';
 import { Constants } from '../../constant/constant';
-import { FormBuilder, FormControl, FormGroup,ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Drilldown from 'highcharts/modules/drilldown';
 
 
 Drilldown(Highcharts);
+
+type BusDetail = {
+  bus_number: string;
+  name: string;
+};
+
+type BusPoint = {
+  busDetails?: BusDetail[];
+};
 
 @Component({
   selector: 'app-top-route',
@@ -26,20 +35,21 @@ export class TopRouteComponent implements OnInit {
   abhibus: any[] = [];
   paytm: any[] = [];
 
-  totalSeat: any[]=[];
-  totalSlepper: any[]=[];
-  totalSeatbooked: any[]=[];
-  totalSlepperbooked: any[]=[];
-  totalSeatavl: any[]=[];
-  totalSlepperavl: any[]=[];
+  totalSeat: any[] = [];
+  totalSlepper: any[] = [];
+  totalSeatbooked: any[] = [];
+  totalSlepperbooked: any[] = [];
+  totalSeatavl: any[] = [];
+  totalSlepperavl: any[] = [];
 
 
   minEndDate: string = '';
   maxEndDate: string = '';
 
   form!: FormGroup;
+  busOperators: any;
 
-  constructor(private http: HttpClient, private spinner: NgxSpinnerService,private fb: FormBuilder) {}
+  constructor(private http: HttpClient, private spinner: NgxSpinnerService, private fb: FormBuilder) { }
 
   updateFlag = false;
 
@@ -65,19 +75,28 @@ export class TopRouteComponent implements OnInit {
   })
 
   operatorFormBooking = new FormGroup({
-    from_j_date : new FormControl(''),
-    to_j_date : new FormControl(''),
-    order : new FormControl('DESC'),
-    limit : new FormControl('10'),
+    from_j_date: new FormControl(''),
+    to_j_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
     bus_operator_id: new FormControl([]),
   })
 
 
   operatorFormRevenue = new FormGroup({
-    from_j_date : new FormControl(''),
-    to_j_date : new FormControl(''),
-    order : new FormControl('DESC'),
-    limit : new FormControl('10'),
+    from_j_date: new FormControl(''),
+    to_j_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+    bus_operator_id: new FormControl([]),
+  })
+
+
+  operatorFormSeat = new FormGroup({
+    from_date: new FormControl(''),
+    to_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
     bus_operator_id: new FormControl([]),
   })
 
@@ -85,15 +104,15 @@ export class TopRouteComponent implements OnInit {
     this.RouteformData.reset();
   }
 
-  Cityrefresh(){
+  Cityrefresh() {
     this.CityFormData.reset();
   }
 
-  Dayrefresh(){
+  Dayrefresh() {
     this.DayFormData.reset();
   }
 
-  opBookingrefresh(){
+  opBookingrefresh() {
     this.operatorFormBooking.reset();
   }
 
@@ -137,33 +156,33 @@ export class TopRouteComponent implements OnInit {
     });
   }
 
-  getCity(){
+  getCity() {
     // console.log(this.CityFormData.value);
     const reqData = this.CityFormData.value;
-    this.http.post(this.apiURL+"/top-city",reqData).subscribe((res:any)=>{
+    this.http.post(this.apiURL + "/top-city", reqData).subscribe((res: any) => {
       // console.log(res.data);
       this.TopCity = res.data.map((item: any) => item.source_name);
       this.CitywiseBooking = res.data.map((item: any) => item.total_bookings);
 
       this.cityChart = {
-          ...this.cityChart,
-          xAxis: {
-            categories: this.TopCity,
+        ...this.cityChart,
+        xAxis: {
+          categories: this.TopCity,
+        },
+        series: [
+          {
+            name: 'Total Bookings',
+            type: 'bar',
+            data: this.CitywiseBooking,
           },
-          series: [
-            {
-              name: 'Total Bookings',
-              type: 'bar',
-              data: this.CitywiseBooking,
-            },
-          ],
-        };
+        ],
+      };
 
-        this.updateFlag = true;
+      this.updateFlag = true;
     })
   }
 
-  
+
 
   getdaywise() {
     const reqData = this.DayFormData.value;
@@ -193,7 +212,7 @@ export class TopRouteComponent implements OnInit {
             name: 'Abhibus',
             type: 'line',
             color: '#00ff7f',
-            data: this.abhibus  
+            data: this.abhibus
           },
           {
             name: 'Paytm',
@@ -208,10 +227,10 @@ export class TopRouteComponent implements OnInit {
     });
   }
 
-  getTotalseat(){
-    const reqParams = this.operatorFormRevenue.value;
-    this.http.post(this.apiURL + "/total-bus-seat", reqParams).subscribe((res:any)=>{
-      console.log(res);
+  getTotalseat() {
+    const reqParams = this.operatorFormSeat.value;
+    this.http.post(this.apiURL + "/total-bus-seat", reqParams).subscribe((res: any) => {
+      // console.log(res);
       this.totalSeat = res.total_lower_berth;
       this.totalSlepper = res.total_upper_berth;
       this.totalSeatbooked = res.total_seat_booked;
@@ -262,7 +281,7 @@ export class TopRouteComponent implements OnInit {
             data: [this.totalSlepper],
             stack: 'America'
           },
-          
+
         ]
       };
 
@@ -308,9 +327,9 @@ export class TopRouteComponent implements OnInit {
 
   getOperator() {
     const reqParams = this.operatorFormBooking.value;
-    console.log(reqParams);
+    // console.log(reqParams);
     this.http.post(this.apiURL + "/operator-wise-booking", reqParams).subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
 
       const operatorSeries = res.map((item: any) => ({
         name: item.operator_name,
@@ -359,7 +378,7 @@ export class TopRouteComponent implements OnInit {
   getOperatorRevenue() {
     const reqParams = this.operatorFormRevenue.value;
     this.http.post(this.apiURL + "/operator-wise-revenue", reqParams).subscribe((res: any) => {
-      console.log(res.data);
+      // console.log(res.data);
 
       const operatorSeries = res.data.map((item: any) => ({
         name: item.operator_name,
@@ -407,17 +426,72 @@ export class TopRouteComponent implements OnInit {
     });
   }
 
+  getOperatorBuscancel() {
+    const reqParams = this.operatorFormSeat.value;
 
-  // busOperators = [
-  //   { id: 1, operatorData: 'Operator One' },
-  //   { id: 2, operatorData: 'Operator Two' },
-  //   { id: 3, operatorData: 'Operator Three' }
-  // ];
+    // console.log(reqParams);
+    this.http.post(this.apiURL + "/operator-wise-busclose", reqParams).subscribe((res: any) => {
 
-  busOperators:any;
+      if (res.type === 'single_date') {
 
-  alloperator(){
-    this.http.get(this.apiURL+"/busoperator").subscribe((res:any)=>{
+        const operatorSeries = res.data.map((item: any) => ({
+          name: item.operator_name,
+          y: item.total_cancel,
+          busDetails: item.cancelled_buses || []
+        }));
+
+        this.operatorSeatCancelchart = {
+          ...this.operatorSeatCancelchart,
+          series: [{
+            name: 'Operators',
+            type: 'column',
+            colorByPoint: true,
+            data: operatorSeries
+          }],
+          drilldown: undefined
+        };
+
+        return;
+      }
+
+      const dateSeries = res.data.map((day: any) => ({
+        name: day.date,
+        y: day.operators.reduce(
+          (sum: number, op: any) => sum + op.total_cancel, 0
+        ),
+        drilldown: day.date
+      }));
+
+      const drilldownSeries = res.data.map((day: any) => ({
+        id: day.date,
+        name: `Operator wise cancel (${day.date})`,
+        type: 'column',
+        data: day.operators.map((op: any) => ({
+          name: op.operator_name,
+          y: op.total_cancel,
+          busDetails: op.cancelled_buses || []
+        }))
+      }));
+
+      this.operatorSeatCancelchart = {
+        ...this.operatorSeatCancelchart,
+        series: [{
+          name: 'Date wise Cancel',
+          type: 'column',
+          colorByPoint: true,
+          data: dateSeries
+        }],
+        drilldown: {
+          series: drilldownSeries
+        }
+      };
+
+    });
+  }
+
+
+  alloperator() {
+    this.http.get(this.apiURL + "/busoperator").subscribe((res: any) => {
       this.busOperators = res.data;
     })
   }
@@ -432,7 +506,7 @@ export class TopRouteComponent implements OnInit {
     this.operatorFormBooking.get('bus_operator_id')?.setValue([]);
   }
 
-  
+
 
   ngOnInit(): void {
     this.getRoute();
@@ -442,6 +516,7 @@ export class TopRouteComponent implements OnInit {
     this.getOperator();
     this.getOperatorRevenue();
     this.alloperator();
+    this.getOperatorBuscancel();
   }
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -642,7 +717,7 @@ export class TopRouteComponent implements OnInit {
     plotOptions: {
       column: {
         stacking: 'normal',
-        pointPadding: 0.3, 
+        pointPadding: 0.3,
         groupPadding: 0.3
       }
     },
@@ -683,7 +758,7 @@ export class TopRouteComponent implements OnInit {
         data: [],
         stack: 'America'
       },
-      
+
     ]
   };
 
@@ -809,4 +884,125 @@ export class TopRouteComponent implements OnInit {
     }
 
   };
+
+  // operatorSeatCancelchart: Highcharts.Options = {
+  //   chart: {
+  //     type: 'column'
+  //   },
+  //   title: {
+  //     text: 'Operator wise Bus Cancel'
+  //   },
+  //   subtitle: {
+  //     text: ''
+  //   },
+  //   xAxis: {
+  //     type: 'category'
+  //   },
+  //   yAxis: {
+  //     title: {
+  //       text: 'Total percent market share'
+  //     }
+  //   },
+  //   legend: {
+  //     enabled: false
+  //   },
+  //   plotOptions: {
+  //     series: {
+  //       borderWidth: 0,
+  //       dataLabels: {
+  //         enabled: true,
+  //       }
+  //     }
+  //   },
+
+  //   series: [
+  //     {
+  //       name: 'Browsers',
+  //       type: 'column',
+  //       colorByPoint: true,
+  //       data: [
+  //       ]
+  //     }
+  //   ],
+
+  //   // drilldown: {
+  //   //   series: [
+  //   //     {
+  //   //       id: 'Chrome',
+  //   //       name: 'Chrome versions',
+  //   //       type: 'column',
+  //   //       data: []
+  //   //     },
+  //   //     {
+  //   //       id: 'Safari',
+  //   //       name: 'Safari versions',
+  //   //       type: 'column',
+  //   //       data: []
+  //   //     }
+  //   //   ]
+  //   // }
+
+  // };
+
+  operatorSeatCancelchart: Highcharts.Options = {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Operator wise Bus Cancel'
+    },
+    xAxis: {
+      type: 'category'
+    },
+    yAxis: {
+      title: {
+        text: 'Total Cancel Count'
+      }
+    },
+    legend: {
+      enabled: false
+    },
+
+    tooltip: {
+      useHTML: true,
+      formatter: function () {
+
+        const point = this.point as Highcharts.Point & BusPoint;
+
+        let html = `
+          <b>${point.name}</b><br/>
+          <b>Total Cancel:</b> ${point.y}<br/>
+        `;
+
+        if (point.busDetails?.length) {
+          html += `<br/><b>Cancelled Buses:</b><br/>`;
+          point.busDetails.forEach((bus, i) => {
+            html += `${i + 1}. ${bus.bus_number} - ${bus.name}<br/>`;
+          });
+        }
+
+        return html;
+      }
+    },
+
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true
+        }
+      }
+    },
+
+    series: [
+      {
+        name: 'Operators',
+        type: 'column',
+        colorByPoint: true,
+        data: []
+      }
+    ]
+  };
+
+
 }

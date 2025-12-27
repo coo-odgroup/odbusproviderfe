@@ -149,7 +149,7 @@
 
   <!-- seat sleeper -->
   <div class="col-md-6 mt-5" style="background-color: rgb(242, 234, 234)">
-    <form [formGroup]="DayFormData" (ngSubmit)="getdaywise()">
+    <form [formGroup]="DayFormData" (ngSubmit)="getTotalseat()">
       <div class="row mb-1 mt-1">
         <div class="col-md-4">
           <label>From Date</label>
@@ -376,4 +376,113 @@
 
 
   </div>
+
+  <div class="col-md-12 mt-5" style="background-color: rgb(242, 234, 234)">
+    <form [formGroup]="operatorFormSeat" (ngSubmit)="getOperatorBuscancel()">
+      <div class="row mb-1 mt-1">
+
+        <!-- From Journey Date -->
+        <div class="col-md-2">
+          <label>From Date</label>
+          <input
+            type="date"
+            formControlName="from_date"
+            class="form-control"
+            (change)="onStartDateChange($event)">
+        </div>
+
+        <!-- To Journey Date -->
+        <div class="col-md-2">
+          <label>To Date</label>
+          <input
+            type="date"
+            formControlName="to_date"
+            class="form-control"
+            [min]="minEndDate"
+            [max]="maxEndDate">
+        </div>
+
+        <!-- Bus Operator -->
+        <div class="col-md-2">
+          <label>Bus Operator</label>
+
+          <ng-select
+            [items]="busOperators"
+            [multiple]="true"
+            bindLabel="operator_name"
+            bindValue="id"
+            placeholder="Select Bus Operator"
+            formControlName="bus_operator_id"
+            [clearable]="false">
+
+            <ng-template ng-header-tmp>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-link p-0 me-2"
+                  (click)="selectAll()">
+                  Select All
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-link p-0"
+                  (click)="clearAll()">
+                  Clear All
+                </button>
+              </div>
+            </ng-template>
+
+          </ng-select>
+        </div>
+
+        <!-- Order -->
+        <div class="col-md-3">
+          <label>Select</label>
+          <select class="form-control" formControlName="order">
+            <option value="DESC">High to Low</option>
+            <option value="ASC">Low to High</option>
+          </select>
+        </div>
+
+        <!-- Limit -->
+        <div class="col-md-3">
+          <label>Limit</label>
+          <select class="form-control" formControlName="limit">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-md-2">
+          <label>&nbsp;</label>
+          <div class="mb-3">
+            <button class="btn btn-success me-2" type="submit">
+              Search
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="opBookingrefresh()">
+              Refresh
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+    <div style="width: 100%">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="operatorSeatCancelchart"
+        style="width: 100%; height: 400px; display: block;">
+      </highcharts-chart>
+    </div>
+
+
+  </div>
+
+  
 </div>
