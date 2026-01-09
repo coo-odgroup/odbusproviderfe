@@ -1,3 +1,14 @@
+input[type="radio"]:checked
+{
+    color: #fff !important;
+    background-color: #007f8e !important;
+    border-color: #007381 !important;   
+}
+
+.card-body22 {
+    padding: 12.5px;
+}
+
 .chart-container {
   position: relative;
   width: 100%;
@@ -24,6 +35,21 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+
+
+.passenger-scroll {
+  height: 540px;
+  overflow-y: auto;
+}
+
+/* sticky header */
+.passenger-scroll thead th {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 2;
+}
+
 
 /* Animation */
 @keyframes spin {

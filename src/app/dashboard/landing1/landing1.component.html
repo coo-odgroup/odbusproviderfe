@@ -1,0 +1,569 @@
+<!-- <ngx-spinner></ngx-spinner> -->
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<div>
+  <div class="row">
+    <div class="col-xl-12 ">
+      <app-card [hidHeader]="true" [options]="false">
+        <div class="float-left">
+          <label>
+            <!-- <h2>Showing {{searchfor}} Data</h2> -->
+            <h2>Showing Today Data</h2>
+          </label>
+        </div>
+        <div class="btn-group btn-group-toggle float-right" ngbRadioGroup name="ticketSize" data-toggle="buttons">
+
+          <label ngbButtonLabel class="btn btn-info">Today
+            <input ngbButton type="radio" class="dateRange" name="dateRange" value="sm-view" id="option1"><i
+              class="feather icon-align-justify m-0"></i>
+          </label>
+          <label ngbButtonLabel class="btn btn-info">This Week
+            <input ngbButton type="radio" class="dateRange" name="dateRange" value="md-view" id="option2"> <i
+              class="feather icon-menu m-0"></i>
+          </label>
+          <label ngbButtonLabel class="btn btn-info">This Month
+            <input ngbButton type="radio" class="dateRange" name="dateRange" value="large-view" id="option3"> <i
+              class="feather icon-grid m-0"></i>
+          </label>
+          <label ngbButtonLabel class="btn btn-info">All
+            <input ngbButton type="radio" class="dateRange" name="dateRange" value="large-view" id="option5"> <i
+              class="feather icon-award m-0"></i>
+          </label>
+        </div>
+      </app-card>
+    </div>
+  </div>
+  <div class="row">
+
+    <!-- operator wise Booking -->
+    <div class="col-md-6" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="operatorFormBooking" (ngSubmit)="getOperator()">
+        <div class="row mb-1 mt-1">
+
+          <!-- From Journey Date -->
+          <div class="col-md-3">
+            <label>Journey Date</label>
+            <input type="date" formControlName="from_j_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)">
+          </div>
+
+          <!-- Bus Operator -->
+          <div class="col-md-3">
+            <label>Bus Operator</label>
+
+            <ng-select [items]="busOperators" [multiple]="true" bindLabel="organisation_name" bindValue="id"
+              placeholder="Select Bus Operator" formControlName="bus_operator_id" [clearable]="false">
+
+              <ng-template ng-header-tmp>
+                <div>
+                  <button type="button" class="btn btn-link p-0 me-2" (click)="selectAll()">
+                    Select All
+                  </button>
+
+                  <button type="button" class="btn btn-link p-0" (click)="clearAll()">
+                    Clear All
+                  </button>
+                </div>
+              </ng-template>
+
+            </ng-select>
+          </div>
+
+          <!-- Order -->
+          <div class="col-md-3">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC">High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div>
+
+          <!-- Limit -->
+          <div class="col-md-3">
+            <label>Limit</label>
+            <select class="form-control form-control-sm" formControlName="limit">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+
+          <!-- Buttons -->
+          <div class="col-md-3">
+            <div class="">
+              <button class="btn btn-success btn-sm mr-2 me-2" type="submit">
+                Search
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="opBookingrefresh()">
+                Refresh
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="isOPbLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <div style="width: 100%">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="operatorchart" (chartInstance)="onChartInstance($event)"
+          style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+      </div>
+
+
+    </div>
+
+    <!-- operator wise Revenue -->
+    <div class="col-md-6" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="operatorFormRevenue" (ngSubmit)="getOperatorRevenue()">
+        <div class="row mb-1 mt-1">
+          <div class="col-md-3">
+            <label>Journey Date</label>
+            <input type="date" formControlName="from_j_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)" />
+          </div>
+
+          <!-- Bus Operator -->
+          <div class="col-md-3">
+            <label>Bus Operator</label>
+
+            <ng-select [items]="busOperators" [multiple]="true" bindLabel="organisation_name" bindValue="id"
+              placeholder="Select Bus Operator" formControlName="bus_operator_id" [clearable]="false">
+
+              <ng-template ng-header-tmp>
+                <div>
+                  <button type="button" class="btn btn-link p-0 me-2" (click)="selectAll()">
+                    Select All
+                  </button>
+
+                  <button type="button" class="btn btn-link p-0" (click)="clearAll()">
+                    Clear All
+                  </button>
+                </div>
+              </ng-template>
+
+            </ng-select>
+          </div>
+
+          <div class="col-md-3">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC" selected>High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label>Limit</label>
+            <select class="form-control form-control-sm" formControlName="limit">
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <div class="">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="opRevenuefresh()"> Refresh </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="isOPrLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <div style="width: 100%">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="operatorRevenuechart"
+          (chartInstance)="onRevenueChartInstance($event)" style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+      </div>
+
+
+    </div>
+
+    <!-- DATE WISE PASSENGER LIST -->
+    <div class="col-md-6 mt-3">
+      <app-card cardTitle="DATE WISE PASSENGER LIST" cardClass="table-card" blockClass="p-0">
+        <!-- SCROLL CONTAINER -->
+        <div class="table-responsive passenger-scroll">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Number</th>
+                <th>Route</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let data of passenger; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.email }}</td>
+                <td>{{ data.phone }}</td>
+                <td>{{ data.source_name }} - {{ data.dest_name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </app-card>
+    </div>
+
+    <!-- Payment report -->
+    <div class="col-md-6 mt-3" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="PaymentFormData" (ngSubmit)="getPaymentdata()">
+        <div class="row mb-3 mt-1">
+          <div class="col-md-4">
+            <label>Journey Date</label>
+            <input type="date" formControlName="start_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)" />
+          </div>
+
+          <!-- <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate"
+              [max]="maxEndDate" />
+          </div> -->
+
+          <div class="col-md-4">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC" selected>High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label>&nbsp;</label>
+            <div>
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm"> Refresh </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row"> -->
+        <!-- <div class="col-md-4">
+            <select class="form-control form-control-sm" formControlName="limit">
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div> -->
+        <!-- </div> -->
+      </form>
+
+      <div class="chart-loader" *ngIf="isPyamentLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Chart -->
+      <highcharts-chart [Highcharts]="Highcharts" [options]="paymentChart"
+        style="width: 100%; height: 500px; display: block;">
+      </highcharts-chart>
+
+    </div>
+
+    <!-- peak booking -->
+    <div class="col-md-6" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="peakBookingFormData" (ngSubmit)="getpeakBooking()">
+        <div class="row mb-1 mt-1">
+          <div class="col-md-4">
+            <label>Journey From Date</label>
+            <input type="date" formControlName="start_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)" />
+          </div>
+
+          <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate"
+              [max]="maxEndDate" />
+          </div>
+
+          <div class="col-md-4">
+            <label>&nbsp;</label>
+            <div class="mb-3">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="peakBookingrefresh()"> Refresh </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="isPeakLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" [(update)]="updateFlag"
+        style="width: 100%; height: 400px; display: block;">
+      </highcharts-chart>
+
+    </div>
+
+    <!-- seat sleeper -->
+    <div class="col-md-6" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="operatorFormSeat" (ngSubmit)="getTotalseat()">
+        <div class="row mb-1 mt-1">
+          <div class="col-md-4">
+            <label>Booking From Date</label>
+            <input type="date" formControlName="start_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)" />
+          </div>
+
+          <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate"
+              [max]="maxEndDate" />
+          </div>
+
+          <div class="col-md-4">
+            <label>&nbsp;</label>
+            <div class="mb-3">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="seatRefresh()"> Refresh </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Chart -->
+      <div class="chart-loader" *ngIf="isSeatLoading">
+        <div class="spinner"></div>
+      </div>
+      <div>
+        <highcharts-chart [Highcharts]="Highcharts" [options]="seatChart"
+          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+      </div>
+
+    </div>
+
+    <!-- Total ticket booked month wise -->
+    <div class="col-md-6 mt-3" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="monthBookingFormData" (ngSubmit)="getMonthBooking()">
+        <div class="row mb-1 mt-1">
+          <div class="col-md-4">
+            <label>Journey From Date</label>
+            <input type="date" formControlName="start_date" class="form-control form-control-sm" />
+          </div>
+
+          <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="end_date" class="form-control form-control-sm" />
+          </div>
+
+          <!-- <div class="col-md-4">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC" selected>High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div> -->
+
+          <div class="col-md-4">
+            <label>&nbsp;</label>
+            <div class="mb-3">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="monthBookingRefresh()"> Refresh </button>
+            </div>
+          </div>
+
+          <!-- <div class="col-md-4">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC" selected>High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div> -->
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <b>Total Booking:- {{totalBooking}}</b>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="isBookingLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Chart -->
+      <highcharts-chart [Highcharts]="Highcharts" [options]="monthBooking"
+        style="width: 100%; height: 500px; display: block;">
+      </highcharts-chart>
+
+    </div>
+
+    <!-- month wise Revenue -->
+    <div class="col-md-6 mt-3" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="monthRevenueFormData" (ngSubmit)="getMonthRevenue()">
+        <div class="row mb-3 mt-1">
+          <div class="col-md-4">
+            <label>Journey From Date</label>
+            <input type="date" formControlName="from_j_date" class="form-control form-control-sm" />
+          </div>
+
+          <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="to_j_date" class="form-control form-control-sm" />
+          </div>
+
+          <div class="col-md-4">
+            <label>&nbsp;</label>
+            <div class="">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="Revenuerfresh()"> Refresh </button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <b>Total Revenue:- {{totalRevenue}}</b>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="ismrLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <div style="width: 100%">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="monthRevenuechart"
+          (chartInstance)="onRevenueChartInstance($event)" style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+      </div>
+
+
+    </div>
+
+    <!-- Routes wise Revenue -->
+    <div class="col-md-6 mt-3" style="background-color: rgb(242, 234, 234)">
+      <!-- Filters -->
+      <form [formGroup]="RouteRevenueformData" (ngSubmit)="getRouteRevenue()">
+        <div class="row mb-1 mt-1">
+          <div class="col-md-4">
+            <label>Booking From Date</label>
+            <input type="date" formControlName="start_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)" />
+          </div>
+
+          <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate"
+              [max]="maxEndDate" />
+          </div>
+
+          <div class="col-md-4">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC" selected>High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <select class="form-control form-control-sm" formControlName="limit">
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="routeBookingRefresh()"> Refresh </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="isRouteRevenueLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Chart -->
+      <div style="width: 100%; height: 500px">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="routeRevenueChart"
+          style="width: 100%; height: 100%; display: block"></highcharts-chart>
+      </div>
+    </div>
+
+    <!-- Routes wise Booking -->
+    <div class="col-md-6 mt-3" style="background-color: rgb(242, 234, 234)">
+      <!-- Filters -->
+      <form [formGroup]="RouteformData" (ngSubmit)="getRoute()">
+        <div class="row mb-1 mt-1">
+          <div class="col-md-4">
+            <label>Booking From Date</label>
+            <input type="date" formControlName="start_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)" />
+          </div>
+
+          <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate"
+              [max]="maxEndDate" />
+          </div>
+
+          <div class="col-md-4">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC" selected>High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <select class="form-control form-control-sm" formControlName="limit">
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="routeRefresh()"> Refresh </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="isChartLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Chart -->
+      <div style="width: 100%; height: 500px">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="routeChart"
+          style="width: 100%; height: 100%; display: block"></highcharts-chart>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="user_role != 1">
+  <h1>hello operator</h1>
+</div> -->
