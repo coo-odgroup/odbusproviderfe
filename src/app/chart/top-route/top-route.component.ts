@@ -648,6 +648,7 @@ export class TopRouteComponent implements OnInit {
     this.getOperatorRevenue();
     this.alloperator();
     this.getOperatorBuscancel();
+    this.cancelledTicketCountReport();
   }
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -1078,5 +1079,223 @@ export class TopRouteComponent implements OnInit {
     ]
   };
 
+  // Cancel Ticket Count Start
+  TCRformData = new FormGroup({
+    start_date: new FormControl(''),
+    end_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+  });
 
+  refreshTCR() {
+    this.TCRformData.reset();
+  }
+
+  isTCRChartLoading: boolean = false;
+
+  cancelledTicketCountReport() {
+    this.isTCRChartLoading = true;
+
+    const reqData = this.TCRformData.value;
+
+    this.http.post(this.apiURL + '/cancelled-ticket-count', reqData).subscribe({
+      next: (res: any) => {
+        if (res.status === true) {
+
+          const journeyDates = res.data.map(
+            (item: any) => item.journey_date
+          );
+
+          const totalCancelledBookings = res.data.map(
+            (item: any) => item.total_cancel_bookings
+          );
+
+          this.cancelTicketChart = {
+            chart: {
+              type: 'column',
+              inverted: false,
+            },
+            title: {
+              text: '',
+            },
+            xAxis: {
+              categories: journeyDates,
+            },
+            yAxis: {
+              title: {
+                text: 'Cancelled Bookings Count',
+              },
+            },
+            series: [
+              {
+                type: 'column',
+                name: 'Cancelled Ticket Count',
+                data: totalCancelledBookings,
+              },
+            ],
+          };
+
+          this.updateFlag = true;
+        }
+      },
+      error: (err) => console.error(err),
+      complete: () => {
+        this.isTCRChartLoading = false;
+      }
+    });
+  }
+
+  cancelTicketChart: Highcharts.Options = {
+    chart: {
+      type: 'column',
+      backgroundColor: '#0b0e11'
+    },
+    title: {
+      text: 'Cancelled Ticket Count',
+      style: { color: '#000', fontSize: '22px' }
+    },
+    xAxis: {
+      categories: [],
+      crosshair: true,
+      labels: { style: { color: '#000' } }
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Value',
+        style: { color: '#000' }
+      },
+      labels: { style: { color: '#000' } }
+    },
+    legend: {
+      itemStyle: { color: '#000' }
+    },
+    tooltip: {
+      shared: true
+    },
+    series: [
+      {
+        name: 'Cancelled Ticket Count',
+        type: 'column',
+        data: [],
+        colorByPoint: true,
+      }
+    ]
+  };
+  // Cancel Ticket Count End
+
+  // Refund Amount Report Start
+  RAformData = new FormGroup({
+    start_date: new FormControl(''),
+    end_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+  });
+
+  refreshRA() {
+    this.RAformData.reset();
+  }
+
+  isRAChartLoading: boolean = false;
+
+  refundAmountReport() {
+    this.isRAChartLoading = true;
+
+    const reqData = this.RAformData.value;
+
+    this.http.post(this.apiURL + '/refund-amount', reqData).subscribe({
+      next: (res: any) => {
+        if (res.status === true) {
+
+          console.log(res.data);
+
+          // X-axis: Journey Dates
+          const journeyDates = res.data.map(
+            (item: any) => item.journey_date
+          );
+
+          // Y-axis: Total Refund Amount
+          const totalRefundAmounts = res.data.map(
+            (item: any) => Number(item.total_refund_amount)
+          );
+
+          this.refundAmountChart = {
+            chart: {
+              type: 'column',
+              inverted: false,
+            },
+            title: {
+              text: '',
+            },
+            xAxis: {
+              categories: journeyDates,
+              title: {
+                text: 'Journey Date',
+              },
+            },
+            yAxis: {
+              title: {
+                text: 'Total Refund Amount',
+              },
+            },
+            tooltip: {
+              valuePrefix: '₹ ',
+            },
+            series: [
+              {
+                type: 'column',
+                name: 'Refund Amount',
+                data: totalRefundAmounts,
+              },
+            ],
+          };
+
+          this.updateFlag = true;
+        }
+      },
+      error: (err) => console.error(err),
+      complete: () => {
+        this.isRAChartLoading = false;
+      }
+    });
+  }
+
+  refundAmountChart: Highcharts.Options = {
+    chart: {
+      type: 'column',
+      backgroundColor: '#0b0e11'
+    },
+    title: {
+      text: 'Refund Amount',
+      style: { color: '#000', fontSize: '22px' }
+    },
+    xAxis: {
+      categories: [],
+      crosshair: true,
+      labels: { style: { color: '#000' } }
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Total Refund Amount',
+        style: { color: '#000' }
+      },
+      labels: { style: { color: '#000' } }
+    },
+    legend: {
+      itemStyle: { color: '#000' }
+    },
+    tooltip: {
+      shared: true
+    },
+    series: [
+      {
+        name: 'Refund Amount',
+        type: 'column',
+        data: [],
+        colorByPoint: true,
+      }
+    ]
+  };
+  // Refund Amount Report End
 }

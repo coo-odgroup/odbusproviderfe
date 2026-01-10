@@ -130,6 +130,61 @@
               </div>
             </div>
 
+            <div class="col-xl-12 col-md-12">
+              <app-card cardTitle="ALERT FOR DOUBLE BOOKINGS" cardClass="table-card double-booking-card" blockClass="p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped mb-0">
+                    <thead>
+                      <tr>   
+                        <th>#</th>               
+                        <th>Journey Date</th>
+                        <th>Bus Name / Number</th>
+                        <th>Bus Id</th>
+                        <th>PNR</th>
+                        <th>Seat No</th>
+                        <th>Total Bookings</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Number</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let route of dupData; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td class="text-c-red"><b>{{ route.journey_dt }}</b></td>
+                        <td>
+                          {{ route.bus_name }} ({{ route.bus_number }})
+                        </td>
+                        <td>{{ route.bus_id }}</td>
+                        <td>
+                          <div *ngFor="let pnr of route.pnrs.split(',')" class="text-c-red">
+                            {{ pnr }}
+                          </div>
+                        </td>
+                        <td>{{ route.seat_no }}</td>
+                        <td>{{ route.total_bookings }}</td>
+                        <td>
+                          <div *ngFor="let name of route.customer_names.split(',')">
+                            <b>{{ name }}</b>
+                          </div>
+                        </td>
+                        <td>
+                          <div *ngFor="let email_id of route.email_ids.split(',')">
+                            {{ email_id }}
+                          </div>
+                        </td>
+                        <td>
+                          <div *ngFor="let number of route.mobile_numbers.split(',')">
+                            {{ number }}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </app-card>
+            </div>
+
             <div class="col-xl-6 col-md-12">
               <app-card cardTitle="TOP ROUTES BOOKINGS IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
                 <div class="table-responsive">

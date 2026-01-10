@@ -47,7 +47,9 @@ export class LandingComponent implements OnInit {
 
     pnr_date: any;
     pnr_label: any;
-  searchfor: string;
+    searchfor: string;
+
+    dupData: any;
 
     user_role:any = localStorage.getItem("ROLE_ID");
 
@@ -200,6 +202,7 @@ export class LandingComponent implements OnInit {
       this.operatordata();
       this.pnrstaticsdata("Today"); 
       this.searchfor='Today';
+      this.duplicateBooking();
     }
 
     // hideSpinner()
@@ -247,6 +250,15 @@ export class LandingComponent implements OnInit {
         res => {
           this.routedata= res.data;
          
+        }
+      );
+    }
+
+    duplicateBooking() {
+      this.ds.duplicatebooking().subscribe(
+        res => {
+          console.log(res);
+          this.dupData = res;
         }
       );
     }

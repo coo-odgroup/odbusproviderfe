@@ -500,5 +500,109 @@
 
   </div>
 
-  
+  <!-- Cancel Ticket Count Report -->
+  <div class="col-md-6 mt-5" style="background-color: rgb(242, 234, 234)">
+    <!-- Filters -->
+    <form [formGroup]="TCRformData" (ngSubmit)="cancelledTicketCountReport()">
+      <div class="row mb-1 mt-1">
+        <div class="col-md-4">
+          <label>Booking From Date</label>
+          <input type="date" formControlName="start_date" class="form-control form-control-sm" (change)="onStartDateChange($event)" />
+        </div>
+
+        <div class="col-md-4">
+          <label>To Date</label>
+          <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate" [max]="maxEndDate" />
+        </div>
+
+        <div class="col-md-4">
+          <label>Select</label>
+          <select class="form-control form-control-sm" formControlName="order">
+            <option value="DESC" selected>High to Low</option>
+            <option value="ASC">Low to High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <select class="form-control form-control-sm" formControlName="limit">
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <div class="mb-3">
+            <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+            <button class="btn btn-danger btn-sm" (click)="refreshTCR()"> Refresh </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="chart-loader" *ngIf="isTCRChartLoading">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Chart -->
+    <div style="width: 100%; height: 500px">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="cancelTicketChart"
+        style="width: 100%; height: 100%; display: block"></highcharts-chart>
+    </div>
+  </div>
+
+  <!-- Refund Amount Report -->
+  <div class="col-md-6 mt-5" style="background-color: rgb(242, 234, 234)">
+    <!-- Filters -->
+    <form [formGroup]="RAformData" (ngSubmit)="refundAmountReport()">
+      <div class="row mb-1 mt-1">
+        <div class="col-md-4">
+          <label>Booking From Date</label>
+          <input type="date" formControlName="start_date" class="form-control form-control-sm" (change)="onStartDateChange($event)" />
+        </div>
+
+        <div class="col-md-4">
+          <label>To Date</label>
+          <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate" [max]="maxEndDate" />
+        </div>
+
+        <div class="col-md-4">
+          <label>Select</label>
+          <select class="form-control form-control-sm" formControlName="order">
+            <option value="DESC" selected>High to Low</option>
+            <option value="ASC">Low to High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <select class="form-control form-control-sm" formControlName="limit">
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <div class="mb-3">
+            <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+            <button class="btn btn-danger btn-sm" (click)="refreshRA()"> Refresh </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="chart-loader" *ngIf="isRAChartLoading">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Chart -->
+    <div style="width: 100%; height: 500px">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="refundAmountChart"
+        style="width: 100%; height: 100%; display: block"></highcharts-chart>
+    </div>
+  </div>
 </div>
