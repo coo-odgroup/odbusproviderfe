@@ -169,6 +169,14 @@
             </select>
           </div>
 
+          <div class="col-md-4">
+            <select class="form-control form-control-sm" formControlName="revenue_by">
+              <option value="total_fare" selected>Total Fare</option>
+              <option value="owner_fare">Owner Fare</option>
+              <option value="odbus_charges">Odbus Charges</option>
+            </select>
+          </div>
+
           <div class="col-md-3">
             <div class="">
               <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
@@ -423,6 +431,15 @@
           </div>
 
           <div class="col-md-4">
+            <label>Revenue By</label>
+            <select class="form-control form-control-sm" formControlName="revenue_by">
+              <option value="total_fare" selected>Total Fare</option>
+              <option value="owner_fare">Owner Fare</option>
+              <option value="odbus_charges">Odbus Charges</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
             <label>&nbsp;</label>
             <div class="">
               <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
@@ -484,6 +501,14 @@
               <option value="10" selected>10</option>
               <option value="15">15</option>
               <option value="20">20</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <select class="form-control form-control-sm" formControlName="revenue_by">
+              <option value="total_fare" selected>Total Fare</option>
+              <option value="owner_fare">Owner Fare</option>
+              <option value="odbus_charges">Odbus Charges</option>
             </select>
           </div>
 
@@ -558,6 +583,114 @@
       <!-- Chart -->
       <div style="width: 100%; height: 500px">
         <highcharts-chart [Highcharts]="Highcharts" [options]="routeChart"
+          style="width: 100%; height: 100%; display: block"></highcharts-chart>
+      </div>
+    </div>
+
+    <!-- Bus wise revenue -->
+    <div class="col-md-6 mt-3" style="background-color: rgb(242, 234, 234)">
+      <!-- Filters -->
+      <form [formGroup]="busRevenueformData" (ngSubmit)="getBusRevenue()">
+        <div class="row mb-1 mt-1">
+          <div class="col-md-4">
+            <label>Booking From Date</label>
+            <input type="date" formControlName="start_date" class="form-control form-control-sm"
+              (change)="onStartDateChange($event)" />
+          </div>
+
+          <div class="col-md-4">
+            <label>To Date</label>
+            <input type="date" formControlName="end_date" class="form-control form-control-sm" [min]="minEndDate"
+              [max]="maxEndDate" />
+          </div>
+
+          <div class="col-md-4">
+            <label>Select</label>
+            <select class="form-control form-control-sm" formControlName="order">
+              <option value="DESC" selected>High to Low</option>
+              <option value="ASC">Low to High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- <div class="col-md-4">
+            <select class="form-control form-control-sm" formControlName="limit">
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div> -->
+          <div class="col-md-3">
+            <label>Bus Operator</label>
+
+            <ng-select [items]="busOperators" bindLabel="organisation_name" bindValue="id"
+              placeholder="Select Bus Operator" (change)="onOperatorChange($event)" formControlName="bus_operator_id"
+              [clearable]="false">
+
+            </ng-select>
+          </div>
+
+          <!-- <div class="col-md-4">
+            <label>Bus Name</label>
+
+            <ng-select [items]="busOperators" [multiple]="true" bindLabel="organisation_name" bindValue="id"
+              placeholder="Select Bus Operator" (change)="onOperatorChange($event)" formControlName="bus_operator_id" [clearable]="false">
+
+              <ng-template ng-header-tmp>
+                <div>
+                  <button type="button" class="btn btn-link p-0 me-2" (click)="selectAll()">
+                    Select All
+                  </button>
+
+                  <button type="button" class="btn btn-link p-0" (click)="clearAll()">
+                    Clear All
+                  </button>
+                </div>
+              </ng-template>
+
+            </ng-select>
+          </div> -->
+
+          <div class="col-md-6">
+            <label>Bus Name</label>
+
+            <ng-select [items]="busNames" [multiple]="true" bindLabel="testing" bindValue="id"
+              placeholder="Select Bus Name" formControlName="bus_id" [clearable]="false">
+
+              <ng-template ng-header-tmp>
+                <div>
+                  <button type="button" class="btn btn-link p-0 me-2" (click)="selectAll()">
+                    Select All
+                  </button>
+
+                  <!-- <button type="button" class="btn btn-link p-0" (click)="clearAll()">
+                    Clear All
+                  </button> -->
+                </div>
+              </ng-template>
+
+            </ng-select>
+          </div>
+
+
+          <div class="col-md-3">
+            <label>&nbsp;</label>
+            <div class="mb-3">
+              <button class="btn btn-success btn-sm mr-2" type="submit"> Search </button>
+              <button class="btn btn-danger btn-sm" (click)="busRevenueRefresh()"> Refresh </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="chart-loader" *ngIf="isChartLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Chart -->
+      <div style="width: 100%; height: 500px">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="busRevenueChart"
           style="width: 100%; height: 100%; display: block"></highcharts-chart>
       </div>
     </div>

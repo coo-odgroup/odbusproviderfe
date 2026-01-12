@@ -321,32 +321,38 @@
                                     <b>{{ (complete.cancel_by == null) ? 'Customer' : complete.cancel_by  }}</b>
                                 </td>
                                 <td class="align-middle">
-                                    <strong>Date: </strong> <small>{{complete.customer_payment.updated_at | date: 'dd-MMM-yyyy'}}</small><br />
+                                    <strong>Date: </strong>
+                                    <small>
+                                        {{ complete?.customer_payment?.updated_at | date:'dd-MMM-yyyy' }}
+                                    </small>
+
                                     <strong>Mode: </strong>
-                                    <small *ngIf="complete.customer_payment.refund_mode == '1'">
+                                    <small *ngIf="complete?.customer_payment?.refund_mode == '1'">
                                         Manual
                                     </small>
-                                    <small *ngIf="complete.customer_payment.refund_mode == '2'">
+                                    <small *ngIf="complete?.customer_payment?.refund_mode == '2'">
                                         Auto
                                     </small>
                                     <br />
+
                                     <strong>Status: </strong>
-                                    <small *ngIf="complete.customer_payment.refund_status == '0'" class="text-primary">
+                                    <small *ngIf="complete?.customer_payment?.refund_status == '0'" class="text-primary">
                                         INITIATED
                                     </small>
-                                    <small *ngIf="complete.customer_payment.refund_status == '1'" class="text-warning">
+                                    <small *ngIf="complete?.customer_payment?.refund_status == '1'" class="text-warning">
                                         PENDING
                                     </small>
-                                    <small *ngIf="complete.customer_payment.refund_status == '2'" class="text-info">
+                                    <small *ngIf="complete?.customer_payment?.refund_status == '2'" class="text-info">
                                         CONFIRMED
                                     </small>
-                                    <small *ngIf="complete.customer_payment.refund_status == '3'" class="text-success">
+                                    <small *ngIf="complete?.customer_payment?.refund_status == '3'" class="text-success">
                                         COMPLETED
                                     </small>
-                                    <small *ngIf="complete.customer_payment.refund_status == '4'" class="text-danger">
+                                    <small *ngIf="complete?.customer_payment?.refund_status == '4'" class="text-danger">
                                         FAILED
                                     </small>
                                 </td>
+
                             </tr>
                         </tbody>    
                         <tbody *ngIf="cancelticketdata?.data.data?.length == 0">

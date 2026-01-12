@@ -75,6 +75,7 @@ export class LandingComponent1 implements OnInit {
   totalRevenue: any;
   TotalRevenue: any;
   Routes: any;
+  routePercentages: number[] = [];
 
   constructor(private http: HttpClient, private spinner: NgxSpinnerService, private fb: FormBuilder) { }
 
@@ -91,6 +92,7 @@ export class LandingComponent1 implements OnInit {
   isPeakLoading: boolean = false;
   isRouteRevenueLoading: boolean = false;
   isChartLoading: boolean = false;
+  isBusRevenueLoading: boolean = false;
 
   operatorFormBooking = new FormGroup({
     from_j_date: new FormControl(''),
@@ -106,6 +108,7 @@ export class LandingComponent1 implements OnInit {
     to_j_date: new FormControl(''),
     order: new FormControl('DESC'),
     limit: new FormControl('10'),
+    revenue_by: new FormControl('total_fare'),
     bus_operator_id: new FormControl([]),
   })
 
@@ -149,6 +152,7 @@ export class LandingComponent1 implements OnInit {
   monthRevenueFormData = new FormGroup({
     from_j_date: new FormControl(''),
     to_j_date: new FormControl(''),
+    revenue_by: new FormControl('total_fare'),
   })
 
   RouteRevenueformData = new FormGroup({
@@ -156,12 +160,22 @@ export class LandingComponent1 implements OnInit {
     end_date: new FormControl(''),
     order: new FormControl('DESC'),
     limit: new FormControl('10'),
+    revenue_by: new FormControl('total_fare'),
   });
 
   RouteformData = new FormGroup({
     start_date: new FormControl(''),
     end_date: new FormControl(''),
     order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+  });
+
+  busRevenueformData = new FormGroup({
+    start_date: new FormControl(''),
+    end_date: new FormControl(''),
+    bus_operator_id: new FormControl(''),
+    bus_id: new FormControl(''),
+    order: new FormControl(''),
     limit: new FormControl('10'),
   });
 
@@ -197,6 +211,12 @@ export class LandingComponent1 implements OnInit {
   routeRefresh() {
     this.RouteformData.reset();
     this.getRoute();
+  }
+
+
+  busRevenueRefresh(){
+    this.busRevenueformData.reset();
+    this.getBusRevenue();
   }
 
 
@@ -435,6 +455,26 @@ export class LandingComponent1 implements OnInit {
       this.busOperators = res.data;
     })
   }
+
+  busNames:any;
+
+  onOperatorChange(operator: any) {
+    // console.log('Selected operator:', operator.id);
+
+    if (!operator?.id) {
+      this.busNames = [];
+      return;
+    }
+
+    this.http.get(this.apiURL + `/operatorBus/${operator.id}`)
+      .subscribe((res: any) => {
+        this.busNames = res.data;
+        console.log(this.busNames);
+        this.busNames.map((i: any) => { i.testing = i.name + ' - ' + i.bus_number + '(' + i.from_location[0].name + '>>' + i.to_location[0].name + ')'; return i; });
+        // console.log(this.busNames)
+      });
+  }
+
 
 
   selectAll() {
@@ -677,46 +717,6 @@ export class LandingComponent1 implements OnInit {
     });
   }
 
-  // getRoute() {
-  //   this.isChartLoading = true;
-
-  //   const reqData = this.RouteformData.value;
-
-  //   this.http.post(this.apiURL + '/top-route', reqData).subscribe({
-  //     next: (res: any) => {
-  //       if (res.status === true) {
-
-  //         this.TopRoutes = res.data.map((item: any) => item.Route);
-  //         this.TotalBooking = res.data.map((item: any) => item.TotalBooking);
-
-  //         this.routeChart = {
-  //           ...this.routeChart,
-  //           xAxis: {
-  //             categories: this.TopRoutes,
-  //           },
-  //           series: [
-  //             {
-  //               name: 'Total Bookings',
-  //               type: 'bar',
-  //               data: this.TotalBooking,
-  //             },
-  //           ],
-  //         };
-
-  //         this.updateFlag = true;
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //     },
-  //     complete: () => {
-  //       this.isChartLoading = false;
-  //     }
-  //   });
-  // }
-
-  routePercentages: number[] = [];
-
   getRoute() {
     this.isChartLoading = true;
 
@@ -763,6 +763,72 @@ export class LandingComponent1 implements OnInit {
     });
   }
 
+  BusName :any [] = [];
+  OwnerName :any [] = [];
+  BusWiseRevenue :any [] = [];
+
+  
+
+  getBusRevenue() {
+    this.isBusRevenueLoading = true;
+
+    const busIds = this.busRevenueformData.value.bus_id;
+    const bus_operator_id = this.busRevenueformData.value.bus_operator_id;
+    const start_date = this.busRevenueformData.value.start_date;
+    const end_date = this.busRevenueformData.value.end_date;
+
+    const reqData = {
+      bus_id: Array.isArray(busIds) ? busIds : busIds ? [busIds] : [],
+      operator_id : bus_operator_id,
+      start_date : start_date,
+      end_date : end_date,
+    };
+
+    this.http.post(this.apiURL + '/bus-wise-revenue', reqData).subscribe({
+      next: (res: any) => {
+        console.log(res.status);
+        if (res.status === 200) {
+
+          this.BusName = res.data.map((item: any) => item.bus_name);
+          this.OwnerName = res.data.map((item: any) => item.organisation_name);
+          this.BusWiseRevenue = res.data.map((item: any) => item.total_owner_fare);
+
+          // 👉 NEW: Percentage array (convert to number)
+          // this.routePercentages = res.data.map((item: any) =>
+          //   parseFloat(item.Percentage)
+          // );
+
+          this.busRevenueChart = {
+            ...this.busRevenueChart,
+            xAxis: {
+              ...this.busRevenueChart.xAxis,
+                categories: this.BusName.map((route, i) =>
+                  `${route} (${this.OwnerName[i]})`
+                )
+              // categories: `this.BusName + (this.OwnerName)`,
+              
+            },
+            series: [
+              {
+                name: 'Total Revenue',
+                type: 'bar',
+                data: this.BusWiseRevenue,
+              },
+            ],
+          };
+
+          this.updateFlag = true;
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      },
+      complete: () => {
+        this.isBusRevenueLoading = false;
+      }
+    });
+  }
+
 
 
 
@@ -778,6 +844,7 @@ export class LandingComponent1 implements OnInit {
     this.getMonthRevenue();
     this.getRouteRevenue();
     this.getRoute();
+    this.getBusRevenue();
   }
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -1235,6 +1302,65 @@ export class LandingComponent1 implements OnInit {
 
     title: {
       text: 'Route Wise Booking In Numbers',
+      style: { color: '#000', fontSize: '22px' },
+    },
+
+    xAxis: {
+      categories: [],
+      title: { text: null },
+      labels: { style: { color: '#000', fontSize: '11px' } },
+    },
+
+    yAxis: {
+      min: 0,
+      title: {
+        text: '',
+        style: { color: '#000' },
+      },
+      labels: { style: { color: '#000' } },
+      gridLineColor: '#333',
+    },
+
+    legend: {
+      reversed: false,
+      itemStyle: { color: '#000' },
+    },
+
+    tooltip: {
+      shared: true,
+      backgroundColor: '#000',
+      borderColor: '#555',
+      style: { color: '#000' },
+    },
+
+    plotOptions: {
+      series: {
+        dataLabels: {
+          enabled: true,
+          style: { color: '#000', textOutline: 'none' },
+        },
+      },
+    },
+
+    series: [
+      {
+        name: 'Year 1990',
+        type: 'bar',
+        data: [],
+        colorByPoint: true,
+      },
+    ],
+  };
+
+  //Routes wise Booking
+  busRevenueChart: Highcharts.Options = {
+    chart: {
+      type: 'bar',
+      backgroundColor: '#121212',
+    },
+
+    title: {
+      text: 'Bus Wise Revenue In Rupees',
       style: { color: '#000', fontSize: '22px' },
     },
 
