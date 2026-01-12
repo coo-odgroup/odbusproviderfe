@@ -667,13 +667,13 @@ const NavigationItems = [
             icon: 'feather icon-pie-chart',
             url: 'reports/completeReport',
           },
-          {
-            id: 'routewise-bookigreport',
-            title: 'Route Wise Report',
-            type: 'item',
-            icon: 'feather icon-pie-chart',
-            url: 'reports/routewise-bookigreport',
-          },
+          // {
+          //   id: 'routewise-bookigreport',
+          //   title: 'Route Wise Report',
+          //   type: 'item',
+          //   icon: 'feather icon-pie-chart',
+          //   url: 'reports/routewise-bookigreport',
+          // },
           // {
           //   id: 'seatblockreport',
           //   title: 'Seat Block Report',
@@ -743,13 +743,13 @@ const NavigationItems = [
             icon: 'feather icon-pie-chart',
             url: 'reports/couponuseduserreport',
           },
-          {
-            id: 'apilogreport',
-            title: 'Api Log Reports',
-            type: 'item',
-            icon: 'feather icon-pie-chart',
-            url: 'reports/apilogreport',
-          }
+          // {
+          //   id: 'apilogreport',
+          //   title: 'Api Log Reports',
+          //   type: 'item',
+          //   icon: 'feather icon-pie-chart',
+          //   url: 'reports/apilogreport',
+          // }
         ],
       },
       {
@@ -1198,34 +1198,34 @@ const NavigationItems = [
           },
         ],
       },
-      {
-        title: 'Manage Notification',
-        type: 'collapse',
-        icon: 'feather icon-message-circle',
-        children: [
-          {
-            id: 'pushnotification',
-            title: 'Push Notification',
-            type: 'item',
-            icon: 'feather icon-upload-cloud',
-            url: 'managepushnotifications/pushnotifications',
-          },
-        ],
-      },
-      {
-        title: 'Chart',
-        type: 'collapse',
-        icon: 'feather icon-message-circle',
-        children: [
-          {
-            id: 'chart',
-            title: 'Chart',
-            type: 'item',
-            icon: 'feather icon-upload-cloud',
-            url: 'top-route-chart',
-          },
-        ],
-      },
+      // {
+      //   title: 'Manage Notification',
+      //   type: 'collapse',
+      //   icon: 'feather icon-message-circle',
+      //   children: [
+      //     {
+      //       id: 'pushnotification',
+      //       title: 'Push Notification',
+      //       type: 'item',
+      //       icon: 'feather icon-upload-cloud',
+      //       url: 'managepushnotifications/pushnotifications',
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: 'Chart',
+      //   type: 'collapse',
+      //   icon: 'feather icon-message-circle',
+      //   children: [
+      //     {
+      //       id: 'chart',
+      //       title: 'Chart',
+      //       type: 'item',
+      //       icon: 'feather icon-upload-cloud',
+      //       url: 'top-route-chart',
+      //     },
+      //   ],
+      // },
     ],
   },
 ];

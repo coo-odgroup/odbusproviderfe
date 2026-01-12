@@ -93,6 +93,7 @@ export class LandingComponent1 implements OnInit {
   isRouteRevenueLoading: boolean = false;
   isChartLoading: boolean = false;
   isBusRevenueLoading: boolean = false;
+  isOPbcLoading: boolean = false;
 
   operatorFormBooking = new FormGroup({
     from_j_date: new FormControl(''),
@@ -179,6 +180,14 @@ export class LandingComponent1 implements OnInit {
     limit: new FormControl('10'),
   });
 
+  opBuscancelForm = new FormGroup({
+    from_date: new FormControl(''),
+    to_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+    bus_operator_id: new FormControl([]),
+  })
+
 
   //refresh 
 
@@ -214,7 +223,7 @@ export class LandingComponent1 implements OnInit {
   }
 
 
-  busRevenueRefresh(){
+  busRevenueRefresh() {
     this.busRevenueformData.reset();
     this.getBusRevenue();
   }
@@ -456,7 +465,7 @@ export class LandingComponent1 implements OnInit {
     })
   }
 
-  busNames:any;
+  busNames: any;
 
   onOperatorChange(operator: any) {
     // console.log('Selected operator:', operator.id);
@@ -763,11 +772,11 @@ export class LandingComponent1 implements OnInit {
     });
   }
 
-  BusName :any [] = [];
-  OwnerName :any [] = [];
-  BusWiseRevenue :any [] = [];
+  BusName: any[] = [];
+  OwnerName: any[] = [];
+  BusWiseRevenue: any[] = [];
 
-  
+
 
   getBusRevenue() {
     this.isBusRevenueLoading = true;
@@ -779,9 +788,9 @@ export class LandingComponent1 implements OnInit {
 
     const reqData = {
       bus_id: Array.isArray(busIds) ? busIds : busIds ? [busIds] : [],
-      operator_id : bus_operator_id,
-      start_date : start_date,
-      end_date : end_date,
+      operator_id: bus_operator_id,
+      start_date: start_date,
+      end_date: end_date,
     };
 
     this.http.post(this.apiURL + '/bus-wise-revenue', reqData).subscribe({
@@ -802,11 +811,11 @@ export class LandingComponent1 implements OnInit {
             ...this.busRevenueChart,
             xAxis: {
               ...this.busRevenueChart.xAxis,
-                categories: this.BusName.map((route, i) =>
-                  `${route} (${this.OwnerName[i]})`
-                )
+              categories: this.BusName.map((route, i) =>
+                `${route} (${this.OwnerName[i]})`
+              )
               // categories: `this.BusName + (this.OwnerName)`,
-              
+
             },
             series: [
               {
@@ -829,6 +838,87 @@ export class LandingComponent1 implements OnInit {
     });
   }
 
+  // busCancelChartRef: Highcharts.Chart | null = null;
+  
+  //   onBusCancelChartInstance(chart: Highcharts.Chart) {
+  //     this.busCancelChartRef = chart;
+  //   }
+
+  getOperatorBuscancel() {
+    if (this.busCancelChartRef) {
+      try {
+        this.busCancelChartRef.drillUp();
+      } catch { }
+    }
+    this.isOPbcLoading = true;
+    const reqParams = this.opBuscancelForm.value;
+
+    this.http.post(this.apiURL + "/operator-wise-busclose", reqParams).subscribe({
+      next: (res: any) => {
+
+        // Single date
+        if (res.type === 'single_date') {
+
+          const operatorSeries = res.data.map((item: any) => ({
+            name: this.toTitleCase(item.organisation_name),
+            y: item.total_cancel,
+            busDetails: item.cancelled_buses || []
+          }));
+
+          this.operatorBusCancelchart = {
+            ...this.operatorBusCancelchart,
+            series: [{
+              name: 'Operators',
+              type: 'column',
+              colorByPoint: true,
+              data: operatorSeries
+            }],
+            drilldown: undefined
+          };
+
+          return;
+        }
+
+        //Date wise
+        const dateSeries = res.data.map((day: any) => ({
+          name: day.date,
+          y: day.operators.reduce(
+            (sum: number, op: any) => sum + op.total_cancel, 0
+          ),
+          drilldown: day.date
+        }));
+
+        const drilldownSeries = res.data.map((day: any) => ({
+          id: day.date,
+          name: `Operator wise cancel (${day.date})`,
+          type: 'column',
+          data: day.operators.map((op: any) => ({
+            name: this.toTitleCase(op.organisation_name),
+            y: op.total_cancel,
+            date: day.date,
+            busDetails: op.cancelled_buses || []
+          }))
+        }));
+
+
+        this.operatorBusCancelchart = {
+          ...this.operatorBusCancelchart,
+          series: [{
+            name: 'Date wise Cancel',
+            type: 'column',
+            colorByPoint: true,
+            data: dateSeries
+          }],
+          drilldown: {
+            series: drilldownSeries
+          }
+        };
+      },
+      error: (err) => console.error(err),
+      complete: () => this.isOPbcLoading = false
+    });
+  }
+
 
 
 
@@ -845,6 +935,7 @@ export class LandingComponent1 implements OnInit {
     this.getRouteRevenue();
     this.getRoute();
     this.getBusRevenue();
+    this.getOperatorBuscancel();
   }
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -1410,6 +1501,75 @@ export class LandingComponent1 implements OnInit {
       },
     ],
   };
+
+
+
+  operatorBusCancelchart: Highcharts.Options = {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Operator wise Bus Cancel'
+      },
+      xAxis: {
+        type: 'category'
+      },
+      yAxis: {
+        title: {
+          text: 'Total Cancel Count'
+        }
+      },
+      legend: {
+        enabled: false
+      },
+  
+      tooltip: {
+        useHTML: true,
+        formatter: function () {
+  
+          const point = this.point as Highcharts.Point & BusPoint;
+  
+          let html = `
+        <b>${point.name}</b><br/>
+      `;
+  
+          if (point.date) {
+            html += `<b>Date:</b> ${point.date}<br/>`;
+          }
+  
+          html += `<b>Total Cancel:</b> ${point.y}<br/>`;
+  
+          if (point.busDetails?.length) {
+            html += `<br/><b>Cancelled Buses:</b><br/>`;
+            point.busDetails.forEach((bus, i) => {
+              html += `${i + 1}. ${bus.cancel_bus}<br/>`;
+            });
+          }
+  
+          return html;
+        }
+      },
+  
+  
+  
+      plotOptions: {
+        series: {
+          borderWidth: 0,
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+  
+      series: [
+        {
+          name: 'Operators',
+          type: 'column',
+          colorByPoint: true,
+          data: []
+        }
+      ]
+    };
 
 
 }

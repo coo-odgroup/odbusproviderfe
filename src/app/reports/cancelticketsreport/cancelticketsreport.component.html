@@ -154,7 +154,7 @@
                                 <th scope="col">Refund Price</th>
                                 <th scope="col">Booked By</th>
                                 <th scope="col">Cancel By</th>
-                                <th scope="col">Refund Details</th>
+                                <!-- <th scope="col">Refund Details</th> -->
                             </tr>
                         </thead>
                         <tbody *ngIf="cancelticketdata?.data.data?.length != 0">
@@ -320,7 +320,7 @@
                                 <td class="align-middle">
                                     <b>{{ (complete.cancel_by == null) ? 'Customer' : complete.cancel_by  }}</b>
                                 </td>
-                                <td class="align-middle">
+                                <!-- <td class="align-middle">
                                     <strong>Date: </strong>
                                     <small>
                                         {{ complete?.customer_payment?.updated_at | date:'dd-MMM-yyyy' }}
@@ -351,7 +351,7 @@
                                     <small *ngIf="complete?.customer_payment?.refund_status == '4'" class="text-danger">
                                         FAILED
                                     </small>
-                                </td>
+                                </td> -->
 
                             </tr>
                         </tbody>    
