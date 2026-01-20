@@ -38,6 +38,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { RouterModule } from '@angular/router';
 
 import { PushnotificationsComponent } from './managepushnotifications/pushnotifications/pushnotifications.component';
+import { ManagecronjobComponent } from './managecronjob/managecronjob.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { PushnotificationsComponent } from './managepushnotifications/pushnotifi
     NavRightComponent,
     ConfigurationComponent,
     ToggleFullScreenDirective,
-    TopRouteComponent
+    TopRouteComponent,
+    ManagecronjobComponent
   ],
   imports: [
     HighchartsChartModule,

@@ -649,6 +649,9 @@ export class TopRouteComponent implements OnInit {
     this.alloperator();
     this.getOperatorBuscancel();
     this.cancelledTicketCountReport();
+    this.refundAmountReport();
+    this.cancellationChargesReport();
+    this.getBusWiseLoss();
   }
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -1107,29 +1110,61 @@ export class TopRouteComponent implements OnInit {
           );
 
           const totalCancelledBookings = res.data.map(
-            (item: any) => item.total_cancel_bookings
+            (item: any) => Number(item.total_cancel_bookings)
           );
 
           this.cancelTicketChart = {
+            ...this.cancelTicketChart, // ✅ keep existing config
+
             chart: {
               type: 'column',
               inverted: false,
             },
+
             title: {
               text: '',
             },
+
+            // ✅ CATEGORY AXIS (added)
             xAxis: {
+              type: 'category',
               categories: journeyDates,
+              title: {
+                text: 'Journey Date',
+              },
             },
+
             yAxis: {
               title: {
                 text: 'Cancelled Bookings Count',
               },
             },
+
+            // ✅ BETTER TOOLTIP (added)
+            tooltip: {
+              shared: true,
+              pointFormat:
+                '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
+            },
+
+            // ✅ DATA LABELS (added)
+            plotOptions: {
+              series: {
+                borderWidth: 0,
+                dataLabels: {
+                  enabled: true,
+                  formatter: function () {
+                    return this.y;
+                  }
+                }
+              }
+            },
+
             series: [
               {
                 type: 'column',
                 name: 'Cancelled Ticket Count',
+                colorByPoint: true,
                 data: totalCancelledBookings,
               },
             ],
@@ -1155,6 +1190,7 @@ export class TopRouteComponent implements OnInit {
       style: { color: '#000', fontSize: '22px' }
     },
     xAxis: {
+      type: 'category',        // ✅ added
       categories: [],
       crosshair: true,
       labels: { style: { color: '#000' } }
@@ -1162,7 +1198,7 @@ export class TopRouteComponent implements OnInit {
     yAxis: {
       min: 0,
       title: {
-        text: 'Value',
+        text: 'Cancelled Bookings Count',
         style: { color: '#000' }
       },
       labels: { style: { color: '#000' } }
@@ -1170,9 +1206,23 @@ export class TopRouteComponent implements OnInit {
     legend: {
       itemStyle: { color: '#000' }
     },
+
+    // ✅ improved tooltip
     tooltip: {
       shared: true
     },
+
+    // ✅ data labels added
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: '{point.y}'
+        }
+      }
+    },
+
     series: [
       {
         name: 'Cancelled Ticket Count',
@@ -1207,7 +1257,7 @@ export class TopRouteComponent implements OnInit {
       next: (res: any) => {
         if (res.status === true) {
 
-          console.log(res.data);
+          // console.log(res.data);
 
           // X-axis: Journey Dates
           const journeyDates = res.data.map(
@@ -1220,31 +1270,57 @@ export class TopRouteComponent implements OnInit {
           );
 
           this.refundAmountChart = {
+            ...this.refundAmountChart,
+
             chart: {
               type: 'column',
               inverted: false,
             },
+
             title: {
               text: '',
             },
+
+            // ✅ CATEGORY AXIS (added)
             xAxis: {
+              type: 'category',
               categories: journeyDates,
               title: {
                 text: 'Journey Date',
               },
             },
+
             yAxis: {
               title: {
                 text: 'Total Refund Amount',
               },
             },
+
+            // ✅ BETTER TOOLTIP (added)
             tooltip: {
-              valuePrefix: '₹ ',
+              shared: true,
+              pointFormat:
+                '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>₹ {point.y}</b><br/>'
             },
+
+            // ✅ DATA LABELS (added)
+            plotOptions: {
+              series: {
+                borderWidth: 0,
+                dataLabels: {
+                  enabled: true,
+                  formatter: function () {
+                    return '₹ ' + this.y;
+                  }
+                }
+              }
+            },
+
             series: [
               {
                 type: 'column',
                 name: 'Refund Amount',
+                colorByPoint: true,
                 data: totalRefundAmounts,
               },
             ],
@@ -1270,6 +1346,7 @@ export class TopRouteComponent implements OnInit {
       style: { color: '#000', fontSize: '22px' }
     },
     xAxis: {
+      type: 'category',   // ✅ added
       categories: [],
       crosshair: true,
       labels: { style: { color: '#000' } }
@@ -1285,9 +1362,23 @@ export class TopRouteComponent implements OnInit {
     legend: {
       itemStyle: { color: '#000' }
     },
+
+    // ✅ improved tooltip
     tooltip: {
       shared: true
     },
+
+    // ✅ data labels added
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: '₹ {point.y}'
+        }
+      }
+    },
+
     series: [
       {
         name: 'Refund Amount',
@@ -1298,4 +1389,319 @@ export class TopRouteComponent implements OnInit {
     ]
   };
   // Refund Amount Report End
+
+  // Cancellation Charges Report Start
+  CCformData = new FormGroup({
+    start_date: new FormControl(''),
+    end_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+  });
+
+  refreshCC() {
+    this.CCformData.reset();
+  }
+
+  isCCChartLoading: boolean = false;
+
+  cancellationChargesReport() {
+    this.isCCChartLoading = true;
+
+    const reqData = this.CCformData.value;
+
+    this.http.post(this.apiURL + '/cancellation-charges', reqData).subscribe({
+      next: (res: any) => {
+        if (res.status === true) {
+
+          console.log(res.data);
+
+          // X-axis: Journey Dates
+          const journeyDates = res.data.map(
+            (item: any) => item.journey_date
+          );
+
+          // Y-axis: Total Refund Amount
+          const totalRefundAmounts = res.data.map(
+            (item: any) => Number(item.total_cancel_profit)
+          );
+
+          this.cancellationChargesChart = {
+            ...this.cancellationChargesChart,
+
+            chart: {
+              type: 'column',
+              inverted: false,
+            },
+
+            title: {
+              text: '',
+            },
+
+            // ✅ CATEGORY AXIS (added)
+            xAxis: {
+              type: 'category',
+              categories: journeyDates,
+              title: {
+                text: 'Journey Date',
+              },
+            },
+
+            yAxis: {
+              title: {
+                text: 'Total Cancellation Charges',
+              },
+            },
+
+            // ✅ BETTER TOOLTIP (added)
+            tooltip: {
+              shared: true,
+              pointFormat:
+                '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>₹ {point.y}</b><br/>'
+            },
+
+            // ✅ DATA LABELS (added)
+            plotOptions: {
+              series: {
+                borderWidth: 0,
+                dataLabels: {
+                  enabled: true,
+                  formatter: function () {
+                    return '₹ ' + this.y;
+                  }
+                }
+              }
+            },
+
+            series: [
+              {
+                type: 'column',
+                name: 'Cancellation Charges',
+                colorByPoint: true,
+                data: totalRefundAmounts,
+              },
+            ],
+          };
+
+          this.updateFlag = true;
+        }
+      },
+      error: (err) => console.error(err),
+      complete: () => {
+        this.isCCChartLoading = false;
+      }
+    });
+  }
+
+  cancellationChargesChart: Highcharts.Options = {
+    chart: {
+      type: 'column',
+      backgroundColor: '#0b0e11'
+    },
+    title: {
+      text: 'Cancellation Charges',
+      style: { color: '#000', fontSize: '22px' }
+    },
+    xAxis: {
+      type: 'category',   // ✅ added
+      categories: [],
+      crosshair: true,
+      labels: { style: { color: '#000' } }
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Total Cancellation Charges',
+        style: { color: '#000' }
+      },
+      labels: { style: { color: '#000' } }
+    },
+    legend: {
+      itemStyle: { color: '#000' }
+    },
+
+    // ✅ improved tooltip
+    tooltip: {
+      shared: true
+    },
+
+    // ✅ data labels added
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: '₹ {point.y}'
+        }
+      }
+    },
+
+    series: [
+      {
+        name: 'Cancellation Charges',
+        type: 'column',
+        data: [],
+        colorByPoint: true,
+      }
+    ]
+  };
+  // Cancellation Charges Report End
+
+  // Bus wise Loss Report Start
+  BWLformData = new FormGroup({
+    start_date: new FormControl(''),
+    end_date: new FormControl(''),
+    order: new FormControl('DESC'),
+    limit: new FormControl('10'),
+  });
+
+  refreshBWL() {
+    if (this.busWiseLossRef) {
+      try {
+        this.busWiseLossRef.drillUp();
+      } catch { }
+    }
+    this.BWLformData.reset();
+    this.getBusWiseLoss();
+  }
+
+  isBWLChartLoading: boolean = false;
+
+  busWiseLossRef: Highcharts.Chart | null = null;
+
+  onBusWiseLossChartInstance(chart: Highcharts.Chart) {
+    this.busWiseLossRef = chart;
+  }
+
+  getBusWiseLoss() {
+    if (this.busWiseLossRef) {
+      try {
+        this.busWiseLossRef.drillUp();
+      } catch { }
+    }
+
+    this.isBWLChartLoading = true;
+    const reqParams = this.BWLformData.value;
+
+    this.http.post(this.apiURL + '/buswisetotalloss', reqParams).subscribe({
+      next: (res: any) => {
+
+        /*
+         |--------------------------------------------------------------------------
+         | DATE WISE → BUS WISE LOSS
+         |--------------------------------------------------------------------------
+         */
+
+        const dateSeries = res.data.map((day: any) => ({
+          name: day.journey_date,
+          y: day.date_total_loss,
+          drilldown: day.journey_date
+        }));
+
+        const drilldownSeries = res.data.map((day: any) => ({
+          id: day.journey_date,
+          name: `Bus wise Loss (${day.journey_date})`,
+          type: 'column',
+          data: day.buses.map((bus: any) => ({
+            name: this.toTitleCase(bus.bus_name),
+            y: bus.loss,
+            date: day.journey_date,
+            busDetails: [bus]
+          }))
+        }));
+
+        this.busWiseLossChart = {
+          ...this.busWiseLossChart,
+          title: {
+            text: 'Date wise Bus Loss'
+          },
+          yAxis: {
+            title: {
+              text: 'Total Loss Amount'
+            }
+          },
+          series: [
+            {
+              name: 'Date wise Loss',
+              type: 'column',
+              colorByPoint: true,
+              data: dateSeries
+            }
+          ],
+          drilldown: {
+            series: drilldownSeries
+          }
+        };
+      },
+      error: (err) => console.error(err),
+      complete: () => this.isBWLChartLoading = false
+    });
+  }
+
+  busWiseLossChart: Highcharts.Options = {
+    chart: {
+      type: 'column'
+    },
+
+    title: {
+      text: 'Date wise Bus Loss'
+    },
+
+    xAxis: {
+      type: 'category'
+    },
+
+    yAxis: {
+      title: {
+        text: 'Total Loss Amount'
+      }
+    },
+
+    legend: {
+      enabled: false
+    },
+
+    tooltip: {
+      useHTML: true,
+      formatter: function () {
+
+        const point = this.point as Highcharts.Point & any;
+
+        let html = `<b>${point.name}</b><br/>`;
+
+        if (point.date) {
+          html += `<b>Date:</b> ${point.date}<br/>`;
+        }
+
+        html += `<b>Total Loss:</b> ₹${point.y}<br/>`;
+
+        if (point.busDetails?.length) {
+          html += `<br/><b>Bus Details:</b><br/>`;
+          point.busDetails.forEach((bus: any, i: number) => {
+            html += `${i + 1}. ${bus.bus_name} — ₹${bus.loss}<br/>`;
+          });
+        }
+
+        return html;
+      }
+    },
+
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true
+        }
+      }
+    },
+
+    series: [
+      {
+        name: 'Date wise Loss',
+        type: 'column',
+        colorByPoint: true,
+        data: []
+      }
+    ]
+  };
+  // Bus wise Loss Report End
 }
