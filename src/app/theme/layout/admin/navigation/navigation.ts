@@ -1226,6 +1226,13 @@ const NavigationItems = [
           },
         ],
       },
+      {
+        id: 'managecronjob',
+        title: 'Manage Cron Job',
+        type: 'item',
+        icon: 'feather icon-clock',
+        url: 'managecronjob',
+      },
     ],
   },
 ];
