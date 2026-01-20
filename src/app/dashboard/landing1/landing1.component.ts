@@ -180,11 +180,12 @@ export class LandingComponent1 implements OnInit {
     limit: new FormControl('10'),
   });
 
-  opBuscancelForm = new FormGroup({
+  busSeatForm = new FormGroup({
     from_date: new FormControl(''),
     to_date: new FormControl(''),
     order: new FormControl('DESC'),
     limit: new FormControl('10'),
+    type: new FormControl('2'),
     bus_operator_id: new FormControl([]),
   })
 
@@ -228,6 +229,11 @@ export class LandingComponent1 implements OnInit {
     this.getBusRevenue();
   }
 
+
+  busSeat() {
+    this.busSeatForm.reset();
+    this.getOperatorBuscancel();
+  }
 
 
 
@@ -838,86 +844,58 @@ export class LandingComponent1 implements OnInit {
     });
   }
 
-  // busCancelChartRef: Highcharts.Chart | null = null;
-  
-  //   onBusCancelChartInstance(chart: Highcharts.Chart) {
-  //     this.busCancelChartRef = chart;
-  //   }
-
   getOperatorBuscancel() {
-    if (this.busCancelChartRef) {
-      try {
-        this.busCancelChartRef.drillUp();
-      } catch { }
-    }
-    this.isOPbcLoading = true;
-    const reqParams = this.opBuscancelForm.value;
-
-    this.http.post(this.apiURL + "/operator-wise-busclose", reqParams).subscribe({
-      next: (res: any) => {
-
-        // Single date
-        if (res.type === 'single_date') {
-
-          const operatorSeries = res.data.map((item: any) => ({
-            name: this.toTitleCase(item.organisation_name),
-            y: item.total_cancel,
-            busDetails: item.cancelled_buses || []
-          }));
-
-          this.operatorBusCancelchart = {
-            ...this.operatorBusCancelchart,
-            series: [{
-              name: 'Operators',
-              type: 'column',
-              colorByPoint: true,
-              data: operatorSeries
-            }],
-            drilldown: undefined
-          };
-
-          return;
-        }
-
-        //Date wise
-        const dateSeries = res.data.map((day: any) => ({
-          name: day.date,
-          y: day.operators.reduce(
-            (sum: number, op: any) => sum + op.total_cancel, 0
-          ),
-          drilldown: day.date
-        }));
-
-        const drilldownSeries = res.data.map((day: any) => ({
-          id: day.date,
-          name: `Operator wise cancel (${day.date})`,
-          type: 'column',
-          data: day.operators.map((op: any) => ({
-            name: this.toTitleCase(op.organisation_name),
-            y: op.total_cancel,
-            date: day.date,
-            busDetails: op.cancelled_buses || []
-          }))
-        }));
-
-
-        this.operatorBusCancelchart = {
-          ...this.operatorBusCancelchart,
-          series: [{
-            name: 'Date wise Cancel',
-            type: 'column',
-            colorByPoint: true,
-            data: dateSeries
-          }],
-          drilldown: {
-            series: drilldownSeries
-          }
-        };
-      },
-      error: (err) => console.error(err),
-      complete: () => this.isOPbcLoading = false
-    });
+  if (this.busCancelChartRef) {
+    try {
+      this.busCancelChartRef.drillUp();
+    } catch {}
   }
+
+  this.isOPbcLoading = true;
+
+  const reqParam = this.busSeatForm.value;
+
+  console.log(reqParam);
+
+  this.http.post(this.apiURL + "/total-seatBlock", reqParam).subscribe({
+    next: (res: any) => {
+
+      // 🔹 Operator-wise main series
+      const operatorSeries = res.data.map((op: any) => ({
+        name: this.toTitleCase(op.organisation_name),
+        y: op.total_seat_block_count,
+        drilldown: `operator-${op.bus_operator_id}`
+      }));
+
+      // 🔹 Bus-wise drilldown series
+      const drilldownSeries = res.data.map((op: any) => ({
+        id: `operator-${op.bus_operator_id}`,
+        name: `${op.organisation_name} - Bus wise seat block`,
+        type: 'column',
+        data: op.buses.map((bus: any) => ([
+          bus.bus_name,
+          bus.seat_block_count
+        ]))
+      }));
+
+      this.operatorBusCancelchart = {
+        ...this.operatorBusCancelchart,
+        series: [{
+          name: 'Operator wise Seat Block',
+          type: 'column',
+          colorByPoint: true,
+          data: operatorSeries
+        }],
+        drilldown: {
+          series: drilldownSeries
+        }
+      };
+    },
+    error: (err) => console.error(err),
+    complete: () => (this.isOPbcLoading = false)
+  });
+}
+
 
 
 
@@ -1505,71 +1483,71 @@ export class LandingComponent1 implements OnInit {
 
 
   operatorBusCancelchart: Highcharts.Options = {
-      chart: {
-        type: 'column'
-      },
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Total Seat Block'
+    },
+    xAxis: {
+      type: 'category'
+    },
+    yAxis: {
       title: {
-        text: 'Operator wise Bus Cancel'
-      },
-      xAxis: {
-        type: 'category'
-      },
-      yAxis: {
-        title: {
-          text: 'Total Cancel Count'
-        }
-      },
-      legend: {
-        enabled: false
-      },
-  
-      tooltip: {
-        useHTML: true,
-        formatter: function () {
-  
-          const point = this.point as Highcharts.Point & BusPoint;
-  
-          let html = `
+        text: 'Total Cancel Count'
+      }
+    },
+    legend: {
+      enabled: false
+    },
+
+    tooltip: {
+      useHTML: true,
+      formatter: function () {
+
+        const point = this.point as Highcharts.Point & BusPoint;
+
+        let html = `
         <b>${point.name}</b><br/>
       `;
-  
-          if (point.date) {
-            html += `<b>Date:</b> ${point.date}<br/>`;
-          }
-  
-          html += `<b>Total Cancel:</b> ${point.y}<br/>`;
-  
-          if (point.busDetails?.length) {
-            html += `<br/><b>Cancelled Buses:</b><br/>`;
-            point.busDetails.forEach((bus, i) => {
-              html += `${i + 1}. ${bus.cancel_bus}<br/>`;
-            });
-          }
-  
-          return html;
+
+        if (point.date) {
+          html += `<b>Date:</b> ${point.date}<br/>`;
         }
-      },
-  
-  
-  
-      plotOptions: {
-        series: {
-          borderWidth: 0,
-          dataLabels: {
-            enabled: true
-          }
+
+        html += `<b>Total Cancel:</b> ${point.y}<br/>`;
+
+        if (point.busDetails?.length) {
+          html += `<br/><b>Cancelled Buses:</b><br/>`;
+          point.busDetails.forEach((bus, i) => {
+            html += `${i + 1}. ${bus.cancel_bus}<br/>`;
+          });
         }
-      },
-  
-      series: [
-        {
-          name: 'Operators',
-          type: 'column',
-          colorByPoint: true,
-          data: []
+
+        return html;
+      }
+    },
+
+
+
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true
         }
-      ]
-    };
+      }
+    },
+
+    series: [
+      {
+        name: 'Operators',
+        type: 'column',
+        colorByPoint: true,
+        data: []
+      }
+    ]
+  };
 
 
 }

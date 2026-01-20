@@ -695,13 +695,13 @@
       </div>
     </div>
 
-    <div class="col-md-12 mt-5" style="background-color: rgb(242, 234, 234)">
-      <form [formGroup]="opBuscancelForm" (ngSubmit)="getOperatorBuscancel()">
+    <div class="col-md-6 mt-3" style="background-color: rgb(242, 234, 234)">
+      <form [formGroup]="busSeatForm" (ngSubmit)="getOperatorBuscancel()">
         <div class="row mb-1 mt-1">
 
           <!-- From Journey Date -->
           <div class="col-md-3">
-            <label>Cancel From Date</label>
+            <label>From Date</label>
             <input type="date" formControlName="from_date" class="form-control form-control-sm"
               (change)="onStartDateChange($event)">
           </div>
@@ -714,7 +714,7 @@
           </div>
 
           <!-- Bus Operator -->
-          <div class="col-md-2">
+          <div class="col-md-3">
             <label>Bus Operator</label>
 
             <ng-select [items]="busOperators" [multiple]="true" bindLabel="organisation_name" bindValue="id"
@@ -745,7 +745,7 @@
         </div> -->
 
           <!-- Limit -->
-          <div class="col-md-2">
+          <div class="col-md-3">
             <label>Limit</label>
             <select class="form-control form-control-sm" formControlName="limit">
               <option value="10">10</option>
@@ -754,20 +754,27 @@
               <option value="100">100</option>
             </select>
           </div>
-
-          <!-- Buttons -->
-          <div class="col-md-2">
+        </div>
+        <!-- Buttons -->
+        <div class="row">
+          <div class="col-md-3">
+            <label>Seat</label>
+            <select class="form-control form-control-sm" formControlName="type">
+              <option value="2">Seat Close</option>
+              <option value="1">Seat Open</option>
+            </select>
+          </div>
+          <div class="col-md-3">
             <label>&nbsp;</label>
-            <div class="mb-3">
-              <button class="btn btn-success btn-sm mr-2 me-2" type="submit">
+            <div>
+              <button class="btn btn-success btn-sm mr-2" type="submit">
                 Search
               </button>
-              <button type="button" class="btn btn-danger btn-sm">
+              <button type="button" class="btn btn-danger btn-sm" (click)="busSeat()">
                 Refresh
               </button>
             </div>
           </div>
-
         </div>
       </form>
 
