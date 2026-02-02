@@ -12,11 +12,11 @@ import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: 'app-completereport',
-  templateUrl: './completereport.component.html',
-  styleUrls: ['./completereport.component.scss']
+  selector: 'app-archivecompletereport',
+  templateUrl: './archivecompletereport.component.html',
+  styleUrls: ['./archivecompletereport.component.scss']
 })
-export class CompletereportComponent implements OnInit {
+export class ArchiveCompletereportComponent implements OnInit {
 
   public searchFrom: FormGroup;
 
@@ -35,6 +35,7 @@ export class CompletereportComponent implements OnInit {
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   completExportdata: any;
+  totaldata: any = [];
 
   apiProvider = [
     { name: 'DOLPHIN' },
@@ -59,7 +60,15 @@ export class CompletereportComponent implements OnInit {
   }
   title = 'angular-app';
   fileName = 'Complete-Report.csv';
+  years: number[] = [];
   ngOnInit(): void {
+    const currentYear = new Date().getFullYear();
+    const startYear = 2022;
+
+    for (let y = currentYear - 2; y >= startYear; y--) {
+      this.years.push(y);
+    }
+
     this.spinner.show();
 
 
@@ -75,7 +84,8 @@ export class CompletereportComponent implements OnInit {
       destination_id: [null],
       hasGst: [null],
       apiUser: [null],
-      device_type: [null]
+      device_type: [null],
+      year: [null]
 
     })
 
@@ -153,6 +163,7 @@ export class CompletereportComponent implements OnInit {
       hasGst: this.completeReportRecord.hasGst,
       apiUser: this.searchFrom.value.apiUser,
       device_type: this.searchFrom.value.device_type,
+      year: this.searchFrom.value.year,
       USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
     };
 
@@ -163,16 +174,19 @@ export class CompletereportComponent implements OnInit {
       this.rs.completepaginationReport(pageurl, data).subscribe(
         res => {
           this.completedata = res.data;
-          console.log(this.completedata)
+          this.totaldata = res;
+          console.log(this.totaldata)
           this.spinner.hide();
         }
       );
     }
     else {
-      this.rs.completeReport(data).subscribe(
+      this.rs.archivecompleteReport(data).subscribe(
         res => {
           this.completedata = res.data;
-          // console.log(this.completedata.data.data);
+          this.totaldata = res;
+          console.log(this.totaldata)
+          console.log(this.completedata.data[0].bus_id)
           this.spinner.hide();
         }
       );

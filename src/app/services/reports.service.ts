@@ -98,6 +98,19 @@ export class ReportsService {
   }
 
 
+  archivecompleteReport(data:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/archive-completereport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  archivecancelReport(data:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/archive-cancelreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   completepaginationReport(url,data): Observable<any> {
     return this.httpClient.post<any>(url,JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
