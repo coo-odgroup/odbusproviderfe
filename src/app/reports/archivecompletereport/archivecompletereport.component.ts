@@ -61,6 +61,9 @@ export class ArchiveCompletereportComponent implements OnInit {
   title = 'angular-app';
   fileName = 'Complete-Report.csv';
   years: number[] = [];
+  minDate: string | null = null;
+  maxDate: string | null = null;
+
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
     const startYear = 2022;
@@ -91,12 +94,20 @@ export class ArchiveCompletereportComponent implements OnInit {
 
 
     this.searchFrom.get('year')?.valueChanges.subscribe((year) => {
-      if (!year) return;
+
+      if (!year) {
+        this.minDate = null;
+        this.maxDate = null;
+        return;
+      }
+
+      this.minDate = `${year}-01-01`;
+      this.maxDate = `${year}-12-31`;
 
       this.searchFrom.patchValue({
-        rangeFromDate: `${year}-01-01`,
-        rangeToDate: `${year}-12-31`
-      }, { emitEvent: false }); // 🚫 avoid loop
+        rangeFromDate: this.minDate,
+        rangeToDate: `${year}-02-28`
+      }, { emitEvent: false });
     });
 
     this.searchFrom.valueChanges.subscribe((value) => {
@@ -129,7 +140,7 @@ export class ArchiveCompletereportComponent implements OnInit {
 
   exportexcel(): void {
     this.spinner.show();
-    // this.completeReportRecord = this.searchFrom.value ; 
+    // this.completeReportRecord = this.searchFrom.value ;
     this.completExportdata = '';
 
     const data = {
