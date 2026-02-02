@@ -89,6 +89,37 @@ export class ArchiveCancelReportComponent implements OnInit {
 
     })
 
+    this.searchFrom.get('year')?.valueChanges.subscribe((year) => {
+      if (!year) return;
+
+      this.searchFrom.patchValue({
+        rangeFromDate: `${year}-01-01`,
+        rangeToDate: `${year}-12-31`
+      }, { emitEvent: false }); // 🚫 avoid loop
+    });
+
+    this.searchFrom.valueChanges.subscribe((value) => {
+      const from = value.rangeFromDate;
+      const to = value.rangeToDate;
+
+      if (from && to) {
+        const fromYear = new Date(from).getFullYear();
+        const toYear = new Date(to).getFullYear();
+
+        if (fromYear === toYear) {
+          this.searchFrom.patchValue(
+            { year: fromYear },
+            { emitEvent: false }
+          );
+        } else {
+          this.searchFrom.patchValue(
+            { year: null },
+            { emitEvent: false }
+          );
+        }
+      }
+    });
+
 
     this.search();
     this.loadServices();
@@ -147,7 +178,7 @@ export class ArchiveCancelReportComponent implements OnInit {
     return label;
   }
 
-  totaldata: any =[];
+  totaldata: any = [];
 
   search(pageurl = "") {
     this.spinner.show();
@@ -187,8 +218,8 @@ export class ArchiveCancelReportComponent implements OnInit {
         res => {
           this.completedata = res.data;
           this.totaldata = res;
-          console.log(this.totaldata);
-          console.log(this.completedata.data[0].bus_id)
+          // console.log(this.completedata.data.length);
+          // console.log(this.completedata.data[0].bus_id)
           this.spinner.hide();
         }
       );
