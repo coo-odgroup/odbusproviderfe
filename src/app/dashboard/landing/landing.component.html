@@ -130,32 +130,32 @@
               </div>
             </div>
 
-            <div class="col-xl-6 col-md-12">
-              <app-card cardTitle="TOP ROUTES BOOKINGS IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
-                <div class="table-responsive">
-                  <table class="table table-hover mb-0">
-                    <thead>
-                      <tr>   
-                        <th>#</th>               
-                        <th>ROUTES</th>
-                        <th>PNR</th>
-                        <th>PRICE</th>                    
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let route of routedata; let i = index">
-                        <td>{{i+1}}</td>
-                        <td>
-                          {{route.from_location[0].name}} - {{route.to_location[0].name}}
-                        </td>
-                        <td>{{route.pnr_count}} PNR</td>
-                        <td><i class="fas fa-rupee-sign"></i> {{route.amount |number : '1.2-2'}}</td>                   
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </app-card>
-            </div>
+              <div class="col-xl-6 col-md-12">
+                <app-card cardTitle="TOP ROUTES BOOKINGS IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <thead>
+                        <tr>   
+                          <th>#</th>               
+                          <th>ROUTES</th>
+                          <th>PNR</th>
+                          <th>PRICE</th>                    
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let route of routedata; let i = index">
+                          <td>{{i+1}}</td>
+                          <td>
+                            {{route.from_location[0].name}} - {{route.to_location[0].name}}
+                          </td>
+                          <td>{{route.pnr_count}} PNR</td>
+                          <td><i class="fas fa-rupee-sign"></i> {{route.amount |number : '1.2-2'}}</td>                   
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </app-card>
+              </div>
             <div class="col-xl-6 col-md-12">
               <app-card cardTitle="TOP BUSES AS PER BOOKINGS IN LAST 30 DAYS" cardClass="table-card" blockClass="p-0">
                 <div class="table-responsive">

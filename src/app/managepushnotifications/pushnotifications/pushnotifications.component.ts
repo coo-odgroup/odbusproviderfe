@@ -11,19 +11,19 @@ import { NotificationService } from '../../services/notification.service';
   styleUrls: ['./pushnotifications.component.scss'],
 })
 export class PushnotificationsComponent implements OnInit {
-  searchForm: FormGroup;
-  form: FormGroup;
-  formConfirm: FormGroup;
+  searchForm!: FormGroup;
+  form!: FormGroup;
+  formConfirm!: FormGroup;
 
   pagecontent: any[] = [];
   pagination: any = null;
   all: any = null;
 
   selectedStatusRow: any = null;
-  newStatus: number = null;
+  newStatus!: number;
 
-  modalReference: NgbModalRef;
-  confirmDialogReference: NgbModalRef;
+  modalReference!: NgbModalRef;
+  confirmDialogReference!: NgbModalRef;
 
   ModalBtn = 'Save';
   ModalHeading = 'Add Notification';
@@ -177,7 +177,6 @@ export class PushnotificationsComponent implements OnInit {
     this.search();
   }
 
-  // --------------------------- Modal Actions ---------------------------
 
   OpenModal(content: any) {
     this.modalReference = this.modalService.open(content, {
@@ -246,7 +245,7 @@ export class PushnotificationsComponent implements OnInit {
     this.form.patchValue({
       id: this.selectedRecord.id,
       type_id: this.selectedRecord.type_id,
-      template_key_id: this.selectedRecord.template_key_id,
+      template_key_id: this.selectedRecord.template_key_id, 
       title: this.selectedRecord.title,
       description: this.selectedRecord.description,
       message: this.selectedRecord.message,
