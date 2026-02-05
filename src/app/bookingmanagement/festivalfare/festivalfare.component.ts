@@ -325,6 +325,11 @@ findOperator(event:any)
   let operatorId=event.id;
   if(operatorId)
   {
+    this.buses = [];
+      this.festivalFareForm.patchValue({
+        bus_id: []
+      });
+
     this.spinner.show();
     this.busService.getByOperaor(operatorId).subscribe(
       res=>{
