@@ -807,7 +807,7 @@
                                             <label for="name" class="col-sm-3 col-form-label">Percentage
                                                 :</label>
                                             <div class="col-sm-12">
-                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="text"  class="form-control" ngbAutofocus
                                                     formControlName="percentage" placeholder="Percentage">
                                             </div>
                                         </div>
@@ -890,6 +890,24 @@
                                                     Max Redeem is required! </span>
                                             </div>
                                         </div>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">User Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                               
+                                                <select class="form-control" formControlName="user_type"
+                                                    required>
+                                                    <option value="1">First Time User</option>
+                                                    <option value="2">Repeated User</option>
+                                                </select>
+
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['user_type'].touched && form.controls['user_type'].hasError('required')">
+                                                    User Type is required! </span>
+                                            </div>
+                                        </div>
+
 
                                         <div class="from-group">
                                             <label for="name" class="col-sm-4 col-form-label">Auto Apply

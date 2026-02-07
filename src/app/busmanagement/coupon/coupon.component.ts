@@ -96,8 +96,7 @@ export class CouponComponent implements OnInit {
       max_redeem: [null],
       auto_apply: [false],      
       apply_once:  [false],
-      user_type:  [false]
-
+      user_type:  [null]
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
     });
@@ -125,7 +124,7 @@ export class CouponComponent implements OnInit {
       max_redeem: [null],
       auto_apply: [false],
       apply_once: [false],
-      user_type:  [false]
+      user_type:  [null]
       
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -389,7 +388,7 @@ export class CouponComponent implements OnInit {
     this.editform.controls.full_description.setValue(this.couponRecord.full_desc);
     this.editform.controls.auto_apply.setValue(this.couponRecord.auto_apply);   
     this.editform.controls.apply_once.setValue(this.couponRecord.apply_once);   
-    this.editform.controls.all_route_check.setValue(this.couponRecord.all_route_check); 
+    // this.editform.controls.all_route_check.setValue(this.couponRecord.all_route_check); 
     
     this.editform.controls.coupon_discount_type.setValue(this.couponRecord.type);
     this.editform.controls.coupon_type.setValue(this.couponRecord.coupon_type_id);
@@ -408,7 +407,7 @@ export class CouponComponent implements OnInit {
     this.editform.controls.max_redeem.setValue(this.couponRecord.max_redeem);
     this.editform.controls.bus_id.setValue(this.couponRecord.bus_id);
 
-
+   // console.log(this.editform);
 
   }
 
@@ -530,23 +529,24 @@ export class CouponComponent implements OnInit {
   updateCoupon(){
 
       const data={      
-      via:this.form.value.via,
-      coupon_discount_type:this.form.value.coupon_discount_type,
-      amount:this.form.value.amount,
-      full_description:this.form.value.full_description,
-      max_discount_price:this.form.value.max_discount_price,
-      max_redeem:this.form.value.max_redeem,
-      auto_apply:this.form.value.auto_apply,
-      apply_once:this.form.value.apply_once,
-      user_type:this.form.value.user_type,
-      min_tran_amount:this.form.value.min_tran_amount,
-      percentage:this.form.value.percentage,
-      short_description:this.form.value.short_description,
-      valid_by:this.form.value.valid_by,
-      from_date:this.form.value.from_date,
-      to_date:this.form.value.to_date
+      via:this.editform.value.via,
+      coupon_discount_type:this.editform.value.coupon_discount_type,
+      amount:this.editform.value.amount,
+      full_description:this.editform.value.full_description,
+      max_discount_price:this.editform.value.max_discount_price,
+      max_redeem:this.editform.value.max_redeem,
+      auto_apply:this.editform.value.auto_apply,
+      apply_once:this.editform.value.apply_once,
+      user_type:this.editform.value.user_type,
+      min_tran_amount:this.editform.value.min_tran_amount,
+      percentage:this.editform.value.percentage,
+      short_description:this.editform.value.short_description,
+      valid_by:this.editform.value.valid_by,
+      from_date:this.editform.value.from_date,
+      to_date:this.editform.value.to_date,
+      created_by:localStorage.getItem('USERNAME') ,
+      user_id:localStorage.getItem('USERID')
     };
-
 
     this.couponService.update(this.couponRecord.id,data).subscribe(
       resp => {
