@@ -161,7 +161,7 @@ export class DisplayInfoComponent implements OnInit {
       });         
     }
   }
-  editDisplayInfo(event : Event, id : any)
+  editdisplayinfo(event : Event, id : any)
   {
     this.displayinfoRecord=this.displayinfos[id] ;
     console.log(this.displayinfoRecord);
