@@ -148,11 +148,11 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th >Coupan type</th>
-                            <th >Bus Details</th>
+                            <th >Coupon type</th>
+                            <!-- <th >Bus Details</th>
                             <th>Operator</th>
                             <th>Source</th>
-                            <th>Destination</th>
+                            <th>Destination</th> -->
                             <th>Valid From</th>
                             <th>Valid Till</th>
                             <th>Coupon Title</th>
@@ -175,13 +175,12 @@
                             
                             </td>
 
-                            <td>
+                            <!-- <td>
                                 <p>{{couponData.bus.name}}</p>
                                 <p>{{couponData.bus.bus_number}}</p>                            
                             </td>
 
                             <td>
-                                <!-- {{couponData|json}} -->
                                 <span *ngIf='couponData.bus_operator!=null '>
                                     {{ couponData.bus_operator.organisation_name }} [{{
                                         couponData.bus_operator.operator_name }}]
@@ -205,7 +204,7 @@
                                 <span *ngIf="couponData.to_location==null">
                                     ----
                                 </span>
-                            </td>
+                            </td> -->
                             <td>{{couponData.from_date  }}</td>
                             <td>{{couponData.to_date }} </td>
                             <td>{{couponData.coupon_title}}</td>
@@ -332,7 +331,7 @@
                         <div class="right-icon-control">
                             <form [formGroup]="form" class="editForm" novalidate>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="from-group">
                                             <label for="name" class="col-sm-5 col-form-label">Coupon Type
                                                 :<span class="text-danger">*</span></label>
@@ -366,13 +365,14 @@
                                             </div>
                                         </div>
                                         <div class="from-group" *ngIf="form.controls.coupon_type.value=='2' || form.controls.coupon_type.value=='3' ">
-                                            <label for="bus" class="col-sm-5  col-form-label">Routes</label>
+                                            <label for="route" class="col-sm-5  col-form-label">Routes</label>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
                                                     <div class="col-sm-12">
                                                         <ng-select id="route" [multiple]="true"  [items]="allRoutes"
                                                             bindLabel="route" bindValue="id"
                                                             placeholder="Select Route"
+                                                            [disabled]="form.get('all_route_check')?.value"
                                                             formControlName="route" [clearable]="false" (change)="GetBusList()">
 
                                                             <ng-template ng-header-tmp *ngIf="allRoutes?.length > 0">
@@ -388,7 +388,20 @@
                                         </div>
 
 
-                                        <div class="from-group">
+                                      
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="from-group"
+                                            *ngIf="form.controls.coupon_type.value == '2'">
+                                            <label class="col-sm-5 col-form-label">
+                                                <input type="checkbox"
+                                                    formControlName="all_route_check"
+                                                    (change)="onAllRoutesChange($event)" />
+                                                All Routes
+                                            </label>
+                                        </div>
+                                          <div class="from-group">
                                             <label for="bus" class="col-sm-5  col-form-label">Bus</label>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
@@ -412,6 +425,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -575,6 +590,24 @@
                                                     Max Redeem is required! </span>
                                             </div>
                                         </div>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">User Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                               
+                                                <select class="form-control" formControlName="user_type"
+                                                    required>
+                                                    <option value="1">First Time User</option>
+                                                    <option value="2">Repeated User</option>
+                                                </select>
+
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['user_type'].touched && form.controls['user_type'].hasError('required')">
+                                                    User Type is required! </span>
+                                            </div>
+                                        </div>
+
 
                                         <div class="from-group">
                                             <label for="name" class="col-sm-4 col-form-label">Auto Apply
@@ -759,7 +792,7 @@
                                                 Discount Type
                                                 :<span class="text-danger">*</span></label>
                                             <div class="col-sm-12">
-                                                <select class="form-control" disabled
+                                                <select class="form-control"
                                                     formControlName="coupon_discount_type" required>                                                            
                                                     <option value="1">Percentage %</option>
                                                     <option value="2">Cut Off</option>
@@ -774,7 +807,7 @@
                                             <label for="name" class="col-sm-3 col-form-label">Percentage
                                                 :</label>
                                             <div class="col-sm-12">
-                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="text"  class="form-control" ngbAutofocus
                                                     formControlName="percentage" placeholder="Percentage">
                                             </div>
                                         </div>
@@ -783,7 +816,7 @@
                                             <label for="name" class="col-sm-4 col-form-label">Max Discount
                                                 :</label>
                                             <div class="col-sm-12">
-                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="text"  class="form-control" ngbAutofocus
                                                     formControlName="max_discount_price"
                                                     placeholder="Max Discount">
                                             </div>
@@ -793,7 +826,7 @@
                                             <label for="name" class="col-sm-12 col-form-label">Cut Off
                                                 Amount :</label>
                                             <div class="col-sm-12">
-                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="text"  class="form-control" ngbAutofocus
                                                     formControlName="amount" placeholder="Cut Off Amount">
                                             </div>
                                         </div>
@@ -802,7 +835,7 @@
                                             <label for="name" class="col-sm-12 col-form-label">Min
                                                 Transaction Amount :</label>
                                             <div class="col-sm-12">
-                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="text"  class="form-control" ngbAutofocus
                                                     formControlName="min_tran_amount"
                                                     placeholder="Min Transaction Amount">
                                             </div>
@@ -811,7 +844,7 @@
                                             <label for="name" class="col-sm-4 col-form-label">Valid By
                                                 :<span class="text-danger">*</span></label>
                                             <div class="col-sm-12">
-                                                <select class="form-control" disabled formControlName="valid_by"
+                                                <select class="form-control" formControlName="valid_by"
                                                     required>
                                                     <option value="1">Journey Date</option>
                                                     <option value="2">Booking Date</option>
@@ -825,7 +858,7 @@
                                             <label for="name" class="col-sm-4 col-form-label">From Date
                                                 :<span class="text-danger">*</span></label>
                                             <div class="col-sm-12">
-                                                <input type="date" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="date"  class="form-control" ngbAutofocus
                                                     formControlName="from_date" placeholder="From Date"
                                                     required>
                                                 <span class="text-danger"
@@ -837,7 +870,7 @@
                                             <label for="name" class="col-sm-4 col-form-label">To Date
                                                 :<span class="text-danger">*</span></label>
                                             <div class="col-sm-12">
-                                                <input type="date" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="date"  class="form-control" ngbAutofocus
                                                     formControlName="to_date" placeholder="To Date"
                                                     required>
                                                 <span class="text-danger"
@@ -849,7 +882,7 @@
                                             <label for="name" class="col-sm-4 col-form-label">Max Redeem
                                                 :<span class="text-danger">*</span></label>
                                             <div class="col-sm-12">
-                                                <input type="text" [readonly]="true" class="form-control" ngbAutofocus
+                                                <input type="text"  class="form-control" ngbAutofocus
                                                     formControlName="max_redeem" placeholder="Max Redeem"
                                                     required>
                                                 <span class="text-danger"
@@ -857,6 +890,24 @@
                                                     Max Redeem is required! </span>
                                             </div>
                                         </div>
+
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-4 col-form-label">User Type
+                                                :<span class="text-danger">*</span></label>
+                                            <div class="col-sm-12">
+                                               
+                                                <select class="form-control" formControlName="user_type"
+                                                    required>
+                                                    <option value="1">First Time User</option>
+                                                    <option value="2">Repeated User</option>
+                                                </select>
+
+                                                <span class="text-danger"
+                                                    *ngIf="form.controls['user_type'].touched && form.controls['user_type'].hasError('required')">
+                                                    User Type is required! </span>
+                                            </div>
+                                        </div>
+
 
                                         <div class="from-group">
                                             <label for="name" class="col-sm-4 col-form-label">Auto Apply

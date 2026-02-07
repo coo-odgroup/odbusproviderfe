@@ -82,6 +82,7 @@ export class CouponComponent implements OnInit {
       short_description: [null],
       full_description: [null],
       route: [null],
+      all_route_check: [false],  
       coupon_discount_type: [null],
       percentage: [null],
       max_discount_price: [null],
@@ -91,11 +92,11 @@ export class CouponComponent implements OnInit {
       from_date: [null],
       to_date: [null],
       bus_operator_id:[null],
-      bus_id:[null, Validators.compose([Validators.required])],
+      bus_id:[null], //, Validators.compose([Validators.required])
       max_redeem: [null],
       auto_apply: [false],      
-      apply_once:  [false]
-
+      apply_once:  [false],
+      user_type:  [null]
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
     });
@@ -119,10 +120,11 @@ export class CouponComponent implements OnInit {
       from_date: [null],
       to_date: [null],
       bus_operator_id:[null],
-      bus_id:[null, Validators.compose([Validators.required])],
+      bus_id:[null], //, Validators.compose([Validators.required])
       max_redeem: [null],
       auto_apply: [false],
-      apply_once: [false]
+      apply_once: [false],
+      user_type:  [null]
       
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
@@ -149,7 +151,7 @@ export class CouponComponent implements OnInit {
     
   }
 
-  coupon_type(){
+  coupon_type_old(){
 
     this.form.controls.bus_id.setValue(null);
     this.form.controls.route.setValue(null);
@@ -190,6 +192,50 @@ export class CouponComponent implements OnInit {
 
 
   }
+
+
+  coupon_type() {
+
+  // Reset dependent fields
+  this.form.patchValue({
+    bus_id: null,
+    route: null,
+    bus_operator_id: null,
+    all_routes: false
+  });
+
+  this.form.controls['route'].enable();
+  this.form.controls['bus_id'].enable();
+
+  this.allRoutes = [];
+  this.busList = [];
+
+  const typ = this.form.controls.coupon_type.value;
+
+  if (typ == 2) {
+
+    this.spinner.show();
+
+    const Bus_Operator = {
+      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
+    };
+
+    if (
+      Bus_Operator.USER_BUS_OPERATOR_ID &&
+      localStorage.getItem('ROLE_ID') == '4'
+    ) {
+      this.busstoppageService.AllRoutes(Bus_Operator).subscribe(res => {
+        this.allRoutes = res.data;
+        this.spinner.hide();
+      });
+    } else {
+      this.busstoppageService.AllRoutes().subscribe(res => {
+        this.allRoutes = res.data;
+        this.spinner.hide();
+      });
+    }
+  }
+}
 
 
   getBusoperatorRoute(){
@@ -342,6 +388,7 @@ export class CouponComponent implements OnInit {
     this.editform.controls.full_description.setValue(this.couponRecord.full_desc);
     this.editform.controls.auto_apply.setValue(this.couponRecord.auto_apply);   
     this.editform.controls.apply_once.setValue(this.couponRecord.apply_once);   
+    // this.editform.controls.all_route_check.setValue(this.couponRecord.all_route_check); 
     
     this.editform.controls.coupon_discount_type.setValue(this.couponRecord.type);
     this.editform.controls.coupon_type.setValue(this.couponRecord.coupon_type_id);
@@ -353,13 +400,14 @@ export class CouponComponent implements OnInit {
     this.editform.controls.amount.setValue(this.couponRecord.amount);
     this.editform.controls.min_tran_amount.setValue(this.couponRecord.min_tran_amount);
     this.editform.controls.valid_by.setValue(this.couponRecord.valid_by);
+    this.editform.controls.user_type.setValue(this.couponRecord.user_type);
     this.editform.controls.from_date.setValue(date);
     this.editform.controls.to_date.setValue(to_date);
     this.editform.controls.bus_operator_id.setValue(this.couponRecord.bus_operator_id);
     this.editform.controls.max_redeem.setValue(this.couponRecord.max_redeem);
     this.editform.controls.bus_id.setValue(this.couponRecord.bus_id);
 
-
+   // console.log(this.editform);
 
   }
 
@@ -467,7 +515,9 @@ export class CouponComponent implements OnInit {
       bus_id:[null, Validators.compose([Validators.required])],
       max_redeem: [null],
       auto_apply: [false],
-      apply_once:[false]
+      apply_once:[false],
+      all_route_check:[false],
+      user_type:[null],
 
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
@@ -478,13 +528,24 @@ export class CouponComponent implements OnInit {
 
   updateCoupon(){
 
-    const data={
+      const data={      
       via:this.editform.value.via,
+      coupon_discount_type:this.editform.value.coupon_discount_type,
+      amount:this.editform.value.amount,
       full_description:this.editform.value.full_description,
+      max_discount_price:this.editform.value.max_discount_price,
+      max_redeem:this.editform.value.max_redeem,
       auto_apply:this.editform.value.auto_apply,
       apply_once:this.editform.value.apply_once,
+      user_type:this.editform.value.user_type,
+      min_tran_amount:this.editform.value.min_tran_amount,
+      percentage:this.editform.value.percentage,
       short_description:this.editform.value.short_description,
-      created_by:localStorage.getItem('USERNAME') 
+      valid_by:this.editform.value.valid_by,
+      from_date:this.editform.value.from_date,
+      to_date:this.editform.value.to_date,
+      created_by:localStorage.getItem('USERNAME') ,
+      user_id:localStorage.getItem('USERID')
     };
 
     this.couponService.update(this.couponRecord.id,data).subscribe(
@@ -509,7 +570,7 @@ export class CouponComponent implements OnInit {
   {
     this.spinner.show();
     let id=this.couponRecord.id;
-    // console.log(this.form.value);
+    // console.log(this.form.value);return;
 
     if(this.form.value.coupon_type==1 && this.form.value.bus_operator_id.length ==0)
     {
@@ -518,7 +579,7 @@ export class CouponComponent implements OnInit {
       this.spinner.hide();
       return;
     }
-    if(this.form.value.coupon_type==2 && this.form.value.route.length == 0)
+    if((this.form.value.all_route_check == 0 || this.form.value.all_route_check === false) && this.form.value.coupon_type==2 && this.form.value.route.length == 0)
     {
       this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Route is required", type:Constants.ErrorType});
       this.spinner.hide();
@@ -532,7 +593,7 @@ export class CouponComponent implements OnInit {
       return;
     }
 
-    if(this.form.value.bus_id.length == 0){
+    if((this.form.value.all_route_check == 0 || this.form.value.all_route_check === false) && this.form.value.bus_id.length == 0){
 
       this.notificationService.addToast({title:Constants.ErrorTitle,msg:"Bus is required", type:Constants.ErrorType});
       this.spinner.hide();
@@ -549,12 +610,13 @@ export class CouponComponent implements OnInit {
       amount:this.form.value.amount,
       route:this.form.value.route,
       bus_id:this.form.value.bus_id,
-     // destination_id:this.form.value.destination_id,
       full_description:this.form.value.full_description,
       max_discount_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
       auto_apply:this.form.value.auto_apply,
       apply_once:this.form.value.apply_once,
+      all_route_check:this.form.value.all_route_check,
+      user_type:this.form.value.user_type,
       min_tran_amount:this.form.value.min_tran_amount,
       percentage:this.form.value.percentage,
       short_description:this.form.value.short_description,
@@ -800,5 +862,26 @@ changeStatus(event: Event, stsitem: any) {
     }
   );
 }
+
+onAllRoutesChange(event: any) {
+  if (event.target.checked) {
+    // Clear values
+    this.form.patchValue({
+      route: null,
+      bus_id: null
+    });
+
+    // Disable controls
+    this.form.get('route')?.disable();
+    this.form.get('bus_id')?.disable();
+  } else {
+    // Enable controls
+    this.form.get('route')?.enable();
+    this.form.get('bus_id')?.enable();
+  }
+}
+
+
+
 
 }
