@@ -1,0 +1,24 @@
+import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { CommonModule } from '@angular/common';
+import { DisplayInfoRoutingModule } from './displayinfo-routing.module';
+import {SharedModule} from '../../theme/shared/shared.module';
+import {FormsModule} from '@angular/forms';
+import { DisplayInfoComponent } from './displayinfo.component';
+import { NotificationService } from '../../services/notification.service';
+import {NgxPrintModule} from 'ngx-print';
+import { NgSelectModule } from '@ng-select/ng-select';
+@NgModule({
+  imports: [
+    CommonModule,
+    DisplayInfoRoutingModule,
+    SharedModule,
+    FormsModule,
+    NgSelectModule,
+    NgxPrintModule,NgxSpinnerModule
+    ],
+  declarations: [ DisplayInfoComponent],
+  providers: [NotificationService],schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+
+export class DisplayInfoModule { }

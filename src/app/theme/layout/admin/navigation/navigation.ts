@@ -474,6 +474,15 @@ const NavigationItems = [
             icon: 'feather icon-share-2',
             url: 'busmanagement/bustype',
           },
+
+          {
+            id: 'displayinfo',
+            title: 'Display Info',
+            type: 'item',
+            icon: 'feather icon-share-2',
+            url: 'busmanagement/displayinfo',
+          },
+
           {
             id: 'safety',
             title: 'Safety',

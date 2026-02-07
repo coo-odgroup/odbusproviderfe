@@ -14,6 +14,10 @@ const routes: Routes = [
         loadChildren: () => import('./bustype/bustype.module').then(module => module.BusTypedModule)
       },
       {
+        path: 'displayinfo',
+        loadChildren: () => import('./displayinfo/displayinfo.module').then(module => module.DisplayInfoModule)
+      },
+      {
         path: 'coupon',
         loadChildren: () => import('./coupon/coupon.module').then(module => module.CouponModule)
       },
