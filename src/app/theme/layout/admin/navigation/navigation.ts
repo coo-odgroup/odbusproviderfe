@@ -1233,6 +1233,27 @@ const NavigationItems = [
         icon: 'feather icon-clock',
         url: 'managecronjob',
       },
+      {
+        title: 'Archive Reports',
+        type: 'collapse',
+        icon: 'feather icon-file',
+        children: [
+          {
+            id: 'archivecompletereport',
+            title: 'Archive Complete Report',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'reports/archivecompletereport',
+          },
+          {
+            id: 'archivecancelreport',
+            title: 'Archive Cancel Report',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'reports/archivecancelreport',
+          },
+        ],
+      },
     ],
   },
 ];

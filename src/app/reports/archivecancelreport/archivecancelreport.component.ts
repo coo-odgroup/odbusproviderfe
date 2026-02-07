@@ -12,11 +12,11 @@ import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: 'app-completereport',
-  templateUrl: './completereport.component.html',
-  styleUrls: ['./completereport.component.scss']
+  selector: 'app-archivecancelreport',
+  templateUrl: './archivecancelreport.component.html',
+  styleUrls: ['./archivecancelreport.component.scss']
 })
-export class CompletereportComponent implements OnInit {
+export class ArchiveCancelReportComponent implements OnInit {
 
   public searchFrom: FormGroup;
 
@@ -59,7 +59,19 @@ export class CompletereportComponent implements OnInit {
   }
   title = 'angular-app';
   fileName = 'Complete-Report.csv';
+  years: number[] = [];
+  minDate: string | null = null;
+  maxDate: string | null = null;
+
   ngOnInit(): void {
+
+    const currentYear = new Date().getFullYear();
+    const startYear = 2022;
+
+    for (let y = currentYear - 2; y >= startYear; y--) {
+      this.years.push(y);
+    }
+
     this.spinner.show();
 
 
@@ -75,9 +87,50 @@ export class CompletereportComponent implements OnInit {
       destination_id: [null],
       hasGst: [null],
       apiUser: [null],
-      device_type: [null]
+      device_type: [null],
+      year: [null]
 
     })
+
+    this.searchFrom.get('year')?.valueChanges.subscribe((year) => {
+
+      if (!year) {
+        this.minDate = null;
+        this.maxDate = null;
+        return;
+      }
+
+      this.minDate = `${year}-01-01`;
+      this.maxDate = `${year}-12-31`;
+
+      this.searchFrom.patchValue({
+        rangeFromDate: this.minDate,
+        rangeToDate: `${year}-02-28`
+      }, { emitEvent: false });
+    });
+
+
+    this.searchFrom.valueChanges.subscribe((value) => {
+      const from = value.rangeFromDate;
+      const to = value.rangeToDate;
+
+      if (from && to) {
+        const fromYear = new Date(from).getFullYear();
+        const toYear = new Date(to).getFullYear();
+
+        if (fromYear === toYear) {
+          this.searchFrom.patchValue(
+            { year: fromYear },
+            { emitEvent: false }
+          );
+        } else {
+          this.searchFrom.patchValue(
+            { year: null },
+            { emitEvent: false }
+          );
+        }
+      }
+    });
 
 
     this.search();
@@ -136,6 +189,9 @@ export class CompletereportComponent implements OnInit {
   page(label: any) {
     return label;
   }
+
+  totaldata: any = [];
+
   search(pageurl = "") {
     this.spinner.show();
     this.completeReportRecord = this.searchFrom.value;
@@ -153,6 +209,7 @@ export class CompletereportComponent implements OnInit {
       hasGst: this.completeReportRecord.hasGst,
       apiUser: this.searchFrom.value.apiUser,
       device_type: this.searchFrom.value.device_type,
+      year: this.searchFrom.value.year,
       USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
     };
 
@@ -163,16 +220,18 @@ export class CompletereportComponent implements OnInit {
       this.rs.completepaginationReport(pageurl, data).subscribe(
         res => {
           this.completedata = res.data;
-          console.log(this.completedata)
+          console.log(this.completedata.data[0].bus_id)
           this.spinner.hide();
         }
       );
     }
     else {
-      this.rs.completeReport(data).subscribe(
+      this.rs.archivecancelReport(data).subscribe(
         res => {
           this.completedata = res.data;
-          // console.log(this.completedata.data.data);
+          this.totaldata = res;
+          // console.log(this.completedata.data.length);
+          // console.log(this.completedata.data[0].bus_id)
           this.spinner.hide();
         }
       );
