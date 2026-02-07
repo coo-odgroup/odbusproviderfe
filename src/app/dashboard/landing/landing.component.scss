@@ -9,3 +9,40 @@ input[type="radio"]:checked
     padding: 12.5px;
 }
 
+.double-booking-card .card-header h5,
+.double-booking-card .card-title {
+  color: #d10000;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  animation: alertPulse 1.5s infinite;
+  text-shadow: 0 0 8px rgba(209, 0, 0, 0.8);
+}
+
+.double-booking-card .card-header,
+.double-booking-card .card-title {
+  text-align: center;
+}
+
+/* 🔥 Alert pulse animation */
+@keyframes alertPulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 5px rgba(209, 0, 0, 0.6);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.08);
+    text-shadow: 0 0 15px rgba(255, 0, 0, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 5px rgba(209, 0, 0, 0.6);
+  }
+}
+.double-booking-card .card-header {
+  background: #ffe6e6;
+  border-bottom: 2px solid #ff0000;
+}

@@ -84,7 +84,15 @@ const routes: Routes = [
       {
         path: 'routewise-bookigreport',
         loadChildren: () => import('./routewisebookingreport/routewisebookingreport.module').then(module => module.RouteWiseBookingModule)
-      }       
+      },
+      {
+        path: 'archivecompletereport',
+        loadChildren: () => import('./archivecompletereport/archivecompletereport.module').then(module => module.ArchiveCompletereportModule)
+      },
+      {
+        path: 'archivecancelreport',
+        loadChildren: () => import('./archivecancelreport/archivecancelreport.module').then(module => module.ArchiveCancelReportModule)
+      }
     ]
   }
 ];

@@ -12,12 +12,11 @@ import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: 'app-routewisebookingreport',
-  templateUrl: './routewisebookingreport.component.html',
-  styleUrls: ['./routewisebookingreport.component.scss']
+  selector: 'app-archivecancelreport',
+  templateUrl: './archivecancelreport.component.html',
+  styleUrls: ['./archivecancelreport.component.scss']
 })
-export class RouteWiseBookingreport implements OnInit {
-  BASE_URL = Constants.BASE_URL;
+export class ArchiveCancelReportComponent implements OnInit {
 
   public searchFrom: FormGroup;
 
@@ -31,15 +30,16 @@ export class RouteWiseBookingreport implements OnInit {
   locations: any;
   buses: any;
   CONSUMER_PUBLIC_URL = Constants.CONSUMER_PUBLIC_URL;
-  RouteData:any;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   completExportdata: any;
 
-  FILE_BASE_PATH = Constants.DOWNLOAD_URL;
-
+  apiProvider = [
+    { name: 'DOLPHIN' },
+    { name: 'MANTIS' }
+  ];
   role = localStorage.getItem('ROLE_ID');
 
   constructor(
@@ -57,40 +57,83 @@ export class RouteWiseBookingreport implements OnInit {
     this.toDate = calendar.getToday();
 
   }
-
-  getData(){
-    this.spinner.show();
-    this.http.post(this.BASE_URL+"/route-wise-search","").subscribe((res:any)=>{
-      // console.log(res.status)
-      if(res.status == 200){
-        this.spinner.hide();
-        this.RouteData =res.data;
-        console.log(this.RouteData)
-      }
-    })
-  }
-  
-
-  downloadCsv(path: string) {
-    window.open(this.FILE_BASE_PATH + `${path}` , '_blank');
-  }
-
   title = 'angular-app';
   fileName = 'Complete-Report.csv';
+  years: number[] = [];
+  minDate: string | null = null;
+  maxDate: string | null = null;
+
   ngOnInit(): void {
-    // this.spinner.show();
+
+    const currentYear = new Date().getFullYear();
+    const startYear = 2022;
+
+    for (let y = currentYear - 2; y >= startYear; y--) {
+      this.years.push(y);
+    }
+
+    this.spinner.show();
 
 
     this.searchFrom = this.fb.group({
+      bus_operator_id: [null],
+      rangeFromDate: [null],
+      rangeToDate: [null],
+      payment_id: [null],
+      date_type: ['journey'],
+      pnr: [null],
+      rows_number: 100,
       source_id: [null],
       destination_id: [null],
-      fromdate: [null],
-      todate: [null],
+      hasGst: [null],
+      apiUser: [null],
+      device_type: [null],
+      year: [null]
+
     })
 
+    this.searchFrom.get('year')?.valueChanges.subscribe((year) => {
 
-    // this.onSubmit();
-    this.getData();
+      if (!year) {
+        this.minDate = null;
+        this.maxDate = null;
+        return;
+      }
+
+      this.minDate = `${year}-01-01`;
+      this.maxDate = `${year}-12-31`;
+
+      this.searchFrom.patchValue({
+        rangeFromDate: this.minDate,
+        rangeToDate: `${year}-02-28`
+      }, { emitEvent: false });
+    });
+
+
+    this.searchFrom.valueChanges.subscribe((value) => {
+      const from = value.rangeFromDate;
+      const to = value.rangeToDate;
+
+      if (from && to) {
+        const fromYear = new Date(from).getFullYear();
+        const toYear = new Date(to).getFullYear();
+
+        if (fromYear === toYear) {
+          this.searchFrom.patchValue(
+            { year: fromYear },
+            { emitEvent: false }
+          );
+        } else {
+          this.searchFrom.patchValue(
+            { year: null },
+            { emitEvent: false }
+          );
+        }
+      }
+    });
+
+
+    this.search();
     this.loadServices();
 
   }
@@ -146,66 +189,53 @@ export class RouteWiseBookingreport implements OnInit {
   page(label: any) {
     return label;
   }
-  onSubmit(pageurl = "") {
-    this.spinner.show();
-    // this.completeReportRecord = this.searchFrom.value;
 
-    // console.log(this.searchFrom.value);
+  totaldata: any = [];
+
+  search(pageurl = "") {
+    this.spinner.show();
+    this.completeReportRecord = this.searchFrom.value;
 
     const data = {
-      "source_id" : this.searchFrom.value.source_id,
-      "destination_id" : this.searchFrom.value.destination_id,
-      "fromdate" : this.searchFrom.value.fromdate,
-      "todate" : this.searchFrom.value.todate,
-    }
- 
-    this.http.post(this.BASE_URL+"/route-wise-booking",data).subscribe((res:any)=>{
-      if(res.status == 200){
-        this.getData()
-        console.log(res);
-        this.spinner.hide();
-      }
-    })
-
-    // console.log(this.BASE_URL);
-
-    // const data = {
-    //   bus_operator_id: this.completeReportRecord.bus_operator_id,
-    //   payment_id: this.completeReportRecord.payment_id,
-    //   date_type: this.completeReportRecord.date_type,
-    //   pnr: this.completeReportRecord.pnr,
-    //   rows_number: this.completeReportRecord.rows_number,
-    //   source_id: this.completeReportRecord.source_id,
-    //   destination_id: this.completeReportRecord.destination_id,
-    //   rangeFromDate: this.completeReportRecord.rangeFromDate,
-    //   rangeToDate: this.completeReportRecord.rangeToDate,
-    //   hasGst: this.completeReportRecord.hasGst,
-    //   apiUser: this.searchFrom.value.apiUser,
-    //   device_type: this.searchFrom.value.device_type,
-    //   USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
-    // };
+      bus_operator_id: this.completeReportRecord.bus_operator_id,
+      payment_id: this.completeReportRecord.payment_id,
+      date_type: this.completeReportRecord.date_type,
+      pnr: this.completeReportRecord.pnr,
+      rows_number: this.completeReportRecord.rows_number,
+      source_id: this.completeReportRecord.source_id,
+      destination_id: this.completeReportRecord.destination_id,
+      rangeFromDate: this.completeReportRecord.rangeFromDate,
+      rangeToDate: this.completeReportRecord.rangeToDate,
+      hasGst: this.completeReportRecord.hasGst,
+      apiUser: this.searchFrom.value.apiUser,
+      device_type: this.searchFrom.value.device_type,
+      year: this.searchFrom.value.year,
+      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
+    };
 
     // console.log(data);
 
 
-    // if (pageurl != "") {
-    //   this.rs.completepaginationReport(pageurl, data).subscribe(
-    //     res => {
-    //       this.completedata = res.data;
-    //       console.log(this.completedata)
-    //       this.spinner.hide();
-    //     }
-    //   );
-    // }
-    // else {
-    //   this.rs.completeReport(data).subscribe(
-    //     res => {
-    //       this.completedata = res.data;
-    //       // console.log(this.completedata.data.data);
-    //       this.spinner.hide();
-    //     }
-    //   );
-    // }
+    if (pageurl != "") {
+      this.rs.completepaginationReport(pageurl, data).subscribe(
+        res => {
+          this.completedata = res.data;
+          console.log(this.completedata.data[0].bus_id)
+          this.spinner.hide();
+        }
+      );
+    }
+    else {
+      this.rs.archivecancelReport(data).subscribe(
+        res => {
+          this.completedata = res.data;
+          this.totaldata = res;
+          // console.log(this.completedata.data.length);
+          // console.log(this.completedata.data[0].bus_id)
+          this.spinner.hide();
+        }
+      );
+    }
 
   }
 
@@ -246,7 +276,7 @@ export class RouteWiseBookingreport implements OnInit {
       device_type: [null],
 
     })
-    // this.search();
+    this.search();
   }
 
 

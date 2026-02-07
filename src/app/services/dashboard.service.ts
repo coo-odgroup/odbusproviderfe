@@ -38,6 +38,12 @@ export class DashboardService {
     )
   }
 
+  duplicatebooking(): Observable<any> {
+    return this.httpClient.get(this.apiURL + '/AlertDuplicateBooking').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   operatordata(): Observable<any> {
     return this.httpClient.get(this.apiURL + '/operatordata').pipe(
       catchError(this.errorHandler)

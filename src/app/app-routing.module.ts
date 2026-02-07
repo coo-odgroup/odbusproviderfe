@@ -5,6 +5,7 @@ import { LoginComponent } from './theme/layout/admin/login/login.component';
 import { AuthComponent } from './theme/layout/auth/auth.component';
 import { Routeguard } from './helpers/routeguard';
 import { TopRouteComponent } from './chart/top-route/top-route.component';
+import { ManagecronjobComponent } from './managecronjob/managecronjob.component';
 
 const routes: Routes = [
   {
@@ -160,6 +161,10 @@ const routes: Routes = [
       {
         path:"top-route-chart",
         component:TopRouteComponent
+      },
+      {
+        path:"managecronjob",
+        component:ManagecronjobComponent
       },
       {
         path: 'managescheduler',

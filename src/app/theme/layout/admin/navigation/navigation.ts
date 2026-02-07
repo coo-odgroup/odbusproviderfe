@@ -667,6 +667,13 @@ const NavigationItems = [
             icon: 'feather icon-pie-chart',
             url: 'reports/completeReport',
           },
+          {
+            id: 'routewise-bookigreport',
+            title: 'Route Wise Report',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'reports/routewise-bookigreport',
+          },
           // {
           //   id: 'seatblockreport',
           //   title: 'Seat Block Report',
@@ -1202,6 +1209,48 @@ const NavigationItems = [
             type: 'item',
             icon: 'feather icon-upload-cloud',
             url: 'managepushnotifications/pushnotifications',
+          },
+        ],
+      },
+      {
+        title: 'Chart',
+        type: 'collapse',
+        icon: 'feather icon-message-circle',
+        children: [
+          {
+            id: 'chart',
+            title: 'Chart',
+            type: 'item',
+            icon: 'feather icon-upload-cloud',
+            url: 'top-route-chart',
+          },
+        ],
+      },
+      {
+        id: 'managecronjob',
+        title: 'Manage Cron Job',
+        type: 'item',
+        icon: 'feather icon-clock',
+        url: 'managecronjob',
+      },
+      {
+        title: 'Archive Reports',
+        type: 'collapse',
+        icon: 'feather icon-file',
+        children: [
+          {
+            id: 'archivecompletereport',
+            title: 'Archive Complete Report',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'reports/archivecompletereport',
+          },
+          {
+            id: 'archivecancelreport',
+            title: 'Archive Cancel Report',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'reports/archivecancelreport',
           },
         ],
       },
