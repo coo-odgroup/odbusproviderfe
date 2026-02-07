@@ -610,7 +610,6 @@ export class CouponComponent implements OnInit {
       amount:this.form.value.amount,
       route:this.form.value.route,
       bus_id:this.form.value.bus_id,
-     // destination_id:this.form.value.destination_id,
       full_description:this.form.value.full_description,
       max_discount_price:this.form.value.max_discount_price,
       max_redeem:this.form.value.max_redeem,
