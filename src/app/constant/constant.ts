@@ -30,18 +30,18 @@ export class Constants {
 
 
 
-    public static BASE_URL:any ='https://provider.odbus.co.in/api';
-    public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
-    public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';
-    public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
-    public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
+    // public static BASE_URL:any ='https://provider.odbus.co.in/api';
+    // public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
+    // public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';
+    // public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
+    // public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
 
 
-    // public static BASE_URL: any = 'https://testingadminapi.odbus.co.in/api';
-    // public static CONSUMER_PUBLIC_URL: any = 'https://testing.odbus.co.in/public/';
-    // public static CONSUMER_API_URL: any = 'https://testing.odbus.co.in/api/';
-    // public static PATHURL: any = 'https://testingadminapi.odbus.co.in/public/uploads/';
-    // public static DOWNLOAD_URL: any = 'https://testingadminapi.odbus.co.in/storage/';
+    public static BASE_URL: any = 'https://testingadminapi.odbus.co.in/api';
+    public static CONSUMER_PUBLIC_URL: any = 'https://testing.odbus.co.in/public/';
+    public static CONSUMER_API_URL: any = 'https://testing.odbus.co.in/api/';
+    public static PATHURL: any = 'https://testingadminapi.odbus.co.in/public/uploads/';
+    public static DOWNLOAD_URL: any = 'https://testingadminapi.odbus.co.in/storage/';
 
 
 }

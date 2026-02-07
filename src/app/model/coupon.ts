@@ -4,6 +4,8 @@ export interface Coupon {
     apply_once:any;
     source_id: any;
     coupon_type_id: any;
+    user_type: any;
+    all_route_check: any;
     coupon_discount_type: any;
     id:any;
     coupon_title:any;
