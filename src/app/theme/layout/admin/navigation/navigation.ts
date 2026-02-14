@@ -539,13 +539,13 @@ const NavigationItems = [
           //   type: 'item',
           //   url: 'busmanagement/settings'
           // },
-          {
-            id: 'Offers',
-            title: 'Offers',
-            type: 'item',
-            icon: 'feather icon-watch',
-            url: 'busmanagement/offers',
-          },
+          // {
+          //   id: 'Offers',
+          //   title: 'Offers',
+          //   type: 'item',
+          //   icon: 'feather icon-watch',
+          //   url: 'busmanagement/offers',
+          // },
           {
             id: 'BusSequence',
             title: 'Bus Sequence',
@@ -1367,13 +1367,13 @@ const AssociationNavItems = [
           //   type: 'item',
           //   url: 'busmanagement/settings'
           // },
-          {
-            id: 'Offers',
-            title: 'Offers',
-            type: 'item',
-            icon: 'feather icon-watch',
-            url: 'busmanagement/offers',
-          },
+          // {
+          //   id: 'Offers',
+          //   title: 'Offers',
+          //   type: 'item',
+          //   icon: 'feather icon-watch',
+          //   url: 'busmanagement/offers',
+          // },
           {
             id: 'BusSequence',
             title: 'Bus Sequence',

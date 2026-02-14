@@ -30,7 +30,7 @@ export class PermissiontoroleService {
   {
       if(menu == 'Bus Management')
       {
-          let SubMenu = ['Location', 'Boarding-Dropping', 'Bus', 'Coupon Type', 'Coupon', 'Gallery','Seat Fare','Bus Type','Safety','Seating Type','Amenities','Seat Layout','Cancellation Slab','Bus Operator','Bus Schedule','Offers','Bus Sequence'];  
+          let SubMenu = ['Location', 'Boarding-Dropping', 'Bus', 'Coupon Type', 'Coupon', 'Gallery','Seat Fare','Bus Type','Safety','Seating Type','Amenities','Seat Layout','Cancellation Slab','Bus Operator','Bus Schedule','Bus Sequence'];  //,'Offers'
           return of(SubMenu);  
       }
       else if(menu=='Booking Management')
