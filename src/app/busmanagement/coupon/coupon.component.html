@@ -149,10 +149,10 @@
                         <tr>
                             <th>#</th>
                             <th >Coupon type</th>
-                            <!-- <th >Bus Details</th>
+                            <th >Bus Details</th>
                             <th>Operator</th>
                             <th>Source</th>
-                            <th>Destination</th> -->
+                            <th>Destination</th>
                             <th>Valid From</th>
                             <th>Valid Till</th>
                             <th>Coupon Title</th>
@@ -175,9 +175,9 @@
                             
                             </td>
 
-                            <!-- <td>
-                                <p>{{couponData.bus.name}}</p>
-                                <p>{{couponData.bus.bus_number}}</p>                            
+                           <td>
+                                <p>{{couponData?.bus?.name}}</p>
+                                <p>{{couponData?.bus?.bus_number}}</p>                            
                             </td>
 
                             <td>
@@ -204,7 +204,7 @@
                                 <span *ngIf="couponData.to_location==null">
                                     ----
                                 </span>
-                            </td> -->
+                            </td> 
                             <td>{{couponData.from_date  }}</td>
                             <td>{{couponData.to_date }} </td>
                             <td>{{couponData.coupon_title}}</td>
