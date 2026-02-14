@@ -415,6 +415,7 @@ export class CouponComponent implements OnInit {
     return label;
    }
 
+ url: any;
 
   search(pageurl="")
   {      
@@ -442,6 +443,7 @@ export class CouponComponent implements OnInit {
           
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all =res.data;
           this.spinner.hide();
 
@@ -455,6 +457,7 @@ export class CouponComponent implements OnInit {
         res => {
           this.coupons= res.data.data.data;
           this.pagination= res.data.data;
+          this.url= this.pagination.path+'?page='+this.pagination.current_page ;
           this.all =res.data;
           // console.log( this.coupons);
           this.spinner.hide();
@@ -853,7 +856,8 @@ changeStatus(event: Event, stsitem: any) {
     resp => {
       if (resp.status == 1) {
         this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-        this.refresh();
+        //this.refresh();
+        this.search(this.url);
       }
       else {
         this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
