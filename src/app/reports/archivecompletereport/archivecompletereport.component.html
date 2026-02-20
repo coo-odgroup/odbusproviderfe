@@ -255,8 +255,10 @@
                                 <td>
                                     <!-- <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' "> -->
                                     <span>
-                                        <strong>{{ complete.bus.name }}</strong><br>
-                                        {{ complete.bus.bus_number }}<br>
+                                        <!-- <strong>{{ complete.bus.name }}</strong><br>
+                                        {{ complete.bus.bus_number }}<br> -->
+                                        <strong>{{ complete?.bus?.name || '' }}</strong><br>
+                                        {{ complete?.bus?.bus_number || '' }}<br>
                                         <!-- <ng-template #tipContent1>
                                             <table style="width: 350px;">
                                                 <tr>
@@ -588,107 +590,107 @@
         </app-card>
 
         <div style="display: none;" id="export-section">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Journey Status</th>
-                <th>PNR No</th>
-                <th>Seat No</th>
-                <th>Bus Number</th>
-                <th>Bus Name</th>
-                <th>Source - Destination</th>
-                <th>Journey Date</th>
-                <th>Passenger Name</th>
-                <th>User Phone</th>
-                <th>User Email</th>
-                <th>Total Fare</th>
-                <th>Owner Fare</th>
-                <th>Additional Festival Fare</th>
-                <th>Additional Owner Fare</th>
-                <th>Additional Special Fare</th>
-                <th>Odbus GST</th>
-                <th>Owner GST</th>
-                <th>Odbus Received</th>
-                <th>Amount Received</th>
-                <th>Transaction Fee</th>
-                <th>Razorpay Payment Id</th>
-                <th>Order Id</th>
-                <th>App Type</th>
-                <th>GST Invoice No</th>
-                <th>Customer GST Number</th>
-                <th>Customer GST Business Name</th>
-                <th>Customer GST Business Email</th>
-                <th>Customer GST Business Address</th>
-                <th>Customer GST Amount</th>
-            </tr>
-        </thead>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Journey Status</th>
+                        <th>PNR No</th>
+                        <th>Seat No</th>
+                        <th>Bus Number</th>
+                        <th>Bus Name</th>
+                        <th>Source - Destination</th>
+                        <th>Journey Date</th>
+                        <th>Passenger Name</th>
+                        <th>User Phone</th>
+                        <th>User Email</th>
+                        <th>Total Fare</th>
+                        <th>Owner Fare</th>
+                        <th>Additional Festival Fare</th>
+                        <th>Additional Owner Fare</th>
+                        <th>Additional Special Fare</th>
+                        <th>Odbus GST</th>
+                        <th>Owner GST</th>
+                        <th>Odbus Received</th>
+                        <th>Amount Received</th>
+                        <th>Transaction Fee</th>
+                        <th>Razorpay Payment Id</th>
+                        <th>Order Id</th>
+                        <th>App Type</th>
+                        <th>GST Invoice No</th>
+                        <th>Customer GST Number</th>
+                        <th>Customer GST Business Name</th>
+                        <th>Customer GST Business Email</th>
+                        <th>Customer GST Business Address</th>
+                        <th>Customer GST Amount</th>
+                    </tr>
+                </thead>
 
-        <tbody *ngIf="completExportdata?.data?.data?.length > 0">
-            <tr *ngFor="let complete of completExportdata?.data?.data">
+                <tbody *ngIf="completExportdata?.data?.data?.length > 0">
+                    <tr *ngFor="let complete of completExportdata?.data?.data">
 
-                <!-- Journey -->
-                <td>{{ complete?.journey }}</td>
+                        <!-- Journey -->
+                        <td>{{ complete?.journey }}</td>
 
-                <!-- PNR -->
-                <td>{{ complete?.pnr }}</td>
+                        <!-- PNR -->
+                        <td>{{ complete?.pnr }}</td>
 
-                <!-- Seat -->
-                <td>{{ complete?.seat_numbers }}</td>
+                        <!-- Seat -->
+                        <td>{{ complete?.seat_numbers }}</td>
 
-                <!-- Bus -->
-                <td>{{ complete?.bus?.bus_number }}</td>
-                <td>{{ complete?.bus?.name }}</td>
+                        <!-- Bus -->
+                        <td>{{ complete?.bus?.bus_number }}</td>
+                        <td>{{ complete?.bus?.name }}</td>
 
-                <!-- Source - Destination -->
-                <td>
-                    {{ complete?.source?.name }} - {{ complete?.destination?.name }}
-                </td>
+                        <!-- Source - Destination -->
+                        <td>
+                            {{ complete?.source?.name }} - {{ complete?.destination?.name }}
+                        </td>
 
-                <!-- Journey Date -->
-                <td>{{ complete?.journey_dt | date: 'dd-MM-yyyy' }}</td>
+                        <!-- Journey Date -->
+                        <td>{{ complete?.journey_dt | date: 'dd-MM-yyyy' }}</td>
 
-                <!-- Passenger (from user object) -->
-                <td>{{ complete?.user?.name }}</td>
-                <td>{{ complete?.user?.phone }}</td>
-                <td>{{ complete?.user?.email }}</td>
+                        <!-- Passenger (from user object) -->
+                        <td>{{ complete?.user?.name }}</td>
+                        <td>{{ complete?.user?.phone }}</td>
+                        <td>{{ complete?.user?.email }}</td>
 
-                <!-- Fare Details -->
-                <td>{{ complete?.total_fare }}</td>
+                        <!-- Fare Details -->
+                        <td>{{ complete?.total_fare }}</td>
 
-                <td>
-                    {{ (complete?.owner_fare || 0) + (complete?.additional_owner_fare || 0) }}
-                </td>
+                        <td>
+                            {{ (complete?.owner_fare || 0) + (complete?.additional_owner_fare || 0) }}
+                        </td>
 
-                <td>{{ complete?.additional_festival_fare || 0 }}</td>
-                <td>{{ complete?.additional_owner_fare || 0 }}</td>
-                <td>{{ complete?.additional_special_fare || 0 }}</td>
+                        <td>{{ complete?.additional_festival_fare || 0 }}</td>
+                        <td>{{ complete?.additional_owner_fare || 0 }}</td>
+                        <td>{{ complete?.additional_special_fare || 0 }}</td>
 
-                <td>{{ complete?.odbus_gst_amount || 0 }}</td>
-                <td>{{ complete?.owner_gst_amount || 0 }}</td>
-                <td>{{ complete?.odbus_charges || 0 }}</td>
+                        <td>{{ complete?.odbus_gst_amount || 0 }}</td>
+                        <td>{{ complete?.owner_gst_amount || 0 }}</td>
+                        <td>{{ complete?.odbus_charges || 0 }}</td>
 
-                <td>
-                    {{ (complete?.payable_amount || 0) - (complete?.agent_commission || 0) }}
-                </td>
+                        <td>
+                            {{ (complete?.payable_amount || 0) - (complete?.agent_commission || 0) }}
+                        </td>
 
-                <!-- Transaction -->
-                <td>{{ complete?.transactionFee || 0 }}</td>
-                <td>{{ complete?.payment?.razorpay_id }}</td>
-                <td>{{ complete?.payment?.order_id }}</td>
+                        <!-- Transaction -->
+                        <td>{{ complete?.transactionFee || 0 }}</td>
+                        <td>{{ complete?.payment?.razorpay_id }}</td>
+                        <td>{{ complete?.payment?.order_id }}</td>
 
-                <!-- Other -->
-                <td>{{ complete?.app_type }}</td>
-                <td>{{ complete?.gst_invoice_no }}</td>
-                <td>{{ complete?.customer_gst_number }}</td>
-                <td>{{ complete?.customer_gst_business_name }}</td>
-                <td>{{ complete?.customer_gst_business_email }}</td>
-                <td>{{ complete?.customer_gst_business_address }}</td>
-                <td>{{ complete?.customer_gst_amount || 0 }}</td>
+                        <!-- Other -->
+                        <td>{{ complete?.app_type }}</td>
+                        <td>{{ complete?.gst_invoice_no }}</td>
+                        <td>{{ complete?.customer_gst_number }}</td>
+                        <td>{{ complete?.customer_gst_business_name }}</td>
+                        <td>{{ complete?.customer_gst_business_email }}</td>
+                        <td>{{ complete?.customer_gst_business_address }}</td>
+                        <td>{{ complete?.customer_gst_amount || 0 }}</td>
 
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </div>
