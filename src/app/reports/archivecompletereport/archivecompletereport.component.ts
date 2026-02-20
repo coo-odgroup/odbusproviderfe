@@ -228,7 +228,7 @@ export class ArchiveCompletereportComponent implements OnInit {
         res => {
           this.completedata = res;
           this.totaldata = res.data;
-          // console.log(this.completedata)
+          console.log(this.completedata)
           this.spinner.hide();
         }
       );
