@@ -1,0 +1,449 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [hidHeader]="false" cardTitle="Blog" cardClass="card-datatable" [options]="false"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
+      <div class="row  mb-2">
+
+        <div class="col-12">
+          <form [formGroup]="searchForm" class="editForm" novalidate>
+            <div class="row">
+              <div class="col-md-2">
+                <div class="from-group text-left">
+                  <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                    Add Blog
+                  </button>
+                </div>
+              </div>
+
+              <div class="from-group col-md-3">
+                <select class="form-control sml_input" formControlName="status" *ngIf="role_id==1">
+                  <option [value]="" [selected]="true">-Status-</option>
+                  <option value=1>Active</option>
+                  <option value=0>Pending</option>
+                </select>
+              </div>
+              <div class="from-group col-md-3">
+                <!-- <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By"> -->
+                <div class="input-group" *ngIf="role_id==1">
+                  <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                    formControlName="searchBy">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
+                      <i class="fas fa-search"> </i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="from-group col-md-4">
+                <!-- <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i> Search</button> -->
+                <button class="btn sml_input btn-danger " (click)="refresh()" *ngIf="role_id==1"> <i
+                    class="fas fa-sync-alt"></i> Refresh</button>
+                <div class="dropdown float-right">
+                  <select class="form-control sml_input" formControlName="per_page" (change)="getAll()">
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                    <!-- <option value='all'>All</option> -->
+                  </select>
+                </div>
+              </div>
+
+
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Category Name</th>
+              <th scope="col">Slug</th>
+              <th scope="col">Meta Title</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Status </th>
+              <th width="100" class="hide_print">&nbsp; </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="blogList?.length != 0">
+            <tr *ngFor="let catblogData of blogList; let i = index">
+              <td>{{ i+1 }}</td>
+              <td>{{catblogData.category_name}} </td>
+              <td>{{catblogData.slug}}</td>
+              <td>{{catblogData.meta_title}}</td>
+              <td *ngIf="catblogData.created_by == 1">ODBUS</td>
+              <td>
+                <label *ngIf="catblogData.active_status==1" class="badge badge-light-success pointer"
+                  (click)="changeStatus($event, catblogData.id);">Active</label>
+                <label *ngIf="catblogData.active_status==0" class="badge badge-light-warning pointer"
+                  (click)="changeStatus($event, catblogData.id);">Pending</label>
+              </td>
+
+
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button type="button" (click)="editcategory(catblogData);OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, catblogData.id)"
+                    class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+          <tbody *ngIf="blog?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <div *ngIf="pagination?.length!= 0" class="hide_print container">
+            <div class="row">
+              <div class="col-6">
+  
+                <div class="col-12">
+                  <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                  <nav class="my-1 pt-1 ">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                      <li (click)="search(pagination.first_page_url,statusLabel)"
+                        class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                        <a class="page-link">First</a>
+                      </li>
+                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                        <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                          (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                      </li>
+                      <li class="page-item {{ pagination.last_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block"
+                        (click)="search(pagination.last_page_url,statusLabel)">
+                        <a class="page-link">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+  
+              </div>
+  
+            </div>
+          </div> -->
+
+      </div>
+
+      <div class="app-card-footer">
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes();OpenModal(content)">Add </button>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form class="editForm" novalidate [formGroup]="blog">
+                      <div class="row">
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Category Id <span class="text-danger">*</span>
+                            </label>
+                            <select formControlName="category_id" class="form-control" id="">
+                              <option value="">Select</option>
+                              <option *ngFor="let category of blogcat" [value]="category.id">
+                                {{ category.category_name }}
+                              </option>
+                            </select>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.category_id.touched && blog.controls.category_id.hasError('required')">
+                              Category id is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <!-- Category Name -->
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Title <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" placeholder="Enter Title" formControlName="title">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.title.touched && blog.controls.title.hasError('required')">
+                              Title is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <!-- Slog -->
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Slug <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="slug" placeholder="Enter slug"
+                              disabled>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.slug.touched && blog.controls.slug.hasError('required')">
+                              Slug is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <!-- Icon -->
+                        <!-- <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Icon <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="icon"
+                              placeholder="Enter icon class (e.g. fa fa-user)">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.icon.touched && blog.controls.icon.hasError('required')">
+                              Icon is required
+                            </small>
+                          </div>
+                        </div> -->
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Meta Title <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="meta_title"
+                              placeholder="Enter Meta Title">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.meta_title.touched && blog.controls.meta_title.hasError('required')">
+                              Meta Title is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Meta Description <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="meta_description"
+                              placeholder="Enter Meta description"></textarea>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.meta_description.touched && blog.controls.meta_description.hasError('required')">
+                              Meta Description is required
+                            </small>
+                          </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Meta Keywords <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="meta_keywords"
+                              placeholder="Enter Meta Keywords"></textarea>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.meta_keywords.touched && blog.controls.meta_keywords.hasError('required')">
+                              Meta Keywords is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Short Description <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" placeholder="Enter description"
+                              formControlName="short_description"></textarea>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.short_description.touched && blog.controls.short_description.hasError('required')">
+                              Description is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Author Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="author_name"
+                              placeholder="Enter Author Name">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.author_name.touched && blog.controls.author_name.hasError('required')">
+                              Author Name is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Thumbnail Image <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control" accept=".png,.jpg,.jpeg"
+                              (change)="onThumbImageChange($event)">
+                            <small class="text-muted">
+                              Max file size 1MB. Supports jpg/jpeg/png
+                            </small>
+                            <br>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.featured_image.touched && blog.controls.featured_image.hasError('required')">
+                              Banner image is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Thumbnail Alt Text <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="thumb_alt_text"
+                              placeholder="Enter Canonical Url">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.thumb_alt_text.touched && blog.controls.thumb_alt_text.hasError('required')">
+                              Canonical Url is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Feature Image <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control" accept=".png,.jpg,.jpeg"
+                              (change)="onFeaturedImageChange($event)">
+                            <small class="text-muted">
+                              Max file size 1MB. Supports jpg/jpeg/png
+                            </small>
+                            <br>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.featured_image.touched && blog.controls.featured_image.hasError('required')">
+                              Banner image is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Feature Alt Text <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="feature_alt_text"
+                              placeholder="Enter Canonical Url">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.feature_alt_text.touched && blog.controls.feature_alt_text.hasError('required')">
+                              Canonical Url is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Og Image <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control" accept=".png,.jpg,.jpeg"
+                              (change)="onOgImageChange($event)">
+                            <small class="text-muted">
+                              Max file size 1MB. Supports jpg/jpeg/png
+                            </small>
+                            <br>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.og_image.touched && blog.controls.og_image.hasError('required')">
+                              Og image is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Canonical Url <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="canonical_url"
+                              placeholder="Enter Canonical Url">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.canonical_url.touched && blog.controls.canonical_url.hasError('required')">
+                              Canonical Url is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group mb-3">
+                            <label>
+                              Content <span class="text-danger">*</span>
+                            </label>
+                            <!-- <textarea class="form-control" rows="3" placeholder="Enter description"
+                              formControlName="description"></textarea> -->
+                            <angular-editor class="col-sm-12" formControlName="content" [config]="editorConfig">
+                            </angular-editor>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.content.touched && blog.controls.content.hasError('required')">
+                              Description is required
+                            </small>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="addblog()" [disabled]="" class="btn btn-primary">{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+      </div>
+    </app-card>
+  </div>
+</div>

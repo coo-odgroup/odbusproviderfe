@@ -108,6 +108,14 @@ const routes: Routes = [
         canActivate: [Routeguard],
       },
       {
+        path: 'blogs',
+        loadChildren: () =>
+          import('./blogmanagement/blogmanagement.module').then(
+            (module) => module.BlogmanagementsModule
+          ),
+        canActivate: [Routeguard],
+      },
+      {
         path: 'setting',
         loadChildren: () =>
           import('./setting/setting.module').then(

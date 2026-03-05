@@ -210,7 +210,7 @@ export class ArchiveCompletereportComponent implements OnInit {
       USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
     };
 
-    // console.log(data);
+    console.log(data);
 
 
     if (pageurl != "") {

@@ -1,0 +1,194 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [hidHeader]="false" cardTitle="Tag Maps" cardClass="card-datatable" [options]="false"
+      cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
+      <div class="row  mb-2">
+
+        <div class="col-12">
+          <form [formGroup]="searchForm" class="editForm" novalidate>
+            <div class="row">
+              <div class="col-md-2">
+                <div class="from-group text-left">
+                  <button class="btn sml_input btn-success mb-2 " (click)="ResetAttributes();OpenModal(content)">
+                    Add Tag Map
+                  </button>
+                </div>
+              </div>
+
+              <div class="from-group col-md-3">
+                <select class="form-control sml_input" formControlName="status" *ngIf="role_id==1">
+                  <option [value]="" [selected]="true">-Status-</option>
+                  <option value=1>Active</option>
+                  <option value=0>Pending</option>
+                </select>
+              </div>
+              <div class="from-group col-md-3">
+                <!-- <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By"> -->
+                <div class="input-group" *ngIf="role_id==1">
+                  <input type="text" class="form-control sml_input" placeholder="Search Here " required
+                    formControlName="searchBy">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-success  sml_input" (click)="getallData()" title="search">
+                      <i class="fas fa-search"> </i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="from-group col-md-4">
+                <!-- <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i> Search</button> -->
+                <button class="btn sml_input btn-danger " (click)="refresh()" *ngIf="role_id==1"> <i
+                    class="fas fa-sync-alt"></i> Refresh</button>
+                <div class="dropdown float-right">
+                  <select class="form-control sml_input" formControlName="per_page" (change)="getallData()">
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                    <!-- <option value='all'>All</option> -->
+                  </select>
+                </div>
+              </div>
+
+
+            </div>
+          </form>
+        </div>
+
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Blog</th>
+              <th scope="col">Tag</th>
+              <th scope="col">Created By</th>
+              <th width="100" class="hide_print">&nbsp; </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="tagmapdata?.length != 0">
+            <tr *ngFor="let tagmap of tagmapdata; let i = index">
+              <td>{{ i+1 }}</td>
+              <td>{{tagmap.title}} </td>
+              <td>{{tagmap.tag_name}}</td>
+              <td *ngIf="tagmap.created_by == 1">ODBUS</td>
+
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button type="button" (click)="edittagmap(tagmap);OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, tagmap.id)"
+                    class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+          <tbody *ngIf="tagmapdata?.length == 0">
+            <tr>
+              <td colspan="5" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="app-card-footer">
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    Would you Like to Delete the Record
+                    <form [formGroup]="formConfirm" class="editForm" novalidate>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Cancel</button>
+          </div>
+        </ng-template>
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes();OpenModal(content)">Add </button>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">{{ModalHeading}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-material">
+                  <div class="right-icon-control">
+                    <form class="editForm" novalidate [formGroup]="tagmapform">
+                      <div class="row">
+
+                        <!-- Category Name -->
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Select Blog <span class="text-danger">*</span>
+                            </label>
+                            <select formControlName="blog_id" class="form-control" id="">
+                              <option value="">Select</option>
+                              <option *ngFor="let blog of blogList" [value]="blog.id">{{ blog.title }}</option>
+                            </select>
+                            <small class="text-danger"
+                              *ngIf="tagmapform.controls.blog_id.touched && tagmapform.controls.blog_id.hasError('required')">
+                              Blog id is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <!-- Slog -->
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Select Tag <span class="text-danger">*</span>
+                            </label>
+                            <select formControlName="tag_id" class="form-control" id="">
+                              <option value="">Select</option>
+                              <option *ngFor="let tag of tagdata" [value]="tag.id">
+                                {{ tag.tag_name }}
+                              </option>
+                            </select>
+                            <small class="text-danger"
+                              *ngIf="tagmapform.controls.tag_id.touched && tagmapform.controls.tag_id.hasError('required')">
+                              Tag id is required
+                            </small>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="addTagmap()" class="btn btn-primary">{{ModalBtn}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
+      </div>
+    </app-card>
+  </div>
+</div>
