@@ -98,6 +98,15 @@ export class ReportsService {
   }
 
 
+  //archiveReport section
+
+  exportarchivecompleteReport(data:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/archive-completereport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+
   archivecompleteReport(data:any): Observable<any> {
     return this.httpClient.post<any>(this.apiURL + '/archive-completereport',JSON.stringify(data), this.httpOptions).pipe(
       catchError(this.errorHandler)
@@ -109,6 +118,15 @@ export class ReportsService {
       catchError(this.errorHandler)
     )
   }
+
+
+  exportarchivecancelReport(data:any): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/archive-cancelreport',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  //end of archiveReport section
 
 
   completepaginationReport(url,data): Observable<any> {

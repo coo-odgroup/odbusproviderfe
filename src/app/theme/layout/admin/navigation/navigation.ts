@@ -1263,6 +1263,48 @@ const NavigationItems = [
           },
         ],
       },
+      {
+        title: 'Manage Blog',
+        type: 'collapse',
+        icon: 'feather icon-file',
+        children: [
+          {
+            id: 'categoryblog',
+            title: 'Blog Category',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'blogs/addCategory',
+          },
+          {
+            id: 'blog',
+            title: 'Blogs',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'blogs/addBlog',
+          },
+          {
+            id: 'tag',
+            title: 'Tags',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'blogs/addTag',
+          },
+          {
+            id: 'tag_map',
+            title: 'Tag Maps',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'blogs/addTagmap',
+          },
+          {
+            id: 'blog_route',
+            title: 'Blog Route',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'blogs/addBlogroute',
+          },
+        ],
+      },
     ],
   },
 ];

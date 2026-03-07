@@ -158,9 +158,9 @@ export class ArchiveCompletereportComponent implements OnInit {
       device_type: this.searchFrom.value.device_type,
     };
 
-    this.rs.completeReport(data).subscribe(
+    this.rs.exportarchivecompleteReport(data).subscribe(
       res => {
-        this.completExportdata = res.data;
+        this.completExportdata = res;
         let length = this.completExportdata.data.data.length;
         // console.log(length);
         if (length != 0) {
@@ -210,14 +210,14 @@ export class ArchiveCompletereportComponent implements OnInit {
       USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
     };
 
-    // console.log(data);
+    console.log(data);
 
 
     if (pageurl != "") {
       this.rs.completepaginationReport(pageurl, data).subscribe(
         res => {
-          this.completedata = res.data;
-          this.totaldata = res;
+          this.completedata = res;
+          this.totaldata = res.data;
           console.log(this.totaldata)
           this.spinner.hide();
         }
@@ -226,10 +226,9 @@ export class ArchiveCompletereportComponent implements OnInit {
     else {
       this.rs.archivecompleteReport(data).subscribe(
         res => {
-          this.completedata = res.data;
-          this.totaldata = res;
-          console.log(this.totaldata)
-          // console.log(this.completedata.data[0].bus_id)
+          this.completedata = res;
+          this.totaldata = res.data;
+          console.log(this.completedata)
           this.spinner.hide();
         }
       );

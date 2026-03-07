@@ -58,7 +58,7 @@ export class ArchiveCancelReportComponent implements OnInit {
 
   }
   title = 'angular-app';
-  fileName = 'Complete-Report.csv';
+  fileName = 'Cancel-Report.csv';
   years: number[] = [];
   minDate: string | null = null;
   maxDate: string | null = null;
@@ -158,9 +158,9 @@ export class ArchiveCancelReportComponent implements OnInit {
       device_type: this.searchFrom.value.device_type,
     };
 
-    this.rs.completeReport(data).subscribe(
+    this.rs.exportarchivecancelReport(data).subscribe(
       res => {
-        this.completExportdata = res.data;
+        this.completExportdata = res;
         let length = this.completExportdata.data.data.length;
         // console.log(length);
         if (length != 0) {
@@ -219,8 +219,9 @@ export class ArchiveCancelReportComponent implements OnInit {
     if (pageurl != "") {
       this.rs.completepaginationReport(pageurl, data).subscribe(
         res => {
-          this.completedata = res.data;
-          console.log(this.completedata.data[0].bus_id)
+          this.completedata = res;
+          this.totaldata = res.data;
+          // console.log(this.completedata.data[0].bus_id)
           this.spinner.hide();
         }
       );
@@ -228,8 +229,8 @@ export class ArchiveCancelReportComponent implements OnInit {
     else {
       this.rs.archivecancelReport(data).subscribe(
         res => {
-          this.completedata = res.data;
-          this.totaldata = res;
+          this.completedata = res;
+          this.totaldata = res.data;
           // console.log(this.completedata.data.length);
           // console.log(this.completedata.data[0].bus_id)
           this.spinner.hide();
