@@ -529,6 +529,8 @@
                         <th>User Email</th>
                         <th>Total Fare</th>
                         <th>Owner Fare</th>
+                        <th>Coupon Amount</th>
+                        <th>Updated Owner Fare</th>
                         <th>Seater Fare</th>
                         <th>Sleeper Fare</th>
                         <td>Additionl Festival Fare</td>
@@ -636,6 +638,12 @@
                         <td><span *ngIf="complete.users != null">{{complete.users.email}}</span></td>
                         <td>{{complete.total_fare}}</td>
                         <td>{{complete.owner_fare + complete.additional_owner_fare}}</td>
+                        <td>{{complete.coupon_discount}}</td>
+                        <td>
+                          {{ complete.coupon_type == 1 
+                            ? (complete.owner_fare + complete.additional_owner_fare) - complete.coupon_discount
+                            : (complete.owner_fare + complete.additional_owner_fare) }}
+                        </td>
                         <td>
                             <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
                                 {{complete.booking_detail[0].bus_seats.ticket_price.base_seat_fare}}
