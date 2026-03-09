@@ -317,7 +317,7 @@
                           </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div [ngClass]="'col-md-' + (isEditMode ? 4 : 6)">
                           <div class="form-group mb-3">
                             <label>
                               Thumbnail Image <span class="text-danger">*</span>
@@ -335,6 +335,10 @@
                           </div>
                         </div>
 
+                        <div class="col-md-2" *ngIf="isEditMode == true">
+                          <img height="70" src="http://localhost:7001/ODBUS/odbusproviderbe/public/{{existthumbImageFile}}" alt="" class="mt-4">
+                        </div>
+
                         <div class="col-md-6">
                           <div class="form-group mb-3">
                             <label>
@@ -350,7 +354,7 @@
                         </div>
 
                         <!-- Image -->
-                        <div class="col-md-6">
+                        <div [ngClass]="'col-md-' + (isEditMode ? 4 : 6)">
                           <div class="form-group mb-3">
                             <label>
                               Feature Image <span class="text-danger">*</span>
@@ -368,6 +372,10 @@
                           </div>
                         </div>
 
+                        <div class="col-md-2" *ngIf="isEditMode == true">
+                          <img height="70" src="http://localhost:7001/ODBUS/odbusproviderbe/public/{{existfeaturedImageFile}}" alt="" class="mt-4">
+                        </div>
+
                         <div class="col-md-6">
                           <div class="form-group mb-3">
                             <label>
@@ -382,7 +390,7 @@
                           </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div [ngClass]="'col-md-' + (isEditMode ? 4 : 6)">
                           <div class="form-group mb-3">
                             <label>
                               Og Image <span class="text-danger">*</span>
@@ -398,6 +406,10 @@
                               Og image is required
                             </small>
                           </div>
+                        </div>
+
+                        <div class="col-md-2" *ngIf="isEditMode == true">
+                          <img height="70" src="http://localhost:7001/ODBUS/odbusproviderbe/public/{{existogImageFile}}" alt="" class="mt-4">
                         </div>
 
                         <div class="col-md-6">
