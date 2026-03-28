@@ -206,10 +206,23 @@ export class BlogComponent implements OnInit {
     this.ModalBtn = "Add Category";
   }
 
+  existthumbImageFile: any
+  existfeaturedImageFile: any
+  existogImageFile: any
+
   editcategory(data: any) {
     this.isEditMode = true;
+    this.thumbImageFile = null;
+    this.featuredImageFile = null;
+    this.ogImageFile = null;
     console.log(this.isEditMode)
-    this.ModalBtn = "Update Category";
+    this.ModalBtn = "Update Blog";
+
+
+    // existing images
+    this.existthumbImageFile = data.thumb_image;
+    this.existfeaturedImageFile = data.featured_image;
+    this.existogImageFile = data.og_image;
 
     this.blog.patchValue({
       id: data.id,
@@ -286,6 +299,7 @@ export class BlogComponent implements OnInit {
         .subscribe((res: any) => {
           this.modalReference.close();
           this.notificationService.addToast({ title: 'Success', msg: "Blog Updated Successfully", type: 'success' });
+          this.blog.reset();
           console.log("Blog Updated");
         });
 
@@ -295,6 +309,7 @@ export class BlogComponent implements OnInit {
         .subscribe((res: any) => {
           this.modalReference.close();
           this.notificationService.addToast({ title: 'Success', msg: "Blog Created Successfully", type: 'success' });
+          this.blog.reset();
           console.log("Blog Created Successfully");
         });
 
@@ -395,7 +410,7 @@ export class BlogComponent implements OnInit {
 
   }
 
-  openConfirmDialog(content, id: any) {
+  openConfirmDialog(content:any, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.blogRecord = id;
   }
