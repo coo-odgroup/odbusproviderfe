@@ -522,6 +522,7 @@
                         <th>Bus Number</th>
                         <th>Bus Name</th>
                         <th>Source- Destination</th>
+                        <th>Booking Date</th>
                         <th>Journey Date</th>
                         <th>Passenger Details</th>
                         <th>User Name</th>
@@ -616,6 +617,7 @@
                                 {{dropping.name}}
                             </span>
                         </td>
+                        <td>{{complete.created_at | date: 'dd-MM-YYYY'}}</td>
                         <td>{{complete.journey_dt | date: 'dd-MM-YYYY'}}</td>
                         <td>
                             <span *ngIf="complete.origin != 'DOLPHIN'  && complete.origin != 'MANTIS' ">
