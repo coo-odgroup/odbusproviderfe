@@ -10,6 +10,7 @@ export interface Login {
     role_id:any;
     user_bus_operator:user_bus_operator;
     bus_operator_id:any;
+    admin_login_token:any;
 }
 export interface Role{
     id:any,

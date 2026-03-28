@@ -151,6 +151,7 @@ const routes: Routes = [
           import('./ticketinformation/ticketinformation.module').then(
             (module) => module.TicketinformationModule
           ),
+          canActivate: [Routeguard],
       },
       {
         path: 'useracessmanagement',
@@ -158,6 +159,7 @@ const routes: Routes = [
           import('./useraccessmanagement/useraccessmanagement.module').then(
             (module) => module.UserAccessManagementModule
           ),
+          canActivate: [Routeguard],
       },
       {
         path: 'manageapiclients',
@@ -165,6 +167,7 @@ const routes: Routes = [
           import('./manageapiclients/manageapiclients.module').then(
             (module) => module.ManageApiClientsModule
           ),
+          canActivate: [Routeguard],
       },
       {
         path:"top-route-chart",
@@ -180,6 +183,7 @@ const routes: Routes = [
           import('./managescheduler/managescheduler.module').then(
             (module) => module.ManageSchedulerModule
           ),
+          canActivate: [Routeguard],
       },
       {
         path: 'managepushnotifications',
@@ -187,6 +191,7 @@ const routes: Routes = [
           import(
             './managepushnotifications/managepushnotifications.module'
           ).then((module) => module.ManagePushnotificationsModule),
+          canActivate: [Routeguard],
       },
     ],
   },
