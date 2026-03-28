@@ -131,7 +131,7 @@
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
                 aria-hidden="true">&times;</span></button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="height: 250px;">
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-material">
@@ -162,12 +162,16 @@
                             <label>
                               Select Tag <span class="text-danger">*</span>
                             </label>
-                            <select formControlName="tag_id" class="form-control" id="">
+                            <!-- <select formControlName="tag_id" class="form-control" id="">
                               <option value="">Select</option>
                               <option *ngFor="let tag of tagdata" [value]="tag.id">
                                 {{ tag.tag_name }}
                               </option>
-                            </select>
+                            </select> -->
+                            <ng-select [items]="tagdata" bindLabel="tag_name" bindValue="id" placeholder="Select Tags"
+                              formControlName="tag_id" [clearable]="false" [multiple]="true" required>
+
+                            </ng-select>
                             <small class="text-danger"
                               *ngIf="tagmapform.controls.tag_id.touched && tagmapform.controls.tag_id.hasError('required')">
                               Tag id is required

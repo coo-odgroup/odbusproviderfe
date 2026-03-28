@@ -68,8 +68,8 @@ export class TagmapComponent implements OnInit {
   blgogcat: any;
   blogRecord: any;
   tagmapform: any;
-  blogList:any;
-  tagmapdata:any;
+  blogList: any;
+  tagmapdata: any;
 
 
   constructor(private spinner: NgxSpinnerService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal,
@@ -140,17 +140,21 @@ export class TagmapComponent implements OnInit {
     const formData = new FormData();
 
     formData.append('blog_id', this.tagmapform.get('blog_id')?.value);
-    formData.append('tag_id', this.tagmapform.get('tag_id')?.value);
+
+    const tagIds = this.tagmapform.get('tag_id')?.value;
+
+    // ✅ Handle multiple tags properly
+    tagIds.forEach((id: any) => {
+      formData.append('tag_id[]', id);
+    });
 
     if (this.isEditMode) {
-      console.log(this.tagmapform.value)
       const id = this.tagmapform.get('id')?.value;
-
-      console.log(id)
 
       this.http.post(this.apiURL + "/tagmap/" + id, formData)
         .subscribe((res: any) => {
           this.modalReference.close();
+          this.getAll();
           console.log("Map Updated");
         });
 
@@ -159,6 +163,7 @@ export class TagmapComponent implements OnInit {
       this.http.post(this.apiURL + "/add-tagmap", formData)
         .subscribe((res: any) => {
           this.modalReference.close();
+          this.getAll();
           console.log("Added Successfully");
         });
 

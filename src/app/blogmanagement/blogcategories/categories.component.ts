@@ -126,7 +126,6 @@ export class CategoryComponent implements OnInit {
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
       ['fontSize']
     ]
   };
@@ -247,6 +246,7 @@ export class CategoryComponent implements OnInit {
       this.http.post(this.apiURL + "/blogcategory/" + id, formData)
         .subscribe((res: any) => {
           this.modalReference.close();
+          this.getAll();
           console.log("Category Updated");
         });
 
@@ -255,6 +255,7 @@ export class CategoryComponent implements OnInit {
       this.http.post(this.apiURL + "/add-blogcategory", formData)
         .subscribe((res: any) => {
           this.modalReference.close();
+          this.getAll();
           console.log("Added Successfully");
         });
 

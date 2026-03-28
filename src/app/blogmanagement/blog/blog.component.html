@@ -83,7 +83,7 @@
               <td *ngIf="catblogData.created_by == 1">ODBUS</td>
               <td>
                 <label *ngIf="catblogData.active_status==1" class="badge badge-light-success pointer"
-                  (click)="changeStatus($event, catblogData.id);">Active</label>
+                  (click)="changeStatus($event, catblogData.id,'blog');">Active</label>
                 <label *ngIf="catblogData.active_status==0" class="badge badge-light-warning pointer"
                   (click)="changeStatus($event, catblogData.id);">Pending</label>
               </td>
@@ -336,7 +336,7 @@
                         </div>
 
                         <div class="col-md-2" *ngIf="isEditMode == true">
-                          <img height="70" src="http://localhost:7001/ODBUS/odbusproviderbe/public/{{existthumbImageFile}}" alt="" class="mt-4">
+                          <img height="70" src="{{ path }}{{existthumbImageFile}}" alt="" class="mt-4">
                         </div>
 
                         <div class="col-md-6">
@@ -373,7 +373,7 @@
                         </div>
 
                         <div class="col-md-2" *ngIf="isEditMode == true">
-                          <img height="70" src="http://localhost:7001/ODBUS/odbusproviderbe/public/{{existfeaturedImageFile}}" alt="" class="mt-4">
+                          <img height="70" src="{{ path }}{{existfeaturedImageFile}}" alt="" class="mt-4">
                         </div>
 
                         <div class="col-md-6">
@@ -409,7 +409,7 @@
                         </div>
 
                         <div class="col-md-2" *ngIf="isEditMode == true">
-                          <img height="70" src="http://localhost:7001/ODBUS/odbusproviderbe/public/{{existogImageFile}}" alt="" class="mt-4">
+                          <img height="70" src="{{path}}{{existogImageFile}}" alt="" class="mt-4">
                         </div>
 
                         <div class="col-md-6">
