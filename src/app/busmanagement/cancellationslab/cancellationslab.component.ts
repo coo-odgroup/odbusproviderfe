@@ -141,7 +141,7 @@ export class CancellationslabComponent implements OnInit {
   }
   loadServices() {
 
-    // if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    // if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     // {
     //   this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
     //     record=>{
@@ -161,10 +161,10 @@ export class CancellationslabComponent implements OnInit {
     // }
 
     const BusOperator={
-      user_id:localStorage.getItem("USERID")
+      user_id:sessionStorage.getItem("USERID")
     };
      ////// get all user list
-    if(localStorage.getItem("USERID")!="" && localStorage.getItem('ROLE_ID')!= '1'){
+    if(sessionStorage.getItem("USERID")!="" && sessionStorage.getItem('ROLE_ID')!= '1'){
 
       this.userService.specifieUser(BusOperator).subscribe(
         record=>{
@@ -195,8 +195,8 @@ export class CancellationslabComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      user_role:sessionStorage.getItem('ROLE_ID'),
+      user_id:sessionStorage.getItem('USERID')
     };
    
 
@@ -306,7 +306,7 @@ export class CancellationslabComponent implements OnInit {
       rule_name:this.form.value.rule_name,
       cancellation_policy_desc:this.form.value.cancellation_policy_desc,
       slabs:this.form.value.slabs,
-      created_by:localStorage.getItem('USERNAME')
+      created_by:sessionStorage.getItem('USERNAME')
     };
     // console.log(data);
     // return false;

@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
       
-        const APIAccessToken =  localStorage.getItem('AccessToken');   
+        const APIAccessToken =  sessionStorage.getItem('AccessToken');   
       
         req = req.clone({
             setHeaders: {
@@ -36,7 +36,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 if (err.status === 401) {
                         this.tokenSubject.next(null);                        
                         this.auth.getToken().subscribe(res=>{
-                            localStorage.setItem('AccessToken', res.data);
+                            sessionStorage.setItem('AccessToken', res.data);
                             this.tokenSubject.next(res.data);
                             this.collectFailedRequest(req);
                             this.retryFailedRequests(req,next);

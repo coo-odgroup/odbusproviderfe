@@ -51,13 +51,13 @@ export class LandingComponent implements OnInit {
 
     dupData: any;
 
-    user_role:any = localStorage.getItem("ROLE_ID");
+    user_role:any = sessionStorage.getItem("ROLE_ID");
 
 
     constructor(private http: HttpClient , private ds:DashboardService,private spinner: NgxSpinnerService) {
 
       
-      this.RoleType=localStorage.getItem("ROLE_ID");
+      this.RoleType=sessionStorage.getItem("ROLE_ID");
       this.isCollapsed = false;
       this.isMail = 'inbox';
       this.isSubMail = 'primary';
@@ -226,9 +226,9 @@ export class LandingComponent implements OnInit {
         rangeFor:range,
         rangeFrom:"",
         rangeTo:"",
-        USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID"),
-        USERID:localStorage.getItem("USERID"),
-        ROLE_ID:localStorage.getItem("ROLE_ID"),
+        USER_BUS_OPERATOR_ID:sessionStorage.getItem("USER_BUS_OPERATOR_ID"),
+        USERID:sessionStorage.getItem("USERID"),
+        ROLE_ID:sessionStorage.getItem("ROLE_ID"),
       };
       this.ds.dashboard(data).subscribe(
         res => {
@@ -243,8 +243,8 @@ export class LandingComponent implements OnInit {
     toproute() {
 
       const data={
-        USERID:localStorage.getItem("USERID"),
-        ROLE_ID:localStorage.getItem("ROLE_ID"),
+        USERID:sessionStorage.getItem("USERID"),
+        ROLE_ID:sessionStorage.getItem("ROLE_ID"),
       };
       this.ds.toproute(data).subscribe(
         res => {
@@ -295,7 +295,7 @@ export class LandingComponent implements OnInit {
     pnrstaticsdata(range:any) {
       const data={
         dateRange:range,
-        USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+        USER_BUS_OPERATOR_ID:sessionStorage.getItem("USER_BUS_OPERATOR_ID")
       };
       setTimeout(() => {
         this.ds.pnrstaticsdata(data).subscribe(

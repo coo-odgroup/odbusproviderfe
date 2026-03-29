@@ -148,8 +148,8 @@ export class BlogComponent implements OnInit {
   //     status: this.searchForm.value.status,
   //     searchBy: this.searchForm.value.searchBy,
   //     per_page: this.searchForm.value.per_page,
-  //     role_id: localStorage.getItem('ROLE_ID'),
-  //     userID: localStorage.getItem('USERID'),
+  //     role_id: sessionStorage.getItem('ROLE_ID'),
+  //     userID: sessionStorage.getItem('USERID'),
   //   };
   //   this.bannerService.bannerDataTable(pageurl, data).subscribe(
   //     res => {
@@ -168,8 +168,8 @@ export class BlogComponent implements OnInit {
       status: this.searchForm.value.status,
       searchBy: this.searchForm.value.searchBy,
       per_page: this.searchForm.value.per_page,
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
     };
     this.http.post(this.apiURL + "/blogcategory", "").subscribe((res: any) => {
       this.blogCategorydata = res.data;
@@ -324,8 +324,8 @@ export class BlogComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id = localStorage.getItem('ROLE_ID');
-    this.usre_name = localStorage.getItem('USERNAME');
+    this.role_id = sessionStorage.getItem('ROLE_ID');
+    this.usre_name = sessionStorage.getItem('USERNAME');
 
 
     this.blog = new FormGroup({

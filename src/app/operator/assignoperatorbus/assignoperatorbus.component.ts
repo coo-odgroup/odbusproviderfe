@@ -203,7 +203,7 @@ export class AssignoperatorbusComponent implements OnInit {
     const data = {
       user_id: this.form.value.assocName,
       bus_id: this.form.value.bus_id,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
     };
     // console.log(data);
 

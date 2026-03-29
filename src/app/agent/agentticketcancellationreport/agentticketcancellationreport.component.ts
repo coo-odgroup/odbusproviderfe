@@ -84,7 +84,7 @@ export class AgentticketcancellationreportComponent implements OnInit {
       destination_id:this.cancelTicketsReportRecord.destination_id,
       rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
       rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
-      user_id : localStorage.getItem('USERID'),               
+      user_id : sessionStorage.getItem('USERID'),               
     };
 
     if(pageurl!="")

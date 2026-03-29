@@ -148,7 +148,7 @@ export class AgentfeeComponent implements OnInit {
       price_from:this.form.value.price_from,
       price_to:this.form.value.price_to,
       max_comission:this.form.value.max_comission,
-      created_by: localStorage.getItem('USERNAME')   
+      created_by: sessionStorage.getItem('USERNAME')   
     };
     
     if(id==null)

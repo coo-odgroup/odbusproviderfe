@@ -89,7 +89,7 @@ export class AgentDetailsComponent implements OnInit {
         res=>{ 
           //console.log(res);
           if(res.status==1){ 
-            localStorage.setItem('user', JSON.stringify(res.data[0]));
+            sessionStorage.setItem('user', JSON.stringify(res.data[0]));
             this.notify.notify('Agent Registration Successful',"Success");
             this.router.navigate(['dashboard/landing']);
               
@@ -105,7 +105,7 @@ export class AgentDetailsComponent implements OnInit {
   
   ngOnInit(): void {
  
-    this.userId = localStorage.getItem('USERID');
+    this.userId = sessionStorage.getItem('USERID');
   }
   fieldTextType: boolean;
 

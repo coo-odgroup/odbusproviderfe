@@ -182,8 +182,8 @@ export class CancelticketComponent implements OnInit {
       full_refund:this.cancelTicketForm.value.full_refund,
       refund_amount:this.cancelTicketForm.value.refundAmount,
       reason:this.cancelTicketForm.value.reason,
-      cancelled_by:localStorage.getItem('USERNAME'),
-      created_by:localStorage.getItem('USERNAME'),
+      cancelled_by:sessionStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
       status:2,
     };
 

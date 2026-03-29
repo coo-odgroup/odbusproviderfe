@@ -48,7 +48,7 @@ export class LocationComponent implements OnInit {
     config.keyboard = false;
     this.ModalHeading = "Add New Location";
     this.ModalBtn = "Save"; 
-    this.userType=localStorage.getItem('ROLE_ID');
+    this.userType=sessionStorage.getItem('ROLE_ID');
     // console.log(this.userType);
   }
   OpenModal(content) {
@@ -193,7 +193,7 @@ export class LocationComponent implements OnInit {
       synonym:this.form.value.synonym,
       state_id:this.form.value.state_id,
       status:'1',
-      created_by:localStorage.getItem('USERNAME') 
+      created_by:sessionStorage.getItem('USERNAME') 
     };
     if(id==null)
     {

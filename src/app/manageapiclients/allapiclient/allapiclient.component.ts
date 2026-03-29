@@ -193,7 +193,7 @@ export class AllapiclientComponent implements OnInit {
         city:this.form.value.city,
         street:this.form.value.street,
         pincode:this.form.value.pincode,
-        created_by: localStorage.getItem('USERNAME')       
+        created_by: sessionStorage.getItem('USERNAME')       
     };
     
     if(id==null)
@@ -268,7 +268,7 @@ export class AllapiclientComponent implements OnInit {
   changeStatus(event : Event, stsitem:any)
   { 
     const data = {
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       id:stsitem
     }
     // console.log(data);

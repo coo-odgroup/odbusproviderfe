@@ -67,7 +67,7 @@ export class OtpComponent implements OnInit {
           if(res.status==1){
             let data:any=this.enc.decrypt(res.data[0]);
             data=JSON.parse(data);
-            localStorage.setItem('user', JSON.stringify(data));
+            sessionStorage.setItem('user', JSON.stringify(data));
 
             this.router.navigate(['agentDetails']);     
           }
@@ -86,7 +86,7 @@ export class OtpComponent implements OnInit {
 
   ngOnInit(): void {
  
-    this.userId = localStorage.getItem('USERID');
+    this.userId = sessionStorage.getItem('USERID');
     if(this.userId=='' || this.userId==null){
       this.router.navigate(['']);
     }

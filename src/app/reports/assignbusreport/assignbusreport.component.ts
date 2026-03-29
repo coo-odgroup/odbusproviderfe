@@ -47,8 +47,8 @@ export class AssignbusreportComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
 
     this.searchFrom = this.fb.group({
       assoc_id: [null],
@@ -75,8 +75,8 @@ export class AssignbusreportComponent implements OnInit {
     const data = {
       assoc_id: this.searchFrom.value.assoc_id,
       rows_number:this.searchFrom.value.rows_number, 
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
        
     };
       
@@ -116,8 +116,8 @@ export class AssignbusreportComponent implements OnInit {
     this.searchFrom = this.fb.group({
       assoc_id: [null],
       rows_number: Constants.RecordLimit,
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
     })  
     this.search();
   }

@@ -419,7 +419,7 @@ export class SmsEmailTicketComponent implements OnInit {
                             mobile_no:this.SmsToCustomerForm.value.customer_mob,
                             contents:this.SmsToCustomerForm.value.sms_to_customer,
                             reason:this.SmsToCustomerForm.value.reason,
-                            added_by:localStorage.getItem('USERID')
+                            added_by:sessionStorage.getItem('USERID')
                       };
 
                       if(data != null)
@@ -445,7 +445,7 @@ export class SmsEmailTicketComponent implements OnInit {
                             mobile_no:this.SmsToConductorForm.value.cmo_mob,
                             contents:this.SmsToConductorForm.value.sms_to_cmo,
                             reason:this.SmsToConductorForm.value.cmo_reason,
-                            added_by:localStorage.getItem('USERID')
+                            added_by:sessionStorage.getItem('USERID')
                       };
 
                       //console.log(data);
@@ -473,7 +473,7 @@ export class SmsEmailTicketComponent implements OnInit {
                             mobile_no:this.CancelSmsToCustomerForm.value.ccustomer_mob,
                             contents:this.CancelSmsToCustomerForm.value.csms_to_customer,
                             reason:this.CancelSmsToCustomerForm.value.creason,
-                            added_by:localStorage.getItem('USERID')
+                            added_by:sessionStorage.getItem('USERID')
                       };
 
                       //console.log(data); 
@@ -501,7 +501,7 @@ export class SmsEmailTicketComponent implements OnInit {
                             mobile_no:this.CancelSmsToConductorForm.value.ccmo_mob,
                             contents:this.CancelSmsToConductorForm.value.csms_to_cmo,
                             reason:this.CancelSmsToConductorForm.value.ccmo_reason,
-                            added_by:localStorage.getItem('USERID')
+                            added_by:sessionStorage.getItem('USERID')
                       };
 
                       //console.log(data); 

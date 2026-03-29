@@ -141,7 +141,7 @@ export class TicketfareslabComponent implements OnInit {
   }
   loadServices() {
     const BusOperator = {
-      USER_BUS_OPERATOR_ID: localStorage.getItem("USER_BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem("USER_BUS_OPERATOR_ID")
     };
     if (BusOperator.USER_BUS_OPERATOR_ID == "") {
       this.busOperatorService.readAll().subscribe(
@@ -173,7 +173,7 @@ export class TicketfareslabComponent implements OnInit {
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
-      USER_BUS_OPERATOR_ID: localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem('USER_BUS_OPERATOR_ID')
     };
 
 
@@ -294,7 +294,7 @@ export class TicketfareslabComponent implements OnInit {
     const data = {
       bus_operator_id: this.form.value.bus_operator_id,
       slabs: this.form.value.slabs,
-      created_by: localStorage.getItem('USERNAME')
+      created_by: sessionStorage.getItem('USERNAME')
     };
 
     //console.log(data);

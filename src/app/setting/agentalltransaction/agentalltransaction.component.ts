@@ -130,7 +130,7 @@ export class AgentalltransactionComponent implements OnInit {
       transaction_id:this.form.value.transaction_id,
       reference_id:this.form.value.reference_id,
       transaction_type:this.form.value.transaction_type,
-      created_by: localStorage.getItem('USERNAME') 
+      created_by: sessionStorage.getItem('USERNAME') 
     };
     // console.log(data);
     // return;

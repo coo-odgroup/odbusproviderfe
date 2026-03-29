@@ -81,7 +81,7 @@ export class EmployeeComponent implements OnInit {
   }
   loadServices() {
     // const BusOperator={
-    //   USER_BUS_OPERATOR_ID:localStorage.getItem("USER_BUS_OPERATOR_ID")
+    //   USER_BUS_OPERATOR_ID:sessionStorage.getItem("USER_BUS_OPERATOR_ID")
     // };
     // if(BusOperator.USER_BUS_OPERATOR_ID=="")
     // {
@@ -117,7 +117,7 @@ export class EmployeeComponent implements OnInit {
       name: this.searchForm.value.name,
       bus_type: this.searchForm.value.bus_type,
       rows_number:this.searchForm.value.rows_number, 
-     // USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+     // USER_BUS_OPERATOR_ID:sessionStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);
@@ -187,7 +187,7 @@ export class EmployeeComponent implements OnInit {
 //       type:this.form.value.type,
 //       name:this.form.value.name,
 //       bus_operator_id:this.form.value.bus_operator_id,
-//       created_by:localStorage.getItem('USERNAME') 
+//       created_by:sessionStorage.getItem('USERNAME') 
 //     };
 //     // console.log(data);
 //     if(id==null)

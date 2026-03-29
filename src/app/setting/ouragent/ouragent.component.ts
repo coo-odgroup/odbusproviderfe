@@ -255,7 +255,7 @@ export class OuragentComponent implements OnInit {
       ifsc_code:this.form.value.ifsc_code,  
       bank_account_no:this.form.value.bank_account_no,  
       
-      created_by: localStorage.getItem('USERNAME') 
+      created_by: sessionStorage.getItem('USERNAME') 
       
     };
     // console.log(data);

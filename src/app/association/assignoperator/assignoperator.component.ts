@@ -181,7 +181,7 @@ export class AssignoperatorComponent implements OnInit {
     const data = {
       user_id: this.form.value.assocName,
       operator_id: this.form.value.busoperator,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
     };
 
     this.assocBusOprService.create(data).subscribe(
@@ -207,7 +207,7 @@ export class AssignoperatorComponent implements OnInit {
     let delitem = this.assocOperaterRecord.id;
     const data = {
       id: this.assocOperaterRecord.id,
-      created_by:localStorage.getItem('USERNAME')
+      created_by:sessionStorage.getItem('USERNAME')
     };
     this.assocBusOprService.delete(data).subscribe(
       resp => {

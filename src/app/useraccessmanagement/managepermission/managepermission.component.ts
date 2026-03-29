@@ -147,7 +147,7 @@ export class ManagepermissionComponent implements OnInit {
     let id:any = this.form.value.id;
     const data = {
       name:this.form.value.name,
-      created_by:localStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
     };
 
     if(id==null)

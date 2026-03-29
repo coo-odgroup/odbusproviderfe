@@ -71,8 +71,8 @@ export class UserreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
 
     this.formConfirm=this.fb.group({
       id:[null]
@@ -104,8 +104,8 @@ export class UserreviewComponent implements OnInit {
     this.spinner.show();
       
     const data = {
-      role_id: localStorage.getItem('ROLE_ID'),
-      user_id: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      user_id: sessionStorage.getItem('USERID'),
       bus_operator_id:this.searchFrom.value.bus_operator_id,
       rows_number:this.searchFrom.value.rows_number,  
       rangeFromDate:this.searchFrom.value.rangeFromDate,

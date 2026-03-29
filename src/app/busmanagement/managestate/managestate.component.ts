@@ -48,7 +48,7 @@ export class ManagestateComponent implements OnInit {
     config.keyboard = false;
     this.ModalHeading = "Add New State";
     this.ModalBtn = "Save"; 
-    this.userType=localStorage.getItem('ROLE_ID');
+    this.userType=sessionStorage.getItem('ROLE_ID');
     // console.log(this.userType);
   }
   OpenModal(content) {
@@ -176,7 +176,7 @@ export class ManagestateComponent implements OnInit {
       id:this.form.value.id,
       state_name:this.form.value.state_name,
       status:'1',
-      created_by:localStorage.getItem('USERNAME') 
+      created_by:sessionStorage.getItem('USERNAME') 
     };
     if(id==null)
     {

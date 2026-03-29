@@ -55,7 +55,7 @@ export class BusscheduleComponent implements OnInit {
   unSubscribeData: any;
   locations: any;
   url: string;
-  role = localStorage.getItem('ROLE_ID');
+  role = sessionStorage.getItem('ROLE_ID');
 
 
   constructor(private locationService: LocationService, private buscanCellationService: BuscancellationService, private spinner: NgxSpinnerService, private busscheduleService: BusscheduleService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busOperatorService: BusOperatorService, private busService: BusService) {
@@ -94,8 +94,8 @@ export class BusscheduleComponent implements OnInit {
     this.search();
     this.loadServices();
 
-    if (localStorage.getItem('ROLE_ID') != '1') {
-      let operatorId = localStorage.getItem('BUS_OPERATOR_ID');
+    if (sessionStorage.getItem('ROLE_ID') != '1') {
+      let operatorId = sessionStorage.getItem('BUS_OPERATOR_ID');
       if (operatorId) {
         this.busService.getByOperaor(operatorId).subscribe(
           res => {
@@ -118,7 +118,7 @@ export class BusscheduleComponent implements OnInit {
       rows_number: this.searchForm.value.rows_number,
       source_id: this.searchForm.value.source_id,
       destination_id: this.searchForm.value.destination_id,
-      USER_BUS_OPERATOR_ID: localStorage.getItem('BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem('BUS_OPERATOR_ID')
     };
     if (pageurl != "") {
       this.busscheduleService.getAllPaginationData(pageurl, data).subscribe(
@@ -234,9 +234,9 @@ export class BusscheduleComponent implements OnInit {
 
 
     const BusOperator = {
-      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if (BusOperator.USER_BUS_OPERATOR_ID != "" && localStorage.getItem('ROLE_ID') != '1') {
+    if (BusOperator.USER_BUS_OPERATOR_ID != "" && sessionStorage.getItem('ROLE_ID') != '1') {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record => {
           this.operators = record.data;
@@ -274,7 +274,7 @@ export class BusscheduleComponent implements OnInit {
       bus_operator_id: this.busScheduleForm.value.bus_operator_id,
       entry_date: this.busScheduleForm.value.entry_date,
       running_cycle: this.busScheduleForm.value.running_cycle,
-      created_by: localStorage.getItem('USERNAME')
+      created_by: sessionStorage.getItem('USERNAME')
     };
     if (id == null) {
       this.busscheduleService.create(data).subscribe(

@@ -51,7 +51,7 @@ export class AgentwalletreportComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [null],
       rows_number: Constants.RecordLimit,
-      user_id : localStorage.getItem('USERID'),
+      user_id : sessionStorage.getItem('USERID'),
     });
     this.search();
   }
@@ -79,7 +79,7 @@ export class AgentwalletreportComponent implements OnInit {
       name: this.searchForm.value.name,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
-      user_id : localStorage.getItem('USERID')
+      user_id : sessionStorage.getItem('USERID')
     };
 
     // console.log(data);
@@ -106,7 +106,7 @@ export class AgentwalletreportComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [null],
       rows_number: Constants.RecordLimit,
-      user_id : localStorage.getItem('USERID')
+      user_id : sessionStorage.getItem('USERID')
     });
     this.search();
   }

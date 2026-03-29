@@ -28,15 +28,12 @@ export class LoginComponent implements OnInit {
 
   constructor(public router: Router,protected fb:FormBuilder, private loginService: LoginService, private notificationService: NotificationService,private notify: NotificationService,private roleService: RoleService,private enc:EncryptionService) {
 
-    // this.roleService.getRoles().subscribe(
-    //   res=>{
-    //     this.usertypes=res.data;
-    //     // console.log(this.usertypes);
-    //   }
-    // );
+   sessionStorage.clear();
   }
  
   ngOnInit() {
+   sessionStorage.clear();
+
     this.form = this.fb.group({
       email: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])],
@@ -69,18 +66,18 @@ export class LoginComponent implements OnInit {
           loginRecord=JSON.parse(loginRecord);
           this.loginRecord=loginRecord;          
           // console.log(this.loginRecord);
-          localStorage.setItem("USERRECORDS",JSON.stringify(this.loginRecord));
-          localStorage.setItem("USERID",JSON.stringify(this.loginRecord.id)); 
-          localStorage.setItem("ROLE_ID",JSON.stringify(this.loginRecord.role_id)); 
-          localStorage.setItem("USERNAME",this.loginRecord.name); 
-          localStorage.setItem("TOKEN",this.loginRecord.admin_login_token); 
-          localStorage.setItem("USER_BUS_OPERATOR_ID",''); 
+          sessionStorage.setItem("USERRECORDS",JSON.stringify(this.loginRecord));
+          sessionStorage.setItem("USERID",JSON.stringify(this.loginRecord.id)); 
+          sessionStorage.setItem("ROLE_ID",JSON.stringify(this.loginRecord.role_id)); 
+          sessionStorage.setItem("USERNAME",this.loginRecord.name); 
+          sessionStorage.setItem("TOKEN",this.loginRecord.admin_login_token); 
+          sessionStorage.setItem("USER_BUS_OPERATOR_ID",''); 
           if(this.loginRecord.role_id==4)
           {
-            localStorage.setItem("BUS_OPERATOR_ID",this.loginRecord.bus_operator_id); 
+            sessionStorage.setItem("BUS_OPERATOR_ID",this.loginRecord.bus_operator_id); 
           }
-          // var ROLE_ID = localStorage.getItem("ROLE_ID");
-          // var USERID = localStorage.getItem("USERID");
+          // var ROLE_ID = sessionStorage.getItem("ROLE_ID");
+          // var USERID = sessionStorage.getItem("USERID");
           // console.log("ROLE ID : "+ROLE_ID+", USER ID : "+USERID);
           this.router.navigate(['dashboard/landing']);
         }else{

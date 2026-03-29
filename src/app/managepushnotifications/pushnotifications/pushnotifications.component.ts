@@ -203,7 +203,7 @@ export class PushnotificationsComponent implements OnInit {
       title: this.form.value.title,
       description: this.form.value.description,
       message: this.form.value.message,
-      user_id: localStorage.getItem('USERID'),
+      user_id: sessionStorage.getItem('USERID'),
     };
 
     if (this.selectedRecord) {

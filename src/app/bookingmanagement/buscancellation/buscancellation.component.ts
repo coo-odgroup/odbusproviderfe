@@ -56,7 +56,7 @@ export class BuscancellationComponent implements OnInit {
   dateformate: string;
   locations: any;
   url: string;
-  role=localStorage.getItem('ROLE_ID');
+  role=sessionStorage.getItem('ROLE_ID');
 
   //getter for form array buses
   get busesFormGroup() {
@@ -147,7 +147,7 @@ export class BuscancellationComponent implements OnInit {
       toDate: this.searchForm.value.toDate,
       fromDate: this.searchForm.value.fromDate,
       rows_number: this.searchForm.value.rows_number,
-      USER_BUS_OPERATOR_ID: localStorage.getItem('BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem('BUS_OPERATOR_ID')
     };
 
     // console.log(data);
@@ -444,7 +444,7 @@ export class BuscancellationComponent implements OnInit {
   }
   loadOperators() {
     // const BusOperator = {
-    //   USER_BUS_OPERATOR_ID: localStorage.getItem("USER_BUS_OPERATOR_ID")
+    //   USER_BUS_OPERATOR_ID: sessionStorage.getItem("USER_BUS_OPERATOR_ID")
     // };
     // if (BusOperator.USER_BUS_OPERATOR_ID == "") {
     //   this.busOperatorService.readAll().subscribe(
@@ -465,9 +465,9 @@ export class BuscancellationComponent implements OnInit {
     //   );
     // }
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
@@ -500,7 +500,7 @@ export class BuscancellationComponent implements OnInit {
     let id: any = this.busCancellationRecord.id;
     const data = {
       bus_operator_id: this.busCancellationForm.value.bus_operator_id,
-      cancelled_by: localStorage.getItem('USERNAME'),
+      cancelled_by: sessionStorage.getItem('USERNAME'),
       month: this.busCancellationForm.value.month,
       year: this.busCancellationForm.value.year,
       reason: this.busCancellationForm.value.reason,

@@ -192,8 +192,8 @@ export class BlogrouteComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id = localStorage.getItem('ROLE_ID');
-    this.usre_name = localStorage.getItem('USERNAME');
+    this.role_id = sessionStorage.getItem('ROLE_ID');
+    this.usre_name = sessionStorage.getItem('USERNAME');
 
 
     this.routeform = new FormGroup({
@@ -232,8 +232,8 @@ export class BlogrouteComponent implements OnInit {
       status: this.searchForm.value.status,
       searchBy: this.searchForm.value.searchBy,
       per_page: this.searchForm.value.per_page,
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
     };
     this.http.post(this.apiURL + "/blogroute", "").subscribe((res: any) => {
       this.blogroutedata = res.data;

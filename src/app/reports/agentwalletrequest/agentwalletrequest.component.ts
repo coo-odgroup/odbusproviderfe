@@ -158,7 +158,7 @@ export class AgentwalletrequestComponent implements OnInit {
     
     const data ={
       otp:this.form.value.otp,
-      user_name : localStorage.getItem('USERNAME'),
+      user_name : sessionStorage.getItem('USERNAME'),
     };
 
     this.ws.chngsts(id,data).subscribe(
@@ -198,7 +198,7 @@ export class AgentwalletrequestComponent implements OnInit {
     
     const data ={
       reject_reason:this.formRejectReason.value.reject_reason,
-      user_name : localStorage.getItem('USERNAME'),
+      user_name : sessionStorage.getItem('USERNAME'),
     };
 
     //this.ws.chngsts(id,data).subscribe(

@@ -194,8 +194,8 @@ export class ApicancelticketsComponent implements OnInit {
       percentage_deduct:this.cancelTicketForm.value.percentage_deduct,
       refund_amount:this.cancelTicketForm.value.refundAmount,
       reason:this.cancelTicketForm.value.reason,
-      cancelled_by:localStorage.getItem('USERNAME'),
-      created_by:localStorage.getItem('USERNAME'),
+      cancelled_by:sessionStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
       status:2,
     };
     if(this.cancelTicketForm.value.refundAmount >  this.pnrDetails[0].payable_amount)
@@ -244,7 +244,7 @@ export class ApicancelticketsComponent implements OnInit {
           rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
           rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
           apiUser:this.cancelTicketsReportRecord.apiUser,         
-          USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')            
+          USER_BUS_OPERATOR_ID:sessionStorage.getItem('USER_BUS_OPERATOR_ID')            
     };
    
     // console.log(data);
@@ -318,7 +318,7 @@ export class ApicancelticketsComponent implements OnInit {
           rangeFromDate:this.cancelTicketsReportRecord.rangeFromDate,
           rangeToDate :this.cancelTicketsReportRecord.rangeToDate,
           apiUser:this.cancelTicketsReportRecord.apiUser,         
-          USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')            
+          USER_BUS_OPERATOR_ID:sessionStorage.getItem('USER_BUS_OPERATOR_ID')            
     };
 
         this.rs.cancelticketReport(data).subscribe(

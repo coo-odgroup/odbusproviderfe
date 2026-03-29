@@ -397,7 +397,7 @@ addfestivalFare()
             bus_operator_id:this.festivalFareForm.value.bus_operator_id,
             source_id:this.festivalFareForm.value.source_id,
             destination_id:this.festivalFareForm.value.destination_id,
-            created_by:localStorage.getItem('USERNAME'),
+            created_by:sessionStorage.getItem('USERNAME'),
             bus_id:this.festivalFareForm.value.bus_id,
           };
           this.festivalfareService.create(data).subscribe(
@@ -428,7 +428,7 @@ addfestivalFare()
             bus_operator_id:this.editfestivalFareForm.value.bus_operator_id,
             source_id:this.editfestivalFareForm.value.source_id,
             destination_id:this.editfestivalFareForm.value.destination_id,
-            created_by:localStorage.getItem('USERNAME'),
+            created_by:sessionStorage.getItem('USERNAME'),
             bus_id:this.editfestivalFareForm.value.bus_id,
           };
          

@@ -71,7 +71,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         addationalCharges: [null, Validators.compose([Validators.required])],
         dolphinaddationalCharges: [null, Validators.compose([Validators.required])],
         cancelCommission: [null, Validators.compose([Validators.required])],
-        user_name : localStorage.getItem('USERNAME'),   
+        user_name : sessionStorage.getItem('USERNAME'),   
       });  
       this.formConfirm=this.fb.group({
         id:[null]
@@ -168,7 +168,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         addationalCharges: ['', Validators.compose([Validators.required])],
         dolphinaddationalCharges: ['', Validators.compose([Validators.required])],
         cancelCommission: ['', Validators.compose([Validators.required])],
-        user_name : localStorage.getItem('USERNAME'),   
+        user_name : sessionStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Add Commission Slab";
       this.ModalBtn = "Save";
@@ -188,7 +188,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         addationalCharges:this.form.value.addationalCharges,
         dolphinaddationalCharges:this.form.value.dolphinaddationalCharges,
         cancelCommission:this.form.value.cancelCommission,
-        created_by : localStorage.getItem('USERNAME'),     
+        created_by : sessionStorage.getItem('USERNAME'),     
     };
 
     // console.log(data);
@@ -246,7 +246,7 @@ export class ApiclientcommissionslabComponent implements OnInit {
         addationalCharges: [this.aapiusercommissionslabRecord.addationalcharges,Validators.compose([Validators.required])],
         dolphinaddationalCharges: [this.aapiusercommissionslabRecord.dolphinaddationalCharges,Validators.compose([Validators.required])],
         cancelCommission: [this.aapiusercommissionslabRecord.cancellation_commission,Validators.compose([Validators.required])],
-        user_name : localStorage.getItem('USERNAME'),   
+        user_name : sessionStorage.getItem('USERNAME'),   
       });
       this.ModalHeading = "Edit Agent Commission Slab";
       this.ModalBtn = "Update";

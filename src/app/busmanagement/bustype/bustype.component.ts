@@ -78,9 +78,9 @@ export class BustypeComponent implements OnInit {
   }
   loadServices() {
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
@@ -112,9 +112,9 @@ export class BustypeComponent implements OnInit {
       name: this.searchForm.value.name,
       bus_type: this.searchForm.value.bus_type,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID'),
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem('BUS_OPERATOR_ID'),
+      user_role:sessionStorage.getItem('ROLE_ID'),
+      user_id:sessionStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -183,9 +183,9 @@ export class BustypeComponent implements OnInit {
     const data = {
       type:this.form.value.type,
       name:this.form.value.name,
-      user_id:localStorage.getItem('USERID'),
+      user_id:sessionStorage.getItem('USERID'),
       bus_operator_id:this.form.value.bus_operator_id,
-      created_by:localStorage.getItem('USERNAME') 
+      created_by:sessionStorage.getItem('USERNAME') 
     };
     console.log(data);
     if(id==null)

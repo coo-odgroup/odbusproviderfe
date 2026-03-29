@@ -56,7 +56,7 @@ export class AgentcomissionComponent implements OnInit {
       range_from: [null, Validators.compose([Validators.required])],
       range_to: [null, Validators.compose([Validators.required])],
       comission_per_seat: [null, Validators.compose([Validators.required])],
-      user_name : localStorage.getItem('USERNAME'),   
+      user_name : sessionStorage.getItem('USERNAME'),   
     });  
     this.formConfirm=this.fb.group({
       id:[null]
@@ -138,7 +138,7 @@ export class AgentcomissionComponent implements OnInit {
       range_from: ['', Validators.compose([Validators.required])],
       range_to: ['', Validators.compose([Validators.required])],
       comission_per_seat: ['', Validators.compose([Validators.required])],
-      user_name : localStorage.getItem('USERNAME'),   
+      user_name : sessionStorage.getItem('USERNAME'),   
     });
     this.ModalHeading = "Add Commission Slab";
     this.ModalBtn = "Save";
@@ -153,7 +153,7 @@ export class AgentcomissionComponent implements OnInit {
       range_from:this.form.value.range_from,
       range_to:this.form.value.range_to,
       comission_per_seat:this.form.value.comission_per_seat,
-      user_name : localStorage.getItem('USERNAME'),     
+      user_name : sessionStorage.getItem('USERNAME'),     
     };
     
     if(id==null)
@@ -204,7 +204,7 @@ export class AgentcomissionComponent implements OnInit {
       range_from: [this.agentCommissionSlabRecord.range_from, Validators.compose([Validators.required])],
       range_to: [this.agentCommissionSlabRecord.range_to,Validators.compose([Validators.required])],
       comission_per_seat: [this.agentCommissionSlabRecord.comission_per_seat,Validators.compose([Validators.required])],
-      user_name : localStorage.getItem('USERNAME'),   
+      user_name : sessionStorage.getItem('USERNAME'),   
     });
     this.ModalHeading = "Edit Agent Commission Slab";
     this.ModalBtn = "Update";

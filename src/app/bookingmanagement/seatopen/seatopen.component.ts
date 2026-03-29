@@ -108,7 +108,7 @@ export class SeatopenComponent implements OnInit {
   checkedDate: any = [];
   DatesRecord: FormArray;
   busDatas: any;
-  role=localStorage.getItem('ROLE_ID');
+  role=sessionStorage.getItem('ROLE_ID');
 
   constructor(
     calendar: NgbCalendar,
@@ -232,7 +232,7 @@ export class SeatopenComponent implements OnInit {
       toDate:this.searchForm.value.toDate,
       source_id:this.searchForm.value.source_id,
       destination_id:this.searchForm.value.destination_id,
-      USER_BUS_OPERATOR_ID: localStorage.getItem('BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem('BUS_OPERATOR_ID')
     };
 
     // console.log(data);
@@ -933,9 +933,9 @@ alreadyOpen()
   loadServices() {
     
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
@@ -1028,7 +1028,7 @@ alreadyOpen()
       other_reson: this.seatOpenForm.value.otherReson,
       date: this.checkedDate,
       bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       type: "1"
 
     };
@@ -1144,7 +1144,7 @@ alreadyOpen()
     // console.log(data);
 
     this.seatOpenForm = this.fb.group({
-      bus_operator_id:  localStorage.getItem('OPERATOR_ID'),
+      bus_operator_id:  sessionStorage.getItem('OPERATOR_ID'),
       id: [null],
       bus_id: bus_id,  
       busRoute: [null],
@@ -1200,7 +1200,7 @@ alreadyOpen()
       other_reson: this.openSeatsData[0].otherReson,
       date: this.seatOpenForm.value.date,
       bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       type: "1"
     };
       this.seatopenService.updateSeatOpen(data).subscribe(

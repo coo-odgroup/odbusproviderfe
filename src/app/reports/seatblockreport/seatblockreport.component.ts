@@ -98,7 +98,7 @@ export class SeatblockreportComponent implements OnInit {
       rows_number:this.seatBlockReportRecord.rows_number,  
       rangeFromDate:this.seatBlockReportRecord.rangeFromDate,
       rangeToDate :this.seatBlockReportRecord.rangeToDate,
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);

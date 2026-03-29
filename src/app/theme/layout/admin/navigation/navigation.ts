@@ -1702,7 +1702,7 @@ const AssociationNavItems = [
 @Injectable()
 export class NavigationItem {
   public get() {
-    var ROLE_ID = localStorage.getItem('ROLE_ID');
+    var ROLE_ID = sessionStorage.getItem('ROLE_ID');
     if (ROLE_ID == '1') {
       return NavigationItems;
     } else if (ROLE_ID == '3') {

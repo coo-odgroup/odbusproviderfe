@@ -13,11 +13,11 @@ export class NavRightComponent implements OnInit {
   constructor(public router: Router) { }
 
   ngOnInit() { 
-    this.username=localStorage.getItem("USERNAME");
+    this.username=sessionStorage.getItem("USERNAME");
   }
   logout()
   {
-    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['login']);
   }
 }

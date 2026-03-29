@@ -43,7 +43,7 @@ export class AdminchangepasswordComponent implements OnInit {
 
   updatePassword() {
     this.spinner.show();
-    let id = localStorage.getItem("USERID");
+    let id = sessionStorage.getItem("USERID");
     const updateDate = {
         password: this.pwdform.value.password
       }

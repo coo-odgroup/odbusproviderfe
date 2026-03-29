@@ -111,7 +111,7 @@ export class BookingseizedComponent implements OnInit {
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
-      USER_BUS_OPERATOR_ID: localStorage.getItem('BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem('BUS_OPERATOR_ID')
     };
 
     // console.log(data);
@@ -265,7 +265,7 @@ export class BookingseizedComponent implements OnInit {
 
     const data = {
       busSeized: this.bookingseizedForm.controls.bookingseized.value,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       reason: this.bookingseizedForm.controls.reason.value,
       date: this.bookingseizedForm.controls.date.value,
       bus_id: this.bookingseizedForm.controls.bus_id.value,
@@ -302,7 +302,7 @@ export class BookingseizedComponent implements OnInit {
 
   loadServices() {
     if (this.isOperatorSelected != false) {
-      if (localStorage.getItem('ROLE_ID') == '1') {
+      if (sessionStorage.getItem('ROLE_ID') == '1') {
         this.busService.all().subscribe(
           res => {
             this.buses = res.data;
@@ -310,8 +310,8 @@ export class BookingseizedComponent implements OnInit {
           }
         );
       }
-      else if (localStorage.getItem('ROLE_ID') == '4') {
-        let operatorId = localStorage.getItem("BUS_OPERATOR_ID");
+      else if (sessionStorage.getItem('ROLE_ID') == '4') {
+        let operatorId = sessionStorage.getItem("BUS_OPERATOR_ID");
         if (operatorId) {
           this.busService.getByOperaor(operatorId).subscribe(
             res => {
@@ -326,9 +326,9 @@ export class BookingseizedComponent implements OnInit {
 
 
     const BusOperator = {
-      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if (BusOperator.USER_BUS_OPERATOR_ID != "" && localStorage.getItem('ROLE_ID') != '1') {
+    if (BusOperator.USER_BUS_OPERATOR_ID != "" && sessionStorage.getItem('ROLE_ID') != '1') {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record => {
           this.busoperators = record.data;

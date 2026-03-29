@@ -97,7 +97,7 @@ export class ForgetpasswordComponent implements OnInit {
         res=>{
           if(res.status==1){ 
             this.verifyStatus=true;
-            localStorage.setItem("OtpData",JSON.stringify(this.OtpData));
+            sessionStorage.setItem("OtpData",JSON.stringify(this.OtpData));
           }else{
             this.notify.notify(res.message,"Error");
           } 

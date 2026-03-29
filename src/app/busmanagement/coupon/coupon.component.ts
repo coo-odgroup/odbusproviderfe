@@ -168,10 +168,10 @@ export class CouponComponent implements OnInit {
 
       /////// get all routes
       const Bus_Operator={
-        USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+        USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
       };
 
-      if(Bus_Operator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')== '4'){
+      if(Bus_Operator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')== '4'){
         this.busstoppageService.AllRoutes(Bus_Operator).subscribe(
           res => {
             this.allRoutes=res.data;
@@ -217,12 +217,12 @@ export class CouponComponent implements OnInit {
     this.spinner.show();
 
     const Bus_Operator = {
-      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem("BUS_OPERATOR_ID")
     };
 
     if (
       Bus_Operator.USER_BUS_OPERATOR_ID &&
-      localStorage.getItem('ROLE_ID') == '4'
+      sessionStorage.getItem('ROLE_ID') == '4'
     ) {
       this.busstoppageService.AllRoutes(Bus_Operator).subscribe(res => {
         this.allRoutes = res.data;
@@ -326,13 +326,13 @@ export class CouponComponent implements OnInit {
     }
     else{
       if(route.length>0){
-        if(localStorage.getItem('ROLE_ID') != '1'){
+        if(sessionStorage.getItem('ROLE_ID') != '1'){
           // console.log('hello');
-          this.local_operator[0] = localStorage.getItem('BUS_OPERATOR_ID');
+          this.local_operator[0] = sessionStorage.getItem('BUS_OPERATOR_ID');
           const param={
             "route":route,
             "bus_operator_id":this.local_operator,
-            // "bus_operator_id":localStorage.getItem('BUS_OPERATOR_ID').split(''),
+            // "bus_operator_id":sessionStorage.getItem('BUS_OPERATOR_ID').split(''),
           };  
           this.busstoppageService.GetBusList(param).subscribe(
             res => {
@@ -430,9 +430,9 @@ export class CouponComponent implements OnInit {
       coupon_type:this.searchForm.value.coupon_type,  
       status:this.searchForm.value.status,  
       rows_number:this.searchForm.value.rows_number,
-      // USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      // USER_BUS_OPERATOR_ID:sessionStorage.getItem('USER_BUS_OPERATOR_ID')
+      user_role:sessionStorage.getItem('ROLE_ID'),
+      user_id:sessionStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -547,8 +547,8 @@ export class CouponComponent implements OnInit {
       valid_by:this.editform.value.valid_by,
       from_date:this.editform.value.from_date,
       to_date:this.editform.value.to_date,
-      created_by:localStorage.getItem('USERNAME') ,
-      user_id:localStorage.getItem('USERID')
+      created_by:sessionStorage.getItem('USERNAME') ,
+      user_id:sessionStorage.getItem('USERID')
     };
 
     this.couponService.update(this.couponRecord.id,data).subscribe(
@@ -627,8 +627,8 @@ export class CouponComponent implements OnInit {
       from_date:this.form.value.from_date,
       to_date:this.form.value.to_date,
       bus_operator_id:this.form.value.bus_operator_id,
-      created_by:localStorage.getItem('USERNAME') ,
-      user_id:localStorage.getItem('USERID')
+      created_by:sessionStorage.getItem('USERNAME') ,
+      user_id:sessionStorage.getItem('USERID')
     };
 
    
@@ -679,9 +679,9 @@ export class CouponComponent implements OnInit {
   loadServices() {
     
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')== '4')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')== '4')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{

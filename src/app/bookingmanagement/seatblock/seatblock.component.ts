@@ -97,7 +97,7 @@ export class SeatblockComponent implements OnInit {
   upperData: FormArray;
   busopenform: any;
 
-  role=localStorage.getItem('ROLE_ID');
+  role=sessionStorage.getItem('ROLE_ID');
 
   // datesSelected:NgbDateStruct[]=[]; 
   dtOptionsSeatblock: { pagingType: string; pageLength: number; serverSide: boolean; processing: boolean; dom: string; order: string[]; aLengthMenu: (string | number)[]; buttons: ({ extend: string; className: string; init: (api: any, node: any, config: any) => void; exportOptions: { columns: string; }; text?: undefined; action?: undefined; } | { text: string; className: string; init: (api: any, node: any, config: any) => void; action: () => void; extend?: undefined; exportOptions?: undefined; })[]; language: { searchPlaceholder: string; processing: string; }; ajax: (dataTablesParameters: any, callback: any) => void; columns: ({ data: string; title?: undefined; render?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: string; render?: undefined; orderable?: undefined; className?: undefined; } | { data: string; render: (data: any) => "Active" | "Pending"; title?: undefined; orderable?: undefined; className?: undefined; } | { title: string; data: any; orderable: boolean; className: string; render?: undefined; })[]; };
@@ -246,7 +246,7 @@ export class SeatblockComponent implements OnInit {
       bus_operator_id:this.searchForm.value.bus_operator_id,
       source_id:this.searchForm.value.source_id,
       destination_id:this.searchForm.value.destination_id,
-      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID') 
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem('BUS_OPERATOR_ID') 
     };   
 
     if(pageurl!="")
@@ -714,9 +714,9 @@ export class SeatblockComponent implements OnInit {
     //   }
     // );
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
@@ -848,7 +848,7 @@ export class SeatblockComponent implements OnInit {
       other_reson: this.seatBlockForm.value.otherReson,
       date: this.checkedDate,
       bus_seat_layout_data: this.seatBlockForm.value.bus_seat_layout_data,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       type: "2"
     };
     // console.log(data);
@@ -1002,7 +1002,7 @@ export class SeatblockComponent implements OnInit {
     };
 
     this.seatBlockForm = this.fb.group({
-      bus_operator_id:  localStorage.getItem('OPERATOR_ID'),
+      bus_operator_id:  sessionStorage.getItem('OPERATOR_ID'),
       id: [null],
       bus_id: bus_id,  
       busRoute: [null],
@@ -1248,7 +1248,7 @@ export class SeatblockComponent implements OnInit {
       other_reson: this.blockSeatsData[0].otherReson,
       date: this.seatBlockForm.value.date,
       bus_seat_layout_data: this.seatBlockForm.value.bus_seat_layout_data,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       type: "2"
     };
 

@@ -40,9 +40,9 @@ export class SignupComponent implements OnInit {
         if(res.status==1){ 
           this.signupRecord=res.data;
           //console.log(res.data);
-          localStorage.setItem("USERRECORDS",JSON.stringify(this.signupRecord));
-          localStorage.setItem("USERID",JSON.stringify(this.signupRecord.id));
-          localStorage.setItem("PHONE",JSON.stringify(this.signupRecord.phone));
+          sessionStorage.setItem("USERRECORDS",JSON.stringify(this.signupRecord));
+          sessionStorage.setItem("USERID",JSON.stringify(this.signupRecord.id));
+          sessionStorage.setItem("PHONE",JSON.stringify(this.signupRecord.phone));
           this.router.navigate(['otp']);
           
         }else{

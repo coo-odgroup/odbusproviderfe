@@ -144,7 +144,7 @@ export class CoupontypeComponent implements OnInit {
     let id:any = this.form.value.id;
     const data = {
       coupon_type_name:this.form.value.coupon_type_name,
-      created_by:localStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
     };
 
     if(id==null)

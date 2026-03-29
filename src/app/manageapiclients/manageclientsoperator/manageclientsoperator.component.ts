@@ -69,7 +69,7 @@ ngOnInit(): void {
       id:[null],
       user_id: [null, Validators.compose([Validators.required])],
       bus_operator_id: [null, Validators.compose([Validators.required])],
-      user_name : localStorage.getItem('USERNAME'),   
+      user_name : sessionStorage.getItem('USERNAME'),   
     });  
     this.formConfirm=this.fb.group({
       id:[null]
@@ -163,7 +163,7 @@ ResetAttributes()
       id:[null],
       user_id: ['', Validators.compose([Validators.required])],
       bus_operator_id: ['', Validators.compose([Validators.required])],
-      user_name : localStorage.getItem('USERNAME'),   
+      user_name : sessionStorage.getItem('USERNAME'),   
     });
     this.ModalHeading = "Add Commission Slab";
     this.ModalBtn = "Save";
@@ -178,7 +178,7 @@ addCommissionSlab()
   const data = {
       user_id: this.form.value.user_id,
       bus_operator_id:this.form.value.bus_operator_id,
-      created_by : localStorage.getItem('USERNAME'),     
+      created_by : sessionStorage.getItem('USERNAME'),     
   };
 
   // console.log(data);
@@ -216,7 +216,7 @@ editAgentCommission(event : Event, id : any)
       commision: [this.aapiusercommissionslabRecord.commision,Validators.compose([Validators.required])],
       addationalCharges: [this.aapiusercommissionslabRecord.addationalcharges,Validators.compose([Validators.required])],
       cancelCommission: [this.aapiusercommissionslabRecord.cancellation_commission,Validators.compose([Validators.required])],
-      user_name : localStorage.getItem('USERNAME'),   
+      user_name : sessionStorage.getItem('USERNAME'),   
     });
     this.ModalHeading = "Edit Agent Commission Slab";
     this.ModalBtn = "Update";

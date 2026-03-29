@@ -239,7 +239,7 @@ export class AgentComponent implements OnInit {
       bank_name:this.form.value.bank_name,
       ifsc_code:this.form.value.ifsc_code,  
       bank_account_no:this.form.value.bank_account_no,  
-      created_by: localStorage.getItem('USERNAME') 
+      created_by: sessionStorage.getItem('USERNAME') 
       
     };
     // console.log(data);
@@ -319,7 +319,7 @@ export class AgentComponent implements OnInit {
   changeStatus(event : Event, stsitem:any)
   { 
     const data = {
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       id:stsitem
     }
     this.spinner.show();

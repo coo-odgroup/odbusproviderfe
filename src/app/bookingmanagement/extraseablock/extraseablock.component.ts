@@ -209,7 +209,7 @@ export class ExtraseablockComponent implements OnInit {
       date:this.searchForm.value.date,
       source_id:this.searchForm.value.source_id,
       destination_id:this.searchForm.value.destination_id,
-      USER_BUS_OPERATOR_ID: localStorage.getItem('BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem('BUS_OPERATOR_ID')
     };
 
     // console.log(data);
@@ -629,9 +629,9 @@ export class ExtraseablockComponent implements OnInit {
     // );
 
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
@@ -716,7 +716,7 @@ export class ExtraseablockComponent implements OnInit {
         other_reson: this.seatOpenForm.value.otherReson,
         date: this.seatOpenForm.value.date,
         bus_seat_layout_data: this.seatOpenForm.value.bus_seat_layout_data,
-        created_by: localStorage.getItem('USERNAME')
+        created_by: sessionStorage.getItem('USERNAME')
   
       };
       // console.log(data);

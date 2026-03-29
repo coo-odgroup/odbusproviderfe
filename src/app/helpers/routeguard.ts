@@ -17,7 +17,7 @@ export class Routeguard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): boolean | Promise<boolean> {
 
-               const user=localStorage.getItem('TOKEN');  
+               const user=sessionStorage.getItem('TOKEN');  
                 if(user){
                     this.isSignedIn =true;                  
                 } else{

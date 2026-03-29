@@ -71,7 +71,7 @@ export class BoardingdropingComponent implements OnInit {
     config.keyboard = false;
     this.ModalHeading = "Add Boarding Dropping";
     this.ModalBtn = "Save";
-    this.userType = localStorage.getItem('ROLE_ID');
+    this.userType = sessionStorage.getItem('ROLE_ID');
 
   }
   OpenModal(content) {
@@ -219,7 +219,7 @@ export class BoardingdropingComponent implements OnInit {
     const data = {
       id: this.BoardingDroppingRecord.id,
       location_id: this.form.value.location_id,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       boarding_point: this.form.value.boards
     };
     // console.log(data);
@@ -266,7 +266,7 @@ export class BoardingdropingComponent implements OnInit {
     this.form = this.fb.group({
       id: [this.BoardingDroppingRecord.id],
       location_id: [this.BoardingDroppingRecord.id, Validators.compose([Validators.required])],
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       boards: this.fb.array([this.createBoard()])
     });
     this.boardingList = this.form.get('boards') as FormArray;

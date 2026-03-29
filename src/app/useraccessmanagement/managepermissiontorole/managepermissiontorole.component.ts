@@ -225,7 +225,7 @@ export class ManagepermissiontoroleComponent implements OnInit
       update_status: this.form.value.update_status,
       view_status: this.form.value.view_status,
       delete_status: this.form.value.delete_status,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
     };
 
    // console.log(data);
@@ -253,7 +253,7 @@ export class ManagepermissiontoroleComponent implements OnInit
   deleteRecord() {
     let delitem = this.del_id;
     // const data = {
-    //   id: this.permissiontoroleRecord.id,created_by: localStorage.getItem('USERNAME'),
+    //   id: this.permissiontoroleRecord.id,created_by: sessionStorage.getItem('USERNAME'),
     // };
 
     this.permissiontoroleService.delete(delitem).subscribe(

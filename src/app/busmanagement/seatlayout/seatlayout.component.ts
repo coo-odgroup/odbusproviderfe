@@ -283,8 +283,8 @@ export class SeatlayoutComponent implements OnInit {
     const data={
       name:form.value.SeatLayoutName,
       layout_data:JSON.stringify(this.seatBlocks),
-      user_id:localStorage.getItem('USERID'),
-      created_by:localStorage.getItem('USERNAME'),
+      user_id:sessionStorage.getItem('USERID'),
+      created_by:sessionStorage.getItem('USERNAME'),
       bus_operator_id:this.SeatLayoutRecord.bus_operator_id  
     }
 
@@ -438,9 +438,9 @@ export class SeatlayoutComponent implements OnInit {
   }
   loadServices() {
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{
@@ -473,9 +473,9 @@ export class SeatlayoutComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID'),
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem('BUS_OPERATOR_ID'),
+      user_role:sessionStorage.getItem('ROLE_ID'),
+      user_id:sessionStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -650,8 +650,8 @@ export class SeatlayoutComponent implements OnInit {
     const data ={
       name:layoutName,
       layout_data:JSON.stringify(this.seatBlocks),
-      created_by:localStorage.getItem('USERNAME'),
-      user_id:localStorage.getItem('USERID'),
+      created_by:sessionStorage.getItem('USERNAME'),
+      user_id:sessionStorage.getItem('USERID'),
       bus_operator_id:this.SeatLayoutForm.value.bus_operator_id
     }
     

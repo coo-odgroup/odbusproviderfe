@@ -79,7 +79,7 @@ export class SeatopenreportComponent implements OnInit {
       rows_number:this.seatOpenReportRecord.rows_number,  
       rangeFromDate:this.seatOpenReportRecord.rangeFromDate,
       rangeToDate :this.seatOpenReportRecord.rangeToDate,
-      USER_BUS_OPERATOR_ID:localStorage.getItem('USER_BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem('USER_BUS_OPERATOR_ID')
     };
    
     // console.log(data);

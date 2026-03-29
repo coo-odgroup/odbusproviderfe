@@ -198,7 +198,7 @@ export class AssignagentsComponent implements OnInit {
     const data = {
       user_id: this.form.value.user_id,
       agent_id: this.form.value.agent_id,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
     };
 
     this.oprassignagentsService.create(data).subscribe(
@@ -222,7 +222,7 @@ export class AssignagentsComponent implements OnInit {
   deleteRecord() {
     let delitem = this.assocBusRecord.id;
     const data = {
-      id: this.assocBusRecord.id,created_by: localStorage.getItem('USERNAME'),
+      id: this.assocBusRecord.id,created_by: sessionStorage.getItem('USERNAME'),
     };
 
     this.oprassignagentsService.delete(data).subscribe(

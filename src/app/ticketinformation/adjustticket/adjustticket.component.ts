@@ -225,7 +225,7 @@ export class AdjustticketComponent implements OnInit {
   //     percentage_deduct:this.adjustTicketForm.value.percentage_deduct,
   //     refund_amount:this.adjustTicketForm.value.refundAmount,
   //     reason:this.adjustTicketForm.value.reason,
-  //     cancelled_by:localStorage.getItem('USERNAME'),
+  //     cancelled_by:sessionStorage.getItem('USERNAME'),
   //     status:2,
   //   };
 
@@ -627,7 +627,7 @@ export class AdjustticketComponent implements OnInit {
           "passenger_name": this.pnrDetails[0].booking_detail[i].passenger_name,
           "passenger_gender": this.pnrDetails[0].booking_detail[i].passenger_gender,
           "passenger_age": this.pnrDetails[0].booking_detail[i].passenger_age,
-          "created_by": localStorage.getItem('USERNAME')
+          "created_by": sessionStorage.getItem('USERNAME')
           };  
           bookingDetailarr.push(booking_dtl);
           this.seatIDs.push(b.seatId);        
@@ -776,7 +776,7 @@ export class AdjustticketComponent implements OnInit {
           "payable_amount":this.pnrDetails[0].payable_amount, 
           "reason": this.adjustTicketForm.value.reason,
           "adj_note": this.adjustTicketForm.value.adj_note,
-          "created_by": localStorage.getItem('USERNAME'),
+          "created_by": sessionStorage.getItem('USERNAME'),
           "customer_payment_id" : this.customer_payment_id,
           "razorpay_payment_id" : this.razorpay_id,
           "razorpay_order_id" : this.customer_payment_order_id,

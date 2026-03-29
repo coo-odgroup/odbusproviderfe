@@ -77,8 +77,8 @@ export class BannermanagementComponent implements OnInit {
       status:this.searchForm.value.status,
       searchBy:this.searchForm.value.searchBy,
       per_page:this.searchForm.value.per_page,
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
     }; 
       this.bannerService.bannerDataTable(pageurl,data).subscribe(
           res=>{    
@@ -97,8 +97,8 @@ export class BannermanagementComponent implements OnInit {
               status:this.searchForm.value.status,
               searchBy:this.searchForm.value.searchBy,
               per_page:this.searchForm.value.per_page,
-              role_id: localStorage.getItem('ROLE_ID'),
-              userID: localStorage.getItem('USERID'),
+              role_id: sessionStorage.getItem('ROLE_ID'),
+              userID: sessionStorage.getItem('USERID'),
             }; 
      this.bannerService.bannerDataTable(url,data).subscribe(
             res=>{    
@@ -128,8 +128,8 @@ export class BannermanagementComponent implements OnInit {
   }
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id= localStorage.getItem('ROLE_ID');
-      this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+      this.usre_name= sessionStorage.getItem('USERNAME');
 
 
       ////// get all user list
@@ -304,7 +304,7 @@ export class BannermanagementComponent implements OnInit {
   addBanner()
   {
     if(this.role_id!=1){
-      this.bannerForm.controls.user_id.setValue(localStorage.getItem('USERID'));
+      this.bannerForm.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
     
     this.spinner.show();
@@ -320,7 +320,7 @@ export class BannermanagementComponent implements OnInit {
     fd.append("alt_tag",this.bannerForm.value.alt_tag);
     fd.append("end_date",this.bannerForm.value.end_date);
     fd.append("end_time",this.bannerForm.value.end_time);
-    fd.append("created_by",localStorage.getItem('USERNAME'));
+    fd.append("created_by",sessionStorage.getItem('USERNAME'));
 
   //   for (var pair of fd.entries()) {
   //     console.log(pair[0]+ ', ' + pair[1]); 

@@ -59,7 +59,7 @@ export class BusgalleryComponent implements OnInit {
   img_5: any;
   img_4: any;
 
-  role =localStorage.getItem('ROLE_ID');
+  role =sessionStorage.getItem('ROLE_ID');
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
@@ -162,7 +162,7 @@ export class BusgalleryComponent implements OnInit {
     fd.append("bus_image_5", this.bus_image_5);
     fd.append("bus_operator_id",this.busForm.value.bus_operator_id);
     fd.append("bus_id",this.busForm.value.bus_id);
-    fd.append("created_by",localStorage.getItem('USERNAME'));
+    fd.append("created_by",sessionStorage.getItem('USERNAME'));
     
   // for (var pair of fd.entries()) {
   // console.log(pair[0]+ ', ' + pair[1]); 
@@ -433,7 +433,7 @@ export class BusgalleryComponent implements OnInit {
       bus_id: this.searchForm.value.bus_id,
       bus_operator_id: this.searchForm.value.bus_operator_id,
       rows_number: this.searchForm.value.rows_number,
-      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID')
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem('BUS_OPERATOR_ID')
     };
 
     console.log(data);
@@ -475,7 +475,7 @@ export class BusgalleryComponent implements OnInit {
   }
 
   loadServices() {
-    if(localStorage.getItem('ROLE_ID')== '1'){
+    if(sessionStorage.getItem('ROLE_ID')== '1'){
       this.busService.all().subscribe(
         res => {
           this.buses = res.data;
@@ -483,8 +483,8 @@ export class BusgalleryComponent implements OnInit {
         }
       );
     }
-    else if(localStorage.getItem('ROLE_ID')== '4'){
-      let operatorId=localStorage.getItem("BUS_OPERATOR_ID");
+    else if(sessionStorage.getItem('ROLE_ID')== '4'){
+      let operatorId=sessionStorage.getItem("BUS_OPERATOR_ID");
     if(operatorId)
     {
       this.busService.getByOperaor(operatorId).subscribe(
@@ -500,9 +500,9 @@ export class BusgalleryComponent implements OnInit {
     }
 
     const BusOperator={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if(BusOperator.USER_BUS_OPERATOR_ID!="" && localStorage.getItem('ROLE_ID')!= '1')
+    if(BusOperator.USER_BUS_OPERATOR_ID!="" && sessionStorage.getItem('ROLE_ID')!= '1')
     {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record=>{

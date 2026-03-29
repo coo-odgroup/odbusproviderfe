@@ -77,7 +77,7 @@ export class NotificationComponent implements OnInit {
       rows_number:this.searchFrom.value.rows_number,  
       rangeFromDate:this.searchFrom.value.rangeFromDate,
       rangeToDate :this.searchFrom.value.rangeToDate,
-      user_id : localStorage.getItem('USERID'),
+      user_id : sessionStorage.getItem('USERID'),
     };
    
     if(pageurl!="")

@@ -64,8 +64,8 @@ export class TestimonialComponent implements OnInit {
       
       this.spinner.show();
 
-      this.role_id= localStorage.getItem('ROLE_ID');
-      this.usre_name= localStorage.getItem('USERNAME');
+      this.role_id= sessionStorage.getItem('ROLE_ID');
+      this.usre_name= sessionStorage.getItem('USERNAME');
 
       this.form = this.fb.group({
         id:[null],
@@ -126,8 +126,8 @@ export class TestimonialComponent implements OnInit {
         name: this.searchForm.value.name,
         user_id:  this.searchForm.value.user_id,
         rows_number:this.searchForm.value.rows_number, 
-        role_id: localStorage.getItem('ROLE_ID'),
-        userID: localStorage.getItem('USERID'),
+        role_id: sessionStorage.getItem('ROLE_ID'),
+        userID: sessionStorage.getItem('USERID'),
       };
      
       // console.log(data);
@@ -172,7 +172,7 @@ export class TestimonialComponent implements OnInit {
 
       this.spinner.show();
       if(this.role_id!=1){
-        this.form.controls.user_id.setValue(localStorage.getItem('USERID'));
+        this.form.controls.user_id.setValue(sessionStorage.getItem('USERID'));
       }
       // console.log(this.form.value);return false; 
       const data = {
@@ -183,7 +183,7 @@ export class TestimonialComponent implements OnInit {
         user_id: this.form.value.user_id,
         destination: this.form.value.destination,
         source: this.form.value.source,
-        created_by: localStorage.getItem('USERNAME') 
+        created_by: sessionStorage.getItem('USERNAME') 
       };
       // console.log(data);
       let id = this.testimonialRecord?.id;

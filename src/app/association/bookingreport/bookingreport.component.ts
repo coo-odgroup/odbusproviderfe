@@ -57,8 +57,8 @@ export class BookingreportComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
 
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
 
 
     this.searchFrom = this.fb.group({
@@ -113,8 +113,8 @@ export class BookingreportComponent implements OnInit {
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate, 
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID')            
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID')            
     };
        
     // console.log(data);
@@ -173,8 +173,8 @@ export class BookingreportComponent implements OnInit {
       rows_number: Constants.RecordLimit,
       source_id:[null],
       destination_id:[null],
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
     })
     this.search();
   }

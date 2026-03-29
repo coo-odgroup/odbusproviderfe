@@ -296,7 +296,7 @@ export class FailedtransactionreportComponent implements OnInit {
           {
             'booking_id':  this.generateTicketFrom.value.booking_id,
             'razorpay_payment_id':  this.generateTicketFrom.value.Razorpay_payment_id,           
-            "created_by": localStorage.getItem('USERNAME')
+            "created_by": sessionStorage.getItem('USERNAME')
           }
           this.gfts.generateTicket(bookingData).subscribe(
             resp => {

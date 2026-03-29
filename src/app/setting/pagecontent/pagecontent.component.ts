@@ -62,8 +62,8 @@ export class PagecontentComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
     this.form = this.fb.group({
       id: [null],      
       user_id: [null, Validators.compose([Validators.required])],
@@ -101,8 +101,8 @@ export class PagecontentComponent implements OnInit {
 
     const data = {
       name: this.searchForm.value.name,
-      role_id: localStorage.getItem('ROLE_ID'),
-      user_id: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      user_id: sessionStorage.getItem('USERID'),
       rows_number: this.searchForm.value.rows_number
     };
 
@@ -221,7 +221,7 @@ export class PagecontentComponent implements OnInit {
   addData() {
     this.spinner.show();
     if(this.role_id!=1){
-      this.form.controls.user_id.setValue(localStorage.getItem('USERID'));
+      this.form.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
 
     const data = {
@@ -234,7 +234,7 @@ export class PagecontentComponent implements OnInit {
       meta_description: this.form.value.meta_description,
       extra_meta: this.form.value.extra_meta,
       canonical_url: this.form.value.canonical_url,
-      created_by: localStorage.getItem('USERNAME')
+      created_by: sessionStorage.getItem('USERNAME')
     };
     // console.log(data);
     // return;

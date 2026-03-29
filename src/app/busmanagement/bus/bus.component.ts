@@ -248,7 +248,7 @@ export class BusComponent implements OnInit {
   safetyRecord: Safety;
   safetyies:Safety[];
 
-  role =localStorage.getItem('ROLE_ID');
+  role =sessionStorage.getItem('ROLE_ID');
 
   
   cancellationslabs: Cancellationslab[];
@@ -409,9 +409,9 @@ export class BusComponent implements OnInit {
 
      
 
-    if(localStorage.getItem("BUS_OPERATOR_ID")!='' && localStorage.getItem('ROLE_ID')!= '1')
+    if(sessionStorage.getItem("BUS_OPERATOR_ID")!='' && sessionStorage.getItem('ROLE_ID')!= '1')
     {
-      this.busOperartorService.readOne(localStorage.getItem("BUS_OPERATOR_ID")).subscribe(
+      this.busOperartorService.readOne(sessionStorage.getItem("BUS_OPERATOR_ID")).subscribe(
         record=>{
         this.operators=record.data;
         this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
@@ -447,9 +447,9 @@ export class BusComponent implements OnInit {
       source_id: this.searchForm.value.source_id,
       destination_id: this.searchForm.value.destination_id,
       rows_number:this.searchForm.value.rows_number, 
-      USER_BUS_OPERATOR_ID:localStorage.getItem('BUS_OPERATOR_ID'),
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem('BUS_OPERATOR_ID'),
+      user_role:sessionStorage.getItem('ROLE_ID'),
+      user_id:sessionStorage.getItem('USERID')
     };
 
     if(pageurl!="")
@@ -615,9 +615,9 @@ export class BusComponent implements OnInit {
   LoadAllService()
   {
     const UserInfo={
-      USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID"),
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID"),
+      user_role:sessionStorage.getItem('ROLE_ID'),
+      user_id:sessionStorage.getItem('USERID')
     };
     // if(UserInfo.USER_BUS_OPERATOR_ID=="")
     // {
@@ -692,9 +692,9 @@ export class BusComponent implements OnInit {
     //     this.safetyies=res.data;
     //   });
     // }
-    if(localStorage.getItem("BUS_OPERATOR_ID")!='' && localStorage.getItem('ROLE_ID')!= '1')
+    if(sessionStorage.getItem("BUS_OPERATOR_ID")!='' && sessionStorage.getItem('ROLE_ID')!= '1')
     {
-      this.busOperartorService.readOne(localStorage.getItem("BUS_OPERATOR_ID")).subscribe(
+      this.busOperartorService.readOne(sessionStorage.getItem("BUS_OPERATOR_ID")).subscribe(
         record=>{
         this.operators=record.data;
         this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
@@ -875,7 +875,7 @@ export class BusComponent implements OnInit {
     const data ={
       id:this.busRecord.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
-      user_id :localStorage.getItem('USERID'),
+      user_id :sessionStorage.getItem('USERID'),
       amenities:this.busForm.value.amenities,
       safety:this.busForm.value.safety,
       type:this.busForm.value.type,
@@ -892,7 +892,7 @@ export class BusComponent implements OnInit {
       via:this.busForm.value.via,
       ticket_cancelation_id:'1', 
       bus_description:this.busForm.value.bus_description,
-      created_by:localStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
     };
 
     if(data.id!=null)
@@ -921,7 +921,7 @@ export class BusComponent implements OnInit {
     //here
     const data={
       id:this.busForm.value.id,
-      created_by:localStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
       bus_number:this.busForm.value.bus_number,
       conductor_no:this.busForm.value.conductor_no,
       c_sms_ticket:this.busForm.value.c_sms_ticket,
@@ -1062,7 +1062,7 @@ export class BusComponent implements OnInit {
     const data ={
       id:this.busForm.value.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
-      user_id :localStorage.getItem('USERID'),
+      user_id :sessionStorage.getItem('USERID'),
       amenities:this.busForm.value.amenities,
       safety:this.busForm.value.safety,
       type:this.busForm.value.type,
@@ -1077,7 +1077,7 @@ export class BusComponent implements OnInit {
       name:this.busForm.value.name,
       via:this.busForm.value.via,
       ticket_cancelation_id:'1', 
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
       bus_number:this.busForm.value.bus_number,
       conductor_no:this.busForm.value.conductor_no,
       c_sms_ticket:this.busForm.value.c_sms_ticket,
@@ -1789,8 +1789,8 @@ export class BusComponent implements OnInit {
     const data ={
       id:this.busForm.value.id,
       bus_operator_id:this.busForm.value.bus_operator_id,
-      user_id :localStorage.getItem('USERID'),
-      created_by:localStorage.getItem('USERNAME'),
+      user_id :sessionStorage.getItem('USERID'),
+      created_by:sessionStorage.getItem('USERNAME'),
       busRoutes:FinalRoute,
       busRoutesInfo:this.busForm.value.busRoutesInfo,
       bus_id:this.busRecord.id,
@@ -2865,11 +2865,11 @@ export class BusComponent implements OnInit {
     }
     const data ={
       id:this.busRecord.id,
-      user_id :localStorage.getItem('USERID'),
+      user_id :sessionStorage.getItem('USERID'),
       bus_id:this.busRecord.id,
       duration:this.busForm.value.duration_minuties,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
-      created_by:localStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
     };
    
     // console.log(data);
@@ -2896,11 +2896,11 @@ export class BusComponent implements OnInit {
   {
     this.spinner.show();
     const data ={
-      user_id :localStorage.getItem('USERID'),
+      user_id :sessionStorage.getItem('USERID'),
       bus_id:this.busRecord.id,
       id:this.busForm.value.bus_seat_layout_id,
       bus_seat_layout_data:this.busForm.value.bus_seat_layout_data,
-      created_by:localStorage.getItem('USERNAME'),
+      created_by:sessionStorage.getItem('USERNAME'),
     };
     
     if(data.id!=null)
@@ -3393,7 +3393,7 @@ export class BusComponent implements OnInit {
     //// commented by Lima :: 22 Sep,2024  (issue fixed for bus operator changing)
     //this.spinner.show();
     // const BusOperator={
-    //   USER_BUS_OPERATOR_ID:localStorage.getItem("BUS_OPERATOR_ID")
+    //   USER_BUS_OPERATOR_ID:sessionStorage.getItem("BUS_OPERATOR_ID")
     // };
     // if(BusOperator.USER_BUS_OPERATOR_ID=="")
     // {

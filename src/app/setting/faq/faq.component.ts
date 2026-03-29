@@ -60,8 +60,8 @@ export class FaqComponent implements OnInit {
 
   ngOnInit(): void {
     // this.spinner.show();
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
     this.form = this.fb.group({
       id: [null],      
       title: [null, Validators.compose([Validators.required])],
@@ -171,13 +171,13 @@ export class FaqComponent implements OnInit {
   addData() {
     this.spinner.show();
     if(this.role_id!=1){
-      this.form.controls.user_id.setValue(localStorage.getItem('USERID'));
+      this.form.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
 
     const data = {
       title: this.form.value.title,
       content: this.form.value.content,
-      created_by: localStorage.getItem('USERNAME')
+      created_by: sessionStorage.getItem('USERNAME')
     };
     // console.log(data);
     // return;

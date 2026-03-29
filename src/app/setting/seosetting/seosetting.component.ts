@@ -69,8 +69,8 @@ export class SeosettingComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
 
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
 
     this.form = this.fb.group({
       id: [null],
@@ -146,8 +146,8 @@ export class SeosettingComponent implements OnInit {
       name: this.searchForm.value.name,
       user_id: this.searchForm.value.user_id,
       rows_number: this.searchForm.value.rows_number,
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
     };
 
     // console.log(data);
@@ -236,7 +236,7 @@ export class SeosettingComponent implements OnInit {
     this.spinner.show();
 
     if(this.role_id!=1){
-      this.form.controls.user_id.setValue(localStorage.getItem('USERID'));
+      this.form.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
 
     const data = {
@@ -251,7 +251,7 @@ export class SeosettingComponent implements OnInit {
       meta_description: this.form.value.meta_description,
       extra_meta: this.form.value.extra_meta,
       canonical_url: this.form.value.canonical_url,
-      created_by: localStorage.getItem('USERNAME') 
+      created_by: sessionStorage.getItem('USERNAME') 
     };
 
     let id = this.urlcontentRecord?.id;

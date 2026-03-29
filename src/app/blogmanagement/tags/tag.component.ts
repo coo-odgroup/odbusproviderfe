@@ -86,8 +86,8 @@ export class TagComponent implements OnInit {
       status: this.searchForm.value.status,
       searchBy: this.searchForm.value.searchBy,
       per_page: this.searchForm.value.per_page,
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
     };
     this.http.post(this.apiURL + "/tag", "").subscribe((res: any) => {
       this.tagdata = res.data;
@@ -179,8 +179,8 @@ export class TagComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id = localStorage.getItem('ROLE_ID');
-    this.usre_name = localStorage.getItem('USERNAME');
+    this.role_id = sessionStorage.getItem('ROLE_ID');
+    this.usre_name = sessionStorage.getItem('USERNAME');
 
 
     this.tagform = new FormGroup({

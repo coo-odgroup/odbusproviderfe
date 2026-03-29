@@ -200,7 +200,7 @@ export class AssignbusComponent implements OnInit {
     const data = {
       user_id: this.form.value.assocName,
       bus_id: this.form.value.bus_id,
-      created_by: localStorage.getItem('USERNAME'),
+      created_by: sessionStorage.getItem('USERNAME'),
     };
 
     this.assocBusService.create(data).subscribe(
@@ -226,7 +226,7 @@ export class AssignbusComponent implements OnInit {
     let delitem = this.assocBusRecord.id;
     const data = {
       id: this.assocBusRecord.id,
-      created_by:localStorage.getItem('USERNAME')
+      created_by:sessionStorage.getItem('USERNAME')
     };
     // console.log(data);
     // return;

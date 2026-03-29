@@ -59,8 +59,8 @@ export class SocialmediaComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
     this.socialFrom = this.fb.group({
       id: [null],
       user_id: [null, Validators.compose([Validators.required])],
@@ -114,8 +114,8 @@ export class SocialmediaComponent implements OnInit {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
-      role_id: localStorage.getItem('ROLE_ID'),
-      user_id: localStorage.getItem('USERID'),
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      user_id: sessionStorage.getItem('USERID'),
       rows_number: this.searchForm.value.rows_number
     };
 
@@ -196,7 +196,7 @@ export class SocialmediaComponent implements OnInit {
   addData() {
     this.spinner.show();
     if(this.role_id!=1){
-      this.socialFrom.controls.user_id.setValue(localStorage.getItem('USERID'));
+      this.socialFrom.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
 
     const data = {
@@ -206,7 +206,7 @@ export class SocialmediaComponent implements OnInit {
       instagram_link: this.socialFrom.value.instagram_link,
       googleplus_link: this.socialFrom.value.googleplus_link,
       linkedin_link: this.socialFrom.value.linkedin_link,
-      created_by: localStorage.getItem('USERNAME')
+      created_by: sessionStorage.getItem('USERNAME')
     };
 
     let id = this.socialRecord?.id;

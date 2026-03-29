@@ -86,7 +86,7 @@ export class OwnerfareComponent implements OnInit {
   public ModalBtn: any;
   public searchBy: any;
 
-  role = localStorage.getItem('ROLE_ID');
+  role = sessionStorage.getItem('ROLE_ID');
 
   public searchForm: FormGroup;
   pagination: any;
@@ -167,7 +167,7 @@ export class OwnerfareComponent implements OnInit {
       fromDate: this.searchForm.value.fromDate,
       toDate: this.searchForm.value.toDate,
       bus_operator_id: this.searchForm.value.bus_operator_id,
-      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem("BUS_OPERATOR_ID")
     };
 
     if (pageurl != "") {
@@ -294,7 +294,7 @@ export class OwnerfareComponent implements OnInit {
 
   loadServices() {
     if (this.isOperatorSelected != false) {
-      if (localStorage.getItem('ROLE_ID') == '1') {
+      if (sessionStorage.getItem('ROLE_ID') == '1') {
         this.busService.all().subscribe(
           res => {
             this.buses = res.data;
@@ -304,7 +304,7 @@ export class OwnerfareComponent implements OnInit {
         );
       }
       else {
-        let operatorId = localStorage.getItem("BUS_OPERATOR_ID");
+        let operatorId = sessionStorage.getItem("BUS_OPERATOR_ID");
         if (operatorId) {
           this.busService.getByOperaor(operatorId).subscribe(
             res => {
@@ -320,9 +320,9 @@ export class OwnerfareComponent implements OnInit {
 
 
     const BusOperator = {
-      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID")
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem("BUS_OPERATOR_ID")
     };
-    if (BusOperator.USER_BUS_OPERATOR_ID != "" && localStorage.getItem('ROLE_ID') != '1') {
+    if (BusOperator.USER_BUS_OPERATOR_ID != "" && sessionStorage.getItem('ROLE_ID') != '1') {
       this.busOperatorService.readOne(BusOperator.USER_BUS_OPERATOR_ID).subscribe(
         record => {
           this.busoperators = record.data;
@@ -419,12 +419,12 @@ export class OwnerfareComponent implements OnInit {
     let source_id = this.ownerFareForm.controls.source_id.value;
     let destination_id = this.ownerFareForm.controls.destination_id.value;
     const BusOperator = {
-      USER_BUS_OPERATOR_ID: localStorage.getItem("BUS_OPERATOR_ID"),
+      USER_BUS_OPERATOR_ID: sessionStorage.getItem("BUS_OPERATOR_ID"),
       source_id: this.ownerFareForm.controls.source_id.value,
       destination_id: this.ownerFareForm.controls.destination_id.value,
     };
 
-    if (BusOperator.USER_BUS_OPERATOR_ID != "" && localStorage.getItem('ROLE_ID') != '1') {
+    if (BusOperator.USER_BUS_OPERATOR_ID != "" && sessionStorage.getItem('ROLE_ID') != '1') {
       // findbySource
       this.busService.findbySource(BusOperator).subscribe(
         res => {
@@ -475,7 +475,7 @@ export class OwnerfareComponent implements OnInit {
           bus_operator_id: this.ownerFareForm.value.bus_operator_id,
           source_id: this.ownerFareForm.value.source_id,
           destination_id: this.ownerFareForm.value.destination_id,
-          created_by: localStorage.getItem('USERNAME'),
+          created_by: sessionStorage.getItem('USERNAME'),
           bus_id: this.ownerFareForm.value.bus_id,
         };
         this.ownerfareService.create(data).subscribe(
@@ -503,7 +503,7 @@ export class OwnerfareComponent implements OnInit {
         bus_operator_id: this.editownerFareForm.value.bus_operator_id,
         source_id: this.editownerFareForm.value.source_id,
         destination_id: this.editownerFareForm.value.destination_id,
-        created_by: localStorage.getItem('USERNAME'),
+        created_by: sessionStorage.getItem('USERNAME'),
         bus_id: this.editownerFareForm.value.bus_id,
       };
       this.ownerfareService.update(id, data).subscribe(

@@ -81,8 +81,8 @@ export class SpecialsliderComponent implements OnInit {
               status:this.searchForm.value.status,
               searchBy:this.searchForm.value.searchBy,
               per_page:this.searchForm.value.per_page,
-              role_id: localStorage.getItem('ROLE_ID'),
-              userID: localStorage.getItem('USERID'),
+              role_id: sessionStorage.getItem('ROLE_ID'),
+              userID: sessionStorage.getItem('USERID'),
             }; 
      this.specialsliderService.sliderDataTable(url,data).subscribe(
             res=>{    
@@ -113,8 +113,8 @@ export class SpecialsliderComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
 
     this.searchForm =this.fb.group({
       searchBy:[null],
@@ -428,7 +428,7 @@ export class SpecialsliderComponent implements OnInit {
       "File": this.imageSrc,
     }
     if(this.role_id!=1){
-      this.sliderForm.controls.user_id.setValue(localStorage.getItem('USERID'));
+      this.sliderForm.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
     let id: any = this.sliderForm.value.id;
     let fd: any = new FormData();
@@ -445,7 +445,7 @@ export class SpecialsliderComponent implements OnInit {
     fd.append("alt_tag",this.sliderForm.value.alt_tag);
     fd.append("end_date",this.sliderForm.value.end_date);
     fd.append("end_time",this.sliderForm.value.end_time);
-    fd.append("created_by",localStorage.getItem('USERNAME'));
+    fd.append("created_by",sessionStorage.getItem('USERNAME'));
    
     if (id == null) {
       this.specialsliderService.create(fd).subscribe(

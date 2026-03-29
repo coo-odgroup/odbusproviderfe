@@ -58,8 +58,8 @@ export class CancelreportComponent implements OnInit {
     this.spinner.show();
 
     
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
 
     this.searchFrom = this.fb.group({
       user_id: [null],
@@ -113,8 +113,8 @@ export class CancelreportComponent implements OnInit {
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate,
-      role_id: localStorage.getItem('ROLE_ID'),
-      userID: localStorage.getItem('USERID')      
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID')      
     };
        
     // console.log(data);

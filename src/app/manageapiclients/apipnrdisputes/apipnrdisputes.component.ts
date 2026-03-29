@@ -132,7 +132,7 @@ export class ApipnrdisputesComponent implements OnInit {
       const data= {
         id:id,
         status:event,
-        created_by:localStorage.getItem('USERNAME')
+        created_by:sessionStorage.getItem('USERNAME')
       };
 
       this.rs.apiclientissuestatue(data).subscribe(

@@ -99,7 +99,7 @@ export class AgentcompletereportComponent implements OnInit {
       destination_id:this.completeReportRecord.destination_id,
       rangeFromDate:this.completeReportRecord.rangeFromDate,
       rangeToDate :this.completeReportRecord.rangeToDate,
-      user_id : localStorage.getItem('USERID'),        
+      user_id : sessionStorage.getItem('USERID'),        
     };
    
     if(pageurl!="")

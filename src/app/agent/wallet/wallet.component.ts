@@ -58,8 +58,8 @@ export class WalletComponent implements OnInit {
       payment_via: [null, Validators.compose([Validators.required])],
       amount: [null],
       remarks: [null],
-      user_id: localStorage.getItem('USERID'),
-      user_name: localStorage.getItem('USERNAME')
+      user_id: sessionStorage.getItem('USERID'),
+      user_name: sessionStorage.getItem('USERNAME')
     });
     this.formConfirm = this.fb.group({
       id: [null]
@@ -87,8 +87,8 @@ export class WalletComponent implements OnInit {
       payment_via: [null, Validators.compose([Validators.required])],
       amount:  [null, Validators.compose([Validators.required,Validators.min(2000),Validators.required,Validators.max(49000)])],
       remarks: [null], 
-      user_id: localStorage.getItem('USERID'),
-      user_name: localStorage.getItem('USERNAME')
+      user_id: sessionStorage.getItem('USERID'),
+      user_name: sessionStorage.getItem('USERNAME')
     });
     this.form.reset();
     this.ModalHeading = "Enter Payment Details";
@@ -106,7 +106,7 @@ export class WalletComponent implements OnInit {
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
-      user_id : localStorage.getItem('USERID'),
+      user_id : sessionStorage.getItem('USERID'),
     };
 
     // console.log(data);
@@ -135,7 +135,7 @@ export class WalletComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [null],
       rows_number: Constants.RecordLimit,
-      user_id : localStorage.getItem('USERID'),
+      user_id : sessionStorage.getItem('USERID'),
     });
     this.search();
 
@@ -167,8 +167,8 @@ export class WalletComponent implements OnInit {
       payment_via:this.form.value.payment_via,
       amount: this.form.value.amount,
       remarks: this.form.value.remarks,
-      user_id: localStorage.getItem('USERID'),
-      user_name: localStorage.getItem('USERNAME'),
+      user_id: sessionStorage.getItem('USERID'),
+      user_name: sessionStorage.getItem('USERNAME'),
       transaction_type: "c",
     };
     // console.log(data);

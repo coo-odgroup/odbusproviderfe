@@ -106,8 +106,8 @@ export class BusoperatorComponent implements OnInit {
     const data = { 
       name: this.searchForm.value.name,
       rows_number:this.searchForm.value.rows_number, 
-      user_role:localStorage.getItem('ROLE_ID'),
-      user_id:localStorage.getItem('USERID')
+      user_role:sessionStorage.getItem('ROLE_ID'),
+      user_id:sessionStorage.getItem('USERID')
     };
    
     // console.log(data);
@@ -314,8 +314,8 @@ export class BusoperatorComponent implements OnInit {
       need_gst_bill: gst_need,
       gst_number: this.form.value.gst_number,
       gst_amount: this.form.value.gst_amount,
-      created_by:localStorage.getItem('USERNAME'),
-      user_id:localStorage.getItem('USERID'),
+      created_by:sessionStorage.getItem('USERNAME'),
+      user_id:sessionStorage.getItem('USERID'),
       status:'0',
       id:this.BusOperatorRecord.id,
     };

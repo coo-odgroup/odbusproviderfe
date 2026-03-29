@@ -182,7 +182,7 @@ export class AssignoperatorComponent implements OnInit {
     const data = {
         user_id: this.form.value.assocName,
         operator_id: this.form.value.busoperator,
-        created_by: localStorage.getItem('USERNAME'),
+        created_by: sessionStorage.getItem('USERNAME'),
     };
 
     this.assignbusoperatorService.create(data).subscribe(

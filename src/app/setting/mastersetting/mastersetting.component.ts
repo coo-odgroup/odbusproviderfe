@@ -88,8 +88,8 @@ export class MastersettingComponent implements OnInit {
      const data= {
           name:this.searchForm.value.name,
           per_page:this.searchForm.value.per_page,
-          role_id: localStorage.getItem('ROLE_ID'),
-          userID: localStorage.getItem('USERID'),
+          role_id: sessionStorage.getItem('ROLE_ID'),
+          userID: sessionStorage.getItem('USERID'),
      }; 
      this.settingsService.DataTable(url,data).subscribe(
             res=>{    
@@ -120,8 +120,8 @@ export class MastersettingComponent implements OnInit {
       
       this.spinner.show();
       
-    this.role_id= localStorage.getItem('ROLE_ID');
-    this.usre_name= localStorage.getItem('USERNAME');
+    this.role_id= sessionStorage.getItem('ROLE_ID');
+    this.usre_name= sessionStorage.getItem('USERNAME');
 
     this.searchForm =this.fb.group({
       name:[null],
@@ -157,7 +157,7 @@ export class MastersettingComponent implements OnInit {
       iconSrc:[null],
       favIcon:[null],
       favSrc:[null],
-      user_name : localStorage.getItem('USERNAME'),
+      user_name : sessionStorage.getItem('USERNAME'),
       logo_image:[null],
       favicon_image:[null],
       operator_slogan:[null],
@@ -546,7 +546,7 @@ export class MastersettingComponent implements OnInit {
       iconSrc:[null],
       favIcon:[null],
       favSrc:[null],
-      user_name : localStorage.getItem('USERNAME'),
+      user_name : sessionStorage.getItem('USERNAME'),
       logo_image:[null],
       favicon_image:[null],
       operator_slogan:[null],
@@ -593,7 +593,7 @@ export class MastersettingComponent implements OnInit {
 
     let id = this.settingRecord?.id;
     if(this.role_id!=1){
-      this.settingForm.controls.user_id.setValue(localStorage.getItem('USERID'));
+      this.settingForm.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
     if(this.settingForm.value.maintenance == true){
       this.man_val = 1;
@@ -666,7 +666,7 @@ export class MastersettingComponent implements OnInit {
     fd.append("countdown_endtime",this.settingForm.value.countdown_endtime);
     fd.append("countdown_enddate",this.settingForm.value.countdown_enddate);
     fd.append("no_script",this.settingForm.value.no_script);
-    fd.append("created_by",localStorage.getItem('USERNAME'));
+    fd.append("created_by",sessionStorage.getItem('USERNAME'));
  
    
 //     console.log(this.settingForm.value);

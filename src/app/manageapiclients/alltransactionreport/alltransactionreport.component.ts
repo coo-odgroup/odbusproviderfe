@@ -147,7 +147,7 @@ export class AlltransactionreportComponent implements OnInit {
       pnr:this.form.value.pnr,
       reference_id:this.form.value.reference_id,
       transaction_type:this.form.value.transaction_type,
-      created_by: localStorage.getItem('USERNAME') 
+      created_by: sessionStorage.getItem('USERNAME') 
     };
 
     this.ws.clientTransByAdmin(data).subscribe(
@@ -183,7 +183,7 @@ export class AlltransactionreportComponent implements OnInit {
     id:this.editform.value.id,
     amount:this.editform.value.amount,
     balance:this.editform.value.balance,
-    created_by: localStorage.getItem('USERNAME') 
+    created_by: sessionStorage.getItem('USERNAME') 
   };
 
 this.ws.clientTransUpdateByAdmin(data).subscribe(
