@@ -131,10 +131,14 @@ export class BlogComponent implements OnInit {
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
       ['fontSize']
     ]
   };
+
+
+  changeStatus(event:any,id:any,data:any){
+    return confirm('Are you sure');
+  }
 
 
 
@@ -298,6 +302,7 @@ export class BlogComponent implements OnInit {
       this.http.post(this.apiURL + "/blog/" + id, formData)
         .subscribe((res: any) => {
           this.modalReference.close();
+          this.getallData();
           this.notificationService.addToast({ title: 'Success', msg: "Blog Updated Successfully", type: 'success' });
           this.blog.reset();
           console.log("Blog Updated");
@@ -308,6 +313,7 @@ export class BlogComponent implements OnInit {
       this.http.post(this.apiURL + "/add-blog", formData)
         .subscribe((res: any) => {
           this.modalReference.close();
+          this.getallData();
           this.notificationService.addToast({ title: 'Success', msg: "Blog Created Successfully", type: 'success' });
           this.blog.reset();
           console.log("Blog Created Successfully");
@@ -342,7 +348,7 @@ export class BlogComponent implements OnInit {
     })
 
     // 👇 Auto generate slug
-    this.blog.get('title')?.valueChanges.subscribe(value => {
+    this.blog.get('title')?.valueChanges.subscribe((value:any) => {
       const slug = this.generateSlug(value);
       this.blog.get('slug')?.setValue(slug, { emitEvent: false });
     });

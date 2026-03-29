@@ -301,6 +301,7 @@ export class CustomercancelrefundComponent implements OnInit {
     this.srs.getRefundSelected(param).subscribe(
       res => {
         console.log(res);
+        this.search();
         this.spinner.hide();
       }
     );
