@@ -1,30 +1,29 @@
 import { Injectable } from "@angular/core";
 import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot
+    ActivatedRouteSnapshot,
+    CanActivate,
+    Router,
+    RouterStateSnapshot,
+    UrlTree
 } from "@angular/router";
 
-@Injectable({
-  providedIn: 'root'
-})
+  
+@Injectable()
 export class Routeguard implements CanActivate {
 
-  constructor(private router: Router) {}
+    isSignedIn:boolean;
+    constructor( private router: Router) { }
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): boolean | Promise<boolean> {
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+               const user=localStorage.getItem('TOKEN');  
+                if(user){
+                    this.isSignedIn =true;                  
+                } else{
+                    this.router.navigate(['login']);
+                }
 
-    const token = sessionStorage.getItem('TOKEN'); // ✅ use TOKEN
-
-    if (token) {
-      return true;
-    } else {
-      this.router.navigate(['login']);
-      return false; // ✅ IMPORTANT
+        return this.isSignedIn;
     }
-  }
 }
