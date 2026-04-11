@@ -75,25 +75,25 @@
             </tr>
           </thead>
           <tbody *ngIf="blogList?.length != 0">
-            <tr *ngFor="let catblogData of blogList; let i = index">
+            <tr *ngFor="let blogData of blogList; let i = index">
               <td>{{ i+1 }}</td>
-              <td>{{catblogData.category_name}} </td>
-              <td>{{catblogData.slug}}</td>
-              <td>{{catblogData.meta_title}}</td>
-              <td *ngIf="catblogData.created_by == 1">ODBUS</td>
+              <td>{{blogData.category_name}} </td>
+              <td>{{blogData.slug}}</td>
+              <td>{{blogData.meta_title}}</td>
+              <td *ngIf="blogData.created_by == 1">ODBUS</td>
               <td>
-                <label *ngIf="catblogData.active_status==1" class="badge badge-light-success pointer"
-                  (click)="changeStatus($event, catblogData.id,'blog');">Active</label>
-                <label *ngIf="catblogData.active_status==0" class="badge badge-light-warning pointer"
-                  (click)="changeStatus($event, catblogData.id);">Pending</label>
+                <label *ngIf="blogData.active_status==1" class="badge badge-light-success pointer"
+                  (click)="changeStatus($event, blogData.id,'blog');">Active</label>
+                <label *ngIf="blogData.active_status==0" class="badge badge-light-warning pointer"
+                  (click)="changeStatus($event, blogData.id);">Pending</label>
               </td>
 
 
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button type="button" (click)="editcategory(catblogData);OpenModal(content)"
+                  <button type="button" (click)="editcategory(blogData);OpenModal(content)"
                     class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
-                  <button type="button" (click)="openConfirmDialog(confirmDialog, catblogData.id)"
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, blogData.id)"
                     class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                 </div>
               </td>
@@ -145,27 +145,23 @@
       <div class="app-card-footer">
         <ng-template #confirmDialog let-modal>
           <div class="modal-header">
-            <h5 class="ng-tns-c116-5"> Would you Like to Delete the Record??</h5>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
-                aria-hidden="true">&times;</span></button>
+            <h5>Would you Like to Delete the Record??</h5>
+            <button type="button" class="close" (click)="modal.dismiss('Cross click')">
+              <span>&times;</span>
+            </button>
           </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-material">
-                  <div class="right-icon-control">
-                    Would you Like to Delete the Record
-                    <form [formGroup]="formConfirm" class="editForm" novalidate>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
+
+          <div class="modal-body text-center">
+            Would you Like to Delete the Record
           </div>
+
           <div class="modal-footer">
-            <button type="button" (click)="deleteRecord()" class="btn btn-primary" ngbAutofocus>Confirm Delete</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
-              (click)="modal.dismiss('Cross click')">Cancel</button>
+            <button type="button" (click)="deleteRecord()" class="btn btn-primary">
+              Confirm Delete
+            </button>
+            <button type="button" class="btn btn-default" (click)="modal.dismiss('Cross click')">
+              Cancel
+            </button>
           </div>
         </ng-template>
         <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
@@ -306,12 +302,16 @@
                         <div class="col-md-6">
                           <div class="form-group mb-3">
                             <label>
-                              Author Name <span class="text-danger">*</span>
+                              Select Author Name <span class="text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" formControlName="author_name"
-                              placeholder="Enter Author Name">
+                            <select class="form-control" formControlName="author_id">
+                              <option value="">Select Author</option>
+                              <option *ngFor="let author of auther" [value]="author.id">
+                                {{ author.author_name }}
+                              </option>
+                            </select>
                             <small class="text-danger"
-                              *ngIf="blog.controls.author_name.touched && blog.controls.author_name.hasError('required')">
+                              *ngIf="blog.controls.author_id.touched && blog.controls.author_id.hasError('required')">
                               Author Name is required
                             </small>
                           </div>
@@ -423,6 +423,36 @@
                               *ngIf="blog.controls.canonical_url.touched && blog.controls.canonical_url.hasError('required')">
                               Canonical Url is required
                             </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Breadcrumb Schema <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="breadcrumb_schema"
+                              placeholder="Enter Breadcrumb Schema"></textarea>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              FAQ Schema <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="faq_schema"
+                              placeholder="Enter FAQ Schema"></textarea>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Service Schema <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="service_schema"
+                              placeholder="Enter Service Schema"></textarea>
                           </div>
                         </div>
 

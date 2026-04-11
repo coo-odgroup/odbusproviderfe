@@ -55,6 +55,7 @@ export class BlogComponent implements OnInit {
   public message: any;
   public pagination: any;
   public imageSizeFlag = true;
+  public auther: any;
   all: any;
   role_id: any;
   usre_name: any;
@@ -136,9 +137,43 @@ export class BlogComponent implements OnInit {
   };
 
 
-  changeStatus(event:any,id:any,data:any){
-    return confirm('Are you sure');
+  changeStatus(event: any, id: any, currentStatus: any) {
+
+    if (!confirm('Are you sure you want to change status?')) {
+      return;
+    }
+
+    this.spinner.show();
+
+    const newStatus = currentStatus == 1 ? 0 : 1;
+
+    this.http.post(this.apiURL + '/change-blogstatus/' + id, {active_status: newStatus}).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+
+        if (res.status == 1) {
+          this.notificationService.addToast({
+            title: 'Success',
+            msg: res.data,
+            type: 'success'
+          });
+          this.getallData();
+          this.refresh();
+        } else {
+          this.notificationService.addToast({
+            title: 'Error',
+            msg: res.data,
+            type: 'error'
+          });
+        }
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
+
+
 
 
 
@@ -237,13 +272,24 @@ export class BlogComponent implements OnInit {
       content: data.content,
       thumb_alt_text: data.thumb_alt_text,
       feature_alt_text: data.feature_alt_text,
-      author_name: data.author_name,
+      author_id: data.author_id,
       meta_title: data.meta_title,
       meta_description: data.meta_description,
       meta_keywords: data.meta_keywords,
-      canonical_url: data.canonical_url
+      canonical_url: data.canonical_url,
+      breadcrumb_schema: this.parseJSON(data.breadcrumb_schema),
+      faq_schema: this.parseJSON(data.faq_schema),
+      service_schema: this.parseJSON(data.service_schema)
     });
 
+  }
+
+  parseJSON(data: any) {
+    try {
+      return typeof data === 'string' ? JSON.parse(data) : data;
+    } catch (e) {
+      return null;
+    }
   }
 
 
@@ -276,11 +322,14 @@ export class BlogComponent implements OnInit {
     formData.append('content', this.blog.get('content')?.value);
     formData.append('thumb_alt_text', this.blog.get('thumb_alt_text')?.value);
     formData.append('feature_alt_text', this.blog.get('feature_alt_text')?.value);
-    formData.append('author_name', this.blog.get('author_name')?.value);
+    formData.append('author_id', this.blog.get('author_id')?.value);
     formData.append('meta_title', this.blog.get('meta_title')?.value);
     formData.append('meta_description', this.blog.get('meta_description')?.value);
     formData.append('meta_keywords', this.blog.get('meta_keywords')?.value);
     formData.append('canonical_url', this.blog.get('canonical_url')?.value);
+    formData.append('breadcrumb_schema', this.blog.get('breadcrumb_schema')?.value);
+    formData.append('faq_schema', this.blog.get('faq_schema')?.value);
+    formData.append('service_schema', this.blog.get('service_schema')?.value);
 
     // ✅ Image fields
     if (this.thumbImageFile) {
@@ -305,6 +354,7 @@ export class BlogComponent implements OnInit {
           this.getallData();
           this.notificationService.addToast({ title: 'Success', msg: "Blog Updated Successfully", type: 'success' });
           this.blog.reset();
+          console.log(res);
           console.log("Blog Updated");
         });
 
@@ -322,7 +372,15 @@ export class BlogComponent implements OnInit {
     }
   }
 
+  public getAllAuthors(){
+    this.http.post(this.apiURL + "/get-allAuthors", "").subscribe((res:any)=>{
+      this.auther = res.data;
+      console.log(this.auther)
+    })
+  }
+
   ngOnInit(): void {
+    this.getAllAuthors();
     this.spinner.show();
     this.role_id = sessionStorage.getItem('ROLE_ID');
     this.usre_name = sessionStorage.getItem('USERNAME');
@@ -340,15 +398,19 @@ export class BlogComponent implements OnInit {
       feature_alt_text: new FormControl('', Validators.required),
       featured_image: new FormControl('', Validators.required),
       author_name: new FormControl('', Validators.required),
+      author_id: new FormControl('', Validators.required),
       meta_title: new FormControl('', Validators.required),
       meta_description: new FormControl('', Validators.required),
       meta_keywords: new FormControl('', Validators.required),
       og_image: new FormControl('', Validators.required),
       canonical_url: new FormControl('', Validators.required),
+      breadcrumb_schema: new FormControl(''),
+      faq_schema: new FormControl(''),
+      service_schema: new FormControl(''),
     })
 
     // 👇 Auto generate slug
-    this.blog.get('title')?.valueChanges.subscribe((value:any) => {
+    this.blog.get('title')?.valueChanges.subscribe((value: any) => {
       const slug = this.generateSlug(value);
       this.blog.get('slug')?.setValue(slug, { emitEvent: false });
     });
@@ -416,14 +478,14 @@ export class BlogComponent implements OnInit {
 
   }
 
-  openConfirmDialog(content:any, id: any) {
+  openConfirmDialog(content: any, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
     this.blogRecord = id;
   }
   deleteRecord() {
 
     let delitem = this.blogRecord;
-    this.http.delete(this.apiURL + '/delete-blogcategory/' + delitem).subscribe((res: any) => {
+    this.http.delete(this.apiURL + '/delete-blog/' + delitem).subscribe((res: any) => {
       this.notificationService.addToast({ title: 'Success', msg: "Deleted successfully", type: 'success' });
       this.confirmDialogReference.close();
       this.ResetAttributes();
