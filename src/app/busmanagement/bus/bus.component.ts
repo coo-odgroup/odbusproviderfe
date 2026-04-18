@@ -518,7 +518,7 @@ export class BusComponent implements OnInit {
      this.ModalHeading = "BUS DETAILS"
     
       this.busRecord = this.buses[index];
-      console.log(this.busRecord);
+     // console.log(this.busRecord);
     
    }
 
@@ -1286,7 +1286,7 @@ export class BusComponent implements OnInit {
     this.busService.getSelectedSeat(this.busRecord.id).subscribe(
       seatData=>{
         this.selectedSeats=seatData.data['seat']; 
-        console.log(this.selectedSeats);       
+        //console.log(this.selectedSeats);       
         // this.spinner.hide();
         // return
 
@@ -1563,13 +1563,6 @@ export class BusComponent implements OnInit {
           }
         ); 
 
-
-        console.log(this.seatLayoutData);
-
-
-
-
-
       }
     );
    
@@ -1580,7 +1573,6 @@ export class BusComponent implements OnInit {
     this.busService.fetchBusTime(this.busRecord.id).subscribe(
       timing=>{
 
-       // console.log(timing);
         
         if(timing.status==1)
         {
@@ -1590,8 +1582,6 @@ export class BusComponent implements OnInit {
           //this.busRoutesRecords.clear();
           let counter=0;
           this.sequenceItem=timing.data.sequence;
-
-          
 
           for(let items of timing.data.routes)
           {
@@ -1611,15 +1601,17 @@ export class BusComponent implements OnInit {
               records=>{
                 this.sourceLocationRecord = (<FormArray>this.busForm.controls['busRoutes']).at(arraylen).get('sourceBoarding') as FormArray;     
                 let spoints="";
-                this.boardings=records.data;     
+                this.boardings=records.data; 
 
                 for(let SourceLoop of this.boardings)
                 {
                   let arraylen_child = this.sourceLocationRecord.length;
-                  foundValue=Array()
-                  if(stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point))
+                  foundValue=Array();                  
+                  //if(stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point))  // commented by Lima :: 18-april-2026
+                  if(stoppages.find(obj=>obj.boarding_droping_id===SourceLoop.id))                 
                   {
-                    var foundValue = stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point).stoppage_time;
+                   // console.log(obj.stoppage_name."----".SourceLoop.boarding_point)
+                    var foundValue = stoppages.find(obj=>obj.boarding_droping_id===SourceLoop.id).stoppage_time;
                     let newSourcegroup: FormGroup = this.fb.group({
                       sourceLocation: [SourceLoop.boarding_point],
                       boarding_droping_id: [SourceLoop.id],
@@ -1706,7 +1698,6 @@ export class BusComponent implements OnInit {
     let FinalRoute=[];
 
     let BusRoutes= this.busForm.value.busRoutes;
-
     for (const element of BusRoutes) {
 
       let boardingPointArr={
@@ -1746,7 +1737,6 @@ export class BusComponent implements OnInit {
 
       }
     }
-
 
   /////////////////// seat layout at least 1 seat selected
 
