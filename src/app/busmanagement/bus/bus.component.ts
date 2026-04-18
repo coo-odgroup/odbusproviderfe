@@ -2229,9 +2229,9 @@ export class BusComponent implements OnInit {
                 {
                   let arraylen_child = this.sourceLocationRecord.length;
                   foundValue=Array()
-                  if(stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point))
+                  if(stoppages.find(obj=>obj.boarding_droping_id===SourceLoop.id))
                   {
-                    var foundValue = stoppages.find(obj=>obj.stoppage_name===SourceLoop.boarding_point).stoppage_time;
+                    var foundValue = stoppages.find(obj=>obj.boarding_droping_id===SourceLoop.id).stoppage_time;
                                     
                     let newSourcegroup: FormGroup = this.fb.group({
                       sourceLocation: [SourceLoop.boarding_point],
