@@ -2037,7 +2037,7 @@ export class BusComponent implements OnInit {
                   {
                    
     
-                    if(durationCheck==0 && type == null && operation_date ==null )
+                    if(durationCheck==0 && type == null && operation_date ==null ) // normal seat
                     {
                       let columnData: FormGroup = this.fb.group({ 
                         seatText:[seatData.seatText],
@@ -2052,7 +2052,7 @@ export class BusComponent implements OnInit {
                       this.seatLayoutCol.insert(collen, columnData);
                     }
     
-                  else if(durationCheck ==0 && type == '1' && operation_date!='' && operation_date >= today )
+                  else if(durationCheck ==0 && type == '1' && operation_date!='' && operation_date >= today ) // seat open
                   {
                     let columnData: FormGroup = this.fb.group({ 
                       seatText:[seatData.seatText],
@@ -2067,7 +2067,7 @@ export class BusComponent implements OnInit {
                     this.seatLayoutCol.insert(collen, columnData);
                   }
     
-                  else if(durationCheck !=0 && type == null && operation_date ==null )
+                  else if(durationCheck !=0 && type == null && operation_date ==null ) // Extra seat 
                   {
                       let columnData: FormGroup = this.fb.group({ 
                         seatText:[seatData.seatText],
