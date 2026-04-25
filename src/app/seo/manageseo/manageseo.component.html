@@ -1,0 +1,71 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Manage Seo" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
+
+
+            <div class="mb-3">
+                <form [formGroup]="searchFrom">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="Enter Location"
+                                formControlName="location" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success w-100" (click)="search()">
+                                Search
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger w-100" (click)="refresh()">
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <form [formGroup]="updateFrom">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle" style="font-size: 13px;">
+
+                        <thead class="table-light align-middle">
+                            <tr>
+                                <th style="width: 5%;">#</th>
+                                <th style="width: 20%;">Location</th>
+                                <th style="width: 60%;">Content</th>
+                                <th style="width: 15%;" class="text-right">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let data of cityContent">
+                                <td class="align-middle">{{ data.id }}</td>
+                                <td class="align-middle">{{ data.name }}</td>
+
+                                <td>
+                                    <textarea #contentInput class="form-control" rows="3" placeholder="Enter Content">{{ data.content }}</textarea>
+                                </td>
+
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-success btn-sm px-3"
+                                            (click)="updateForm(data, contentInput.value)">
+                                            Update
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </form>
+        </app-card>
+
+    </div>
+</div>

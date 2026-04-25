@@ -1,0 +1,89 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Manage Seo" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
+
+            <div class="mb-3">
+                <form *ngIf="searchFrom" [formGroup]="searchFrom">
+                    <div class="row align-items-center">
+                        <div class="col-md-3" *ngIf="role == '1'">
+                            <div>
+                                <!-- <label>&nbsp; </label> -->
+                                <ng-select [items]="routesData" bindLabel="route_name" bindValue="id"
+                                    placeholder="Select Routes" formControlName="route_id" [clearable]="false">
+                                </ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success w-100" (click)="search()">
+                                Search
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger w-100" (click)="refresh()">
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <form [formGroup]="updateFrom">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle" style="font-size: 13px;">
+
+                        <thead class="table-light align-middle">
+                            <tr>
+                                <th>#</th>
+                                <th>Location</th>
+                                <th>Distance</th>
+                                <th>Location</th>
+                                <th>Distance</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- <td>{{ pair[0]?.id }}</td> -->
+                            <tr *ngFor="let pair of locationsData; let i = index">
+
+                                <!-- FIRST -->
+                                <td>{{ i + 1 }}</td>
+                                <td>
+                                    {{ pair[0]?.source }} - {{ pair[0]?.destination }}
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" [(ngModel)]="pair[0].distance"
+                                        (input)="pair[1].distance = pair[0].distance"
+                                        [ngModelOptions]="{standalone: true}">
+                                </td>
+
+                                <!-- SECOND -->
+                                <td>
+                                    {{ pair[1]?.source }} - {{ pair[1]?.destination }}
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" [(ngModel)]="pair[1].distance"
+                                        (input)="pair[0].distance = pair[1].distance"
+                                        [ngModelOptions]="{standalone: true}">
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- SAVE BUTTON -->
+                <div class="mt-3 text-center" *ngIf="locationsData?.length > 0">
+                    <button class="btn btn-primary" (click)="saveAll()">
+                        Update All
+                    </button>
+                </div>
+            </form>
+        </app-card>
+
+    </div>
+</div>
