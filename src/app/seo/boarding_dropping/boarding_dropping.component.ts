@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ReportsService } from '../../services/reports.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { BusOperatorService } from './../../services/bus-operator.service';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LocationService } from '../../services/location.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Constants } from '../../constant/constant';
 import { NotificationService } from '../../services/notification.service';
 
 @Component({
-  selector: 'app-managedistance',
-  templateUrl: './managedistance.component.html',
-  styleUrls: ['./managedistance.component.scss']
+  selector: 'app-boarding_dropping',
+  templateUrl: './boarding_dropping.component.html',
+  styleUrls: ['./boarding_dropping.component.scss']
 })
-export class ManageDistanceComponent implements OnInit {
+export class BoardingDroppingComponent implements OnInit {
 
   public searchFrom!: FormGroup;
   public updateFrom!: FormGroup;
@@ -25,17 +22,15 @@ export class ManageDistanceComponent implements OnInit {
 
   cityContent: any;
   routesData: any;
-  locationsData: any;
+  Data: any;
+  selectedRouteId: any;
 
   constructor(
     private spinner: NgxSpinnerService,
     private http: HttpClient,
-    private rs: ReportsService,
-    private busOperatorService: BusOperatorService,
     private fb: FormBuilder,
-    private locationService: LocationService,
     public formatter: NgbDateParserFormatter,
-    private notificationService:NotificationService
+    private notificationService: NotificationService,
   ) {
 
   }
@@ -50,13 +45,12 @@ export class ManageDistanceComponent implements OnInit {
     })
 
     this.updateFrom = this.fb.group({
-      id: [null],
-      content: [null],
+      breadcrumb_schema: [null],
+      faq_schema: [null],
     })
 
     // this.search();
     this.getRoute();
-    // this.loadServices();
 
   }
 
@@ -73,9 +67,13 @@ export class ManageDistanceComponent implements OnInit {
 
     const formData = this.searchFrom.value;
 
-    this.http.post(this.apiUrl + '/getlocation', formData).subscribe((res: any) => {
+    this.http.post(this.apiUrl + '/route-wise-brd_drp', formData).subscribe((res: any) => {
       // console.log(res.data);
-      this.locationsData = res.data;
+      this.Data = res;
+      this.updateFrom.patchValue({
+        breadcrumb_schema: JSON.stringify(res.breadcrumb_schema, null, 2),
+        faq_schema: JSON.stringify(res.faq_schema, null, 2),
+      });
 
       this.spinner.hide();
     }, (err) => {
@@ -86,21 +84,46 @@ export class ManageDistanceComponent implements OnInit {
 
 
   saveAll() {
+
     const USERID = localStorage.getItem('USERID');
-    const payload = this.locationsData
-      .flat()
-      .map((item: any) => ({
-        id: item.id,
-        distance: item.distance || 0,
-        user_id: USERID
-      }));
+    const routeId = this.searchFrom.value.route_id;
+    const now = new Date().toISOString();
+    const payload: any[] = [];
 
-    // console.log(payload);
+    this.Data.boarding.points
+      .filter((b: any) => b.checked)
+      .forEach((b: any) => {
+        payload.push({
+          route_id: routeId,
+          type: 1,
+          brd_drp_id: b.id,
+          active_status: 1,
+          created_by: USERID,
+          updated_by: USERID,
+          created_at: now,
+          updated_at: now
+        });
+      });
 
-    this.http.post(this.apiUrl + '/updateDistance', payload).subscribe((res: any) => {
-      console.log(res)
+    this.Data.dropping.points
+      .filter((d: any) => d.checked)
+      .forEach((d: any) => {
+        payload.push({
+          route_id: routeId,
+          type: 2,
+          brd_drp_id: d.id,
+          active_status: 1,
+          created_by: USERID,
+          updated_by: USERID,
+          created_at: now,
+          updated_at: now
+        });
+      });
+
+    this.http.post(this.apiUrl + '/add-brd_drp', { payload: payload, schema: this.updateFrom.value }).subscribe((res: any) => {
       this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
-    });
+    })
+
   }
 
 

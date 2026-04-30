@@ -12,7 +12,16 @@ const routes: Routes = [
       {
         path: 'manage-distance',
         loadChildren: () => import('./managedistance/managedistance.module').then(module => module.ManageDistanceModule)
+      },
+      {
+        path: 'manage-brd-drp',
+        loadChildren: () => import('./boarding_dropping/boarding_dropping.module').then(module => module.BoardingDroppingModule)
+      },
+      {
+        path: 'manage-template',
+        loadChildren: () => import('./managetemplate/managetemplate.module').then(module => module.ManageTemplateModule)
       }
+
     ]
   }
 ];

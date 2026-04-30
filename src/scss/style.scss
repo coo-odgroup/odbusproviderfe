@@ -97,22 +97,137 @@ File: style.css
 
 // custom
 @import "themes/custom";
+
 .loader {
-  margin: 50px auto 0;
-  border: 16px solid #f3f3f3;
-  border-top: 8px solid #072964;
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-  margin-top:20%;
+    margin: 50px auto 0;
+    border: 16px solid #f3f3f3;
+    border-top: 8px solid #072964;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    margin-top: 20%;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+.scroll-box {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.scroll-box2 {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.seo-section {
+    background: #f7f8f9;
+    padding: 25px 0;
+}
+
+/* ================= CONTENT WIDTH ================= */
+.seo-full {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* ================= TITLE ================= */
+.seo-main-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0b2c6b;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* ================= INTRO ================= */
+.seo-intro {
+    font-size: 14.5px;
+    color: #333;
+    margin-bottom: 18px;
+    line-height: 1.8;
+}
+
+/* ================= HEADINGS ================= */
+.seo-full h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0b2c6b;
+    margin-top: 26px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 4px;
+}
+
+/* ================= TEXT ================= */
+.seo-full p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+/* ================= LIST ================= */
+.seo-list {
+    padding-left: 18px;
+    margin-bottom: 16px;
+}
+
+.seo-list li {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 6px;
+}
+
+/* ================= STRONG ================= */
+.seo-full strong {
+    font-weight: 600;
+    color: #000;
+}
+
+/* ================= SPACING FIX ================= */
+.seo-full h2+p {
+    margin-top: 4px;
+}
+
+.seo-full h1 {
+    font-size: 22px;
+    color: #1b2155;
+    font-weight: 600;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+    .seo-main-title {
+        font-size: 18px;
+    }
+
+    .seo-full h2 {
+        font-size: 16px;
+    }
+
+    .seo-full p,
+    .seo-list li {
+        font-size: 13px;
+    }
+
+    .seo-full {
+        margin-bottom: 50px !important;
+    }
 }

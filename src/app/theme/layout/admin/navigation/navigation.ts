@@ -1324,6 +1324,13 @@ const NavigationItems = [
             icon: 'feather icon-pie-chart',
             url: 'seo/manage-distance',
           },
+          {
+            id: 'distance',
+            title: 'Manage Bord-Dropping',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/manage-brd-drp',
+          },
         ],
       },
     ],
