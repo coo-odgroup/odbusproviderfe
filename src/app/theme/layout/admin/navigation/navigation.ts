@@ -1331,6 +1331,13 @@ const NavigationItems = [
             icon: 'feather icon-pie-chart',
             url: 'seo/manage-brd-drp',
           },
+          {
+            id: 'template',
+            title: 'Manage Template',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/manage-template',
+          },
         ],
       },
     ],

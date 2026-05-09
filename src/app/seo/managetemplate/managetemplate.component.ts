@@ -46,6 +46,8 @@ export class ManageTemplateComponent implements OnInit {
 
     this.updateFrom = this.fb.group({
       seo_content: [null],
+      meta_title: [null],
+      meta_description: [null],
     })
 
     // this.search();
@@ -71,7 +73,9 @@ export class ManageTemplateComponent implements OnInit {
       this.Data = res;
 
       this.updateFrom.patchValue({
-        seo_content: res.seo_content || ''
+        seo_content: res.seo_content || '',
+        meta_title: res.meta_title || '',
+        meta_description: res.meta_description || '',
       });
 
       this.spinner.hide();
@@ -91,8 +95,13 @@ export class ManageTemplateComponent implements OnInit {
     const payload ={
       'route_id': routeId,
       'seo_content': this.updateFrom.value.seo_content,
+      'meta_title': this.updateFrom.value.meta_title,
+      'meta_description': this.updateFrom.value.meta_description,
       'updated_by': USERID
     }
+
+
+    // console.log(payload);
 
 
     this.http.post(this.apiUrl + '/add-seo-content', payload).subscribe((res: any) => {

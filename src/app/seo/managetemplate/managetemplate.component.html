@@ -33,34 +33,52 @@
             </div>
 
             <form [formGroup]="updateFrom">
-                <textarea formControlName="seo_content" style="display:none;">
-                    {{ Data?.seo_content }}
-                </textarea>
-                <div class="row">
-                    <div class="col-md-7">
-                        <div [innerHTML]="Data?.seo_content" class="scroll-box"></div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="seo-section scroll-box2 seo-full p-3">
-                                    <h1>Breadcrumb Schema</h1>
-                                    <pre>{{ Data?.breadcrumb_schema | json }}</pre>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-3">
-                                <div class="seo-section scroll-box2 seo-full p-3">
-                                    <h1>FAQ Schema</h1>
-                                    <pre>{{ Data?.faq_schema | json }}</pre>
-                                </div>
-                            </div>
-                        </div>
+                <div *ngIf="Data">
+                    <textarea formControlName="seo_content" style="display:none;">{{ Data?.seo_content }}</textarea>
+                    <input type="hidden" formControlName="meta_title">
+                    <textarea formControlName="meta_description" style="display:none;"></textarea>
 
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div [innerHTML]="Data?.seo_content" class="scroll-box"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="seo-section scroll-box2 seo-full p-3">
+                                        <h1>Meta Title</h1>
+                                        <p>{{Data?.meta_title}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3">
+                                    <div class="seo-section scroll-box2 seo-full p-3">
+                                        <h1>Meta Description</h1>
+                                        <p>{{Data?.meta_description}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <div class="seo-section scroll-box2 seo-full p-3">
+                                        <h1>Breadcrumb Schema</h1>
+                                        <pre>{{ Data?.breadcrumb_schema | json }}</pre>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <div class="seo-section scroll-box2 seo-full p-3">
+                                        <h1>FAQ Schema</h1>
+                                        <pre>{{ Data?.faq_schema | json }}</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+
                 </div>
 
+
                 <!-- SAVE BUTTON -->
-                <div class="mt-3 text-center">
+                <div class="mt-3 text-center" *ngIf="Data">
                     <button class="btn btn-primary" (click)="saveAll()">
                         Update All
                     </button>

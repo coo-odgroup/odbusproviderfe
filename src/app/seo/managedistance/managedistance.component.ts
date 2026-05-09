@@ -91,7 +91,7 @@ export class ManageDistanceComponent implements OnInit {
       .flat()
       .map((item: any) => ({
         id: item.id,
-        distance: item.distance || 0,
+        distance: item.distance,
         user_id: USERID
       }));
 

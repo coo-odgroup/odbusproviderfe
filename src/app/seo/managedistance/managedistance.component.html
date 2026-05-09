@@ -3,7 +3,7 @@
 </ngx-spinner>
 <div class="row">
     <div class="col-sm-12">
-        <app-card cardTitle="Manage Seo" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
+        <app-card cardTitle="Manage Distance" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
 
             <div class="mb-3">
                 <form *ngIf="searchFrom" [formGroup]="searchFrom">
@@ -55,7 +55,7 @@
                                     {{ pair[0]?.source }} - {{ pair[0]?.destination }}
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" [(ngModel)]="pair[0].distance"
+                                    <input type="text" class="form-control" [(ngModel)]="pair[0].distance"
                                         (input)="pair[1].distance = pair[0].distance"
                                         [ngModelOptions]="{standalone: true}">
                                 </td>
@@ -65,7 +65,7 @@
                                     {{ pair[1]?.source }} - {{ pair[1]?.destination }}
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" [(ngModel)]="pair[1].distance"
+                                    <input type="text" class="form-control" [(ngModel)]="pair[1].distance"
                                         (input)="pair[0].distance = pair[1].distance"
                                         [ngModelOptions]="{standalone: true}">
                                 </td>
