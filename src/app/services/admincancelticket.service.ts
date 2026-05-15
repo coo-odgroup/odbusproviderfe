@@ -39,6 +39,13 @@ export class AdmincancelticketService {
       )
   }  
 
+  smstomCmo(post){
+      return this.httpClient.post<any>(this.apiURL + '/smstomCmo', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }  
+
   //Get Cancel Message to customer
   GetCancelSmsToCustomer(post){
       return this.httpClient.post<any>(this.apiURL + '/GetCancelSmsToCustomer', JSON.stringify(post), this.httpOptions)
