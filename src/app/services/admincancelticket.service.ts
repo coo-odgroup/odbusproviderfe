@@ -104,6 +104,13 @@ export class AdmincancelticketService {
       )
   }
 
+  smstomCmo(post){
+      return this.httpClient.post<any>(this.apiURL + '/smstomCmo', JSON.stringify(post), this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  } 
+
   cancelTicket(post): Observable<any> {
       return this.httpClient.post<any>(this.apiURL + '/cancelticket', JSON.stringify(post), this.httpOptions)
       .pipe(

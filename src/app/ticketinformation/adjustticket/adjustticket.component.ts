@@ -55,10 +55,10 @@ export class AdjustticketComponent implements OnInit {
   seatFare: any[];
   seaterRecord: any;
   seatFareDetails: any[];
-  seatIDs: any=[];
-  seatNames:any=[];
+  seatIDs: any = [];
+  seatNames: any = [];
   selectedSeats: string;
-  maxAllowedSeat:number=0;
+  maxAllowedSeat: number = 0;
   boardingDropping: any;
   boardingPoints: any;
   droppingPoints: any;
@@ -95,10 +95,10 @@ export class AdjustticketComponent implements OnInit {
       j_date: [null],
       bus: [null],
       reason: [null],
-      adj_note:[null],
-      boarding_id:[null],
-      dropping_id:[null],
-      bus_seat_layout_data: this.fb.array([  ])
+      adj_note: [null],
+      boarding_id: [null],
+      dropping_id: [null],
+      bus_seat_layout_data: this.fb.array([])
 
     });
     this.formConfirm = this.fb.group({
@@ -113,12 +113,12 @@ export class AdjustticketComponent implements OnInit {
 
     this.search();
     this.pnrDetails = [];
-    this.seaterRecord='';
-    this.seatFareDetails=[];
-    this.customer_payment_id = "" ;
-      this.razorpay_id ="" ;
-      this.customer_payment_order_id = "" ;
-      this.customer_payment_razorpay_signature = ""  ;
+    this.seaterRecord = '';
+    this.seatFareDetails = [];
+    this.customer_payment_id = "";
+    this.razorpay_id = "";
+    this.customer_payment_order_id = "";
+    this.customer_payment_razorpay_signature = "";
   }
 
   page(label: any) {
@@ -131,8 +131,8 @@ export class AdjustticketComponent implements OnInit {
     const data = {
       name: this.searchForm.value.name,
       rows_number: this.searchForm.value.rows_number,
-      rangeFromDate:this.searchForm.value.rangeFromDate,
-      rangeToDate :this.searchForm.value.rangeToDate,
+      rangeFromDate: this.searchForm.value.rangeFromDate,
+      rangeToDate: this.searchForm.value.rangeToDate,
     };
     if (pageurl != "") {
       this.acts.getAllaginationData(pageurl, data).subscribe(
@@ -160,41 +160,38 @@ export class AdjustticketComponent implements OnInit {
 
   search_pnr() {
     this.spinner.show();
-    this.seatNames=[];
+    this.seatNames = [];
     let pnr = this.adjustTicketForm.value.pnr_no;
     if (pnr != null) {
       this.acts.getPnrDetails(pnr).subscribe(
         res => {
 
-         
-          this.pnrDetails = res.data; 
+
+          this.pnrDetails = res.data;
           // console.log(this.pnrDetails);
-          
+
 
           if (this.pnrDetails.length == 0) {
             this.msg = "No Pnr Found";
           }
-          else{
+          else {
 
-            if(this.pnrDetails.length!=0)
-            {
-              this.maxAllowedSeat= this.pnrDetails[0].booking_detail.length;
+            if (this.pnrDetails.length != 0) {
+              this.maxAllowedSeat = this.pnrDetails[0].booking_detail.length;
             }
-            if(this.pnrDetails[0].origin != 'DOLPHIN')
-            {
+            if (this.pnrDetails[0].origin != 'DOLPHIN') {
               this.pnrDetails[0].booking_detail.forEach(b => {
-                this.seatNames.push(b.bus_seats.seats.seatText); 
+                this.seatNames.push(b.bus_seats.seats.seatText);
               });
             }
-            else if(this.pnrDetails[0].origin == 'DOLPHIN')
-            {
+            else if (this.pnrDetails[0].origin == 'DOLPHIN') {
               this.pnrDetails[0].booking_detail.forEach(b => {
-                this.seatNames.push(b.seat_name); 
+                this.seatNames.push(b.seat_name);
               });
             }
             this.busListing();
-          }         
-          
+          }
+
           this.spinner.hide();
         }
       );
@@ -273,7 +270,7 @@ export class AdjustticketComponent implements OnInit {
     // console.log(data);
     this.acts.getBusList(data).subscribe(
       res => {
-        
+
         this.busList = res.data;
         // console.log(this.busList);
         this.busList.map((i: any) => { i.testing = i.busName + ' - ' + i.busNumber; return i; });
@@ -285,107 +282,100 @@ export class AdjustticketComponent implements OnInit {
 
   getSeatLayout() {
     this.spinner.show();
-    this.seatFareDetails=[];
+    this.seatFareDetails = [];
     // console.log(this.adjustTicketForm.value.bus);
-    this.reff="";
-    this.orgn="";
+    this.reff = "";
+    this.orgn = "";
 
     this.busList.forEach(item => {
       // console.log(item);
-      if(this.adjustTicketForm.value.bus == item.busId)
-      {
-        this.orgn =  item.origin;
-        this.reff =  item.ReferenceNumber;
+      if (this.adjustTicketForm.value.bus == item.busId) {
+        this.orgn = item.origin;
+        this.reff = item.ReferenceNumber;
       }
     });
     const data =
     {
       busId: this.adjustTicketForm.value.bus,
-      entry_date:   this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
+      entry_date: this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
       sourceId: this.pnrDetails[0].source_id,
       destinationId: this.pnrDetails[0].destination_id,
-      ReferenceNumber:this.reff ,
-      origin:this.orgn,
+      ReferenceNumber: this.reff,
+      origin: this.orgn,
     }
     this.acts.getSeatLayout(data).subscribe(
       resp => {
         this.seatLayout = resp.data;
         // console.log(this.seatLayout);
         this.spinner.hide();
-      
-        
-      this.seatLayoutData = (<FormArray>this.adjustTicketForm.controls['bus_seat_layout_data']) as FormArray;
-      this.seatLayoutData.clear();    
-      if(this.seatLayout.lower_berth)
-      {
-        if (this.seatLayout.lower_berth.length != undefined)
-        {
-          for (let lowerData of this.seatLayout.lower_berth) {
-            // console.log(seized);
-            if (lowerData.bus_seats) {
-              let arraylen = this.seatLayoutData.length;
-              // console.log(arraylen);
 
-              let berthData: FormGroup = this.fb.group({
-                        seatText: [lowerData.seatText],
-                        seatType: [lowerData.seat_class_id],
-                        berthType: [lowerData.berthType],
-                        seatChecked: [],
-                        category: ['0'],
-                        seatId: [lowerData.id],
-                        rowNumber:[lowerData.rowNumber],
-                        bus_seats_id:[lowerData.bus_seats.id]
-                        
-              });
-              this.seatLayoutData.insert(arraylen, berthData);
-            }        
-          } 
-          // console.log(this.seatLayoutData.value);
+
+        this.seatLayoutData = (<FormArray>this.adjustTicketForm.controls['bus_seat_layout_data']) as FormArray;
+        this.seatLayoutData.clear();
+        if (this.seatLayout.lower_berth) {
+          if (this.seatLayout.lower_berth.length != undefined) {
+            for (let lowerData of this.seatLayout.lower_berth) {
+              // console.log(seized);
+              if (lowerData.bus_seats) {
+                let arraylen = this.seatLayoutData.length;
+                // console.log(arraylen);
+
+                let berthData: FormGroup = this.fb.group({
+                  seatText: [lowerData.seatText],
+                  seatType: [lowerData.seat_class_id],
+                  berthType: [lowerData.berthType],
+                  seatChecked: [],
+                  category: ['0'],
+                  seatId: [lowerData.id],
+                  rowNumber: [lowerData.rowNumber],
+                  bus_seats_id: [lowerData.bus_seats.id]
+
+                });
+                this.seatLayoutData.insert(arraylen, berthData);
+              }
+            }
+            // console.log(this.seatLayoutData.value);
+          }
+
+
         }
 
+        if (this.seatLayout.upper_berth) {
+          if (this.seatLayout.upper_berth.length != undefined) {
+            for (let upperData of this.seatLayout.upper_berth) {
+              if (upperData.bus_seats) {
+                let arraylen = this.seatLayoutData.length;
+                let berthData: FormGroup = this.fb.group({
+                  seatText: [upperData.seatText],
+                  seatType: [upperData.seat_class_id],
+                  berthType: [upperData.berthType],
+                  seatChecked: [],
+                  category: ['0'],
+                  seatId: [upperData.id],
+                  rowNumber: [upperData.rowNumber],
+                  bus_seats_id: [upperData.bus_seats.id]
 
-      }
-        
-      if(this.seatLayout.upper_berth)
-      {
-        if (this.seatLayout.upper_berth.length != undefined)
-        {
-          for (let upperData of this.seatLayout.upper_berth) {
-            if (upperData.bus_seats) {
-              let arraylen = this.seatLayoutData.length;
-              let berthData: FormGroup = this.fb.group({
-                        seatText: [upperData.seatText],
-                        seatType: [upperData.seat_class_id],
-                        berthType: [upperData.berthType],
-                        seatChecked: [],
-                        category: ['0'],
-                        seatId: [upperData.id],
-                        rowNumber:[upperData.rowNumber],
-                        bus_seats_id:[upperData.bus_seats.id]
-           
-              });
-              this.seatLayoutData.insert(arraylen, berthData);
-            }        
-          } 
-          // console.log(this.seatLayoutData.value);
+                });
+                this.seatLayoutData.insert(arraylen, berthData);
+              }
+            }
+            // console.log(this.seatLayoutData.value);
+          }
         }
-      }
-       
+
       }
     );
 
   }
-  getBoardingDropping()
-  {
-    this.reff="";
-    this.orgn="";
+  getBoardingDropping() {
+    this.reff = "";
+    this.orgn = "";
 
     this.busList.forEach(item => {
       // console.log(item);
-      if(this.adjustTicketForm.value.bus == item.busId)
-      {
-        this.orgn =  item.origin;
-        this.reff =  item.ReferenceNumber;
+      if (this.adjustTicketForm.value.bus == item.busId) {
+        this.orgn = item.origin;
+        this.reff = item.ReferenceNumber;
       }
     });
 
@@ -395,10 +385,10 @@ export class AdjustticketComponent implements OnInit {
       busId: this.adjustTicketForm.value.bus,
       sourceId: this.pnrDetails[0].source_id,
       destinationId: this.pnrDetails[0].destination_id,
-      journey_date:   this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
-      ReferenceNumber:this.reff,
-      origin:this.orgn ,
-    }   
+      journey_date: this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
+      ReferenceNumber: this.reff,
+      origin: this.orgn,
+    }
     // console.log(data); 
     this.acts.getBoardingDropping(data).subscribe(
       res => {
@@ -412,81 +402,76 @@ export class AdjustticketComponent implements OnInit {
       }
     );
   }
-  getSeatFare()
-  {
-    this.seatFareDetails=[];
-    let checkedSeat=0;
-   
-    this.selectedSeats='';
-    this.seaterRecord='';
+  getSeatFare() {
+    this.seatFareDetails = [];
+    let checkedSeat = 0;
 
-    let seater= [];
-    let sleeper= [];
+    this.selectedSeats = '';
+    this.seaterRecord = '';
+
+    let seater = [];
+    let sleeper = [];
 
 
     for (let selectedSeat of this.adjustTicketForm.value.bus_seat_layout_data) {
-      if (selectedSeat.seatChecked == true)
-      {
+      if (selectedSeat.seatChecked == true) {
 
         checkedSeat++;
-        this.selectedSeats = this.selectedSeats+selectedSeat.seatText+',';
-     
-        if (selectedSeat.berthType == 1)
-        {
+        this.selectedSeats = this.selectedSeats + selectedSeat.seatText + ',';
+
+        if (selectedSeat.berthType == 1) {
           seater.push(selectedSeat.seatId);
         }
-        if (selectedSeat.berthType == 2)
-        {
+        if (selectedSeat.berthType == 2) {
           sleeper.push(selectedSeat.seatId);
         }
       }
     }
 
-    if(this.maxAllowedSeat < checkedSeat){
+    if (this.maxAllowedSeat < checkedSeat) {
 
-      this.notificationService.addToast({ title: 'Error', msg: "You are allowed to select "+this.maxAllowedSeat+" seat(s) only ", type: 'error' });
+      this.notificationService.addToast({ title: 'Error', msg: "You are allowed to select " + this.maxAllowedSeat + " seat(s) only ", type: 'error' });
       return false;
 
     }
 
-    this.selectedSeats =this.selectedSeats.slice(0, -1)
+    this.selectedSeats = this.selectedSeats.slice(0, -1)
     // console.log(this.selectedSeats);
-    this.reff="";
-    this.orgn="";
+    this.reff = "";
+    this.orgn = "";
 
     this.busList.forEach(item => {
       // console.log(item);
-      if(this.adjustTicketForm.value.bus == item.busId)
-      {
-        this.orgn =  item.origin;
-        this.reff =  item.ReferenceNumber;
+      if (this.adjustTicketForm.value.bus == item.busId) {
+        this.orgn = item.origin;
+        this.reff = item.ReferenceNumber;
       }
     });
 
-     
-        const data =
-        {
-          entry_date: this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
-          busId: this.adjustTicketForm.value.bus,
-          sourceId: this.pnrDetails[0].source_id,
-          destinationId: this.pnrDetails[0].destination_id,
-          seater:seater,
-          sleeper:sleeper,
-          ReferenceNumber:this.reff,
-          origin:this.orgn
-        }
-        // console.log(data);
-        this.acts.getSeatFare(data).subscribe(
-        resp => {
-          this.seatFareDetails=resp.data;
-          // console.log(this.seatFareDetails);
-        });
-        
+
+    const data =
+    {
+      entry_date: this.datePipe.transform(this.adjustTicketForm.value.j_date, 'dd-MM-yyyy'),
+      busId: this.adjustTicketForm.value.bus,
+      sourceId: this.pnrDetails[0].source_id,
+      destinationId: this.pnrDetails[0].destination_id,
+      seater: seater,
+      sleeper: sleeper,
+      ReferenceNumber: this.reff,
+      origin: this.orgn
+    }
+    // console.log(data);
+    this.acts.getSeatFare(data).subscribe(
+      resp => {
+        this.seatFareDetails = resp.data;
+        // console.log(this.seatFareDetails);
+      });
+
   }
 
   dateWiseBusListing() {
     this.spinner.show();
-    this.busList =[];
+    this.busList = [];
     this.boardingPoints = [];
     this.droppingPoints = [];
     // console.log(this.busList);
@@ -509,57 +494,54 @@ export class AdjustticketComponent implements OnInit {
     );
 
   }
-  
+
 
 
 
   title = 'angular-app';
   fileName = 'Adjust-ticket.csv';
 
-  exportexcel(): void
-  {
+  exportexcel(): void {
     this.spinner.show();
     // this.completeReportRecord = this.searchFrom.value ; 
-    this.completExportdata= '';
+    this.completExportdata = '';
 
-        const data = {
-          rows_number:'all',
-          name: this.searchForm.value.name,
-          rangeFromDate:this.searchForm.value.rangeFromDate,
-          rangeToDate :this.searchForm.value.rangeToDate,
-        };
+    const data = {
+      rows_number: 'all',
+      name: this.searchForm.value.name,
+      rangeFromDate: this.searchForm.value.rangeFromDate,
+      rangeToDate: this.searchForm.value.rangeToDate,
+    };
 
-        this.acts.getAllData(data).subscribe(
-          res => {
-            this.completExportdata = res.data.data.data;
+    this.acts.getAllData(data).subscribe(
+      res => {
+        this.completExportdata = res.data.data.data;
 
-            let length = this.completExportdata.length;
-            // console.log( length);return;
-            if(length != 0)
-            {
-              setTimeout(() => {
-                this.exportdata();
-              }, 3 * 1000);
-            }
-          }
-        );
+        let length = this.completExportdata.length;
+        // console.log( length);return;
+        if (length != 0) {
+          setTimeout(() => {
+            this.exportdata();
+          }, 3 * 1000);
+        }
+      }
+    );
   }
 
-  exportdata(): void
-  {
+  exportdata(): void {
     let element = document.getElementById('export-section');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
 
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    /* save to file */  
+    /* save to file */
     XLSX.writeFile(wb, this.fileName);
 
     this.spinner.hide();
   }
-  
+
 
 
 
@@ -567,42 +549,40 @@ export class AdjustticketComponent implements OnInit {
     this.busList = [];
     this.seatLayout = [];
     this.pnrDetails = [];
-    this.seaterRecord='';
-    this.seatFareDetails=[];
+    this.seaterRecord = '';
+    this.seatFareDetails = [];
     this.boardingPoints = [];
     this.droppingPoints = [];
-      
+
     // this.festivalFareRecord = {} as Festivalfare;
     this.adjustTicketForm = this.fb.group({
       pnr_no: [null],
       j_date: [null],
       bus: [null],
       reason: [null],
-      adj_note:[null],
-      boarding_id:[null],
-      dropping_id:[null],
-      bus_seat_layout_data: this.fb.array([  ])
+      adj_note: [null],
+      boarding_id: [null],
+      dropping_id: [null],
+      bus_seat_layout_data: this.fb.array([])
     });
     this.ModalHeading = "Adjust Ticket By Admin End";
     this.ModalBtn = "Adjust Ticket";
   }
 
-  adjustTicket()
-  {
+  adjustTicket() {
 
-    let rest_bal=0;
-    let agent_wallet_balance=0;
+    let rest_bal = 0;
+    let agent_wallet_balance = 0;
 
-    if(this.pnrDetails[0].agent_wallet_balance)
-    {
+    if (this.pnrDetails[0].agent_wallet_balance) {
 
-       rest_bal=this.pnrDetails[0].payable_amount - this.seatFareDetails[0].totalFare ;
+      rest_bal = this.pnrDetails[0].payable_amount - this.seatFareDetails[0].totalFare;
 
-       agent_wallet_balance= this.pnrDetails[0].agent_wallet_balance['balance'];
+      agent_wallet_balance = this.pnrDetails[0].agent_wallet_balance['balance'];
 
-      if(rest_bal < 0 && Math.abs(rest_bal) > this.pnrDetails[0].agent_wallet_balance['balance']){
+      if (rest_bal < 0 && Math.abs(rest_bal) > this.pnrDetails[0].agent_wallet_balance['balance']) {
 
-        this.notificationService.addToast({ title: 'Error', msg: "The Agent has low balance: Rs. "+ this.pnrDetails[0].agent_wallet_balance['balance']+". So the extra amount can't be deducted from agent wallet ", type: 'error' });
+        this.notificationService.addToast({ title: 'Error', msg: "The Agent has low balance: Rs. " + this.pnrDetails[0].agent_wallet_balance['balance'] + ". So the extra amount can't be deducted from agent wallet ", type: 'error' });
         return false;
 
       }
@@ -610,229 +590,223 @@ export class AdjustticketComponent implements OnInit {
 
     // console.log(this.pnrDetails[0]);
 
-    this.spinner.show(); 
+    this.spinner.show();
 
-    this.seatIDs=[];
-    
+    this.seatIDs = [];
 
-    let bookingDetailarr=[];
 
-    let i=0;
+    let bookingDetailarr = [];
+
+    let i = 0;
 
     this.adjustTicketForm.value.bus_seat_layout_data.forEach(b => {
 
-      if(b.seatChecked==true && this.pnrDetails[0].booking_detail[i]){
-        let booking_dtl={
+      if (b.seatChecked == true && this.pnrDetails[0].booking_detail[i]) {
+        let booking_dtl = {
           "bus_seats_id": b.seatId,
           "passenger_name": this.pnrDetails[0].booking_detail[i].passenger_name,
           "passenger_gender": this.pnrDetails[0].booking_detail[i].passenger_gender,
           "passenger_age": this.pnrDetails[0].booking_detail[i].passenger_age,
           "created_by": sessionStorage.getItem('USERNAME')
-          };  
-          bookingDetailarr.push(booking_dtl);
-          this.seatIDs.push(b.seatId);        
-          i++;
+        };
+        bookingDetailarr.push(booking_dtl);
+        this.seatIDs.push(b.seatId);
+        i++;
       }
     });
     this.boardingPoints.forEach(b => {
-      if(b.id==  this.adjustTicketForm.value.boarding_id){
-        this.boardingData= b;     
+      if (b.id == this.adjustTicketForm.value.boarding_id) {
+        this.boardingData = b;
       }
     });
     this.droppingPoints.forEach(b => {
-      if(b.id==  this.adjustTicketForm.value.dropping_id){
-        this.droppingData= b;     
+      if (b.id == this.adjustTicketForm.value.dropping_id) {
+        this.droppingData = b;
       }
     });
 
     this.busList.forEach(b => {
-      if(b.busId==  this.adjustTicketForm.value.bus){
-        this.busData= b;     
+      if (b.busId == this.adjustTicketForm.value.bus) {
+        this.busData = b;
       }
     });
 
-    if( bookingDetailarr.length== 0)
-    {
+    if (bookingDetailarr.length == 0) {
       this.notificationService.addToast({ title: 'Error', msg: "Please Select Seat ", type: 'error' });
-      this.spinner.hide(); 
+      this.spinner.hide();
       return false;
-  
+
     }
 
-    if(bookingDetailarr.length < this.maxAllowedSeat)
-    {
-      this.notificationService.addToast({ title: 'Error', msg: "You must select "+this.maxAllowedSeat+" seat(s)", type: 'error' });
-      this.spinner.hide(); 
+    if (bookingDetailarr.length < this.maxAllowedSeat) {
+      this.notificationService.addToast({ title: 'Error', msg: "You must select " + this.maxAllowedSeat + " seat(s)", type: 'error' });
+      this.spinner.hide();
       return false;
-  
+
     }
 
-    if(bookingDetailarr.length > this.maxAllowedSeat)
-    {
-      this.notificationService.addToast({ title: 'Error', msg: "You are allowed to select "+this.maxAllowedSeat+" seat(s) only ", type: 'error' });
-      this.spinner.hide(); 
+    if (bookingDetailarr.length > this.maxAllowedSeat) {
+      this.notificationService.addToast({ title: 'Error', msg: "You are allowed to select " + this.maxAllowedSeat + " seat(s) only ", type: 'error' });
+      this.spinner.hide();
       return false;
-  
+
     }
 
 
-    let conductor_number='';
-    if(this.pnrDetails[0].origin != 'DOLPHIN'){
-    if(this.pnrDetails[0].bus.bus_contacts.length>0){
-      this.pnrDetails[0].bus.bus_contacts.forEach(c => {
+    let conductor_number = '';
+    if (this.pnrDetails[0].origin != 'DOLPHIN') {
+      if (this.pnrDetails[0].bus.bus_contacts.length > 0) {
+        this.pnrDetails[0].bus.bus_contacts.forEach(c => {
 
-        if(c.type==2){
-          conductor_number = c.phone;
-        }
-      
-      });
+          if (c.type == 2) {
+            conductor_number = c.phone;
+          }
+
+        });
+      }
     }
-  }
-    if(this.pnrDetails[0].customer_payment!= null)
-    {
-      this.customer_payment_id = this.pnrDetails[0].customer_payment.id ;
-      this.razorpay_id = this.pnrDetails[0].customer_payment.razorpay_id ;
-      this.customer_payment_order_id = this.pnrDetails[0].customer_payment.order_id ;
-      this.customer_payment_razorpay_signature = this.pnrDetails[0].customer_payment.razorpay_signature  ;
+    if (this.pnrDetails[0].customer_payment != null) {
+      this.customer_payment_id = this.pnrDetails[0].customer_payment.id;
+      this.razorpay_id = this.pnrDetails[0].customer_payment.razorpay_id;
+      this.customer_payment_order_id = this.pnrDetails[0].customer_payment.order_id;
+      this.customer_payment_razorpay_signature = this.pnrDetails[0].customer_payment.razorpay_signature;
     }
-    
+
     // console.log(this.pnrDetails[0]);
     // this.spinner.hide(); 
     // return;
-    
+
     // console.log(this.busData);
     // return;
     let agent_number = null;
-    let agent_email=null;
-    let agent_name=null;
+    let agent_email = null;
+    let agent_name = null;
 
     // console.log(this.pnrDetails[0]);
 
-    if(this.pnrDetails[0].user){
-      agent_number=this.pnrDetails[0].user.phone;
-      agent_email=this.pnrDetails[0].user.email;
-      agent_name=this.pnrDetails[0].user.name;
+    if (this.pnrDetails[0].user) {
+      agent_number = this.pnrDetails[0].user.phone;
+      agent_email = this.pnrDetails[0].user.email;
+      agent_name = this.pnrDetails[0].user.name;
     }
 
-    this.reff="";
-    this.orgn="";
-    this.cmpId ="";
-    this.routTime ="";
+    this.reff = "";
+    this.orgn = "";
+    this.cmpId = "";
+    this.routTime = "";
 
     this.busList.forEach(item => {
       // console.log(item);
-      if(this.adjustTicketForm.value.bus == item.busId)
-      {
-        this.cmpId =  item.CompanyID;
-        this.orgn =  item.origin;
-        this.reff =  item.ReferenceNumber;
-        this.routTime =  item.RouteTimeID;
+      if (this.adjustTicketForm.value.bus == item.busId) {
+        this.cmpId = item.CompanyID;
+        this.orgn = item.origin;
+        this.reff = item.ReferenceNumber;
+        this.routTime = item.RouteTimeID;
       }
     });
-    
 
-    const data = { 
-        "customerInfo":{
-          "email": this.pnrDetails[0].users.email,
-          "phone": this.pnrDetails[0].users.phone,
-          "name": this.pnrDetails[0].users.name
-        },
-        "bookingInfo":{
-          "id": this.pnrDetails[0].id,
-          "user_id": this.pnrDetails[0].user_id,
-          "agent_number": agent_number,
-          "agent_email": agent_email,
-          "agent_name": agent_name,
-          "customer_comission": this.pnrDetails[0].customer_comission,
-          "pnr": this.pnrDetails[0].pnr,
-          "bus_id": this.adjustTicketForm.value.bus,
-          "busname": this.busData.busName,
-          "busNumber": this.busData.busNumber,
-          "bustype":this.busData.busType,
-          "busTypeName":this.busData.busTypeName,
-          "sittingType":this.busData.sittingType,
-          "conductor_number":this.busData.conductor_number,
-          "source_id":this.pnrDetails[0].source_id,
-          "source_name":this.pnrDetails[0].from_location[0].name,
-          "destination_id": this.pnrDetails[0].destination_id,
-          "destination_name": this.pnrDetails[0].to_location[0].name,
-          "seat_ids":this.seatIDs,
-          "seat_names":this.seatNames, //this is only for cancellation email and sms
-          "journey_dt": this.adjustTicketForm.value.j_date,
-          "boarding_point":  this.boardingData.boardingPoints,
-          "dropping_point":  this.droppingData.droppingPoints,
-          "boarding_time": this.boardingData.boardingTimes,
-          "dropping_time": this.droppingData.droppingTimes,
-          // "origin": this.pnrDetails[0].origin,
-          "app_type": this.pnrDetails[0].app_type,
-          "typ_id": this.pnrDetails[0].typ_id,
-          "total_fare": this.seatFareDetails[0].totalFare,
-          "specialFare": this.seatFareDetails[0].specialFare,
-          "addOwnerFare": this.seatFareDetails[0].addOwnerFare,
-          "festiveFare": this.seatFareDetails[0].festiveFare,
-          "owner_fare": this.seatFareDetails[0].ownerFare,
-          "odbus_service_Charges": this.seatFareDetails[0].odbusServiceCharges,
-          "odbus_gst":this.seatFareDetails[0].transactionFee, 
-          "payable_amount":this.pnrDetails[0].payable_amount, 
-          "reason": this.adjustTicketForm.value.reason,
-          "adj_note": this.adjustTicketForm.value.adj_note,
-          "created_by": sessionStorage.getItem('USERNAME'),
-          "customer_payment_id" : this.customer_payment_id,
-          "razorpay_payment_id" : this.razorpay_id,
-          "razorpay_order_id" : this.customer_payment_order_id,
-          "razorpay_signature" :this.customer_payment_razorpay_signature, 
-          "rest_bal": rest_bal,
-          "agent_wallet_balance": agent_wallet_balance,
-          "bookingDetail": bookingDetailarr,
-          "CompanyID": this.cmpId,
-          "PickupID": this.boardingData.id,
-          "DropID": this.droppingData.id,
-          "origin":  this.orgn,
-          "ReferenceNumber":this.reff,
-          "RouteTimeID": this.routTime,
-        },
+
+    const data = {
+      "customerInfo": {
+        "email": this.pnrDetails[0].users.email,
+        "phone": this.pnrDetails[0].users.phone,
+        "name": this.pnrDetails[0].users.name
+      },
+      "bookingInfo": {
+        "id": this.pnrDetails[0].id,
+        "user_id": this.pnrDetails[0].user_id,
+        "agent_number": agent_number,
+        "agent_email": agent_email,
+        "agent_name": agent_name,
+        "customer_comission": this.pnrDetails[0].customer_comission,
+        "pnr": this.pnrDetails[0].pnr,
+        "bus_id": this.adjustTicketForm.value.bus,
+        "busname": this.busData.busName,
+        "busNumber": this.busData.busNumber,
+        "bustype": this.busData.busType,
+        "busTypeName": this.busData.busTypeName,
+        "sittingType": this.busData.sittingType,
+        "conductor_number": this.busData.conductor_number,
+        "source_id": this.pnrDetails[0].source_id,
+        "source_name": this.pnrDetails[0].from_location[0].name,
+        "destination_id": this.pnrDetails[0].destination_id,
+        "destination_name": this.pnrDetails[0].to_location[0].name,
+        "seat_ids": this.seatIDs,
+        "seat_names": this.seatNames, //this is only for cancellation email and sms
+        "journey_dt": this.adjustTicketForm.value.j_date,
+        "boarding_point": this.boardingData.boardingPoints,
+        "dropping_point": this.droppingData.droppingPoints,
+        "boarding_time": this.boardingData.boardingTimes,
+        "dropping_time": this.droppingData.droppingTimes,
+        // "origin": this.pnrDetails[0].origin,
+        "app_type": this.pnrDetails[0].app_type,
+        "typ_id": this.pnrDetails[0].typ_id,
+        "total_fare": this.seatFareDetails[0].totalFare,
+        "specialFare": this.seatFareDetails[0].specialFare,
+        "addOwnerFare": this.seatFareDetails[0].addOwnerFare,
+        "festiveFare": this.seatFareDetails[0].festiveFare,
+        "owner_fare": this.seatFareDetails[0].ownerFare,
+        "odbus_service_Charges": this.seatFareDetails[0].odbusServiceCharges,
+        "odbus_gst": this.seatFareDetails[0].transactionFee,
+        "payable_amount": this.pnrDetails[0].payable_amount,
+        "reason": this.adjustTicketForm.value.reason,
+        "adj_note": this.adjustTicketForm.value.adj_note,
+        "created_by": sessionStorage.getItem('USERNAME'),
+        "customer_payment_id": this.customer_payment_id,
+        "razorpay_payment_id": this.razorpay_id,
+        "razorpay_order_id": this.customer_payment_order_id,
+        "razorpay_signature": this.customer_payment_razorpay_signature,
+        "rest_bal": rest_bal,
+        "agent_wallet_balance": agent_wallet_balance,
+        "bookingDetail": bookingDetailarr,
+        "CompanyID": this.cmpId,
+        "PickupID": this.boardingData.id,
+        "DropID": this.droppingData.id,
+        "origin": this.orgn,
+        "ReferenceNumber": this.reff,
+        "RouteTimeID": this.routTime,
+      },
     };
-    
-      // console.log(data);
-      // return;
 
-      this.acts.adjustTicket(data).subscribe(
-        res =>{
-         // console.log(res);
-          if (res.status == 1) {
-             if(res.data=='SEAT NOT AVAIL')
-             {
-              this.notificationService.addToast({ title: 'Error', msg:"Seat(s) are not available at the moment.Please select other..", type: 'error' });
-             
-             }else if(res.data.status==0){
-              this.notificationService.addToast({ title: 'Error', msg:res.data.Message, type: 'error' });
-             }
-             else{
+    // console.log(data);
+    // return;
 
-              this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
-          
-               this.modalReference.close();
-               this.refresh();
-             }
+    this.acts.adjustTicket(data).subscribe(
+      res => {
+        // console.log(res);
+        if (res.status == 1) {
+          if (res.data == 'SEAT NOT AVAIL') {
+            this.notificationService.addToast({ title: 'Error', msg: "Seat(s) are not available at the moment.Please select other..", type: 'error' });
 
-             this.spinner.hide();
+          } else if (res.data.status == 0) {
+            this.notificationService.addToast({ title: 'Error', msg: res.data.Message, type: 'error' });
           }
           else {
-            this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
-            this.spinner.hide();
-            
+
+            this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
+
+            this.modalReference.close();
+            this.refresh();
           }
-        },
-        error => {
-          this.notificationService.addToast({ title: 'Error', msg: error, type: 'error' });
-          this.spinner.hide();   
-    
+
+          this.spinner.hide();
         }
-      );   
+        else {
+          this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
+          this.spinner.hide();
+
+        }
+      },
+      error => {
+        this.notificationService.addToast({ title: 'Error', msg: error, type: 'error' });
+        this.spinner.hide();
+
+      }
+    );
 
   }
 
-  
+
 
 
 }

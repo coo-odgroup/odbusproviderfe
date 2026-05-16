@@ -1305,6 +1305,41 @@ const NavigationItems = [
           },
         ],
       },
+      {
+        title: 'Manage Seo',
+        type: 'collapse',
+        icon: 'feather icon-file',
+        children: [
+          {
+            id: 'citycontent',
+            title: 'Manage City Content',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/manageSeo',
+          },
+          {
+            id: 'distance',
+            title: 'Manage Distance',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/manage-distance',
+          },
+          {
+            id: 'distance',
+            title: 'Manage Bord-Dropping',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/manage-brd-drp',
+          },
+          {
+            id: 'template',
+            title: 'Manage Template',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/manage-template',
+          },
+        ],
+      },
     ],
   },
 ];

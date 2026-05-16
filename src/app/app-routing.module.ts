@@ -108,6 +108,14 @@ const routes: Routes = [
         canActivate: [Routeguard],
       },
       {
+        path: 'seo',
+        loadChildren: () =>
+          import('./seo/seo.module').then(
+            (module) => module.SeoModule
+          ),
+        canActivate: [Routeguard],
+      },
+      {
         path: 'blogs',
         loadChildren: () =>
           import('./blogmanagement/blogmanagement.module').then(
