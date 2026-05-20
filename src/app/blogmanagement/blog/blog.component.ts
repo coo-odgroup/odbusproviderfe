@@ -147,7 +147,7 @@ export class BlogComponent implements OnInit {
 
     const newStatus = currentStatus == 1 ? 0 : 1;
 
-    this.http.post(this.apiURL + '/change-blogstatus/' + id, {active_status: newStatus}).subscribe(
+    this.http.post(this.apiURL + '/change-blogstatus/' + id, { active_status: newStatus }).subscribe(
       (res: any) => {
         this.spinner.hide();
 
@@ -196,29 +196,15 @@ export class BlogComponent implements OnInit {
   //     },
   //   );
   // }
-
-  getAll(url: any = '') {
-    this.spinner.show();
-    const data = {
-      status: this.searchForm.value.status,
-      searchBy: this.searchForm.value.searchBy,
-      per_page: this.searchForm.value.per_page,
-      role_id: sessionStorage.getItem('ROLE_ID'),
-      userID: sessionStorage.getItem('USERID'),
-    };
-    this.http.post(this.apiURL + "/blogcategory", "").subscribe((res: any) => {
-      this.blogCategorydata = res.data;
-      this.spinner.hide();
-    })
-  }
   refresh() {
-    this.searchForm = this.fb.group({
-      searchBy: [null],
-      status: [null],
-      banner_image: [null],
-      per_page: Constants.RecordLimit,
-    })
-    this.getAll();
+
+    this.searchForm.reset({
+      searchBy: '',
+      status: '',
+      per_page: 10
+    });
+
+    this.getallData();
   }
   page(label: any) {
     return label;
@@ -355,6 +341,7 @@ export class BlogComponent implements OnInit {
           this.notificationService.addToast({ title: 'Success', msg: "Blog Updated Successfully", type: 'success' });
           this.blog.reset();
           console.log(res);
+          this.getallData();
           console.log("Blog Updated");
         });
 
@@ -372,8 +359,8 @@ export class BlogComponent implements OnInit {
     }
   }
 
-  public getAllAuthors(){
-    this.http.post(this.apiURL + "/get-allAuthors", "").subscribe((res:any)=>{
+  public getAllAuthors() {
+    this.http.post(this.apiURL + "/get-allAuthors", "").subscribe((res: any) => {
       this.auther = res.data;
       console.log(this.auther)
     })
@@ -416,6 +403,12 @@ export class BlogComponent implements OnInit {
     });
 
 
+    this.searchForm = this.fb.group({
+      searchBy: [''],
+      status: [''],
+      per_page: [10]
+    });
+
     this.getallData();
     this.getcatallData();
 
@@ -429,22 +422,26 @@ export class BlogComponent implements OnInit {
       }
     );
 
-
-    this.searchForm = this.fb.group({
-      searchBy: [null],
-      status: [null],
-      banner_image: [null],
-      per_page: Constants.RecordLimit,
-    })
     this.finalImage = null;
-    this.getAll();
   }
 
 
   public getallData() {
-    this.http.post(this.apiURL + "/blog", "").subscribe((res: any) => {
-      this.blogList = res.data;
-    })
+
+    const data = {
+      searchBy: this.searchForm.value.searchBy,
+      status: this.searchForm.value.status,
+      per_page: this.searchForm.value.per_page
+    };
+
+    console.log(data);
+
+    this.http.post(this.apiURL + "/blog", data)
+      .subscribe((res: any) => {
+        this.blogList = res.data;
+        this.spinner.hide();
+      });
+
   }
 
   public getcatallData() {
@@ -489,7 +486,7 @@ export class BlogComponent implements OnInit {
       this.notificationService.addToast({ title: 'Success', msg: "Deleted successfully", type: 'success' });
       this.confirmDialogReference.close();
       this.ResetAttributes();
-      this.getAll();
+      this.getallData();
     })
   }
 

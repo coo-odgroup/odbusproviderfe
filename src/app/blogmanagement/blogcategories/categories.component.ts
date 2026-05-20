@@ -68,8 +68,10 @@ export class CategoryComponent implements OnInit {
 
   selectedFile!: File;
 
-  blgogcat:any;
-  blogRecord:any;
+  blgogcat: any;
+  blogRecord: any;
+  formConfirm: FormGroup;
+
 
 
   constructor(private spinner: NgxSpinnerService, private bannerService: BannerService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer, private busOperartorService: BusOperatorService,
@@ -130,27 +132,6 @@ export class CategoryComponent implements OnInit {
     ]
   };
 
-
-
-  // search(pageurl = "") {
-  //   this.spinner.show();
-  //   const data = {
-  //     status: this.searchForm.value.status,
-  //     searchBy: this.searchForm.value.searchBy,
-  //     per_page: this.searchForm.value.per_page,
-  //     role_id: sessionStorage.getItem('ROLE_ID'),
-  //     userID: sessionStorage.getItem('USERID'),
-  //   };
-  //   this.bannerService.bannerDataTable(pageurl, data).subscribe(
-  //     res => {
-  //       this.banners = res.data.data.data;
-  //       this.pagination = res.data.data;
-  //       this.all = res.data;
-  //       this.spinner.hide();
-  //       // console.log(res.data.data.data);
-  //     },
-  //   );
-  // }
 
   getAll(url: any = '') {
     this.spinner.show();
@@ -263,6 +244,9 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.formConfirm = this.fb.group({
+      id: ['']
+    });
     this.spinner.show();
     this.role_id = sessionStorage.getItem('ROLE_ID');
     this.usre_name = sessionStorage.getItem('USERNAME');
@@ -286,8 +270,16 @@ export class CategoryComponent implements OnInit {
     });
 
 
-    this.getallData();
+    this.searchForm = this.fb.group({
+      searchBy: [null],
+      status: [null],
+      per_page: [Constants.RecordLimit],
+    });
 
+    this.finalImage = null;
+
+    // NOW call API
+    this.getallData();
 
     ////// get all user list
 
@@ -299,21 +291,70 @@ export class CategoryComponent implements OnInit {
     );
 
 
-    this.searchForm = this.fb.group({
-      searchBy: [null],
-      status: [null],
-      banner_image: [null],
-      per_page: Constants.RecordLimit,
-    })
-    this.finalImage = null;
-    this.getAll();
+    // this.searchForm = this.fb.group({
+    //   searchBy: [null],
+    //   status: [null],
+    //   per_page: Constants.RecordLimit,
+    // })
+    // this.finalImage = null;
+    // this.getAll();
   }
 
+  changeStatus(event: any, id: number) {
+
+    console.log(this.apiURL)
+
+    const confirmStatus = confirm('Are you sure you want to change status?');
+
+    if (confirmStatus) {
+
+      const data = {
+        id: id
+      };
+
+      this.http.post(this.apiURL + '/change-blogcategory-status', data)
+        .subscribe((res: any) => {
+
+          if (res.status == 1) {
+
+            // update local array without reload
+            this.blogCategorydata.forEach((item: any) => {
+
+              if (item.id == id) {
+
+                item.active_status =
+                  item.active_status == 1 ? 0 : 1;
+              }
+            });
+
+          } else {
+            alert(res.message);
+          }
+
+        }, error => {
+          console.log(error);
+        });
+
+    }
+
+  }
 
   public getallData() {
-    this.http.post(this.apiURL + "/blogcategory", "").subscribe((res: any) => {
-      this.blogCategorydata = res.data;
-    })
+
+    const data = {
+      searchBy: this.searchForm.value.searchBy,
+      status: this.searchForm.value.status,
+      per_page: this.searchForm.value.per_page
+    };
+
+    this.http.post(this.apiURL + "/blogcategory", data)
+      .subscribe((res: any) => {
+
+        this.blogCategorydata = res.data;
+        this.spinner.hide();
+
+      });
+
   }
 
   onFileChange(event: any) {
@@ -321,57 +362,26 @@ export class CategoryComponent implements OnInit {
   }
 
 
-  // ResetAttributes() {
-  //   this.bannerRecord = {} as Banner;
-  //   this.bannerForm = this.fb.group({
-  //     id: [null],
-  //     occassion: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.required, Validators.maxLength(15)])],
-  //     // category: [null],
-  //     url: [null],
-  //     heading: [null],
-  //     user_id: [null],
-  //     banner_img: [null],
-  //     start_date: [null, Validators.compose([Validators.required])],
-  //     start_time: [null, Validators.compose([Validators.required])],
-  //     alt_tag: [null, Validators.compose([Validators.required])],
-  //     end_date: [null, Validators.compose([Validators.required])],
-  //     end_time: [null, Validators.compose([Validators.required])],
-  //     iconSrc: [null],
-  //     banner_image: [null],
-  //   });
-  //   this.ModalHeading = "Add Blog Catrgory";
-  //   this.ModalBtn = "Save";
-  //   this.imgURL = "";
-  //   this.imageSrc = "";
-  //   this.bannerRecord.banner_img = "";
-  //   this.busOperartorService.readAll().subscribe(
-  //     record => {
-  //       this.operators = record.data;
-  //       this.operators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name + '  )'; return i; });
-  //     }
-  //   );
-  // }
-
   ResetAttributes() {
 
-  this.blogCategory.reset({
-    id: null,
-    category_name: '',
-    slug: '',
-    description: '',
-    icon: '',
-    banner_image: '',
-    meta_title: '',
-    meta_description: ''
-  });
+    this.blogCategory.reset({
+      id: null,
+      category_name: '',
+      slug: '',
+      description: '',
+      icon: '',
+      banner_image: '',
+      meta_title: '',
+      meta_description: ''
+    });
 
-  this.selectedFile = null;
-  this.isEditMode = false;
+    this.selectedFile = null;
+    this.isEditMode = false;
 
-  this.ModalHeading = "Add Blog Category";
-  this.ModalBtn = "Save";
+    this.ModalHeading = "Add Blog Category";
+    this.ModalBtn = "Save";
 
-}
+  }
 
   openConfirmDialog(content, id: any) {
     this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
