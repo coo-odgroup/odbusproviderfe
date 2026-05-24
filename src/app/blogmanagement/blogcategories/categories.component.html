@@ -23,7 +23,7 @@
                 <select class="form-control sml_input" formControlName="status" *ngIf="role_id==1">
                   <option [value]="" [selected]="true">-Status-</option>
                   <option value=1>Active</option>
-                  <option value=0>Pending</option>
+                  <option value=0>Deactive</option>
                 </select>
               </div>
               <div class="from-group col-md-3">
@@ -93,7 +93,7 @@
                 <label *ngIf="catblogData.active_status==1" class="badge badge-light-success pointer"
                   (click)="changeStatus($event, catblogData.id);">Active</label>
                 <label *ngIf="catblogData.active_status==0" class="badge badge-light-warning pointer"
-                  (click)="changeStatus($event, catblogData.id);">Pending</label>
+                  (click)="changeStatus($event, catblogData.id);">Deactive</label>
               </td>
 
 
