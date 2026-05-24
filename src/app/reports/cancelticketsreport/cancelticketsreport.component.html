@@ -419,6 +419,8 @@
                         <th>Source- Destination</th>
                         <th>Booking Date</th>
                         <th>Journey Date</th>
+                        <th>Cancel Date</th>
+                        <th>GST Number</th>
                         <th>Passenger Details</th>
                         <th>User Name</th>
                         <th>User Phone</th>
@@ -495,11 +497,21 @@
                             </span>
                         </td>
                         <td>
-                            {{ complete.created_at | date:'dd-MM-yyyy' }}
+                        {{ complete.created_at | date:'dd-MM-yyyy' }}
                         </td>
+
                         <td>
-                            {{complete.journey_dt | date: 'dd-MM-YYYY'}}
+                        {{ complete.journey_dt | date:'dd-MM-yyyy' }}
                         </td>
+
+                        <td>
+                        {{ complete.updated_at | date:'dd-MM-yyyy' }}
+                        </td>
+
+                        <td>
+                            {{ (complete.customer_gst_status==1) ? complete.customer_gst_number  : '' }}
+                        </td>
+
                         <td>
                             <span *ngIf="complete.origin != 'DOLPHIN' && complete.origin != 'MANTIS'">
                                 <p *ngFor="let passanger of complete.booking_detail;">

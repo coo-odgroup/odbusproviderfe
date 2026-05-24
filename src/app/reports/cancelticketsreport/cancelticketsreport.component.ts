@@ -230,16 +230,31 @@ export class CancelticketsreportComponent implements OnInit {
         );
   }
 
-  exportdata(): void
-  {
-    let element = document.getElementById('export-section');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+  exportdata(): void {
 
-    /* generate workbook and add the worksheet */
+    let element = document.getElementById('export-section');
+
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+    // FORCE DATE COLUMNS AS STRING FORMAT
+    const range = XLSX.utils.decode_range(ws['!ref'] || '');
+
+    for (let R = 1; R <= range.e.r; ++R) {
+
+      // Booking Date Column (H)
+      let bookingCell = ws['H' + (R + 1)];
+
+      // Journey Date Column (I)
+      let journeyCell = ws['I' + (R + 1)];
+
+      // Cancel Date Column (J)
+      let cancelCell = ws['J' + (R + 1)];
+    }
+
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    /* save to file */  
     XLSX.writeFile(wb, this.fileName);
 
     this.spinner.hide();
@@ -331,6 +346,21 @@ export class CancelticketsreportComponent implements OnInit {
     }
   }
 
-  
+  formatDate(date: any): string {
+
+    if (!date) return '';
+
+    const d = new Date(date);
+
+    if (isNaN(d.getTime())) {
+      return date;
+    }
+
+    const day = ('0' + d.getDate()).slice(-2);
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const year = d.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
 
 }
