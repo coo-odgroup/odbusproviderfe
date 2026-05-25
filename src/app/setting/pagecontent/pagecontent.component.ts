@@ -2,18 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { NotificationService } from '../../services/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModalConfig,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 import { Pagecontent } from '../../model/pagecontent';
 import { UserService } from '../../services/user.service';
 import { Constants } from '../../constant/constant';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { PagecontentService } from '../../services/pagecontent.service';
 import { BusOperatorService } from './../../services/bus-operator.service';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-pagecontent',
   templateUrl: './pagecontent.component.html',
-  styleUrls: ['./pagecontent.component.scss']
+  styleUrls: ['./pagecontent.component.scss'],
 })
 export class PagecontentComponent implements OnInit {
   public form: FormGroup;
@@ -28,11 +32,9 @@ export class PagecontentComponent implements OnInit {
   public isSubmit: boolean;
   public ModalHeading: any;
   public ModalBtn: any;
-  users:any=[];
+  users: any = [];
   role_id: any;
-  usre_name:any ;
-
-
+  usre_name: any;
 
   pagecontent: Pagecontent[];
   pagecontentRecord: Pagecontent;
@@ -48,24 +50,20 @@ export class PagecontentComponent implements OnInit {
     private busOperatorService: BusOperatorService,
     private modalService: NgbModal,
     config: NgbModalConfig,
-    private userService: UserService
+    private userService: UserService,
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Add New Location";
-    this.ModalBtn = "Save";
+    this.ModalHeading = 'Add New Location';
+    this.ModalBtn = 'Save';
   }
-
-
-
-
 
   ngOnInit(): void {
     this.spinner.show();
-    this.role_id= sessionStorage.getItem('ROLE_ID');
-    this.usre_name= sessionStorage.getItem('USERNAME');
+    this.role_id = sessionStorage.getItem('ROLE_ID');
+    this.usre_name = sessionStorage.getItem('USERNAME');
     this.form = this.fb.group({
-      id: [null],      
+      id: [null],
       user_id: [null, Validators.compose([Validators.required])],
       page_name: [null, Validators.compose([Validators.required])],
       page_url: [null, Validators.compose([Validators.required])],
@@ -74,10 +72,10 @@ export class PagecontentComponent implements OnInit {
       meta_keyword: [null],
       meta_description: [null],
       extra_meta: [null],
-      canonical_url: [null]
+      canonical_url: [null],
     });
     this.formConfirm = this.fb.group({
-      id: [null]
+      id: [null],
     });
     this.searchForm = this.fb.group({
       name: [null],
@@ -95,43 +93,36 @@ export class PagecontentComponent implements OnInit {
     return label;
   }
 
-
-  search(pageurl = "") {
+  search(pageurl = '') {
     this.spinner.show();
 
     const data = {
       name: this.searchForm.value.name,
       role_id: sessionStorage.getItem('ROLE_ID'),
       user_id: sessionStorage.getItem('USERID'),
-      rows_number: this.searchForm.value.rows_number
+      rows_number: this.searchForm.value.rows_number,
     };
 
     // console.log(data);
     // return;
-    if (pageurl != "") {
-      this.pc.getAllaginationData(pageurl, data).subscribe(
-        res => {
-          this.pagecontent = res.data.data.data;
+    if (pageurl != '') {
+      this.pc.getAllaginationData(pageurl, data).subscribe((res) => {
+        this.pagecontent = res.data.data.data;
 
-          this.pagination = res.data.data;
-          this.all = res.data;
-          this.spinner.hide();
-        }
-      );
-    }
-    else {
-      this.pc.getAllData(data).subscribe(
-        res => {
-          this.pagecontent = res.data.data.data;
-          this.pagination = res.data.data;
+        this.pagination = res.data.data;
+        this.all = res.data;
+        this.spinner.hide();
+      });
+    } else {
+      this.pc.getAllData(data).subscribe((res) => {
+        this.pagecontent = res.data.data.data;
+        this.pagination = res.data.data;
 
-          this.all = res.data;
-          this.spinner.hide();
-        }
-      );
+        this.all = res.data;
+        this.spinner.hide();
+      });
     }
   }
-
 
   refresh() {
     this.spinner.show();
@@ -142,51 +133,53 @@ export class PagecontentComponent implements OnInit {
       rows_number: Constants.RecordLimit,
     });
     this.search();
-
   }
-
 
   loadServices() {
+    this.busOperatorService.readAll().subscribe((res) => {
+      this.busoperators = res.data;
+      this.busoperators.map((i: any) => {
+        i.operatorData =
+          i.organisation_name + '    (  ' + i.operator_name + '  )';
+        return i;
+      });
+    });
 
-    this.busOperatorService.readAll().subscribe(
-      res => {
-        this.busoperators = res.data;
-        this.busoperators.map((i: any) => { i.operatorData = i.organisation_name + '    (  ' + i.operator_name  + '  )'; return i; });
-      }
-    );
+    ////// get all user list
 
-
-     ////// get all user list
-
-     this.userService.getAllUser().subscribe(
-      record=>{
-      this.users=record.data;
-      this.users.map((i: any) => { i.userData = i.name + '    (  ' + i.email  + '  )'; return i; });
-      }
-    );
-
+    this.userService.getAllUser().subscribe((record) => {
+      this.users = record.data;
+      this.users.map((i: any) => {
+        i.userData = i.name + '    (  ' + i.email + '  )';
+        return i;
+      });
+    });
   }
 
-  toSeoUrl(url) {
-    return url.toString()               // Convert to string
-      .normalize('NFD')               // Change diacritics
+  toSeoUrl(url: string): string {
+    return url
+      .toString() // Convert to string
+      .normalize('NFD') // Change diacritics
       .replace(/[\u0300-\u036f]/g, '') // Remove illegal characters
-      .replace(/\s+/g, '-')            // Change whitespace to dashes
-      .toLowerCase()                  // Change to lowercase
-      .replace(/&/g, '-and-')          // Replace ampersand
-      .replace(/[^a-z0-9\-]/g, '')     // Remove anything that is not a letter, number or dash
-      .replace(/-+/g, '-')             // Remove duplicate dashes
-      .replace(/^-*/, '')              // Remove starting dashes
-      .replace(/-*$/, '');             // Remove trailing dashes
+      .replace(/\s+/g, '-') // Change whitespace to dashes
+      .toLowerCase() // Change to lowercase
+      .replace(/&/g, '-and-') // Replace ampersand
+      .replace(/[^a-z0-9\-]/g, '') // Remove anything that is not a letter, number or dash
+      .replace(/-+/g, '-') // Remove duplicate dashes
+      .replace(/^-*/, '') // Remove starting dashes
+      .replace(/-*$/, ''); // Remove trailing dashes
   }
-  
+
   generate_url() {
     let pagecontent = this.form.controls.page_name.value;
     pagecontent = this.toSeoUrl(pagecontent);
     this.form.controls.page_url.setValue(pagecontent);
   }
-  OpenModal(content) {
-    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
+  OpenModal(content: any) {
+    this.modalReference = this.modalService.open(content, {
+      scrollable: true,
+      size: 'xl',
+    });
   }
   ResetAttributes() {
     this.pagecontentRecord = {} as Pagecontent;
@@ -200,27 +193,23 @@ export class PagecontentComponent implements OnInit {
       meta_keyword: [null],
       meta_description: [null],
       extra_meta: [null],
-      canonical_url: [null]
-
+      canonical_url: [null],
     });
     this.form.reset();
-    this.ModalHeading = "Add Page";
-    this.ModalBtn = "Save";
+    this.ModalHeading = 'Add Page';
+    this.ModalBtn = 'Save';
   }
 
   getAll() {
-    this.pc.readAll().subscribe(
-      res => {
-        this.pagecontent = res.data;
-        // console.log(res.data);
-      }
-    );
+    this.pc.readAll().subscribe((res) => {
+      this.pagecontent = res.data;
+      // console.log(res.data);
+    });
   }
-
 
   addData() {
     this.spinner.show();
-    if(this.role_id!=1){
+    if (this.role_id != 1) {
       this.form.controls.user_id.setValue(sessionStorage.getItem('USERID'));
     }
 
@@ -234,55 +223,56 @@ export class PagecontentComponent implements OnInit {
       meta_description: this.form.value.meta_description,
       extra_meta: this.form.value.extra_meta,
       canonical_url: this.form.value.canonical_url,
-      created_by: sessionStorage.getItem('USERNAME')
+      created_by: sessionStorage.getItem('USERNAME'),
     };
     // console.log(data);
     // return;
 
     let id = this.pagecontentRecord?.id;
     if (id != null) {
-      this.pc.update(id, data).subscribe(
-        resp => {
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
-
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            this.spinner.hide();
-          }
+      this.pc.update(id, data).subscribe((resp) => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({
+            title: 'Success',
+            msg: resp.message,
+            type: 'success',
+          });
+          this.modalReference.close();
+          this.ResetAttributes();
+          this.refresh();
+        } else {
+          this.notificationService.addToast({
+            title: 'Error',
+            msg: resp.message,
+            type: 'error',
+          });
+          this.spinner.hide();
         }
-      );
-    }
-    else {
-      this.pc.create(data).subscribe(
-        resp => {
-
-          if (resp.status == 1) {
-            this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-            this.modalReference.close();
-            this.ResetAttributes();
-            this.refresh();
-
-
-          }
-          else {
-            this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-            this.spinner.hide();
-          }
+      });
+    } else {
+      this.pc.create(data).subscribe((resp) => {
+        if (resp.status == 1) {
+          this.notificationService.addToast({
+            title: 'Success',
+            msg: resp.message,
+            type: 'success',
+          });
+          this.modalReference.close();
+          this.ResetAttributes();
+          this.refresh();
+        } else {
+          this.notificationService.addToast({
+            title: 'Error',
+            msg: resp.message,
+            type: 'error',
+          });
+          this.spinner.hide();
         }
-      );
-
+      });
     }
-
   }
 
-
-
-  editData(id) {
+  editData(id: any) {
     this.pagecontentRecord = this.pagecontent[id];
 
     // console.log(this.pagecontentRecord);
@@ -290,52 +280,55 @@ export class PagecontentComponent implements OnInit {
     this.form.controls.user_id.setValue(this.pagecontentRecord.user_id);
     this.form.controls.page_name.setValue(this.pagecontentRecord.page_name);
     this.form.controls.page_url.setValue(this.pagecontentRecord.page_url);
-    this.form.controls.page_description.setValue(this.pagecontentRecord.page_description);
+    this.form.controls.page_description.setValue(
+      this.pagecontentRecord.page_description,
+    );
     this.form.controls.meta_title.setValue(this.pagecontentRecord.meta_title);
-    this.form.controls.meta_keyword.setValue(this.pagecontentRecord.meta_keyword);
-    this.form.controls.meta_description.setValue(this.pagecontentRecord.meta_description);
+    this.form.controls.meta_keyword.setValue(
+      this.pagecontentRecord.meta_keyword,
+    );
+    this.form.controls.meta_description.setValue(
+      this.pagecontentRecord.meta_description,
+    );
     this.form.controls.extra_meta.setValue(this.pagecontentRecord.extra_meta);
-    this.form.controls.canonical_url.setValue(this.pagecontentRecord.canonical_url);
+    this.form.controls.canonical_url.setValue(
+      this.pagecontentRecord.canonical_url,
+    );
 
-    this.ModalHeading = "Edit Page";
-    this.ModalBtn = "Update";
-
-
+    this.ModalHeading = 'Edit Page';
+    this.ModalBtn = 'Update';
   }
 
-  openConfirmDialog(content, id: any) {
-    this.confirmDialogReference = this.modalService.open(content, { scrollable: true, size: 'md' });
+  openConfirmDialog(content: any, id: any) {
+    this.confirmDialogReference = this.modalService.open(content, {
+      scrollable: true,
+      size: 'md',
+    });
     this.pagecontentRecord = this.pagecontent[id];
   }
 
   deleteRecord() {
-
-
     let delitem = this.pagecontentRecord.id;
-    this.pc.delete(delitem).subscribe(
-      resp => {
-        if (resp.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: resp.message, type: 'success' });
-          this.confirmDialogReference.close();
-          this.ResetAttributes();
-          this.search();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: resp.message, type: 'error' });
-          this.spinner.hide();
-        }
-      });
+    this.pc.delete(delitem).subscribe((resp) => {
+      if (resp.status == 1) {
+        this.notificationService.addToast({
+          title: 'Success',
+          msg: resp.message,
+          type: 'success',
+        });
+        this.confirmDialogReference.close();
+        this.ResetAttributes();
+        this.search();
+      } else {
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: resp.message,
+          type: 'error',
+        });
+        this.spinner.hide();
+      }
+    });
   }
-
-
-
-
-
-
-
-
-
-
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -356,7 +349,7 @@ export class PagecontentComponent implements OnInit {
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
     ],
     customClasses: [
       {
@@ -365,7 +358,7 @@ export class PagecontentComponent implements OnInit {
       },
       {
         name: 'redText',
-        class: 'redText'
+        class: 'redText',
       },
       {
         name: 'titleText',
@@ -378,10 +371,27 @@ export class PagecontentComponent implements OnInit {
     uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
-    ]
+    toolbarHiddenButtons: [['bold', 'italic'], ['fontSize']],
   };
 
+  changeStatus(event: Event, stsitem: any) {
+    this.spinner.show();
+    this.pc.changestatus(stsitem).subscribe((resp) => {
+      if (resp.status == 1) {
+        this.notificationService.addToast({
+          title: 'Success',
+          msg: resp.message,
+          type: 'success',
+        });
+        this.ResetAttributes();
+        this.refresh();
+      } else {
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: resp.message,
+          type: 'error',
+        });
+      }
+    });
+  }
 }
