@@ -5,14 +5,13 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Constants } from '../../constant/constant';
 import { NotificationService } from '../../services/notification.service';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-managetemplate',
-  templateUrl: './managetemplate.component.html',
-  styleUrls: ['./managetemplate.component.scss']
+  selector: 'app-templatelist',
+  templateUrl: './templatelist.component.html',
+  styleUrls: ['./templatelist.component.scss']
 })
-export class ManageTemplateComponent implements OnInit {
+export class TemplateListComponent implements OnInit {
 
   public searchFrom!: FormGroup;
   public updateFrom!: FormGroup;
@@ -25,6 +24,8 @@ export class ManageTemplateComponent implements OnInit {
   routesData: any;
   Data: any;
   selectedRouteId: any;
+  showModal = false;
+  templateData:any;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -32,7 +33,6 @@ export class ManageTemplateComponent implements OnInit {
     private fb: FormBuilder,
     public formatter: NgbDateParserFormatter,
     private notificationService: NotificationService,
-    private router:Router
   ) {
 
   }
@@ -52,7 +52,7 @@ export class ManageTemplateComponent implements OnInit {
       meta_description: [null],
     })
 
-    // this.search();
+    this.search();
     this.getRoute();
 
   }
@@ -67,24 +67,34 @@ export class ManageTemplateComponent implements OnInit {
 
   search() {
     this.spinner.show();
-
     const formData = this.searchFrom.value;
 
-    this.http.post(this.apiUrl + '/seo-content', formData).subscribe((res: any) => {
-      console.log(res);
+    this.http.post(this.apiUrl + '/all-Route-template', formData).subscribe((res: any) => {
       this.Data = res;
 
-      this.updateFrom.patchValue({
-        seo_content: res.seo_content || '',
-        meta_title: res.meta_title || '',
-        meta_description: res.meta_description || '',
-      });
+      // this.updateFrom.patchValue({
+      //   seo_content: res.seo_content || '',
+      //   meta_title: res.meta_title || '',
+      //   meta_description: res.meta_description || '',
+      // });
 
       this.spinner.hide();
     }, (err) => {
       this.spinner.hide();
       console.error(err);
     });
+  }
+
+
+  selectedData(id:any){
+    const formData = {
+      route_id :id
+    };
+    console.log(formData)
+    this.http.post(this.apiUrl + '/templateDetails', formData).subscribe((res: any) => {
+      console.log(res);
+      this.templateData = res;
+    })
   }
 
 
@@ -109,7 +119,6 @@ export class ManageTemplateComponent implements OnInit {
     this.http.post(this.apiUrl + '/add-seo-content', payload).subscribe((res: any) => {
       console.log(res);
       this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
-      this.router.navigate(['/seo/template-list']);
     })
 
   }
@@ -120,6 +129,6 @@ export class ManageTemplateComponent implements OnInit {
     this.searchFrom = this.fb.group({
       route_id: [null],
     })
-    this.spinner.hide();
+    this.search();
   }
 }

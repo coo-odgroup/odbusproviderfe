@@ -20,6 +20,10 @@ const routes: Routes = [
       {
         path: 'manage-template',
         loadChildren: () => import('./managetemplate/managetemplate.module').then(module => module.ManageTemplateModule)
+      },
+      {
+        path: 'template-list',
+        loadChildren: () => import('./templatelist/templatelist.module').then(module => module.TemplateListModule)
       }
 
     ]

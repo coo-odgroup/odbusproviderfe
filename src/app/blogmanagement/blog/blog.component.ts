@@ -406,6 +406,8 @@ export class BlogComponent implements OnInit {
     this.searchForm = this.fb.group({
       searchBy: [''],
       status: [''],
+      category_id: [''],
+      author_id: [''],
       per_page: [10]
     });
 
@@ -431,10 +433,10 @@ export class BlogComponent implements OnInit {
     const data = {
       searchBy: this.searchForm.value.searchBy,
       status: this.searchForm.value.status,
-      per_page: this.searchForm.value.per_page
+      per_page: this.searchForm.value.per_page,
+      category_id: this.searchForm.value.category_id,
+      author_id: this.searchForm.value.author_id,
     };
-
-    console.log(data);
 
     this.http.post(this.apiURL + "/blog", data)
       .subscribe((res: any) => {
@@ -449,10 +451,6 @@ export class BlogComponent implements OnInit {
       this.blogcat = res.data;
     })
   }
-
-  // onFileChange(event: any) {
-  //   this.selectedFile = event.target.files[0];
-  // }
 
 
   ResetAttributes() {

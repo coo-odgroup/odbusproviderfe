@@ -194,6 +194,23 @@ File: style.css
     margin-bottom: 6px;
 }
 
+.op-list {
+    column-count: 3;
+    /* number of columns */
+    column-gap: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.op-list li {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 6px;
+    break-inside: avoid;
+    list-style: none;
+    margin-bottom: 8px;
+}
+
 /* ================= STRONG ================= */
 .seo-full strong {
     font-weight: 600;
