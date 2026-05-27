@@ -8,25 +8,39 @@
             <div class="mb-3">
                 <form *ngIf="searchFrom" [formGroup]="searchFrom">
                     <div class="row align-items-center">
+
                         <div class="col-md-3" *ngIf="role == '1'">
-                            <div>
-                                <!-- <label>&nbsp; </label> -->
-                                <ng-select [items]="routesData" bindLabel="route_name" bindValue="id"
-                                    placeholder="Select Routes" formControlName="route_id" [clearable]="false">
-                                </ng-select>
-                            </div>
+                            <ng-select [items]="routesData" bindLabel="route_name" bindValue="id"
+                                placeholder="Select Routes" formControlName="route_id" [clearable]="false">
+                            </ng-select>
                         </div>
 
+                        <!-- SEARCH -->
                         <div class="col-md-2">
                             <button type="button" class="btn btn-success w-100" (click)="search()">
                                 Search
                             </button>
                         </div>
+
+                        <!-- REFRESH -->
                         <div class="col-md-2">
                             <button type="button" class="btn btn-danger w-100" (click)="refresh()">
                                 Refresh
                             </button>
                         </div>
+
+                        <!-- DOWNLOAD CSV -->
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary w-100" (click)="downloadCSV()">
+                                Download CSV
+                            </button>
+                        </div>
+
+                        <!-- UPLOAD CSV -->
+                        <div class="col-md-3">
+                            <input type="file" class="form-control" accept=".csv" (change)="uploadCSV($event)">
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -44,16 +58,17 @@
                                 <th>Distance</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            <!-- <td>{{ pair[0]?.id }}</td> -->
+
                             <tr *ngFor="let pair of locationsData; let i = index">
 
                                 <!-- FIRST -->
                                 <td>{{ i + 1 }}</td>
+
                                 <td>
                                     {{ pair[0]?.source }} - {{ pair[0]?.destination }}
                                 </td>
+
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="pair[0].distance"
                                         (input)="pair[1].distance = pair[0].distance"
@@ -64,6 +79,7 @@
                                 <td>
                                     {{ pair[1]?.source }} - {{ pair[1]?.destination }}
                                 </td>
+
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="pair[1].distance"
                                         (input)="pair[0].distance = pair[1].distance"
@@ -71,6 +87,7 @@
                                 </td>
 
                             </tr>
+
                         </tbody>
 
                     </table>

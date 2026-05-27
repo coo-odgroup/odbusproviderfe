@@ -112,19 +112,7 @@
 
               <td>{{ tagmap.title }}</td>
 
-              <td>{{ tagmap.tag_name }}</td>
-
-              <!-- <td>
-                <span class="badge badge-success" *ngIf="tagmap.active_status == 1">
-
-                  Active
-                </span>
-
-                <span class="badge badge-danger" *ngIf="tagmap.active_status == 0">
-
-                  Pending
-                </span>
-              </td> -->
+              <td>{{ tagmap.tags }}</td>
 
               <td>
                 <span *ngIf="tagmap.created_by == 1">ODBUS</span>
@@ -144,7 +132,7 @@
 
                   <!-- DELETE -->
                   <button type="button" class="btn btn-icon btn-danger"
-                    (click)="openConfirmDialog(confirmDialog, tagmap.id)">
+                    (click)="openConfirmDialog(confirmDialog, tagmap.blog_id)">
 
                     <i class="feather icon-trash-2"></i>
 
@@ -277,8 +265,8 @@
                   </label>
 
                   <ng-select [items]="tagdata" bindLabel="tag_name" bindValue="id" [multiple]="true"
-                    [closeOnSelect]="false" [searchable]="true" placeholder="Select Tags" formControlName="tag_id">
-
+                    [closeOnSelect]="false" [searchable]="true" placeholder="Select Tags" formControlName="tag_id"
+                    appendTo="body">
                   </ng-select>
 
                   <small class="text-danger" *ngIf="tagmapform.controls.tag_id.touched &&

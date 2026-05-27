@@ -77,6 +77,8 @@ export class BlogComponent implements OnInit {
   blgogcat: any;
   blogRecord: any;
 
+  private consumerfe_url = Constants.CONSUMERFE_URL
+
 
   constructor(private spinner: NgxSpinnerService, private bannerService: BannerService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private sanitizer: DomSanitizer, private busOperartorService: BusOperatorService,
     private userService: UserService
@@ -173,29 +175,6 @@ export class BlogComponent implements OnInit {
     );
   }
 
-
-
-
-
-  // search(pageurl = "") {
-  //   this.spinner.show();
-  //   const data = {
-  //     status: this.searchForm.value.status,
-  //     searchBy: this.searchForm.value.searchBy,
-  //     per_page: this.searchForm.value.per_page,
-  //     role_id: sessionStorage.getItem('ROLE_ID'),
-  //     userID: sessionStorage.getItem('USERID'),
-  //   };
-  //   this.bannerService.bannerDataTable(pageurl, data).subscribe(
-  //     res => {
-  //       this.banners = res.data.data.data;
-  //       this.pagination = res.data.data;
-  //       this.all = res.data;
-  //       this.spinner.hide();
-  //       // console.log(res.data.data.data);
-  //     },
-  //   );
-  // }
   refresh() {
 
     this.searchForm.reset({
@@ -211,17 +190,6 @@ export class BlogComponent implements OnInit {
   }
   OpenModal(content: any) {
     this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
-  }
-
-  generateSlug(value: string): string {
-    if (!value) return '';
-
-    return value
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, '-')       // replace spaces with -
-      .replace(/[^\w\-]+/g, '')   // remove special characters
-      .replace(/\-\-+/g, '-');    // remove multiple -
   }
 
 
@@ -263,6 +231,8 @@ export class BlogComponent implements OnInit {
       meta_description: data.meta_description,
       meta_keywords: data.meta_keywords,
       canonical_url: data.canonical_url,
+      og_title: data.og_title,
+      og_desc: data.og_desc,
       breadcrumb_schema: this.parseJSON(data.breadcrumb_schema),
       faq_schema: this.parseJSON(data.faq_schema),
       service_schema: this.parseJSON(data.service_schema)
@@ -313,6 +283,8 @@ export class BlogComponent implements OnInit {
     formData.append('meta_description', this.blog.get('meta_description')?.value);
     formData.append('meta_keywords', this.blog.get('meta_keywords')?.value);
     formData.append('canonical_url', this.blog.get('canonical_url')?.value);
+    formData.append('og_title', this.blog.get('og_title')?.value);
+    formData.append('og_desc', this.blog.get('og_desc')?.value);
     formData.append('breadcrumb_schema', this.blog.get('breadcrumb_schema')?.value);
     formData.append('faq_schema', this.blog.get('faq_schema')?.value);
     formData.append('service_schema', this.blog.get('service_schema')?.value);
@@ -346,7 +318,7 @@ export class BlogComponent implements OnInit {
         });
 
     } else {
-      console.log(formData)
+      // console.log(formData)
       this.http.post(this.apiURL + "/add-blog", formData)
         .subscribe((res: any) => {
           this.modalReference.close();
@@ -364,6 +336,17 @@ export class BlogComponent implements OnInit {
       this.auther = res.data;
       console.log(this.auther)
     })
+  }
+
+  generateSlug(value: string): string {
+
+    return value
+      ?.toLowerCase()
+      ?.trim()
+      ?.replace(/[^a-z0-9\s-]/g, '')
+      ?.replace(/\s+/g, '-')
+      ?.replace(/-+/g, '-');
+
   }
 
   ngOnInit(): void {
@@ -391,15 +374,66 @@ export class BlogComponent implements OnInit {
       meta_keywords: new FormControl('', Validators.required),
       og_image: new FormControl('', Validators.required),
       canonical_url: new FormControl('', Validators.required),
+      og_title: new FormControl('', Validators.required),
+      og_desc: new FormControl('', Validators.required),
       breadcrumb_schema: new FormControl(''),
       faq_schema: new FormControl(''),
       service_schema: new FormControl(''),
     })
 
     // 👇 Auto generate slug
+    // this.blog.get('title')?.valueChanges.subscribe((value: any) => {
+    //   const slug = this.generateSlug(value);
+    //   this.blog.get('slug')?.setValue(slug, { emitEvent: false });
+    // });
+
     this.blog.get('title')?.valueChanges.subscribe((value: any) => {
+
       const slug = this.generateSlug(value);
+
       this.blog.get('slug')?.setValue(slug, { emitEvent: false });
+
+      // category name/slug find from category list
+      const categoryId = this.blog.get('category_id')?.value;
+
+      const categoryData = this.blogcat.find(
+        (x: any) => x.id == categoryId
+      );
+
+      const categorySlug = categoryData
+        ? this.generateSlug(categoryData.category_name)
+        : '';
+
+      const canonicalUrl =
+        `${this.consumerfe_url}blog/${categorySlug}/${slug}`;
+
+      this.blog.get('canonical_url')
+        ?.setValue(canonicalUrl, { emitEvent: false });
+
+    });
+
+
+    // ALSO UPDATE WHEN CATEGORY CHANGES
+    this.blog.get('category_id')?.valueChanges.subscribe((categoryId: any) => {
+
+      const title = this.blog.get('title')?.value;
+
+      const slug = this.generateSlug(title);
+
+      const categoryData = this.blogcat.find(
+        (x: any) => x.id == categoryId
+      );
+
+      const categorySlug = categoryData
+        ? this.generateSlug(categoryData.category_name)
+        : '';
+
+      const canonicalUrl =
+        `${this.consumerfe_url}blog/${categorySlug}/${slug}`;
+
+      this.blog.get('canonical_url')
+        ?.setValue(canonicalUrl, { emitEvent: false });
+
     });
 
 

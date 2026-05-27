@@ -25,15 +25,15 @@ export class Constants {
   // public static CONSUMER_API_URL:any = 'http://192.168.29.141:7001/ODBUS/odbusconsumerbe/api/';
   // public static PATHURL:any = 'http://192.168.29.141:7001/ODBUS/odbusproviderbe/public/uploads/';
 
-  // public static BASE_URL:any ='https://provider.odbus.co.in/api';
-  // public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
-  // public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';
-  // public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
-  // public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
+  public static BASE_URL:any ='https://provider.odbus.co.in/api';
+  public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
+  public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';
+  public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
+  public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
 
-  public static BASE_URL: any = 'https://testingadminapi.odbus.co.in/api';
-  public static CONSUMER_PUBLIC_URL: any = 'https://testing.odbus.co.in/public/';
-  public static CONSUMER_API_URL: any = 'https://testing.odbus.co.in/api/';
-  public static PATHURL: any = 'https://testingadminapi.odbus.co.in/public/uploads/';
-  public static DOWNLOAD_URL: any = 'https://testingadminapi.odbus.co.in/storage/';
+//   public static BASE_URL: any = 'https://testingadminapi.odbus.co.in/api';
+//   public static CONSUMER_PUBLIC_URL: any = 'https://testing.odbus.co.in/public/';
+//   public static CONSUMER_API_URL: any = 'https://testing.odbus.co.in/api/';
+//   public static PATHURL: any = 'https://testingadminapi.odbus.co.in/public/uploads/';
+//   public static DOWNLOAD_URL: any = 'https://testingadminapi.odbus.co.in/storage/';
 }

@@ -214,18 +214,20 @@ export class TagmapComponent implements OnInit {
     this.isEditMode = true;
     this.ModalHeading = "Edit Tag Map";
     this.ModalBtn = "Update";
-
-    // get all selected tag ids
-    const selectedTags = this.tagmapdata
-      .filter((x: any) => x.blog_id == data.blog_id)
-      .map((x: any) => Number(x.tag_id)); // IMPORTANT
+    // convert comma string to array
+    const selectedTags = data.tag_ids
+      ? data.tag_ids.split(',').map((id: any) => Number(id))
+      : [];
 
     console.log(selectedTags);
-
     this.tagmapform.patchValue({
+
       id: data.blog_id,
+
       blog_id: Number(data.blog_id),
+
       tag_id: selectedTags
+
     });
 
   }

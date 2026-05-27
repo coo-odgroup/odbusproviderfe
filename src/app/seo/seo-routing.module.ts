@@ -24,6 +24,10 @@ const routes: Routes = [
       {
         path: 'template-list',
         loadChildren: () => import('./templatelist/templatelist.module').then(module => module.TemplateListModule)
+      },
+      {
+        path: 'manage-routes',
+        loadChildren: () => import('./manageroute/manageroute.module').then(module => module.ManageRouteListModule)
       }
 
     ]

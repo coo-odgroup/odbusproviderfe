@@ -1,0 +1,116 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Manage Route" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
+
+
+            <div class=" mb-3">
+                <div class="row">
+                    <div class="col-12">
+                        <form [formGroup]="searchFrom">
+
+                            <div class="row align-items-end">
+
+                                <!-- Route -->
+                                <div class="col-md-2 col-sm-6 mb-3" *ngIf="role == '1'">
+                                    <div class="form-group mb-0">
+                                        <label class="mb-1">Source</label>
+
+                                        <ng-select [items]="routesData" bindLabel="name" bindValue="id"
+                                            placeholder="Select Source" formControlName="source_id" [clearable]="false">
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-6 mb-3" *ngIf="role == '1'">
+                                    <div class="form-group mb-0">
+                                        <label class="mb-1">Destination</label>
+
+                                        <ng-select [items]="routesData" bindLabel="name" bindValue="id"
+                                            placeholder="Select Destination" formControlName="destination_id"
+                                            [clearable]="false">
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+                                <!-- Search / Refresh -->
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <div class="d-flex">
+
+                                        <button type="button" class="btn btn-success sml_input me-2 w-50" title="search"
+                                            (click)="search()">
+                                            Search
+                                        </button>
+
+                                        <button type="button" class="btn btn-danger sml_input w-50" title="refresh"
+                                            (click)="refresh()">
+                                            Refresh
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                                <!-- Show Rows -->
+                                <div class="col-md-2 col-sm-6 mb-3">
+                                    <div class="form-group mb-0">
+                                        <!-- <label class="mb-1">Show Rows</label> -->
+
+                                        <select class="form-control sml_input">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="500">500</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="table-responsive " id="print-section">
+                <div class=" tableFixHead">
+                    <table class="table table-striped header-fixed" style="font-size: 11px !important;">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Routes</th>
+                                <th scope="col">Exists</th>
+                            </tr>
+                        </thead>
+
+                        <tbody *ngIf="Data?.length != 0">
+                            <tr *ngFor="let data of Data; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ data.source_name }} - {{ data.destination_name }}</td>
+
+                                <!-- Checkbox -->
+                                <td>
+                                    <input type="checkbox" [checked]="data.already_exist"
+                                        [disabled]="data.already_exist">
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tbody *ngIf="Data?.length == 0">
+                            <tr>
+                                <td colspan="4" class="no-data-available">
+                                    No data!
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </app-card>
+    </div>
+</div>

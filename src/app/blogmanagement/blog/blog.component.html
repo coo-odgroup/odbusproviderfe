@@ -309,49 +309,6 @@
                         <div class="col-md-6">
                           <div class="form-group mb-3">
                             <label>
-                              Meta Title <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control" formControlName="meta_title"
-                              placeholder="Enter Meta Title">
-                            <small class="text-danger"
-                              *ngIf="blog.controls.meta_title.touched && blog.controls.meta_title.hasError('required')">
-                              Meta Title is required
-                            </small>
-                          </div>
-                        </div>
-
-                        <div class="col-md-6">
-                          <div class="form-group mb-3">
-                            <label>
-                              Meta Description <span class="text-danger">*</span>
-                            </label>
-                            <textarea class="form-control" rows="3" formControlName="meta_description"
-                              placeholder="Enter Meta description"></textarea>
-                            <small class="text-danger"
-                              *ngIf="blog.controls.meta_description.touched && blog.controls.meta_description.hasError('required')">
-                              Meta Description is required
-                            </small>
-                          </div>
-                        </div>
-
-
-                        <div class="col-md-6">
-                          <div class="form-group mb-3">
-                            <label>
-                              Meta Keywords <span class="text-danger">*</span>
-                            </label>
-                            <textarea class="form-control" rows="3" formControlName="meta_keywords"
-                              placeholder="Enter Meta Keywords"></textarea>
-                            <small class="text-danger"
-                              *ngIf="blog.controls.meta_keywords.touched && blog.controls.meta_keywords.hasError('required')">
-                              Meta Keywords is required
-                            </small>
-                          </div>
-                        </div>
-
-                        <div class="col-md-6">
-                          <div class="form-group mb-3">
-                            <label>
                               Short Description <span class="text-danger">*</span>
                             </label>
                             <textarea class="form-control" rows="3" placeholder="Enter description"
@@ -464,6 +421,9 @@
                             <small class="text-muted">
                               Max file size 1MB. Supports jpg/jpeg/png
                             </small>
+                            <small class="col-md-2" *ngIf="isEditMode == true">
+                              {{path}}{{existogImageFile}}
+                            </small>
                             <br>
                             <small class="text-danger"
                               *ngIf="blog.controls.og_image.touched && blog.controls.og_image.hasError('required')">
@@ -479,13 +439,85 @@
                         <div class="col-md-6">
                           <div class="form-group mb-3">
                             <label>
+                              Og Title <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="og_title"
+                              placeholder="Enter Og Title">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.og_title.touched && blog.controls.og_title.hasError('required')">
+                              Og Title is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Og Description <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="og_desc"
+                              placeholder="Enter Og Description">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.og_desc.touched && blog.controls.og_desc.hasError('required')">
+                              Og Description is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
                               Canonical Url <span class="text-danger">*</span>
                             </label>
                             <input type="text" class="form-control" formControlName="canonical_url"
-                              placeholder="Enter Canonical Url">
+                              placeholder="Enter Canonical Url" disabled>
                             <small class="text-danger"
                               *ngIf="blog.controls.canonical_url.touched && blog.controls.canonical_url.hasError('required')">
                               Canonical Url is required
+                            </small>
+                          </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Meta Title <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" formControlName="meta_title"
+                              placeholder="Enter Meta Title">
+                            <small class="text-danger"
+                              *ngIf="blog.controls.meta_title.touched && blog.controls.meta_title.hasError('required')">
+                              Meta Title is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Meta Description <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="meta_description"
+                              placeholder="Enter Meta description"></textarea>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.meta_description.touched && blog.controls.meta_description.hasError('required')">
+                              Meta Description is required
+                            </small>
+                          </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                          <div class="form-group mb-3">
+                            <label>
+                              Meta Keywords <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="meta_keywords"
+                              placeholder="Enter Meta Keywords"></textarea>
+                            <small class="text-danger"
+                              *ngIf="blog.controls.meta_keywords.touched && blog.controls.meta_keywords.hasError('required')">
+                              Meta Keywords is required
                             </small>
                           </div>
                         </div>
@@ -495,7 +527,7 @@
                             <label>
                               Breadcrumb Schema <span class="text-danger">*</span>
                             </label>
-                            <textarea class="form-control" rows="3" formControlName="breadcrumb_schema"
+                            <textarea class="form-control" rows="9" formControlName="breadcrumb_schema"
                               placeholder="Enter Breadcrumb Schema"></textarea>
                           </div>
                         </div>
@@ -505,17 +537,17 @@
                             <label>
                               FAQ Schema <span class="text-danger">*</span>
                             </label>
-                            <textarea class="form-control" rows="3" formControlName="faq_schema"
+                            <textarea class="form-control" rows="9" formControlName="faq_schema"
                               placeholder="Enter FAQ Schema"></textarea>
                           </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                           <div class="form-group mb-3">
                             <label>
                               Service Schema <span class="text-danger">*</span>
                             </label>
-                            <textarea class="form-control" rows="3" formControlName="service_schema"
+                            <textarea class="form-control" rows="9" formControlName="service_schema"
                               placeholder="Enter Service Schema"></textarea>
                           </div>
                         </div>
