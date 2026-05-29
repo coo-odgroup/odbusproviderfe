@@ -410,6 +410,43 @@ export class BlogComponent implements OnInit {
       this.blog.get('canonical_url')
         ?.setValue(canonicalUrl, { emitEvent: false });
 
+      // BREADCRUMB SCHEMA
+      const breadcrumbSchema = {
+        "@context": "https://schema.org/",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home Page",
+            "item": `${this.consumerfe_url}`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog Page",
+            "item": `${this.consumerfe_url}blog`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": categoryData?.category_name || '',
+            "item": `${this.consumerfe_url}blog/${categorySlug}`
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": value,
+            "item": `${this.consumerfe_url}blog/${categorySlug}/${slug}`
+          }
+        ]
+      };
+
+      this.blog.get('breadcrumb_schema')
+        ?.setValue(JSON.stringify(breadcrumbSchema, null, 2), {
+          emitEvent: false
+        });
+
     });
 
 
@@ -428,11 +465,50 @@ export class BlogComponent implements OnInit {
         ? this.generateSlug(categoryData.category_name)
         : '';
 
+      // CANONICAL URL
       const canonicalUrl =
         `${this.consumerfe_url}blog/${categorySlug}/${slug}`;
 
       this.blog.get('canonical_url')
         ?.setValue(canonicalUrl, { emitEvent: false });
+
+
+      // BREADCRUMB SCHEMA
+      const breadcrumbSchema = {
+        "@context": "https://schema.org/",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home Page",
+            "item": `${this.consumerfe_url}`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog Page",
+            "item": `${this.consumerfe_url}blog`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": categoryData?.category_name || '',
+            "item": `${this.consumerfe_url}blog/${categorySlug}`
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": title,
+            "item": `${this.consumerfe_url}blog/${categorySlug}/${slug}`
+          }
+        ]
+      };
+
+      this.blog.get('breadcrumb_schema')
+        ?.setValue(JSON.stringify(breadcrumbSchema, null, 2), {
+          emitEvent: false
+        });
 
     });
 
