@@ -73,6 +73,8 @@ export class PagecontentComponent implements OnInit {
       meta_description: [null],
       extra_meta: [null],
       canonical_url: [null],
+      breadcrumb_schema: [null],
+      faq_schema: [null]
     });
     this.formConfirm = this.fb.group({
       id: [null],
@@ -194,6 +196,8 @@ export class PagecontentComponent implements OnInit {
       meta_description: [null],
       extra_meta: [null],
       canonical_url: [null],
+      breadcrumb_schema: [null],
+      faq_schema: [null]
     });
     this.form.reset();
     this.ModalHeading = 'Add Page';
@@ -203,7 +207,6 @@ export class PagecontentComponent implements OnInit {
   getAll() {
     this.pc.readAll().subscribe((res) => {
       this.pagecontent = res.data;
-      // console.log(res.data);
     });
   }
 
@@ -223,6 +226,8 @@ export class PagecontentComponent implements OnInit {
       meta_description: this.form.value.meta_description,
       extra_meta: this.form.value.extra_meta,
       canonical_url: this.form.value.canonical_url,
+      breadcrumb_schema: this.form.value.breadcrumb_schema,
+      faq_schema: this.form.value.faq_schema,
       created_by: sessionStorage.getItem('USERNAME'),
     };
     // console.log(data);
@@ -294,7 +299,12 @@ export class PagecontentComponent implements OnInit {
     this.form.controls.canonical_url.setValue(
       this.pagecontentRecord.canonical_url,
     );
-
+    this.form.controls.breadcrumb_schema.setValue(
+      this.pagecontentRecord.breadcrumb_schema,
+    );
+    this.form.controls.faq_schema.setValue(
+      this.pagecontentRecord.faq_schema,
+    );
     this.ModalHeading = 'Edit Page';
     this.ModalBtn = 'Update';
   }

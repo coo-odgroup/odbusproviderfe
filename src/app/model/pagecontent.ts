@@ -9,4 +9,6 @@ export interface Pagecontent {
     extra_meta:any;
     canonical_url:any;
     user_id:null;
+    breadcrumb_schema:null;
+    faq_schema:null;
 }

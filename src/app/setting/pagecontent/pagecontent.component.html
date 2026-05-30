@@ -271,7 +271,6 @@
                     <form [formGroup]="form" class="editForm" novalidate>
                       <div class="row">
                         <div class="from-group col-md-4">
-                          <!-- <label>Page name :</label> -->
                           <label for="name" class="col-sm-12 col-form-label"
                             >Select User :<span class="text-danger"
                               >*</span
@@ -303,7 +302,6 @@
                         </div>
 
                         <div class="from-group col-md-4">
-                          <!-- <label>Page name :</label> -->
                           <label for="name" class="col-sm-12 col-form-label"
                             >Page name :<span class="text-danger"
                               >*</span
@@ -331,7 +329,6 @@
                           </div>
                         </div>
                         <div class="from-group col-md-4">
-                          <!-- <label>Page name :</label> -->
                           <label for="name" class="col-sm-12 col-form-label"
                             >Page URL :<span class="text-danger">*</span></label
                           >
@@ -438,6 +435,36 @@
                               ngbAutofocus
                               placeholder="Enter Canonical URL"
                               formControlName="canonical_url"
+                              rows="3"
+                            ></textarea>
+                          </div>
+                        </div>
+
+                        <div class="from-group col-md-6">
+                          <label for="name" class="col-sm-5 col-form-label"
+                            >Breadcrumb Schema :</label
+                          >
+                          <div class="col-sm-12">
+                            <textarea
+                              class="form-control"
+                              ngbAutofocus
+                              placeholder="Enter Breadcrumb Schema"
+                              formControlName="breadcrumb_schema"
+                              rows="3"
+                            ></textarea>
+                          </div>
+                        </div>
+
+                        <div class="from-group col-md-6">
+                          <label for="name" class="col-sm-3 col-form-label"
+                            >FAQ Schema :</label
+                          >
+                          <div class="col-sm-12">
+                            <textarea
+                              class="form-control"
+                              ngbAutofocus
+                              placeholder="Enter FAQ Schema"
+                              formControlName="faq_schema"
                               rows="3"
                             ></textarea>
                           </div>
