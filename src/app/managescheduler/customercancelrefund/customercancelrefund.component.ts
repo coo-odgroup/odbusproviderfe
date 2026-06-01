@@ -7,10 +7,14 @@ import { AdmincancelticketService } from '../../services/admincancelticket.servi
 import { BusService } from '../../services/bus.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Constants } from '../../constant/constant';
-import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModalConfig,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 import { LocationService } from '../../services/location.service';
 import * as XLSX from 'xlsx';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 // New
 import { ScheduleRefundService } from '../../services/schedule-refund.service';
@@ -20,10 +24,9 @@ import { Cancelrefund } from '../../model/cancelrefund';
   selector: 'app-customercancelrefund',
   templateUrl: './customercancelrefund.component.html',
   styleUrls: ['./customercancelrefund.component.scss'],
-  providers: [NgbModalConfig, NgbModal]
+  providers: [NgbModalConfig, NgbModal],
 })
 export class CustomercancelrefundComponent implements OnInit {
-
   // @ViewChild("addnew") addnew;
   @ViewChild('addnew') addnew!: ElementRef;
   public cancelTicketForm!: FormGroup;
@@ -31,7 +34,6 @@ export class CustomercancelrefundComponent implements OnInit {
 
   modalReference!: NgbModalRef;
   confirmDialogReference!: NgbModalRef;
-
 
   public searchForm!: FormGroup;
   pagination: any;
@@ -55,18 +57,32 @@ export class CustomercancelrefundComponent implements OnInit {
 
   selectAll: boolean = false;
 
-  constructor(private srs: ScheduleRefundService, private acts: AdmincancelticketService, private http: HttpClient, private notificationService: NotificationService, private fb: FormBuilder, config: NgbModalConfig, private modalService: NgbModal, private busService: BusService, private busOperatorService: BusOperatorService, private locationService: LocationService, private spinner: NgxSpinnerService) {
+  constructor(
+    private srs: ScheduleRefundService,
+    private acts: AdmincancelticketService,
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private fb: FormBuilder,
+    config: NgbModalConfig,
+    private modalService: NgbModal,
+    private busService: BusService,
+    private busOperatorService: BusOperatorService,
+    private locationService: LocationService,
+    private spinner: NgxSpinnerService,
+  ) {
     this.isSubmit = false;
     this.cancelTicketRecord = {} as Admincancelticket;
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Cancel Ticket";
-    this.ModalBtn = "Cancel Ticket";
-
+    this.ModalHeading = 'Cancel Ticket';
+    this.ModalBtn = 'Cancel Ticket';
   }
 
   OpenModal(content: any) {
-    this.modalReference = this.modalService.open(content, { scrollable: true, size: 'xl' });
+    this.modalReference = this.modalService.open(content, {
+      scrollable: true,
+      size: 'xl',
+    });
   }
   ngOnInit(): void {
     // this.spinner.show();
@@ -75,13 +91,15 @@ export class CustomercancelrefundComponent implements OnInit {
       percentage_deduct: [null],
       full_refund: [false],
       refundAmount: [null],
-      reason: [null]
+      reason: [null],
     });
     this.formConfirm = this.fb.group({
-      id: [null]
+      id: [null],
     });
     this.searchForm = this.fb.group({
-      name: [null],
+      journey_dt: null,
+      updated_at: null,
+      pnr: null,
       rows_number: Constants.RecordLimit,
     });
 
@@ -93,39 +111,29 @@ export class CustomercancelrefundComponent implements OnInit {
     return label;
   }
 
-
-  search(pageurl = "") {
+  search(pageurl = '') {
     this.spinner.show();
-    const data = {
-      name: this.searchForm.value.name,
+    const param = {
+      journey_dt: this.searchForm.value.journey_dt,
+      updated_at: this.searchForm.value.updated_at,
+      pnr: this.searchForm.value.pnr,
       rows_number: this.searchForm.value.rows_number,
     };
-    if (pageurl != "") {
-      this.acts.getAllaginationData(pageurl, data).subscribe(
-        res => {
-          this.cancelRefund = res.data.data.data;
-          this.pagination = res.data.data;
-          this.all = res.data;
-          this.spinner.hide();
-        }
-      );
-    }
-    else {
-
-      const param = {
-        rows_number: 100,
-        cancel_by: "ODBUS"
-      };
-
-      this.srs.getRefundList(param).subscribe(
-        res => {
-          this.cancelRefund = res.data.data.data;
-          this.pagination = res.data.data;
-          this.all = res.data;
-          // console.log(res);
-          this.spinner.hide();
-        }
-      );
+    if (pageurl != '') {
+      this.acts.getAllaginationData(pageurl, param).subscribe((res) => {
+        this.cancelRefund = res.data.data.data;
+        this.pagination = res.data.data;
+        this.all = res.data;
+        this.spinner.hide();
+      });
+    } else {
+      this.srs.getRefundList(param).subscribe((res) => {
+        this.cancelRefund = res.data.data.data;
+        this.pagination = res.data.data;
+        this.all = res.data;
+        // console.log(res);
+        this.spinner.hide();
+      });
     }
   }
 
@@ -137,20 +145,17 @@ export class CustomercancelrefundComponent implements OnInit {
     this.cancelTicketForm.controls.full_refund.setValue('');
     this.cancelTicketForm.controls.reason.setValue('');
 
-
     let pnr = this.cancelTicketForm.value.pnr_no;
     if (pnr != null) {
-      this.acts.getPnrDetails(pnr).subscribe(
-        res => {
-          this.pnrDetails = res.data;
-          this.spinner.hide();
-          console.log(this.pnrDetails);
+      this.acts.getPnrDetails(pnr).subscribe((res) => {
+        this.pnrDetails = res.data;
+        this.spinner.hide();
+        console.log(this.pnrDetails);
 
-          if (this.pnrDetails.length == 0) {
-            this.msg = "No Pnr Found"
-          }
+        if (this.pnrDetails.length == 0) {
+          this.msg = 'No Pnr Found';
         }
-      );
+      });
     }
   }
 
@@ -160,10 +165,11 @@ export class CustomercancelrefundComponent implements OnInit {
     // console.log(percentage);
     let totalFare = this.pnrDetails[0].payable_amount;
     // console.log(((totalFare/100)*(100-percentage)).toFixed(2));
-    this.cancelTicketForm.controls['refundAmount'].setValue(((totalFare / 100) * (100 - percentage)).toFixed(2));
+    this.cancelTicketForm.controls['refundAmount'].setValue(
+      ((totalFare / 100) * (100 - percentage)).toFixed(2),
+    );
 
     // ((totalFare/100)*percentage).toFixed(2) //percentage calculation in angular
-
   }
   previewCancelTicket() {
     // console.log(this.cancelTicketForm.value);
@@ -191,37 +197,41 @@ export class CustomercancelrefundComponent implements OnInit {
     console.log(data);
     // return;
 
-    this.acts.cancelTicket(data).subscribe(
-      res => {
-        if (res.status == 1) {
-          this.notificationService.addToast({ title: 'Success', msg: res.message, type: 'success' });
-          this.modalReference.close();
-          this.refresh();
-        }
-        else {
-          this.notificationService.addToast({ title: 'Error', msg: res.message, type: 'error' });
-          this.spinner.hide();
-        }
+    this.acts.cancelTicket(data).subscribe((res) => {
+      if (res.status == 1) {
+        this.notificationService.addToast({
+          title: 'Success',
+          msg: res.message,
+          type: 'success',
+        });
+        this.modalReference.close();
+        this.refresh();
+      } else {
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: res.message,
+          type: 'error',
+        });
+        this.spinner.hide();
       }
-    );
-
+    });
   }
 
   refresh() {
     this.spinner.show();
     this.searchForm = this.fb.group({
-      name: [null],
+      journey_dt: null,
+      updated_at: null,
+      pnr: null,
       rows_number: Constants.RecordLimit,
     });
     this.search();
   }
 
-
   title = 'angular-app';
   fileName = 'Cancel-ticket.csv';
 
   exportexcel(): void {
-
     /* pass here the table id */
     let element = document.getElementById('print-section');
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
@@ -232,7 +242,6 @@ export class CustomercancelrefundComponent implements OnInit {
 
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
-
   }
   ResetAttributes() {
     this.user = '';
@@ -246,8 +255,8 @@ export class CustomercancelrefundComponent implements OnInit {
       reason: [null],
       full_refund: [false],
     });
-    this.ModalHeading = "Cancel Ticket By Admin End";
-    this.ModalBtn = "Cancel Ticket";
+    this.ModalHeading = 'Cancel Ticket By Admin End';
+    this.ModalBtn = 'Cancel Ticket';
   }
 
   toggleSelectAll() {
@@ -282,28 +291,39 @@ export class CustomercancelrefundComponent implements OnInit {
 
   scheduleRecords() {
     const selectedBookingIds = this.cancelRefund
-      .filter(item => item.selected)
-      .map(item => item.id);
+      .filter((item) => item.selected)
+      .map((item) => item.id);
 
     console.log(selectedBookingIds);
 
     if (selectedBookingIds.length === 0) {
-      alert("Please select at least one record!");
+      alert('Please select at least one record!');
       return;
     }
 
     const param = {
-      booking_ids: selectedBookingIds
+      booking_ids: selectedBookingIds,
     };
 
     this.spinner.show();
 
-    this.srs.getRefundSelected(param).subscribe(
-      res => {
-        console.log(res);
+    this.srs.getRefundSelected(param).subscribe((res) => {
+      console.log(res);
+      if (res.status == 1) {
         this.search();
-        this.spinner.hide();
+        this.notificationService.addToast({
+          title: 'Success',
+          msg: res.message,
+          type: 'success',
+        });
+      } else {
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: res.message,
+          type: 'error',
+        });
       }
-    );
+      this.spinner.hide();
+    });
   }
 }
