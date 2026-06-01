@@ -1,0 +1,653 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-sm-12">
+        <app-card [hidHeader]="false" cardTitle="Send Sms Email Ticket Form" cardClass="card-datatable"
+        [options]="false" cardClass=" table-border-style user-profile-list">
+        <div class="row">
+         <div class="col-sm-12">
+           <div class="form-material">
+             <div class="right-icon-control">
+                 <form [formGroup]="sendSmsEmailTicketForm" class="editForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-8 col-8">
+                                <div class="form-group row">
+                                    <div class="input-group col-11 ">
+                                        <input type="text" class="form-control sml_input"
+                                            placeholder="Enter Pnr No" required
+                                            formControlName="pnr_no">
+                                        <div class="input-group-append">
+                                            <button type="button" [disabled]="!sendSmsEmailTicketForm.controls['pnr_no'].valid"
+                                                class="btn btn-primary  sml_input"
+                                                (click)="search_pnr()" title="search">
+                                                <i class="fas fa-search"> </i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>                               
+                                <div class="row">
+                                    <div class="col-10 offset-1">
+                                        <span class="text-danger"
+                                            *ngIf="sendSmsEmailTicketForm.controls['pnr_no'].touched && sendSmsEmailTicketForm.controls['pnr_no'].hasError('required')">
+                                            Pnr required! </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-2">
+                              <button type="button" class="btn btn-danger  sml_input"
+                                                (click)="refresh()" title="Refresh">
+                                                <i class="fas fa-sync-alt"> </i>
+                                            </button>
+                            </div>
+                             <div class="col-md-2 col-2">
+                              <a  (click)="sms_log(smslog)" class="btn btn-primary">View Sms Log Error List</a>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="pnrDetails.length > 0">                            
+                            <div class="col-md-4">                                
+                                <h3>ACTION </h3>
+                                <hr>  
+                                <div class="row" *ngIf="pnrDetails[0].status==1">
+                                    <div class="col-12">
+                                        <div class="from-group" >
+                                            <label for="name" class="col-sm-12 col-form-label">
+                                                <input type="radio" formControlName="action" value="smsToCustomer" (change)="Sms_details();">  Sms To Customer
+                                            </label>                                         
+                                        </div>
+                                        <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                            <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==2 && contact.status==1  && contact.booking_sms_send == 1">
+                                                <input type="radio" formControlName="action" value="smsToConductor" (change)="Sms_details();">  Sms To Conductor/Manager/Owner
+                                            </label>                                         
+                                        </div>                                        
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-12 col-form-label">
+                                                <input type="radio" formControlName="action" value="emailToCustomer" (change)="Sms_details();">  Email To Customer
+                                            </label>                                         
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-12 col-form-label">
+                                                <input type="radio" formControlName="action" value="emailToBooking" (change)="Sms_details();">  Email To booking@odbus.in
+                                            </label>                                         
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-12 col-form-label">
+                                                <button class="btn btn-info" (click)="previewTicket()">Preview Ticket</button>
+                                            </label>                                         
+                                        </div>                                     
+                                    </div>
+                                </div>
+                                
+                                <div class="row" *ngIf="pnrDetails[0].status==2">
+                                    <div class="col-12">
+                                        <div class="from-group" >
+                                            <label for="name" class="col-sm-12 col-form-label">
+                                                <input type="radio" formControlName="action" value="cancelsmsToCustomer" (change)="CancelSms_details();"> Cancel SMS To Customer
+                                            </label>                                         
+                                        </div>
+                                        <div class="from-group" *ngFor="let contact of  pnrDetails[0].bus.bus_contacts">
+                                            <label for="name" class="col-sm-12 col-form-label" *ngIf="contact.type==2 && contact.status==1  && contact.booking_sms_send == 1">
+                                                <input type="radio" formControlName="action" value="cancelsmsToConductor" (change)="CancelSms_details();"> Cancel Sms To Conductor/Manager/Owner
+                                            </label>                                         
+                                        </div>                                      
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-12 col-form-label">
+                                                <input type="radio" formControlName="action" value="cancelemailToCustomer" (change)="CancelSms_details                                                                            ();"> Cancel Email To Customer
+                                            </label>                                         
+                                        </div>
+                                        <div class="from-group">
+                                            <label for="name" class="col-sm-12 col-form-label">
+                                                <input type="radio" formControlName="action" value="cancelemailToSupport" (change)="CancelSms_details();"> Cancel Email To support@odbus.in
+                                            </label>                                         
+                                        </div>                                       
+                                    </div>
+                                </div> 
+                                
+                                <!-- <div class="col-12 mt-3">
+                                    <button type="button" [disabled]="!sendSmsEmailTicketForm.valid"
+                                    (click)="sendTicket();" class="btn btn-danger btn-sm"
+                                    ngbAutofocus>{{ModalBtn}}</button>
+                                </div> -->
+                            </div>
+                            <div class="col-md-8">
+                                <h3 class="text-center">Booking Details</h3>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <table class="table-secondary">
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <strong>Passanger Details</strong>
+                                                    </td>                                                          
+                                                </tr>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Gender</th>
+                                                    <th>Seat no</th>
+                                                    <th>Age</th>
+                                                </tr>
+                                                <tr *ngFor="let passanger of pnrDetails[0].booking_detail">
+                                                    <td>{{passanger.passenger_name}}</td>
+                                                    <td>{{passanger.passenger_gender}}</td>
+                                                    <td>{{passanger.bus_seats.seats.seatText}}</td>
+                                                    <td>{{passanger.passenger_age}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total Fare</td>
+                                                    <td colspan="3" class="text-center text-danger text-right">
+                                                        >>
+                                                        <b>{{pnrDetails[0].total_fare}}</b>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td><small>From- To</small></td>
+                                                    <td><strong>{{pnrDetails[0].from_location[0].name}}
+                                                        <i class="fas fa-long-arrow-right" aria-hidden="true"></i>
+                                                            {{pnrDetails[0].to_location[0].name}}</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><small>D.O.B</small></td>
+                                                    <td><strong
+                                                            class="text-danger">{{pnrDetails[0].created_at
+                                                            | date: 'dd-MM-yyyy HH:mm:ss'}}</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><small>D.O.J</small></td>
+                                                    <td><strong
+                                                            class="text-danger">{{pnrDetails[0].journey_dt
+                                                            | date: 'dd-MM-yyyy'}}</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><small>Boarding At :</small></td>
+                                                    <td><strong>{{pnrDetails[0].boarding_point}},
+                                                            {{pnrDetails[0].boarding_time }}
+                                                        </strong> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><small>Bus :</small></td>
+                                                    <td><strong>{{ pnrDetails[0].bus.name
+                                                            }}</strong><br>
+                                                        <strong>{{ pnrDetails[0].bus.bus_number
+                                                            }}</strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="pnrDetails.length == 0">
+                            <h4 class="text-center">{{msg}}</h4>
+                        </div>
+                 </form>
+                </div>
+            </div>
+           
+        </div>
+        </div>       
+        </app-card>
+
+        <div class="row">            
+           <div class="col-sm-12"  *ngIf="sendSmsEmailTicketForm.controls.action.value=='smsToCustomer'">
+             <app-card [hidHeader]="false" cardTitle="SMS To Customer" cardClass="card-datatable"
+                [options]="false" cardClass=" table-border-style user-profile-list">
+                <div class="form-material">
+                    <div class="right-icon-control">
+                      <form [formGroup]="SmsToCustomerForm" class="editForm" novalidate>                   
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group row">
+                              <label for="name" class="col-sm-2 col-form-label">Customer Mobile No<span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="Customer Mobile No" formControlName="customer_mob">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="form-group row">
+                              <label for="email" class="col-sm-2 col-form-label">SMS To Customer<span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-10">
+                                 <textarea class="form-control" placeholder="Message To Customer" rows="5" formControlName="sms_to_customer"></textarea>                             
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="form-group row">
+                              <label for="phone" class="col-sm-2 col-form-label">Reason<span
+                                  class="text-danger">*</span></label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control"  placeholder="Reason" formControlName="reason">
+                                <span class="text-danger"
+                                  *ngIf="SmsToCustomerForm.controls['reason'].touched && SmsToCustomerForm.controls['reason'].hasError('required')">
+                                  Reason is required! </span>
+                              </div>
+                            </div>
+                          </div>                
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="form-group row">
+                                <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
+                                <div class="col-sm-10">
+                                    <button type="button" [disabled]="!SmsToCustomerForm.valid" (click)="SaveCustomerSMS()" class="btn btn-danger btn-sm">Submit</button>
+                                </div>
+                             </div>  
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+             </app-card> 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='smsToConductor'">
+             <app-card [hidHeader]="false" cardTitle=" SMS To Conductor/Manager/Operator" cardClass="card-datatable"
+                [options]="false" cardClass=" table-border-style user-profile-list">
+              <div class="form-material">
+                <div class="right-icon-control">
+                  <form [formGroup]="SmsToConductorForm" class="editForm" novalidate>                   
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-3 col-form-label">Conductor/Manager/Owner No<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control"  placeholder="Conductor/Manager/Owner Mobile No" formControlName="cmo_mob">
+                          </div>
+                        </div>
+                      </div>                    
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="email" class="col-sm-3 col-form-label">SMS<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-9">
+                             <textarea class="form-control" placeholder="SMS To Conductor/Manager/Operator" rows="5" formControlName="sms_to_cmo"></textarea>                             
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="phone" class="col-sm-3 col-form-label">Reason<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control"  placeholder="Reason" formControlName="cmo_reason">
+                            <!-- <span class="text-danger"
+                              *ngIf="form.controls['cmo_reason'].touched && form.controls['cmo_reason'].hasError('required')">
+                              Reason is required! </span> -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="form-group row">
+                            <label for="phone" class="col-sm-3 col-form-label">&nbsp;</label>
+                            <div class="col-sm-9">
+                                <button type="button" (click)="SaveCustomerSMS()" class="btn btn-danger btn-sm">Submit</button>
+                            </div>
+                         </div>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+             </app-card> 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='emailToCustomer'">
+             <app-card [hidHeader]="false" cardTitle="Email To Customer" cardClass="card-datatable"
+                [options]="false" cardClass=" table-border-style user-profile-list">
+              <div class="form-material">
+                <div class="right-icon-control">
+                  <form [formGroup]="EmailToCustomerForm" class="editForm" novalidate>                         
+                    <input type="hidden" formControlName="customer_mobile">              
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-2 col-form-label">Email ID<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Email To Customer" formControlName="customer_eml">
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="phone" class="col-sm-2 col-form-label">Reason<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control"  placeholder="Reason" formControlName="ceml_reason">
+                            <!-- <span class="text-danger"
+                              *ngIf="form.controls['cmo_reason'].touched && form.controls['cmo_reason'].hasError('required')">
+                              Reason is required! </span> -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="form-group row">
+                            <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
+                            <div class="col-sm-10"> 
+                                <button type="button" class="btn btn-danger btn-sm" (click)="sendEmailToCustomer()">Submit</button>
+                            </div>
+                         </div>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+             </app-card> 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='emailToBooking'">
+             <app-card [hidHeader]="false" cardTitle="Email To booking@odbus.in" cardClass="card-datatable"
+                [options]="false" cardClass=" table-border-style user-profile-list">
+              <div class="form-material">
+                <div class="right-icon-control">
+                  <form [formGroup]="EmailToBookingForm" class="editForm" novalidate>   
+                    <input type="hidden"  formControlName="Email_PNR" >               
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-2 col-form-label">Email ID<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Email ID: booking@odbus.in" formControlName="booking_eml">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="email" class="col-sm-2 col-form-label">Email Message<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                             <textarea class="form-control" placeholder="Email Message" rows="5" formControlName="eml_msg"></textarea>                             
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="phone" class="col-sm-2 col-form-label">Reason<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control"  placeholder="Reason" formControlName="eml_reason">                            
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="form-group row">
+                            <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
+                            <div class="col-sm-10">
+                                <button type="button" class="btn btn-danger btn-sm" (click)="SendEmailToBooking()">Submit</button>
+                            </div>
+                         </div>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+             </app-card> 
+            </div>
+        </div>
+
+        <div class="row">            
+            <div class="col-sm-12"  *ngIf="sendSmsEmailTicketForm.controls.action.value=='cancelsmsToCustomer'">
+              <app-card [hidHeader]="false" cardTitle="Cancel SMS To Customer" cardClass="card-datatable"
+                 [options]="false" cardClass=" table-border-style user-profile-list">
+                 <div class="form-material">
+                     <div class="right-icon-control">
+                       <form [formGroup]="CancelSmsToCustomerForm" class="editForm" novalidate>                   
+                         <div class="row">
+                           <div class="col-md-12">
+                             <div class="form-group row">
+                               <label for="name" class="col-sm-3 col-form-label">Customer Mobile No<span
+                                   class="text-danger">*</span></label>
+                               <div class="col-sm-9">
+                                 <input type="text" class="form-control" placeholder="Customer Mobile No" formControlName="ccustomer_mob">
+                               </div>
+                             </div>
+                           </div>
+                           <div class="col-md-12">
+                             <div class="form-group row">
+                               <label for="email" class="col-sm-3 col-form-label">Cancel SMS To Customer<span
+                                   class="text-danger">*</span></label>
+                               <div class="col-sm-9">
+                                  <textarea class="form-control" placeholder="Message To Customer" rows="5" formControlName="csms_to_customer"></textarea>                             
+                               </div>
+                             </div>
+                           </div>
+                           <div class="col-md-12">
+                             <div class="form-group row">
+                               <label for="phone" class="col-sm-3 col-form-label">Reason<span
+                                   class="text-danger">*</span></label>
+                               <div class="col-sm-9">
+                                 <input type="text" class="form-control"  placeholder="Reason" formControlName="creason">
+                                 <!-- <span class="text-danger"
+                                   *ngIf="form.controls['reason'].touched && form.controls['reason'].hasError('required')">
+                                   Reason is required! </span> -->
+                               </div>
+                             </div>
+                           </div>                
+                         </div>
+                         <div class="col-12 mt-3">
+                             <div class="form-group row">
+                                 <label for="phone" class="col-sm-3 col-form-label">&nbsp;</label>
+                                 <div class="col-sm-9">
+                                     <button type="button" class="btn btn-danger btn-sm" (click)="SaveCustomerSMS()">Submit</button>
+                                 </div>
+                              </div>  
+                         </div>
+                       </form>
+                     </div>
+                   </div>
+              </app-card> 
+             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='cancelsmsToConductor'">
+             <app-card [hidHeader]="false" cardTitle="Cancel SMS To Conductor/Manager/Operator" cardClass="card-datatable"
+                [options]="false" cardClass=" table-border-style user-profile-list">
+              <div class="form-material">
+                <div class="right-icon-control">
+                  <form [formGroup]="CancelSmsToConductorForm" class="editForm" novalidate>                   
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Conductor/Manager/Operator Mobile No<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Conductor/Manager/Operator Mobile No" formControlName="ccmo_mob">
+                          </div>
+                        </div>
+                      </div>
+                   
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="email" class="col-sm-4 col-form-label">SMS<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                             <textarea class="form-control" placeholder="SMS To Conductor/Manager/Operator" rows="5" formControlName="csms_to_cmo"></textarea>                             
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="phone" class="col-sm-4 col-form-label">Reason<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control"  placeholder="Reason" formControlName="ccmo_reason">
+                            <!-- <span class="text-danger"
+                              *ngIf="form.controls['cmo_reason'].touched && form.controls['cmo_reason'].hasError('required')">
+                              Reason is required! </span> -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="form-group row">
+                            <label for="phone" class="col-sm-4 col-form-label">&nbsp;</label>
+                            <div class="col-sm-8">
+                                <button type="button" class="btn btn-danger btn-sm" (click)="SaveCustomerSMS()">Submit</button>
+                            </div>
+                         </div>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+             </app-card> 
+            </div>
+        </div>
+
+        <!-- Cancel Email To Customer -->    
+        <div class="row">
+            <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='cancelemailToCustomer'">
+             <app-card [hidHeader]="false" cardTitle="Cancel Email To Customer" cardClass="card-datatable"
+                [options]="false" cardClass=" table-border-style user-profile-list">
+              <div class="form-material">
+                <div class="right-icon-control">
+                  <form [formGroup]="CancelEmailToCustomerForm" class="editForm" novalidate>                   
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-2 col-form-label">Email ID<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Email ID Of Customer" formControlName="ccustomer_eml">
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="phone" class="col-sm-2 col-form-label">Reason<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control"  placeholder="Reason" formControlName="cceml_reason">
+                            <!-- <span class="text-danger"
+                              *ngIf="form.controls['cmo_reason'].touched && form.controls['cmo_reason'].hasError('required')">
+                              Reason is required! </span> -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="form-group row">
+                            <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
+                            <div class="col-sm-10">
+                                <button type="button" class="btn btn-danger btn-sm" (click)="sendCancelEmailToCustomer()">Submit</button>
+                            </div>
+                         </div>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+             </app-card> 
+            </div>
+        </div>
+        <!-- Cancel Email To support@odbus.in -->    
+        <div class="row">
+            <div class="col-sm-12" *ngIf="sendSmsEmailTicketForm.controls.action.value=='cancelemailToSupport'">
+             <app-card [hidHeader]="false" cardTitle="Email To support@odbus.in" cardClass="card-datatable"
+                [options]="false" cardClass=" table-border-style user-profile-list">
+              <div class="form-material">
+                <div class="right-icon-control">
+                  <form [formGroup]="CancelEmailToSupportForm" class="editForm" novalidate>                   
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-2 col-form-label">Email ID<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="support@odbus.in" formControlName="cnclsupport_eml" [readonly]="true">
+                          </div>
+                        </div>
+                      </div>
+               
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label for="phone" class="col-sm-2 col-form-label">Reason<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control"  placeholder="Reason" formControlName="cncleml_reason">                            
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="form-group row">
+                            <label for="phone" class="col-sm-2 col-form-label">&nbsp;</label>
+                            <div class="col-sm-10">
+                                <button type="button" class="btn btn-danger btn-sm" (click)="sendCancelEmailToSupport()">Submit</button>
+                            </div>
+                         </div>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+             </app-card> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ <ng-template #smslog let-modal>
+          <div class="modal-header">
+            <h5 class="ng-tns-c116-5">SMS Log List</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    
+                    <th>Created On</th>
+                    <th>Via</th>
+                    <th>To</th>                    
+                    <th>Response</th>
+                    <th>Message</th>
+                    <th>Request Body</th>
+                  </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let s of sms_log_list; let i = index">
+                      <td>{{ s.created_on}}</td>
+                      <td>{{ s.via}}</td>
+                      <td>{{ s.phone}}</td>                      
+                      <td>{{ s.response}}</td>
+                      <td>{{ s.sms_body}}</td>
+                      <td>{{ s.req_body}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">           
+            <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+              (click)="modal.dismiss('Cross click')">Close</button>
+          </div>
+        </ng-template>
