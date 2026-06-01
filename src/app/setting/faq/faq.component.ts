@@ -81,6 +81,8 @@ export class FaqComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       title: [null],
+      page_id: [null],
+      faq_category_id: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -98,6 +100,8 @@ export class FaqComponent implements OnInit {
 
     const data = {
       title: this.searchForm.value.title,
+      page_id: this.searchForm.value.page_id,
+      faq_category_id: this.searchForm.value.faq_category_id,
       rows_number: this.searchForm.value.rows_number,
     };
 
@@ -127,6 +131,8 @@ export class FaqComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       title: [null],
+      page_id: [null],
+      faq_category_id: [null],
       rows_number: Constants.RecordLimit,
     });
     this.search();
@@ -183,7 +189,7 @@ export class FaqComponent implements OnInit {
       faq_category_id: this.form.value.faq_category_id,
       title: this.form.value.title,
       content: this.form.value.content,
-      created_by: sessionStorage.getItem('USERNAME')
+      created_by: sessionStorage.getItem('USERNAME'),
     };
     // console.log(data);
     // return;
@@ -353,6 +359,24 @@ export class FaqComponent implements OnInit {
   getFaqCategoryList() {
     this.http.get(this.apiURL + '/faqcategory').subscribe((res: any) => {
       this.faqCategoryList = res.data;
+    });
+  }
+
+  getAll(url: any = '') {
+    this.spinner.show();
+    const data = {
+      title: this.searchForm.value.title,
+      page_id: this.searchForm.value.page_id,
+      faq_category_id: this.searchForm.value.faq_category_id,
+      rows_number: this.searchForm.value.rows_number,
+      role_id: sessionStorage.getItem('ROLE_ID'),
+      userID: sessionStorage.getItem('USERID'),
+    };
+    this.fs.sliderDataTable(url, data).subscribe((res) => {
+      this.faqcontent = res.data.data.data;
+      this.pagination = res.data.data;
+      this.all = res.data;
+      this.spinner.hide();
     });
   }
 }
