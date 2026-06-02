@@ -74,7 +74,8 @@ export class PagecontentComponent implements OnInit {
       extra_meta: [null],
       canonical_url: [null],
       breadcrumb_schema: [null],
-      faq_schema: [null]
+      faq_schema: [null],
+      page_short_desc: [null]
     });
     this.formConfirm = this.fb.group({
       id: [null],
@@ -197,7 +198,8 @@ export class PagecontentComponent implements OnInit {
       extra_meta: [null],
       canonical_url: [null],
       breadcrumb_schema: [null],
-      faq_schema: [null]
+      faq_schema: [null],
+      page_short_desc: [null]
     });
     this.form.reset();
     this.ModalHeading = 'Add Page';
@@ -228,6 +230,7 @@ export class PagecontentComponent implements OnInit {
       canonical_url: this.form.value.canonical_url,
       breadcrumb_schema: this.form.value.breadcrumb_schema,
       faq_schema: this.form.value.faq_schema,
+      page_short_desc: this.form.value.page_short_desc,
       created_by: sessionStorage.getItem('USERNAME'),
     };
     // console.log(data);
@@ -294,6 +297,9 @@ export class PagecontentComponent implements OnInit {
     );
     this.form.controls.meta_description.setValue(
       this.pagecontentRecord.meta_description,
+    );
+    this.form.controls.page_short_desc.setValue(
+      this.pagecontentRecord.page_short_desc,
     );
     this.form.controls.extra_meta.setValue(this.pagecontentRecord.extra_meta);
     this.form.controls.canonical_url.setValue(

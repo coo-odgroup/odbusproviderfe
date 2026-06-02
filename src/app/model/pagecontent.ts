@@ -11,4 +11,5 @@ export interface Pagecontent {
     user_id:null;
     breadcrumb_schema:null;
     faq_schema:null;
+    page_short_desc:any;
 }
