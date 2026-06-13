@@ -26,6 +26,7 @@ export class ManageDistanceComponent implements OnInit {
   cityContent: any;
   routesData: any;
   locationsData: any;
+  Location: any;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -47,6 +48,7 @@ export class ManageDistanceComponent implements OnInit {
 
     this.searchFrom = this.fb.group({
       route_id: [null],
+      location_id: [null],
     })
 
     this.updateFrom = this.fb.group({
@@ -56,6 +58,7 @@ export class ManageDistanceComponent implements OnInit {
 
     // this.search();
     this.getRoute();
+    this.getLocations();
     // this.loadServices();
 
   }
@@ -64,6 +67,13 @@ export class ManageDistanceComponent implements OnInit {
     this.http.post(this.apiUrl + '/getroutes', '').subscribe((res: any) => {
       this.routesData = res.data;
       // console.log(this.routesData)
+    });
+  }
+
+  getLocations() {
+    this.http.get(this.apiUrl + '/locations').subscribe((res: any) => {
+      this.Location = res.data;
+      // console.log(this.Location)
     });
   }
 
@@ -104,12 +114,19 @@ export class ManageDistanceComponent implements OnInit {
   }
 
 
+  // refresh() {
+  //   this.spinner.show();
+  //   this.searchFrom = this.fb.group({
+  //     route_id: [null],
+  //     location_id: [null],
+  //   })
+  //   this.search();
+  //   this.spinner.hide();
+  // }
+
   refresh() {
-    this.spinner.show();
-    this.searchFrom = this.fb.group({
-      route_id: [null],
-    })
-    this.spinner.hide();
+    this.searchFrom.reset();
+    this.locationsData = [];
   }
 
 
@@ -150,9 +167,7 @@ export class ManageDistanceComponent implements OnInit {
   // }
 
   downloadCSV() {
-
     let csvData: any[] = [];
-
     this.locationsData.forEach((pair: any) => {
 
       // FIRST LOCATION

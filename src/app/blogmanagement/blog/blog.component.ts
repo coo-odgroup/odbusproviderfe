@@ -24,6 +24,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class BlogComponent implements OnInit {
 
   private apiURL = Constants.BASE_URL;
+  private consumerApiURL = Constants.CONSUMER_API_URL;
 
   per_page = Constants.RecordLimit;
   searchBy = '';
@@ -91,7 +92,6 @@ export class BlogComponent implements OnInit {
     this.ModalBtn = "Save";
   }
 
-
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -107,12 +107,20 @@ export class BlogComponent implements OnInit {
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
+    sanitize: false,
+
+    uploadUrl:
+      this.consumerApiURL + 'blogimageupload',
+
+    uploadWithCredentials: false,
+
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' }
     ],
+
     customClasses: [
       {
         name: 'quote',
@@ -126,18 +134,14 @@ export class BlogComponent implements OnInit {
         name: 'titleText',
         class: 'titleText',
         tag: 'h1',
-      },
+      }
     ],
-    uploadUrl: 'v1/image',
-    // upload: (file: File) => { ... }
-    uploadWithCredentials: false,
-    sanitize: true,
+
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
       ['fontSize']
     ]
   };
-
 
   changeStatus(event: any, id: any, currentStatus: any) {
 

@@ -1338,6 +1338,13 @@ const NavigationItems = [
             icon: 'feather icon-pie-chart',
             url: 'seo/manage-template',
           },
+          {
+            id: 'template',
+            title: 'Template List',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/template-list',
+          }
         ],
       },
     ],

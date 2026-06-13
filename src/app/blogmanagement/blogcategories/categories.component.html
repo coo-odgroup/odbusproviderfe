@@ -99,10 +99,10 @@
 
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button type="button" (click)="editcategory(catblogData);OpenModal(content)" class="btn btn-icon btn-success"><i
-                      class="feather icon-edit"></i></button>
-                  <button type="button" (click)="openConfirmDialog(confirmDialog, catblogData.id)" class="btn btn-icon btn-danger"><i
-                      class="feather icon-trash-2"></i></button>
+                  <button type="button" (click)="editcategory(catblogData);OpenModal(content)"
+                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="openConfirmDialog(confirmDialog, catblogData.id)"
+                    class="btn btn-icon btn-danger"><i class="feather icon-trash-2"></i></button>
                 </div>
               </td>
 
@@ -254,13 +254,13 @@
                         <div class="col-md-6">
                           <div class="form-group mb-3">
                             <label>
-                              Meta Description <span class="text-danger">*</span>
+                              BreadCrumb Schema <span class="text-danger">*</span>
                             </label>
-                            <textarea class="form-control" rows="3" formControlName="meta_description"
-                              placeholder="Enter Meta description"></textarea>
+                            <textarea class="form-control" rows="3" formControlName="breadcrumb_schema"
+                              placeholder="Enter BreadCrumb Schema"></textarea>
                             <small class="text-danger"
-                              *ngIf="blogCategory.controls.meta_description.touched && blogCategory.controls.meta_description.hasError('required')">
-                              Meta Description is required
+                              *ngIf="blogCategory.controls.breadcrumb_schema.touched && blogCategory.controls.breadcrumb_schema.hasError('required')">
+                              BreadCrumb Schema is required
                             </small>
                           </div>
                         </div>
@@ -280,6 +280,20 @@
                             <small class="text-danger"
                               *ngIf="blogCategory.controls.banner_image.touched && blogCategory.controls.banner_image.hasError('required')">
                               Banner image is required
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group mb-3">
+                            <label>
+                              Meta Description <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" rows="3" formControlName="meta_description"
+                              placeholder="Enter Meta description"></textarea>
+                            <small class="text-danger"
+                              *ngIf="blogCategory.controls.meta_description.touched && blogCategory.controls.meta_description.hasError('required')">
+                              Meta Description is required
                             </small>
                           </div>
                         </div>

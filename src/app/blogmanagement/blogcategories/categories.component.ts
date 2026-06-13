@@ -81,7 +81,7 @@ export class CategoryComponent implements OnInit {
     this.bannerRecord = {} as Banner;
     config.backdrop = 'static';
     config.keyboard = false;
-    this.ModalHeading = "Add Banner Line";
+    this.ModalHeading = "Edit Blog Category";
     this.ModalBtn = "Save";
   }
 
@@ -187,13 +187,14 @@ export class CategoryComponent implements OnInit {
     this.ModalBtn = "Update Category";
 
     this.blogCategory.patchValue({
-      id: data.id,  // 👈 very important
+      id: data.id,
       category_name: data.category_name,
       slug: data.slug,
       icon: data.icon,
       description: data.description,
       meta_title: data.meta_title,
-      meta_description: data.meta_description
+      meta_description: data.meta_description,
+      breadcrumb_schema: data.breadcrumb_schema
     });
 
   }
@@ -213,6 +214,7 @@ export class CategoryComponent implements OnInit {
     formData.append('description', this.blogCategory.get('description')?.value);
     formData.append('meta_title', this.blogCategory.get('meta_title')?.value);
     formData.append('meta_description', this.blogCategory.get('meta_description')?.value);
+    formData.append('breadcrumb_schema', this.blogCategory.get('breadcrumb_schema')?.value);
     formData.append('icon', this.blogCategory.get('icon')?.value);
 
     // ✅ Only append image if selected
@@ -261,6 +263,7 @@ export class CategoryComponent implements OnInit {
       banner_image: new FormControl(''),
       meta_title: new FormControl('', Validators.required),
       meta_description: new FormControl('', Validators.required),
+      breadcrumb_schema: new FormControl('', Validators.required),
     })
 
     // 👇 Auto generate slug
@@ -372,7 +375,8 @@ export class CategoryComponent implements OnInit {
       icon: '',
       banner_image: '',
       meta_title: '',
-      meta_description: ''
+      meta_description: '',
+      breadcrumb_schema: ''
     });
 
     this.selectedFile = null;

@@ -9,9 +9,14 @@
                 <form *ngIf="searchFrom" [formGroup]="searchFrom">
                     <div class="row align-items-center">
 
-                        <div class="col-md-3" *ngIf="role == '1'">
+                        <div class="col-md-2" *ngIf="role == '1'">
                             <ng-select [items]="routesData" bindLabel="route_name" bindValue="id"
-                                placeholder="Select Routes" formControlName="route_id" [clearable]="false">
+                                placeholder="Search By Routes" formControlName="route_id" [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-2" *ngIf="role == '1'">
+                            <ng-select [items]="Location" bindLabel="name" bindValue="id"
+                                placeholder="Search By Location" formControlName="location_id" [clearable]="false">
                             </ng-select>
                         </div>
 
@@ -30,14 +35,14 @@
                         </div>
 
                         <!-- DOWNLOAD CSV -->
-                        <div class="col-md-2">
+                        <div class="col-md-2" *ngIf="locationsData?.length > 0">
                             <button type="button" class="btn btn-primary w-100" (click)="downloadCSV()">
                                 Download CSV
                             </button>
                         </div>
 
                         <!-- UPLOAD CSV -->
-                        <div class="col-md-3">
+                        <div class="col-md-2" *ngIf="locationsData?.length > 0">
                             <input type="file" class="form-control" accept=".csv" (change)="uploadCSV($event)">
                         </div>
 
@@ -47,7 +52,7 @@
 
             <form [formGroup]="updateFrom">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle" style="font-size: 13px;">
+                    <table class="table table-bordered table-hover align-middle" style="font-size: 13px;" *ngIf="locationsData?.length > 0">
 
                         <thead class="table-light align-middle">
                             <tr>

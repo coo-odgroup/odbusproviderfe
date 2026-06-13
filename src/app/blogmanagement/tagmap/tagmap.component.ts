@@ -155,7 +155,7 @@ export class TagmapComponent implements OnInit {
 
   getAlltag() {
 
-    this.http.post(this.apiURL + "/tag", "")
+    this.http.post(this.apiURL + "/gettag", "")
       .subscribe((res: any) => {
 
         this.tagdata = res.data;
