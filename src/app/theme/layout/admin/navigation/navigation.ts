@@ -1194,17 +1194,24 @@ const NavigationItems = [
         ],
       },
       {
-        title: 'Manage Scheduler',
+        title: 'Manage Refund',
         type: 'collapse',
         icon: 'feather icon-twitter ',
         children: [
           {
             id: 'customercancelrefund',
-            title: 'Customer Cancel Refund',
+            title: 'Pending Refund',
             type: 'item',
-            icon: 'feather icon-pie-chart',
+            icon: 'feather icon-rotate-ccw',
             url: 'managescheduler/customercancelrefund',
           },
+          {
+            id: 'completerefund',
+            title: 'Complete Refund',
+            type: 'item',
+            icon: 'feather icon-refresh-cw',
+            url: 'managescheduler/completerefund',
+          }
         ],
       },
       {

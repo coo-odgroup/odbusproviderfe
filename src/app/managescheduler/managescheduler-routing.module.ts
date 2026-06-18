@@ -8,6 +8,10 @@ const routes: Routes = [
       {
         path: 'customercancelrefund',
         loadChildren: () => import('./customercancelrefund/customercancelrefund.module').then(module => module.CustomercancelrefundModule)
+      },
+      {
+        path: 'completerefund',
+        loadChildren: () => import('./completerefund/completerefund.module').then(module => module.CompleterefundModule)
       }
     ]
   }
