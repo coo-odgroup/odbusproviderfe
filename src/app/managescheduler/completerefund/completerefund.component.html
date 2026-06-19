@@ -21,21 +21,6 @@
         <div class="col-12">
           <form [formGroup]="searchForm">
             <div class="row">
-              <div class="col-md-2">
-                <div class="from-group">
-                  <div class="row">
-                    <label for="schedule_btn" class="col-form-label col-sm-12"
-                      >&nbsp;</label
-                    >
-                  </div>
-                  <button
-                    class="btn sml_input btn-success mb-2"
-                    (click)="scheduleRecords()"
-                  >
-                    Schedule
-                  </button>
-                </div>
-              </div>
 
               <div class="col-md-2">
                 <div class="from-group">
@@ -65,7 +50,7 @@
                 </div>
               </div>
 
-              <div class="col-md-3">
+              <div class="col-md-5">
                 <div class="form-group">
                   <label for="name" class="col-form-label">Search PNR</label>
                   <div class="input-group">
@@ -145,13 +130,6 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  [(ngModel)]="selectAll"
-                  (change)="toggleSelectAll()"
-                />
-              </th>
               <th>Id</th>
               <th>Ticket Details</th>
               <th>Cancel Date</th>
@@ -167,14 +145,6 @@
 
           <tbody *ngIf="cancelRefund?.length != 0">
             <tr *ngFor="let list of cancelRefund; let i = index">
-              <!-- Checkbox for each row -->
-              <td>
-                <input
-                  type="checkbox"
-                  [(ngModel)]="list.selected"
-                  (change)="updateSelectAll()"
-                />
-              </td>
 
               <td>{{ i + 1 }}</td>
               <td class="align-middle">
@@ -318,7 +288,7 @@
                     *ngIf="list.user_id == 0"
                     style="color: rgb(77, 189, 77)"
                   >
-                    <small>Refund to Customer</small></span
+                    <small>Refunded to Customer</small></span
                   >
                 </b>
               </td>

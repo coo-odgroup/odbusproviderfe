@@ -21,4 +21,8 @@ export class ScheduleRefundService {
   getRefundSelected(body: any): Observable<any> {
     return this.http.post<any>(this.apiURL + '/scheduleRefundSelected', body);
   }
+
+  getCompleteRefundList(body: any): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/completeRefund', body);
+  }
 }

@@ -1,10 +1,8 @@
-import { BusOperatorService } from './../../services/bus-operator.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Admincancelticket } from '../../model/admincancelticket';
 import { NotificationService } from '../../services/notification.service';
 import { AdmincancelticketService } from '../../services/admincancelticket.service';
-import { BusService } from '../../services/bus.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Constants } from '../../constant/constant';
 import {
@@ -12,7 +10,6 @@ import {
   NgbModal,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
-import { LocationService } from '../../services/location.service';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -59,14 +56,10 @@ export class CompleterefundComponent implements OnInit {
   constructor(
     private srs: ScheduleRefundService,
     private acts: AdmincancelticketService,
-    private http: HttpClient,
     private notificationService: NotificationService,
     private fb: FormBuilder,
     config: NgbModalConfig,
     private modalService: NgbModal,
-    private busService: BusService,
-    private busOperatorService: BusOperatorService,
-    private locationService: LocationService,
     private spinner: NgxSpinnerService,
   ) {
     this.isSubmit = false;
@@ -83,6 +76,7 @@ export class CompleterefundComponent implements OnInit {
       size: 'xl',
     });
   }
+
   ngOnInit(): void {
     // this.spinner.show();
     this.cancelTicketForm = this.fb.group({
@@ -126,7 +120,7 @@ export class CompleterefundComponent implements OnInit {
         this.spinner.hide();
       });
     } else {
-      this.srs.getRefundList(param).subscribe((res) => {
+      this.srs.getCompleteRefundList(param).subscribe((res) => {
         this.cancelRefund = res.data.data.data;
         this.pagination = res.data.data;
         this.all = res.data;
@@ -149,8 +143,6 @@ export class CompleterefundComponent implements OnInit {
       this.acts.getPnrDetails(pnr).subscribe((res) => {
         this.pnrDetails = res.data;
         this.spinner.hide();
-        console.log(this.pnrDetails);
-
         if (this.pnrDetails.length == 0) {
           this.msg = 'No Pnr Found';
         }
@@ -170,6 +162,7 @@ export class CompleterefundComponent implements OnInit {
 
     // ((totalFare/100)*percentage).toFixed(2) //percentage calculation in angular
   }
+
   previewCancelTicket() {
     // console.log(this.cancelTicketForm.value);
   }
@@ -193,7 +186,7 @@ export class CompleterefundComponent implements OnInit {
       status: 2,
     };
 
-    console.log(data);
+    // console.log(data);
     // return;
 
     this.acts.cancelTicket(data).subscribe((res) => {
@@ -242,6 +235,7 @@ export class CompleterefundComponent implements OnInit {
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
   }
+
   ResetAttributes() {
     this.user = '';
     this.msg = '';
@@ -258,22 +252,6 @@ export class CompleterefundComponent implements OnInit {
     this.ModalBtn = 'Cancel Ticket';
   }
 
-  toggleSelectAll() {
-    this.cancelRefund.forEach((item: any) => {
-      item.selected = this.selectAll;
-    });
-  }
-
-  updateSelectAll() {
-    this.selectAll = this.cancelRefund.every((item: any) => item.selected);
-  }
-
-  // Get selected rows when needed
-  getSelectedRows() {
-    const selected = this.cancelRefund.filter((item: any) => item.selected);
-    return selected;
-  }
-
   copyMessage($event: any) {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
@@ -286,43 +264,5 @@ export class CompleterefundComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-  }
-
-  scheduleRecords() {
-    const selectedBookingIds = this.cancelRefund
-      .filter((item) => item.selected)
-      .map((item) => item.id);
-
-    console.log(selectedBookingIds);
-
-    if (selectedBookingIds.length === 0) {
-      alert('Please select at least one record!');
-      return;
-    }
-
-    const param = {
-      booking_ids: selectedBookingIds,
-    };
-
-    this.spinner.show();
-
-    this.srs.getRefundSelected(param).subscribe((res) => {
-      console.log(res);
-      if (res.status == 1) {
-        this.search();
-        this.notificationService.addToast({
-          title: 'Success',
-          msg: res.message,
-          type: 'success',
-        });
-      } else {
-        this.notificationService.addToast({
-          title: 'Error',
-          msg: res.message,
-          type: 'error',
-        });
-      }
-      this.spinner.hide();
-    });
   }
 }
