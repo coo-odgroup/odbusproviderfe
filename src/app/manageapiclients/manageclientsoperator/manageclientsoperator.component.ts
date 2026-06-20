@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input, ViewChild } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
 import { ManageclientsoperatorService } from '../../services/manageclientsoperator.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,12 +6,33 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Apiusercommissionslab} from '../../model/apiusercommissionslab';
 import { Subject } from 'rxjs';
 import{Constants} from '../../constant/constant';
-import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalConfig, NgbModal, NgbModalRef, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml  } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from "ngx-spinner";
 import { BusOperatorService } from './../../services/bus-operator.service';
+const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
+one && two && two.year === one.year && two.month === one.month && two.day === one.day;
 
+const before = (one: NgbDateStruct, two: NgbDateStruct) =>
+!one || !two ? false :
+one.year === two.year
+? one.month === two.month
+? one.day === two.day
+? false
+: one.day < two.day
+: one.month < two.month
+: one.year < two.year;
+
+const after = (one: NgbDateStruct, two: NgbDateStruct) =>
+!one || !two ? false :
+one.year === two.year
+? one.month === two.month
+? one.day === two.day
+? false
+: one.day > two.day
+: one.month > two.month
+: one.year > two.year;
 
 @Component({
   selector: 'app-manageclientsoperator',
@@ -20,7 +41,27 @@ import { BusOperatorService } from './../../services/bus-operator.service';
 })
 export class ManageclientsoperatorComponent implements OnInit {
 
-  
+  hoveredDate: NgbDateStruct;
+
+  fromDate: NgbDateStruct;
+  toDate: NgbDateStruct;
+
+  _datesSelected: NgbDateStruct[] = [];
+
+  @Input()
+  set datesSelected(value: NgbDateStruct[]) {
+  this._datesSelected = value;
+  }
+
+  get datesSelected(): NgbDateStruct[] {
+  return this._datesSelected ? this._datesSelected : [];
+  }
+
+  @Output()
+  datesSelectedChange = new EventEmitter<NgbDateStruct[]>();
+
+
+
   public form: FormGroup;
   public formConfirm: FormGroup;
   public searchForm: FormGroup;
@@ -69,6 +110,8 @@ ngOnInit(): void {
       id:[null],
       user_id: [null, Validators.compose([Validators.required])],
       bus_operator_id: [null, Validators.compose([Validators.required])],
+      restriction_type:['permanent', Validators.required],
+      journey_dates:[[]],
       user_name : sessionStorage.getItem('USERNAME'),   
     });  
     this.formConfirm=this.fb.group({
@@ -81,6 +124,20 @@ ngOnInit(): void {
     });
     this.loadServices();
     this.search(); 
+
+    this.form.get('restriction_type')?.valueChanges.subscribe((type: string) => {
+
+      const journeyDate = this.form.get('journey_dates');
+
+      if (type === 'datewise') {
+        journeyDate?.setValidators([Validators.required]);
+      } else {
+        journeyDate?.clearValidators();
+        journeyDate?.setValue(null);
+      }
+
+      journeyDate?.updateValueAndValidity();
+    });
 }
 
 page(label:any){
@@ -153,6 +210,11 @@ refresh()
 }  
 ResetAttributes()
 {
+
+  this.datesSelected = [];
+  this.fromDate = null;
+  this.toDate = null;
+
     this.aapiusercommissionslabRecord = {
       user_id:'',
       starting_fare:'',
@@ -163,6 +225,8 @@ ResetAttributes()
       id:[null],
       user_id: ['', Validators.compose([Validators.required])],
       bus_operator_id: ['', Validators.compose([Validators.required])],
+      restriction_type:['permanent', Validators.required],
+      journey_dates:[[]],
       user_name : sessionStorage.getItem('USERNAME'),   
     });
     this.ModalHeading = "Add Commission Slab";
@@ -178,6 +242,8 @@ addCommissionSlab()
   const data = {
       user_id: this.form.value.user_id,
       bus_operator_id:this.form.value.bus_operator_id,
+      restriction_type:this.form.value.restriction_type,
+      journey_dates:this.form.value.journey_dates,
       created_by : sessionStorage.getItem('USERNAME'),     
   };
 
@@ -251,5 +317,107 @@ deleteRecord()
           }
     }); 
 }
+
+
+onDateSelection(event: any, date: NgbDateStruct) {
+
+event.target.parentElement.blur();
+
+if (!this.fromDate && !this.toDate) {
+
+if (event.ctrlKey === true) {
+  this.fromDate = date;
+} else {
+  this.addDate(date);
+}
+
+this.datesSelectedChange.emit(this.datesSelected);
+
+} else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
+
+this.toDate = date;
+
+this.addRangeDate(this.fromDate, this.toDate);
+
+this.fromDate = null;
+this.toDate = null;
+
+} else {
+
+this.toDate = null;
+this.fromDate = date;
+
+}
+}
+
+addDate(date: NgbDateStruct) {
+
+const index = this.datesSelected.findIndex(
+f => f.day === date.day &&
+f.month === date.month &&
+f.year === date.year
+);
+
+if (index >= 0) {
+this.datesSelected.splice(index, 1);
+} else {
+this.datesSelected.push(date);
+}
+
+this.form.controls['journey_dates'].setValue([...this.datesSelected]);
+
+console.log(this.datesSelected);
+
+}
+
+addRangeDate(fromDate: NgbDateStruct, toDate: NgbDateStruct) {
+
+const from = new Date(
+fromDate.year + '-' + fromDate.month + '-' + fromDate.day
+).getTime();
+
+const to = new Date(
+toDate.year + '-' + toDate.month + '-' + toDate.day
+).getTime();
+
+for (let time = from; time <= to; time += 86400000) {
+
+const date = new Date(time);
+
+this.addDate({
+  year: date.getFullYear(),
+  month: date.getMonth() + 1,
+  day: date.getDate()
+});
+
+}
+
+this.datesSelectedChange.emit(this.datesSelected);
+}
+
+isDateSelected(date: NgbDateStruct) {
+
+return this.datesSelected.findIndex(
+f => f.day === date.day &&
+f.month === date.month &&
+f.year === date.year
+) >= 0;
+}
+
+isHovered = date =>
+this.fromDate &&
+!this.toDate &&
+this.hoveredDate &&
+after(date, this.fromDate) &&
+before(date, this.hoveredDate);
+
+isInside = date =>
+after(date, this.fromDate) &&
+before(date, this.toDate);
+
+isFrom = date => equals(date, this.fromDate);
+
+isTo = date => equals(date, this.toDate);
+
 
 }

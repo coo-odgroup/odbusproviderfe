@@ -47,7 +47,7 @@
                     </div>
                     
                 
-                </div>
+                </div>               
             </form>
         </div>
           <!-- <div class="col-8">
@@ -75,6 +75,8 @@
               <tr>
                 <th>SL.NO</th>
                 <th>API User Name</th>
+                <th>Restriction Type</th>
+                <th>Journey Date</th>
                 <th>Restrict Bus Operator</th>
                 <th scope="col">Created/Updated On</th>
                 <th scope="col">Created By</th>                
@@ -85,6 +87,23 @@
               <tr *ngFor="let cm of apiusercommissionslab; let i=index;">
                 <td>{{ i+1}}</td>
                 <td>{{ cm.user.name }}</td>
+                <td>
+                  <span
+                    class="badge badge-success"
+                    *ngIf="cm.restriction_type=='permanent'">
+                      Permanent
+                  </span>
+
+                  <span
+                    class="badge badge-warning"
+                    *ngIf="cm.restriction_type=='datewise'">
+                      Date Wise
+                  </span>
+              </td>
+
+              <td>
+                  {{ cm.journey_date ? (cm.journey_date | date:'yyyy-MM-dd') : '-' }}
+              </td>
                 <td>{{ cm.bus_operator.organisation_name }}<br> {{ cm.bus_operator.operator_name }}</td>
                 <td>{{ cm.updated_at| date: 'yyyy-MM-dd hh:mm:ss' }}</td>
                 <td>{{ cm.created_by }}</td>
@@ -203,6 +222,54 @@
                             </div>
                         </div>
                         </div>
+
+                        <div class="row">
+                        <div class="from-group col-md-12">
+                          <label class="col-sm-12 col-form-label">
+                            Restriction Type <span class="text-danger">*</span>
+                          </label>
+
+                          <div class="col-sm-12">
+                            <select class="form-control" formControlName="restriction_type">
+                              <option value="permanent">Permanent</option>
+                              <option value="datewise">Date Wise</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div *ngIf="form.get('restriction_type')?.value=='datewise'">
+
+                        <label>
+                            Journey Dates
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <ngb-datepicker
+                            [displayMonths]="1"
+                            [dayTemplate]="t">
+                        </ngb-datepicker>
+
+                        <ng-template #t let-date="date" let-focused="focused">
+
+                            <span
+                                class="custom-day"
+                                (click)="onDateSelection($event,date)"
+                                [class.focused]="focused"
+                                [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
+                                [class.faded]="isHovered(date) || isInside(date)"
+                                [class.selected]="isDateSelected(date)"
+                                (mouseenter)="hoveredDate = date"
+                                (mouseleave)="hoveredDate = null">
+
+                                {{ date.day }}
+
+                            </span>
+
+                        </ng-template>
+
+                    </div>
+
                       </form>
                     </div>
                   </div>
