@@ -322,7 +322,6 @@ export class SmsEmailTicketComponent implements OnInit {
         ━━━━━━━━━━━━━━━━━━
         👤 Passenger: ${smsD?.Name || sms.customerName}
         💺 Seat(s): ${smsD?.seat || sms.seatNo}
-        🛏️ Sleeper(s): ${smsD?.seat || sms.seatNo}
         📞 Conductor Mob: ${sms.conductor_no}
         ━━━━━━━━━━━━━━━━━━
         📧 Ticket Details, cancellation policy & boarding info sent to your registered email.
