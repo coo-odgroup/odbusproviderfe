@@ -1110,6 +1110,7 @@ alreadyOpen()
     // return;
     this.seatopenService.delete(delitem).subscribe(
       resp => {
+        console.log(resp);
         if (resp.status == 1) {
           this.notificationService.addToast({ title: Constants.SuccessTitle, msg: resp.message, type: Constants.SuccessType });
           this.confirmDialogReference.close();
