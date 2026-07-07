@@ -817,7 +817,7 @@ export class SeatblockComponent implements OnInit {
     });
 
     this.spinner.show();
-    this.onSelectAll();
+   // this.onSelectAll();
 
     // if(checkedSeats.length>6)
     // {
@@ -851,8 +851,7 @@ export class SeatblockComponent implements OnInit {
       created_by: sessionStorage.getItem('USERNAME'),
       type: "2"
     };
-    // console.log(data);
-    // return;
+   
     let id = this.seatBlockRecord.id;
     if (id != null) {
       this.seatblockService.update(id, data).subscribe(
@@ -1231,7 +1230,7 @@ export class SeatblockComponent implements OnInit {
   updateBlockseat() {
     this.spinner.show();
     // this.checkroute();
-    this.onSelectAll();
+   // this.onSelectAll();
     // console.log(this.seatBlockForm.value.bus_id);
 
     if(this.seatBlockForm.value.date == null)
