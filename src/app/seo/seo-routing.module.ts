@@ -28,6 +28,10 @@ const routes: Routes = [
       {
         path: 'manage-routes',
         loadChildren: () => import('./manageroute/manageroute.module').then(module => module.ManageRouteListModule)
+      },
+      {
+        path: 'manage-popular-routes',
+        loadChildren: () => import('./managepopularroute/managepopularroute.module').then(module => module.ManagePopularRouteModule)
       }
 
     ]

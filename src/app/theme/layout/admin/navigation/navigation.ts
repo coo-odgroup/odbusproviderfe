@@ -1340,6 +1340,13 @@ const NavigationItems = [
           },
           {
             id: 'template',
+            title: 'Manage Popular Routes',
+            type: 'item',
+            icon: 'feather icon-pie-chart',
+            url: 'seo/manage-popular-routes',
+          },
+          {
+            id: 'template',
             title: 'Manage Template',
             type: 'item',
             icon: 'feather icon-pie-chart',
