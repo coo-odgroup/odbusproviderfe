@@ -1,0 +1,204 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Manage Popular Routes" cardClass="card-datatable" [options]="false" [isCardFooter]="false">
+
+
+            <div class=" mb-3">
+                <div class="row">
+                    <div class="col-12">
+                        <form [formGroup]="searchFrom">
+
+                            <div class="row align-items-end">
+
+                                <!-- Route -->
+                                <div class="col-md-3 col-sm-6 mb-3" *ngIf="role == '1'">
+                                    <div class="form-group mb-0">
+                                        <label class="mb-1">Routes</label>
+
+                                        <ng-select [items]="routesData" bindLabel="route_name" bindValue="id"
+                                            placeholder="Search By Routes" formControlName="route_id"
+                                            [clearable]="false">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <!-- Show Rows -->
+                                <div class="col-md-2 col-sm-6 mb-3">
+                                    <div class="form-group mb-0">
+                                        <label class="mb-1">Route Type</label>
+                                        <select class="form-control sml_input" formControlName="route_type">
+                                            <option value="">Select</option>
+                                            <option value="is_popular_routes">Is Popular Route</option>
+                                            <option value="is_top_routes">Is Top Route</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Show Rows -->
+                                <div class="col-md-2 col-sm-6 mb-3">
+                                    <div class="form-group mb-0">
+                                        <label class="mb-1">Order By</label>
+                                        <select class="form-control sml_input" formControlName="order_by">
+                                            <option value="">Select</option>
+                                            <option value="asc">ASC</option>
+                                            <option value="desc">DESC</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Search / Refresh -->
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <div class="d-flex">
+
+                                        <button type="button" class="btn btn-success sml_input me-2 w-50" title="search"
+                                            (click)="search()">
+                                            Search
+                                        </button>
+
+                                        <button type="button" class="btn btn-danger sml_input w-50" title="refresh"
+                                            (click)="refresh()">
+                                            Refresh
+                                        </button>
+
+                                    </div>
+                                </div>
+
+
+                                <!-- Add -->
+                                <div class="col-md-2 col-sm-6 mb-3">
+                                    <button type="button" class="btn btn-success sml_input w-50" title="Add"
+                                        (click)="updateRouteDetails()">
+                                        Update
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="table-responsive table-container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Routes</th>
+                <th>Is Popular Route</th>
+                <th>Is Top Route</th>
+                <th>Sequence</th>
+            </tr>
+        </thead>
+
+        <tbody *ngIf="Data?.length != 0">
+            <tr *ngFor="let data of Data; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ data.source }} - {{ data.destination }}</td>
+
+                <td>
+                    <input type="checkbox"
+                        [(ngModel)]="data.is_popular_routes"
+                        (change)="markAsChanged(data)"
+                        [ngModelOptions]="{standalone: true}">
+                </td>
+
+                <td>
+                    <input type="checkbox"
+                        [(ngModel)]="data.is_top_routes"
+                        (change)="markAsChanged(data)"
+                        [ngModelOptions]="{standalone: true}">
+                </td>
+
+                <td>
+                    <input type="number"
+                        [(ngModel)]="data.sequence"
+                        (change)="markAsChanged(data)"
+                        min="1"
+                        [ngModelOptions]="{standalone: true}">
+                </td>
+            </tr>
+        </tbody>
+
+        <tbody *ngIf="Data?.length == 0">
+            <tr>
+                <td colspan="5" class="text-center">No data!</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+            <!-- Static Modal -->
+            <div class="modal fade show" tabindex="-1" [ngStyle]="{'display': showModal ? 'block' : 'none'}"
+                *ngIf="showModal">
+
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Template Details</h5>
+
+                            <button type="button" class="close-btn" (click)="showModal = false">
+                                ✕
+                            </button>
+                        </div>
+
+                        <div class="modal-body overflow-auto" style="max-height:700px;">
+
+                            <div class="row">
+
+                                <!-- Content -->
+                                <div class="col-md-8">
+                                    <div [innerHTML]="templateData?.content"></div>
+                                </div>
+
+                                <!-- Meta Details -->
+                                <div class="col-md-4">
+
+                                    <div class="mb-4">
+                                        <h5>Meta Title</h5>
+                                        <p>{{ templateData?.meta_title }}</p>
+                                    </div>
+
+                                    <div>
+                                        <h5>Meta Description</h5>
+                                        <p>{{ templateData?.meta_description }}</p>
+                                    </div>
+
+                                    <div>
+                                        <h5>Breadcrumb Schema</h5>
+                                        <pre>{{ templateData?.breadcrumb_schema | json }}</pre>
+                                    </div>
+                                    <div>
+                                        <h5>FAQ Schema</h5>
+                                        <pre>{{ templateData?.faq_schema | json }}</pre>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-secondary" (click)="showModal = false">
+                                Close
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Backdrop -->
+            <div class="modal-backdrop fade show" *ngIf="showModal">
+            </div>
+
+        </app-card>
+    </div>
+</div>
