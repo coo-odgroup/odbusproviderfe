@@ -49,4 +49,5 @@ export interface SettingsRecords{
     countdown_enddate:any,
     countdown_status:any,
     organization_schema?: any;
+    storage_version?: any;
   }

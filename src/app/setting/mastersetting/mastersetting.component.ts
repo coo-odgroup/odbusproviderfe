@@ -80,6 +80,7 @@ export class MastersettingComponent implements OnInit {
   popup_status: number;
   pop: boolean;
   organization_schema: any;
+  storage_version: any;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -204,7 +205,8 @@ export class MastersettingComponent implements OnInit {
       countdown_endtime: [null],
       countdown_enddate: [null],
       countdown_status: [null],
-      organization_schema: [null]
+      organization_schema: [null],
+      storage_version: [null]
     });
 
     this.formConfirm = this.fb.group({
@@ -575,7 +577,8 @@ export class MastersettingComponent implements OnInit {
       countdown_endtime: [null],
       countdown_enddate: [null],
       countdown_status: [null],
-      organization_schema: [null]
+      organization_schema: [null],
+      storage_version: [null]
     });
 
     this.LoadAllService();
@@ -684,6 +687,7 @@ export class MastersettingComponent implements OnInit {
     fd.append('countdown_endtime', this.settingForm.value.countdown_endtime);
     fd.append('countdown_enddate', this.settingForm.value.countdown_enddate);
     fd.append('no_script', this.settingForm.value.no_script);
+    fd.append('storage_version', this.settingForm.value.storage_version);
     fd.append('created_by', sessionStorage.getItem('USERNAME'));
 
     //     console.log(this.settingForm.value);
@@ -824,7 +828,8 @@ export class MastersettingComponent implements OnInit {
       countdown_status: [this.count],
       countdown_endtime: [this.settingRecord.countdown_endtime],
       countdown_enddate: [this.settingRecord.countdown_enddate],
-      organization_schema: [this.settingRecord.organization_schema]
+      organization_schema: [this.settingRecord.organization_schema],
+      storage_version: [this.settingRecord.storage_version]
     });
 
     //console.log(this.settingForm);
