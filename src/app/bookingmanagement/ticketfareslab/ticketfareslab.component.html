@@ -26,11 +26,34 @@
                       </select>
                     </div>
                   </div>
-                  
                 </div>
+
+                <!-- Date filter Add -->
+                <div class="col-md-2">
+                  <div class="form-group row">
+                    <div class="col-sm-12">
+                      <div class="input-group">
+                        <input type="date" class="form-control sml_input" placeholder="Search Here " required
+                          formControlName="form_date">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-group row">
+                    <div class="col-sm-12">
+                      <div class="input-group">
+                        <input type="date" class="form-control sml_input" placeholder="Search Here " required
+                          formControlName="to_date">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
                 <div class="col-md-4">
                   <div class="form-group row">
-  
                     <div class="col-sm-12">
                       <div class="input-group">
                         <input type="text" class="form-control sml_input" placeholder="Search Here " required
@@ -44,6 +67,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <button type="button" class="btn btn-success  sml_input" (click)="search()" title="search">
                      Search

@@ -133,6 +133,8 @@ export class TicketfareslabComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       name: [null],
+      form_date: [null],
+      to_date: [null],
       rows_number: Constants.RecordLimit,
     });
 
@@ -172,6 +174,8 @@ export class TicketfareslabComponent implements OnInit {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
+      form_date: this.searchForm.value.form_date,
+      to_date: this.searchForm.value.to_date,
       rows_number: this.searchForm.value.rows_number,
       USER_BUS_OPERATOR_ID: sessionStorage.getItem('USER_BUS_OPERATOR_ID')
     };
@@ -208,6 +212,8 @@ export class TicketfareslabComponent implements OnInit {
     this.spinner.show();
     this.searchForm = this.fb.group({
       name: [null],
+      form_date: [null],
+      to_date: [null],
       rows_number: Constants.RecordLimit,
     });
 
