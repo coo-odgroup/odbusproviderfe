@@ -758,7 +758,7 @@ const NavigationItems = [
             type: 'item',
             icon: 'feather icon-pie-chart',
             url: 'reports/apilogreport',
-          }
+          },
         ],
       },
       {
@@ -1211,7 +1211,7 @@ const NavigationItems = [
             type: 'item',
             icon: 'feather icon-refresh-cw',
             url: 'managescheduler/completerefund',
-          }
+          },
         ],
       },
       {
@@ -1225,6 +1225,13 @@ const NavigationItems = [
             type: 'item',
             icon: 'feather icon-upload-cloud',
             url: 'managepushnotifications/pushnotifications',
+          },
+          {
+            id: 'campaignnotification',
+            title: 'Campaign Notification',
+            type: 'item',
+            icon: 'feather icon-send',
+            url: 'managepushnotifications/campaignnotifications',
           },
         ],
       },
@@ -1358,7 +1365,7 @@ const NavigationItems = [
             type: 'item',
             icon: 'feather icon-pie-chart',
             url: 'seo/template-list',
-          }
+          },
         ],
       },
     ],

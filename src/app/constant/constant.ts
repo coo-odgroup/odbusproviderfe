@@ -23,18 +23,18 @@ export class Constants {
     // public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
     
     //For Testing
-    public static BASE_URL: any = 'https://odapi.adglob.in/api';
-    public static CONSUMER_PUBLIC_URL: any = 'https://odclient.adglob.in/';
-    public static CONSUMER_API_URL: any = 'https://odclient.adglob.in/api/';
-    public static PATHURL: any = 'https://odapi.adglob.in/uploads/';
-    public static DOWNLOAD_URL: any = 'https://odapi.adglob.in/storage/';
+    // public static BASE_URL: any = 'https://odapi.adglob.in/api';
+    // public static CONSUMER_PUBLIC_URL: any = 'https://odclient.adglob.in/';
+    // public static CONSUMER_API_URL: any = 'https://odclient.adglob.in/api/';
+    // public static PATHURL: any = 'https://odapi.adglob.in/uploads/';
+    // public static DOWNLOAD_URL: any = 'https://odapi.adglob.in/storage/';
 
     // FOR LOCAL
-    // public static BASE_URL:any ='http://localhost:7001/ODBUS/odbusproviderbe/api';
-    // public static CONSUMER_PUBLIC_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/uploads/';
-    // public static CONSUMER_API_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/api/';
-    // public static PATHURL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/public/uploads/';
-    // public static DOWNLOAD_URL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/storage/';
+    public static BASE_URL:any ='http://localhost:7001/ODBUS/odbusproviderbe/api';
+    public static CONSUMER_PUBLIC_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/uploads/';
+    public static CONSUMER_API_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/api/';
+    public static PATHURL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/public/uploads/';
+    public static DOWNLOAD_URL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/storage/';
 
 
 

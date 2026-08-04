@@ -1,0 +1,425 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large"
+  color="#fff"
+  type="timer"
+  [fullScreen]="true"
+  ><p style="color: white">Loading...</p></ngx-spinner
+>
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card
+      [hidHeader]="false"
+      cardTitle="Campaign Notification List"
+      cardClass="card-datatable table-border-style user-profile-list"
+      [options]="false"
+      [isCardFooter]="false"
+    >
+      <form [formGroup]="searchForm">
+        <div class="row align-items-end">
+          <!-- Add Button -->
+          <div class="col-lg-2 col-md-3 mb-3">
+            <button
+              type="button"
+              class="btn btn-success btn-block"
+              (click)="ResetAttributes(); OpenModal(content)"
+            >
+              <i class="fa fa-plus"></i>
+              Add Campaign Notification
+            </button>
+          </div>
+
+          <!-- Status -->
+          <div class="col-lg-2 col-md-3 mb-3">
+            <label class="font-weight-bold">Status</label>
+            <select class="form-control sml_input" formControlName="status">
+              <option value="">All</option>
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+
+          <!-- Type -->
+          <div class="col-lg-2 col-md-3 mb-3">
+            <label class="font-weight-bold">Type</label>
+            <select class="form-control sml_input" formControlName="type">
+              <option value="">All</option>
+              <option value="PROMOTIONAL">Promotional</option>
+              <option value="TRANSACTIONAL">Transactional</option>
+              <option value="REMINDER">Reminder</option>
+              <option value="CUSTOM">Custom</option>
+            </select>
+          </div>
+
+          <!-- Target Type -->
+          <div class="col-lg-3 col-md-3 mb-3">
+            <label class="font-weight-bold">Target Type</label>
+            <select
+              class="form-control sml_input"
+              formControlName="target_type"
+            >
+              <option value="">All</option>
+              <option value="ALL">All Users</option>
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+              <option value="VERIFIED">Verified</option>
+              <option value="CUSTOM">Custom</option>
+            </select>
+          </div>
+
+          <!-- Schedule Type -->
+          <div class="col-lg-3 col-md-3 mb-3">
+            <label class="font-weight-bold">Schedule Type</label>
+            <select
+              class="form-control sml_input"
+              formControlName="schedule_type"
+            >
+              <option value="">All</option>
+              <option value="IMMEDIATE">Immediate</option>
+              <option value="SCHEDULED">Scheduled</option>
+              <option value="BEFORE_EVENT">Before Event</option>
+              <option value="AFTER_EVENT">After Event</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mt-2 align-items-center">
+          <!-- Refresh -->
+          <div class="col-lg-1 col-md-2 mb-2">
+            <button
+              type="button"
+              class="btn btn-danger btn-block"
+              (click)="refresh()"
+              title="Refresh"
+            >
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+
+          <!-- Search -->
+          <div class="col-lg-9 col-md-8 mb-2">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search Campaign Name / Title / Message"
+                formControlName="name"
+              />
+
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  (click)="search()"
+                >
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rows -->
+          <div class="col-lg-2 col-md-2 mb-2">
+            <select
+              class="form-control"
+              formControlName="rows_number"
+              (change)="search()"
+            >
+              <option value="10">10 Rows</option>
+              <option value="25">25 Rows</option>
+              <option value="50">50 Rows</option>
+              <option value="100">100 Rows</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <div class="table-responsive" id="print-section">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>SL</th>
+              <th>Campaign Name</th>
+              <th>Title</th>
+              <th>Message</th>
+              <th>Campaign Type</th>
+              <th>Target Type</th>
+              <th>Schedule Type</th>
+              <th scope="col">Created On</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+              <!-- <th width="100" class="hide_print" >&nbsp; </th> -->
+            </tr>
+          </thead>
+          <tbody *ngIf="campaignNotifications?.length != 0">
+            <tr *ngFor="let campaign of campaignNotifications; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ campaign.campaign_name }}</td>
+              <td>{{ campaign.title }}</td>
+              <td>{{ campaign.message }}</td>
+              <td>{{ campaign.type }}</td>
+              <td>{{ campaign.target_type }}</td>
+              <td>{{ campaign.schedule_type }}</td>
+              <td>{{ campaign.created_at | date: "dd/MM/yyyy H:mm:ss" }}</td>
+              <td>{{ campaign.created_by_name }}</td>
+              <td>
+                <div>
+                  <label
+                    *ngIf="campaign.active_status == 1"
+                    class="badge badge-light-primary pointer text-dark"
+                    (click)="changeStatus($event, campaign.id)"
+                  >
+                    Active
+                  </label>
+
+                  <label
+                    *ngIf="campaign.active_status == 0"
+                    class="badge badge-light-danger pointer text-dark"
+                    (click)="changeStatus($event, campaign.id)"
+                  >
+                    Inactive
+                  </label>
+                </div>
+              </td>
+
+              <td class="hide_print">
+                <div class="overlay-edit">
+                  <button
+                    type="button"
+                    (click)="
+                      editCampaignNotification($event, i); OpenModal(content)
+                    "
+                    class="btn btn-icon btn-success"
+                  >
+                    <i class="feather icon-edit"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="campaignNotifications?.length == 0">
+            <tr>
+              <td colspan="10" class="text-center">
+                No Campaign Notifications Found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div *ngIf="pagination?.length!= 0" class="hide_print container">
+            <div class="row">
+              <div class="col-6">
+               
+                  <div class="col-12">
+                    <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+                  </div> 
+              </div>
+              <div class="col-6">
+                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
+                  <nav class="my-1 pt-1 ">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                      <li (click)="search(pagination.first_page_url,statusLabel)"
+                        class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
+                        <a class="page-link">First</a>
+                      </li>
+                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
+                        <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
+                          (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
+                      </li>
+                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
+                        (click)="search(pagination.last_page_url,statusLabel)">
+                        <a class="page-link">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+    
+              </div>
+    
+            </div>
+          </div>   -->
+      </div>
+
+      <div class="app-card-footer">
+        <button
+          type="button"
+          #addnew
+          class="btn btn-primary btn-add-task m-t-10 invisible"
+          id="modal"
+          (click)="ResetAttributes(); OpenModal(content)"
+        >
+          Add
+        </button>
+        <ng-template #content let-modal>
+          <form [formGroup]="form">
+            <div class="modal-header">
+              <h5 class="ng-tns-c116-5">{{ ModalHeading }}</h5>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <!-- Campaign Name -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      >Campaign Name <span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="campaign_name"
+                      placeholder="Enter Campaign Name"
+                    />
+                  </div>
+                </div>
+
+                <!-- Title -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Title <span class="text-danger">*</span></label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="title"
+                      placeholder="Enter Notification Title"
+                    />
+                  </div>
+                </div>
+
+                <!-- Message -->
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Message <span class="text-danger">*</span></label>
+                    <textarea
+                      class="form-control"
+                      rows="5"
+                      formControlName="message"
+                      placeholder="Enter Notification Message"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- Image -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Image</label>
+                    <input
+                      type="file"
+                      class="form-control"
+                      (change)="onImageChange($event)"
+                    />
+                  </div>
+                </div>
+
+                <!-- Type -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Type <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="type">
+                      <option value="">Select Type</option>
+                      <option value="PROMOTIONAL">PROMOTIONAL</option>
+                      <option value="TRANSACTIONAL">TRANSACTIONAL</option>
+                      <option value="REMINDER">REMINDER</option>
+                      <option value="CUSTOM">CUSTOM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Target Type -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      >Target Type <span class="text-danger">*</span></label
+                    >
+                    <select class="form-control" formControlName="target_type">
+                      <option value="">Select Target</option>
+                      <option value="ALL">ALL</option>
+                      <option value="ACTIVE">ACTIVE</option>
+                      <option value="INACTIVE">INACTIVE</option>
+                      <option value="VERIFIED">VERIFIED</option>
+                      <option value="CUSTOM">CUSTOM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Schedule Type -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      >Schedule Type <span class="text-danger">*</span></label
+                    >
+                    <select
+                      class="form-control"
+                      formControlName="schedule_type"
+                      (change)="scheduleTypeChange($event.target.value)"
+                    >
+                      <option value="">Select Schedule</option>
+                      <option value="IMMEDIATE">IMMEDIATE</option>
+                      <option value="SCHEDULED">SCHEDULED</option>
+                      <option value="BEFORE_EVENT">BEFORE_EVENT</option>
+                      <option value="AFTER_EVENT">AFTER_EVENT</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Schedule Minutes -->
+                <div
+                  class="col-md-6"
+                  *ngIf="form.get('schedule_type')?.value !== 'IMMEDIATE'"
+                >
+                  <div class="form-group">
+                    <label>
+                      Schedule Minutes
+                      <small class="text-muted">(Use + or -)</small>
+                    </label>
+
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="schedule_minutes"
+                      placeholder="Example: -30 or 30"
+                      step="1"
+                    />
+
+                    <small class="text-info">
+                      <strong>-</strong> = Before Event &nbsp;&nbsp;
+                      <strong>+</strong> = After Event
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="spinner.isSpinnerShowing || form.invalid"
+                (click)="saveCampaignNotification()"
+                ngbAutofocus
+              >
+                {{ ModalBtn }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                #defaultClick
+                (click)="modal.dismiss('Cross click')"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </app-card>
+  </div>
+</div>

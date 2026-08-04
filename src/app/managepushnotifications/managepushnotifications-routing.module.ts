@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { CampaignnotificationsComponent } from './campaignnotifications/campaignnotifications.component';
 
 const routes: Routes = [
   {
@@ -9,7 +10,14 @@ const routes: Routes = [
         path: 'pushnotifications',
         loadChildren: () =>
           import('./pushnotifications/pushnotifications.module').then(
-            module => module.PushnotificationsModule
+            (m) => m.PushnotificationsModule,
+          ),
+      },
+      {
+        path: 'campaignnotifications',
+        loadChildren: () =>
+          import('./campaignnotifications/campaignnotifications.module').then(
+            (m) => m.CampaignnotificationsModule,
           ),
       },
     ],
