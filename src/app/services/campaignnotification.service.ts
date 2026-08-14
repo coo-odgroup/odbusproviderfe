@@ -3,23 +3,22 @@ import { HttpClient } from '@angular/common/http';
 import { Constants } from '../constant/constant';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CampaignnotificationService {
-
   constructor(private http: HttpClient) {}
 
   create(data: any) {
     return this.http.post<any>(
       Constants.BASE_URL + '/createCampaignNotification',
-      data
+      data,
     );
   }
 
   getAllData(data: any) {
     return this.http.post<any>(
       Constants.BASE_URL + '/getAllCampaignNotificationData',
-      data
+      data,
     );
   }
 
@@ -30,14 +29,24 @@ export class CampaignnotificationService {
   update(id: number, data: any) {
     return this.http.post<any>(
       Constants.BASE_URL + '/updateCampaignNotification/' + id,
-      data
+      data,
     );
   }
 
   changeStatus(data: any) {
     return this.http.post<any>(
       Constants.BASE_URL + '/changeCampaignNotificationStatus',
-      data
+      data,
+    );
+  }
+
+  getNotificationCategories() {
+    return this.http.get<any>(Constants.BASE_URL + '/notification-categories');
+  }
+
+  getCampaignNotification(id: any) {
+    return this.http.get<any>(
+      Constants.BASE_URL + '/getCampaignNotification/' + id,
     );
   }
 }

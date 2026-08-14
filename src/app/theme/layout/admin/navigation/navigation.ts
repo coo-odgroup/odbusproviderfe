@@ -1230,7 +1230,7 @@ const NavigationItems = [
             id: 'campaignnotification',
             title: 'Campaign Notification',
             type: 'item',
-            icon: 'feather icon-send',
+            icon: 'icon-award',
             url: 'managepushnotifications/campaignnotifications',
           },
         ],

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
 import { CampaignnotificationService } from '../../services/campaignnotification.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { Constants } from '../../constant/constant';
@@ -35,6 +35,7 @@ export class CampaignnotificationsComponent implements OnInit {
   public validIFSC: any;
   public ModalHeading: any;
   public ModalBtn: any;
+  notificationCategories: any[] = [];
   pagination: any;
   all: any;
   pan_pattern = '/^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/';
@@ -79,6 +80,7 @@ export class CampaignnotificationsComponent implements OnInit {
 
     this.form = this.fb.group({
       id: [null],
+      notification_category_id: ['', Validators.required],
       campaign_name: ['', Validators.required],
       title: ['', Validators.required],
       message: ['', Validators.required],
@@ -87,6 +89,7 @@ export class CampaignnotificationsComponent implements OnInit {
       target_type: ['ALL', Validators.required],
       schedule_type: ['IMMEDIATE', Validators.required],
       schedule_minutes: [0],
+      schedules: this.fb.array([]),
     });
 
     this.formConfirm = this.fb.group({
@@ -101,6 +104,7 @@ export class CampaignnotificationsComponent implements OnInit {
       schedule_type: [''],
       rows_number: Constants.RecordLimit,
     });
+    this.getNotificationCategories();
     this.search();
   }
 
@@ -151,15 +155,35 @@ export class CampaignnotificationsComponent implements OnInit {
     this.search();
   }
 
+  get schedules(): FormArray {
+    return this.form.get('schedules') as FormArray;
+  }
+
+  createSchedule(): FormGroup {
+    return this.fb.group({
+      schedule_date: ['', Validators.required],
+      start_time: ['', Validators.required],
+      end_time: ['', Validators.required],
+    });
+  }
+
+  addSchedule(): void {
+    this.schedules.push(this.createSchedule());
+  }
+
+  removeSchedule(index: number): void {
+    if (this.schedules.length > 1) {
+      this.schedules.removeAt(index);
+    }
+  }
   ResetAttributes() {
     this.campaignNotificationRecord = {} as CampaignNotification;
-
     this.form.reset();
     this.selectedImage = null;
     this.form.patchValue({
+      notification_category_id: '',
       type: 'PROMOTIONAL',
       target_type: 'ALL',
-
       schedule_type: 'IMMEDIATE',
       schedule_minutes: 0,
     });
@@ -188,9 +212,12 @@ export class CampaignnotificationsComponent implements OnInit {
     // console.log(this.form.value);
     // return
 
-    console.log(this.form.value);
     const data = new FormData();
 
+    data.append(
+      'notification_category_id',
+      this.form.value.notification_category_id?.toString() || '',
+    );
     data.append('campaign_name', this.form.value.campaign_name);
     data.append('title', this.form.value.title);
     data.append('message', this.form.value.message);
@@ -201,7 +228,30 @@ export class CampaignnotificationsComponent implements OnInit {
       'schedule_minutes',
       this.form.value.schedule_minutes?.toString() ?? '0',
     );
+
     data.append('created_by', sessionStorage.getItem('USERID') || '');
+
+    /*
+     * Add schedules only for SCHEDULED campaign
+     */
+    if (this.form.value.schedule_type === 'SCHEDULED') {
+      this.schedules.controls.forEach((schedule, index) => {
+        data.append(
+          `schedules[${index}][schedule_date]`,
+          schedule.get('schedule_date')?.value || '',
+        );
+
+        data.append(
+          `schedules[${index}][start_time]`,
+          schedule.get('start_time')?.value || '',
+        );
+
+        data.append(
+          `schedules[${index}][end_time]`,
+          schedule.get('end_time')?.value || '',
+        );
+      });
+    }
 
     if (this.selectedImage) {
       data.append('image', this.selectedImage);
@@ -255,31 +305,116 @@ export class CampaignnotificationsComponent implements OnInit {
       });
     }
   }
-  editCampaignNotification(event: Event, id: any) {
-    this.campaignNotificationRecord = this.campaignNotifications[id];
 
-    this.form.patchValue({
-      id: this.campaignNotificationRecord.id,
-      campaign_name: this.campaignNotificationRecord.campaign_name,
-      title: this.campaignNotificationRecord.title,
-      message: this.campaignNotificationRecord.message,
-      type: this.campaignNotificationRecord.type,
-      target_type: this.campaignNotificationRecord.target_type,
-      schedule_type: this.campaignNotificationRecord.schedule_type,
-      schedule_minutes: this.campaignNotificationRecord.schedule_minutes,
-    });
-
-    this.ModalHeading = 'Edit Campaign Notification';
-
-    this.ModalBtn = 'Update';
-    this.selectedImage = null;
+  getNotificationCategories() {
+    this.campaignNotificationService
+      .getNotificationCategories()
+      .subscribe((res: any) => {
+        if (res.status == 1) {
+          this.notificationCategories = res.data || [];
+        } else {
+          this.notificationCategories = [];
+        }
+      });
   }
+
+  editCampaignNotification(event: Event, id: any) {
+    this.spinner.show();
+
+    this.campaignNotificationService
+      .getCampaignNotification(this.campaignNotifications[id].id)
+      .subscribe(
+        (res: any) => {
+          this.spinner.hide();
+
+          if (res.status !== 1) {
+            return;
+          }
+
+          const campaign = res.data.campaign;
+          const schedules = res.data.schedules || [];
+
+          /*
+           * Patch campaign fields
+           */
+          this.form.patchValue({
+            id: campaign.id,
+            notification_category_id: campaign.notification_category_id,
+            campaign_name: campaign.campaign_name,
+            title: campaign.title,
+            message: campaign.message,
+            type: campaign.type,
+            target_type: campaign.target_type,
+            schedule_type: campaign.schedule_type,
+            schedule_minutes: campaign.schedule_minutes,
+          });
+
+          /*
+           * Clear existing FormArray
+           */
+          this.schedules.clear();
+
+          /*
+           * Add previously saved schedules
+           */
+          if (campaign.schedule_type === 'SCHEDULED' && schedules.length > 0) {
+            schedules.forEach((schedule: any) => {
+              this.schedules.push(
+                this.fb.group({
+                  schedule_date: [schedule.schedule_date, Validators.required],
+
+                  start_time: [schedule.start_time, Validators.required],
+
+                  end_time: [schedule.end_time, Validators.required],
+                }),
+              );
+            });
+          } else if (campaign.schedule_type === 'SCHEDULED') {
+            /*
+             * Safety: show one empty row
+             */
+            this.addSchedule();
+          }
+
+          /*
+           * Schedule minutes state
+           */
+          if (campaign.schedule_type === 'SCHEDULED') {
+            this.form.get('schedule_minutes')?.disable();
+          } else if (
+            campaign.schedule_type === 'BEFORE_EVENT' ||
+            campaign.schedule_type === 'AFTER_EVENT'
+          ) {
+            this.form.get('schedule_minutes')?.enable();
+          } else {
+            this.form.get('schedule_minutes')?.disable();
+          }
+
+          this.ModalHeading = 'Edit Campaign Notification';
+
+          this.ModalBtn = 'Update';
+
+          this.selectedImage = null;
+        },
+        (error) => {
+          this.spinner.hide();
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: 'Unable to load campaign notification',
+            type: Constants.ErrorType,
+          });
+        },
+      );
+  }
+
   openConfirmDialog(content) {
     this.confirmDialogReference = this.modalService.open(content, {
       scrollable: true,
       size: 'md',
     });
   }
+
   changeStatus(event: Event, stsitem: any) {
     const data = {
       created_by: sessionStorage.getItem('USERID'),
@@ -308,17 +443,34 @@ export class CampaignnotificationsComponent implements OnInit {
     });
   }
 
-  scheduleTypeChange(type: string) {
+  scheduleTypeChange(type: string): void {
     this.form.patchValue({
       schedule_type: type,
     });
-    if (type === 'IMMEDIATE') {
-      this.form.patchValue({
-        schedule_minutes: 0,
-      });
+
+    if (type === 'SCHEDULED') {
+      // Disable schedule minutes
       this.form.get('schedule_minutes')?.disable();
+
+      // Add first schedule row if none exists
+      if (this.schedules.length === 0) {
+        this.addSchedule();
+      }
     } else {
-      this.form.get('schedule_minutes')?.enable();
+      // Remove all scheduled rows
+      this.schedules.clear();
+
+      // Enable schedule minutes for BEFORE_EVENT / AFTER_EVENT
+      if (type === 'BEFORE_EVENT' || type === 'AFTER_EVENT') {
+        this.form.get('schedule_minutes')?.enable();
+      } else {
+        // IMMEDIATE
+        this.form.patchValue({
+          schedule_minutes: 0,
+        });
+
+        this.form.get('schedule_minutes')?.disable();
+      }
     }
   }
 

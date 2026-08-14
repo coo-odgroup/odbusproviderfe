@@ -1,6 +1,8 @@
 export interface CampaignNotification {
   id?: number;
 
+  notification_category_id?: number;
+
   campaign_name?: string;
   title?: string;
   message?: string;

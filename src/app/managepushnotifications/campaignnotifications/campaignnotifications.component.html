@@ -30,11 +30,27 @@
             </button>
           </div>
 
+          <div class="col-lg-2 col-md-3 mb-3">
+            <label class="font-weight-bold">Campaign Category </label>
+            <select
+              class="form-control sml_input"
+              formControlName="notification_category_id"
+            >
+              <option value="">Select Campaign Category</option>
+              <option
+                *ngFor="let category of notificationCategories"
+                [value]="category.id"
+              >
+                {{ category.category_name }}
+              </option>
+            </select>
+          </div>
+
           <!-- Status -->
           <div class="col-lg-2 col-md-3 mb-3">
             <label class="font-weight-bold">Status</label>
             <select class="form-control sml_input" formControlName="status">
-              <option value="">All</option>
+              <option value="">STATUS</option>
               <option value="1">Active</option>
               <option value="0">Inactive</option>
             </select>
@@ -44,7 +60,7 @@
           <div class="col-lg-2 col-md-3 mb-3">
             <label class="font-weight-bold">Type</label>
             <select class="form-control sml_input" formControlName="type">
-              <option value="">All</option>
+              <option value="">TYPE</option>
               <option value="PROMOTIONAL">Promotional</option>
               <option value="TRANSACTIONAL">Transactional</option>
               <option value="REMINDER">Reminder</option>
@@ -53,13 +69,13 @@
           </div>
 
           <!-- Target Type -->
-          <div class="col-lg-3 col-md-3 mb-3">
+          <div class="col-lg-2 col-md-3 mb-3">
             <label class="font-weight-bold">Target Type</label>
             <select
               class="form-control sml_input"
               formControlName="target_type"
             >
-              <option value="">All</option>
+              <option value="">TARGET TYPE</option>
               <option value="ALL">All Users</option>
               <option value="ACTIVE">Active</option>
               <option value="INACTIVE">Inactive</option>
@@ -69,13 +85,13 @@
           </div>
 
           <!-- Schedule Type -->
-          <div class="col-lg-3 col-md-3 mb-3">
+          <div class="col-lg-2 col-md-3 mb-3">
             <label class="font-weight-bold">Schedule Type</label>
             <select
               class="form-control sml_input"
               formControlName="schedule_type"
             >
-              <option value="">All</option>
+              <option value="">SCHEDULE TYPE</option>
               <option value="IMMEDIATE">Immediate</option>
               <option value="SCHEDULED">Scheduled</option>
               <option value="BEFORE_EVENT">Before Event</option>
@@ -255,6 +271,7 @@
           <form [formGroup]="form">
             <div class="modal-header">
               <h5 class="ng-tns-c116-5">{{ ModalHeading }}</h5>
+
               <button
                 type="button"
                 class="close"
@@ -264,14 +281,17 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+
             <div class="modal-body">
               <div class="row">
                 <!-- Campaign Name -->
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label
-                      >Campaign Name <span class="text-danger">*</span></label
-                    >
+                    <label>
+                      Campaign Name
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <input
                       type="text"
                       class="form-control"
@@ -281,10 +301,38 @@
                   </div>
                 </div>
 
+                <!-- Campaign Category -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Campaign Category
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <select
+                      class="form-control"
+                      formControlName="notification_category_id"
+                    >
+                      <option value="">Select Campaign Category</option>
+
+                      <option
+                        *ngFor="let category of notificationCategories"
+                        [value]="category.id"
+                      >
+                        {{ category.category_name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
                 <!-- Title -->
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Title <span class="text-danger">*</span></label>
+                    <label>
+                      Title
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <input
                       type="text"
                       class="form-control"
@@ -297,7 +345,11 @@
                 <!-- Message -->
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label>Message <span class="text-danger">*</span></label>
+                    <label>
+                      Message
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <textarea
                       class="form-control"
                       rows="5"
@@ -311,6 +363,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Image</label>
+
                     <input
                       type="file"
                       class="form-control"
@@ -322,12 +375,20 @@
                 <!-- Type -->
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Type <span class="text-danger">*</span></label>
+                    <label>
+                      Type
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <select class="form-control" formControlName="type">
                       <option value="">Select Type</option>
+
                       <option value="PROMOTIONAL">PROMOTIONAL</option>
+
                       <option value="TRANSACTIONAL">TRANSACTIONAL</option>
+
                       <option value="REMINDER">REMINDER</option>
+
                       <option value="CUSTOM">CUSTOM</option>
                     </select>
                   </div>
@@ -336,15 +397,22 @@
                 <!-- Target Type -->
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label
-                      >Target Type <span class="text-danger">*</span></label
-                    >
+                    <label>
+                      Target Type
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <select class="form-control" formControlName="target_type">
                       <option value="">Select Target</option>
+
                       <option value="ALL">ALL</option>
+
                       <option value="ACTIVE">ACTIVE</option>
+
                       <option value="INACTIVE">INACTIVE</option>
+
                       <option value="VERIFIED">VERIFIED</option>
+
                       <option value="CUSTOM">CUSTOM</option>
                     </select>
                   </div>
@@ -353,9 +421,11 @@
                 <!-- Schedule Type -->
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label
-                      >Schedule Type <span class="text-danger">*</span></label
-                    >
+                    <label>
+                      Schedule Type
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <select
                       class="form-control"
                       formControlName="schedule_type"
@@ -371,9 +441,13 @@
                 </div>
 
                 <!-- Schedule Minutes -->
+                <!-- Schedule Minutes -->
                 <div
                   class="col-md-6"
-                  *ngIf="form.get('schedule_type')?.value !== 'IMMEDIATE'"
+                  *ngIf="
+                    form.get('schedule_type')?.value === 'BEFORE_EVENT' ||
+                    form.get('schedule_type')?.value === 'AFTER_EVENT'
+                  "
                 >
                   <div class="form-group">
                     <label>
@@ -395,8 +469,95 @@
                     </small>
                   </div>
                 </div>
+
+                <!-- Scheduled Date / Time -->
+                <div
+                  class="col-md-12"
+                  *ngIf="form.get('schedule_type')?.value === 'SCHEDULED'"
+                >
+                  <div formArrayName="schedules">
+                    <div
+                      class="row align-items-end mb-3"
+                      *ngFor="let schedule of schedules.controls; let i = index"
+                      [formGroupName]="i"
+                    >
+                      <!-- Date -->
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>
+                            Schedule Date
+                            <span class="text-danger">*</span>
+                          </label>
+
+                          <input
+                            type="date"
+                            class="form-control"
+                            formControlName="schedule_date"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Start Time -->
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>
+                            Start Time
+                            <span class="text-danger">*</span>
+                          </label>
+
+                          <input
+                            type="time"
+                            class="form-control"
+                            formControlName="start_time"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- End Time -->
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>
+                            End Time
+                            <span class="text-danger">*</span>
+                          </label>
+
+                          <input
+                            type="time"
+                            class="form-control"
+                            formControlName="end_time"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Add / Remove -->
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <button
+                            type="button"
+                            class="btn btn-success mr-2"
+                            *ngIf="i === 0"
+                            (click)="addSchedule()"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            *ngIf="i > 0"
+                            (click)="removeSchedule(i)"
+                          >
+                            <i class="fa fa-minus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
+            <!-- Modal Footer -->
             <div class="modal-footer">
               <button
                 type="button"
@@ -407,6 +568,7 @@
               >
                 {{ ModalBtn }}
               </button>
+
               <button
                 type="button"
                 class="btn btn-default"
