@@ -353,6 +353,9 @@
                               *ngIf="blog.controls.featured_image.touched && blog.controls.featured_image.hasError('required')">
                               Banner image is required
                             </small>
+                            <small class="text-danger" *ngIf="thumbImageError">
+                              {{ thumbImageError }}
+                            </small>
                             <small class="col-md-2" *ngIf="isEditMode == true">
                               {{path}}{{existthumbImageFile}}
                             </small>
@@ -392,6 +395,9 @@
                             <small class="text-danger"
                               *ngIf="blog.controls.featured_image.touched && blog.controls.featured_image.hasError('required')">
                               Banner image is required
+                            </small>
+                            <small class="text-danger" *ngIf="featuredImageError">
+                              {{ featuredImageError }}
                             </small>
                             <small class="col-md-2" *ngIf="isEditMode == true">
                               {{path}}{{existfeaturedImageFile}}
@@ -434,6 +440,9 @@
                             <small class="text-danger"
                               *ngIf="blog.controls.og_image.touched && blog.controls.og_image.hasError('required')">
                               Og image is required
+                            </small>
+                            <small class="text-danger" *ngIf="ogImageError">
+                              {{ ogImageError }}
                             </small>
                           </div>
                         </div>

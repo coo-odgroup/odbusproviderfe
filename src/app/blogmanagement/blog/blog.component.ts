@@ -252,24 +252,55 @@ export class BlogComponent implements OnInit {
     }
   }
 
+  thumbImageError = '';
+  featuredImageError = '';
+  ogImageError = '';
+
+  validateImage(event: any, type: 'thumb' | 'featured' | 'og'): File | null {
+  const file = event.target.files[0];
+
+  this[`${type}ImageError`] = '';
+
+  if (!file) {
+    return null;
+  }
+
+  if (file.size > 1024 * 1024) {
+    this[`${type}ImageError`] = 'Image size must be less than 1 MB.';
+    event.target.value = '';
+    return null;
+  }
+
+  return file;
+}
+
+
+  // onThumbImageChange(event: any) {
+  //   if (event.target.files.length > 0) {
+  //     this.thumbImageFile = event.target.files[0];
+  //   }
+  // }
 
   onThumbImageChange(event: any) {
-    if (event.target.files.length > 0) {
-      this.thumbImageFile = event.target.files[0];
-    }
+  const file = this.validateImage(event, 'thumb');
+  if (file) {
+    this.thumbImageFile = file;
   }
+}
 
-  onFeaturedImageChange(event: any) {
-    if (event.target.files.length > 0) {
-      this.featuredImageFile = event.target.files[0];
-    }
+onFeaturedImageChange(event: any) {
+  const file = this.validateImage(event, 'featured');
+  if (file) {
+    this.featuredImageFile = file;
   }
+}
 
-  onOgImageChange(event: any) {
-    if (event.target.files.length > 0) {
-      this.ogImageFile = event.target.files[0];
-    }
+onOgImageChange(event: any) {
+  const file = this.validateImage(event, 'og');
+  if (file) {
+    this.ogImageFile = file;
   }
+}
 
 
   public addblog() {
