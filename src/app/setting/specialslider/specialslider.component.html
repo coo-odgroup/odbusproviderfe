@@ -1,12 +1,13 @@
-
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
 
 <div class="row">
   <div class="col-sm-12">
-      <app-card [hidHeader]="false" cardTitle="Special Slider" cardClass="card-datatable" [options]="false"
+    <app-card [hidHeader]="false" cardTitle="Special Slider" cardClass="card-datatable" [options]="false"
       cardClass=" table-border-style user-profile-list " [isCardFooter]="false">
       <div class="row  mb-2">
-        
+
         <div class="col-12">
           <form [formGroup]="searchForm" class="editForm" novalidate>
             <div class="row">
@@ -17,7 +18,7 @@
                   </button>
                 </div>
               </div>
-             
+
               <div class="from-group col-md-3">
                 <select class="form-control sml_input" formControlName="status" *ngIf="role_id==1">
                   <option [value]="" [selected]="true">-Status-</option>
@@ -29,8 +30,8 @@
                 <!-- <input type="text" class="form-control sml_input" formControlName="searchBy" placeholder="Search By"> -->
                 <div class="input-group" *ngIf="role_id==1">
                   <input type="text" class="form-control sml_input" placeholder="Search Here " required
-                    formControlName="searchBy" >
-                    
+                    formControlName="searchBy">
+
                   <div class="input-group-append">
                     <button type="button" class="btn btn-success  sml_input" (click)="getAll()" title="search">
                       <i class="fas fa-search"> </i>
@@ -41,21 +42,21 @@
               <div class="from-group col-md-4">
                 <!-- <button class="btn sml_input btn-success" (click)="getAll()"><i class="fas fa-search"></i>Search</button> -->
                 <button class="btn sml_input btn-danger ml-2" (click)="refresh()" *ngIf="role_id==1">Refresh</button>
-                    <div class="dropdown float-right">
-                      <select class="form-control sml_input" formControlName="per_page" (change)="getAll()">
-                        <option value=10>10</option>
-                        <option value=25>25</option>
-                        <option value=50>50</option>
-                        <option value=100>100</option>
-                        <!-- <option value='all'>All</option> -->
-                      </select>
-                    </div>
+                <div class="dropdown float-right">
+                  <select class="form-control sml_input" formControlName="per_page" (change)="getAll()">
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                    <!-- <option value='all'>All</option> -->
+                  </select>
+                </div>
               </div>
-     
+
             </div>
           </form>
         </div>
-        
+
       </div>
       <div class="table-responsive">
         <table class="table table-striped">
@@ -77,18 +78,18 @@
             <tr *ngFor="let sliderdata of sliders; let i = index">
               <td>{{ i+1 }}</td>
               <td>{{sliderdata.occassion}} </td>
-                <td>
-                  <img *ngIf="sliderdata.slider_photo!='' && sliderdata.slider_photo!=null" class="sliderImage"
+              <td>
+                <img *ngIf="sliderdata.slider_photo!='' && sliderdata.slider_photo!=null" class="sliderImage"
                   src="{{path}}slider_photos/{{sliderdata.slider_photo}}" height="100">
-                  <img *ngIf="sliderdata.slider_photo=='' || sliderdata.slider_photo==null" class="sliderImage"
-                    src="../../../assets/images/noImage.png" height="100">
-                </td>
+                <img *ngIf="sliderdata.slider_photo=='' || sliderdata.slider_photo==null" class="sliderImage"
+                  src="../../../assets/images/noImage.png" height="100">
+              </td>
               <td>{{sliderdata.start_date}} <br>{{sliderdata.start_time}} </td>
               <td>{{sliderdata.end_date}}<br> {{sliderdata.end_time}}</td>
               <td>
                 <span *ngIf="sliderdata.coupon!=null">
                   {{sliderdata.coupon.coupon_title}}<br> <b>{{sliderdata.coupon.coupon_code}}</b>
-                </span>                
+                </span>
               </td>
               <td>{{ sliderdata.updated_at| date: 'dd/MM/yyyy' }}</td>
               <td>{{ sliderdata.created_by }}</td>
@@ -100,8 +101,8 @@
               </td>
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button type="button" (click)="editSlider(i);OpenModal(content)"
-                    class="btn btn-icon btn-success"><i class="feather icon-edit"></i></button>
+                  <button type="button" (click)="editSlider(i);OpenModal(content)" class="btn btn-icon btn-success"><i
+                      class="feather icon-edit"></i></button>
                   <button type="button" (click)="openConfirmDialog(confirmDialog, i)" class="btn btn-icon btn-danger"><i
                       class="feather icon-trash-2"></i></button>
                 </div>
@@ -113,17 +114,17 @@
               <td colspan="7" class="no-data-available">No data!</td>
             </tr>
           </tbody>
-        </table> 
+        </table>
       </div>
       <!-- /////Paginate Code -->
       <!-- {{sliders|json}} -->
       <div *ngIf="pagination?.length!= 0" class="hide_print container">
         <div class="row">
           <div class="col-6">
-           
-              <div class="col-12">
-                <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
-              </div> 
+
+            <div class="col-12">
+              <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
+            </div>
           </div>
           <div class="col-6">
             <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
@@ -137,7 +138,8 @@
                     <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
                       (click)="(b.url) ? getAll(b.url,statusLabel) : ''" [innerHTML]="page(b.label)"></a>
                   </li>
-                  <li class="page-item {{ pagination.next_page_url == null? 'disabled' : ''}} clearfix d-none d-md-block"
+                  <li
+                    class="page-item {{ pagination.next_page_url == null? 'disabled' : ''}} clearfix d-none d-md-block"
                     (click)="getAll(pagination.last_page_url,statusLabel)">
                     <a class="page-link">Last</a>
                   </li>
@@ -148,7 +150,7 @@
           </div>
 
         </div>
-      </div>  
+      </div>
 
 
       <div class="app-card-footer">
@@ -197,26 +199,26 @@
                             <label for="Type" class="col-sm-5 col-form-label">User<span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-7" *ngIf="role_id==1">
-                              <ng-select  [items]="users" bindLabel="userData" bindValue="id"
-                              placeholder="Select User" formControlName="user_id" [clearable]="false">
-                            </ng-select>
-                            <span class="text-danger"
-                            *ngIf="sliderForm.controls['user_id'].touched && sliderForm.controls['user_id'].hasError('required')">
-                            User Field is Required
-                          </span>
+                              <ng-select [items]="users" bindLabel="userData" bindValue="id" placeholder="Select User"
+                                formControlName="user_id" [clearable]="false">
+                              </ng-select>
+                              <span class="text-danger"
+                                *ngIf="sliderForm.controls['user_id'].touched && sliderForm.controls['user_id'].hasError('required')">
+                                User Field is Required
+                              </span>
                             </div>
                             <div class="col-sm-7" *ngIf="role_id!=1">
                               {{usre_name}}
-                          </div>
+                            </div>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label for="Name" class="col-sm-5 col-form-label">Define Your Slider<span
-                              class="text-danger">*</span></label>
+                                class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <ng-select [items]="sliderDefinations" bindLabel="name" bindValue="name" placeholder="Choose slider defination"
-                                formControlName="occassion" [clearable]="false">
+                              <ng-select [items]="sliderDefinations" bindLabel="name" bindValue="name"
+                                placeholder="Choose slider defination" formControlName="occassion" [clearable]="false">
                               </ng-select>
                               <span class="text-danger"
                                 *ngIf="sliderForm.controls['occassion'].touched && sliderForm.controls['occassion'].hasError('required')">
@@ -305,10 +307,12 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="Name" class="col-sm-5 col-form-label">Slider Image<span class="text-danger">*</span></label>
+                            <label for="Name" class="col-sm-5 col-form-label">Slider Image<span
+                                class="text-danger">*</span></label>
                             <div class="col-sm-7">
-                              <input type="file" #file accept='image/*' (change)="picked($event,file.files);" accept='image/*'
-                                class="form-control" id="slider_img" placeholder="Drop your image here" formControlName="slider_img" />
+                              <input type="file" #file accept='image/*' (change)="picked($event,file.files);"
+                                accept='image/*' class="form-control" id="slider_img" placeholder="Drop your image here"
+                                formControlName="slider_img" />
                               <small class="text-info">Max file size 100KB and supports jpg/jpeg/png</small><br>
                               <span class="text-danger">{{imageError}}</span>
                               <span class="text-danger"
@@ -337,18 +341,18 @@
                             <label for="Type" class="col-sm-5 col-form-label">URL(if any)</label>
                             <div class="col-sm-7">
                               <input type="text" class="form-control" ngbAutofocus placeholder="Enter Url"
-                                 formControlName="url"/>
+                                formControlName="url" />
                             </div>
                           </div>
-                        </div> 
+                        </div>
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label for="Type" class="col-sm-5 col-form-label">Coupon</label>
                             <div class="col-sm-7">
-                              <ng-select  [items]="coupondet" bindLabel="coupondata" bindValue="id"
-                              placeholder="Select User" formControlName="coupon_id" [clearable]="false">
-                            </ng-select>
-                           
+                              <ng-select [items]="coupondet" bindLabel="coupondata" bindValue="id"
+                                placeholder="Select User" formControlName="coupon_id" [clearable]="false">
+                              </ng-select>
+
                             </div>
                           </div>
                         </div>
@@ -356,49 +360,51 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label for="Type" class="col-sm-5 col-form-label">Description)</label>
+                            <label for="Type" class="col-sm-5 col-form-label">Description</label>
                             <div class="col-sm-7">
-                                <textarea rows="3" class="form-control"  placeholder="Enter Description" formControlName="slider_description"></textarea>
+                              <textarea rows="3" class="form-control" placeholder="Enter Description"
+                                formControlName="slider_description"></textarea>
                             </div>
                           </div>
-                        </div> 
+                        </div>
 
                         <div class="col-md-6">
-                             <div class="form-group row">
-                                  <label for="android_image" class="col-sm-5 col-form-label"><strong>Android Image</strong> <span
-                                      class="text-danger">*</span></label>
-                                  <div class="col-sm-7">
-                                    <div>      
-                                        <input  type="file" accept='image/*' (change)="pickedfav($event);"
-                                        class="form-control" id="android_image" placeholder="Drop android_image image here"
-                                        formControlName="android_image" />
-      
-                                    </div>
-                                    <span class="text-info">Max file size 100Kb</span><br>
-                                    <span class="text-danger">{{favError}}</span>
-                                    <span class="text-danger"
-                                      *ngIf="sliderForm.controls['android_image'].touched && sliderForm.controls['android_image'].hasError('required')">
-                                      Image file is required! </span>
-      
-                                      <div class="col-12">
-                                        <div class="row">
-                                          <div class="col-md-6" *ngIf="sliderRecord.android_image">
-                                            <span><b>Existing Image</b></span> <br>                       
-                                            <img class="bg-info sliderImage"  src="{{path}}slider_photos/{{sliderRecord.android_image}}" height="70"/>
-            
-                                          </div>
-                                          <div class="col-md-6" *ngIf="favURL">
-                                            <span ><b>New image</b></span><br>
-                                            <img  class="sliderImage-edit bg-info"
-                                             [attr.src]="getImagepath(sliderForm.value['favSrc'])" height="70">
-            
-                                          </div>
-                                        </div>
-                                      </div>                             
+                          <div class="form-group row">
+                            <label for="android_image" class="col-sm-5 col-form-label"><strong>Android Image</strong>
+                              <span class="text-danger">*</span></label>
+                            <div class="col-sm-7">
+                              <div>
+                                <input type="file" accept='image/*' (change)="pickedfav($event);" class="form-control"
+                                  id="android_image" placeholder="Drop android_image image here"
+                                  formControlName="android_image" />
+
+                              </div>
+                              <span class="text-info">Max file size 100Kb</span><br>
+                              <span class="text-danger">{{favError}}</span>
+                              <span class="text-danger"
+                                *ngIf="sliderForm.controls['android_image'].touched && sliderForm.controls['android_image'].hasError('required')">
+                                Image file is required! </span>
+
+                              <div class="col-12">
+                                <div class="row">
+                                  <div class="col-md-6" *ngIf="sliderRecord.android_image">
+                                    <span><b>Existing Image</b></span> <br>
+                                    <img class="bg-info sliderImage"
+                                      src="{{path}}slider_photos/{{sliderRecord.android_image}}" height="70" />
+
+                                  </div>
+                                  <div class="col-md-6" *ngIf="favURL">
+                                    <span><b>New image</b></span><br>
+                                    <img class="sliderImage-edit bg-info"
+                                      [attr.src]="getImagepath(sliderForm.value['favSrc'])" height="70">
+
                                   </div>
                                 </div>
-                        </div> 
-                       
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                       </div>
                     </form>
                   </div>
