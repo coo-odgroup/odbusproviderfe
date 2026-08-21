@@ -370,7 +370,8 @@ export class CampaignnotificationsComponent implements OnInit {
     data.append('operator_id', this.form.value.operator_id?.toString() || '');
     data.append(
       'active_user_duration',
-      this.form.value.target_type === 'ACTIVE'
+      this.form.value.target_type === 'ACTIVE' ||
+        this.form.value.target_type === 'CUSTOM'
         ? this.form.value.active_user_duration?.toString() || ''
         : '',
     );
