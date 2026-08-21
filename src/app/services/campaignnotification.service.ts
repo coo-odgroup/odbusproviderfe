@@ -49,4 +49,16 @@ export class CampaignnotificationService {
       Constants.BASE_URL + '/getCampaignNotification/' + id,
     );
   }
+
+  getOperators() {
+    return this.http.get<any>(Constants.BASE_URL + '/get-operators');
+  }
+  
+   getLocations() {
+    return this.http.get<any>(Constants.BASE_URL + '/get-locations');
+  }
+
+   getActiveCoupons() {
+    return this.http.get<any>(Constants.BASE_URL + '/getActiveCoupons');
+  }
 }

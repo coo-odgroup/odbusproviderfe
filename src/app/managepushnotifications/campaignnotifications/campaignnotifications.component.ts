@@ -36,9 +36,15 @@ export class CampaignnotificationsComponent implements OnInit {
   public ModalHeading: any;
   public ModalBtn: any;
   notificationCategories: any[] = [];
+  operators: any[] = [];
+  locations: any[] = [];
+  coupons: any[] = [];
   pagination: any;
   all: any;
   pan_pattern = '/^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/';
+
+  imagePreview: string | null = null;
+  selectedImage: File | null = null;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -68,6 +74,7 @@ export class CampaignnotificationsComponent implements OnInit {
     this.modalReference = this.modalService.open(content, {
       scrollable: true,
       size: 'xl',
+      windowClass: 'campaign-notification-modal',
     });
 
     this.modalReference.result.finally(() => {
@@ -78,6 +85,9 @@ export class CampaignnotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
 
+    this.getOperators();
+    this.getLocations();
+    this.getActiveCoupons();
     this.form = this.fb.group({
       id: [null],
       notification_category_id: ['', Validators.required],
@@ -85,11 +95,36 @@ export class CampaignnotificationsComponent implements OnInit {
       title: ['', Validators.required],
       message: ['', Validators.required],
       image: [null],
-      type: ['PROMOTIONAL', Validators.required],
+
+      type: ['', Validators.required],
+
       target_type: ['ALL', Validators.required],
-      schedule_type: ['IMMEDIATE', Validators.required],
+      active_user_duration: [''],
+
+      schedule_type: ['', Validators.required],
       schedule_minutes: [0],
       schedules: this.fb.array([]),
+
+      custom_scenario: [''],
+      source: [''],
+      destination: [''],
+      operator_id: [''],
+      coupon_code: [''],
+    });
+
+    this.form.get('custom_scenario')?.valueChanges.subscribe((value) => {
+      if (value !== 'ROUTE') {
+        this.form.patchValue({
+          source: '',
+          destination: '',
+        });
+      }
+
+      if (value !== 'OPERATOR') {
+        this.form.patchValue({
+          operator_id: '',
+        });
+      }
     });
 
     this.formConfirm = this.fb.group({
@@ -192,11 +227,116 @@ export class CampaignnotificationsComponent implements OnInit {
     this.ModalBtn = 'Save';
   }
 
-  selectedImage: File | null = null;
+  onImageChange(event: any): void {
+    const file = event.target.files?.[0];
 
-  onImageChange(event: any) {
-    if (event.target.files.length > 0) {
-      this.selectedImage = event.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    this.selectedImage = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  removeImage(): void {
+    this.selectedImage = null;
+    this.imagePreview = null;
+
+    this.form.patchValue({
+      image: null,
+    });
+
+    this.form.get('image')?.updateValueAndValidity();
+  }
+
+  getOperators(): void {
+    this.campaignNotificationService.getOperators().subscribe(
+      (response: any) => {
+        console.log('Operators API response:', response);
+
+        if (response && response.status === true) {
+          this.operators = response.data || [];
+
+          console.log('Operators loaded:', this.operators);
+        } else {
+          this.operators = [];
+          console.log('No operators found');
+        }
+      },
+      (error) => {
+        console.error('Failed to load operators:', error);
+        this.operators = [];
+      },
+    );
+  }
+
+  getLocations(): void {
+    this.campaignNotificationService.getLocations().subscribe(
+      (response: any) => {
+        console.log('Locations API response:', response);
+
+        if (response && response.status === true) {
+          this.locations = response.data || [];
+
+          console.log('Locations loaded:', this.locations);
+        } else {
+          this.locations = [];
+          console.log('No Locations found');
+        }
+      },
+      (error) => {
+        console.error('Failed to load Locations:', error);
+        this.locations = [];
+      },
+    );
+  }
+
+  getActiveCoupons(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.campaignNotificationService.getActiveCoupons().subscribe(
+        (response: any) => {
+          if (response && response.status === true) {
+            this.coupons = response.data || [];
+
+            console.log('Coupons loaded:', this.coupons);
+
+            resolve(this.coupons);
+          } else {
+            this.coupons = [];
+            resolve([]);
+          }
+        },
+        (error) => {
+          console.error('Failed to load coupons:', error);
+          this.coupons = [];
+          reject(error);
+        },
+      );
+    });
+  }
+
+  onTypeChange(): void {
+    const type = this.form.get('type')?.value;
+
+    console.log('Selected type:', type);
+
+    if (type === 'PROMOTIONAL') {
+      this.getActiveCoupons();
+    } else {
+      this.coupons = [];
+
+      this.form.patchValue({
+        custom_scenario: '',
+        source: '',
+        destination: '',
+        operator_id: '',
+        coupon_code: '',
+      });
     }
   }
 
@@ -223,6 +363,18 @@ export class CampaignnotificationsComponent implements OnInit {
     data.append('message', this.form.value.message);
     data.append('type', this.form.value.type);
     data.append('target_type', this.form.value.target_type);
+    data.append('custom_scenario', this.form.value.custom_scenario || '');
+
+    data.append('source', this.form.value.source || '');
+    data.append('destination', this.form.value.destination || '');
+    data.append('operator_id', this.form.value.operator_id?.toString() || '');
+    data.append(
+      'active_user_duration',
+      this.form.value.target_type === 'ACTIVE'
+        ? this.form.value.active_user_duration?.toString() || ''
+        : '',
+    );
+    data.append('coupon_code', this.form.value.coupon_code?.toString() || '');
     data.append('schedule_type', this.form.value.schedule_type);
     data.append(
       'schedule_minutes',
@@ -306,6 +458,26 @@ export class CampaignnotificationsComponent implements OnInit {
     }
   }
 
+  onImageSelected(event: any): void {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      this.imagePreview = null;
+      this.selectedImage = null;
+      return;
+    }
+
+    this.selectedImage = file;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+
+    reader.readAsDataURL(file);
+  }
+
   getNotificationCategories() {
     this.campaignNotificationService
       .getNotificationCategories()
@@ -318,8 +490,23 @@ export class CampaignnotificationsComponent implements OnInit {
       });
   }
 
-  editCampaignNotification(event: Event, id: any) {
+  targetTypeChange(type: string): void {
+    this.form.patchValue({
+      target_type: type,
+      active_user_duration:
+        type === 'ACTIVE' || type === 'CUSTOM'
+          ? this.form.get('active_user_duration')?.value
+          : '',
+    });
+  }
+
+  async editCampaignNotification(event: Event, id: any) {
     this.spinner.show();
+
+    // Make sure coupons are loaded before finding the saved coupon
+    if (!this.coupons || this.coupons.length === 0) {
+      await this.getActiveCoupons();
+    }
 
     this.campaignNotificationService
       .getCampaignNotification(this.campaignNotifications[id].id)
@@ -333,10 +520,40 @@ export class CampaignnotificationsComponent implements OnInit {
 
           const campaign = res.data.campaign;
           const schedules = res.data.schedules || [];
+          const custom = res.data.custom;
 
-          /*
-           * Patch campaign fields
-           */
+          // --------------------------------
+          // Determine Custom Scenario
+          // --------------------------------
+          let customScenario = '';
+
+          if (custom && custom.custom_type) {
+            switch (Number(custom.custom_type)) {
+              case 1:
+                customScenario = 'ROUTE';
+                break;
+
+              case 2:
+                customScenario = 'NEW_USER';
+                break;
+
+              case 3:
+                customScenario = 'OPERATOR';
+                break;
+
+              case 4:
+                customScenario = 'SPECIAL_OFFER';
+                break;
+            }
+          }
+
+          console.log('EDIT CAMPAIGN:', campaign);
+          console.log('EDIT CUSTOM:', custom);
+          console.log('CUSTOM SCENARIO:', customScenario);
+
+          // --------------------------------
+          // First patch normal campaign data
+          // --------------------------------
           this.form.patchValue({
             id: campaign.id,
             notification_category_id: campaign.notification_category_id,
@@ -345,65 +562,88 @@ export class CampaignnotificationsComponent implements OnInit {
             message: campaign.message,
             type: campaign.type,
             target_type: campaign.target_type,
+            active_user_duration: campaign.active_user_duration,
             schedule_type: campaign.schedule_type,
             schedule_minutes: campaign.schedule_minutes,
           });
 
-          /*
-           * Clear existing FormArray
-           */
+          // --------------------------------
+          // Find coupon ID from saved coupon CODE
+          // --------------------------------
+          let couponId = '';
+
+          if (custom && custom.coupon_code) {
+            const selectedCoupon = this.coupons.find(
+              (coupon: any) => coupon.coupon_code === custom.coupon_code,
+            );
+
+            if (selectedCoupon) {
+              couponId = selectedCoupon.id;
+            }
+
+            console.log('Saved coupon code:', custom.coupon_code);
+            console.log('Matched coupon:', selectedCoupon);
+            console.log('Coupon ID:', couponId);
+          }
+
+          // --------------------------------
+          // Patch custom data
+          // IMPORTANT: emitEvent false
+          // --------------------------------
+          this.form.patchValue(
+            {
+              custom_scenario: customScenario,
+
+              source: custom?.source_id || '',
+              destination: custom?.destination_id || '',
+
+              operator_id: custom?.operator_id || '',
+
+              coupon_code: couponId,
+            },
+            {
+              emitEvent: false,
+            },
+          );
+
+          console.log('FORM AFTER PATCH:', this.form.value);
+
+          // --------------------------------
+          // schedules
+          // --------------------------------
           this.schedules.clear();
 
-          /*
-           * Add previously saved schedules
-           */
           if (campaign.schedule_type === 'SCHEDULED' && schedules.length > 0) {
             schedules.forEach((schedule: any) => {
               this.schedules.push(
                 this.fb.group({
                   schedule_date: [schedule.schedule_date, Validators.required],
-
                   start_time: [schedule.start_time, Validators.required],
-
                   end_time: [schedule.end_time, Validators.required],
                 }),
               );
             });
-          } else if (campaign.schedule_type === 'SCHEDULED') {
-            /*
-             * Safety: show one empty row
-             */
-            this.addSchedule();
           }
 
-          /*
-           * Schedule minutes state
-           */
-          if (campaign.schedule_type === 'SCHEDULED') {
-            this.form.get('schedule_minutes')?.disable();
-          } else if (
-            campaign.schedule_type === 'BEFORE_EVENT' ||
-            campaign.schedule_type === 'AFTER_EVENT'
-          ) {
-            this.form.get('schedule_minutes')?.enable();
+          // --------------------------------
+          // Image
+          // --------------------------------
+          this.selectedImage = null;
+
+          if (campaign.image) {
+            this.imagePreview =
+              Constants.BASE_URL.replace('/api', '') + '/' + campaign.image;
           } else {
-            this.form.get('schedule_minutes')?.disable();
+            this.imagePreview = null;
           }
 
           this.ModalHeading = 'Edit Campaign Notification';
-
           this.ModalBtn = 'Update';
-
-          this.selectedImage = null;
         },
         (error) => {
           this.spinner.hide();
 
-          this.notificationService.addToast({
-            title: Constants.ErrorTitle,
-            msg: 'Unable to load campaign notification',
-            type: Constants.ErrorType,
-          });
+          console.error('Failed to load campaign notification:', error);
         },
       );
   }

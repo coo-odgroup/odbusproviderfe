@@ -70,6 +70,7 @@ export class OwnerpaymentComponent implements OnInit {
   OpenModal(content) {
     this.modalReference=this.modalService.open(content,{ scrollable: true, size: 'xl' });
   }
+  
   ngOnInit(): void {
     this.spinner.show();
     this.ownerpaymentForm = this.fb.group({     

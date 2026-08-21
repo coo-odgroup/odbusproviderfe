@@ -8,11 +8,11 @@
 >
 
 <div class="row">
-  <div class="col-sm-12">
+  <div class="col-12">
     <app-card
       [hidHeader]="false"
       cardTitle="Campaign Notification List"
-      cardClass="card-datatable table-border-style user-profile-list"
+      cardClass="card-datatable table-border-style user-profile-list campaign-full-width"
       [options]="false"
       [isCardFooter]="false"
     >
@@ -285,7 +285,7 @@
             <div class="modal-body">
               <div class="row">
                 <!-- Campaign Name -->
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label>
                       Campaign Name
@@ -301,8 +301,24 @@
                   </div>
                 </div>
 
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>
+                      Title
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="title"
+                      placeholder="Enter Notification Title"
+                    />
+                  </div>
+                </div>
+
                 <!-- Campaign Category -->
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label>
                       Campaign Category
@@ -325,23 +341,6 @@
                   </div>
                 </div>
 
-                <!-- Title -->
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>
-                      Title
-                      <span class="text-danger">*</span>
-                    </label>
-
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="title"
-                      placeholder="Enter Notification Title"
-                    />
-                  </div>
-                </div>
-
                 <!-- Message -->
                 <div class="col-md-12">
                   <div class="form-group">
@@ -361,82 +360,374 @@
 
                 <!-- Image -->
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Image</label>
+                  <label>Image</label>
 
-                    <input
-                      type="file"
-                      class="form-control"
-                      (change)="onImageChange($event)"
-                    />
+                  <div
+                    class="target-settings-box"
+                    [class.active]="
+                      form.get('type')?.value !== '' &&
+                      form.get('type')?.value !== null
+                    "
+                  >
+                    <div class="form-group">
+                      <input
+                        type="file"
+                        class="form-control"
+                        accept="image/*"
+                        (change)="onImageChange($event)"
+                      />
+                    </div>
+
+                    <!-- Image Preview -->
+                    <div class="image-preview-container" *ngIf="imagePreview">
+                      <label class="preview-label">Image Preview</label>
+
+                      <div class="image-preview mb-3">
+                        <img [src]="imagePreview" alt="Image Preview" />
+
+                        <button
+                          type="button"
+                          class="remove-image"
+                          (click)="removeImage()"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <!-- Type -->
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label>
-                      Type
-                      <span class="text-danger">*</span>
-                    </label>
+                  <label>
+                    Type
+                    <span class="text-danger">*</span>
+                  </label>
 
-                    <select class="form-control" formControlName="type">
-                      <option value="">Select Type</option>
+                  <div
+                    class="target-settings-box"
+                    [class.active]="
+                      form.get('type')?.value !== '' &&
+                      form.get('type')?.value !== null
+                    "
+                  >
+                    <!-- Type -->
+                    <div class="form-group">
+                      <select
+                        class="form-control"
+                        formControlName="type"
+                        (change)="onTypeChange()"
+                      >
+                        <option value="">Select Type</option>
+                        <option value="PROMOTIONAL">PROMOTIONAL</option>
+                        <option value="TRANSACTIONAL">TRANSACTIONAL</option>
+                        <option value="REMINDER">REMINDER</option>
+                        <option value="CUSTOM">CUSTOM</option>
+                      </select>
+                    </div>
 
-                      <option value="PROMOTIONAL">PROMOTIONAL</option>
+                    <!-- Coupon - Only for PROMOTIONAL -->
+                    <div
+                      class="form-group"
+                      *ngIf="form.get('type')?.value === 'PROMOTIONAL'"
+                    >
+                      <label> Coupon </label>
 
-                      <option value="TRANSACTIONAL">TRANSACTIONAL</option>
+                      <select
+                        class="form-control"
+                        formControlName="coupon_code"
+                      >
+                        <option value="">Select Coupon</option>
 
-                      <option value="REMINDER">REMINDER</option>
-
-                      <option value="CUSTOM">CUSTOM</option>
-                    </select>
+                        <option
+                          *ngFor="let coupon of coupons"
+                          [value]="coupon.id"
+                        >
+                          {{ coupon.coupon_title }} ({{ coupon.coupon_code }})
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
                 <!-- Target Type -->
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label>
-                      Target Type
-                      <span class="text-danger">*</span>
-                    </label>
+                  <label>
+                    Target Type
+                    <span class="text-danger">*</span>
+                  </label>
+                  <div
+                    class="target-settings-box"
+                    [class.active]="
+                      form.get('target_type')?.value !== '' &&
+                      form.get('target_type')?.value !== null
+                    "
+                  >
+                    <!-- Target Type -->
+                    <div class="form-group">
+                      <select
+                        class="form-control"
+                        formControlName="target_type"
+                      >
+                        <option value="">Select Target</option>
+                        <option value="ALL">ALL</option>
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                        <option value="VERIFIED">VERIFIED</option>
+                        <option value="CUSTOM">CUSTOM</option>
+                      </select>
+                    </div>
 
-                    <select class="form-control" formControlName="target_type">
-                      <option value="">Select Target</option>
+                    <!-- Active User Duration -->
+                    <div
+                      class="form-group"
+                      *ngIf="
+                        form.get('target_type')?.value === 'ACTIVE' ||
+                        form.get('target_type')?.value === 'CUSTOM'
+                      "
+                    >
+                      <label>
+                        Active User Duration
+                        <span class="text-danger">*</span>
+                      </label>
 
-                      <option value="ALL">ALL</option>
+                      <select
+                        class="form-control"
+                        formControlName="active_user_duration"
+                      >
+                        <option value="">Select Duration</option>
+                        <option [value]="7">1 Week</option>
+                        <option [value]="14">2 Weeks</option>
+                        <option [value]="30">1 Month</option>
+                        <option [value]="60">2 Months</option>
+                        <option [value]="90">3 Months</option>
+                        <option [value]="120">4 Months</option>
+                        <option [value]="150">5 Months</option>
+                        <option [value]="180">6 Months</option>
+                        <option [value]="270">9 Months</option>
+                        <option [value]="365">1 Year</option>
+                      </select>
+                    </div>
 
-                      <option value="ACTIVE">ACTIVE</option>
+                    <div
+                      class="form-group"
+                      *ngIf="form.get('target_type')?.value === 'CUSTOM'"
+                    >
+                      <label>
+                        Custom Scenario
+                        <span class="text-danger">*</span>
+                      </label>
 
-                      <option value="INACTIVE">INACTIVE</option>
+                      <select
+                        class="form-control"
+                        formControlName="custom_scenario"
+                      >
+                        <option value="">Select Scenario</option>
 
-                      <option value="VERIFIED">VERIFIED</option>
+                        <option value="ROUTE">Route</option>
+                        <option value="NEW_USER">New User</option>
+                        <option value="OPERATOR">Operator</option>
+                        <option value="SPECIAL_OFFER">Special Offer</option>
+                      </select>
+                    </div>
 
-                      <option value="CUSTOM">CUSTOM</option>
-                    </select>
+                    <!-- Route Fields -->
+                    <div
+                      class="row"
+                      *ngIf="
+                        form.get('target_type')?.value === 'CUSTOM' &&
+                        form.get('custom_scenario')?.value === 'ROUTE'
+                      "
+                    >
+                      <!-- Source -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>
+                            Source
+                            <span class="text-danger">*</span>
+                          </label>
+
+                          <select class="form-control" formControlName="source">
+                            <option value="">Select Source</option>
+
+                            <option
+                              *ngFor="let location of locations"
+                              [value]="location.id"
+                            >
+                              {{ location.name }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- Destination -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>
+                            Destination
+                            <span class="text-danger">*</span>
+                          </label>
+
+                          <select
+                            class="form-control"
+                            formControlName="destination"
+                          >
+                            <option value="">Select Destination</option>
+
+                            <option
+                              *ngFor="let location of locations"
+                              [value]="location.id"
+                            >
+                              {{ location.name }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Operator -->
+                    <div
+                      class="form-group"
+                      *ngIf="
+                        form.get('type')?.value === 'CUSTOM' &&
+                        form.get('custom_scenario')?.value === 'OPERATOR'
+                      "
+                    >
+                      <label>
+                        Operator
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <select
+                        class="form-control"
+                        formControlName="operator_id"
+                      >
+                        <option value="">Select Operator</option>
+                        <option
+                          *ngFor="let operator of operators"
+                          [value]="operator.id"
+                        >
+                          {{ operator.organisation_name }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
                 <!-- Schedule Type -->
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label>
-                      Schedule Type
-                      <span class="text-danger">*</span>
-                    </label>
+                  <label>
+                    Schedule Type
+                    <span class="text-danger">*</span>
+                  </label>
+                  <div
+                    class="target-settings-box"
+                    [class.active]="
+                      form.get('target_type')?.value !== '' &&
+                      form.get('target_type')?.value !== null
+                    "
+                  >
+                    <div class="form-group">
+                      <select
+                        class="form-control"
+                        formControlName="schedule_type"
+                        (change)="scheduleTypeChange($event.target.value)"
+                      >
+                        <option value="">Select Schedule</option>
+                        <option value="IMMEDIATE">IMMEDIATE</option>
+                        <option value="SCHEDULED">SCHEDULED</option>
+                        <option value="BEFORE_EVENT">BEFORE_EVENT</option>
+                        <option value="AFTER_EVENT">AFTER_EVENT</option>
+                      </select>
+                    </div>
 
-                    <select
-                      class="form-control"
-                      formControlName="schedule_type"
-                      (change)="scheduleTypeChange($event.target.value)"
+                    <!-- Scheduled Date / Time -->
+                    <div
+                      class="col-md-12"
+                      *ngIf="form.get('schedule_type')?.value === 'SCHEDULED'"
                     >
-                      <option value="">Select Schedule</option>
-                      <option value="IMMEDIATE">IMMEDIATE</option>
-                      <option value="SCHEDULED">SCHEDULED</option>
-                      <option value="BEFORE_EVENT">BEFORE_EVENT</option>
-                      <option value="AFTER_EVENT">AFTER_EVENT</option>
-                    </select>
+                      <div formArrayName="schedules">
+                        <div
+                          class="row align-items-end mb-3"
+                          *ngFor="
+                            let schedule of schedules.controls;
+                            let i = index
+                          "
+                          [formGroupName]="i"
+                        >
+                          <!-- Date -->
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>
+                                Schedule Date
+                                <span class="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="date"
+                                class="form-control"
+                                formControlName="schedule_date"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- Start Time -->
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>
+                                Start Time
+                                <span class="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="time"
+                                class="form-control"
+                                formControlName="start_time"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- End Time -->
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>
+                                End Time
+                                <span class="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="time"
+                                class="form-control"
+                                formControlName="end_time"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- Add / Remove -->
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <button
+                                type="button"
+                                class="btn btn-success mr-2"
+                                *ngIf="i === 0"
+                                (click)="addSchedule()"
+                              >
+                                <i class="fa fa-plus"></i>
+                              </button>
+
+                              <button
+                                type="button"
+                                class="btn btn-danger"
+                                *ngIf="i > 0"
+                                (click)="removeSchedule(i)"
+                              >
+                                <i class="fa fa-minus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -467,91 +758,6 @@
                       <strong>-</strong> = Before Event &nbsp;&nbsp;
                       <strong>+</strong> = After Event
                     </small>
-                  </div>
-                </div>
-
-                <!-- Scheduled Date / Time -->
-                <div
-                  class="col-md-12"
-                  *ngIf="form.get('schedule_type')?.value === 'SCHEDULED'"
-                >
-                  <div formArrayName="schedules">
-                    <div
-                      class="row align-items-end mb-3"
-                      *ngFor="let schedule of schedules.controls; let i = index"
-                      [formGroupName]="i"
-                    >
-                      <!-- Date -->
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label>
-                            Schedule Date
-                            <span class="text-danger">*</span>
-                          </label>
-
-                          <input
-                            type="date"
-                            class="form-control"
-                            formControlName="schedule_date"
-                          />
-                        </div>
-                      </div>
-
-                      <!-- Start Time -->
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>
-                            Start Time
-                            <span class="text-danger">*</span>
-                          </label>
-
-                          <input
-                            type="time"
-                            class="form-control"
-                            formControlName="start_time"
-                          />
-                        </div>
-                      </div>
-
-                      <!-- End Time -->
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>
-                            End Time
-                            <span class="text-danger">*</span>
-                          </label>
-
-                          <input
-                            type="time"
-                            class="form-control"
-                            formControlName="end_time"
-                          />
-                        </div>
-                      </div>
-
-                      <!-- Add / Remove -->
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <button
-                            type="button"
-                            class="btn btn-success mr-2"
-                            *ngIf="i === 0"
-                            (click)="addSchedule()"
-                          >
-                            <i class="fa fa-plus"></i>
-                          </button>
-
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            *ngIf="i > 0"
-                            (click)="removeSchedule(i)"
-                          >
-                            <i class="fa fa-minus"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
