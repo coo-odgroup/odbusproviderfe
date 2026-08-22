@@ -96,7 +96,7 @@ export class CouponComponent implements OnInit {
       auto_apply: [false],
       apply_once: [false],
       user_type: [null],
-      category: [null],
+      category: [null,Validators.compose([Validators.required])],
       // name: [null, Validators.compose([Validators.required,Validators.minLength(2),Validators.required,Validators.maxLength(15)])],
       // synonym: [null, Validators.compose([Validators.maxLength(15)])]
     });
