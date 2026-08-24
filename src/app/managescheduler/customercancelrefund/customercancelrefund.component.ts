@@ -311,6 +311,7 @@ export class CustomercancelrefundComponent implements OnInit {
       console.log(res);
       if (res.status == 1) {
         this.search();
+        this.selectAll = false;
         this.notificationService.addToast({
           title: 'Success',
           msg: res.message,
