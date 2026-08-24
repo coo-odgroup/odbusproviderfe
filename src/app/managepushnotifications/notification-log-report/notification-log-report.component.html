@@ -1,0 +1,511 @@
+<div class="container-fluid">
+  <!-- PAGE HEADER -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <h4 class="page-title">Notification Log Report</h4>
+    </div>
+
+    <div class="col-md-6 text-right">
+      <button
+        type="button"
+        class="btn btn-outline-success btn-sm mr-2"
+        (click)="exportexcel()"
+      >
+        <i class="feather icon-download"></i>
+        Export Excel
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm"
+        (click)="refresh()"
+      >
+        <i class="feather icon-refresh-cw"></i>
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- FILTER SECTION -->
+  <div class="card filter-card">
+    <div class="card-header">
+      <strong> Search Notification Logs </strong>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="searchForm">
+        <div class="row align-items-end">
+          <!-- Rows -->
+
+          <!-- Campaign -->
+          <!-- Campaign -->
+          <div class="col-md">
+            <div class="form-group mb-0">
+              <label>Campaign</label>
+
+              <select
+                class="form-control form-control-sm"
+                formControlName="campaign_id"
+                (change)="search(1)"
+              >
+                <option value="">All Campaigns</option>
+
+                <option
+                  *ngFor="let campaign of campaigns"
+                  [value]="campaign.id"
+                >
+                  {{ campaign.campaign_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Notification Type -->
+          <div class="col-md">
+            <div class="form-group mb-0">
+              <label>Notification Type</label>
+
+              <select
+                class="form-control form-control-sm"
+                formControlName="notification_type"
+              >
+                <option value="">TYPE</option>
+                <option value="PROMOTIONAL">Promotional</option>
+                <option value="TRANSACTIONAL">Transactional</option>
+                <option value="REMINDER">Reminder</option>
+                <option value="CUSTOM">Custom</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="col-md">
+            <div class="form-group mb-0">
+              <label> Status </label>
+
+              <select
+                class="form-control form-control-sm"
+                formControlName="status"
+              >
+                <option value="">All</option>
+                <option value="SUCCESS">Success</option>
+                <option value="FAILED">Failed</option>
+                <option value="PENDING">Pending</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- From Date -->
+          <div class="col-md">
+            <div class="form-group mb-0">
+              <label> From Date </label>
+
+              <input
+                type="date"
+                class="form-control form-control-sm"
+                formControlName="date_from"
+              />
+            </div>
+          </div>
+
+          <!-- To Date -->
+          <!-- To Date -->
+          <div class="col-md">
+            <div class="form-group mb-0">
+              <label>To Date</label>
+
+              <input
+                type="date"
+                class="form-control form-control-sm"
+                formControlName="date_to"
+              />
+            </div>
+          </div>
+
+          <!-- Rows -->
+          <div class="col-md-auto">
+            <div class="form-group mb-0">
+              <label>Rows</label>
+
+              <select
+                class="form-control form-control-sm rows-select"
+                formControlName="rows_number"
+                (change)="search(1)"
+              >
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <div class="col-md-auto">
+            <div class="form-group mb-0">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                (click)="search(1)"
+              >
+                <i class="feather icon-search"></i>
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="row summary-row">
+    <div class="col-md-3">
+      <div class="summary-card">
+        <div>
+          <small>Total</small>
+          <h4>{{ totalCount }}</h4>
+        </div>
+
+        <i class="feather icon-send"></i>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="summary-card success">
+        <div>
+          <small>Successful</small>
+          <h4>{{ successCount }}</h4>
+        </div>
+
+        <i class="feather icon-check-circle"></i>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="summary-card failed">
+        <div>
+          <small>Failed</small>
+          <h4>{{ failedCount }}</h4>
+        </div>
+
+        <i class="feather icon-x-circle"></i>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="summary-card pending">
+        <div>
+          <small>Pending</small>
+          <h4>{{ pendingCount }}</h4>
+        </div>
+
+        <i class="feather icon-clock"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG TABLE -->
+  <div class="card log-card">
+    <div class="card-header">
+      <strong> Notification Logs </strong>
+
+      <span class="float-right text-muted"> {{ totalCount }} records </span>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table id="notification-log-table" class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th class="th-number">#</th>
+
+              <th class="th-campaign">Campaign</th>
+
+              <th class="th-user">User</th>
+
+              <th class="th-type">Notification Type</th>
+
+              <th class="th-notification">Notification</th>
+
+              <th class="th-fcm">FCM Message ID</th>
+
+              <th class="th-status">Status</th>
+
+              <th class="th-sent">Sent At</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let log of notificationLogs; let i = index">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>
+                <strong>
+                  {{ log.campaign_name || log.campaign_id }}
+                </strong>
+              </td>
+              <td>
+                <div class="user-info">
+                  <strong class="user-name">
+                    {{ log.user_name || "--" }}
+                  </strong>
+                </div>
+              </td>
+              <td>
+                <span class="notification-type-badge">
+                  {{ log.notification_type || "--" }}
+                </span>
+              </td>
+              <td>
+                <div class="notification-title">
+                  {{ log.title }}
+                </div>
+                <small class="text-muted">
+                  {{ log.message }}
+                </small>
+              </td>
+              <td>
+                <small>
+                  {{ log.fcm_message_id || "--" }}
+                </small>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(log)">
+                  {{ getStatusText(log) }}
+                </span>
+              </td>
+              <td>
+                <small>
+                  {{ log.sent_at || "--" }}
+                </small>
+              </td>
+            </tr>
+            <!-- EMPTY -->
+            <tr *ngIf="notificationLogs.length === 0">
+              <td colspan="9" class="text-center empty-state">
+                <i class="feather icon-inbox"></i>
+                <div>No notification logs found.</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- PAGINATION -->
+        <div
+          class="pagination-wrapper"
+          *ngIf="pagination && pagination.last_page > 1"
+        >
+          <!-- Showing information -->
+          <div class="pagination-info">
+            Showing
+            <strong>
+              {{ (pagination.current_page - 1) * pagination.per_page + 1 }}
+            </strong>
+
+            -
+            <strong>
+              {{
+                Math.min(
+                  pagination.current_page * pagination.per_page,
+                  pagination.total
+                )
+              }}
+            </strong>
+
+            of
+            <strong>{{ pagination.total }}</strong>
+            records
+          </div>
+
+          <!-- Pagination -->
+          <ul class="pagination mb-0">
+            <!-- Previous -->
+            <li
+              class="page-item"
+              [class.disabled]="pagination.current_page === 1"
+            >
+              <a
+                class="page-link"
+                href="javascript:void(0)"
+                (click)="
+                  pagination.current_page > 1 &&
+                    search(pagination.current_page - 1)
+                "
+              >
+                Previous
+              </a>
+            </li>
+
+            <!-- Page Numbers -->
+            <li
+              class="page-item"
+              *ngFor="let page of getPageNumbers()"
+              [class.active]="page === pagination.current_page"
+            >
+              <a
+                class="page-link"
+                href="javascript:void(0)"
+                (click)="search(page)"
+              >
+                {{ page }}
+              </a>
+            </li>
+
+            <!-- Next -->
+            <li
+              class="page-item"
+              [class.disabled]="
+                pagination.current_page === pagination.last_page
+              "
+            >
+              <a
+                class="page-link"
+                href="javascript:void(0)"
+                (click)="
+                  pagination.current_page < pagination.last_page &&
+                    search(pagination.current_page + 1)
+                "
+              >
+                Next
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- LOG DETAIL SECTION -->
+  <!-- ========================= -->
+
+  <div class="card detail-card" *ngIf="selectedLog">
+    <div class="card-header">
+      <strong> Notification Details </strong>
+
+      <button
+        type="button"
+        class="btn btn-sm btn-light float-right"
+        (click)="closeDetails()"
+      >
+        <i class="feather icon-x"></i>
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <!-- BASIC INFORMATION -->
+        <div class="col-md-6">
+          <h6 class="section-title">Basic Information</h6>
+
+          <div class="detail-row">
+            <span>Campaign ID</span>
+
+            <strong>
+              {{ selectedLog.campaign_id || "--" }}
+            </strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Queue ID</span>
+
+            <strong>
+              {{ selectedLog.queue_id || "--" }}
+            </strong>
+          </div>
+
+          <div class="detail-row">
+            <span>User ID</span>
+
+            <strong>
+              {{ selectedLog.user_id || "--" }}
+            </strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Status</span>
+
+            <strong>
+              <span
+                class="status-badge"
+                [ngClass]="getStatusClass(selectedLog.status)"
+              >
+                {{ selectedLog.status }}
+              </span>
+            </strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Sent At</span>
+
+            <strong>
+              {{ selectedLog.sent_at || "--" }}
+            </strong>
+          </div>
+        </div>
+
+        <!-- FCM INFORMATION -->
+        <div class="col-md-6">
+          <h6 class="section-title">FCM Information</h6>
+
+          <div class="detail-row">
+            <span>FCM Token</span>
+
+            <strong class="break-text">
+              {{ selectedLog.fcm_token || "--" }}
+            </strong>
+          </div>
+
+          <div class="detail-row">
+            <span>FCM Message ID</span>
+
+            <strong class="break-text">
+              {{ selectedLog.fcm_message_id || "--" }}
+            </strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Error Code</span>
+
+            <strong>
+              {{ selectedLog.error_code || "--" }}
+            </strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Error Message</span>
+
+            <strong>
+              {{ selectedLog.error_message || "--" }}
+            </strong>
+          </div>
+        </div>
+
+        <!-- MESSAGE -->
+        <div class="col-md-12 mt-3">
+          <h6 class="section-title">Notification</h6>
+
+          <div class="message-box">
+            <div class="message-title">
+              {{ selectedLog.title }}
+            </div>
+
+            <div class="message-body">
+              {{ selectedLog.message }}
+            </div>
+          </div>
+        </div>
+
+        <!-- FIREBASE RESPONSE -->
+        <div class="col-md-12 mt-3">
+          <h6 class="section-title">Firebase Response</h6>
+
+          <pre class="firebase-response">{{
+            selectedLog.firebase_response || "--"
+          }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

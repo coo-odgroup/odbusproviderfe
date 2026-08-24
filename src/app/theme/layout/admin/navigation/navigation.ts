@@ -1218,6 +1218,7 @@ const NavigationItems = [
         title: 'Manage Notification',
         type: 'collapse',
         icon: 'feather icon-message-circle',
+
         children: [
           {
             id: 'pushnotification',
@@ -1226,12 +1227,21 @@ const NavigationItems = [
             icon: 'feather icon-upload-cloud',
             url: 'managepushnotifications/pushnotifications',
           },
+
           {
             id: 'campaignnotification',
             title: 'Campaign Notification',
             type: 'item',
             icon: 'icon-award',
             url: 'managepushnotifications/campaignnotifications',
+          },
+
+          {
+            id: 'notificationlogreport',
+            title: 'Notification Log Report',
+            type: 'item',
+            icon: 'feather icon-file-text',
+            url: 'managepushnotifications/notificationlogreport',
           },
         ],
       },

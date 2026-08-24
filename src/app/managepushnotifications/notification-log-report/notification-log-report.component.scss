@@ -1,0 +1,207 @@
+/* ============================= */
+/* STATUS BADGES */
+/* ============================= */
+
+.status-badge {
+  display: inline-block;
+  min-width: 90px;
+  text-align: center;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* SUCCESS - GREEN */
+
+.status-success {
+  background: #198754;
+  color: #ffffff;
+}
+
+/* FAILED - RED */
+
+.status-failed {
+  background: #dc3545;
+  color: #ffffff;
+}
+
+/* INVALID TOKEN - DARK RED */
+
+.status-invalid-token {
+  background: #b02a37;
+  color: #ffffff;
+}
+
+/* PENDING - ORANGE */
+
+.status-pending {
+  background: #fd7e14;
+  color: #ffffff;
+}
+
+/* UNKNOWN */
+
+.status-default {
+  background: #6c757d;
+  color: #ffffff;
+}
+
+/* ============================= */
+/* NOTIFICATION TYPE */
+/* ============================= */
+
+.notification-type-badge {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 4px;
+  background: #e7f1ff;
+  color: #0d6efd;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ============================= */
+/* USER */
+/* ============================= */
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 13px;
+  color: #212529;
+}
+
+.user-id {
+  font-size: 10px;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+/* ============================= */
+/* CAMPAIGN */
+/* ============================= */
+
+.campaign-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.campaign-info strong {
+  font-size: 13px;
+}
+
+.campaign-info small {
+  font-size: 10px;
+  color: #6c757d;
+}
+
+/* ============================= */
+/* FCM MESSAGE ID */
+/* ============================= */
+
+.fcm-message-id {
+  display: block;
+  max-width: 280px;
+  word-break: break-all;
+  font-size: 10px;
+}
+
+/* ============================= */
+/* TABLE ROW */
+/* ============================= */
+
+.log-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.log-row:hover {
+  background-color: #f5f9ff !important;
+}
+
+/* ============================= */
+/* SUMMARY CARDS */
+/* ============================= */
+
+.summary-card {
+  border-radius: 6px;
+  padding: 15px 18px;
+  border-left: 4px solid #6c757d;
+  background: #ffffff;
+}
+
+.summary-card.success {
+  border-left-color: #198754;
+}
+
+.summary-card.failed {
+  border-left-color: #dc3545;
+}
+
+.summary-card.pending {
+  border-left-color: #fd7e14;
+}
+.pagination-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: #ffffff;
+  border-top: 1px solid #e5e5e5;
+}
+
+.pagination-info {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+.pagination {
+  display: flex;
+  margin: 0;
+}
+
+.pagination .page-item {
+  margin-left: 4px;
+}
+
+.pagination .page-link {
+  min-width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 4px !important;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #495057;
+  background: #ffffff;
+
+  border: 1px solid #dee2e6;
+
+  cursor: pointer;
+}
+
+.pagination .page-link:hover {
+  background: #f1f5f9;
+}
+
+.pagination .page-item.active .page-link {
+  background: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+}
+
+.pagination .page-item.disabled .page-link {
+  background: #f8f9fa;
+  color: #adb5bd;
+  cursor: not-allowed;
+}
