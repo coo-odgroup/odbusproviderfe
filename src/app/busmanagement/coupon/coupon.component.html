@@ -507,15 +507,20 @@
                                                     </div>
 
                                                     <div class="from-group">
-                                                    <label for="Type" class="col-sm-12 col-form-label">Category<span class="text-danger">*</span></label>
-                                                    <div class="col-sm-12">
-                                                        <select class="form-control" formControlName="category">
-                                                            <option value="">Select Category</option>
-                                                            <option value="General">General</option>
-                                                            <option value="Route">Route Wise Coupon</option>
-                                                            <option value="Operator">Operator Wise Coupon</option>
-                                                        </select>
-                                                    </div>
+                                                        <label for="Type" class="col-sm-12 col-form-label">Category<span
+                                                                class="text-danger">*</span></label>
+                                                        <div class="col-sm-12">
+                                                            <select class="form-control" formControlName="category"
+                                                                id="category" required>
+                                                                <option value="">Select Category</option>
+                                                                <option value="General">General</option>
+                                                                <option value="Route">Route Wise Coupon</option>
+                                                                <option value="Operator">Operator Wise Coupon</option>
+                                                            </select>
+                                                            <span class="text-danger"
+                                                                *ngIf="form.controls['category'].touched && form.controls['category'].hasError('required')">
+                                                                Category is required! </span>
+                                                        </div>
                                                     </div>
 
                                                 </div>
