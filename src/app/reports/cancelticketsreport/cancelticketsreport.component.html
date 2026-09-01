@@ -442,6 +442,7 @@
                         <th>Order Id</th>
                         <th>App Type</th>
                         <th>Booked By</th>
+                        <th>Cancel By</th>
                     </tr>
                 </thead>
 
@@ -564,6 +565,7 @@
                         </td>
                         <td>{{complete.app_type}}</td>
                         <td> {{ (complete.user_id > 0) ? complete.user.name : 'Customer' }} </td>
+                        <td>{{ (complete.cancel_by == null) ? 'Customer' : complete.cancel_by }}</td>
                     </tr>
                 </tbody>
             </table>
