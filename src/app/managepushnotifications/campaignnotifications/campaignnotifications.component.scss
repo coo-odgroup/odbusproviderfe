@@ -138,4 +138,177 @@
 
 .remove-image:hover {
   background: rgba(220, 53, 69, 0.9);
+}/* Selected users dropdown */
+.selected-user-dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Main select box */
+.selected-user-select-box {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #ced4da;
+  background: #fff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: #495057;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.selected-user-select-box:hover {
+  border-color: #adb5bd;
+}
+
+.dropdown-arrow {
+  font-size: 11px;
+  color: #495057;
+}
+
+/* Dropdown panel */
+.selected-user-dropdown-panel {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ced4da;
+  border-top: none;
+  z-index: 9999;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Search area */
+.user-search-box {
+  padding: 10px;
+  border-bottom: 1px solid #e9ecef;
+  background: #fff;
+}
+
+.user-search-box input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #ced4da;
+  padding: 0 10px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.user-search-box input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.08);
+}
+
+/* Select all / deselect all */
+.user-list-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 7px 10px;
+  border-bottom: 1px solid #e9ecef;
+  background: #fff;
+}
+
+.user-list-actions button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user-list-actions button:first-child {
+  color: #00a88f;
+}
+
+.user-list-actions .text-danger {
+  color: #dc3545 !important;
+}
+
+/* User list */
+.user-list {
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Individual user */
+.user-option {
+  display: flex;
+  align-items: center;
+  min-height: 54px;
+  padding: 7px 10px;
+  border-bottom: 1px solid #eeeeee;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.user-option:hover {
+  background: #f8f9fa;
+}
+
+/* Checkbox */
+.user-option input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0 10px 0 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* User information */
+.user-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #343a40;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-contact {
+  font-size: 11px;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* No users */
+.no-user {
+  padding: 20px 10px;
+  text-align: center;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+/* Scrollbar */
+.user-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+.user-list::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.user-list::-webkit-scrollbar-thumb {
+  background: #b8b8b8;
+  border-radius: 4px;
+}
+
+.user-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }

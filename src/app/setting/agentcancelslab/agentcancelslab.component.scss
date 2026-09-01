@@ -1,0 +1,61 @@
+.default-yes {
+  color: #00a651;
+  font-weight: 500;
+}
+
+.default-no {
+  color: #ff3333;
+  font-weight: 500;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.status-active {
+  background-color: #d5f3eb;
+  color: #008f72;
+}
+
+.status-inactive {
+  background-color: #f8d7da;
+  color: #dc3545;
+}   
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.status-active {
+  background: #d9f3ee;
+  color: #159b7d;
+}
+
+.status-inactive {
+  background: #f8d7da;
+  color: #dc3545;
+}
+
+.default-yes {
+  color: #16a34a;
+}
+
+.default-no {
+  color: #ff3333;
+}
+
+.slab-main-row td {
+  vertical-align: middle;
+}
+
+.slab-sub-row td {
+  vertical-align: middle;
+}

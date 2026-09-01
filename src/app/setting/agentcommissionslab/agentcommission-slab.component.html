@@ -1,0 +1,870 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large"
+  color="#fff"
+  type="timer"
+  [fullScreen]="true"
+>
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card
+      [hidHeader]="false"
+      cardTitle="Agent Commission Slab"
+      cardClass="card-datatable"
+      [options]="false"
+      cardClass="table-border-style user-profile-list"
+      [isCardFooter]="false"
+    >
+      <!-- TOP SECTION -->
+      <div class="row mb-2">
+        <div class="col-12">
+          <form [formGroup]="searchForm" class="editForm" novalidate>
+            <div class="row">
+              <!-- ADD BUTTON -->
+              <div class="col-md">
+                <div class="from-group text-left">
+                  <button
+                    type="button"
+                    class="btn sml_input btn-success mb-2"
+                    (click)="ResetAttributes(); OpenModal(content)"
+                  >
+                    Add Agent Commission Slab
+                  </button>
+                </div>
+              </div>
+
+              <!-- SLAB NAME -->
+              <div class="from-group col-md">
+                <input
+                  type="text"
+                  class="form-control sml_input"
+                  placeholder="Slab Name"
+                  formControlName="slabName"
+                />
+              </div>
+
+              <!-- DEFAULT -->
+              <div class="from-group col-md">
+                <select
+                  class="form-control sml_input"
+                  formControlName="isDefault"
+                >
+                  <option value="">-Default-</option>
+                  <option value="1">Default</option>
+                  <option value="0">Agent Assigned</option>
+                </select>
+              </div>
+
+              <!-- FROM DATE -->
+              <div class="from-group col-md">
+                <input
+                  type="date"
+                  class="form-control sml_input"
+                  formControlName="fromDate"
+                />
+              </div>
+
+              <!-- TO DATE -->
+              <div class="from-group col-md">
+                <input
+                  type="date"
+                  class="form-control sml_input"
+                  formControlName="toDate"
+                />
+              </div>
+
+              <!-- STATUS -->
+              <div class="from-group col-md">
+                <select class="form-control sml_input" formControlName="status">
+                  <option value="">-Status-</option>
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+
+              <!-- SEARCH -->
+              <div class="from-group col-md">
+                <button
+                  type="button"
+                  class="btn btn-success sml_input"
+                  (click)="getAll()"
+                  title="Search"
+                >
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+
+              <!-- REFRESH + PER PAGE -->
+              <div class="from-group col-md">
+                <button
+                  type="button"
+                  class="btn sml_input btn-danger ml-2"
+                  (click)="refresh()"
+                >
+                  Refresh
+                </button>
+
+                <div class="dropdown float-right">
+                  <select
+                    class="form-control sml_input"
+                    formControlName="per_page"
+                    (change)="getAll()"
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Slab Name</th>
+              <th>Min Fare</th>
+              <th>Max Fare</th>
+              <th>Total Commission</th>
+              <th>ODBUS Commission</th>
+              <th>Agent Commission</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Default</th>
+              <th>Status</th>
+              <th>Created/Updated On</th>
+              <th>Created By</th>
+              <th width="100">Action</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="slabs?.length">
+            <ng-container *ngFor="let slab of slabs; let i = index">
+              <!-- ========================================= -->
+              <!-- MAIN SLAB ROW -->
+              <!-- ========================================= -->
+
+              <tr class="slab-main-row">
+                <!-- # -->
+                <td>
+                  {{ i + 1 }}
+                </td>
+
+                <td>
+                  <strong>{{ slab.slab_name }}</strong>
+                </td>
+                <td colspan="11"></td>
+              </tr>
+
+              <tr
+                class="slab-sub-row"
+                *ngFor="let commission of slab.commission_rows; let j = index"
+              >
+                <td></td>
+                <td></td>
+
+                <td>
+                  {{ commission.min_fare }}
+                </td>
+
+                <!-- MAX FARE -->
+                <td>
+                  {{ commission.max_fare || "-" }}
+                </td>
+
+                <!-- TOTAL COMMISSION -->
+                <td>
+                  {{ commission.total_comm }}
+                </td>
+
+                <td>
+                  {{ commission.odbus_comm }}
+                </td>
+
+                <td>
+                  {{ commission.agent_comm }}
+                </td>
+
+                <td>
+                  {{
+                    slab.from_date
+                      ? (slab.from_date | date: "dd MMM yyyy")
+                      : "-"
+                  }}
+                </td>
+
+                <td>
+                  {{
+                    slab.to_date ? (slab.to_date | date: "dd MMM yyyy") : "-"
+                  }}
+                </td>
+
+                <!-- DEFAULT -->
+                <td class="text-center">
+                  <span
+                    *ngIf="slab.is_default == 1"
+                    class="text-success font-weight-bold"
+                  >
+                    Yes
+                  </span>
+
+                  <span
+                    *ngIf="slab.is_default == 0"
+                    class="text-danger font-weight-bold"
+                  >
+                    No
+                  </span>
+                </td>
+
+                <!-- STATUS -->
+                <td>
+                  <label
+                    *ngIf="slab.status == 1"
+                    class="badge badge-light-primary text-dark"
+                  >
+                    Active
+                  </label>
+
+                  <label
+                    *ngIf="slab.status == 0"
+                    class="badge badge-light-danger text-dark"
+                  >
+                    Pending
+                  </label>
+                </td>
+
+                <!-- CREATED / UPDATED -->
+                <td>
+                  {{
+                    slab.updated_at
+                      ? (slab.updated_at | date: "dd MMM yyyy")
+                      : "-"
+                  }}
+                </td>
+
+                <!-- CREATED BY -->
+                <td>
+                  {{ slab.created_by }}
+                </td>
+
+                <!-- ACTION -->
+                <td class="hide_print">
+                  <!-- Only show action on LAST commission row -->
+                  <ng-container *ngIf="j === slab.commission_rows.length - 1">
+                    <div class="overlay-edit">
+                      <button
+                        type="button"
+                        (click)="editSlab(i, content)"
+                        class="btn btn-icon btn-success"
+                      >
+                        <i class="feather icon-edit"></i>
+                      </button>
+
+                      <button
+                        type="button"
+                        (click)="openConfirmDialog(confirmDialog, i)"
+                        class="btn btn-icon btn-danger"
+                      >
+                        <i class="feather icon-trash-2"></i>
+                      </button>
+                    </div>
+                  </ng-container>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+
+          <!-- NO DATA -->
+          <tbody *ngIf="slabs?.length == 0">
+            <tr>
+              <td colspan="15" class="no-data-available text-center">
+                No data!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <div *ngIf="pagination?.length != 0" class="hide_print container">
+        <div class="row">
+          <div class="col-6">
+            <p class="row mt-3 ml-1">
+              Showing {{ all?.count }} of {{ all?.total }} records.
+            </p>
+          </div>
+
+          <div class="col-6">
+            <div
+              class="d-flex flex-row-reverse mb-4 text-center"
+              *ngIf="pagination?.links"
+            >
+              <nav class="my-1 pt-1">
+                <ul
+                  class="pagination pagination-circle pg-blue mb-0 hide_print"
+                >
+                  <li
+                    (click)="getAll(pagination.first_page_url)"
+                    class="page-item"
+                  >
+                    <a class="page-link"> First </a>
+                  </li>
+
+                  <li class="page-item" *ngFor="let b of pagination.links">
+                    <a
+                      class="page-link"
+                      (click)="b.url ? getAll(b.url) : ''"
+                      [innerHTML]="page(b.label)"
+                    ></a>
+                  </li>
+
+                  <li
+                    class="page-item"
+                    (click)="getAll(pagination.last_page_url)"
+                  >
+                    <a class="page-link"> Last </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODALS -->
+
+      <div class="app-card-footer">
+        <!-- DELETE MODAL -->
+
+        <ng-template #confirmDialog let-modal>
+          <div class="modal-header">
+            <h5>Would you Like to Delete the Record??</h5>
+
+            <button
+              type="button"
+              class="close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span>&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">Would you Like to Delete the Record</div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              (click)="deleteRecord()"
+              class="btn btn-primary"
+            >
+              Confirm Delete
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-default"
+              (click)="modal.dismiss('Cross click')"
+            >
+              Cancel
+            </button>
+          </div>
+        </ng-template>
+
+        <!-- ADD / EDIT MODAL -->
+
+        <ng-template #content let-modal>
+          <div class="modal-header commission-modal-header">
+            <div>
+              <h5 class="modal-title">
+                {{ ModalHeading }}
+              </h5>
+            </div>
+
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss()"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body commission-modal-body">
+            <form [formGroup]="slabForm">
+              <!-- ================================================= -->
+              <!-- SECTION 1 : SLAB INFORMATION -->
+              <!-- ================================================= -->
+
+              <div class="commission-section">
+                <div class="section-heading">
+                  <div class="section-icon">
+                    <i class="feather icon-layers"></i>
+                  </div>
+
+                  <div>
+                    <h6>Slab Name</h6>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- Slab Name -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label-custom">
+                        Slab Name
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control custom-input"
+                        formControlName="slab_name"
+                        placeholder="Enter slab name"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Default -->
+                  <div class="col-md-3">
+                    <div class="default-box">
+                      <label class="form-label-custom"> Default </label>
+
+                      <input
+                        type="checkbox"
+                        id="isDefault"
+                        formControlName="is_default"
+                        (change)="onDefaultChange($event)"
+                      />
+
+                      <label for="isDefault"> Set as default slab </label>
+                    </div>
+                  </div>
+
+                  <!-- Agent Assigned -->
+                  <div class="col-md-3">
+                    <div class="default-box">
+                      <label class="form-label-custom">Agent Assigned</label>
+
+                      <div class="custom-checkbox">
+                        <input
+                          type="checkbox"
+                          id="agentAssigned"
+                          formControlName="agent_assigned"
+                          (change)="onAgentAssignedChange($event)"
+                        />
+
+                        <label for="agentAssigned"> Assign to Agent </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ================================================= -->
+              <!-- SECTION 2 : COMMISSION RANGE -->
+              <!-- ================================================= -->
+
+              <div formArrayName="commissionRows">
+                <div
+                  class="row commission-row"
+                  *ngFor="let row of commissionRows.controls; let i = index"
+                  [formGroupName]="i"
+                >
+                  <!-- Min Fare -->
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-label-custom">
+                        Min Fare
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="number"
+                        min="0"
+                        class="form-control custom-input"
+                        formControlName="min_fare"
+                        placeholder="Minimum fare"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Max Fare -->
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-label-custom">
+                        Max Fare
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="number"
+                        min="0"
+                        class="form-control custom-input"
+                        formControlName="max_fare"
+                        placeholder="Maximum fare"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Total -->
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-label-custom">
+                        Total Comm %
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="number"
+                        min="0"
+                        class="form-control custom-input"
+                        formControlName="total_comm"
+                        placeholder="Total %"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- ODBUS -->
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-label-custom">
+                        ODBUS Comm %
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="number"
+                        min="0"
+                        class="form-control custom-input"
+                        formControlName="odbus_comm"
+                        placeholder="ODBUS %"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Agent -->
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-label-custom">
+                        Agent Comm %
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="number"
+                        min="0"
+                        class="form-control custom-input"
+                        formControlName="agent_comm"
+                        placeholder="Agent %"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- ACTION -->
+                  <div class="col-md-2">
+                    <div class="commission-action">
+                      <!-- FIRST ROW = PLUS -->
+                      <button
+                        *ngIf="i === 0"
+                        type="button"
+                        class="commission-add-btn mt-4"
+                        (click)="addCommissionRow()"
+                        title="Add another commission range"
+                      >
+                        +
+                      </button>
+
+                      <!-- OTHER ROWS = MINUS -->
+                      <button
+                        *ngIf="i > 0"
+                        type="button"
+                        class="commission-remove-btn mt-4"
+                        (click)="removeCommissionRow(i)"
+                        title="Remove this commission range"
+                      >
+                        −
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ================================================= -->
+              <!-- SECTION 3 : AGENT ASSIGNMENT -->
+              <!-- ================================================= -->
+
+              <!-- ================= AGENT ASSIGNMENT ================= -->
+              <div class="commission-section agent-section">
+                <div class="section-header">
+                  <div class="section-icon">
+                    <i class="feather icon-users"></i>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- AGENT DROPDOWN -->
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="form-label">
+                        Agent
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <div
+                        class="agent-dropdown-container"
+                        [class.disabled-dropdown]="
+                          !slabForm.get('agent_assigned')?.value
+                        "
+                        (click)="$event.stopPropagation()"
+                      >
+                        <!-- SELECT BOX -->
+                        <!-- AGENT SELECTOR -->
+                        <div class="agent-selector">
+                          <div
+                            class="agent-select-box"
+                            [class.disabled]="
+                              !slabForm.get('agent_assigned')?.value
+                            "
+                            (click)="
+                              slabForm.get('agent_assigned')?.value
+                                ? toggleAgentDropdown($event)
+                                : null
+                            "
+                          >
+                            <span
+                              *ngIf="getSelectedAgents().length === 0"
+                              class="agent-placeholder"
+                            >
+                              Select agents
+                            </span>
+
+                            <span
+                              *ngIf="getSelectedAgents().length > 0"
+                              class="agent-selected-count"
+                            >
+                              {{ getSelectedAgents().length }} agent(s) selected
+                            </span>
+
+                            <i
+                              class="feather"
+                              [class.icon-chevron-down]="!agentDropdownOpen"
+                              [class.icon-chevron-up]="agentDropdownOpen"
+                            ></i>
+                          </div>
+
+                          <!-- DROPDOWN -->
+                          <div
+                            class="agent-dropdown"
+                            *ngIf="
+                              agentDropdownOpen &&
+                              slabForm.get('agent_assigned')?.value
+                            "
+                            (click)="$event.stopPropagation()"
+                          >
+                            <!-- SEARCH -->
+                            <div class="agent-search">
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Search agents..."
+                                [(ngModel)]="agentSearch"
+                                [ngModelOptions]="{ standalone: true }"
+                                (ngModelChange)="filterAgents()"
+                                (click)="$event.stopPropagation()"
+                              />
+                            </div>
+
+                            <!-- AGENT LIST -->
+                            <div class="agent-list">
+                              <div
+                                class="agent-option"
+                                *ngFor="
+                                  let agent of getFilteredAgents();
+                                  trackBy: trackByAgentId
+                                "
+                                (click)="toggleAgent(agent)"
+                              >
+                                <input
+                                  type="checkbox"
+                                  [checked]="isAgentSelected(agent.id)"
+                                  (click)="
+                                    toggleAgent(agent); $event.stopPropagation()
+                                  "
+                                />
+
+                                <div class="agent-details">
+                                  <div class="agent-name">
+                                    {{ agent.name }}
+                                  </div>
+
+                                  <div class="agent-id">ID: {{ agent.id }}</div>
+                                </div>
+                              </div>
+
+                              <div
+                                class="no-agent"
+                                *ngIf="getFilteredAgents().length === 0"
+                              >
+                                No agents found
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- DROPDOWN -->
+                        <div
+                          class="agent-dropdown-panel"
+                          *ngIf="agentDropdownOpen"
+                        >
+                          <!-- SEARCH -->
+                          <div class="agent-search-box">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search agent..."
+                              [(ngModel)]="agentSearch"
+                              [ngModelOptions]="{ standalone: true }"
+                              (click)="$event.stopPropagation()"
+                            />
+                          </div>
+
+                          <!-- AGENT LIST -->
+                          <div class="agent-list">
+                            <div
+                              class="agent-option"
+                              *ngFor="let agent of getFilteredAgents()"
+                              (click)="toggleAgent(agent)"
+                            >
+                              <input
+                                type="checkbox"
+                                [checked]="isAgentSelected(agent.id)"
+                                (click)="$event.stopPropagation()"
+                                (change)="toggleAgent(agent)"
+                              />
+
+                              <span>
+                                {{ agent.name }}
+                              </span>
+                            </div>
+
+                            <!-- NO AGENT -->
+                            <div
+                              class="no-agent"
+                              *ngIf="getFilteredAgents().length === 0"
+                            >
+                              No agents found
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- SELECTED AGENTS -->
+                  <div class="col-md-12">
+                    <div class="selected-agents-box">
+                      <div class="selected-agents-header">
+                        <span> Selected Agents </span>
+
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-link text-danger"
+                          *ngIf="getSelectedAgents().length > 0"
+                          (click)="clearAgents()"
+                        >
+                          Clear All
+                        </button>
+                      </div>
+
+                      <div
+                        class="selected-agents-content"
+                        *ngIf="getSelectedAgents().length > 0"
+                      >
+                        <span
+                          class="agent-chip"
+                          *ngFor="let agent of getSelectedAgents()"
+                        >
+                          {{ agent.name }}
+
+                          <button type="button" (click)="removeAgent(agent.id)">
+                            ×
+                          </button>
+                        </span>
+                      </div>
+
+                      <div
+                        class="empty-selected-agents"
+                        *ngIf="getSelectedAgents().length === 0"
+                      >
+                        <i class="feather icon-users"></i>
+
+                        <span> No agents selected </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- FROM DATE -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label"> From Date </label>
+
+                      <input
+                        type="date"
+                        class="form-control"
+                        formControlName="from_date"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- TO DATE -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label"> To Date </label>
+
+                      <input
+                        type="date"
+                        class="form-control"
+                        formControlName="to_date"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- FOOTER -->
+
+          <div class="modal-footer commission-modal-footer">
+            <button
+              type="button"
+              class="btn btn-light"
+              (click)="modal.dismiss()"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-success save-btn"
+              (click)="addSlab()"
+            >
+              <i class="feather icon-check mr-1"></i>
+
+              {{ ModalBtn }}
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </app-card>
+  </div>
+</div>

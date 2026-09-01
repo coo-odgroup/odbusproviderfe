@@ -11,6 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import {NgxPrintModule} from 'ngx-print';
 
+
 @NgModule({
   imports: [
     CommonModule,

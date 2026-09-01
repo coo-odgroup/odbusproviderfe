@@ -1039,6 +1039,27 @@ const NavigationItems = [
             icon: 'feather icon-wind',
             url: 'setting/agentcancellationreport',
           },
+          {
+            id: 'agentslider',
+            title: 'Agent Slider',
+            type: 'item',
+            icon: 'feather icon-image',
+            url: 'setting/agentslider',
+          },
+          {
+            id: 'agentcommissionslab',
+            title: 'Agent Commission Slab',
+            type: 'item',
+            icon: 'feather icon-image',
+            url: 'setting/agentcommissionslab',
+          },
+          {
+            id: 'agentcancelslab',
+            title: 'Agent Cancel Slab',
+            type: 'item',
+            icon: 'feather icon-image',
+            url: 'setting/agentcancelslab',
+          },
           // {
           //   id: 'agentcommissionreport',
           //   title: 'Agent Commission Report',

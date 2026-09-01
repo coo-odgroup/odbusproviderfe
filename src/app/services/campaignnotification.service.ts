@@ -53,12 +53,24 @@ export class CampaignnotificationService {
   getOperators() {
     return this.http.get<any>(Constants.BASE_URL + '/get-operators');
   }
-  
-   getLocations() {
+
+  getLocations() {
     return this.http.get<any>(Constants.BASE_URL + '/get-locations');
   }
 
-   getActiveCoupons() {
+  getActiveCoupons() {
     return this.http.get<any>(Constants.BASE_URL + '/getActiveCoupons');
+  }
+
+  getUsers() {
+    return this.http.get<any>(
+      Constants.BASE_URL + '/getCampaignNotificationUsers',
+    );
+  }
+
+  getSelectedTargetUsers(duration: number) {
+    return this.http.post<any>(Constants.BASE_URL + '/getSelectedTargetUsers', {
+      duration: duration,
+    });
   }
 }

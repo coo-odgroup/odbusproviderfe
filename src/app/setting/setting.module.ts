@@ -24,8 +24,10 @@ import { AgentcancellationreportComponent } from './agentcancellationreport/agen
 import { FaqComponent } from './faq/faq.component';
 
 
+
 @NgModule({
   declarations: [
+  
   ],
   imports: [
     CommonModule,

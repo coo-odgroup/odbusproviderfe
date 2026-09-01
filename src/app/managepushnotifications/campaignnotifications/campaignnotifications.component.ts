@@ -36,10 +36,18 @@ export class CampaignnotificationsComponent implements OnInit {
   public ModalHeading: any;
   public ModalBtn: any;
   notificationCategories: any[] = [];
+  users: any[] = [];
   operators: any[] = [];
   locations: any[] = [];
+  userSearch: string = '';
+  filteredUsers: any[] = [];
+  userDropdownOpen: boolean = false;
+  selectedUsers: any[] = [];
   coupons: any[] = [];
   pagination: any;
+
+  validUserCount: number = 0;
+  loadingValidUsers: boolean = false;
   all: any;
   pan_pattern = '/^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/';
 
@@ -95,6 +103,7 @@ export class CampaignnotificationsComponent implements OnInit {
       title: ['', Validators.required],
       message: ['', Validators.required],
       image: [null],
+      selected_user_ids: [[]],
 
       type: ['', Validators.required],
 
@@ -211,6 +220,29 @@ export class CampaignnotificationsComponent implements OnInit {
       this.schedules.removeAt(index);
     }
   }
+
+  getUsers(): void {
+    this.campaignNotificationService.getUsers().subscribe(
+      (response: any) => {
+        console.log('Users API response:', response);
+
+        if (response && response.status === true) {
+          this.users = response.data || [];
+
+          console.log('Users loaded:', this.users);
+        } else {
+          this.users = [];
+        }
+      },
+
+      (error) => {
+        console.error('Error loading users:', error);
+
+        this.users = [];
+      },
+    );
+  }
+
   ResetAttributes() {
     this.campaignNotificationRecord = {} as CampaignNotification;
     this.form.reset();
@@ -371,10 +403,17 @@ export class CampaignnotificationsComponent implements OnInit {
     data.append(
       'active_user_duration',
       this.form.value.target_type === 'ACTIVE' ||
-        this.form.value.target_type === 'CUSTOM'
+        this.form.value.target_type === 'CUSTOM' ||
+        this.form.value.target_type === 'SELECTED'
         ? this.form.value.active_user_duration?.toString() || ''
         : '',
     );
+
+    if (this.form.value.target_type === 'SELECTED') {
+      this.selectedUsers.forEach((user: any) => {
+        data.append('selected_user_ids[]', user.id.toString());
+      });
+    }
     data.append('coupon_code', this.form.value.coupon_code?.toString() || '');
     data.append('schedule_type', this.form.value.schedule_type);
     data.append(
@@ -494,11 +533,33 @@ export class CampaignnotificationsComponent implements OnInit {
   targetTypeChange(type: string): void {
     this.form.patchValue({
       target_type: type,
-      active_user_duration:
-        type === 'ACTIVE' || type === 'CUSTOM'
-          ? this.form.get('active_user_duration')?.value
-          : '',
     });
+
+    this.users = [];
+    this.filteredUsers = [];
+    this.selectedUsers = [];
+    this.userSearch = '';
+    this.userDropdownOpen = false;
+    this.validUserCount = 0;
+    this.loadingValidUsers = false;
+
+    this.form.patchValue({
+      selected_user_ids: [],
+    });
+
+    if (type === 'SELECTED') {
+      this.form.patchValue({
+        active_user_duration: '',
+      });
+
+      return;
+    }
+
+    if (type !== 'ACTIVE' && type !== 'CUSTOM') {
+      this.form.patchValue({
+        active_user_duration: '',
+      });
+    }
   }
 
   async editCampaignNotification(event: Event, id: any) {
@@ -649,6 +710,91 @@ export class CampaignnotificationsComponent implements OnInit {
       );
   }
 
+  onSelectedDurationChange(): void {
+    if (this.form.get('target_type')?.value !== 'SELECTED') {
+      return;
+    }
+
+    const duration = Number(this.form.get('active_user_duration')?.value);
+
+    if (!duration || duration < 1) {
+      this.users = [];
+      this.filteredUsers = [];
+      this.selectedUsers = [];
+      this.validUserCount = 0;
+
+      this.form.patchValue({
+        selected_user_ids: [],
+      });
+
+      return;
+    }
+
+    this.loadSelectedTargetUsers(duration);
+  }
+
+  loadSelectedTargetUsers(duration: number): void {
+    this.loadingValidUsers = true;
+
+    this.users = [];
+    this.filteredUsers = [];
+    this.selectedUsers = [];
+    this.validUserCount = 0;
+    this.userDropdownOpen = false;
+
+    this.form.patchValue({
+      selected_user_ids: [],
+    });
+
+    this.http
+      .post(Constants.BASE_URL + '/getSelectedTargetUsers', {
+        duration: duration,
+      })
+      .subscribe(
+        (response: any) => {
+          this.loadingValidUsers = false;
+
+          console.log('Selected Target Users API Response:', response);
+
+          if (response && response.status == 1) {
+            this.users = response.data || [];
+
+            this.filteredUsers = [...this.users];
+
+            this.validUserCount = response.count || this.users.length;
+
+            console.log('Valid users:', this.users);
+            console.log('Valid user count:', this.validUserCount);
+
+            // Open dropdown automatically when users are loaded
+            if (this.users.length > 0) {
+              this.userDropdownOpen = true;
+            }
+          } else {
+            this.users = [];
+            this.filteredUsers = [];
+            this.validUserCount = 0;
+          }
+        },
+
+        (error) => {
+          this.loadingValidUsers = false;
+
+          console.error('Error loading selected target users:', error);
+
+          this.users = [];
+          this.filteredUsers = [];
+          this.selectedUsers = [];
+          this.validUserCount = 0;
+          this.userDropdownOpen = false;
+
+          this.form.patchValue({
+            selected_user_ids: [],
+          });
+        },
+      );
+  }
+
   openConfirmDialog(content) {
     this.confirmDialogReference = this.modalService.open(content, {
       scrollable: true,
@@ -734,5 +880,110 @@ export class CampaignnotificationsComponent implements OnInit {
   testSave() {
     console.log('Button Clicked');
     console.log(this.form.value);
+  }
+
+  loadUsers() {
+    this.campaignNotificationService.getUsers().subscribe(
+      (response: any) => {
+        console.log('Users API response:', response);
+
+        if (response && response.status && response.data) {
+          this.users = response.data;
+          this.filteredUsers = [...this.users];
+        } else {
+          this.users = [];
+          this.filteredUsers = [];
+        }
+      },
+      (error) => {
+        console.error('Users API error:', error);
+        this.users = [];
+        this.filteredUsers = [];
+      },
+    );
+  }
+  filterUsers(): void {
+    const search = (this.userSearch || '').trim().toLowerCase();
+
+    if (!search) {
+      this.filteredUsers = [...this.users];
+
+      return;
+    }
+
+    this.filteredUsers = this.users.filter((user: any) => {
+      const id = user.id != null ? String(user.id).toLowerCase() : '';
+      const name = user.name ? String(user.name).toLowerCase() : '';
+      const email = user.email ? String(user.email).toLowerCase() : '';
+      const phone = user.phone ? String(user.phone).toLowerCase() : '';
+
+      return (
+        id.indexOf(search) !== -1 ||
+        name.indexOf(search) !== -1 ||
+        email.indexOf(search) !== -1 ||
+        phone.indexOf(search) !== -1
+      );
+    });
+  }
+
+  onUserSearchChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    this.userSearch = input.value;
+
+    this.filterUsers();
+  }
+
+  toggleUser(user: any): void {
+    const userId = Number(user.id);
+
+    const index = this.selectedUsers.findIndex(
+      (selectedUser: any) => Number(selectedUser.id) === userId,
+    );
+
+    if (index === -1) {
+      this.selectedUsers.push(user);
+    } else {
+      this.selectedUsers.splice(index, 1);
+    }
+
+    this.setSelectedUserIds();
+  }
+
+  isUserSelected(userId: number): boolean {
+    return this.selectedUsers.some(
+      (user: any) => Number(user.id) === Number(userId),
+    );
+  }
+
+  selectAllUsers(): void {
+    this.selectedUsers = [...this.users];
+    this.setSelectedUserIds();
+  }
+
+  deselectAllUsers(): void {
+    this.selectedUsers = [];
+    this.setSelectedUserIds();
+  }
+
+  removeUser(userId: number) {
+    this.selectedUsers = this.selectedUsers.filter(
+      (user: any) => user.id !== userId,
+    );
+
+    this.setSelectedUserIds();
+  }
+
+  clearUsers() {
+    this.selectedUsers = [];
+    this.setSelectedUserIds();
+  }
+
+  setSelectedUserIds(): void {
+    const userIds = this.selectedUsers.map((user: any) => Number(user.id));
+
+    this.form.patchValue({
+      selected_user_ids: userIds,
+    });
   }
 }
