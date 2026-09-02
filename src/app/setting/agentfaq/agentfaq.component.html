@@ -6,37 +6,33 @@
       </div>
 
       <div class="card-body">
-        <!-- Top Buttons -->
-        <div class="row">
-          <div class="col-2">
-            <div class="form-group">
-              <button
-                class="btn sml_input btn-success mb-2"
-                type="button"
-                (click)="ResetAttributes(); OpenModal(content)"
-              >
-                Add AgentFAQ
-              </button>
-            </div>
+        <div class="row faq-toolbar">
+          <!-- ADD BUTTON -->
+          <div class="col-md-2 faq-add-wrapper">
+            <label>&nbsp;</label>
+
+            <button
+              class="btn sml_input btn-success mb-2"
+              type="button"
+              (click)="openAddModal(content)"
+            >
+              Add Agent FAQ
+            </button>
           </div>
 
-          <div class="col-10">
+          <!-- FILTERS -->
+          <!-- FILTERS -->
+          <div class="col-md-10">
             <div class="row align-items-end">
               <!-- CATEGORY TYPE -->
               <div class="col-md-3">
-                <div class="faq-filter">
-                  <label for="filter_category_type">Category Type</label>
+                <div class="form-group">
+                  <label>Category Type</label>
 
                   <select
-                    id="filter_category_type"
                     class="form-control sml_input"
-                    [value]="searchForm.get('category_type')?.value"
-                    (change)="
-                      searchForm
-                        .get('category_type')
-                        ?.setValue($any($event.target).value);
-                      search()
-                    "
+                    [value]="searchForm.get('category_type').value"
+                    (change)="onFilterCategoryTypeChange($event)"
                   >
                     <option value="">All Types</option>
                     <option value="1">Operational</option>
@@ -45,64 +41,53 @@
                 </div>
               </div>
 
-              <!-- FAQ CATEGORY -->
+              <!-- CATEGORY -->
               <div class="col-md-3">
-                <div class="faq-filter">
-                  <label for="filter_category_id">FAQ Category</label>
+                <div class="form-group">
+                  <label>FAQ Category</label>
 
                   <select
-                    id="filter_category_id"
                     class="form-control sml_input"
-                    [value]="searchForm.get('category_id')?.value"
-                    (change)="
-                      searchForm
-                        .get('category_id')
-                        ?.setValue($any($event.target).value);
-                      search()
-                    "
+                    [value]="searchForm.get('category_id').value"
+                    (change)="onFilterCategoryChange($event)"
                   >
                     <option value="">All Categories</option>
-                    <option value="1">General</option>
+
+                    <option
+                      *ngFor="let category of categories"
+                      [value]="category.id"
+                    >
+                      {{ category.category_name }}
+                    </option>
                   </select>
                 </div>
               </div>
 
               <!-- FAQ SEARCH -->
               <div class="col-md-3">
-                <div class="faq-filter">
-                  <label for="faq_search">FAQ</label>
+                <div class="form-group">
+                  <label>FAQ Name / Question / Answer</label>
 
                   <input
                     type="text"
-                    id="faq_search"
                     class="form-control sml_input"
-                    [value]="searchForm.get('faq_search')?.value"
-                    (input)="
-                      searchForm
-                        .get('faq_search')
-                        ?.setValue($any($event.target).value)
-                    "
-                    (keyup.enter)="search()"
                     placeholder="Search FAQ"
+                    [value]="searchForm.get('faq_search').value"
+                    (input)="onFaqSearchInput($event)"
+                    (keyup.enter)="search()"
                   />
                 </div>
               </div>
 
-              <!-- PAGE SIZE -->
-              <div class="col-md-3">
-                <div class="faq-filter">
-                  <label for="page_size">Show</label>
+              <!-- SHOW -->
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label>Show</label>
 
                   <select
-                    id="page_size"
                     class="form-control sml_input"
-                    [value]="searchForm.get('rows_number')?.value"
-                    (change)="
-                      searchForm
-                        .get('rows_number')
-                        ?.setValue($any($event.target).value);
-                      search()
-                    "
+                    [value]="searchForm.get('rows_number').value"
+                    (change)="onRowsChange($event)"
                   >
                     <option value="10">10</option>
                     <option value="25">25</option>
@@ -111,11 +96,39 @@
                   </select>
                 </div>
               </div>
+
+              <!-- SEARCH BUTTON -->
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label>&nbsp;</label>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary filter-btn"
+                    (click)="search()"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+
+              <!-- RESET BUTTON -->
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label>&nbsp;</label>
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary filter-btn"
+                    (click)="resetFilters()"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- FAQ TABLE -->
         <div class="table-responsive" id="print-section">
           <table class="table table-striped">
             <thead>
@@ -131,77 +144,92 @@
                 <th width="100" class="hide_print">Action</th>
               </tr>
             </thead>
-
             <tbody>
-              <!-- Example row -->
-              <tr>
-                <td>1</td>
-                <td>General</td>
-                <td>Booking FAQ</td>
-                <td>How can I book a bus?</td>
-                <td>You can book a bus from the application.</td>
-
-                <!-- STATUS -->
+              <tr *ngFor="let faq of faqs; let i = index">
                 <td>
-                  <button
-                    type="button"
-                    class="btn btn-sm"
-                    [ngClass]="1 == 1 ? 'btn-success' : 'btn-danger'"
-                  >
-                    Active
-                  </button>
+                  {{
+                    ((pagination.current_page || 1) - 1) *
+                      (pagination.per_page || 10) +
+                      i +
+                      1
+                  }}
                 </td>
+                <td>
+                  {{ faq.category_name }}
+                </td>
+                <td>
+                  {{ faq.faq_name }}
+                </td>
+                <td>
+                  {{ faq.question }}
+                </td>
+                <td>
+                  {{ faq.answer }}
+                </td>
+                <td>
+                  <span *ngIf="faq.status == 1" class="text-success">
+                    Active
+                  </span>
 
-                <td>02/09/2026</td>
-                <td>19</td>
-
-                <!-- ACTION -->
+                  <span *ngIf="faq.status != 1" class="text-danger">
+                    Inactive
+                  </span>
+                </td>
+                <td>
+                  {{ faq.updated_at || faq.created_at }}
+                </td>
+                <td>
+                  {{ faq.created_by }}
+                </td>
                 <td class="hide_print">
                   <div class="overlay-edit">
                     <button
                       type="button"
                       class="btn btn-icon btn-success"
-                      (click)="editAgentFee($event, 0); OpenModal(content)"
+                      (click)="editFaq(faq.id, content)"
                     >
                       <i class="feather icon-edit"></i>
                     </button>
                   </div>
                 </td>
               </tr>
+
+              <!-- NO DATA -->
+              <tr *ngIf="!faqs || faqs.length === 0">
+                <td colspan="9" class="text-center">No Agent FAQ found.</td>
+              </tr>
             </tbody>
           </table>
 
-          <!-- PAGINATION -->
-          <div class="hide_print container">
+          <div class="hide_print container" *ngIf="pagination">
             <div class="row">
+              <!-- RECORD COUNT -->
               <div class="col-6">
-                <div class="col-12">
-                  <p class="row mt-3 ml-1">Showing 1 of 1 records.</p>
-                </div>
+                <p class="mt-3 ml-1">
+                  Showing
+                  {{ faqs.length }}
+                  of
+                  {{ pagination.total || 0 }}
+                  records.
+                </p>
               </div>
 
+              <!-- PAGINATION -->
               <div class="col-6">
                 <div class="d-flex flex-row-reverse mb-4 text-center">
                   <nav class="my-1 pt-1">
                     <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li class="page-item disabled clearfix d-none d-md-block">
-                        <a class="page-link">First</a>
-                      </li>
-
-                      <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                      </li>
-
-                      <li class="page-item">
-                        <a class="page-link active">1</a>
-                      </li>
-
-                      <li class="page-item">
-                        <a class="page-link">Next</a>
-                      </li>
-
-                      <li class="page-item clearfix d-none d-md-block">
-                        <a class="page-link">Last</a>
+                      <li
+                        *ngFor="let link of pagination.links"
+                        class="page-item"
+                        [ngClass]="{
+                          disabled: !link.url,
+                          active: link.active
+                        }"
+                      >
+                        <a class="page-link" (click)="goToPage(link.url)">
+                          {{ page(link.label) }}
+                        </a>
                       </li>
                     </ul>
                   </nav>
@@ -216,7 +244,7 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- ADD / EDIT AGENT FAQ MODAL                                -->
+<!-- ADD / EDIT MODAL                                          -->
 <!-- ========================================================= -->
 
 <ng-template #content let-modal>
@@ -231,165 +259,157 @@
       aria-label="Close"
       (click)="modal.dismiss('Cross click')"
     >
-      <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true"> &times; </span>
     </button>
   </div>
 
   <div class="modal-body">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="form-material">
-          <div class="right-icon-control">
-            <form class="editForm faq-form" [formGroup]="form" novalidate>
-              <!-- CATEGORY ROW -->
-              <div class="row">
-                <!-- FAQ CATEGORY -->
-                <div class="col-md-6">
-                  <div class="faq-field">
-                    <label for="category_type">
-                      Category Type <span class="text-danger">*</span>
-                    </label>
+    <form class="editForm" [formGroup]="form" (ngSubmit)="saveFaq()" novalidate>
+      <div class="row">
+        <!-- CATEGORY TYPE -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>
+              Category Type
+              <span class="text-danger">*</span>
+            </label>
 
-                    <select
-                      id="category_type"
-                      class="form-control faq-input"
-                      formControlName="category_type"
-                    >
-                      <option value="">Select Category Type</option>
-                      <option value="1">Operational</option>
-                      <option value="2">Non Operational</option>
-                    </select>
+            <select
+              class="form-control"
+              formControlName="category_type"
+              (change)="onCategoryTypeChange($event)"
+            >
+              <option value="">Select Category Type</option>
 
-                    <span
-                      class="text-danger faq-error"
-                      *ngIf="
-                        form.get('category_type')?.touched &&
-                        form.get('category_type')?.hasError('required')
-                      "
-                    >
-                      Category Type is required!
-                    </span>
-                  </div>
-                </div>
+              <option value="1">Operational</option>
+              <option value="2">Non Operational</option>
+            </select>
 
-                <!-- SECOND CATEGORY -->
-                <div class="col-md-6">
-                  <div class="faq-field">
-                    <label for="category_id_2">
-                      FAQ Category <span class="text-danger">*</span>
-                    </label>
+            <span
+              class="text-danger"
+              *ngIf="
+                form.get('category_type').touched &&
+                form.get('category_type').hasError('required')
+              "
+            >
+              Category Type is required!
+            </span>
+          </div>
+        </div>
 
-                    <select
-                      id="category_id_2"
-                      class="form-control faq-input"
-                      formControlName="category_id"
-                    >
-                      <option value="">Select Category</option>
-                      <option value="1">General</option>
-                    </select>
+        <!-- CATEGORY -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>
+              FAQ Category
+              <span class="text-danger"> * </span>
+            </label>
 
-                    <span
-                      class="text-danger faq-error"
-                      *ngIf="
-                        form.get('category_id')?.touched &&
-                        form.get('category_id')?.hasError('required')
-                      "
-                    >
-                      FAQ Category is required!
-                    </span>
-                  </div>
-                </div>
-              </div>
+            <select
+              class="form-control"
+              formControlName="category_id"
+              (change)="onCategoryChange($event)"
+            >
+              <option value="">Select Category</option>
 
-              <!-- FAQ NAME -->
-              <div class="faq-field">
-                <label for="faq_name">
-                  FAQ Name <span class="text-danger">*</span>
-                </label>
+              <option *ngFor="let category of categories" [value]="category.id">
+                {{ category.category_name }}
+              </option>
+            </select>
 
-                <input
-                  type="text"
-                  id="faq_name"
-                  class="form-control faq-input"
-                  formControlName="faq_name"
-                  placeholder="Enter FAQ name"
-                />
-
-                <span
-                  class="text-danger faq-error"
-                  *ngIf="
-                    form.get('faq_name')?.touched &&
-                    form.get('faq_name')?.hasError('required')
-                  "
-                >
-                  FAQ Name is required!
-                </span>
-              </div>
-
-              <!-- QUESTION -->
-              <div class="faq-field">
-                <label for="question">
-                  Question <span class="text-danger">*</span>
-                </label>
-
-                <textarea
-                  id="question"
-                  class="form-control faq-textarea"
-                  rows="4"
-                  formControlName="question"
-                  placeholder="Enter the question"
-                ></textarea>
-
-                <span
-                  class="text-danger faq-error"
-                  *ngIf="
-                    form.get('question')?.touched &&
-                    form.get('question')?.hasError('required')
-                  "
-                >
-                  Question is required!
-                </span>
-              </div>
-
-              <!-- ANSWER -->
-              <div class="faq-field">
-                <label for="answer">
-                  Answer <span class="text-danger">*</span>
-                </label>
-
-                <textarea
-                  id="answer"
-                  class="form-control faq-textarea answer-textarea"
-                  rows="5"
-                  formControlName="answer"
-                  placeholder="Enter the answer"
-                ></textarea>
-
-                <span
-                  class="text-danger faq-error"
-                  *ngIf="
-                    form.get('answer')?.touched &&
-                    form.get('answer')?.hasError('required')
-                  "
-                >
-                  Answer is required!
-                </span>
-              </div>
-            </form>
+            <span
+              class="text-danger"
+              *ngIf="
+                form.get('category_id').touched &&
+                form.get('category_id').hasError('required')
+              "
+            >
+              FAQ Category is required!
+            </span>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- MODAL FOOTER -->
+      <!-- ================================================= -->
+      <!-- FAQ NAME -->
+      <!-- ================================================= -->
+
+      <div class="form-group">
+        <label>
+          FAQ Name
+          <span class="text-danger"> * </span>
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          formControlName="faq_name"
+          placeholder="Enter FAQ name"
+          (input)="form.get('faq_name').setValue($any($event.target).value)"
+        />
+
+        <span
+          class="text-danger"
+          *ngIf="
+            form.get('faq_name').touched &&
+            form.get('faq_name').hasError('required')
+          "
+        >
+          FAQ Name is required!
+        </span>
+      </div>
+
+      <!-- ================================================= -->
+      <!-- QUESTION -->
+      <!-- ================================================= -->
+
+      <div class="form-group">
+        <label>
+          Question
+          <span class="text-danger"> * </span>
+        </label>
+
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="question"
+          placeholder="Enter question"
+          (input)="form.get('question').setValue($any($event.target).value)"
+        ></textarea>
+
+        <span
+          class="text-danger"
+          *ngIf="
+            form.get('question').touched &&
+            form.get('question').hasError('required')
+          "
+        >
+          Question is required!
+        </span>
+      </div>
+
+      <!-- ================================================= -->
+      <!-- ANSWER -->
+      <!-- ================================================= -->
+
+      <div class="form-group">
+        <label>
+          Answer
+          <span class="text-danger"> * </span>
+        </label>
+
+        <textarea
+          class="form-control"
+          rows="6"
+          formControlName="answer"
+          placeholder="Enter answer"
+          (input)="onAnswerInput($event)"
+        ></textarea>
+      </div>
+    </form>
+  </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-primary"
-      [disabled]="form.invalid"
-      (click)="addFeeSlab()"
-    >
+    <button type="button" class="btn btn-primary" (click)="saveFaq()">
       {{ ModalBtn }}
     </button>
 
