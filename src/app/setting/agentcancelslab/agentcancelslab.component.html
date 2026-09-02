@@ -15,11 +15,7 @@
         cardTitle="Agent Cancellation Slab"
         cardClass="card-datatable"
         [options]="false"
-        [isCardFooter]="false"
-      >
-        <!-- ========================= -->
-        <!-- SEARCH -->
-        <!-- ========================= -->
+        [isCardFooter]="false">
 
         <div class="row mb-2">
           <div class="col-12">
@@ -78,8 +74,7 @@
                     type="button"
                     class="btn btn-success sml_input"
                     (click)="getAll()"
-                    title="Search"
-                  >
+                    title="Search">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
@@ -187,7 +182,7 @@
                       [ngClass]="
                         slab.status == 1 ? 'status-active' : 'status-inactive'
                       "
-                      (click)="changeStatus(slab.slab_id, slab.status)"
+                      (click)="changeStatus(slab.id, slab.status)"
                     >
                       {{ slab.status == 1 ? "Active" : "Inactive" }}
                     </span>
@@ -209,7 +204,7 @@
                     <button
                       type="button"
                       class="btn btn-success btn-sm"
-                      (click)="editSlab(slab.slab_id, editContent)"
+                      (click)="editSlab(slab, editContent)"
                     >
                       <i class="fa fa-edit"></i>
                     </button>
@@ -383,7 +378,7 @@
 
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label>&nbsp;</label> 
+                    <label>&nbsp;</label>
 
                     <div class="form-check mt-2">
                       <input
@@ -391,7 +386,6 @@
                         class="form-check-input"
                         id="is_default"
                         formControlName="is_default"
-                        (change)="onDefaultChange()"
                       />
 
                       <label class="form-check-label" for="is_default">

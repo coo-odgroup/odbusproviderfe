@@ -1,0 +1,112 @@
+/* FAQ FORM */
+.faq-form {
+  padding: 24px 26px 10px;
+}
+
+/* FIELD */
+.faq-field {
+  margin-bottom: 22px;
+}
+
+/* LABEL */
+.faq-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* REQUIRED STAR */
+.faq-field .text-danger {
+  font-weight: 500;
+}
+
+/* INPUT / SELECT / TEXTAREA */
+.faq-input,
+.faq-textarea {
+  width: 100%;
+  border: 1px solid #d8d8d8;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: none;
+  font-size: 14px;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+/* INPUT & SELECT */
+.faq-input {
+  height: 42px;
+  padding: 8px 12px;
+}
+
+/* TEXTAREA */
+.faq-textarea {
+  min-height: 105px;
+  padding: 11px 12px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* ANSWER */
+.answer-textarea {
+  min-height: 135px;
+}
+
+/* PLACEHOLDER */
+.faq-input::placeholder,
+.faq-textarea::placeholder {
+  color: #999;
+}
+
+/* FOCUS */
+.faq-input:focus,
+.faq-textarea:focus {
+  border-color: #999;
+  outline: none;
+  box-shadow: none;
+}
+
+/* ERROR */
+.faq-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+/* CATEGORY ROW */
+.faq-form .row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.faq-form .row > [class*="col-"] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.faq-filter {
+  width: 100%;
+}
+
+.faq-filter label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+.faq-filter .sml_input {
+  height: 38px;
+  border: 1px solid #d8d8d8;
+  border-radius: 3px;
+  box-shadow: none;
+  font-size: 13px;
+}
+
+.faq-filter .sml_input:focus {
+  border-color: #999;
+  box-shadow: none;
+  outline: none;
+}

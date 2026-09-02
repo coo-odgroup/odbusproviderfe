@@ -1,0 +1,400 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card card-datatable table-border-style user-profile-list">
+      <div class="card-header">
+        <h5>Agent FAQ</h5>
+      </div>
+
+      <div class="card-body">
+        <!-- Top Buttons -->
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <button
+                class="btn sml_input btn-success mb-2"
+                type="button"
+                (click)="ResetAttributes(); OpenModal(content)"
+              >
+                Add AgentFAQ
+              </button>
+            </div>
+          </div>
+
+          <div class="col-10">
+            <div class="row align-items-end">
+              <!-- CATEGORY TYPE -->
+              <div class="col-md-3">
+                <div class="faq-filter">
+                  <label for="filter_category_type">Category Type</label>
+
+                  <select
+                    id="filter_category_type"
+                    class="form-control sml_input"
+                    [value]="searchForm.get('category_type')?.value"
+                    (change)="
+                      searchForm
+                        .get('category_type')
+                        ?.setValue($any($event.target).value);
+                      search()
+                    "
+                  >
+                    <option value="">All Types</option>
+                    <option value="1">Operational</option>
+                    <option value="2">Non Operational</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- FAQ CATEGORY -->
+              <div class="col-md-3">
+                <div class="faq-filter">
+                  <label for="filter_category_id">FAQ Category</label>
+
+                  <select
+                    id="filter_category_id"
+                    class="form-control sml_input"
+                    [value]="searchForm.get('category_id')?.value"
+                    (change)="
+                      searchForm
+                        .get('category_id')
+                        ?.setValue($any($event.target).value);
+                      search()
+                    "
+                  >
+                    <option value="">All Categories</option>
+                    <option value="1">General</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- FAQ SEARCH -->
+              <div class="col-md-3">
+                <div class="faq-filter">
+                  <label for="faq_search">FAQ</label>
+
+                  <input
+                    type="text"
+                    id="faq_search"
+                    class="form-control sml_input"
+                    [value]="searchForm.get('faq_search')?.value"
+                    (input)="
+                      searchForm
+                        .get('faq_search')
+                        ?.setValue($any($event.target).value)
+                    "
+                    (keyup.enter)="search()"
+                    placeholder="Search FAQ"
+                  />
+                </div>
+              </div>
+
+              <!-- PAGE SIZE -->
+              <div class="col-md-3">
+                <div class="faq-filter">
+                  <label for="page_size">Show</label>
+
+                  <select
+                    id="page_size"
+                    class="form-control sml_input"
+                    [value]="searchForm.get('rows_number')?.value"
+                    (change)="
+                      searchForm
+                        .get('rows_number')
+                        ?.setValue($any($event.target).value);
+                      search()
+                    "
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ TABLE -->
+        <div class="table-responsive" id="print-section">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>SL.NO</th>
+                <th>FAQ Category</th>
+                <th>FAQ Name</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Status</th>
+                <th>Created/Updated On</th>
+                <th>Created By</th>
+                <th width="100" class="hide_print">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- Example row -->
+              <tr>
+                <td>1</td>
+                <td>General</td>
+                <td>Booking FAQ</td>
+                <td>How can I book a bus?</td>
+                <td>You can book a bus from the application.</td>
+
+                <!-- STATUS -->
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    [ngClass]="1 == 1 ? 'btn-success' : 'btn-danger'"
+                  >
+                    Active
+                  </button>
+                </td>
+
+                <td>02/09/2026</td>
+                <td>19</td>
+
+                <!-- ACTION -->
+                <td class="hide_print">
+                  <div class="overlay-edit">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="editAgentFee($event, 0); OpenModal(content)"
+                    >
+                      <i class="feather icon-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- PAGINATION -->
+          <div class="hide_print container">
+            <div class="row">
+              <div class="col-6">
+                <div class="col-12">
+                  <p class="row mt-3 ml-1">Showing 1 of 1 records.</p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="d-flex flex-row-reverse mb-4 text-center">
+                  <nav class="my-1 pt-1">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                      <li class="page-item disabled clearfix d-none d-md-block">
+                        <a class="page-link">First</a>
+                      </li>
+
+                      <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link active">1</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link">Next</a>
+                      </li>
+
+                      <li class="page-item clearfix d-none d-md-block">
+                        <a class="page-link">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- ADD / EDIT AGENT FAQ MODAL                                -->
+<!-- ========================================================= -->
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ ModalHeading }}
+    </h5>
+
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-material">
+          <div class="right-icon-control">
+            <form class="editForm faq-form" [formGroup]="form" novalidate>
+              <!-- CATEGORY ROW -->
+              <div class="row">
+                <!-- FAQ CATEGORY -->
+                <div class="col-md-6">
+                  <div class="faq-field">
+                    <label for="category_type">
+                      Category Type <span class="text-danger">*</span>
+                    </label>
+
+                    <select
+                      id="category_type"
+                      class="form-control faq-input"
+                      formControlName="category_type"
+                    >
+                      <option value="">Select Category Type</option>
+                      <option value="1">Operational</option>
+                      <option value="2">Non Operational</option>
+                    </select>
+
+                    <span
+                      class="text-danger faq-error"
+                      *ngIf="
+                        form.get('category_type')?.touched &&
+                        form.get('category_type')?.hasError('required')
+                      "
+                    >
+                      Category Type is required!
+                    </span>
+                  </div>
+                </div>
+
+                <!-- SECOND CATEGORY -->
+                <div class="col-md-6">
+                  <div class="faq-field">
+                    <label for="category_id_2">
+                      FAQ Category <span class="text-danger">*</span>
+                    </label>
+
+                    <select
+                      id="category_id_2"
+                      class="form-control faq-input"
+                      formControlName="category_id"
+                    >
+                      <option value="">Select Category</option>
+                      <option value="1">General</option>
+                    </select>
+
+                    <span
+                      class="text-danger faq-error"
+                      *ngIf="
+                        form.get('category_id')?.touched &&
+                        form.get('category_id')?.hasError('required')
+                      "
+                    >
+                      FAQ Category is required!
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FAQ NAME -->
+              <div class="faq-field">
+                <label for="faq_name">
+                  FAQ Name <span class="text-danger">*</span>
+                </label>
+
+                <input
+                  type="text"
+                  id="faq_name"
+                  class="form-control faq-input"
+                  formControlName="faq_name"
+                  placeholder="Enter FAQ name"
+                />
+
+                <span
+                  class="text-danger faq-error"
+                  *ngIf="
+                    form.get('faq_name')?.touched &&
+                    form.get('faq_name')?.hasError('required')
+                  "
+                >
+                  FAQ Name is required!
+                </span>
+              </div>
+
+              <!-- QUESTION -->
+              <div class="faq-field">
+                <label for="question">
+                  Question <span class="text-danger">*</span>
+                </label>
+
+                <textarea
+                  id="question"
+                  class="form-control faq-textarea"
+                  rows="4"
+                  formControlName="question"
+                  placeholder="Enter the question"
+                ></textarea>
+
+                <span
+                  class="text-danger faq-error"
+                  *ngIf="
+                    form.get('question')?.touched &&
+                    form.get('question')?.hasError('required')
+                  "
+                >
+                  Question is required!
+                </span>
+              </div>
+
+              <!-- ANSWER -->
+              <div class="faq-field">
+                <label for="answer">
+                  Answer <span class="text-danger">*</span>
+                </label>
+
+                <textarea
+                  id="answer"
+                  class="form-control faq-textarea answer-textarea"
+                  rows="5"
+                  formControlName="answer"
+                  placeholder="Enter the answer"
+                ></textarea>
+
+                <span
+                  class="text-danger faq-error"
+                  *ngIf="
+                    form.get('answer')?.touched &&
+                    form.get('answer')?.hasError('required')
+                  "
+                >
+                  Answer is required!
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FOOTER -->
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="form.invalid"
+      (click)="addFeeSlab()"
+    >
+      {{ ModalBtn }}
+    </button>
+
+    <button type="button" class="btn btn-default" (click)="modal.close()">
+      Close
+    </button>
+  </div>
+</ng-template>

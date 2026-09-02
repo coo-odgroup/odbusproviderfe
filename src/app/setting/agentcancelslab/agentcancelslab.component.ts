@@ -242,11 +242,7 @@ export class AgentCancelSlabComponent implements OnInit {
    * ADD CANCEL SLAB
    */
 
-  
   addSlab(): void {
-  
-
-    
     if (this.slabForm.invalid) {
       this.slabForm.markAllAsTouched();
       return;
@@ -360,83 +356,132 @@ export class AgentCancelSlabComponent implements OnInit {
       return null;
     }
   }
-  /*
-   * EDIT CANCEL SLAB
-   */
-  editSlab(id: any, content: any): void {
-    this.editId = id;
+
+  editSlab(slab: any, content: any): void {
+    console.log('EDIT SLAB:', slab);
+
+    if (!slab) {
+      alert('Slab data not found.');
+      return;
+    }
+
+    // Set edit mode
+    this.editId = Number(slab.id);
 
     this.ModalHeading = 'Edit Agent Cancellation Slab';
-
     this.ModalBtn = 'Update';
 
-    this.http.get(this.path + 'getAgentCancelSlab/' + id).subscribe(
-      (response: any) => {
-        console.log('Edit Cancel Slab Response:', response);
+    /*
+     * Remove existing commission rows
+     */
+    while (this.commissionRows.length > 0) {
+      this.commissionRows.removeAt(0);
+    }
 
-        if (response && response.status === true) {
-          const data = response.data;
-          while (this.commissionRows.length > 0) {
-            this.commissionRows.removeAt(0);
-          }
+    /*
+     * Format date for <input type="date">
+     */
+    const formatDateForInput = (date: any): string => {
+      if (!date) {
+        return '';
+      }
 
-          this.slabForm.patchValue({
-            slab_name: '',
-            is_default: false,
-            from_date: '',
-            to_date: '',
-          });
+      return String(date).substring(0, 10);
+    };
 
-          if (data.rows && data.rows.length > 0) {
-            data.rows.forEach((row: any) => {
-              this.commissionRows.push(
-                this.fb.group({
-                  min_fare: [
-                    row.min_fare,
-                    [Validators.required, Validators.min(0)],
-                  ],
+    /*
+     * Fill main slab fields
+     */
+    this.slabForm.patchValue({
+      slab_name: slab.slab_name || '',
+      is_default: Number(slab.is_default) === 1,
 
-                  max_fare: [
-                    row.max_fare,
-                    [Validators.required, Validators.min(0)],
-                  ],
+      from_date:
+        Number(slab.is_default) === 1
+          ? null
+          : formatDateForInput(slab.from_date),
 
-                  total_deduct: [
-                    row.total_deduct,
-                    [Validators.required, Validators.min(0)],
-                  ],
+      to_date:
+        Number(slab.is_default) === 1 ? null : formatDateForInput(slab.to_date),
+    });
 
-                  odus_deduct: [
-                    row.odus_deduct,
-                    [Validators.required, Validators.min(0)],
-                  ],
+    /*
+     * Fill all cancellation/range rows
+     *
+     * Example Dusshera:
+     *
+     * 1-199
+     * 200-499
+     * 500-999
+     * 1000-9999
+     */
+    if (slab.rows && slab.rows.length > 0) {
+      slab.rows.forEach((row: any) => {
+        this.commissionRows.push(
+          this.fb.group({
+            min_fare: [row.min_fare, [Validators.required, Validators.min(0)]],
 
-                  agent_deduct: [
-                    row.agent_deduct,
-                    [Validators.required, Validators.min(0)],
-                  ],
-                }),
-              );
-            });
-          } else {
-            this.commissionRows.push(this.createCancelRow());
-          }
+            max_fare: [row.max_fare, [Validators.required, Validators.min(0)]],
 
-          /*
-           * Open modal only after data is prepared
-           */
-          this.modalService.open(content, {
-            size: 'xl',
-            centered: true,
-            backdrop: 'static',
-          });
-        }
-      },
+            total_deduct: [
+              row.total_deduct,
+              [Validators.required, Validators.min(0)],
+            ],
 
-      (error) => {
-        console.error('Get Agent Cancel Slab Error:', error);
-      },
-    );
+            odus_deduct: [
+              row.odus_deduct,
+              [Validators.required, Validators.min(0)],
+            ],
+
+            agent_deduct: [
+              row.agent_deduct,
+              [Validators.required, Validators.min(0)],
+            ],
+          }),
+        );
+      });
+    } else {
+      this.commissionRows.push(this.createCancelRow());
+    }
+
+    /*
+     * Apply default date enable/disable state
+     */
+    const isDefault = Number(slab.is_default) === 1;
+
+    const fromDate = this.slabForm.get('from_date');
+    const toDate = this.slabForm.get('to_date');
+
+    if (isDefault) {
+      fromDate?.clearValidators();
+      toDate?.clearValidators();
+
+      fromDate?.disable();
+      toDate?.disable();
+    } else {
+      fromDate?.enable();
+      toDate?.enable();
+
+      fromDate?.setValidators([Validators.required]);
+
+      toDate?.setValidators([Validators.required]);
+    }
+
+    fromDate?.updateValueAndValidity();
+    toDate?.updateValueAndValidity();
+
+    console.log('EDIT ID:', this.editId);
+    console.log('EDIT FORM:', this.slabForm.value);
+    console.log('EDIT ROWS:', this.commissionRows.value);
+
+    /*
+     * Open edit modal
+     */
+    this.modalService.open(content, {
+      size: 'xl',
+      centered: true,
+      backdrop: 'static',
+    });
   }
 
   /*
@@ -510,7 +555,7 @@ export class AgentCancelSlabComponent implements OnInit {
     const grouped: any = {};
 
     this.slabs.forEach((row: any) => {
-      const slabId = row.slab_id;
+      const slabId = Number(row.slab_id);
 
       if (!grouped[slabId]) {
         grouped[slabId] = {
@@ -518,8 +563,8 @@ export class AgentCancelSlabComponent implements OnInit {
           slab_name: row.slab_name,
           from_date: row.from_date,
           to_date: row.to_date,
-          is_default: row.is_default,
-          status: row.slab_status,
+          is_default: Number(row.is_default),
+          status: Number(row.slab_status),
           created_by: row.created_by,
           updated_at: row.updated_at,
           rows: [],
@@ -537,5 +582,7 @@ export class AgentCancelSlabComponent implements OnInit {
     });
 
     this.groupedSlabs = Object.values(grouped);
+
+    console.log('GROUPED SLABS:', this.groupedSlabs);
   }
 }

@@ -22,11 +22,12 @@ import { AgentbookingreportComponent } from './agentbookingreport/agentbookingre
 import { AgentcommissionreportComponent } from './agentcommissionreport/agentcommissionreport.component';
 import { AgentcancellationreportComponent } from './agentcancellationreport/agentcancellationreport.component';
 import { FaqComponent } from './faq/faq.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
+  
   
   ],
   imports: [

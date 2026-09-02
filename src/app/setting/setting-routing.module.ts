@@ -147,6 +147,13 @@ const routes: Routes = [
           import('./faq/faq.module').then((module) => module.FaqModule),
       },
       {
+        path: 'agentfaq',
+        loadChildren: () =>
+          import('./agentfaq/agentfaq.module').then(
+            (module) => module.AgentfaqModule,
+          ),
+      },
+      {
         path: 'agentslider',
         loadChildren: () =>
           import('./agentslider/agentslider.module').then(
