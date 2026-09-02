@@ -213,6 +213,7 @@ export class AgentfaqComponent implements OnInit {
     const userId = this.getLoggedInUserId();
 
     const payload: any = {
+      type_id: Number(data.category_type),
       category_id: Number(data.category_id),
       faq_name: data.faq_name,
       question: data.question,
@@ -463,30 +464,54 @@ export class AgentfaqComponent implements OnInit {
     this.search();
   }
 
-  changeStatus(event: any, id: any): void {
-    event.stopPropagation();
+  changeStatus(faq: any): void {
+    console.log('========== CHANGE FAQ STATUS ==========');
+    console.log('FAQ ID:', faq.id);
+    console.log('CURRENT STATUS:', faq.status);
 
-    this.http.post(this.path + 'changeAgentFaqStatus/' + id, {}).subscribe(
-      (response: any) => {
-        console.log('FAQ status response:', response);
+    const userId = this.getLoggedInUserId();
 
-        if (response && response.status === true) {
-          this.getAll();
-        } else {
-          alert(response.message || 'Unable to change FAQ status');
-        }
-      },
+    this.http
+      .post(this.path + 'changeAgentFaqStatus/' + faq.id, {
+        updated_by: userId,
+      })
+      .subscribe(
+        (response: any) => {
+          console.log('FAQ STATUS RESPONSE:', response);
 
-      (error) => {
-        console.error('Change FAQ status error:', error);
+          if (response && response.status === true) {
+            // Update the current row immediately
+            faq.status = Number(response.data.status);
 
-        alert(
-          error && error.error && error.error.message
-            ? error.error.message
-            : 'Unable to change FAQ status',
-        );
-      },
-    );
+            console.log('NEW STATUS:', faq.status);
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: response.message || 'FAQ status changed successfully',
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: response.message || 'Unable to change FAQ status',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        (error) => {
+          console.error('Change FAQ status error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg:
+              error && error.error && error.error.message
+                ? error.error.message
+                : 'Unable to change FAQ status',
+            type: Constants.ErrorType,
+          });
+        },
+      );
   }
 
   goToPage(url: string): void {

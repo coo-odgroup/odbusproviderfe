@@ -135,3 +135,40 @@
   outline: none;
   box-shadow: none;
 }
+.faq-status-btn {
+  min-width: 70px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.active-status {
+  background: #e8f7ee;
+  color: #1a9b50;
+  border: 1px solid #9ed9b7;
+}
+
+.active-status:hover {
+  background: #d5f1df;
+  border-color: #70c794;
+}
+
+.inactive-status {
+  background: #fdecec;
+  color: #dc3545;
+  border: 1px solid #efb0b5;
+}
+
+.inactive-status:hover {
+  background: #f9d9dc;
+  border-color: #e28a91;
+}
+
+.faq-status-btn:focus {
+  outline: none;
+  box-shadow: none;
+}

@@ -167,13 +167,16 @@
                   {{ faq.answer }}
                 </td>
                 <td>
-                  <span *ngIf="faq.status == 1" class="text-success">
-                    Active
-                  </span>
-
-                  <span *ngIf="faq.status != 1" class="text-danger">
-                    Inactive
-                  </span>
+                  <button
+                    type="button"
+                    class="faq-status-btn"
+                    [ngClass]="
+                      faq.status == 1 ? 'active-status' : 'inactive-status'
+                    "
+                    (click)="changeStatus(faq)"
+                  >
+                    {{ faq.status == 1 ? "Active" : "Inactive" }}
+                  </button>
                 </td>
                 <td>
                   {{ faq.updated_at || faq.created_at }}
