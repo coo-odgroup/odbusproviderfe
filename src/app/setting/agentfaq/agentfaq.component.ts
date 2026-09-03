@@ -281,19 +281,11 @@ export class AgentfaqComponent implements OnInit {
 
         if (response && response.status === true) {
           const data = response.data;
+          this.getCategoriesByType(data.type_id);
 
-          /*
-           * First load categories
-           * belonging to this type.
-           */
-          this.getCategoriesByType(data.category_type);
-
-          /*
-           * Patch form
-           */
           this.form = this.fb.group({
             id: [data.id],
-            category_type: [data.category_type, Validators.required],
+            category_type: [data.type_id, Validators.required],
             category_id: [data.category_id, Validators.required],
             faq_name: [data.faq_name, Validators.required],
             question: [data.question, Validators.required],
@@ -301,10 +293,6 @@ export class AgentfaqComponent implements OnInit {
             status: [Number(data.status)],
           });
 
-          /*
-           * Open modal only after
-           * data is prepared.
-           */
           this.modalReference = this.modalService.open(content, {
             size: 'xl',
             centered: true,

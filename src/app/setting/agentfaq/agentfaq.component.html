@@ -134,8 +134,8 @@
             <thead>
               <tr>
                 <th>SL.NO</th>
-                <th>FAQ Category</th>
-                <th>FAQ Name</th>
+                <th>Type</th>
+                <th>Category</th>
                 <th>Question</th>
                 <th>Answer</th>
                 <th>Status</th>
@@ -155,10 +155,16 @@
                   }}
                 </td>
                 <td>
-                  {{ faq.category_name }}
+                  {{
+                    faq.type_id == 1
+                      ? "Operational"
+                      : faq.type_id == 2
+                        ? "Non Operational"
+                        : "--"
+                  }}
                 </td>
                 <td>
-                  {{ faq.faq_name }}
+                  {{ faq.category_name }}
                 </td>
                 <td>
                   {{ faq.question }}
@@ -182,7 +188,7 @@
                   {{ faq.updated_at || faq.created_at }}
                 </td>
                 <td>
-                  {{ faq.created_by }}
+                  {{ faq.created_by_name || "-" }}
                 </td>
                 <td class="hide_print">
                   <div class="overlay-edit">
@@ -245,10 +251,6 @@
     </div>
   </div>
 </div>
-
-<!-- ========================================================= -->
-<!-- ADD / EDIT MODAL                                          -->
-<!-- ========================================================= -->
 
 <ng-template #content let-modal>
   <div class="modal-header">
