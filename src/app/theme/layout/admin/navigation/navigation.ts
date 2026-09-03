@@ -1060,6 +1060,13 @@ const NavigationItems = [
             icon: 'feather icon-image',
             url: 'setting/agentcancelslab',
           },
+          {
+            id: 'agentfaq',
+            title: 'Agent FAQ',
+            type: 'item',
+            icon: 'feather icon-image',
+            url: 'setting/agentfaq',
+          },
           // {
           //   id: 'agentcommissionreport',
           //   title: 'Agent Commission Report',
