@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { Constants } from 'src/app/constant/constant';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-agentcommission-slab',
@@ -41,6 +42,7 @@ export class AgentCommissionSlabComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private http: HttpClient,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -129,7 +131,7 @@ export class AgentCommissionSlabComponent implements OnInit {
       per_page: this.searchForm.get('per_page')?.value || 10,
     };
 
-    this.http.get(requestUrl, { params }).subscribe(
+    this.http.post(requestUrl, params).subscribe(
       (response: any) => {
         if (response && response.status === true) {
           const result = response.data;
@@ -736,10 +738,6 @@ export class AgentCommissionSlabComponent implements OnInit {
     this.getAgents();
   }
 
-  // =========================================================
-  // PAGINATION LABEL
-  // =========================================================
-
   page(label: string): string {
     if (!label) {
       return '';
@@ -748,12 +746,54 @@ export class AgentCommissionSlabComponent implements OnInit {
     return label.replace('&laquo;', '«').replace('&raquo;', '»');
   }
 
-  // =========================================================
-  // GET AGENTS
-  // =========================================================
+  changeSlabStatus(slab: any): void {
+    const newStatus = slab.status == 1 ? 0 : 1;
+
+    this.http
+      .post(
+        Constants.BASE_URL + '/changeAgentCommissionSlabStatus/' + slab.id,
+        {
+          status: newStatus,
+        },
+      )
+      .subscribe(
+        (response: any) => {
+          if (response.status) {
+            // Update UI only after DB update succeeds
+            slab.status = newStatus;
+
+            this.notificationService.addToast({
+              type: 'success',
+              title: 'Success',
+              content:
+                response.message ||
+                (newStatus == 1
+                  ? 'Slab activated successfully'
+                  : 'Slab deactivated successfully'),
+              timeout: 3000,
+            });
+          } else {
+            this.notificationService.addToast({
+              type: 'error',
+              title: 'Error',
+              content: response.message || 'Unable to change slab status',
+              timeout: 3000,
+            });
+          }
+        },
+        (error) => {
+          this.notificationService.addToast({
+            type: 'error',
+            title: 'Error',
+            content: error.error?.message || 'Unable to change slab status',
+            timeout: 3000,
+          });
+        },
+      );
+  }
 
   getAgents(): void {
-    this.http.get(this.path + 'getAgentCommissionSlabAgents').subscribe(
+    this.http.post(this.path + 'getAgentCommissionSlabAgents', {}).subscribe(
       (response: any) => {
         console.log('FULL AGENT API RESPONSE:', response);
         console.log('AGENT API DATA:', response?.data);

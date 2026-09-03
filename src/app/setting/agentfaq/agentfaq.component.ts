@@ -87,7 +87,7 @@ export class AgentfaqComponent implements OnInit {
   }
 
   getCategoryTypes(): void {
-    this.http.get(this.path + 'getAgentFaqCategoryTypes').subscribe(
+    this.http.post(this.path + 'getAgentFaqCategoryTypes', {}).subscribe(
       (response: any) => {
         console.log('FAQ category types response:', response);
 
@@ -141,9 +141,9 @@ export class AgentfaqComponent implements OnInit {
 
   getCategoriesByType(type: any): void {
     this.http
-      .get(
-        this.path + 'getAgentFaqCategoriesByType/' + encodeURIComponent(type),
-      )
+      .post(this.path + 'getAgentFaqCategoriesByType', {
+        type: type,
+      })
       .subscribe(
         (response: any) => {
           console.log('FAQ categories response:', response);
@@ -273,7 +273,7 @@ export class AgentfaqComponent implements OnInit {
     this.editId = Number(id);
     this.ModalHeading = 'Edit Agent FAQ';
     this.ModalBtn = 'Update';
-    this.http.get(this.path + 'getAgentFaq/' + id).subscribe(
+    this.http.post(this.path + 'getAgentFaq/' + id, {}).subscribe(
       (response: any) => {
         this.spinner.hide();
 
@@ -434,9 +434,9 @@ export class AgentfaqComponent implements OnInit {
     }
 
     this.http
-      .get(
-        this.path + 'getAgentFaqCategoriesByType/' + encodeURIComponent(type),
-      )
+      .post(this.path + 'getAgentFaqCategoriesByType', {
+        type: type,
+      })
       .subscribe(
         (response: any) => {
           if (response && response.status === true) {

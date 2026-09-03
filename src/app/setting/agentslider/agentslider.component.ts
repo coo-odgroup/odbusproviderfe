@@ -143,52 +143,48 @@ export class AgentsliderComponent implements OnInit {
     console.log('Agent Slider API:', apiUrl);
     console.log('Agent Slider Params:', params);
 
-    this.http
-      .get(apiUrl, {
-        params: params,
-      })
-      .subscribe(
-        (res: any) => {
-          this.spinner.hide();
+    this.http.post(apiUrl, params).subscribe(
+      (res: any) => {
+        this.spinner.hide();
 
-          console.log('Agent Slider API RESPONSE:', res);
+        console.log('Agent Slider API RESPONSE:', res);
 
-          if (res && res.status === true) {
-            /*
-             * Laravel paginate() response:
-             *
-             * res.data = pagination object
-             * res.data.data = actual records
-             */
+        if (res && res.status === true) {
+          /*
+           * Laravel paginate() response:
+           *
+           * res.data = pagination object
+           * res.data.data = actual records
+           */
 
-            this.sliders =
-              res.data && Array.isArray(res.data.data) ? res.data.data : [];
+          this.sliders =
+            res.data && Array.isArray(res.data.data) ? res.data.data : [];
 
-            this.pagination = res.data;
+          this.pagination = res.data;
 
-            console.log('Agent Slider Records:', this.sliders);
-          } else {
-            this.sliders = [];
-            this.pagination = null;
-
-            console.log('Agent Slider API returned no data:', res);
-          }
-        },
-        (error) => {
-          this.spinner.hide();
-
-          console.error('Get Agent Slider Error:', error);
-
+          console.log('Agent Slider Records:', this.sliders);
+        } else {
           this.sliders = [];
           this.pagination = null;
 
-          this.notificationService.addToast({
-            title: 'Error',
-            msg: error.error?.message || 'Unable to load agent sliders.',
-            type: 'error',
-          });
-        },
-      );
+          console.log('Agent Slider API returned no data:', res);
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+
+        console.error('Get Agent Slider Error:', error);
+
+        this.sliders = [];
+        this.pagination = null;
+
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: error.error?.message || 'Unable to load agent sliders.',
+          type: 'error',
+        });
+      },
+    );
   }
 
   refresh(): void {
@@ -333,27 +329,21 @@ export class AgentsliderComponent implements OnInit {
       formData.append('slider_img', this.selectedFile);
     }
 
-    /*
+    /*  
      * Form fields
      */
     formData.append('url', this.sliderForm.value.url || '');
-
     formData.append('alt_tag', this.sliderForm.value.alt_tag || '');
-
     formData.append(
       'slider_description',
       this.sliderForm.value.slider_description || '',
     );
-
     formData.append(
       'default_slider',
       this.sliderForm.value.default_slider ? '1' : '0',
     );
-
     formData.append('sequence', this.sliderForm.value.sequence || '');
-
     formData.append('start_date', this.sliderForm.value.start_date || '');
-
     formData.append('end_date', this.sliderForm.value.end_date || '');
 
     let apiUrl = '';
@@ -364,18 +354,11 @@ export class AgentsliderComponent implements OnInit {
      */
     if (id == null) {
       formData.append('created_by', String(this.userId));
-
       apiUrl = this.path + 'addAgentSlider';
-
       request = this.http.post(apiUrl, formData);
     } else {
-      /*
-       * UPDATE
-       */
       formData.append('updated_by', String(this.userId));
-
       apiUrl = this.path + 'updateAgentSlider/' + id;
-
       request = this.http.post(apiUrl, formData);
     }
 

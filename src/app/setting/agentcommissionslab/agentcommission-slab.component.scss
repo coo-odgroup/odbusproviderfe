@@ -900,3 +900,30 @@
 .slab-sub-row td:nth-child(2) {
   background: #fafafa;
 }
+
+.slab-status-btn {
+  min-width: 62px;
+  height: 26px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 3px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.slab-status-active {
+  color: #00b894;
+  background-color: #e8fff5;
+  border: 1px solid #00b894;
+}
+
+.slab-status-inactive {
+  color: #ff5b5b;
+  background-color: #fff0f0;
+  border: 1px solid #ff9b9b;
+}
+
+.slab-status-btn:hover {
+  opacity: 0.85;
+}

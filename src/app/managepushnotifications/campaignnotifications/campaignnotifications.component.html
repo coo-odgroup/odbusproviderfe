@@ -17,9 +17,9 @@
       [isCardFooter]="false"
     >
       <form [formGroup]="searchForm">
-        <div class="row align-items-end">
+        <div class="row align-items-end flex-nowrap">
           <!-- Add Button -->
-          <div class="col-lg-2 col-md-3 mb-3">
+          <div class="col mb-3">
             <button
               type="button"
               class="btn btn-success btn-block"
@@ -30,13 +30,16 @@
             </button>
           </div>
 
-          <div class="col-lg-2 col-md-3 mb-3">
-            <label class="font-weight-bold">Campaign Category </label>
+          <!-- Campaign Category -->
+          <div class="col mb-3">
+            <label class="font-weight-bold"> Campaign Category </label>
+
             <select
               class="form-control sml_input"
               formControlName="notification_category_id"
             >
               <option value="">Select Campaign Category</option>
+
               <option
                 *ngFor="let category of notificationCategories"
                 [value]="category.id"
@@ -47,8 +50,9 @@
           </div>
 
           <!-- Status -->
-          <div class="col-lg-2 col-md-3 mb-3">
-            <label class="font-weight-bold">Status</label>
+          <div class="col mb-3">
+            <label class="font-weight-bold"> Status </label>
+
             <select class="form-control sml_input" formControlName="status">
               <option value="">STATUS</option>
               <option value="1">Active</option>
@@ -57,8 +61,9 @@
           </div>
 
           <!-- Type -->
-          <div class="col-lg-2 col-md-3 mb-3">
-            <label class="font-weight-bold">Type</label>
+          <div class="col mb-3">
+            <label class="font-weight-bold"> Type </label>
+
             <select class="form-control sml_input" formControlName="type">
               <option value="">TYPE</option>
               <option value="PROMOTIONAL">Promotional</option>
@@ -69,8 +74,8 @@
           </div>
 
           <!-- Target Type -->
-          <div class="form-groupcol-lg-2 col-md-3 mb-3">
-            <label>
+          <div class="col mb-3">
+            <label class="font-weight-bold">
               Target Type
               <span class="text-danger">*</span>
             </label>
@@ -91,8 +96,9 @@
           </div>
 
           <!-- Schedule Type -->
-          <div class="col-lg-2 col-md-3 mb-3">
-            <label class="font-weight-bold">Schedule Type</label>
+          <div class="col mb-3">
+            <label class="font-weight-bold"> Schedule Type </label>
+
             <select
               class="form-control sml_input"
               formControlName="schedule_type"

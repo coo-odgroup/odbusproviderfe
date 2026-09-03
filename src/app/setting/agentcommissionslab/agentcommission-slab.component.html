@@ -159,10 +159,59 @@
                   {{ i + 1 }}
                 </td>
 
+                <!-- SLAB NAME -->
                 <td>
                   <strong>{{ slab.slab_name }}</strong>
                 </td>
-                <td colspan="11"></td>
+
+                <!-- MIN FARE -->
+                <td></td>
+
+                <!-- MAX FARE -->
+                <td></td>
+
+                <!-- TOTAL COMMISSION -->
+                <td></td>
+
+                <!-- ODBUS COMMISSION -->
+                <td></td>
+
+                <!-- AGENT COMMISSION -->
+                <td></td>
+
+                <!-- FROM DATE -->
+                <td></td>
+
+                <!-- TO DATE -->
+                <td></td>
+
+                <!-- DEFAULT -->
+                <td></td>
+
+                <!-- STATUS - ORIGINAL STATUS COLUMN -->
+                <td class="text-center">
+                  <button
+                    type="button"
+                    class="slab-status-btn"
+                    [ngClass]="{
+                      'slab-status-active': slab.status == 1,
+                      'slab-status-inactive': slab.status == 0
+                    }"
+                    (click)="changeSlabStatus(slab)"
+                    title="Click to change status"
+                  >
+                    {{ slab.status == 1 ? "Active" : "Inactive" }}
+                  </button>
+                </td>
+
+                <!-- CREATED / UPDATED ON -->
+                <td></td>
+
+                <!-- CREATED BY -->
+                <td></td>
+
+                <!-- ACTION -->
+                <td></td>
               </tr>
 
               <tr
@@ -224,25 +273,6 @@
                     No
                   </span>
                 </td>
-
-                <!-- STATUS -->
-                <td>
-                  <label
-                    *ngIf="slab.status == 1"
-                    class="badge badge-light-primary text-dark"
-                  >
-                    Active
-                  </label>
-
-                  <label
-                    *ngIf="slab.status == 0"
-                    class="badge badge-light-danger text-dark"
-                  >
-                    Pending
-                  </label>
-                </td>
-
-                <!-- CREATED / UPDATED -->
                 <td>
                   {{
                     slab.updated_at
@@ -250,7 +280,7 @@
                       : "-"
                   }}
                 </td>
-
+                <td></td>
                 <!-- CREATED BY -->
                 <td>
                   {{ slab.created_by }}

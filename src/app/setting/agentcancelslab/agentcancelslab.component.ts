@@ -47,11 +47,6 @@ export class AgentCancelSlabComponent implements OnInit {
       per_page: ['10'],
     });
 
-    /*
-     * ADD / EDIT FORM
-     *
-     * These names MUST match the HTML formControlName values.
-     */
     this.slabForm = this.fb.group({
       slab_name: ['', Validators.required],
       is_default: [false],
@@ -70,17 +65,13 @@ export class AgentCancelSlabComponent implements OnInit {
           // Default slab does not need dates
           fromDate?.clearValidators();
           toDate?.clearValidators();
-
           fromDate?.setValue(null);
           toDate?.setValue(null);
-
           fromDate?.disable();
           toDate?.disable();
         } else {
-          // Non-default slab requires dates
           fromDate?.enable();
           toDate?.enable();
-
           fromDate?.setValidators([Validators.required]);
           toDate?.setValidators([Validators.required]);
         }
@@ -89,22 +80,8 @@ export class AgentCancelSlabComponent implements OnInit {
         toDate?.updateValueAndValidity();
       });
 
-    /*
-     * LOAD DATA
-     */
     this.getAll();
   }
-
-  /*
-   * CREATE ONE CANCEL RANGE ROW
-   *
-   * DB:
-   * range_from
-   * range_to
-   * total_deduct
-   * odus_deduct
-   * agent_deduct
-   */
   createCancelRow(): FormGroup {
     return this.fb.group({
       min_fare: ['', [Validators.required, Validators.min(0)]],
@@ -116,32 +93,20 @@ export class AgentCancelSlabComponent implements OnInit {
     });
   }
 
-  /*
-   * FORM ARRAY GETTER
-   */
   get commissionRows(): FormArray {
     return this.slabForm.get('commission_rows') as FormArray;
   }
 
-  /*
-   * ADD RANGE ROW
-   */
   addCommissionRow(): void {
     this.commissionRows.push(this.createCancelRow());
   }
 
-  /*
-   * REMOVE RANGE ROW
-   */
   removeCommissionRow(index: number): void {
     if (this.commissionRows.length > 1) {
       this.commissionRows.removeAt(index);
     }
   }
 
-  /*
-   * GET ALL CANCEL SLABS
-   */
   getAll(url?: string): void {
     const requestUrl = url || this.path + 'getAgentCancelSlabs';
 
@@ -152,43 +117,45 @@ export class AgentCancelSlabComponent implements OnInit {
       .set('status', this.searchForm.get('status')?.value || '')
       .set('per_page', this.searchForm.get('per_page')?.value || '10');
 
-    this.http.get(requestUrl, { params: params }).subscribe(
-      (response: any) => {
-        console.log('Agent Cancel Slabs Response:', response);
+    this.http
+      .post(requestUrl, {
+        slab_name: this.searchForm.get('slab_name')?.value || '',
+        from_date: this.searchForm.get('from_date')?.value || '',
+        to_date: this.searchForm.get('to_date')?.value || '',
+        status: this.searchForm.get('status')?.value || '',
+        per_page: this.searchForm.get('per_page')?.value || '10',
+      })
+      .subscribe(
+        (response: any) => {
+          console.log('Agent Cancel Slabs Response:', response);
 
-        if (response && response.status === true) {
-          const result = response.data;
+          if (response && response.status === true) {
+            const result = response.data;
 
-          this.slabs = result?.data || [];
+            this.slabs = result?.data || [];
+            this.groupSlabs();
+            this.pagination = result || {};
+            this.all.count = this.groupedSlabs.length;
+            this.all.total = result?.total || this.groupedSlabs.length;
+          } else {
+            this.slabs = [];
+            this.groupedSlabs = [];
+            this.pagination = {};
+            this.all.count = 0;
+            this.all.total = 0;
+          }
+        },
 
-          // Convert API rows into slab groups
-          this.groupSlabs();
+        (error) => {
+          console.error('Error loading Agent Cancel Slabs:', error);
 
-          this.pagination = result || {};
-
-          this.all.count = this.groupedSlabs.length;
-          this.all.total = result?.total || this.groupedSlabs.length;
-        } else {
           this.slabs = [];
-          this.groupedSlabs = [];
-
           this.pagination = {};
 
           this.all.count = 0;
           this.all.total = 0;
-        }
-      },
-
-      (error) => {
-        console.error('Error loading Agent Cancel Slabs:', error);
-
-        this.slabs = [];
-        this.pagination = {};
-
-        this.all.count = 0;
-        this.all.total = 0;
-      },
-    );
+        },
+      );
   }
 
   /*
