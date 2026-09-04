@@ -163,8 +163,11 @@ export class AgentCommissionSlabComponent implements OnInit {
                 status: Number(row.status || 0),
                 created_at: row.created_at,
                 created_by: row.created_by,
+                created_by_name: row.created_by_name,
+
                 updated_at: row.updated_at,
                 updated_by: row.updated_by,
+                updated_by_name: row.updated_by_name,
                 agent_assigned: Number(row.agent_assigned || 0),
                 agent_ids: row.agent_ids || [],
                 from_date:

@@ -73,6 +73,22 @@
             </select>
           </div>
 
+          <!-- Schedule Type -->
+          <div class="col mb-3">
+            <label class="font-weight-bold"> Schedule Type </label>
+
+            <select
+              class="form-control sml_input"
+              formControlName="schedule_type"
+            >
+              <option value="">SCHEDULE TYPE</option>
+              <option value="IMMEDIATE">Immediate</option>
+              <option value="SCHEDULED">Scheduled</option>
+              <option value="BEFORE_EVENT">Before Event</option>
+              <option value="AFTER_EVENT">After Event</option>
+            </select>
+          </div>
+
           <!-- Target Type -->
           <div class="col mb-3">
             <label class="font-weight-bold">
@@ -94,37 +110,9 @@
               <option value="SELECTED">SELECTED</option>
             </select>
           </div>
-
-          <!-- Schedule Type -->
-          <div class="col mb-3">
-            <label class="font-weight-bold"> Schedule Type </label>
-
-            <select
-              class="form-control sml_input"
-              formControlName="schedule_type"
-            >
-              <option value="">SCHEDULE TYPE</option>
-              <option value="IMMEDIATE">Immediate</option>
-              <option value="SCHEDULED">Scheduled</option>
-              <option value="BEFORE_EVENT">Before Event</option>
-              <option value="AFTER_EVENT">After Event</option>
-            </select>
-          </div>
         </div>
 
         <div class="row mt-2 align-items-center">
-          <!-- Refresh -->
-          <div class="col-lg-1 col-md-2 mb-2">
-            <button
-              type="button"
-              class="btn btn-danger btn-block"
-              (click)="refresh()"
-              title="Refresh"
-            >
-              <i class="fas fa-sync-alt"></i>
-            </button>
-          </div>
-
           <!-- Search -->
           <div class="col-lg-9 col-md-8 mb-2">
             <div class="input-group">
@@ -145,6 +133,18 @@
                 </button>
               </div>
             </div>
+          </div>
+
+          <!-- Refresh -->
+          <div class="col-lg-1 col-md-2 mb-2">
+            <button
+              type="button"
+              class="btn btn-danger btn-block"
+              (click)="refresh()"
+              title="Refresh"
+            >
+              <i class="fas fa-sync-alt"></i>
+            </button>
           </div>
 
           <!-- Rows -->
@@ -458,6 +458,125 @@
                           {{ coupon.coupon_title }} ({{ coupon.coupon_code }})
                         </option>
                       </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Schedule Type -->
+                <div class="col-md-6">
+                  <label>
+                    Schedule Type
+                    <span class="text-danger">*</span>
+                  </label>
+                  <div
+                    class="target-settings-box"
+                    [class.active]="
+                      form.get('target_type')?.value !== '' &&
+                      form.get('target_type')?.value !== null
+                    "
+                  >
+                    <div class="form-group">
+                      <select
+                        class="form-control"
+                        formControlName="schedule_type"
+                        (change)="scheduleTypeChange($event.target.value)"
+                      >
+                        <option value="">Select Schedule</option>
+                        <option value="IMMEDIATE">IMMEDIATE</option>
+                        <option value="SCHEDULED">SCHEDULED</option>
+                        <option value="BEFORE_EVENT">BEFORE_EVENT</option>
+                        <option value="AFTER_EVENT">AFTER_EVENT</option>
+                      </select>
+                    </div>
+
+                    <!-- Scheduled Date / Time -->
+                    <div
+                      class="col-md-12 scheduled-section"
+                      *ngIf="form.get('schedule_type')?.value === 'SCHEDULED'"
+                    >
+                      <div formArrayName="schedules">
+                        <div
+                          class="row align-items-end"
+                          *ngFor="
+                            let schedule of schedules.controls;
+                            let i = index
+                          "
+                          [formGroupName]="i"
+                        >
+                          <!-- Schedule Date -->
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>
+                                Schedule Date
+                                <span class="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="date"
+                                class="form-control"
+                                formControlName="schedule_date"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- Start Time -->
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>
+                                Start Time
+                                <span class="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="time"
+                                class="form-control"
+                                formControlName="start_time"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- End Time -->
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>
+                                End Time
+                                <span class="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="time"
+                                class="form-control"
+                                formControlName="end_time"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- Add / Remove -->
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <!-- Add -->
+                              <button
+                                type="button"
+                                class="btn btn-success mr-2"
+                                *ngIf="i === 0"
+                                (click)="addSchedule()"
+                              >
+                                <i class="fa fa-plus"></i>
+                              </button>
+
+                              <!-- Remove -->
+                              <button
+                                type="button"
+                                class="btn btn-danger"
+                                *ngIf="i > 0"
+                                (click)="removeSchedule(i)"
+                              >
+                                <i class="fa fa-minus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -794,123 +913,6 @@
                         {{ operator.organisation_name }}
                       </option>
                     </select>
-                  </div>
-                </div>
-
-                <!-- Schedule Type -->
-                <div class="col-md-6">
-                  <label>
-                    Schedule Type
-                    <span class="text-danger">*</span>
-                  </label>
-                  <div
-                    class="target-settings-box"
-                    [class.active]="
-                      form.get('target_type')?.value !== '' &&
-                      form.get('target_type')?.value !== null
-                    "
-                  >
-                    <div class="form-group">
-                      <select
-                        class="form-control"
-                        formControlName="schedule_type"
-                        (change)="scheduleTypeChange($event.target.value)"
-                      >
-                        <option value="">Select Schedule</option>
-                        <option value="IMMEDIATE">IMMEDIATE</option>
-                        <option value="SCHEDULED">SCHEDULED</option>
-                        <option value="BEFORE_EVENT">BEFORE_EVENT</option>
-                        <option value="AFTER_EVENT">AFTER_EVENT</option>
-                      </select>
-                    </div>
-
-                    <!-- Scheduled Date / Time -->
-                    <div
-                      class="col-md-12"
-                      *ngIf="form.get('schedule_type')?.value === 'SCHEDULED'"
-                    >
-                      <div formArrayName="schedules">
-                        <div
-                          class="row align-items-end mb-3"
-                          *ngFor="
-                            let schedule of schedules.controls;
-                            let i = index
-                          "
-                          [formGroupName]="i"
-                        >
-                          <!-- Date -->
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label>
-                                Schedule Date
-                                <span class="text-danger">*</span>
-                              </label>
-
-                              <input
-                                type="date"
-                                class="form-control"
-                                formControlName="schedule_date"
-                              />
-                            </div>
-                          </div>
-
-                          <!-- Start Time -->
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>
-                                Start Time
-                                <span class="text-danger">*</span>
-                              </label>
-
-                              <input
-                                type="time"
-                                class="form-control"
-                                formControlName="start_time"
-                              />
-                            </div>
-                          </div>
-
-                          <!-- End Time -->
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>
-                                End Time
-                                <span class="text-danger">*</span>
-                              </label>
-
-                              <input
-                                type="time"
-                                class="form-control"
-                                formControlName="end_time"
-                              />
-                            </div>
-                          </div>
-
-                          <!-- Add / Remove -->
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <button
-                                type="button"
-                                class="btn btn-success mr-2"
-                                *ngIf="i === 0"
-                                (click)="addSchedule()"
-                              >
-                                <i class="fa fa-plus"></i>
-                              </button>
-
-                              <button
-                                type="button"
-                                class="btn btn-danger"
-                                *ngIf="i > 0"
-                                (click)="removeSchedule(i)"
-                              >
-                                <i class="fa fa-minus"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
 

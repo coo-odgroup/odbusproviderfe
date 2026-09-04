@@ -491,7 +491,7 @@ export class AgentCancelSlabComponent implements OnInit {
     });
 
     this.http
-      .post(this.path + 'updateAgentCancelSlabStatus/' + slabId, {
+      .post(this.path + 'changeAgentCancelSlabStatus/' + slabId, {
         status: newStatus,
       })
       .subscribe(
@@ -499,13 +499,17 @@ export class AgentCancelSlabComponent implements OnInit {
           console.log('Status Update Response:', response);
 
           if (response && response.status === true) {
-            // Immediately update UI
-            const slab = this.slabs.find(
-              (item: any) => Number(item.slab_id) === Number(slabId),
+            // IMPORTANT:
+            // The table displays groupedSlabs,
+            // so update groupedSlabs directly.
+            const slab = this.groupedSlabs.find(
+              (item: any) => Number(item.id) === Number(slabId),
             );
 
             if (slab) {
               slab.status = newStatus;
+
+              console.log('UI status changed immediately:', slab.status);
             }
           } else {
             console.error('Status update failed:', response);
@@ -513,6 +517,7 @@ export class AgentCancelSlabComponent implements OnInit {
         },
         (error) => {
           console.error('Change Status Error:', error);
+
           console.error('Backend Response:', error.error);
         },
       );
@@ -533,6 +538,7 @@ export class AgentCancelSlabComponent implements OnInit {
           is_default: Number(row.is_default),
           status: Number(row.slab_status),
           created_by: row.created_by,
+          created_by_name: row.created_by_name,
           updated_at: row.updated_at,
           rows: [],
         };

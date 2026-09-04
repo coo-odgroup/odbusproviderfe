@@ -25,7 +25,7 @@
 .status-inactive {
   background-color: #f8d7da;
   color: #dc3545;
-}   
+}
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -58,4 +58,49 @@
 
 .slab-sub-row td {
   vertical-align: middle;
+}
+.action-column {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.action-btn {
+  width: 42px;
+  height: 38px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+}
+
+.action-btn i {
+  font-size: 14px;
+}
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.status-active {
+  background-color: #d9f3ee;
+  color: #20a88a;
+}
+
+.status-inactive {
+  background-color: #f8d7da;
+  color: #dc3545;
 }

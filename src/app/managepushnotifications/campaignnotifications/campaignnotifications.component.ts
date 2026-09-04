@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
 import { CampaignnotificationService } from '../../services/campaignnotification.service';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
@@ -765,11 +765,6 @@ export class CampaignnotificationsComponent implements OnInit {
 
             console.log('Valid users:', this.users);
             console.log('Valid user count:', this.validUserCount);
-
-            // Open dropdown automatically when users are loaded
-            if (this.users.length > 0) {
-              this.userDropdownOpen = true;
-            }
           } else {
             this.users = [];
             this.filteredUsers = [];
@@ -831,27 +826,53 @@ export class CampaignnotificationsComponent implements OnInit {
   }
 
   scheduleTypeChange(type: string): void {
-    this.form.patchValue({
-      schedule_type: type,
-    });
+    console.log('==============================');
+    console.log('SCHEDULE TYPE CHANGE');
+    console.log('Selected type:', type);
+
+    // Close user dropdown
+    this.userDropdownOpen = false;
+
+    // Update form value
+    const scheduleTypeControl = this.form.get('schedule_type');
+
+    if (scheduleTypeControl) {
+      scheduleTypeControl.setValue(type);
+      scheduleTypeControl.markAsDirty();
+      scheduleTypeControl.updateValueAndValidity();
+    }
 
     if (type === 'SCHEDULED') {
-      // Disable schedule minutes
+      // Disable minutes
       this.form.get('schedule_minutes')?.disable();
 
-      // Add first schedule row if none exists
+      // IMPORTANT:
+      // Always make sure at least one schedule exists
       if (this.schedules.length === 0) {
-        this.addSchedule();
+        this.schedules.push(
+          this.fb.group({
+            schedule_date: ['', Validators.required],
+            start_time: ['', Validators.required],
+            end_time: ['', Validators.required],
+          }),
+        );
       }
+
+      console.log(
+        'schedule_type form value:',
+        this.form.get('schedule_type')?.value,
+      );
+
+      console.log('schedule rows:', this.schedules.length);
+
+      console.log('schedule form:', this.schedules.value);
     } else {
-      // Remove all scheduled rows
+      // Remove scheduled rows
       this.schedules.clear();
 
-      // Enable schedule minutes for BEFORE_EVENT / AFTER_EVENT
       if (type === 'BEFORE_EVENT' || type === 'AFTER_EVENT') {
         this.form.get('schedule_minutes')?.enable();
       } else {
-        // IMMEDIATE
         this.form.patchValue({
           schedule_minutes: 0,
         });
@@ -859,6 +880,10 @@ export class CampaignnotificationsComponent implements OnInit {
         this.form.get('schedule_minutes')?.disable();
       }
     }
+
+    console.log('FINAL schedule_type:', this.form.get('schedule_type')?.value);
+
+    console.log('==============================');
   }
 
   title = 'angular-app';
@@ -934,6 +959,17 @@ export class CampaignnotificationsComponent implements OnInit {
     this.filterUsers();
   }
 
+  toggleUserDropdown(event: Event): void {
+    event.stopPropagation();
+
+    if (!this.users || this.users.length === 0) {
+      this.userDropdownOpen = false;
+      return;
+    }
+
+    this.userDropdownOpen = !this.userDropdownOpen;
+  }
+
   toggleUser(user: any): void {
     const userId = Number(user.id);
 
@@ -948,6 +984,15 @@ export class CampaignnotificationsComponent implements OnInit {
     }
 
     this.setSelectedUserIds();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+
+    if (!target.closest('.selected-user-dropdown-container')) {
+      this.userDropdownOpen = false;
+    }
   }
 
   isUserSelected(userId: number): boolean {

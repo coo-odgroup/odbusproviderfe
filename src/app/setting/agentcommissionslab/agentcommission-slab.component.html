@@ -28,7 +28,7 @@
                 <div class="from-group text-left">
                   <button
                     type="button"
-                    class="btn sml_input btn-success mb-2"
+                    class="btn sml_input btn-success mb-3"
                     (click)="ResetAttributes(); OpenModal(content)"
                   >
                     Add Agent Commission Slab
@@ -179,14 +179,36 @@
                 <!-- AGENT COMMISSION -->
                 <td></td>
 
-                <!-- FROM DATE -->
-                <td></td>
+                <td>
+                  {{
+                    slab.from_date
+                      ? (slab.from_date | date: "dd MMM yyyy")
+                      : "-"
+                  }}
+                </td>
 
-                <!-- TO DATE -->
-                <td></td>
+                <td>
+                  {{
+                    slab.to_date ? (slab.to_date | date: "dd MMM yyyy") : "-"
+                  }}
+                </td>
 
                 <!-- DEFAULT -->
-                <td></td>
+                <td class="text-center">
+                  <span
+                    *ngIf="slab.is_default == 1"
+                    class="text-success font-weight-bold"
+                  >
+                    Yes
+                  </span>
+
+                  <span
+                    *ngIf="slab.is_default == 0"
+                    class="text-danger font-weight-bold"
+                  >
+                    No
+                  </span>
+                </td>
 
                 <!-- STATUS - ORIGINAL STATUS COLUMN -->
                 <td class="text-center">
@@ -205,13 +227,35 @@
                 </td>
 
                 <!-- CREATED / UPDATED ON -->
-                <td></td>
+                <td>
+                  {{
+                    slab.updated_at
+                      ? (slab.updated_at | date: "dd MMM yyyy")
+                      : "-"
+                  }}
+                </td>
 
                 <!-- CREATED BY -->
-                <td></td>
+                <td>
+                  <div>{{ slab.created_by_name }}</div>
+                </td>
 
                 <!-- ACTION -->
-                <td></td>
+                <td>   <button
+                    type="button"
+                    class="btn btn-sm btn-success mr-1"
+                    (click)="editSlab(i, content)"
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="openConfirmDialog(confirmContent, i)"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button></td>
               </tr>
 
               <tr
@@ -243,71 +287,22 @@
                   {{ commission.agent_comm }}
                 </td>
 
-                <td>
-                  {{
-                    slab.from_date
-                      ? (slab.from_date | date: "dd MMM yyyy")
-                      : "-"
-                  }}
-                </td>
+                <td></td>
 
-                <td>
-                  {{
-                    slab.to_date ? (slab.to_date | date: "dd MMM yyyy") : "-"
-                  }}
-                </td>
+                <td></td>
 
                 <!-- DEFAULT -->
-                <td class="text-center">
-                  <span
-                    *ngIf="slab.is_default == 1"
-                    class="text-success font-weight-bold"
-                  >
-                    Yes
-                  </span>
+                <td class="text-center"></td>
+                <td></td>
 
-                  <span
-                    *ngIf="slab.is_default == 0"
-                    class="text-danger font-weight-bold"
-                  >
-                    No
-                  </span>
-                </td>
-                <td>
-                  {{
-                    slab.updated_at
-                      ? (slab.updated_at | date: "dd MMM yyyy")
-                      : "-"
-                  }}
-                </td>
+                <td></td>
                 <td></td>
                 <!-- CREATED BY -->
-                <td>
-                  {{ slab.created_by }}
-                </td>
+                <td></td>
 
                 <!-- ACTION -->
-                <td class="hide_print">
-                  <!-- Only show action on LAST commission row -->
-                  <ng-container *ngIf="j === slab.commission_rows.length - 1">
-                    <div class="overlay-edit">
-                      <button
-                        type="button"
-                        (click)="editSlab(i, content)"
-                        class="btn btn-icon btn-success"
-                      >
-                        <i class="feather icon-edit"></i>
-                      </button>
-
-                      <button
-                        type="button"
-                        (click)="openConfirmDialog(confirmDialog, i)"
-                        class="btn btn-icon btn-danger"
-                      >
-                        <i class="feather icon-trash-2"></i>
-                      </button>
-                    </div>
-                  </ng-container>
+                <td class="action-column">
+               
                 </td>
               </tr>
             </ng-container>

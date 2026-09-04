@@ -329,7 +329,7 @@ export class AgentsliderComponent implements OnInit {
       formData.append('slider_img', this.selectedFile);
     }
 
-    /*  
+    /*
      * Form fields
      */
     formData.append('url', this.sliderForm.value.url || '');
@@ -524,41 +524,69 @@ export class AgentsliderComponent implements OnInit {
     );
   }
 
-  changeStatus(event: Event, slider: any): void {
+  changeStatus(event: Event, id: any): void {
+    console.log('=================================');
+    console.log('CHANGE SLIDER STATUS');
+    console.log('SLIDER ID:', id);
+    console.log('=================================');
+
+    if (!id) {
+      this.notificationService.addToast({
+        title: 'Error',
+        msg: 'Slider ID not found.',
+        type: 'error',
+      });
+
+      return;
+    }
+
     this.spinner.show();
 
-    this.http
-      .put(this.path + 'changeAgentSliderStatus/' + slider.id, {})
-      .subscribe(
-        (resp: any) => {
-          this.spinner.hide();
+    this.http.put(this.path + 'changeAgentSliderStatus/' + id, {}).subscribe(
+      (resp: any) => {
+        this.spinner.hide();
 
-          if (resp.status) {
-            this.notificationService.addToast({
-              title: 'Success',
-              msg: resp.message,
-              type: 'success',
-            });
+        console.log('CHANGE STATUS RESPONSE:', resp);
 
-            this.getAll();
-          } else {
-            this.notificationService.addToast({
-              title: 'Error',
-              msg: resp.message || 'Unable to change status.',
-              type: 'error',
-            });
-          }
-        },
-        (error) => {
-          this.spinner.hide();
+        if (resp && resp.status === true) {
+          this.notificationService.addToast({
+            title: 'Success',
+            msg: resp.message || 'Slider status updated successfully.',
+            type: 'success',
+          });
 
+          /*
+           * Reload the table so the badge changes
+           * from Active <-> Pending immediately.
+           */
+          this.getAll();
+        } else {
           this.notificationService.addToast({
             title: 'Error',
-            msg: error.error?.message || 'Unable to change status.',
+            msg:
+              resp && resp.message
+                ? resp.message
+                : 'Unable to change slider status.',
             type: 'error',
           });
-        },
-      );
+        }
+      },
+
+      (error) => {
+        this.spinner.hide();
+
+        console.error('CHANGE SLIDER STATUS ERROR:', error);
+
+        this.notificationService.addToast({
+          title: 'Error',
+          msg:
+            error && error.error && error.error.message
+              ? error.error.message
+              : 'Unable to change slider status.',
+          type: 'error',
+        });
+      },
+    );
   }
 
   updateDefault(slider: any): void {

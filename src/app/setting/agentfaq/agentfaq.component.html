@@ -2,140 +2,154 @@
   <div class="col-sm-12">
     <div class="card card-datatable table-border-style user-profile-list">
       <div class="card-header">
-        <h5>Agent FAQ</h5>
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <h5 class="mb-0">Agent FAQ</h5>
+          </div>
+        </div>
       </div>
 
       <div class="card-body">
-        <div class="row faq-toolbar">
-          <!-- ADD BUTTON -->
-          <div class="col-md-2 faq-add-wrapper">
-            <label>&nbsp;</label>
+        <form [formGroup]="searchForm">
+          <div class="row mb-3">
+            <!-- CATEGORY TYPE -->
+            <div class="col-md-2 mt-4 ">
+              <div class="form-group">
+                 <label> &nbsp;</label>
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="openAddModal(addContent)"
+              >
+                Add Agent FAQ
+              </button>
 
-            <button
-              class="btn sml_input btn-success mb-2"
-              type="button"
-              (click)="openAddModal(content)"
-            >
-              Add Agent FAQ
-            </button>
-          </div>
-
-          <!-- FILTERS -->
-          <!-- FILTERS -->
-          <div class="col-md-10">
-            <div class="row align-items-end">
-              <!-- CATEGORY TYPE -->
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>Category Type</label>
-
-                  <select
-                    class="form-control sml_input"
-                    [value]="searchForm.get('category_type').value"
-                    (change)="onFilterCategoryTypeChange($event)"
-                  >
-                    <option value="">All Types</option>
-                    <option value="1">Operational</option>
-                    <option value="2">Non Operational</option>
-                  </select>
-                </div>
+              <button
+                type="button"
+                class="btn btn-primary ml-2"
+                (click)="exportexcel()"
+              >
+                Export
+              </button>
               </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label> Category Type </label>
 
-              <!-- CATEGORY -->
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>FAQ Category</label>
-
-                  <select
-                    class="form-control sml_input"
-                    [value]="searchForm.get('category_id').value"
-                    (change)="onFilterCategoryChange($event)"
-                  >
-                    <option value="">All Categories</option>
-
-                    <option
-                      *ngFor="let category of categories"
-                      [value]="category.id"
-                    >
-                      {{ category.category_name }}
-                    </option>
-                  </select>
-                </div>
+                <select
+                  class="form-control"
+                  formControlName="category_type"
+                  (change)="onFilterCategoryTypeChange($event)"
+                >
+                  <option value="">All Types</option>
+                  <option value="1">Operational</option>
+                  <option value="2">Non Operational</option>
+                </select>
               </div>
+            </div>
 
-              <!-- FAQ SEARCH -->
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>FAQ Name / Question / Answer</label>
+            <!-- CATEGORY -->
 
-                  <input
-                    type="text"
-                    class="form-control sml_input"
-                    placeholder="Search FAQ"
-                    [value]="searchForm.get('faq_search').value"
-                    (input)="onFaqSearchInput($event)"
-                    (keyup.enter)="search()"
-                  />
-                </div>
-              </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label> FAQ Category </label>
 
-              <!-- SHOW -->
-              <div class="col-md-1">
-                <div class="form-group">
-                  <label>Show</label>
+                <select
+                  class="form-control"
+                  formControlName="category_id"
+                  (change)="onFilterCategoryChange($event)"
+                >
+                  <option value="">All Categories</option>
 
-                  <select
-                    class="form-control sml_input"
-                    [value]="searchForm.get('rows_number').value"
-                    (change)="onRowsChange($event)"
+                  <option
+                    *ngFor="let category of filterCategories"
+                    [value]="category.id"
                   >
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-                </div>
+                    {{ category.category_name }}
+                  </option>
+                </select>
               </div>
+            </div>
 
-              <!-- SEARCH BUTTON -->
-              <div class="col-md-1">
-                <div class="form-group">
-                  <label>&nbsp;</label>
+            <!-- SEARCH -->
 
-                  <button
-                    type="button"
-                    class="btn btn-primary filter-btn"
-                    (click)="search()"
-                  >
-                    Search
-                  </button>
-                </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label> FAQ Name / Question / Answer </label>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search FAQ"
+                  formControlName="faq_search"
+                  (input)="onSearchInput($event)"
+                  (keyup.enter)="search()"
+                />
               </div>
+            </div>
 
-              <!-- RESET BUTTON -->
-              <div class="col-md-1">
-                <div class="form-group">
-                  <label>&nbsp;</label>
+            <!-- ROWS -->
 
-                  <button
-                    type="button"
-                    class="btn btn-secondary filter-btn"
-                    (click)="resetFilters()"
-                  >
-                    Reset
-                  </button>
-                </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <label> Show </label>
+
+                <select
+                  class="form-control"
+                  formControlName="rows_number"
+                  (change)="onRowsChange($event)"
+                >
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- SEARCH BUTTON -->
+
+            <div class="col-md-1">
+              <div class="form-group">
+                <label> &nbsp; </label>
+
+                <button
+                  type="button"
+                  class="btn btn-primary btn-block"
+                  (click)="search()"
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+
+            <!-- RESET -->
+
+            <div class="col-md-1">
+              <div class="form-group">
+                <label> &nbsp; </label>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-block"
+                  (click)="resetFilters()"
+                >
+                  Reset
+                </button>
               </div>
             </div>
           </div>
-        </div>
+        </form>
+
         <div class="table-responsive" id="print-section">
-          <table class="table table-striped">
+          <table class="table table-striped" id="faq-table">
             <thead>
               <tr>
                 <th>SL.NO</th>
                 <th>Type</th>
                 <th>Category</th>
+                <th>FAQ Name</th>
                 <th>Question</th>
                 <th>Answer</th>
                 <th>Status</th>
@@ -144,8 +158,10 @@
                 <th width="100" class="hide_print">Action</th>
               </tr>
             </thead>
+
             <tbody>
               <tr *ngFor="let faq of faqs; let i = index">
+                <!-- SL NO -->
                 <td>
                   {{
                     ((pagination.current_page || 1) - 1) *
@@ -154,24 +170,34 @@
                       1
                   }}
                 </td>
+
+                <!-- TYPE -->
                 <td>
-                  {{
-                    faq.type_id == 1
-                      ? "Operational"
-                      : faq.type_id == 2
-                        ? "Non Operational"
-                        : "--"
-                  }}
+                  <span *ngIf="faq.type_id == 1"> Operational </span>
+                  <span *ngIf="faq.type_id == 2"> Non Operational </span>
+                  <span *ngIf="faq.type_id != 1 && faq.type_id != 2"> -- </span>
                 </td>
+
+                <!-- CATEGORY -->
                 <td>
-                  {{ faq.category_name }}
+                  {{ faq.category_name || "--" }}
                 </td>
+
+                <!-- FAQ NAME -->
                 <td>
-                  {{ faq.question }}
+                  {{ faq.faq_name || "--" }}
                 </td>
+
+                <!-- QUESTION -->
                 <td>
-                  {{ faq.answer }}
+                  {{ faq.question || "--" }}
                 </td>
+
+                <!-- ANSWER -->
+                <td>
+                  {{ faq.answer || "--" }}
+                </td>
+                <!-- STATUS -->
                 <td>
                   <button
                     type="button"
@@ -184,49 +210,58 @@
                     {{ faq.status == 1 ? "Active" : "Inactive" }}
                   </button>
                 </td>
+
+                <!-- DATE -->
                 <td>
-                  {{ faq.updated_at || faq.created_at }}
+                  {{ faq.updated_at || faq.created_at || "--" }}
                 </td>
+
+                <!-- CREATED BY -->
                 <td>
-                  {{ faq.created_by_name || "-" }}
+                  {{ faq.created_by_name || faq.created_by || "--" }}
                 </td>
+
+                <!-- ACTION -->
                 <td class="hide_print">
-                  <div class="overlay-edit">
-                    <button
-                      type="button"
-                      class="btn btn-icon btn-success"
-                      (click)="editFaq(faq.id, content)"
-                    >
-                      <i class="feather icon-edit"></i>
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    title="Edit"
+                    (click)="editFaq(faq.id, editContent)"
+                  >
+                    <i class="feather icon-edit"></i>
+                  </button>
                 </td>
               </tr>
 
-              <!-- NO DATA -->
               <tr *ngIf="!faqs || faqs.length === 0">
-                <td colspan="9" class="text-center">No Agent FAQ found.</td>
+                <td colspan="10" class="text-center">No Agent FAQ found.</td>
               </tr>
             </tbody>
           </table>
 
-          <div class="hide_print container" *ngIf="pagination">
+          <div class="container hide_print" *ngIf="pagination">
             <div class="row">
               <!-- RECORD COUNT -->
-              <div class="col-6">
-                <p class="mt-3 ml-1">
+
+              <div class="col-md-6">
+                <p class="mt-3">
                   Showing
+
                   {{ faqs.length }}
+
                   of
+
                   {{ pagination.total || 0 }}
+
                   records.
                 </p>
               </div>
 
               <!-- PAGINATION -->
-              <div class="col-6">
-                <div class="d-flex flex-row-reverse mb-4 text-center">
-                  <nav class="my-1 pt-1">
+              <div class="col-md-6">
+                <div class="d-flex flex-row-reverse mb-4">
+                  <nav>
                     <ul class="pagination pagination-circle pg-blue mb-0">
                       <li
                         *ngFor="let link of pagination.links"
@@ -236,7 +271,11 @@
                           active: link.active
                         }"
                       >
-                        <a class="page-link" (click)="goToPage(link.url)">
+                        <a
+                          class="page-link"
+                          href="javascript:void(0)"
+                          (click)="goToPage(link.url)"
+                        >
                           {{ page(link.label) }}
                         </a>
                       </li>
@@ -251,38 +290,36 @@
     </div>
   </div>
 </div>
-
-<ng-template #content let-modal>
+<ng-template #addContent let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">
-      {{ ModalHeading }}
-    </h5>
+    <h5 class="modal-title">Add Agent FAQ</h5>
 
     <button
       type="button"
       class="close"
       aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
+      (click)="modal.dismiss()"
     >
       <span aria-hidden="true"> &times; </span>
     </button>
   </div>
 
-  <div class="modal-body">
-    <form class="editForm" [formGroup]="form" (ngSubmit)="saveFaq()" novalidate>
+  <form [formGroup]="addForm" (ngSubmit)="saveFaq()" novalidate>
+    <div class="modal-body">
       <div class="row">
-        <!-- CATEGORY TYPE -->
+        <!-- TYPE -->
+
         <div class="col-md-6">
           <div class="form-group">
             <label>
               Category Type
-              <span class="text-danger">*</span>
+              <span class="text-danger"> * </span>
             </label>
 
             <select
               class="form-control"
               formControlName="category_type"
-              (change)="onCategoryTypeChange($event)"
+              (change)="onAddCategoryTypeChange($event)"
             >
               <option value="">Select Category Type</option>
 
@@ -290,15 +327,178 @@
               <option value="2">Non Operational</option>
             </select>
 
-            <span
+            <small
               class="text-danger"
               *ngIf="
-                form.get('category_type').touched &&
-                form.get('category_type').hasError('required')
+                addForm.get('category_type').touched &&
+                addForm.get('category_type').hasError('required')
               "
             >
               Category Type is required!
-            </span>
+            </small>
+          </div>
+        </div>
+
+        <!-- CATEGORY -->
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>
+              FAQ Category
+              <span class="text-danger"> * </span>
+            </label>
+
+            <select
+              class="form-control"
+              formControlName="category_id"
+              (change)="onAddCategoryChange($event)"
+            >
+              <option value="">Select Category</option>
+
+              <option
+                *ngFor="let category of addCategories"
+                [value]="category.id"
+              >
+                {{ category.category_name }}
+              </option>
+            </select>
+
+            <small
+              class="text-danger"
+              *ngIf="
+                addForm.get('category_id').touched &&
+                addForm.get('category_id').hasError('required')
+              "
+            >
+              FAQ Category is required!
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>
+          FAQ Name
+          <span class="text-danger"> * </span>
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          formControlName="faq_name"
+          placeholder="Enter FAQ name"
+        />
+
+        <small
+          class="text-danger"
+          *ngIf="
+            addForm.get('faq_name').touched &&
+            addForm.get('faq_name').hasError('required')
+          "
+        >
+          FAQ Name is required!
+        </small>
+      </div>
+      <div class="form-group">
+        <label>
+          Question
+          <span class="text-danger"> * </span>
+        </label>
+
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="question"
+          placeholder="Enter question"
+        ></textarea>
+
+        <small
+          class="text-danger"
+          *ngIf="
+            addForm.get('question').touched &&
+            addForm.get('question').hasError('required')
+          "
+        >
+          Question is required!
+        </small>
+      </div>
+      <div class="form-group">
+        <label>
+          Answer
+          <span class="text-danger"> * </span>
+        </label>
+
+        <textarea
+          class="form-control"
+          rows="6"
+          formControlName="answer"
+          placeholder="Enter answer"
+        ></textarea>
+
+        <small
+          class="text-danger"
+          *ngIf="
+            addForm.get('answer').touched &&
+            addForm.get('answer').hasError('required')
+          "
+        >
+          Answer is required!
+        </small>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Save</button>
+
+      <button type="button" class="btn btn-default" (click)="modal.close()">
+        Close
+      </button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #editContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Agent FAQ</h5>
+
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
+      <span aria-hidden="true"> &times; </span>
+    </button>
+  </div>
+
+  <form [formGroup]="editForm" (ngSubmit)="updateFaq()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <!-- TYPE -->
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>
+              Category Type
+              <span class="text-danger"> * </span>
+            </label>
+
+            <select
+              class="form-control"
+              formControlName="category_type"
+              (change)="onEditCategoryTypeChange($event)"
+            >
+              <option value="">Select Category Type</option>
+              <option value="1">Operational</option>
+              <option value="2">Non Operational</option>
+            </select>
+
+            <small
+              class="text-danger"
+              *ngIf="
+                editForm.get('category_type').touched &&
+                editForm.get('category_type').hasError('required')
+              "
+            >
+              Category Type is required!
+            </small>
           </div>
         </div>
 
@@ -313,35 +513,34 @@
             <select
               class="form-control"
               formControlName="category_id"
-              (change)="onCategoryChange($event)"
+              (change)="onEditCategoryChange($event)"
             >
               <option value="">Select Category</option>
 
-              <option *ngFor="let category of categories" [value]="category.id">
+              <option
+                *ngFor="let category of editCategories"
+                [value]="category.id"
+              >
                 {{ category.category_name }}
               </option>
             </select>
 
-            <span
+            <small
               class="text-danger"
               *ngIf="
-                form.get('category_id').touched &&
-                form.get('category_id').hasError('required')
+                editForm.get('category_id').touched &&
+                editForm.get('category_id').hasError('required')
               "
             >
               FAQ Category is required!
-            </span>
+            </small>
           </div>
         </div>
       </div>
-
-      <!-- ================================================= -->
-      <!-- FAQ NAME -->
-      <!-- ================================================= -->
-
       <div class="form-group">
         <label>
           FAQ Name
+
           <span class="text-danger"> * </span>
         </label>
 
@@ -350,27 +549,22 @@
           class="form-control"
           formControlName="faq_name"
           placeholder="Enter FAQ name"
-          (input)="form.get('faq_name').setValue($any($event.target).value)"
         />
 
-        <span
+        <small
           class="text-danger"
           *ngIf="
-            form.get('faq_name').touched &&
-            form.get('faq_name').hasError('required')
+            editForm.get('faq_name').touched &&
+            editForm.get('faq_name').hasError('required')
           "
         >
           FAQ Name is required!
-        </span>
+        </small>
       </div>
-
-      <!-- ================================================= -->
-      <!-- QUESTION -->
-      <!-- ================================================= -->
-
       <div class="form-group">
         <label>
           Question
+
           <span class="text-danger"> * </span>
         </label>
 
@@ -379,27 +573,22 @@
           rows="4"
           formControlName="question"
           placeholder="Enter question"
-          (input)="form.get('question').setValue($any($event.target).value)"
         ></textarea>
 
-        <span
+        <small
           class="text-danger"
           *ngIf="
-            form.get('question').touched &&
-            form.get('question').hasError('required')
+            editForm.get('question').touched &&
+            editForm.get('question').hasError('required')
           "
         >
           Question is required!
-        </span>
+        </small>
       </div>
-
-      <!-- ================================================= -->
-      <!-- ANSWER -->
-      <!-- ================================================= -->
-
       <div class="form-group">
         <label>
           Answer
+
           <span class="text-danger"> * </span>
         </label>
 
@@ -408,18 +597,25 @@
           rows="6"
           formControlName="answer"
           placeholder="Enter answer"
-          (input)="onAnswerInput($event)"
         ></textarea>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="saveFaq()">
-      {{ ModalBtn }}
-    </button>
 
-    <button type="button" class="btn btn-default" (click)="modal.close()">
-      Close
-    </button>
-  </div>
+        <small
+          class="text-danger"
+          *ngIf="
+            editForm.get('answer').touched &&
+            editForm.get('answer').hasError('required')
+          "
+        >
+          Answer is required!
+        </small>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Update</button>
+
+      <button type="button" class="btn btn-default" (click)="modal.close()">
+        Close
+      </button>
+    </div>
+  </form>
 </ng-template>
