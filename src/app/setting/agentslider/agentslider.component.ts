@@ -63,20 +63,14 @@ export class AgentsliderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const user = localStorage.getItem('user');
+    const userId = sessionStorage.getItem('USERID');
 
-    if (user) {
-      try {
-        this.userData = JSON.parse(user);
-
-        this.userId = this.userData.id;
-        this.role_id = this.userData.role_id;
-
-        console.log('Logged-in User ID:', this.userId);
-        console.log('Logged-in Role ID:', this.role_id);
-      } catch (e) {
-        console.error('Unable to parse user from localStorage:', e);
-      }
+    if (userId) {
+      this.userId = Number(userId);
+      console.log('Logged-in User ID:', this.userId);
+    } else {
+      this.userId = null;
+      console.error('USERID not found in sessionStorage');
     }
 
     this.searchForm = this.fb.group({
@@ -285,20 +279,17 @@ export class AgentsliderComponent implements OnInit {
     this.isSubmit = true;
 
     const id = this.sliderForm.value.id;
+    const createdBy = sessionStorage.getItem('USERID');
 
-    /*
-     * Image is required only while ADDING.
-     * During UPDATE, image is optional.
-     */
-    if (id == null && !this.selectedFile) {
+    if (!createdBy || createdBy === 'null' || createdBy === 'undefined') {
       this.notificationService.addToast({
         title: 'Error',
-        msg: 'Image file is required.',
+        msg: 'User ID not found. Please login again.',
         type: 'error',
       });
-
       return;
     }
+  
 
     if (this.sliderForm.invalid) {
       this.sliderForm.markAllAsTouched();
@@ -306,32 +297,13 @@ export class AgentsliderComponent implements OnInit {
       return;
     }
 
-    if (!this.userId) {
-      this.notificationService.addToast({
-        title: 'Error',
-        msg: 'Logged-in user ID not found.',
-        type: 'error',
-      });
-
-      console.error('USER not found in localStorage or USER.id is missing');
-
-      return;
-    }
-
     this.spinner.show();
 
     const formData = new FormData();
-
-    /*
-     * Image
-     */
     if (this.selectedFile) {
       formData.append('slider_img', this.selectedFile);
     }
 
-    /*
-     * Form fields
-     */
     formData.append('url', this.sliderForm.value.url || '');
     formData.append('alt_tag', this.sliderForm.value.alt_tag || '');
     formData.append(
@@ -349,15 +321,12 @@ export class AgentsliderComponent implements OnInit {
     let apiUrl = '';
     let request: any;
 
-    /*
-     * ADD
-     */
     if (id == null) {
-      formData.append('created_by', String(this.userId));
+      formData.append('created_by', sessionStorage.getItem('USERID') || '');
       apiUrl = this.path + 'addAgentSlider';
       request = this.http.post(apiUrl, formData);
     } else {
-      formData.append('updated_by', String(this.userId));
+      formData.append('updated_by', sessionStorage.getItem('USERID') || '');
       apiUrl = this.path + 'updateAgentSlider/' + id;
       request = this.http.post(apiUrl, formData);
     }
