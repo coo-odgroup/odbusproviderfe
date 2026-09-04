@@ -881,13 +881,10 @@ export class AgentCommissionSlabComponent implements OnInit {
             );
 
             this.getAll();
-
             this.modalService.dismissAll();
-
             this.editId = null;
             this.ModalHeading = 'Add Agent Commission Slab';
             this.ModalBtn = 'Save';
-
             this.slabForm.reset({
               slab_name: '',
               agent_ids: [],
