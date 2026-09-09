@@ -220,56 +220,133 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label for="name" class="col-sm-2 col-form-label">Pnr No<span
-                              class="text-danger">*</span></label>
-                          <div class="col-sm-10">
-                            <input type="text" disabled class="form-control" placeholder="Pnr No"
-                              formControlName="pnr_no">
-                          </div>
-                        </div>
-                      </div>
+
+                      <!-- Bus name -->
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Bus Name<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" disabled placeholder="Bus Name"
+                            <input type="text" class="form-control" placeholder="Bus Name"
                               formControlName="bus_name">
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-12">
+                      <!-- Vehicle No -->
+                      <div class="col-md-6">
                         <div class="form-group row">
-                          <label for="name" class="col-sm-2 col-form-label">Vehicle No<span
+                          <label for="name" class="col-sm-4 col-form-label">Vehicle No<span
                               class="text-danger">*</span></label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Vehicle No"
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Vechicle No"
                               formControlName="vechicle_no">
                           </div>
                         </div>
                       </div>
+                      <!-- Departure Time -->
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Departure Time<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Departure Time"
+                              formControlName="dep">
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- pnr no -->
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Pnr No<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Pnr No"
+                              formControlName="pnr_no">
+                          </div>
+                        </div>
+                      </div>
+                      <!-- date of journey -->
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">DOJ<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="DOJ"
+                              formControlName="doj">
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Boarding Point -->
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Boarding Point<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Boarding Point"
+                              formControlName="boarding_point">
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Drop Point -->
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Droping Point<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Drop Point"
+                              formControlName="dropping_point">
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Source -->
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label for="name" class="col-sm-4 col-form-label">Source<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" disabled placeholder="Source"
+                            <input type="text" class="form-control" placeholder="Source"
                               formControlName="source">
                           </div>
                         </div>
                       </div>
+                      <!-- Destination -->
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label for="name" class="col-sm-4 col-form-label">Destination<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" disabled placeholder="Destination"
+                            <input type="text" class="form-control" placeholder="Destination"
                               formControlName="destination">
                           </div>
                         </div>
                       </div>
+
+                      <!-- seats sleeper -->
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Seat/Sleeper No<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Seat/Sleeper No"
+                              formControlName="seat_no">
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Destination -->
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Passanger Name<span
+                              class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Passenger Name"
+                              formControlName="passanger_name">
+                          </div>
+                        </div>
+                      </div>
+                      
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Conductor MOb No.<span
@@ -342,36 +419,104 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label for="name" class="col-sm-3 col-form-label">Pnr No<span
-                              class="text-danger">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" disabled class="form-control" placeholder="Pnr No"
-                              formControlName="pnr_no">
-                          </div>
-                        </div>
-                      </div>
+
+                      <!-- bUS NAME -->
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label for="name" class="col-sm-3 col-form-label">Bus Name<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" disabled placeholder="Bus Name"
+                            <input type="text" class="form-control" placeholder="Bus Name"
                               formControlName="bus_name">
                           </div>
                         </div>
                       </div>
+
+
                       <div class="col-md-12">
-                        <div class="form-group row">
-                          <label for="name" class="col-sm-3 col-form-label">Vehicle No<span
-                              class="text-danger">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="Vehicle No"
-                              formControlName="vechicle_no">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="name" class="col-form-label">Vehicle No<span class="text-danger">*</span></label>
+                            </div>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="form-group row">
+                              <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="Vehicle No"
+                                  formControlName="vechicle_no">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-4 col-form-label">Departure Time<span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="Departure Time"
+                                      formControlName="dep">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
+
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="name" class="col-form-label">Pnr No<span class="text-danger">*</span></label>
+                            </div>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="form-group row">
+                              <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="Pnr No"
+                                  formControlName="pnr_no">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-4 col-form-label">DOJ<span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="DOJ"
+                                      formControlName="doj">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="name" class="col-form-label">Boarding Point<span class="text-danger">*</span></label>
+                            </div>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="form-group row">
+                              <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="Boarding Point"
+                                  formControlName="boarding_point">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-4 col-form-label">Dropping Point<span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="Dropping Point"
+                                      formControlName="dropping_point">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-3">
@@ -382,7 +527,7 @@
                           <div class="col-md-9">
                             <div class="form-group row">
                               <div class="col-md-4">
-                                <input type="text" class="form-control" disabled placeholder="Source"
+                                <input type="text" class="form-control" placeholder="Source"
                                   formControlName="source">
                               </div>
                               <div class="col-md-8">
@@ -390,7 +535,7 @@
                                   <label for="name" class="col-sm-4 col-form-label">Destination<span
                                       class="text-danger">*</span></label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" disabled placeholder="Destination"
+                                    <input type="text" class="form-control" placeholder="Destination"
                                       formControlName="destination">
                                   </div>
                                 </div>
@@ -399,6 +544,37 @@
                           </div>
                         </div>
                       </div>
+
+
+
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="name" class="col-form-label">Seat No<span class="text-danger">*</span></label>
+                            </div>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="form-group row">
+                              <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="Seat No"
+                                  formControlName="seat_no">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-4 col-form-label">Passenger Name<span
+                                      class="text-danger">*</span></label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="Passenger Name"
+                                      formControlName="passanger_name">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label for="name" class="col-sm-3 col-form-label">Passenger MOb No.<span
@@ -571,7 +747,7 @@
                           <label for="email" class="col-sm-3 col-form-label">Cancel SMS To Customer<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-9">
-                            <textarea class="form-control" placeholder="Message To Customer" rows="5"
+                            <textarea class="form-control" disabled placeholder="Message To Customer" rows="5"
                               formControlName="csms_to_customer"></textarea>
                           </div>
                         </div>
@@ -645,7 +821,7 @@
                           <label for="email" class="col-sm-4 col-form-label">SMS<span
                               class="text-danger">*</span></label>
                           <div class="col-sm-8">
-                            <textarea class="form-control" placeholder="SMS To Conductor/Manager/Operator" rows="5"
+                            <textarea class="form-control" disabled placeholder="SMS To Conductor/Manager/Operator" rows="5"
                               formControlName="csms_to_cmo"></textarea>
                           </div>
                         </div>
