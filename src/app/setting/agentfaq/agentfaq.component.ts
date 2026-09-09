@@ -53,7 +53,6 @@ export class AgentfaqComponent implements OnInit {
       id: [null],
       category_type: ['', Validators.required],
       category_id: ['', Validators.required],
-      faq_name: ['', Validators.required],
       question: ['', Validators.required],
       answer: ['', Validators.required],
     });
@@ -65,7 +64,6 @@ export class AgentfaqComponent implements OnInit {
 
       category_type: ['', Validators.required],
       category_id: ['', Validators.required],
-      faq_name: ['', Validators.required],
       question: ['', Validators.required],
       answer: ['', Validators.required],
     });
@@ -212,7 +210,6 @@ export class AgentfaqComponent implements OnInit {
 
       category_id: '',
 
-      faq_name: '',
 
       question: '',
 
@@ -253,7 +250,6 @@ export class AgentfaqComponent implements OnInit {
 
       category_id: Number(data.category_id),
 
-      faq_name: data.faq_name,
 
       question: data.question,
 
@@ -323,13 +319,8 @@ export class AgentfaqComponent implements OnInit {
       id: null,
 
       category_type: '',
-
       category_id: '',
-
-      faq_name: '',
-
       question: '',
-
       answer: '',
     });
 
@@ -371,8 +362,6 @@ export class AgentfaqComponent implements OnInit {
       category_type: '',
 
       category_id: '',
-
-      faq_name: '',
 
       question: '',
 
@@ -420,8 +409,6 @@ export class AgentfaqComponent implements OnInit {
           category_type: String(faq.type_id),
 
           category_id: String(faq.category_id),
-
-          faq_name: faq.faq_name || '',
 
           question: faq.question || '',
 
@@ -589,8 +576,6 @@ export class AgentfaqComponent implements OnInit {
 
       category_id: Number(data.category_id),
 
-      faq_name: data.faq_name,
-
       question: data.question,
 
       answer: data.answer,
@@ -629,22 +614,14 @@ export class AgentfaqComponent implements OnInit {
 
             this.editForm.reset({
               id: null,
-
               category_type: '',
-
               category_id: '',
-
-              faq_name: '',
-
               question: '',
-
               answer: '',
             });
 
             this.editCategories = [];
-
             this.isSubmit = false;
-
             this.loadFaqs();
           } else {
             this.notificationService.addToast({

@@ -298,9 +298,35 @@ export class AgentCancelSlabComponent implements OnInit {
   }
 
   getLoggedInUserId(): number | null {
+    // 1. First check sessionStorage USERID
+    const sessionUserId = sessionStorage.getItem('USERID');
+
+    if (sessionUserId) {
+      const id = Number(sessionUserId);
+
+      if (id > 0) {
+        console.log('Logged-in User ID from sessionStorage:', id);
+        return id;
+      }
+    }
+
+    // 2. Then check localStorage USERID
+    const localUserId = localStorage.getItem('USERID');
+
+    if (localUserId) {
+      const id = Number(localUserId);
+
+      if (id > 0) {
+        console.log('Logged-in User ID from localStorage:', id);
+        return id;
+      }
+    }
+
+    // 3. Finally try AuthAccessToken
     const token = localStorage.getItem('AuthAccessToken');
 
     if (!token) {
+      console.error('No AuthAccessToken found.');
       return null;
     }
 
@@ -309,7 +335,6 @@ export class AgentCancelSlabComponent implements OnInit {
 
       console.log('JWT Payload:', payload);
 
-      // Change these according to your actual JWT payload
       const userId =
         payload.user_id ||
         payload.userid ||
@@ -317,7 +342,15 @@ export class AgentCancelSlabComponent implements OnInit {
         payload.id ||
         payload.sub;
 
-      return userId ? Number(userId) : null;
+      const id = Number(userId);
+
+      if (id > 0) {
+        console.log('Logged-in User ID from JWT:', id);
+        return id;
+      }
+
+      console.error('User ID not found inside JWT payload.');
+      return null;
     } catch (e) {
       console.error('Unable to decode AuthAccessToken:', e);
       return null;

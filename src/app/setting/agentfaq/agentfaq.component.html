@@ -76,7 +76,7 @@
 
             <div class="col-md-3">
               <div class="form-group">
-                <label> FAQ Name / Question / Answer </label>
+                <label> Question / Answer </label>
 
                 <input
                   type="text"
@@ -149,7 +149,6 @@
                 <th>SL.NO</th>
                 <th>Type</th>
                 <th>Category</th>
-                <th>FAQ Name</th>
                 <th>Question</th>
                 <th>Answer</th>
                 <th>Status</th>
@@ -181,11 +180,6 @@
                 <!-- CATEGORY -->
                 <td>
                   {{ faq.category_name || "--" }}
-                </td>
-
-                <!-- FAQ NAME -->
-                <td>
-                  {{ faq.faq_name || "--" }}
                 </td>
 
                 <!-- QUESTION -->
@@ -377,29 +371,6 @@
       </div>
       <div class="form-group">
         <label>
-          FAQ Name
-          <span class="text-danger"> * </span>
-        </label>
-
-        <input
-          type="text"
-          class="form-control"
-          formControlName="faq_name"
-          placeholder="Enter FAQ name"
-        />
-
-        <small
-          class="text-danger"
-          *ngIf="
-            addForm.get('faq_name').touched &&
-            addForm.get('faq_name').hasError('required')
-          "
-        >
-          FAQ Name is required!
-        </small>
-      </div>
-      <div class="form-group">
-        <label>
           Question
           <span class="text-danger"> * </span>
         </label>
@@ -536,30 +507,6 @@
             </small>
           </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label>
-          FAQ Name
-
-          <span class="text-danger"> * </span>
-        </label>
-
-        <input
-          type="text"
-          class="form-control"
-          formControlName="faq_name"
-          placeholder="Enter FAQ name"
-        />
-
-        <small
-          class="text-danger"
-          *ngIf="
-            editForm.get('faq_name').touched &&
-            editForm.get('faq_name').hasError('required')
-          "
-        >
-          FAQ Name is required!
-        </small>
       </div>
       <div class="form-group">
         <label>

@@ -440,17 +440,40 @@ export class AgentCommissionSlabComponent implements OnInit {
     this.agentDropdownOpen = !this.agentDropdownOpen;
   }
 
-  // =========================================================
-  // CLOSE DROPDOWN
-  // =========================================================
-
   closeAgentDropdown(): void {
     this.agentDropdownOpen = false;
   }
 
-  // =========================================================
-  // EDIT
-  // =========================================================
+  formatDateForInput(date: any): string {
+    if (!date) {
+      return '';
+    }
+
+    const value = String(date);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return value;
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}\s/.test(value)) {
+      return value.substring(0, 10);
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}T/.test(value)) {
+      return value.substring(0, 10);
+    }
+
+    const parsed = new Date(value);
+
+    if (!isNaN(parsed.getTime())) {
+      const year = parsed.getFullYear();
+      const month = String(parsed.getMonth() + 1).padStart(2, '0');
+      const day = String(parsed.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+    }
+
+    return '';
+  }
 
   editSlab(index: number, content: any): void {
     const slab = this.slabs[index];
@@ -460,23 +483,11 @@ export class AgentCommissionSlabComponent implements OnInit {
     }
 
     console.log('EDIT SLAB:', slab);
-
-    // =========================================
-    // RESET FORM FIRST
-    // =========================================
     this.ResetAttributes();
-
-    // =========================================
-    // EDIT MODE
-    // =========================================
     this.editId = slab.id;
 
     this.ModalHeading = 'Edit Agent Commission Slab';
     this.ModalBtn = 'Update';
-
-    // =========================================
-    // AGENT IDS
-    // =========================================
     let agentIds: number[] = [];
 
     if (Array.isArray(slab.agent_ids) && slab.agent_ids.length > 0) {
@@ -485,32 +496,18 @@ export class AgentCommissionSlabComponent implements OnInit {
       agentIds = slab.agents.map((agent: any) => Number(agent.agent_id));
     }
 
-    // =========================================
-    // AGENT ASSIGNED
-    // =========================================
     const agentAssigned =
       Number(slab.agent_assigned || 0) === 1 || agentIds.length > 0;
-
-    // =========================================
-    // MAIN FORM FIELDS
-    // =========================================
     this.slabForm.patchValue({
       slab_name: slab.slab_name || '',
-
       is_default: Number(slab.is_default || 0) === 1,
-
       agent_assigned: agentAssigned,
-
       agent_ids: agentIds,
 
-      from_date: slab.from_date || '',
-
-      to_date: slab.to_date || '',
+      // Convert DB date to HTML date-input format
+      from_date: this.formatDateForInput(slab.from_date),
+      to_date: this.formatDateForInput(slab.to_date),
     });
-
-    // =========================================
-    // COMMISSION ROWS
-    // =========================================
 
     // Remove existing rows
     while (this.commissionRows.length > 0) {
@@ -559,16 +556,9 @@ export class AgentCommissionSlabComponent implements OnInit {
       this.commissionRows.push(this.createCommissionRow());
     }
 
-    // =========================================
-    // ENABLE / DISABLE CONTROLS
-    // =========================================
-
     const defaultControl = this.slabForm.get('is_default');
-
     const agentAssignedControl = this.slabForm.get('agent_assigned');
-
     const agentIdsControl = this.slabForm.get('agent_ids');
-
     defaultControl?.enable();
     agentAssignedControl?.enable();
     agentIdsControl?.enable();
@@ -586,9 +576,6 @@ export class AgentCommissionSlabComponent implements OnInit {
       agentIdsControl?.enable();
     }
 
-    // =========================================
-    // OPEN MODAL
-    // =========================================
     this.modalService.open(content, {
       size: 'xl',
       centered: true,
@@ -596,15 +583,31 @@ export class AgentCommissionSlabComponent implements OnInit {
       windowClass: 'agent-commission-modal',
     });
   }
+
+  showSuccess(message: string): void {
+    this.notificationService.addToast({
+      type: 'success',
+      title: 'Success',
+      content: message,
+      timeout: 3000,
+    });
+  }
+
+  showError(message: string): void {
+    this.notificationService.addToast({
+      type: 'error',
+      title: 'Error',
+      content: message,
+      timeout: 3000,
+    });
+  }
   addSlab(): void {
     const isDefault = this.slabForm.get('is_default')?.value;
-
     const agentAssigned = this.slabForm.get('agent_assigned')?.value;
-
     const agentIds = this.slabForm.get('agent_ids')?.value || [];
 
     if (agentAssigned && agentIds.length === 0) {
-      alert('Please select at least one agent.');
+      this.showError('Please select at least one agent.');
       return;
     }
 
@@ -614,11 +617,10 @@ export class AgentCommissionSlabComponent implements OnInit {
     }
 
     const userId = Number(sessionStorage.getItem('USERID'));
-
     console.log('Logged-in User ID:', userId);
 
     if (!userId || isNaN(userId)) {
-      alert('Logged-in user ID not found.');
+      this.showError('Logged-in user ID not found. Please login again.');
       console.error('USERID not found in sessionStorage');
       return;
     }
@@ -645,7 +647,10 @@ export class AgentCommissionSlabComponent implements OnInit {
         .subscribe(
           (response: any) => {
             if (response.status === true) {
-              alert(response.message);
+              this.showSuccess(
+                response.message ||
+                  'Agent Commission Slab updated successfully',
+              );
 
               this.getAll();
 
@@ -653,13 +658,15 @@ export class AgentCommissionSlabComponent implements OnInit {
 
               this.ResetAttributes();
             } else {
-              alert(response.message || 'Unable to update slab');
+              this.showError(
+                response.message || 'Unable to update Agent Commission Slab',
+              );
             }
           },
           (error) => {
             console.error('Update error:', error);
 
-            alert(
+            this.showError(
               error.error?.message || 'Unable to update Agent Commission Slab',
             );
           },
@@ -668,15 +675,17 @@ export class AgentCommissionSlabComponent implements OnInit {
       this.http.post(this.path + 'addAgentCommissionSlab', data).subscribe(
         (response: any) => {
           if (response.status === true) {
-            alert(response.message);
+            this.showSuccess(
+              response.message || 'Agent Commission Slab added successfully',
+            );
 
             this.getAll();
-
             this.modalService.dismissAll();
-
             this.ResetAttributes();
           } else {
-            alert(response.message || 'Unable to add slab');
+            this.showError(
+              response.message || 'Unable to add Agent Commission Slab',
+            );
           }
         },
         (error) => {
@@ -685,7 +694,9 @@ export class AgentCommissionSlabComponent implements OnInit {
           console.log('ERROR BODY:', error.error);
           console.log('VALIDATION ERRORS:', error.error?.errors);
 
-          alert(error.error?.message || 'Unable to add Agent Commission Slab');
+          this.showError(
+            error.error?.message || 'Unable to add Agent Commission Slab',
+          );
         },
       );
     }
@@ -715,17 +726,9 @@ export class AgentCommissionSlabComponent implements OnInit {
     console.log('Change status:', id);
   }
 
-  // =========================================================
-  // DEFAULT
-  // =========================================================
-
   changeDefault(slab: any): void {
     console.log('Change default:', slab.id, slab.is_default);
   }
-
-  // =========================================================
-  // REFRESH
-  // =========================================================
 
   refresh(): void {
     this.searchForm.reset({
