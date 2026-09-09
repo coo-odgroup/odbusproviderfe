@@ -42,7 +42,6 @@ export class AgentsliderComponent implements OnInit {
   selectedFile: File = null;
 
   path = Constants.BASE_URL + '/';
-
   public isSubmit = false;
   public ModalHeading: any = 'Add Agent Slider';
   public ModalBtn: any = 'Save';
@@ -289,7 +288,6 @@ export class AgentsliderComponent implements OnInit {
       });
       return;
     }
-  
 
     if (this.sliderForm.invalid) {
       this.sliderForm.markAllAsTouched();
@@ -427,12 +425,8 @@ export class AgentsliderComponent implements OnInit {
       end_date: [this.sliderRecord.end_date || ''],
     });
 
-    /*
-     * Existing image preview
-     */
-    if (this.sliderRecord.file_name && this.sliderRecord.image_path) {
-      this.imgURL =
-        this.path + this.sliderRecord.image_path + this.sliderRecord.file_name;
+    if (this.sliderRecord.image_url) {
+      this.imgURL = this.sliderRecord.image_url;
     }
 
     this.ModalHeading = 'Edit Agent Slider';

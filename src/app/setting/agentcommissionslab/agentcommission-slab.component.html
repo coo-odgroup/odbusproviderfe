@@ -241,7 +241,8 @@
                 </td>
 
                 <!-- ACTION -->
-                <td>   <button
+                <td>
+                  <button
                     type="button"
                     class="btn btn-sm btn-success mr-1"
                     (click)="editSlab(i, content)"
@@ -252,10 +253,11 @@
                   <button
                     type="button"
                     class="btn btn-sm btn-danger"
-                    (click)="openConfirmDialog(confirmContent, i)"
+                    (click)="openConfirmDialog(confirmDialog, slab)"
                   >
                     <i class="fa fa-trash"></i>
-                  </button></td>
+                  </button>
+                </td>
               </tr>
 
               <tr
@@ -301,9 +303,7 @@
                 <td></td>
 
                 <!-- ACTION -->
-                <td class="action-column">
-               
-                </td>
+                <td class="action-column"></td>
               </tr>
             </ng-container>
           </tbody>
@@ -382,8 +382,6 @@
               <span>&times;</span>
             </button>
           </div>
-
-          <div class="modal-body">Would you Like to Delete the Record</div>
 
           <div class="modal-footer">
             <button
