@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Constants } from 'src/app/constant/constant';
-
+import { NotificationService } from '../../services/notification.service';
 @Component({
   selector: 'app-agentcancelslab',
   templateUrl: './agentcancelslab.component.html',
@@ -16,7 +16,7 @@ export class AgentCancelSlabComponent implements OnInit {
   slabs: any[] = [];
   pagination: any = {};
   groupedSlabs: any[] = [];
-
+  deleteId: number | null = null;
   all: any = {
     count: 0,
     total: 0,
@@ -33,6 +33,7 @@ export class AgentCancelSlabComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private http: HttpClient,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -415,26 +416,34 @@ export class AgentCancelSlabComponent implements OnInit {
      * 500-999
      * 1000-9999
      */
-    if (slab.rows && slab.rows.length > 0) {
-      slab.rows.forEach((row: any) => {
+    const rows = slab.commission_rows || slab.rows || [];
+
+    if (rows.length > 0) {
+      rows.forEach((row: any) => {
         this.commissionRows.push(
           this.fb.group({
-            min_fare: [row.min_fare, [Validators.required, Validators.min(0)]],
+            min_fare: [
+              row.min_fare ?? row.range_from ?? '',
+              [Validators.required, Validators.min(0)],
+            ],
 
-            max_fare: [row.max_fare, [Validators.required, Validators.min(0)]],
+            max_fare: [
+              row.max_fare ?? row.range_to ?? '',
+              [Validators.required, Validators.min(0)],
+            ],
 
             total_deduct: [
-              row.total_deduct,
+              row.total_deduct ?? '',
               [Validators.required, Validators.min(0)],
             ],
 
             odus_deduct: [
-              row.odus_deduct,
+              row.odus_deduct ?? '',
               [Validators.required, Validators.min(0)],
             ],
 
             agent_deduct: [
-              row.agent_deduct,
+              row.agent_deduct ?? '',
               [Validators.required, Validators.min(0)],
             ],
           }),
@@ -514,6 +523,98 @@ export class AgentCancelSlabComponent implements OnInit {
     return label.replace('&laquo;', '«').replace('&raquo;', '»');
   }
 
+  openConfirmDialog(content: any, slab: any): void {
+    if (!slab || !slab.id) {
+      console.error('Invalid slab for delete:', slab);
+      return;
+    }
+
+    this.deleteId = Number(slab.id);
+
+    console.log('DELETE CANCEL SLAB:', slab);
+    console.log('DELETE CANCEL SLAB ID:', this.deleteId);
+
+    this.modalService.open(content, {
+      centered: true,
+    });
+  }
+
+  deleteRecord(): void {
+    if (!this.deleteId) {
+      console.error('DELETE CANCEL SLAB: No slab ID found');
+
+      this.notificationService.addToast({
+        type: 'error',
+        title: 'Error',
+        content: 'No slab selected for deletion',
+        timeout: 3000,
+      });
+
+      return;
+    }
+
+    const id = Number(this.deleteId);
+
+    const url = this.path + 'deleteAgentCancelSlab/' + id;
+
+    console.log('======================================');
+    console.log('DELETE AGENT CANCEL SLAB');
+    console.log('Slab ID:', id);
+    console.log('Delete URL:', url);
+    console.log('======================================');
+
+    this.http.post(url, {}).subscribe(
+      (response: any) => {
+        console.log('DELETE CANCEL SLAB RESPONSE:', response);
+
+        if (response && response.status === true) {
+          // Toast instead of browser alert
+          this.notificationService.addToast({
+            type: 'success',
+            title: 'Success',
+            content:
+              response.message || 'Agent Cancel Slab deleted successfully',
+            timeout: 3000,
+          });
+
+          // Close confirmation modal
+          this.modalService.dismissAll();
+
+          // Clear deleted ID
+          this.deleteId = null;
+
+          // Reload slab list
+          this.getAll();
+        } else {
+          console.error('DELETE CANCEL SLAB FAILED:', response);
+
+          this.notificationService.addToast({
+            type: 'error',
+            title: 'Error',
+            content: response?.message || 'Unable to delete Agent Cancel Slab',
+            timeout: 3000,
+          });
+        }
+      },
+
+      (error) => {
+        console.error('DELETE CANCEL SLAB HTTP ERROR:', error);
+
+        console.error('STATUS:', error.status);
+
+        console.error('URL:', url);
+
+        console.error('ERROR BODY:', error.error);
+
+        this.notificationService.addToast({
+          type: 'error',
+          title: 'Error',
+          content: error.error?.message || 'Unable to delete Agent Cancel Slab',
+          timeout: 3000,
+        });
+      },
+    );
+  }
   changeStatus(slabId: number, currentStatus: number): void {
     const newStatus = Number(currentStatus) === 1 ? 0 : 1;
 
@@ -560,35 +661,51 @@ export class AgentCancelSlabComponent implements OnInit {
     const grouped: any = {};
 
     this.slabs.forEach((row: any) => {
-      const slabId = Number(row.slab_id);
+      const slabId = row.slab_id;
 
       if (!grouped[slabId]) {
         grouped[slabId] = {
           id: slabId,
+          slab_id: slabId,
+
           slab_name: row.slab_name,
+
+          is_default: row.is_default,
+          status: row.slab_status,
+
+          created_at: row.created_at,
+          created_by: row.created_by,
+
+          // This comes from updated_by -> user.id -> user.name
+          created_by_name: row.updated_by_name,
+
+          updated_at: row.updated_at,
+          updated_by: row.updated_by,
+          updated_by_name: row.updated_by_name,
+
+          // Keep the date on the parent object
           from_date: row.from_date,
           to_date: row.to_date,
-          is_default: Number(row.is_default),
-          status: Number(row.slab_status),
-          created_by: row.created_by,
-          created_by_name: row.created_by_name,
-          updated_at: row.updated_at,
+
           rows: [],
         };
       }
 
       grouped[slabId].rows.push({
         cancellation_id: row.cancellation_id,
-        min_fare: row.range_from,
-        max_fare: row.range_to,
+
+        range_from: row.range_from,
+        range_to: row.range_to,
+
         total_deduct: row.total_deduct,
         odus_deduct: row.odus_deduct,
         agent_deduct: row.agent_deduct,
+
+        from_date: row.from_date,
+        to_date: row.to_date,
       });
     });
 
     this.groupedSlabs = Object.values(grouped);
-
-    console.log('GROUPED SLABS:', this.groupedSlabs);
   }
 }

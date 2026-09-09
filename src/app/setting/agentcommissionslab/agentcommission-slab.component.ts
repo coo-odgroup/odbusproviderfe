@@ -143,24 +143,18 @@ export class AgentCommissionSlabComponent implements OnInit {
           const grouped: any = {};
 
           rawSlabs.forEach((row: any) => {
-            const slabId = row.slab_id || row.id;
+            const slabId = Number(row.slab_id || row.id);
 
             if (!grouped[slabId]) {
-              /*
-               * Get dates from top level first.
-               * If not available, get them from the
-               * first assigned agent.
-               */
-              const firstAgent =
-                Array.isArray(row.agents) && row.agents.length > 0
-                  ? row.agents[0]
-                  : null;
-
               grouped[slabId] = {
-                id: row.slab_id || row.id,
+                id: slabId,
+
                 slab_name: row.slab_name,
+
                 is_default: Number(row.is_default || 0),
-                status: Number(row.status || 0),
+
+                status: Number(row.status ?? row.slab_status ?? 0),
+
                 created_at: row.created_at,
                 created_by: row.created_by,
                 created_by_name: row.created_by_name,
@@ -168,20 +162,44 @@ export class AgentCommissionSlabComponent implements OnInit {
                 updated_at: row.updated_at,
                 updated_by: row.updated_by,
                 updated_by_name: row.updated_by_name,
+
                 agent_assigned: Number(row.agent_assigned || 0),
-                agent_ids: row.agent_ids || [],
-                from_date:
-                  row.from_date || (firstAgent ? firstAgent.from_date : null),
-                to_date:
-                  row.to_date || (firstAgent ? firstAgent.to_date : null),
-                agents: row.agents || [],
+
+                agent_ids: Array.isArray(row.agent_ids)
+                  ? row.agent_ids.map((id: any) => Number(id))
+                  : [],
+
+                agents: Array.isArray(row.agents) ? row.agents : [],
+
+                from_date: row.from_date || null,
+                to_date: row.to_date || null,
+
                 commission_rows: [],
               };
             }
 
             /*
-             * Add commission row
+             * Update agent information if it exists.
+             *
+             * This is important because every commission row
+             * belongs to the same slab.
              */
+            if (Array.isArray(row.agents) && row.agents.length > 0) {
+              grouped[slabId].agents = row.agents;
+
+              grouped[slabId].agent_ids = row.agents
+                .map((agent: any) => Number(agent.agent_id))
+                .filter((id: number) => !isNaN(id));
+
+              grouped[slabId].agent_assigned = 1;
+              if (!grouped[slabId].from_date) {
+                grouped[slabId].from_date = row.agents[0].from_date || null;
+              }
+
+              if (!grouped[slabId].to_date) {
+                grouped[slabId].to_date = row.agents[0].to_date || null;
+              }
+            }
             grouped[slabId].commission_rows.push({
               id: row.commission_id || row.id,
               min_fare: row.min_fare ?? row.range_from,
@@ -490,10 +508,16 @@ export class AgentCommissionSlabComponent implements OnInit {
     this.ModalBtn = 'Update';
     let agentIds: number[] = [];
 
-    if (Array.isArray(slab.agent_ids) && slab.agent_ids.length > 0) {
-      agentIds = slab.agent_ids.map((id: any) => Number(id));
-    } else if (Array.isArray(slab.agents)) {
-      agentIds = slab.agents.map((agent: any) => Number(agent.agent_id));
+    if (Array.isArray(slab.agents) && slab.agents.length > 0) {
+      agentIds = slab.agents
+        .map((agent: any) =>
+          Number(agent.agent_id ?? agent.agentId ?? agent.id),
+        )
+        .filter((id: number) => !isNaN(id));
+    } else if (Array.isArray(slab.agent_ids)) {
+      agentIds = slab.agent_ids
+        .map((id: any) => Number(id))
+        .filter((id: number) => !isNaN(id));
     }
 
     const agentAssigned =
@@ -702,10 +726,16 @@ export class AgentCommissionSlabComponent implements OnInit {
     }
   }
 
-  openConfirmDialog(content: any, index: number): void {
-    if (this.slabs[index]) {
-      this.deleteId = this.slabs[index].id;
+  openConfirmDialog(content: any, slab: any): void {
+    if (!slab || !slab.id) {
+      console.error('Invalid slab for delete:', slab);
+      return;
     }
+
+    this.deleteId = Number(slab.id);
+
+    console.log('DELETE SLAB:', slab);
+    console.log('DELETE SLAB ID:', this.deleteId);
 
     this.modalService.open(content, {
       centered: true,
@@ -714,14 +744,67 @@ export class AgentCommissionSlabComponent implements OnInit {
 
   deleteRecord(): void {
     if (!this.deleteId) {
+      console.error('DELETE: No slab ID found');
       return;
     }
 
-    console.log('Delete Agent Commission Slab:', this.deleteId);
+    const id = Number(this.deleteId);
 
-    this.deleteId = null;
+    const url = this.path + 'deleteAgentCommissionSlab/' + id;
+
+    console.log('======================================');
+    console.log('DELETE AGENT COMMISSION SLAB');
+    console.log('Slab ID:', id);
+    console.log('Delete URL:', url);
+    console.log('======================================');
+
+    this.http.post(url, {}).subscribe(
+      (response: any) => {
+        console.log('DELETE RESPONSE:', response);
+
+        if (response && response.status === true) {
+          this.notificationService.addToast({
+            type: 'success',
+            title: 'Success',
+            content:
+              response.message || 'Agent Commission Slab deleted successfully',
+            timeout: 3000,
+          });
+
+          this.modalService.dismissAll();
+
+          this.deleteId = null;
+
+          this.getAll();
+        } else {
+          console.error('DELETE FAILED RESPONSE:', response);
+
+          this.notificationService.addToast({
+            type: 'error',
+            title: 'Error',
+            content:
+              response?.message || 'Unable to delete Agent Commission Slab',
+            timeout: 3000,
+          });
+        }
+      },
+
+      (error) => {
+        console.error('DELETE HTTP ERROR:', error);
+        console.error('STATUS:', error.status);
+        console.error('URL:', url);
+        console.error('ERROR BODY:', error.error);
+
+        this.notificationService.addToast({
+          type: 'error',
+          title: 'Error',
+          content:
+            error.error?.message || 'Unable to delete Agent Commission Slab',
+          timeout: 3000,
+        });
+      },
+    );
   }
-
   changeStatus(event: any, id: any): void {
     console.log('Change status:', id);
   }
