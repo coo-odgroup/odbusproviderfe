@@ -176,6 +176,7 @@
               <th>Schedule Type</th>
               <th scope="col">Created On</th>
               <th scope="col">Created By</th>
+              <th scope="col">Is Queued</th>
               <th scope="col">Status</th>
               <th scope="col">Action</th>
               <!-- <th width="100" class="hide_print" >&nbsp; </th> -->
@@ -192,6 +193,21 @@
               <td>{{ campaign.schedule_type }}</td>
               <td>{{ campaign.created_at | date: "dd/MM/yyyy H:mm:ss" }}</td>
               <td>{{ campaign.created_by_name }}</td>
+              <td>
+                <span
+                  *ngIf="campaign.queued_status === 'YES'"
+                  class="status-badge status-yes"
+                >
+                  Yes
+                </span>
+
+                <span
+                  *ngIf="campaign.queued_status === 'NO'"
+                  class="status-badge status-no"
+                >
+                  No
+                </span>
+              </td>
               <td>
                 <div>
                   <label
