@@ -94,10 +94,16 @@ export class SmsEmailTicketComponent implements OnInit {
             source: [null],
             destination: [null],
             vechicle_no: [null],
+            seat_no: [null],
             bus_name: [null],
             sms_to_customer: [null],
             conductor_no: [null],
-            reason: [null]
+            reason: [null],
+            dropping_point: [null],
+            boarding_point: [null],
+            doj: [null],
+            dep: [null],
+            passanger_name: [null]
         });
 
         this.SmsToConductorForm = this.fb.group({
@@ -108,9 +114,16 @@ export class SmsEmailTicketComponent implements OnInit {
             source: [null],
             destination: [null],
             vechicle_no: [null],
+            seat_no: [null],
             bus_name: [null],
             sms_to_customer: [null],
             customer_no: [null],
+            dropping_point: [null],
+            conductor_no: [null],
+            boarding_point: [null],
+            doj: [null],
+            dep: [null],
+            passanger_name: [null]
         });
 
         this.EmailToCustomerForm = this.fb.group({
@@ -240,8 +253,14 @@ export class SmsEmailTicketComponent implements OnInit {
                             this.SmsToCustomerForm.controls['source'].setValue(this.SMSDetails[0].smsData.source)
                             this.SmsToCustomerForm.controls['destination'].setValue(this.SMSDetails[0].smsData.destination)
                             this.SmsToCustomerForm.controls['vechicle_no'].setValue(this.SMSDetails[0].smsData.vechicle_no)
+                            this.SmsToCustomerForm.controls['seat_no'].setValue(this.SMSDetails[0].smsData.seat)
                             this.SmsToCustomerForm.controls['conductor_no'].setValue(this.SMSDetails[0].smsData.contactmob)
                             this.SmsToCustomerForm.controls['bus_name'].setValue(this.SMSDetails[0].smsData.busname)
+                            this.SmsToCustomerForm.controls['doj'].setValue(this.SMSDetails[0].smsData.DOJ)
+                            this.SmsToCustomerForm.controls['dep'].setValue(this.SMSDetails[0].smsData.dep)
+                            this.SmsToCustomerForm.controls['boarding_point'].setValue(this.SMSDetails[0].smsData.boarding_point)
+                            this.SmsToCustomerForm.controls['dropping_point'].setValue(this.SMSDetails[0].smsData.dropping_point)
+                            this.SmsToCustomerForm.controls['passanger_name'].setValue(this.SMSDetails[0].smsData.Name)
                             this.SmsToCustomerForm.controls['sms_to_customer'].setValue(this.SMSDetails[0].contents);
                             this.spinner.hide();
                         }
@@ -256,8 +275,15 @@ export class SmsEmailTicketComponent implements OnInit {
                             this.SmsToConductorForm.controls['source'].setValue(this.SMSDetails[0].smsData.source)
                             this.SmsToConductorForm.controls['destination'].setValue(this.SMSDetails[0].smsData.destination)
                             this.SmsToConductorForm.controls['vechicle_no'].setValue(this.SMSDetails[0].smsData.vechicle_no)
-                            this.SmsToConductorForm.controls['customer_no'].setValue(this.SMSDetails[0].smsData.customermobile)
+                            this.SmsToConductorForm.controls['seat_no'].setValue(this.SMSDetails[0].smsData.seat)
+                            this.SmsToConductorForm.controls['conductor_no'].setValue(this.SMSDetails[0].smsData.contactmob)
                             this.SmsToConductorForm.controls['bus_name'].setValue(this.SMSDetails[0].smsData.busname)
+                            this.SmsToConductorForm.controls['doj'].setValue(this.SMSDetails[0].smsData.DOJ)
+                            this.SmsToConductorForm.controls['dep'].setValue(this.SMSDetails[0].smsData.dep)
+                            this.SmsToConductorForm.controls['boarding_point'].setValue(this.SMSDetails[0].smsData.boarding_point)
+                            this.SmsToConductorForm.controls['dropping_point'].setValue(this.SMSDetails[0].smsData.dropping_point)
+                            this.SmsToConductorForm.controls['passanger_name'].setValue(this.SMSDetails[0].smsData.Name)
+                            this.SmsToConductorForm.controls['customer_no'].setValue(this.SMSDetails[0].smsData.customermobile)
                             this.spinner.hide();
                         }
                     }
@@ -312,16 +338,16 @@ export class SmsEmailTicketComponent implements OnInit {
         🎫 BOOKING DETAILS
         PNR: ${sms.pnr_no}
         📍 From: ${sms.source}
-        Boarding Point: ${smsD?.boarding_point}
+        Boarding Point: ${sms?.boarding_point}
         📍 To: ${sms.destination}
-        Drop Point: ${smsD?.dropping_point}
+        Drop Point: ${sms?.dropping_point}
         🚌 Bus: ${sms.bus_name}
         🔢 Vehicle No: ${sms.vechicle_no}
-        📅 Date of Journey: ${smsD?.DOJ}
-        ⏰ Departure Time: ${smsD?.dep || sms.departureTime}
+        📅 Date of Journey: ${sms?.doj}
+        ⏰ Departure Time: ${sms?.dep || sms.departureTime}
         ━━━━━━━━━━━━━━━━━━
-        👤 Passenger: ${smsD?.Name || sms.customerName}
-        💺 Seat(s): ${smsD?.seat || sms.seatNo}
+        👤 Passenger: ${sms.passanger_name}
+        💺 Seat(s): ${sms.seat_no}
         📞 Conductor Mob: ${sms.conductor_no}
         ━━━━━━━━━━━━━━━━━━
         📧 Ticket Details, cancellation policy & boarding info sent to your registered email.
@@ -343,18 +369,18 @@ export class SmsEmailTicketComponent implements OnInit {
         A new booking has been confirmed.
 
         🎫 PNR: ${sms.pnr_no}
-        🚌 Bus Name: ${smsD.busname}
+        🚌 Bus Name: ${sms.bus_name}
         🚘 Vehicle No: ${sms?.vechicle_no}
-        📅 Journey Date: ${smsD?.DOJ}
-        ⏰ Departure Time: ${smsD?.dep}
+        📅 Journey Date: ${sms?.doj}
+        ⏰ Departure Time: ${sms?.dep}
 
-        📍 From: ${smsD?.source}
-        📌 Boarding Point: ${smsD?.boarding_point}
-        📍 To: ${smsD?.destination}
-        📌 Dropping Point: ${smsD?.dropping_point}
+        📍 From: ${sms?.source}
+        📌 Boarding Point: ${sms?.boarding_point}
+        📍 To: ${sms?.destination}
+        📌 Dropping Point: ${sms?.dropping_point}
 
-        👤 Passenger Name: ${smsD?.Name}
-        💺 Seat Number(s): ${smsD?.seat || sms.seatNo}
+        👤 Passenger Name: ${sms?.passanger_name}
+        💺 Seat Number(s): ${sms.seat_no}
         📞 Passenger Mob No: ${sms.customer_no}
 
         📢 Kindly call the passenger to reconfirm the boarding point.
