@@ -164,6 +164,10 @@
                           <th>Seat No</th>
                           <th>Base Fare (Rs)</th>
                           <th>New Fare (Rs)</th>
+                          <th>
+                            <!-- Action -->
+                            <input type="checkbox" class="sm" [checked]="isAllChecked()" (change)="toggleAllFareStatus($event)">
+                          </th>
                         </thead>
                         <tbody formArrayName="fareArray">
                           <tr *ngFor="let seatData of fareFormGroup.controls; let j=index;" [formGroupName]="j">
@@ -172,6 +176,9 @@
                             <td>{{seatData.controls.seat_number.value}}</td>
                             <td>{{seatData.controls.baseFare.value}}</td>
                             <td><input type="text" formControlName="new_fare" class="form-control" placeholder="Fare">
+                            </td>
+                            <td class="vertical-align-middle">
+                              <input type="checkbox" class="sm" formControlName="new_fare_status">
                             </td>
                           </tr>
                         </tbody>

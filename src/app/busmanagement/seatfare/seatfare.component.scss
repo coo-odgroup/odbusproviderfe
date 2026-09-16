@@ -22,3 +22,12 @@ height: calc(1.5em + 1rem);
 padding:0px 9px;
 margin-left: 2px;
 }
+
+input[type="checkbox"].sm {
+  width: 20px;
+  height: 20px;
+}
+
+.vertical-align-middle{
+  vertical-align: middle !important;
+}
