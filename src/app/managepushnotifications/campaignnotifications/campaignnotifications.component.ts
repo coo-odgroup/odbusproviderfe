@@ -72,12 +72,8 @@ export class CampaignnotificationsComponent implements OnInit {
     this.ModalBtn = 'Save';
   }
 
-  OpenModal(content: any) {
-    if (this.isModalOpening) {
-      return;
-    }
-
-    this.isModalOpening = true;
+  OpenModal(content: any): void {
+    console.log('OPEN MODAL FIRED');
 
     this.modalReference = this.modalService.open(content, {
       scrollable: true,
@@ -85,9 +81,10 @@ export class CampaignnotificationsComponent implements OnInit {
       windowClass: 'campaign-notification-modal',
     });
 
-    this.modalReference.result.finally(() => {
-      this.isModalOpening = false;
-    });
+    this.modalReference.result.then(
+      () => {},
+      () => {},
+    );
   }
 
   ngOnInit(): void {
@@ -246,19 +243,41 @@ export class CampaignnotificationsComponent implements OnInit {
   ResetAttributes() {
     this.campaignNotificationRecord = {} as CampaignNotification;
     this.form.reset();
+    this.selectedUsers = [];
+    this.users = [];
+    this.filteredUsers = [];
+    this.userSearch = '';
+    this.userDropdownOpen = false;
+    this.validUserCount = 0;
+    this.loadingValidUsers = false;
     this.selectedImage = null;
+    this.imagePreview = null;
+    this.schedules.clear();
     this.form.patchValue({
+      id: null,
       notification_category_id: '',
+      campaign_name: '',
+      title: '',
+      message: '',
       type: 'PROMOTIONAL',
       target_type: 'ALL',
+      active_user_duration: '',
       schedule_type: 'IMMEDIATE',
       schedule_minutes: 0,
+      custom_scenario: '',
+      source: '',
+      destination: '',
+      operator_id: '',
+      coupon_code: '',
+      selected_user_ids: [],
     });
 
     this.ModalHeading = 'Add Campaign Notification';
-    this.ModalBtn = 'Save';
-  }
 
+    this.ModalBtn = 'Save';
+
+    this.isSubmit = false;
+  }
   onImageChange(event: any): void {
     const file = event.target.files?.[0];
 
@@ -410,10 +429,17 @@ export class CampaignnotificationsComponent implements OnInit {
     );
 
     if (this.form.value.target_type === 'SELECTED') {
-      this.selectedUsers.forEach((user: any) => {
-        data.append('selected_user_ids[]', user.id.toString());
+      const selectedUserIds = this.selectedUsers
+        .map((user: any) => Number(user.id))
+        .filter((id: number) => id > 0);
+
+      console.log('Saving Selected User IDs:', selectedUserIds);
+
+      selectedUserIds.forEach((userId: number) => {
+        data.append('selected_user_ids[]', userId.toString());
       });
     }
+
     data.append('coupon_code', this.form.value.coupon_code?.toString() || '');
     data.append('schedule_type', this.form.value.schedule_type);
     data.append(
@@ -428,6 +454,13 @@ export class CampaignnotificationsComponent implements OnInit {
      */
     if (this.form.value.schedule_type === 'SCHEDULED') {
       this.schedules.controls.forEach((schedule, index) => {
+        // Send existing schedule ID during edit
+        const scheduleId = schedule.get('id')?.value;
+
+        if (scheduleId) {
+          data.append(`schedules[${index}][id]`, scheduleId.toString());
+        }
+
         data.append(
           `schedules[${index}][schedule_date]`,
           schedule.get('schedule_date')?.value || '',
@@ -562,171 +595,297 @@ export class CampaignnotificationsComponent implements OnInit {
     }
   }
 
-  async editCampaignNotification(event: Event, id: any) {
+  async editCampaignNotification(event: Event, index: any, content: any) {
+    event.stopPropagation();
+
     this.spinner.show();
 
-    // Make sure coupons are loaded before finding the saved coupon
-    if (!this.coupons || this.coupons.length === 0) {
-      await this.getActiveCoupons();
-    }
+    try {
+      // --------------------------------
+      // Make sure coupons are loaded
+      // --------------------------------
+      if (!this.coupons || this.coupons.length === 0) {
+        await this.getActiveCoupons();
+      }
 
-    this.campaignNotificationService
-      .getCampaignNotification(this.campaignNotifications[id].id)
-      .subscribe(
-        (res: any) => {
-          this.spinner.hide();
+      const campaignId = this.campaignNotifications[index]?.id;
 
-          if (res.status !== 1) {
-            return;
-          }
+      if (!campaignId) {
+        console.error('Campaign ID not found');
+        this.spinner.hide();
+        return;
+      }
 
-          const campaign = res.data.campaign;
-          const schedules = res.data.schedules || [];
-          const custom = res.data.custom;
+      // --------------------------------
+      // Get campaign details
+      // --------------------------------
+      this.campaignNotificationService
+        .getCampaignNotification(campaignId)
+        .subscribe({
+          next: (res: any) => {
+            if (!res || res.status !== 1) {
+              this.spinner.hide();
 
-          // --------------------------------
-          // Determine Custom Scenario
-          // --------------------------------
-          let customScenario = '';
+              this.notificationService.addToast({
+                title: Constants.ErrorTitle,
+                msg: res?.message || 'Failed to load campaign',
+                type: Constants.ErrorType,
+              });
 
-          if (custom && custom.custom_type) {
-            switch (Number(custom.custom_type)) {
-              case 1:
-                customScenario = 'ROUTE';
-                break;
-
-              case 2:
-                customScenario = 'NEW_USER';
-                break;
-
-              case 3:
-                customScenario = 'OPERATOR';
-                break;
-
-              case 4:
-                customScenario = 'SPECIAL_OFFER';
-                break;
+              return;
             }
-          }
 
-          console.log('EDIT CAMPAIGN:', campaign);
-          console.log('EDIT CUSTOM:', custom);
-          console.log('CUSTOM SCENARIO:', customScenario);
+            const campaign = res.data?.campaign;
+            const schedules = res.data?.schedules || [];
+            const custom = res.data?.custom;
+            const selectedUsers = res.data?.selected_users || [];
 
-          // --------------------------------
-          // First patch normal campaign data
-          // --------------------------------
-          this.form.patchValue({
-            id: campaign.id,
-            notification_category_id: campaign.notification_category_id,
-            campaign_name: campaign.campaign_name,
-            title: campaign.title,
-            message: campaign.message,
-            type: campaign.type,
-            target_type: campaign.target_type,
-            active_user_duration: campaign.active_user_duration,
-            schedule_type: campaign.schedule_type,
-            schedule_minutes: campaign.schedule_minutes,
-          });
+            console.log('EDIT CAMPAIGN:', campaign);
+            console.log('EDIT CUSTOM:', custom);
+            console.log('EDIT SELECTED USERS:', selectedUsers);
 
-          // --------------------------------
-          // Find coupon ID from saved coupon CODE
-          // --------------------------------
-          let couponId = '';
+            // --------------------------------
+            // Reset old form state first
+            // --------------------------------
+            this.selectedUsers = [];
+            this.users = [];
+            this.filteredUsers = [];
+            this.userSearch = '';
+            this.userDropdownOpen = false;
+            this.validUserCount = 0;
 
-          if (custom && custom.coupon_code) {
-            const selectedCoupon = this.coupons.find(
-              (coupon: any) => coupon.coupon_code === custom.coupon_code,
+            this.selectedImage = null;
+            this.imagePreview = null;
+
+            this.schedules.clear();
+
+            // --------------------------------
+            // Determine Custom Scenario
+            // --------------------------------
+            let customScenario = '';
+
+            if (custom && custom.custom_type) {
+              switch (Number(custom.custom_type)) {
+                case 1:
+                  customScenario = 'ROUTE';
+                  break;
+
+                case 2:
+                  customScenario = 'NEW_USER';
+                  break;
+
+                case 3:
+                  customScenario = 'OPERATOR';
+                  break;
+
+                case 4:
+                  customScenario = 'SPECIAL_OFFER';
+                  break;
+              }
+            }
+
+            // --------------------------------
+            // Find coupon ID
+            // --------------------------------
+            let couponId = '';
+
+            if (custom && custom.coupon_code) {
+              const selectedCoupon = this.coupons.find(
+                (coupon: any) =>
+                  String(coupon.coupon_code) === String(custom.coupon_code),
+              );
+
+              if (selectedCoupon) {
+                couponId = selectedCoupon.id;
+              }
+
+              console.log('Saved coupon code:', custom.coupon_code);
+              console.log('Matched coupon:', selectedCoupon);
+              console.log('Coupon ID:', couponId);
+            }
+
+            // --------------------------------
+            // Patch campaign data
+            // --------------------------------
+            this.form.patchValue(
+              {
+                id: campaign.id,
+                notification_category_id: campaign.notification_category_id,
+
+                campaign_name: campaign.campaign_name,
+
+                title: campaign.title,
+
+                message: campaign.message,
+
+                type: campaign.type,
+
+                target_type: campaign.target_type,
+
+                active_user_duration: campaign.active_user_duration,
+
+                schedule_type: campaign.schedule_type,
+
+                schedule_minutes: campaign.schedule_minutes,
+
+                custom_scenario: customScenario,
+
+                source: custom?.source_id || '',
+
+                destination: custom?.destination_id || '',
+
+                operator_id: custom?.operator_id || '',
+
+                coupon_code: couponId,
+
+                selected_user_ids: [],
+              },
+              {
+                emitEvent: false,
+              },
             );
 
-            if (selectedCoupon) {
-              couponId = selectedCoupon.id;
+            // --------------------------------
+            // RESTORE SELECTED USERS
+            // --------------------------------
+            if (campaign.target_type === 'SELECTED') {
+              this.selectedUsers = (selectedUsers || []).map((user: any) => ({
+                id: Number(user.id),
+                name: user.name || '',
+                email: user.email || '',
+                phone: user.phone || '',
+                fcm_id: user.fcm_id || '',
+              }));
+
+              // Keep selected users available in dropdown
+              this.users = [...this.selectedUsers];
+
+              this.filteredUsers = [...this.selectedUsers];
+
+              // VERY IMPORTANT:
+              // Restore selected IDs into form
+              this.form.patchValue(
+                {
+                  selected_user_ids: this.selectedUsers.map((user: any) =>
+                    Number(user.id),
+                  ),
+                },
+                {
+                  emitEvent: false,
+                },
+              );
+
+              this.validUserCount = this.selectedUsers.length;
+
+              console.log('RESTORED SELECTED USERS:', this.selectedUsers);
+
+              console.log(
+                'RESTORED SELECTED USER IDS:',
+                this.form.get('selected_user_ids')?.value,
+              );
             }
 
-            console.log('Saved coupon code:', custom.coupon_code);
-            console.log('Matched coupon:', selectedCoupon);
-            console.log('Coupon ID:', couponId);
-          }
+            // --------------------------------
+            // Restore schedules
+            // --------------------------------
+            if (
+              campaign.schedule_type === 'SCHEDULED' &&
+              schedules.length > 0
+            ) {
+              schedules.forEach((schedule: any) => {
+                this.schedules.push(
+                  this.fb.group({
+                    id: [schedule.id || null],
 
-          // --------------------------------
-          // Patch custom data
-          // IMPORTANT: emitEvent false
-          // --------------------------------
-          this.form.patchValue(
-            {
-              custom_scenario: customScenario,
+                    schedule_date: [
+                      schedule.schedule_date,
+                      Validators.required,
+                    ],
 
-              source: custom?.source_id || '',
-              destination: custom?.destination_id || '',
+                    start_time: [
+                      schedule.start_time
+                        ? schedule.start_time.substring(0, 5)
+                        : '',
+                      Validators.required,
+                    ],
 
-              operator_id: custom?.operator_id || '',
+                    end_time: [
+                      schedule.end_time
+                        ? schedule.end_time.substring(0, 5)
+                        : '',
+                      Validators.required,
+                    ],
+                  }),
+                );
+              });
+            }
 
-              coupon_code: couponId,
-            },
-            {
-              emitEvent: false,
-            },
-          );
+            // --------------------------------
+            // Restore image
+            // --------------------------------
+            if (campaign.image) {
+              this.imagePreview =
+                Constants.BASE_URL.replace('/api', '') + '/' + campaign.image;
+            } else {
+              this.imagePreview = null;
+            }
 
-          console.log('FORM AFTER PATCH:', this.form.value);
+            // --------------------------------
+            // Set modal heading
+            // --------------------------------
+            this.ModalHeading = 'Edit Campaign Notification';
 
-          // --------------------------------
-          // schedules
-          // --------------------------------
-          this.schedules.clear();
+            this.ModalBtn = 'Update';
 
-          if (campaign.schedule_type === 'SCHEDULED' && schedules.length > 0) {
-            schedules.forEach((schedule: any) => {
-              this.schedules.push(
-                this.fb.group({
-                  schedule_date: [schedule.schedule_date, Validators.required],
-                  start_time: [schedule.start_time, Validators.required],
-                  end_time: [schedule.end_time, Validators.required],
-                }),
-              );
+            // --------------------------------
+            // Update form validity
+            // --------------------------------
+            this.form.updateValueAndValidity();
+
+            console.log('FINAL EDIT FORM:', this.form.value);
+
+            // --------------------------------
+            // NOW open modal
+            // --------------------------------
+            this.spinner.hide();
+
+            this.OpenModal(content);
+          },
+
+          error: (error) => {
+            this.spinner.hide();
+
+            console.error('Failed to load campaign notification:', error);
+
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: 'Failed to load campaign notification',
+              type: Constants.ErrorType,
             });
-          }
+          },
+        });
+    } catch (error) {
+      this.spinner.hide();
 
-          // --------------------------------
-          // Image
-          // --------------------------------
-          this.selectedImage = null;
-
-          if (campaign.image) {
-            this.imagePreview =
-              Constants.BASE_URL.replace('/api', '') + '/' + campaign.image;
-          } else {
-            this.imagePreview = null;
-          }
-
-          this.ModalHeading = 'Edit Campaign Notification';
-          this.ModalBtn = 'Update';
-        },
-        (error) => {
-          this.spinner.hide();
-
-          console.error('Failed to load campaign notification:', error);
-        },
-      );
+      console.error('Edit campaign error:', error);
+    }
   }
 
   onSelectedDurationChange(): void {
-    if (this.form.get('target_type')?.value !== 'SELECTED') {
+    const targetType = this.form.get('target_type')?.value;
+
+    if (
+      targetType !== 'SELECTED' &&
+      targetType !== 'ACTIVE' &&
+      targetType !== 'CUSTOM'
+    ) {
       return;
     }
 
     const duration = Number(this.form.get('active_user_duration')?.value);
 
     if (!duration || duration < 1) {
-      this.users = [];
-      this.filteredUsers = [];
-      this.selectedUsers = [];
       this.validUserCount = 0;
-
-      this.form.patchValue({
-        selected_user_ids: [],
-      });
-
       return;
     }
 
@@ -1022,6 +1181,10 @@ export class CampaignnotificationsComponent implements OnInit {
   clearUsers() {
     this.selectedUsers = [];
     this.setSelectedUserIds();
+  }
+
+  getSelectedUsers(): any[] {
+    return this.selectedUsers || [];
   }
 
   setSelectedUserIds(): void {

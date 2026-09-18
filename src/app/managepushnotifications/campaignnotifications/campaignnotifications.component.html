@@ -232,10 +232,8 @@
                 <div class="overlay-edit">
                   <button
                     type="button"
-                    (click)="
-                      editCampaignNotification($event, i); OpenModal(content)
-                    "
                     class="btn btn-icon btn-success"
+                    (click)="editCampaignNotification($event, i, content)"
                   >
                     <i class="feather icon-edit"></i>
                   </button>
@@ -251,38 +249,57 @@
             </tr>
           </tbody>
         </table>
-        <!-- <div *ngIf="pagination?.length!= 0" class="hide_print container">
-            <div class="row">
-              <div class="col-6">
-               
-                  <div class="col-12">
-                    <p class=" row mt-3 ml-1"> Showing {{all?.count}} of {{all?.total}} records. </p>
-                  </div> 
+        <div *ngIf="pagination?.length != 0" class="hide_print container">
+          <div class="row">
+            <div class="col-6">
+              <div class="col-12">
+                <p class="row mt-3 ml-1">
+                  Showing {{ all?.count }} of {{ all?.total }} records.
+                </p>
               </div>
-              <div class="col-6">
-                <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
-                  <nav class="my-1 pt-1 ">
-                    <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li (click)="search(pagination.first_page_url,statusLabel)"
-                        class="page-item {{ pagination.current_page == 1 ? 'disabled' : '' }} clearfix d-none d-md-block">
-                        <a class="page-link">First</a>
-                      </li>
-                      <li class="page-item " *ngFor="let b of pagination.links ; let i = index ">
-                        <a class="page-link {{ pagination.current_page == b.label ? 'active' : '' }}"
-                          (click)="(b.url) ? search(b.url) : ''" [innerHTML]="page(b.label)"></a>
-                      </li>
-                      <li class="page-item {{ pagination.next_page_url == null? 'disabled' : '' }} clearfix d-none d-md-block"
-                        (click)="search(pagination.last_page_url,statusLabel)">
-                        <a class="page-link">Last</a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-    
-              </div>
-    
             </div>
-          </div>   -->
+            <div class="col-6">
+              <div
+                class="d-flex flex-row-reverse mb-4 text-center"
+                *ngIf="pagination?.links"
+              >
+                <nav class="my-1 pt-1">
+                  <ul class="pagination pagination-circle pg-blue mb-0">
+                    <li
+                      (click)="search(pagination.first_page_url, statusLabel)"
+                      class="page-item {{
+                        pagination.current_page == 1 ? 'disabled' : ''
+                      }} clearfix d-none d-md-block"
+                    >
+                      <a class="page-link">First</a>
+                    </li>
+                    <li
+                      class="page-item"
+                      *ngFor="let b of pagination.links; let i = index"
+                    >
+                      <a
+                        class="page-link {{
+                          pagination.current_page == b.label ? 'active' : ''
+                        }}"
+                        (click)="b.url ? search(b.url) : ''"
+                      >
+                        {{ b.label }}
+                      </a>
+                    </li>
+                    <li
+                      class="page-item {{
+                        pagination.next_page_url == null ? 'disabled' : ''
+                      }} clearfix d-none d-md-block"
+                      (click)="search(pagination.last_page_url, statusLabel)"
+                    >
+                      <a class="page-link">Last</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="app-card-footer">
@@ -627,52 +644,95 @@
 
                     <!-- Active User Duration -->
                     <div
-                      class="form-group"
+                      class="row"
                       *ngIf="
                         form.get('target_type')?.value === 'ACTIVE' ||
                         form.get('target_type')?.value === 'CUSTOM'
                       "
                     >
-                      <label>
-                        Active User Duration
-                        <span class="text-danger">*</span>
-                      </label>
+                      <!-- Active User Duration - 10 columns -->
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label>
+                            Active User Duration
+                            <span class="text-danger">*</span>
+                          </label>
 
-                      <select
-                        class="form-control"
-                        formControlName="active_user_duration"
-                      >
-                        <option value="">Select Duration</option>
-                        <option [value]="7">1 Week</option>
-                        <option [value]="14">2 Weeks</option>
-                        <option [value]="30">1 Month</option>
-                        <option [value]="60">2 Months</option>
-                        <option [value]="90">3 Months</option>
-                        <option [value]="120">4 Months</option>
-                        <option [value]="150">5 Months</option>
-                        <option [value]="180">6 Months</option>
-                        <option [value]="270">9 Months</option>
-                        <option [value]="365">1 Year</option>
-                      </select>
+                          <select
+                            class="form-control"
+                            formControlName="active_user_duration"
+                            (change)="onSelectedDurationChange()"
+                          >
+                            <option value="">Select Duration</option>
+                            <option [value]="7">1 Week</option>
+                            <option [value]="14">2 Weeks</option>
+                            <option [value]="30">1 Month</option>
+                            <option [value]="60">2 Months</option>
+                            <option [value]="90">3 Months</option>
+                            <option [value]="120">4 Months</option>
+                            <option [value]="150">5 Months</option>
+                            <option [value]="180">6 Months</option>
+                            <option [value]="270">9 Months</option>
+                            <option [value]="365">1 Year</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- Active Users Count - 2 columns -->
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Active Users</label>
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            [value]="
+                              loadingValidUsers ? 'Loading...' : validUserCount
+                            "
+                            readonly
+                          />
+                        </div>
+                      </div>
                     </div>
                     <!-- SELECTED USER DURATION -->
                     <div
-                      class="form-group"
+                      class="row"
                       *ngIf="form.get('target_type')?.value === 'SELECTED'"
                     >
-                      <label>
-                        Duration (Days)
-                        <span class="text-danger">*</span>
-                      </label>
+                      <!-- Duration - 10 columns -->
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label>
+                            Duration (Days)
+                            <span class="text-danger">*</span>
+                          </label>
 
-                      <input
-                        type="number"
-                        class="form-control"
-                        formControlName="active_user_duration"
-                        min="1"
-                        placeholder="Enter duration in days"
-                        (change)="onSelectedDurationChange()"
-                      />
+                          <input
+                            type="number"
+                            class="form-control"
+                            formControlName="active_user_duration"
+                            min="1"
+                            placeholder="Enter duration in days"
+                            (input)="onSelectedDurationChange()"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Active Users - 2 columns -->
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label> Active Users </label>
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            [value]="
+                              loadingValidUsers ? 'Loading...' : validUserCount
+                            "
+                            readonly
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div
                       class="form-group"
