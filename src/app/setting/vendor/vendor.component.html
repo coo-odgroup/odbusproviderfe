@@ -1,0 +1,2076 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-datatable table-border-style user-profile-list">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <h5 class="mb-0">Vendor</h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form>
+              <div class="row mb-3">
+                <!-- ADD + EXPORT -->
+                <div class="col-md-2 mt-4">
+                  <div class="form-group">
+                    <label>&nbsp;</label>
+
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      (click)="resetVendorForm(); OpenModal(addVendorModal)"
+                    >
+                      Add Vendor
+                    </button>
+
+                    <button type="button" class="btn btn-primary ml-2">
+                      Export
+                    </button>
+                  </div>
+                </div>
+
+                <!-- SEARCH -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label> Search Vendor: </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Search Vendor"
+                      name="searchText"
+                      [(ngModel)]="searchText"
+                      (keyup.enter)="clearVendorFilters(); applyVendorFilters()"
+                    />
+                  </div>
+                </div>
+
+                <!-- GST -->
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label> GST: </label>
+
+                    <select
+                      class="form-control"
+                      name="selectedGst"
+                      [(ngModel)]="selectedGst"
+                    >
+                      <option value="">All</option>
+
+                      <option value="1">Has GST</option>
+
+                      <option value="0">No GST</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- STATUS -->
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label> Status: </label>
+
+                    <select
+                      class="form-control"
+                      name="selectedStatus"
+                      [(ngModel)]="selectedStatus"
+                    >
+                      <option value="">All Status</option>
+
+                      <option value="1">Active</option>
+
+                      <option value="0">Inactive</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- SHOW -->
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label> Show: </label>
+
+                    <select
+                      class="form-control"
+                      name="pageSize"
+                      [(ngModel)]="pageSize"
+                      (change)="changePageSize()"
+                    >
+                      <option [ngValue]="10">10</option>
+                      <option [ngValue]="25">25</option>
+                      <option [ngValue]="50">50</option>
+                      <option [ngValue]="100">100</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- SEARCH BUTTON -->
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label> &nbsp; </label>
+
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-block"
+                      (click)="currentPage = 1; applyVendorFilters()"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
+
+                <!-- RESET -->
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label> &nbsp; </label>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary btn-block"
+                      (click)="clearVendorFilters()"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div class="table-responsive" id="print-section">
+              <table class="table table-striped" id="vendor-table">
+                <thead>
+                  <tr>
+                    <th>SL.NO</th>
+                    <th>Vendor Code</th>
+                    <th>Company Name</th>
+                    <th>Contact Details</th>
+                    <th>Has GST</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Created By</th>
+                    <th width="100" class="hide_print">Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let vendor of vendors; let i = index">
+                    <!-- SL NO -->
+                    <td>
+                      {{ (currentPage - 1) * pageSize + i + 1 }}
+                    </td>
+
+                    <!-- VENDOR CODE -->
+                    <td>
+                      <strong>
+                        {{ vendor.vendor_code }}
+                      </strong>
+                    </td>
+
+                    <!-- COMPANY NAME -->
+                    <td>
+                      {{ vendor.company_name }}
+                    </td>
+
+                    <!-- CONTACT NAME -->
+                    <td>
+                      <div>{{ vendor.contact_name }}</div>
+                      <small style="font-size: 12px; color: #6c757d">
+                        {{ vendor.contact_email }} <br />
+                        {{ vendor.contact_phone }}
+                      </small>
+                    </td>
+
+                    <!-- HAS GST -->
+                    <td>
+                      <span
+                        class="badge badge-success"
+                        *ngIf="vendor.has_gst == 1"
+                      >
+                        Yes
+                      </span>
+
+                      <span
+                        class="badge badge-secondary"
+                        *ngIf="vendor.has_gst == 0"
+                      >
+                        No
+                      </span>
+                    </td>
+
+                    <!-- STATUS -->
+                    <td>
+                      <button
+                        type="button"
+                        class="faq-status-btn"
+                        [ngClass]="{
+                          'active-status': vendor.status == 1,
+                          'inactive-status': vendor.status == 0
+                        }"
+                        (click)="changeVendorStatus(vendor)"
+                      >
+                        {{ vendor.status == 1 ? "Active" : "Inactive" }}
+                      </button>
+                    </td>
+
+                    <!-- DATE -->
+                    <td>
+                      {{ vendor.created_at | date: "dd MMM yyyy HH:mm" }}
+                    </td>
+
+                    <!-- CREATED BY -->
+                    <td>
+                      {{ vendor.created_by_name }}
+                    </td>
+
+                    <!-- ACTION -->
+                    <td class="hide_print">
+                      <div class="vendor-action-wrapper">
+                        <!-- Edit Button -->
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-success"
+                          title="Edit"
+                          (click)="editVendor(vendor.id, editVendorModal)"
+                        >
+                          <i class="feather icon-edit"></i>
+                        </button>
+
+                        <!-- 3 Dot Button -->
+                        <div class="vendor-action-menu">
+                          <button
+                            type="button"
+                            class="btn btn-icon vendor-more-btn"
+                            title="More Options"
+                            (click)="toggleVendorMenu(vendor.id, $event)"
+                          >
+                            <i class="feather icon-more-vertical"></i>
+                          </button>
+
+                          <!-- Dropdown -->
+                          <div
+                            class="vendor-dropdown-menu"
+                            *ngIf="activeVendorMenu === vendor.id"
+                          >
+                            <button
+                              type="button"
+                              class="vendor-dropdown-item"
+                              (click)="
+                                openVendorCredentials(
+                                  vendor,
+                                  vendorCredentialsModal
+                                )
+                              "
+                            >
+                              <i class="feather icon-lock"></i>
+                              <span>Vendor Credentials</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              class="vendor-dropdown-item"
+                              (click)="openVendorIps(vendor, vendorIpsModal)"
+                            >
+                              <i class="feather icon-globe"></i>
+                              <span>Vendor IPs</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              class="vendor-dropdown-item"
+                              (click)="
+                                openVendorAppLimits(
+                                  vendor,
+                                  vendorAppLimitsModal
+                                )
+                              "
+                            >
+                              <i class="feather icon-sliders"></i>
+                              <span>Vendor App Limits</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              class="vendor-dropdown-item"
+                              (click)="
+                                openVendorScope(vendor, vendorScopeModal)
+                              "
+                            >
+                              <i class="feather icon-layers"></i>
+                              <span>Vendor Scope</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="vendors.length == 0">
+                    <td colspan="12" class="text-center">No vendors found</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="container hide_print">
+                <div class="row align-items-center">
+                  <!-- RECORD COUNT -->
+                  <div class="col-md-6">
+                    <p class="mt-3">
+                      Showing
+
+                      {{
+                        totalRecords === 0
+                          ? 0
+                          : (currentPage - 1) * pageSize + 1
+                      }}
+
+                      to
+
+                      {{
+                        currentPage * pageSize > totalRecords
+                          ? totalRecords
+                          : currentPage * pageSize
+                      }}
+
+                      of
+
+                      {{ totalRecords }}
+
+                      records.
+                    </p>
+                  </div>
+
+                  <!-- PAGINATION -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-row-reverse mb-4">
+                      <nav>
+                        <ul class="pagination pagination-circle pg-blue mb-0">
+                          <!-- PREVIOUS -->
+                          <li
+                            class="page-item"
+                            [ngClass]="{
+                              disabled: currentPage === 1
+                            }"
+                          >
+                            <a
+                              class="page-link"
+                              href="javascript:void(0)"
+                              (click)="changePage(currentPage - 1)"
+                            >
+                              Previous
+                            </a>
+                          </li>
+
+                          <!-- PAGE NUMBERS -->
+                          <li
+                            class="page-item"
+                            *ngFor="let page of getPageNumbers()"
+                            [ngClass]="{
+                              active: currentPage === page
+                            }"
+                          >
+                            <a
+                              class="page-link"
+                              href="javascript:void(0)"
+                              (click)="changePage(page)"
+                            >
+                              {{ page }}
+                            </a>
+                          </li>
+
+                          <!-- NEXT -->
+                          <li
+                            class="page-item"
+                            [ngClass]="{
+                              disabled: currentPage === totalPages
+                            }"
+                          >
+                            <a
+                              class="page-link"
+                              href="javascript:void(0)"
+                              (click)="changePage(currentPage + 1)"
+                            >
+                              Next
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ========================= ADD VENDOR MODAL ========================= -->
+    <!-- ========================= ADD VENDOR MODAL ========================= -->
+
+    <ng-template #addVendorModal>
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title">Add Vendor</h5>
+
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <form novalidate>
+        <div class="modal-body vendor-modal-body">
+          <!-- ===================================================== -->
+          <!-- VENDOR DETAILS -->
+          <!-- ===================================================== -->
+
+          <div class="vendor-accordion-section">
+            <!-- HEADER -->
+            <div
+              class="vendor-accordion-header"
+              (click)="toggleVendorSection('details')"
+            >
+              <div>
+                <i class="feather icon-user mr-2"></i>
+                Vendor Details
+              </div>
+
+              <i
+                class="feather"
+                [ngClass]="
+                  activeVendorSection === 'details'
+                    ? 'icon-chevron-up'
+                    : 'icon-chevron-down'
+                "
+              ></i>
+            </div>
+
+            <!-- CONTENT -->
+            <div
+              class="vendor-accordion-content"
+              *ngIf="activeVendorSection === 'details'"
+            >
+              <!-- VENDOR CODE -->
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <div class="form-group mb-0">
+                    <label> Vendor Code </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      value="100001"
+                      readonly
+                      placeholder="Auto generated 6 digit code"
+                    />
+
+                    <small class="text-muted">
+                      Vendor code will be auto generated.
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- COMPANY + CONTACT -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Company Name
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter company name"
+                      name="company_name"
+                      [(ngModel)]="vendorForm.company_name"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Contact Name
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter contact name"
+                      name="contact_name"
+                      [(ngModel)]="vendorForm.contact_name"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- EMAIL + PHONE -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Contact Email
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Enter contact email"
+                      name="contact_email"
+                      [(ngModel)]="vendorForm.contact_email"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Contact Phone
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter 10 digit mobile number"
+                      maxlength="10"
+                      name="contact_phone"
+                      [(ngModel)]="vendorForm.contact_phone"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- GST + RATE -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Has GST </label>
+
+                    <div class="custom-control custom-checkbox mt-2">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="addHasGst"
+                        name="add_has_gst"
+                        [checked]="vendorForm.has_gst == 1"
+                        (change)="toggleAddGst($event)"
+                      />
+
+                      <label class="custom-control-label" for="addHasGst">
+                        Yes, company has GST
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Rate Limit Per Minute
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Enter requests per minute"
+                      min="1"
+                      name="rate_limit_per_minute"
+                      [(ngModel)]="vendorForm.rate_limit_per_minute"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===================================================== -->
+          <!-- VENDOR ADDRESS -->
+          <!-- ===================================================== -->
+
+          <div class="vendor-accordion-section">
+            <!-- HEADER -->
+            <div
+              class="vendor-accordion-header"
+              (click)="toggleVendorSection('address')"
+            >
+              <div>
+                <i class="feather icon-map-pin mr-2"></i>
+                Vendor Address
+              </div>
+
+              <i
+                class="feather"
+                [ngClass]="
+                  activeVendorSection === 'address'
+                    ? 'icon-chevron-up'
+                    : 'icon-chevron-down'
+                "
+              ></i>
+            </div>
+
+            <!-- CONTENT -->
+            <div
+              class="vendor-accordion-content"
+              *ngIf="activeVendorSection === 'address'"
+            >
+              <!-- ADDRESS -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>
+                      Address
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <textarea
+                      class="form-control"
+                      rows="2"
+                      placeholder="Enter complete address"
+                      name="address"
+                      [(ngModel)]="vendorAddress.address"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STREET + LANDMARK -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Street </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter street"
+                      name="street"
+                      [(ngModel)]="vendorAddress.street"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Landmark </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter landmark"
+                      name="landmark"
+                      [(ngModel)]="vendorAddress.landmark"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- CITY + PINCODE -->
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>
+                      City
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter city"
+                      name="city"
+                      [(ngModel)]="vendorAddress.city"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>
+                      Pincode
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter 6 digit pincode"
+                      maxlength="6"
+                      name="pincode"
+                      [(ngModel)]="vendorAddress.pincode"
+                    />
+                  </div>
+                </div>
+
+                <!-- STATE -->
+                <div class="col-md-4">
+                  <div class="form-group mb-0">
+                    <label>
+                      State
+                      <span class="text-danger">*</span>
+                    </label>
+                    <div class="form-group mb-0">
+                      <select
+                        class="form-control"
+                        [(ngModel)]="vendorAddress.state"
+                        name="state"
+                      >
+                        <option value="">Select State</option>
+
+                        <option
+                          *ngFor="let state of states"
+                          [ngValue]="state.id"
+                        >
+                          {{ state.state_name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===================================================== -->
+          <!-- API ENVIRONMENT -->
+          <!-- ===================================================== -->
+
+          <div class="vendor-accordion-section" *ngIf="false">
+            <!-- HEADER -->
+            <div
+              class="vendor-accordion-header"
+              (click)="toggleVendorSection('environment')"
+            >
+              <div>
+                <i class="feather icon-globe mr-2"></i>
+                API Environment
+              </div>
+
+              <i
+                class="feather"
+                [ngClass]="
+                  activeVendorSection === 'environment'
+                    ? 'icon-chevron-up'
+                    : 'icon-chevron-down'
+                "
+              ></i>
+            </div>
+
+            <!-- CONTENT -->
+            <div
+              class="vendor-accordion-content"
+              *ngIf="activeVendorSection === 'environment'"
+            >
+              <div class="row">
+                <!-- SANDBOX -->
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="addSandbox"
+                        name="sandbox"
+                        [(ngModel)]="vendorForm.sandbox"
+                      />
+
+                      <label class="custom-control-label" for="addSandbox">
+                        Sandbox
+                      </label>
+                    </div>
+
+                    <small class="text-muted ml-4">
+                      Enable Sandbox API environment
+                    </small>
+                  </div>
+                </div>
+
+                <!-- PRODUCTION -->
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="addProduction"
+                        name="production"
+                        [(ngModel)]="vendorForm.production"
+                      />
+
+                      <label class="custom-control-label" for="addProduction">
+                        Production
+                      </label>
+                    </div>
+
+                    <small class="text-muted ml-4">
+                      Enable Production API environment
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- FIXED FOOTER -->
+        <!-- ===================================================== -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="addVendor()">
+            Save
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModal()"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </ng-template>
+
+    <!-- ========================= EDIT VENDOR MODAL ========================= -->
+
+    <ng-template #editVendorModal>
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Vendor</h5>
+
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form novalidate>
+        <div class="modal-body vendor-modal-body">
+          <!-- ================================================= -->
+          <!-- VENDOR DETAILS -->
+          <!-- ================================================= -->
+
+          <div class="vendor-accordion-section">
+            <div
+              class="vendor-accordion-header"
+              (click)="toggleEditVendorSection('details')"
+            >
+              <div>
+                <i class="feather icon-user mr-2"></i>
+                Vendor Details
+              </div>
+
+              <i
+                class="feather"
+                [ngClass]="
+                  activeEditVendorSection === 'details'
+                    ? 'icon-chevron-up'
+                    : 'icon-chevron-down'
+                "
+              ></i>
+            </div>
+
+            <div
+              class="vendor-accordion-content"
+              *ngIf="activeEditVendorSection === 'details'"
+            >
+              <!-- Vendor Code -->
+
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <div class="form-group mb-0">
+                    <label> Vendor Code </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="editVendorForm.vendor_code"
+                      name="edit_vendor_code"
+                      readonly
+                    />
+
+                    <small class="text-muted">
+                      Vendor code cannot be changed.
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Company + Contact -->
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Company Name
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter company name"
+                      [(ngModel)]="editVendorForm.company_name"
+                      name="edit_company_name"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Contact Name
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter contact name"
+                      [(ngModel)]="editVendorForm.contact_name"
+                      name="edit_contact_name"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email + Phone -->
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Contact Email
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Enter contact email"
+                      [(ngModel)]="editVendorForm.contact_email"
+                      name="edit_contact_email"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Contact Phone
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      maxlength="10"
+                      placeholder="Enter 10 digit mobile number"
+                      [(ngModel)]="editVendorForm.contact_phone"
+                      name="edit_contact_phone"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- GST + Rate -->
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Has GST </label>
+
+                    <div class="custom-control custom-checkbox mt-2">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="editHasGst"
+                        name="edit_has_gst"
+                        [checked]="editVendorForm.has_gst == 1"
+                        (change)="toggleEditGst($event)"
+                      />
+
+                      <label class="custom-control-label" for="editHasGst">
+                        Yes, company has GST
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      Rate Limit Per Minute
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Enter requests per minute"
+                      [(ngModel)]="editVendorForm.rate_limit_per_minute"
+                      name="edit_rate_limit_per_minute"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================================================= -->
+          <!-- VENDOR ADDRESS -->
+          <!-- ================================================= -->
+
+          <div class="vendor-accordion-section">
+            <div
+              class="vendor-accordion-header"
+              (click)="toggleEditVendorSection('address')"
+            >
+              <div>
+                <i class="feather icon-map-pin mr-2"></i>
+                Vendor Address
+              </div>
+
+              <i
+                class="feather"
+                [ngClass]="
+                  activeEditVendorSection === 'address'
+                    ? 'icon-chevron-up'
+                    : 'icon-chevron-down'
+                "
+              ></i>
+            </div>
+
+            <div
+              class="vendor-accordion-content"
+              *ngIf="activeEditVendorSection === 'address'"
+            >
+              <!-- ADDRESS -->
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>
+                      Address
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <textarea
+                      class="form-control"
+                      rows="2"
+                      placeholder="Enter complete address"
+                      [(ngModel)]="editVendorAddress.address"
+                      name="edit_address"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STREET + LANDMARK -->
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Street </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter street"
+                      [(ngModel)]="editVendorAddress.street"
+                      name="edit_street"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> Landmark </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter landmark"
+                      [(ngModel)]="editVendorAddress.landmark"
+                      name="edit_landmark"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- CITY + PINCODE + STATE -->
+
+              <div class="row">
+                <!-- CITY -->
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>
+                      City
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter city"
+                      [(ngModel)]="editVendorAddress.city"
+                      name="edit_city"
+                    />
+                  </div>
+                </div>
+
+                <!-- PINCODE -->
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>
+                      Pincode
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      class="form-control"
+                      maxlength="6"
+                      placeholder="Enter 6 digit pincode"
+                      [(ngModel)]="editVendorAddress.pincode"
+                      name="edit_pincode"
+                    />
+                  </div>
+                </div>
+
+                <!-- STATE -->
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>
+                      State
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <select
+                      class="form-control"
+                      [(ngModel)]="editVendorAddress.state"
+                      name="edit_state"
+                    >
+                      <option value="">Select State</option>
+
+                      <option *ngFor="let state of states" [ngValue]="state.id">
+                        {{ state.state_name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vendor-accordion-section">
+            <div
+              class="vendor-accordion-header"
+              (click)="toggleEditVendorSection('environment')"
+            >
+              <div>
+                <i class="feather icon-globe mr-2"></i>
+                API Environment
+              </div>
+
+              <i
+                class="feather"
+                [ngClass]="
+                  activeEditVendorSection === 'environment'
+                    ? 'icon-chevron-up'
+                    : 'icon-chevron-down'
+                "
+              ></i>
+            </div>
+            <div
+              class="vendor-accordion-content"
+              *ngIf="activeEditVendorSection === 'environment'"
+            >
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="editSandbox"
+                        name="edit_sandbox"
+                        [(ngModel)]="editVendorForm.sandbox"
+                        disabled
+                      />
+
+                      <label class="custom-control-label" for="editSandbox">
+                        Sandbox
+                      </label>
+                    </div>
+                    <small class="text-muted ml-4">
+                      Enable Sandbox API environment
+                    </small>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="editProduction"
+                        name="edit_production"
+                        [(ngModel)]="editVendorForm.production"
+                        disabled
+                      />
+
+                      <label class="custom-control-label" for="editProduction">
+                        Production
+                      </label>
+                    </div>
+                    <small class="text-muted ml-4">
+                      Enable Production API environment
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================= -->
+        <!-- FOOTER -->
+        <!-- ================================================= -->
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="updateVendor()"
+          >
+            Update
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModal()"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </body>
+
+  <!-- MAIN PAGE -->
+  <div class="row">...</div>
+
+  <!-- ADD VENDOR MODAL -->
+  <ng-template #addVendorModal> ... </ng-template>
+
+  <!-- EDIT VENDOR MODAL -->
+  <ng-template #editVendorModal> ... </ng-template>
+
+  <!-- ================================================= -->
+  <!-- VENDOR CREDENTIALS MODAL -->
+  <!-- ================================================= -->
+  <ng-template #vendorCredentialsModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">
+        <i class="feather icon-lock mr-2"></i>
+        Vendor Credentials
+      </h5>
+
+      <button
+        type="button"
+        class="close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="border rounded p-3 mb-3">
+        <h6 class="font-weight-bold mb-3">Vendor Details</h6>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Vendor</label>
+
+              <input
+                type="text"
+                class="form-control"
+                [value]="selectedVendor?.company_name"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+          <div class="form-group">
+            <label>
+              Environment
+              <span class="text-danger">*</span>
+            </label>
+
+            <div class="row mt-2">
+
+              <!-- SANDBOX -->
+              <div class="col-md-6">
+
+                <div class="custom-control custom-checkbox">
+
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="credentialSandbox"
+                    name="credential_sandbox"
+                    [(ngModel)]="credentialSandboxSelected"
+                    [disabled]="credentialSandboxDisabled"
+                    (change)="
+                      onCredentialEnvironmentChange(
+                        'sandbox',
+                        credentialSandboxSelected
+                      )
+                    "
+                  />
+
+                  <label
+                    class="custom-control-label"
+                    for="credentialSandbox"
+                  >
+                    Sandbox
+                  </label>
+
+                </div>
+
+              </div>
+
+              <!-- PRODUCTION -->
+              <div class="col-md-6">
+
+                <div class="custom-control custom-checkbox">
+
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="credentialProduction"
+                    name="credential_production"
+                    [(ngModel)]="credentialProductionSelected"
+                    [disabled]="credentialProductionDisabled"
+                    (change)="
+                      onCredentialEnvironmentChange(
+                        'production',
+                        credentialProductionSelected
+                      )
+                    "
+                  />
+
+                  <label
+                    class="custom-control-label"
+                    for="credentialProduction"
+                  >
+                    Production
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+          </div>
+        </div>
+      </div>
+              <div
+                class="border rounded p-3"
+                *ngIf="
+                  !credentialSandboxDisabled ||
+                  !credentialProductionDisabled
+                "
+              >
+                <h6 class="font-weight-bold mb-3">
+                  Credential Details
+                </h6>
+
+                <div class="row">
+
+                  <div class="col-md-6">
+
+                    <div class="form-group">
+
+                      <label>
+                        Client ID
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        [value]="credentialForm.client_id"
+                        readonly
+                        placeholder="Generated Client ID"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6">
+
+                    <div class="form-group">
+
+                      <label>
+                        Client Secret
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        [value]="credentialForm.client_secret"
+                        readonly
+                        placeholder="Generated Client Secret"
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div
+  class="border rounded p-3 mt-3"
+  *ngIf="credentials.length > 0"
+>
+
+<h6 class="mb-3 font-weight-bold">
+  {{ selectedVendor?.company_name }} -- Credentials
+</h6>
+
+  <div class="table-responsive">
+
+    <table
+      class="table table-striped table-bordered mb-0"
+    >
+
+      <thead>
+
+        <tr>
+          <th>Environment</th>
+          <th>Client ID</th>
+          <th>Client Secret</th>
+          <th width="220" class="text-center">
+            Action
+          </th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr
+          *ngFor="let credential of credentials"
+        >
+
+          <!-- Environment -->
+          <td>
+
+            <span
+              class="badge vendor-environment-badge"
+              [ngClass]="
+                credential.environment === 'sandbox'
+                  ? 'badge-info'
+                  : 'badge-success'
+              "
+            >
+              {{
+                credential.environment === 'sandbox'
+                  ? 'Sandbox'
+                  : 'Production'
+              }}
+            </span>
+
+          </td>
+
+          <!-- Client ID -->
+          <td>
+            {{ credential.client_id }}
+          </td>
+
+          <!-- Client Secret -->
+          <td>
+            {{ credential.client_secret }}
+          </td>
+
+          <!-- Action -->
+          <td
+            class="text-center"
+            style="white-space: nowrap;"
+          >
+
+            <!-- Active / Inactive -->
+            <button
+              type="button"
+              class="btn btn-sm mr-1"
+              [ngClass]="
+                credential.environment_status == 1
+                  ? 'btn-success'
+                  : 'btn-danger'
+              "
+              (click)="
+                toggleEnvironmentStatus(credential)
+              "
+              [title]="
+                credential.environment_status == 1
+                  ? 'Deactivate'
+                  : 'Activate'
+              "
+            >
+
+              <i
+                class="feather"
+                [ngClass]="
+                  credential.environment_status == 1
+                    ? 'icon-check-circle'
+                    : 'icon-x-circle'
+                "
+              ></i>
+
+              {{
+                credential.environment_status == 1
+                  ? 'Active'
+                  : 'Inactive'
+              }}
+
+            </button>
+
+            <!-- Export -->
+            <button
+              type="button"
+              class="btn btn-sm btn-primary"
+              (click)="
+                exportCredential(
+                  credential.environment
+                )
+              "
+              [title]="
+                'Export ' +
+                credential.environment +
+                ' credentials'
+              "
+            >
+
+              <i
+                class="feather icon-download mr-1"
+              ></i>
+
+              Export
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+            </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Cancel
+      </button>
+
+     <button
+  type="button"
+  class="btn btn-primary"
+  (click)="saveVendorCredentials()"
+  *ngIf="
+    credentialSandboxSelected &&
+    !credentialSandboxDisabled ||
+    credentialProductionSelected &&
+    !credentialProductionDisabled
+  "
+>
+  Save
+</button>
+    </div>
+  </ng-template>
+
+  <!-- ================================================= -->
+  <!-- VENDOR IPS MODAL -->
+  <!-- ================================================= -->
+
+  <ng-template #vendorIpsModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">
+        <i class="feather icon-globe mr-2"></i>
+        Vendor IPs
+      </h5>
+
+      <button
+        type="button"
+        class="close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="border rounded p-3 mb-3">
+        <h6 class="font-weight-bold mb-3">Vendor Details</h6>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Vendor</label>
+
+              <input
+                type="text"
+                class="form-control"
+                [value]="selectedVendor?.company_name"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>
+                Environment
+                <span class="text-danger">*</span>
+              </label>
+
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="scopeSandbox"
+                      name="scope_sandbox"
+                    />
+
+                    <label class="custom-control-label" for="scopeSandbox">
+                      Sandbox
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="scopeProduction"
+                      name="scope_production"
+                    />
+
+                    <label class="custom-control-label" for="scopeProduction">
+                      Production
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border rounded p-3">
+        <h6 class="font-weight-bold mb-3">IP Configuration</h6>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>
+                IP Address
+                <span class="text-danger">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter IP Address"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Status</label>
+
+              <div class="custom-control custom-checkbox mt-2">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="ipActive"
+                />
+
+                <label class="custom-control-label" for="ipActive">
+                  Active
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Cancel
+      </button>
+
+      <button type="button" class="btn btn-primary">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #vendorAppLimitsModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">
+        <i class="feather icon-sliders mr-2"></i>
+        Vendor App Limits
+      </h5>
+
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body vendor-modal-body">
+      <!-- Vendor Details -->
+      <div
+        class="border rounded p-3 mb-4"
+        style="border-color: #dee2e6 !important"
+      >
+        <h6 class="mb-3 font-weight-bold">Vendor Details</h6>
+
+        <div class="row">
+          <!-- Vendor -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Vendor</label>
+
+              <input
+                type="text"
+                class="form-control"
+                [value]="selectedVendor?.company_name || ''"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Environment -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>
+                Environment
+                <span class="text-danger">*</span>
+              </label>
+
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="scopeSandbox"
+                      name="scope_sandbox"
+                    />
+
+                    <label class="custom-control-label" for="scopeSandbox">
+                      Sandbox
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="scopeProduction"
+                      name="scope_production"
+                    />
+
+                    <label class="custom-control-label" for="scopeProduction">
+                      Production
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rate Limit Configuration -->
+      <div class="border rounded p-3" style="border-color: #dee2e6 !important">
+        <h6 class="mb-3 font-weight-bold">Rate Limit Configuration</h6>
+
+        <div class="row">
+          <!-- Endpoint -->
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>
+                Endpoint
+                <span class="text-danger">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                name="endpoint"
+                placeholder="e.g. /api/v1/bookings"
+              />
+            </div>
+          </div>
+
+          <!-- Requests Per Minute -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>
+                Requests Per Minute
+                <span class="text-danger">*</span>
+              </label>
+
+              <input
+                type="number"
+                class="form-control"
+                name="requests_per_minute"
+                placeholder="Enter limit"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <!-- Requests Per Hour -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>
+                Requests Per Hour
+                <span class="text-danger">*</span>
+              </label>
+
+              <input
+                type="number"
+                class="form-control"
+                name="requests_per_hour"
+                placeholder="Enter limit"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <!-- Burst Limit -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>
+                Burst Limit
+                <span class="text-danger">*</span>
+              </label>
+
+              <input
+                type="number"
+                class="form-control"
+                name="burst_limit"
+                placeholder="Enter burst limit"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Status</label>
+
+              <div class="custom-control custom-checkbox mt-2">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="rateLimitActive"
+                  name="rate_limit_active"
+                  checked
+                />
+
+                <label class="custom-control-label" for="rateLimitActive">
+                  Active
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Cancel
+      </button>
+
+      <button type="button" class="btn btn-primary">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #vendorScopeModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">
+        <i class="feather icon-layers mr-2"></i>
+        Vendor Scope
+      </h5>
+
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body vendor-modal-body">
+      <!-- Vendor Details -->
+      <div
+        class="border rounded p-3 mb-4"
+        style="border-color: #dee2e6 !important"
+      >
+        <h6 class="mb-3 font-weight-bold">Vendor Details</h6>
+
+        <div class="row">
+          <!-- Vendor -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label> Vendor </label>
+
+              <input
+                type="text"
+                class="form-control"
+                [value]="selectedVendor?.company_name || ''"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Environment -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>
+                Environment
+                <span class="text-danger">*</span>
+              </label>
+
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="scopeSandbox"
+                      name="scope_sandbox"
+                    />
+
+                    <label class="custom-control-label" for="scopeSandbox">
+                      Sandbox
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="scopeProduction"
+                      name="scope_production"
+                    />
+
+                    <label class="custom-control-label" for="scopeProduction">
+                      Production
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scope Configuration -->
+      <div class="border rounded p-3" style="border-color: #dee2e6 !important">
+        <h6 class="mb-3 font-weight-bold">Scope Configuration</h6>
+
+        <div class="row">
+          <!-- Scope ID -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>
+                Scope ID
+                <span class="text-danger">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                name="scope_id"
+                placeholder="Enter Scope ID"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Cancel
+      </button>
+
+      <button type="button" class="btn btn-primary">Save</button>
+    </div>
+  </ng-template>
+</html>

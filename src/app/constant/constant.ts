@@ -16,11 +16,11 @@ export class Constants {
     // public static BUS_OPERATOR_ID: any = 1;
     
     // For Live
-    public static BASE_URL:any ='https://provider.odbus.co.in/api';
-    public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
-    public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';
-    public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
-    public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
+    // public static BASE_URL:any ='https://provider.odbus.co.in/api';
+    // public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
+    // public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';
+    // public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
+    // public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
     
     //For Testing
     // public static BASE_URL: any = 'https://odapi.adglob.in/api';
@@ -30,11 +30,11 @@ export class Constants {
     // public static DOWNLOAD_URL: any = 'https://odapi.adglob.in/storage/';
 
     // FOR LOCAL
-    // public static BASE_URL:any ='http://localhost:7001/ODBUS/odbusproviderbe/api';
-    // public static CONSUMER_PUBLIC_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/uploads/';
-    // public static CONSUMER_API_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/api/';
-    // public static PATHURL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/public/uploads/';
-    // public static DOWNLOAD_URL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/storage/';
+    public static BASE_URL:any ='http://localhost:7001/ODBUS/odbusproviderbe/api';
+    public static CONSUMER_PUBLIC_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/uploads/';
+    public static CONSUMER_API_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/api/';
+    public static PATHURL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/public/uploads/';
+    public static DOWNLOAD_URL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/storage/';
 
 
 

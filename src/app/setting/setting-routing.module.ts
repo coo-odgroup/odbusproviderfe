@@ -174,6 +174,13 @@ const routes: Routes = [
             (module) => module.AgentCancelSlabModule,
           ),
       },
+      {
+        path: 'vendor',
+        loadChildren: () =>
+          import('./vendor/vendor.module').then(
+            (module) => module.VendorModule,
+          ),
+      },
     ],
   },
 ];
