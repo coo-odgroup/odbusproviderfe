@@ -170,3 +170,51 @@ body {
   max-width: 1300px;
   width: 100%;
 }
+
+.vendor-view-section {
+  margin-bottom: 25px;
+}
+
+.vendor-view-section h6 {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.vendor-view-section .table {
+  margin-bottom: 0;
+}
+
+.vendor-view-section th {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.vendor-view-section td {
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.vendor-view-modal-body {
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+}
+
+.vendor-view-modal .modal-dialog {
+  max-width: 1200px;
+}
+
+.credential-value {
+  width: 100%;
+  padding: 8px 10px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+
+  word-break: break-all;
+  overflow-wrap: anywhere;
+
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}

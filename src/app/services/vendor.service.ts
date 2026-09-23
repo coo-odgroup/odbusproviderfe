@@ -73,4 +73,98 @@ export class VendorService {
       status: status,
     });
   }
+
+  getVendorIps(vendorId: number) {
+    return this.http.post(Constants.BASE_URL + '/vendors/ips/list', {
+      vendor_id: vendorId,
+    });
+  }
+
+  saveVendorIps(
+    vendorId: number,
+    productionIps: any[],
+    sandboxIps: any[],
+    createdBy: number | null,
+    updatedBy: number | null,
+  ) {
+    return this.http.post(Constants.BASE_URL + '/vendors/ips/save', {
+      vendor_id: vendorId,
+      production_ips: productionIps,
+      sandbox_ips: sandboxIps,
+      created_by: createdBy,
+      updated_by: updatedBy,
+    });
+  }
+
+  changeVendorIpStatus(id: number, isActive: number, updatedBy: number | null) {
+    return this.http.post(Constants.BASE_URL + '/vendors/ips/status', {
+      id: id,
+      is_active: isActive,
+      updated_by: updatedBy,
+    });
+  }
+
+  getVendorScopes(vendorId: number) {
+    return this.http.post(Constants.BASE_URL + '/vendors/scope/list', {
+      vendor_id: vendorId,
+    });
+  }
+
+  saveVendorScopes(
+    vendorId: number,
+    sandboxScopes: any[],
+    productionScopes: any[],
+    createdBy: number | null,
+    updatedBy: number | null,
+  ) {
+    return this.http.post(Constants.BASE_URL + '/vendors/scope/save', {
+      vendor_id: vendorId,
+      sandbox_scopes: sandboxScopes,
+      production_scopes: productionScopes,
+      created_by: createdBy,
+      updated_by: updatedBy,
+    });
+  }
+
+  changeVendorScopeStatus(
+    vendorId: number,
+    environment: string,
+    scopeId: number,
+    status: number,
+    updatedBy: number | null,
+  ) {
+    return this.http.post(Constants.BASE_URL + '/vendors/scope/status', {
+      vendor_id: vendorId,
+      environment: environment,
+      scope_id: scopeId,
+      status: status,
+      updated_by: updatedBy,
+    });
+  }
+  getVendorRateLimits(vendorId: number) {
+    return this.http.post(Constants.BASE_URL + '/vendors/rate-limits/list', {
+      vendor_id: vendorId,
+    });
+  }
+
+  saveVendorRateLimits(
+    vendorId: number,
+    sandbox: any[],
+    production: any[],
+    createdBy: number | null,
+    updatedBy: number | null,
+  ) {
+    return this.http.post(Constants.BASE_URL + '/vendors/rate-limits/save', {
+      vendor_id: vendorId,
+      sandbox: sandbox,
+      production: production,
+      created_by: createdBy,
+      updated_by: updatedBy,
+    });
+  }
+  getVendorViewDetails(vendorId: number) {
+    return this.http.post(Constants.BASE_URL + '/vendors/view-details', {
+      vendor_id: vendorId,
+    });
+  }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import {
   NgbModal,
   NgbModalRef,
@@ -103,6 +104,32 @@ export class VendorComponent implements OnInit {
       client_secret: '',
     },
   };
+
+  vendorIpProductionList: any[] = [
+    {
+      id: null,
+      ip_address: '',
+      is_active: true,
+    },
+  ];
+
+  vendorIpSandboxList: any[] = [
+    {
+      id: null,
+      ip_address: '',
+      is_active: true,
+    },
+  ];
+
+  vendorViewData: any = null;
+
+  sandboxScopeCheckAll: boolean = false;
+  productionScopeCheckAll: boolean = false;
+
+  sandboxScopes: any[] = [];
+  productionScopes: any[] = [];
+  vendorRateSandbox: any[] = [];
+  vendorRateProduction: any[] = [];
 
   constructor(
     private modalService: NgbModal,
@@ -323,21 +350,21 @@ export class VendorComponent implements OnInit {
     }
   }
 
-openVendorCredentials(vendor: any, content: any): void {
-  this.activeVendorMenu = null;
-  this.selectedVendor = vendor;
+  openVendorCredentials(vendor: any, content: any): void {
+    this.activeVendorMenu = null;
+    this.selectedVendor = vendor;
 
-  this.resetCredentialForm();
+    this.resetCredentialForm();
 
-  this.getVendorCredentials(vendor.id);
+    this.getVendorCredentials(vendor.id);
 
-  this.modalReference = this.modalService.open(content, {
-    scrollable: true,
-    size: 'xl',
-    windowClass: 'vendor-credentials-modal',
-    centered: true
-  });
-}
+    this.modalReference = this.modalService.open(content, {
+      scrollable: true,
+      size: 'xl',
+      windowClass: 'vendor-credentials-modal',
+      centered: true,
+    });
+  }
 
   getVendorCredentials(vendorId: number): void {
     this.vendorService.getVendorCredentials(vendorId).subscribe({
@@ -764,10 +791,193 @@ openVendorCredentials(vendor: any, content: any): void {
 
     this.selectedVendor = vendor;
 
-    this.modalService.open(content, {
+    /*
+     * Reset first.
+     */
+    this.vendorIpProductionList = [
+      {
+        id: null,
+        ip_address: '',
+        is_active: true,
+      },
+    ];
+
+    this.vendorIpSandboxList = [
+      {
+        id: null,
+        ip_address: '',
+        is_active: true,
+      },
+    ];
+
+    /*
+     * Load existing IPs.
+     */
+    this.getVendorIps(vendor.id);
+
+    this.modalReference = this.modalService.open(content, {
       scrollable: true,
       size: 'xl',
       windowClass: 'vendor-modal',
+      centered: true,
+    });
+  }
+
+  getVendorIps(vendorId: number): void {
+    this.spinner.show();
+
+    this.vendorService.getVendorIps(vendorId).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+
+        if (res && res.status == 1) {
+          /*
+           * Production
+           */
+          if (
+            res.data &&
+            res.data.production &&
+            res.data.production.length > 0
+          ) {
+            this.vendorIpProductionList = res.data.production.map(
+              (item: any) => ({
+                id: item.id,
+                ip_address: item.ip_address || '',
+                status: Number(item.status) === 1,
+              }),
+            );
+          } else {
+            this.vendorIpProductionList = [
+              {
+                id: null,
+                ip_address: '',
+                is_active: true,
+              },
+            ];
+          }
+
+          /*
+           * Sandbox
+           */
+          if (res.data && res.data.sandbox && res.data.sandbox.length > 0) {
+            this.vendorIpSandboxList = res.data.sandbox.map((item: any) => ({
+              id: item.id,
+              ip_address: item.ip_address || '',
+              status: Number(item.status) === 1,
+            }));
+          } else {
+            this.vendorIpSandboxList = [
+              {
+                id: null,
+                ip_address: '',
+                is_active: true,
+              },
+            ];
+          }
+        } else {
+          this.vendorIpProductionList = [
+            {
+              id: null,
+              ip_address: '',
+              is_active: true,
+            },
+          ];
+
+          this.vendorIpSandboxList = [
+            {
+              id: null,
+              ip_address: '',
+              is_active: true,
+            },
+          ];
+        }
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Get Vendor IPs Error:', error);
+      },
+    });
+  }
+
+  getVendorRateLimits(vendorId: number): void {
+    this.spinner.show();
+
+    this.vendorService.getVendorRateLimits(vendorId).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+
+        if (!res || res.status != 1 || !res.data) {
+          this.vendorRateSandbox = [];
+          this.vendorRateProduction = [];
+
+          return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sandbox
+        |--------------------------------------------------------------------------
+        */
+
+        this.vendorRateSandbox = (res.data.sandbox || []).map((item: any) => {
+          return {
+            scope_id: item.scope_id,
+
+            scope_name: item.scope_name,
+
+            endpoint: item.endpoint,
+
+            requests_per_minute: item.requests_per_minute,
+
+            requests_per_hour: item.requests_per_hour,
+
+            burst_limit: item.burst_limit,
+
+            rate_limit_id: item.rate_limit_id,
+
+            is_active: Number(item.is_active) === 1,
+          };
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Production
+        |--------------------------------------------------------------------------
+        */
+
+        this.vendorRateProduction = (res.data.production || []).map(
+          (item: any) => {
+            return {
+              scope_id: item.scope_id,
+
+              scope_name: item.scope_name,
+
+              endpoint: item.endpoint,
+
+              requests_per_minute: item.requests_per_minute,
+
+              requests_per_hour: item.requests_per_hour,
+
+              burst_limit: item.burst_limit,
+
+              rate_limit_id: item.rate_limit_id,
+
+              is_active: Number(item.is_active) === 1,
+            };
+          },
+        );
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Get Vendor Rate Limits Error:', error);
+
+        this.vendorRateSandbox = [];
+        this.vendorRateProduction = [];
+      },
     });
   }
 
@@ -776,11 +986,152 @@ openVendorCredentials(vendor: any, content: any): void {
 
     this.selectedVendor = vendor;
 
-    this.modalService.open(content, {
+    this.vendorRateSandbox = [];
+
+    this.vendorRateProduction = [];
+
+    this.getVendorRateLimits(vendor.id);
+
+    this.modalReference = this.modalService.open(content, {
       scrollable: true,
       size: 'xl',
       windowClass: 'vendor-modal',
+      centered: true,
     });
+  }
+
+  saveVendorRateLimits(): void {
+    if (!this.selectedVendor || !this.selectedVendor.id) {
+      return;
+    }
+
+    /*
+  |--------------------------------------------------------------------------
+  | Validate Sandbox
+  |--------------------------------------------------------------------------
+  */
+
+    for (const rate of this.vendorRateSandbox) {
+      if (!rate.requests_per_minute || Number(rate.requests_per_minute) < 1) {
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: 'Please enter Requests Per Minute for ' + rate.scope_name,
+          type: Constants.ErrorType,
+        });
+
+        return;
+      }
+
+      if (!rate.requests_per_hour || Number(rate.requests_per_hour) < 1) {
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: 'Please enter Requests Per Hour for ' + rate.scope_name,
+          type: Constants.ErrorType,
+        });
+
+        return;
+      }
+
+      if (!rate.burst_limit || Number(rate.burst_limit) < 1) {
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: 'Please enter Burst Limit for ' + rate.scope_name,
+          type: Constants.ErrorType,
+        });
+
+        return;
+      }
+    }
+
+    /*
+  |--------------------------------------------------------------------------
+  | Validate Production
+  |--------------------------------------------------------------------------
+  */
+
+    for (const rate of this.vendorRateProduction) {
+      if (!rate.requests_per_minute || Number(rate.requests_per_minute) < 1) {
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: 'Please enter Requests Per Minute for ' + rate.scope_name,
+          type: Constants.ErrorType,
+        });
+
+        return;
+      }
+
+      if (!rate.requests_per_hour || Number(rate.requests_per_hour) < 1) {
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: 'Please enter Requests Per Hour for ' + rate.scope_name,
+          type: Constants.ErrorType,
+        });
+
+        return;
+      }
+
+      if (!rate.burst_limit || Number(rate.burst_limit) < 1) {
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: 'Please enter Burst Limit for ' + rate.scope_name,
+          type: Constants.ErrorType,
+        });
+
+        return;
+      }
+    }
+
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .saveVendorRateLimits(
+        this.selectedVendor.id,
+        this.vendorRateSandbox,
+        this.vendorRateProduction,
+        userId,
+        userId,
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+
+              msg: res.message || 'Vendor rate limits saved successfully',
+
+              type: Constants.SuccessType,
+            });
+
+            this.getVendorRateLimits(this.selectedVendor.id);
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+
+              msg: res.message || 'Unable to save vendor rate limits',
+
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Save Vendor Rate Limits Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+
+            msg: error?.error?.message || 'Unable to save vendor rate limits',
+
+            type: Constants.ErrorType,
+          });
+        },
+      });
   }
 
   openVendorScope(vendor: any, content: any): void {
@@ -788,10 +1139,21 @@ openVendorCredentials(vendor: any, content: any): void {
 
     this.selectedVendor = vendor;
 
-    this.modalService.open(content, {
+    // Reset old data
+    this.sandboxScopes = [];
+    this.productionScopes = [];
+
+    this.sandboxScopeCheckAll = false;
+    this.productionScopeCheckAll = false;
+
+    // Load scopes from DB
+    this.getVendorScopes(vendor.id);
+
+    this.modalReference = this.modalService.open(content, {
       scrollable: true,
       size: 'xl',
       windowClass: 'vendor-modal',
+      centered: true,
     });
   }
 
@@ -1327,14 +1689,768 @@ openVendorCredentials(vendor: any, content: any): void {
     });
 
     const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `${vendorName}_${environment}_vendor_credentials.csv`;
+    link.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  addVendorIpProduction(): void {
+    this.vendorIpProductionList.push({
+      id: null,
+      ip_address: '',
+      is_active: true,
+    });
+  }
+
+  removeVendorIpProduction(index: number): void {
+    if (index > 0) {
+      this.vendorIpProductionList.splice(index, 1);
+    }
+  }
+
+  addVendorIpSandbox(): void {
+    this.vendorIpSandboxList.push({
+      id: null,
+      ip_address: '',
+      is_active: true,
+    });
+  }
+
+  removeVendorIpSandbox(index: number): void {
+    if (index > 0) {
+      this.vendorIpSandboxList.splice(index, 1);
+    }
+  }
+
+  toggleVendorIpProductionStatus(index: number): void {
+    const ip = this.vendorIpProductionList[index];
+
+    if (!ip) {
+      return;
+    }
+
+    // New unsaved IP - only change UI state
+    if (!ip.id) {
+      ip.is_active = !ip.is_active;
+      return;
+    }
+
+    const newStatus = ip.is_active ? 0 : 1;
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .changeVendorIpStatus(ip.id, newStatus, userId)
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            ip.is_active = newStatus === 1;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: res.message || 'Production IP status updated successfully',
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to update Production IP status',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Production IP Status Error:', error);
+        },
+      });
+  }
+
+  toggleVendorIpSandboxStatus(index: number): void {
+    const ip = this.vendorIpSandboxList[index];
+
+    if (!ip) {
+      return;
+    }
+
+    // New unsaved IP - only change UI state
+    if (!ip.id) {
+      ip.is_active = !ip.is_active;
+      return;
+    }
+
+    const newStatus = ip.is_active ? 0 : 1;
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .changeVendorIpStatus(ip.id, newStatus, userId)
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            ip.is_active = newStatus === 1;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: res.message || 'Sandbox IP status updated successfully',
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to update Sandbox IP status',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Sandbox IP Status Error:', error);
+        },
+      });
+  }
+
+  saveVendorIps(): void {
+    if (!this.selectedVendor || !this.selectedVendor.id) {
+      return;
+    }
+
+    const productionIps = this.vendorIpProductionList.filter(
+      (ip: any) => ip.ip_address && ip.ip_address.trim() !== '',
+    );
+
+    const sandboxIps = this.vendorIpSandboxList.filter(
+      (ip: any) => ip.ip_address && ip.ip_address.trim() !== '',
+    );
+
+    // At least one IP required
+    if (productionIps.length === 0 && sandboxIps.length === 0) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Please enter at least one IP address',
+        type: Constants.ErrorType,
+      });
+
+      return;
+    }
+
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .saveVendorIps(
+        this.selectedVendor.id,
+        productionIps,
+        sandboxIps,
+        userId,
+        userId,
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: res.message || 'Vendor IPs saved successfully',
+              type: Constants.SuccessType,
+            });
+
+            // Reload from database
+            this.getVendorIps(this.selectedVendor.id);
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to save Vendor IPs',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Save Vendor IPs Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: error?.error?.message || 'Unable to save Vendor IPs',
+            type: Constants.ErrorType,
+          });
+        },
+      });
+  }
+
+  getVendorScopes(vendorId: number): void {
+    this.spinner.show();
+
+    this.vendorService.getVendorScopes(vendorId).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+
+        if (res && res.status == 1 && res.data) {
+          this.sandboxScopes = (res.data.sandbox || []).map((scope: any) => ({
+            id: scope.id,
+            name: scope.name,
+            description: scope.description,
+            vendor_scope_id: scope.vendor_scope_id || null,
+            checked: scope.checked === true,
+            status: Number(scope.status) === 1,
+          }));
+
+          this.productionScopes = (res.data.production || []).map(
+            (scope: any) => ({
+              id: scope.id,
+              name: scope.name,
+              description: scope.description,
+              vendor_scope_id: scope.vendor_scope_id || null,
+              checked: scope.checked === true,
+              status: Number(scope.status) === 1,
+            }),
+          );
+
+          /*
+        |--------------------------------------------------------------------------
+        | CHECK ALL
+        |--------------------------------------------------------------------------
+        */
+
+          this.sandboxScopeCheckAll =
+            this.sandboxScopes.length > 0 &&
+            this.sandboxScopes.every((scope: any) => scope.checked === true);
+
+          this.productionScopeCheckAll =
+            this.productionScopes.length > 0 &&
+            this.productionScopes.every((scope: any) => scope.checked === true);
+        } else {
+          this.sandboxScopes = [];
+          this.productionScopes = [];
+
+          this.sandboxScopeCheckAll = false;
+          this.productionScopeCheckAll = false;
+        }
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Get Vendor Scopes Error:', error);
+
+        this.sandboxScopes = [];
+        this.productionScopes = [];
+
+        this.sandboxScopeCheckAll = false;
+        this.productionScopeCheckAll = false;
+
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: error?.error?.message || 'Unable to load vendor scopes',
+          type: Constants.ErrorType,
+        });
+      },
+    });
+  }
+
+  updateVendorScopeStatus(
+    scope: any,
+    environment: string,
+    status: number,
+  ): void {
+    if (!this.selectedVendor || !this.selectedVendor.id) {
+      return;
+    }
+
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .changeVendorScopeStatus(
+        this.selectedVendor.id,
+        environment,
+        scope.id,
+        status,
+        userId,
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            scope.status = Number(res.data?.status ?? status) === 1;
+
+            scope.vendor_scope_id =
+              res.data?.vendor_scope_id || scope.vendor_scope_id;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+
+              msg: res.message || 'Scope status updated successfully',
+
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+
+              msg: res.message || 'Unable to update scope status',
+
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Vendor Scope Status Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+
+            msg: error?.error?.message || 'Unable to update scope status',
+
+            type: Constants.ErrorType,
+          });
+        },
+      });
+  }
+
+  toggleAllSandboxScopes(): void {
+    this.sandboxScopes.forEach((scope: any) => {
+      scope.checked = this.sandboxScopeCheckAll;
+    });
+  }
+
+  toggleAllProductionScopes(): void {
+    this.productionScopes.forEach((scope: any) => {
+      scope.checked = this.productionScopeCheckAll;
+    });
+  }
+
+  setAllSandboxScopeStatus(status: number): void {
+    if (!this.selectedVendor?.id) {
+      return;
+    }
+
+    const checkedScopes = this.sandboxScopes.filter(
+      (scope: any) => scope.checked && scope.id,
+    );
+
+    if (checkedScopes.length === 0) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Please select at least one Sandbox scope',
+        type: Constants.ErrorType,
+      });
+
+      return;
+    }
+
+    const userId = this.getLoggedInUserId();
+
+    const requests = checkedScopes.map((scope: any) => {
+      return this.vendorService.changeVendorScopeStatus(
+        this.selectedVendor.id,
+        'sandbox',
+        scope.id,
+        status,
+        userId,
+      );
+    });
+
+    this.spinner.show();
+
+    forkJoin(requests).subscribe({
+      next: (responses: any[]) => {
+        this.spinner.hide();
+
+        responses.forEach((res: any, index: number) => {
+          if (res && res.status == 1) {
+            checkedScopes[index].status = status;
+          }
+        });
+
+        this.notificationService.addToast({
+          title: Constants.SuccessTitle,
+          msg:
+            status === 1
+              ? `${checkedScopes.length} Sandbox scope(s) activated successfully`
+              : `${checkedScopes.length} Sandbox scope(s) deactivated successfully`,
+          type: Constants.SuccessType,
+        });
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Bulk Sandbox Scope Status Error:', error);
+
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: error?.error?.message || 'Unable to update Sandbox scope status',
+          type: Constants.ErrorType,
+        });
+      },
+    });
+  }
+
+  setAllProductionScopeStatus(status: number): void {
+    if (!this.selectedVendor?.id) {
+      return;
+    }
+
+    const checkedScopes = this.productionScopes.filter(
+      (scope: any) => scope.checked && scope.id,
+    );
+
+    if (checkedScopes.length === 0) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Please select at least one Production scope',
+        type: Constants.ErrorType,
+      });
+
+      return;
+    }
+
+    const userId = this.getLoggedInUserId();
+
+    const requests = checkedScopes.map((scope: any) => {
+      return this.vendorService.changeVendorScopeStatus(
+        this.selectedVendor.id,
+        'production',
+        scope.id,
+        status,
+        userId,
+      );
+    });
+
+    this.spinner.show();
+
+    forkJoin(requests).subscribe({
+      next: (responses: any[]) => {
+        this.spinner.hide();
+
+        responses.forEach((res: any, index: number) => {
+          if (res && res.status == 1) {
+            checkedScopes[index].status = status;
+          }
+        });
+
+        this.notificationService.addToast({
+          title: Constants.SuccessTitle,
+          msg:
+            status === 1
+              ? `${checkedScopes.length} Production scope(s) activated successfully`
+              : `${checkedScopes.length} Production scope(s) deactivated successfully`,
+          type: Constants.SuccessType,
+        });
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Bulk Production Scope Status Error:', error);
+
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg:
+            error?.error?.message || 'Unable to update Production scope status',
+          type: Constants.ErrorType,
+        });
+      },
+    });
+  }
+
+  toggleSandboxScopeStatus(index: number): void {
+    const scope = this.sandboxScopes[index];
+
+    if (!scope || !scope.id || !this.selectedVendor?.id) {
+      return;
+    }
+
+    const newStatus = scope.status ? 0 : 1;
+
+    this.vendorService
+      .changeVendorScopeStatus(
+        this.selectedVendor.id,
+        'sandbox',
+        scope.id,
+        newStatus,
+        this.getLoggedInUserId(),
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res && res.status == 1) {
+            scope.status = newStatus;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: newStatus
+                ? 'Scope activated successfully'
+                : 'Scope deactivated successfully',
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to change scope status',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Sandbox Scope Status Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: error?.error?.message || 'Unable to change scope status',
+            type: Constants.ErrorType,
+          });
+        },
+      });
+  }
+
+  toggleProductionScopeStatus(index: number): void {
+    const scope = this.productionScopes[index];
+
+    if (!scope || !scope.id || !this.selectedVendor?.id) {
+      return;
+    }
+
+    const newStatus = scope.status ? 0 : 1;
+
+    this.vendorService
+      .changeVendorScopeStatus(
+        this.selectedVendor.id,
+        'production',
+        scope.id,
+        newStatus,
+        this.getLoggedInUserId(),
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res && res.status == 1) {
+            scope.status = newStatus;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: newStatus
+                ? 'Scope activated successfully'
+                : 'Scope deactivated successfully',
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to change scope status',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Production Scope Status Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: error?.error?.message || 'Unable to change scope status',
+            type: Constants.ErrorType,
+          });
+        },
+      });
+  }
+  saveVendorScopes(): void {
+    if (!this.selectedVendor || !this.selectedVendor.id) {
+      return;
+    }
+
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .saveVendorScopes(
+        this.selectedVendor.id,
+        this.sandboxScopes,
+        this.productionScopes,
+        userId,
+        userId,
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: res.message || 'Vendor scopes saved successfully',
+              type: Constants.SuccessType,
+            });
+
+            // Reload from database
+            this.getVendorScopes(this.selectedVendor.id);
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to save vendor scopes',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Save Vendor Scopes Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: error?.error?.message || 'Unable to save vendor scopes',
+            type: Constants.ErrorType,
+          });
+        },
+      });
+  }
+
+  openVendorView(vendor: any, content: any): void {
+    this.activeVendorMenu = null;
+
+    this.selectedVendor = vendor;
+
+    this.vendorViewData = null;
+
+    this.spinner.show();
+
+    this.vendorService.getVendorViewDetails(vendor.id).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+
+        if (res && res.status == 1) {
+          this.vendorViewData = res.data;
+
+          this.modalReference = this.modalService.open(content, {
+            scrollable: true,
+            size: 'xl',
+            windowClass: 'vendor-view-modal',
+            centered: true,
+          });
+        } else {
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: res.message || 'Unable to fetch vendor details',
+            type: Constants.ErrorType,
+          });
+        }
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Get Vendor View Details Error:', error);
+
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg: error?.error?.message || 'Unable to fetch vendor details',
+          type: Constants.ErrorType,
+        });
+      },
+    });
+  }
+  exportVendorViewCredentials(environment: string): void {
+    if (
+      !this.vendorViewData ||
+      !this.vendorViewData[environment] ||
+      !this.vendorViewData[environment].credentials ||
+      !this.vendorViewData[environment].credentials.length
+    ) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'No credentials available to export',
+        type: Constants.ErrorType,
+      });
+
+      return;
+    }
+
+    const credentials = this.vendorViewData[environment].credentials;
+
+    const vendorName = this.vendorViewData.vendor?.company_name || 'Vendor';
+
+    const environmentName =
+      environment === 'sandbox' ? 'Sandbox' : 'Production';
+
+    const csvRows: string[] = [];
+
+    // Vendor information
+    csvRows.push(
+      '"Vendor Name","' + String(vendorName).replace(/"/g, '""') + '"',
+    );
+
+    csvRows.push('"Environment","' + environmentName + '"');
+
+    csvRows.push('');
+
+    // Header
+    csvRows.push(
+      ['Environment', 'Client ID', 'Client Secret', 'Status'].join(','),
+    );
+
+    // Data
+    credentials.forEach((credential: any) => {
+      const row = [
+        environmentName,
+        credential.client_id || '',
+        credential.client_secret || '',
+        Number(credential.is_active) === 1 ? 'Active' : 'Inactive',
+      ];
+
+      csvRows.push(
+        row
+          .map((value: any) => {
+            const text =
+              value === null || value === undefined ? '' : String(value);
+
+            return '"' + text.replace(/"/g, '""') + '"';
+          })
+          .join(','),
+      );
+    });
+
+    const csvContent = csvRows.join('\r\n');
+
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;',
+    });
+
+    const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement('a');
 
     link.href = url;
 
-    link.download = `${vendorName}_${environment}_vendor_credentials.csv`;
+    link.download = `${vendorName}_${environmentName}_credentials.csv`;
+
+    document.body.appendChild(link);
 
     link.click();
+
+    document.body.removeChild(link);
 
     window.URL.revokeObjectURL(url);
   }
