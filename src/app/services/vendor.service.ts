@@ -167,4 +167,49 @@ export class VendorService {
       vendor_id: vendorId,
     });
   }
+
+  getVendorAppAccessRules(vendorId: number) {
+    return this.http.post(
+      Constants.BASE_URL + '/vendors/app-access-rules/list',
+      {
+        vendor_id: vendorId,
+      },
+    );
+  }
+
+  saveVendorAppAccessRules(
+    vendorId: number,
+    sandbox: any[],
+    production: any[],
+    createdBy: number | null,
+    updatedBy: number | null,
+  ) {
+    return this.http.post(
+      Constants.BASE_URL + '/vendors/app-access-rules/save',
+      {
+        vendor_id: vendorId,
+        sandbox: sandbox,
+        production: production,
+        created_by: createdBy,
+        updated_by: updatedBy,
+      },
+    );
+  }
+
+  changeVendorAppAccessRuleStatus(
+    id: number,
+    vendorId: number,
+    status: number,
+    updatedBy: number | null,
+  ) {
+    return this.http.post(
+      Constants.BASE_URL + '/vendors/app-access-rules/status',
+      {
+        id: id,
+        vendor_id: vendorId,
+        status: status,
+        updated_by: updatedBy,
+      },
+    );
+  }
 }

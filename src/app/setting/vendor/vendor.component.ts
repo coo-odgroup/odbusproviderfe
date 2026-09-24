@@ -131,6 +131,11 @@ export class VendorComponent implements OnInit {
   vendorRateSandbox: any[] = [];
   vendorRateProduction: any[] = [];
 
+  vendorAppAccessRules: any = {
+    sandbox: [],
+    production: [],
+  };
+
   constructor(
     private modalService: NgbModal,
     config: NgbModalConfig,
@@ -830,23 +835,36 @@ export class VendorComponent implements OnInit {
       next: (res: any) => {
         this.spinner.hide();
 
-        if (res && res.status == 1) {
+        if (res && res.status == 1 && res.data) {
           /*
-           * Production
+           * Production IPs
            */
-          if (
-            res.data &&
-            res.data.production &&
-            res.data.production.length > 0
-          ) {
-            this.vendorIpProductionList = res.data.production.map(
-              (item: any) => ({
-                id: item.id,
-                ip_address: item.ip_address || '',
-                status: Number(item.status) === 1,
-              }),
-            );
-          } else {
+          this.vendorIpProductionList = (res.data.production || []).map(
+            (ip: any) => {
+              return {
+                id: ip.id || null,
+                ip_address: ip.ip_address || '',
+                is_active: Number(ip.is_active) === 1,
+              };
+            },
+          );
+
+          /*
+           * Sandbox IPs
+           */
+          this.vendorIpSandboxList = (res.data.sandbox || []).map((ip: any) => {
+            return {
+              id: ip.id || null,
+              ip_address: ip.ip_address || '',
+              is_active: Number(ip.is_active) === 1,
+            };
+          });
+
+          /*
+           * If there are no existing IPs,
+           * keep one empty row.
+           */
+          if (this.vendorIpProductionList.length === 0) {
             this.vendorIpProductionList = [
               {
                 id: null,
@@ -856,16 +874,7 @@ export class VendorComponent implements OnInit {
             ];
           }
 
-          /*
-           * Sandbox
-           */
-          if (res.data && res.data.sandbox && res.data.sandbox.length > 0) {
-            this.vendorIpSandboxList = res.data.sandbox.map((item: any) => ({
-              id: item.id,
-              ip_address: item.ip_address || '',
-              status: Number(item.status) === 1,
-            }));
-          } else {
+          if (this.vendorIpSandboxList.length === 0) {
             this.vendorIpSandboxList = [
               {
                 id: null,
@@ -897,8 +906,84 @@ export class VendorComponent implements OnInit {
         this.spinner.hide();
 
         console.error('Get Vendor IPs Error:', error);
+
+        this.vendorIpProductionList = [
+          {
+            id: null,
+            ip_address: '',
+            is_active: true,
+          },
+        ];
+
+        this.vendorIpSandboxList = [
+          {
+            id: null,
+            ip_address: '',
+            is_active: true,
+          },
+        ];
       },
     });
+  }
+
+  toggleVendorIpStatus(ip: any): void {
+    if (!ip || !ip.id || !this.selectedVendor || !this.selectedVendor.id) {
+      return;
+    }
+
+    const newStatus = ip.is_active ? 0 : 1;
+
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .changeVendorIpStatus(ip.id, newStatus, userId)
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            /*
+             * Update UI after DB update succeeds.
+             */
+            ip.is_active = newStatus === 1;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+
+              msg: res.message || 'IP status updated successfully',
+
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+
+              msg: res.message || 'Unable to update IP status',
+
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Vendor IP Status Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+
+            msg:
+              error && error.error && error.error.message
+                ? error.error.message
+                : 'Unable to update IP status',
+
+            type: Constants.ErrorType,
+          });
+        },
+      });
   }
 
   getVendorRateLimits(vendorId: number): void {
@@ -997,6 +1082,127 @@ export class VendorComponent implements OnInit {
       size: 'xl',
       windowClass: 'vendor-modal',
       centered: true,
+    });
+  }
+
+  openVendorAppAccessRules(vendor: any, content: any): void {
+    this.activeVendorMenu = null;
+
+    this.selectedVendor = vendor;
+
+    this.vendorAppAccessRules = {
+      sandbox: [],
+      production: [],
+    };
+
+    this.getVendorAppAccessRules(vendor.id);
+
+    this.modalReference = this.modalService.open(content, {
+      scrollable: true,
+      size: 'xl',
+      windowClass: 'vendor-modal',
+      centered: true,
+    });
+  }
+
+  saveVendorAppAccessRules(): void {
+    if (!this.selectedVendor || !this.selectedVendor.id) {
+      return;
+    }
+
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .saveVendorAppAccessRules(
+        this.selectedVendor.id,
+
+        this.vendorAppAccessRules.sandbox,
+
+        this.vendorAppAccessRules.production,
+
+        userId,
+
+        userId,
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+
+              msg: res.message || 'Vendor app access rules saved successfully',
+
+              type: Constants.SuccessType,
+            });
+
+            this.getVendorAppAccessRules(this.selectedVendor.id);
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+
+              msg: res.message || 'Unable to save vendor app access rules',
+
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('Save Vendor App Access Rules Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+
+            msg:
+              error?.error?.message || 'Unable to save vendor app access rules',
+
+            type: Constants.ErrorType,
+          });
+        },
+      });
+  }
+
+  getVendorAppAccessRules(vendorId: number): void {
+    this.spinner.show();
+
+    this.vendorService.getVendorAppAccessRules(vendorId).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+
+        if (res && res.status == 1 && res.data) {
+          this.vendorAppAccessRules = {
+            sandbox: res.data.sandbox || [],
+
+            production: res.data.production || [],
+          };
+        } else {
+          this.vendorAppAccessRules = {
+            sandbox: [],
+            production: [],
+          };
+        }
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Get Vendor App Access Rules Error:', error);
+
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+
+          msg:
+            error?.error?.message || 'Unable to fetch vendor app access rules',
+
+          type: Constants.ErrorType,
+        });
+      },
     });
   }
 
@@ -2372,6 +2578,7 @@ export class VendorComponent implements OnInit {
       },
     });
   }
+
   exportVendorViewCredentials(environment: string): void {
     if (
       !this.vendorViewData ||
@@ -2453,5 +2660,81 @@ export class VendorComponent implements OnInit {
     document.body.removeChild(link);
 
     window.URL.revokeObjectURL(url);
+  }
+
+  toggleVendorAppAccessRuleStatus(rule: any): void {
+    if (!this.selectedVendor || !this.selectedVendor.id) {
+      return;
+    }
+
+    /*
+     * Access rule must already exist in DB.
+     */
+    if (!rule.id && !rule.rule_id) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Please save the access rule before changing its status',
+        type: Constants.ErrorType,
+      });
+
+      return;
+    }
+
+    const ruleId = rule.id || rule.rule_id;
+
+    const currentStatus = Number(rule.status) === 1 ? 1 : 0;
+
+    const newStatus = currentStatus === 1 ? 0 : 1;
+
+    const userId = this.getLoggedInUserId();
+
+    this.spinner.show();
+
+    this.vendorService
+      .changeVendorAppAccessRuleStatus(
+        ruleId,
+        this.selectedVendor.id,
+        newStatus,
+        userId,
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+
+          if (res && res.status == 1) {
+            /*
+             * Update UI immediately.
+             */
+            rule.status = newStatus;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: res.message || 'App access rule status updated successfully',
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to update app access rule status',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+
+        error: (error) => {
+          this.spinner.hide();
+
+          console.error('App Access Rule Status Error:', error);
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg:
+              error && error.error && error.error.message
+                ? error.error.message
+                : 'Unable to update app access rule status',
+            type: Constants.ErrorType,
+          });
+        },
+      });
   }
 }
