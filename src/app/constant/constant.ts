@@ -35,7 +35,7 @@ export class Constants {
     public static CONSUMER_API_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/api/';
     public static PATHURL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/public/uploads/';
     public static DOWNLOAD_URL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/storage/';
-
+    
 
 
 
