@@ -1229,6 +1229,20 @@ const NavigationItems = [
         ],
       },
       {
+        title: 'Manage Vendors',
+        type: 'collapse',
+        icon: 'feather icon-users',
+        children: [
+          {
+            id: 'vendor',
+            title: 'Vendors',
+            type: 'item',
+            icon: 'feather icon-user',
+            url: 'setting/vendor',
+          },
+        ],
+      },
+      {
         title: 'Manage Refund',
         type: 'collapse',
         icon: 'feather icon-twitter ',
