@@ -44,7 +44,11 @@ const routes: Routes = [
       {
         path: 'extraseatblock',
         loadChildren: () => import('./extraseablock/extraseatblock.module').then(module => module.ExtraSeatBlockModule)
-      }    
+      },
+      {
+        path: 'vendorseatblock',
+        loadChildren: () => import('./vendorseatblock/vendor-seatblock.module').then(module => module.VendorSeatBlockModule)
+      }   
     ]
   }
 ];
