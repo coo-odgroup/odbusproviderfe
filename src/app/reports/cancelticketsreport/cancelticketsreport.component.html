@@ -1261,7 +1261,7 @@
                                     </label>
 
                                     <strong>
-                                        {{ refund_details?.created_at  }}
+                                        {{ refund_details?.created_at | date:'dd MMM yyyy, hh:mm a' }}
                                     </strong>
 
                                 </div>
@@ -1331,13 +1331,13 @@
                 </button>
 
 
-                <button type="button" class="btn btn-primary">
+                <!-- <button type="button" class="btn btn-primary">
 
                     <i class="fa fa-print"></i>
 
                     Print Details
 
-                </button>
+                </button> -->
 
             </div>
 

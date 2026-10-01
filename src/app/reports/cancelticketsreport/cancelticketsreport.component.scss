@@ -492,6 +492,10 @@ margin-left: 2px;
     font-weight: 700 !important;
 }
 
+::ng-deep .view-icon{
+    cursor: pointer;
+}
+
 ::ng-deep #transactionDetailsModal .payment-row strong {
     color: #333333 !important;
 
