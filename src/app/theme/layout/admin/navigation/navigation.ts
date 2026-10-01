@@ -640,6 +640,13 @@ const NavigationItems = [
             icon: 'feather icon-user-check',
             url: 'bookingmanagement/ownerpayment',
           },
+          {
+            id: 'vendorseatBlock',
+            title: 'Seat Block For Vendor',
+            type: 'item',
+            icon: 'feather icon-user-check',
+            url: 'bookingmanagement/vendorseatblock',
+          },
           //   {
           //       id   : 'CancellationSlab',
           //       title: 'Cancellation Slab',

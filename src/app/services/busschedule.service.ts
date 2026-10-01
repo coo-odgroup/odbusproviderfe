@@ -37,6 +37,13 @@ export class BusscheduleService {
     )
   }
 
+  alreadyvendorBlocks(post): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL+ '/already-vendor-Blocks', JSON.stringify(post), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   alreadyOpen(post): Observable<any> {
     return this.httpClient.post<any>(this.apiURL+ '/alreadyOpen', JSON.stringify(post), this.httpOptions)
     .pipe(
