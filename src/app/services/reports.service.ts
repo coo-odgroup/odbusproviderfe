@@ -331,4 +331,10 @@ export class ReportsService {
     }
     return throwError(errorMessage);
  }
+
+ transactionDetails(data): Observable<any> {
+    return this.httpClient.post<any>(this.apiURL + '/transaction-details',JSON.stringify(data), this.httpOptions).pipe(
+      catchError(this.errorHandler)
+    )
+  }
 }
