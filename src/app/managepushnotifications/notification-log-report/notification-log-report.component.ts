@@ -14,29 +14,11 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./notification-log-report.component.scss'],
 })
 export class NotificationLogReportComponent implements OnInit {
-  /* ============================================================
-   * FILTER FORM
-   * ============================================================ */
-
   public searchForm!: FormGroup;
 
-  /* ============================================================
-   * CAMPAIGN LIST
-   * ============================================================ */
-
   public campaignsList: any[] = [];
-
   public campaigns: any[] = [];
-
   public selectedCampaign: any = null;
-
-  /* ============================================================
-   * GLOBAL SUMMARY
-   *
-   * These values MUST come from backend aggregation.
-   * Do not calculate them from the current page.
-   * ============================================================ */
-
   public globalSummary = {
     total: 0,
     successful: 0,
@@ -45,20 +27,11 @@ export class NotificationLogReportComponent implements OnInit {
     pending: 0,
     queued: 0,
     processing: 0,
-
     success_rate: 0,
-
     average_response_time: 0,
     minimum_response_time: 0,
     maximum_response_time: 0,
   };
-
-  /* ============================================================
-   * OLD/COMPATIBILITY SUMMARY VARIABLES
-   *
-   * Kept because the existing HTML may still use them.
-   * ============================================================ */
-
   public totalCount = 0;
   public successCount = 0;
   public failedCount = 0;
@@ -66,17 +39,11 @@ export class NotificationLogReportComponent implements OnInit {
   public pendingCount = 0;
   public queuedCount = 0;
   public processingCount = 0;
-
   public successPercentage = 0;
   public failedPercentage = 0;
   public invalidTokenPercentage = 0;
   public pendingPercentage = 0;
   public queuedPercentage = 0;
-
-  /* ============================================================
-   * CAMPAIGN DETAIL SUMMARY
-   * ============================================================ */
-
   public campaignSummary = {
     total: 0,
     successful: 0,
@@ -86,13 +53,6 @@ export class NotificationLogReportComponent implements OnInit {
     queued: 0,
     processing: 0,
   };
-
-  /* ============================================================
-   * SELECTED CAMPAIGN SUMMARY
-   *
-   * Kept for compatibility with existing HTML.
-   * ============================================================ */
-
   public selectedCampaignTotal = 0;
   public selectedCampaignSuccess = 0;
   public selectedCampaignFailed = 0;
@@ -100,78 +60,32 @@ export class NotificationLogReportComponent implements OnInit {
   public selectedCampaignPending = 0;
   public selectedCampaignQueued = 0;
   public selectedCampaignProcessing = 0;
-
   public selectedCampaignSuccessPercentage = 0;
   public selectedCampaignFailedPercentage = 0;
   public selectedCampaignInvalidTokenPercentage = 0;
-
-  /* ============================================================
-   * CAMPAIGN DETAIL METRICS
-   * ============================================================ */
-
   public averageResponseTime = 0;
   public fastestResponseTime = 0;
   public slowestResponseTime = 0;
-
   public totalUsers = 0;
   public uniqueUsers = 0;
-
-  /* ============================================================
-   * CAMPAIGN DETAILS
-   * ============================================================ */
-
   public notificationLogs: any[] = [];
-
   public campaignDetails: any[] = [];
-
   public campaignPagination: any = null;
-
   public pagination: any = null;
-
-  /* ============================================================
-   * MODAL
-   * ============================================================ */
-
   public showCampaignModal = false;
-
   public loadingCampaignDetails = false;
-
   public loadingDashboard = false;
-
-  /* ============================================================
-   * DETAIL FILTER
-   * ============================================================ */
-
+  public campaignRowsPerPage: number | string = 10;
   public detailSearch = '';
-
   public detailStatus = '';
-
-  /* ============================================================
-   * UI
-   * ============================================================ */
-
   public activeTab = 'overview';
-
-  /* ============================================================
-   * EXPORT
-   * ============================================================ */
-
   public fileName = 'Notification-Campaign-Report.xlsx';
-
-  /* ============================================================
-   * CONSTRUCTOR
-   * ============================================================ */
-
   constructor(
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     private notificationService: NotificationService,
     private notificationLogsService: NotificationLogsService,
   ) {}
-
-  /* ============================================================
-   * INIT
-   * ============================================================ */
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
@@ -187,10 +101,6 @@ export class NotificationLogReportComponent implements OnInit {
 
     this.loadDashboard(1);
   }
-
-  /* ============================================================
-   * LOAD CAMPAIGN DROPDOWN
-   * ============================================================ */
 
   loadCampaigns(): void {
     this.notificationLogsService.getNotificationCampaigns().subscribe(
@@ -211,17 +121,11 @@ export class NotificationLogReportComponent implements OnInit {
     );
   }
 
-  /* ============================================================
-   * MAIN DASHBOARD
-   * ============================================================ */
-
   loadDashboard(page: number = 1): void {
     this.loadingDashboard = true;
-
     this.spinner.show();
 
     const value = this.searchForm.value;
-
     const data = {
       campaign_id: value.campaign_id || '',
       notification_type: value.notification_type || '',
@@ -231,32 +135,16 @@ export class NotificationLogReportComponent implements OnInit {
       rows_number: value.rows_number || Constants.RecordLimit || 10,
     };
 
-    console.log('Dashboard Request:', data);
-    console.log('Dashboard Page:', page);
-
     this.notificationLogsService.getNotificationDashboard(data, page).subscribe(
       (response: any) => {
         console.log('Notification Dashboard Response:', response);
 
         if (response && response.status === true) {
-          /*
-           * IMPORTANT
-           *
-           * New backend structure:
-           *
-           * response.summary
-           * response.data
-           * response.pagination
-           */
-
           this.setGlobalSummary(response.summary || {});
-
           this.campaigns = response.data || [];
-
           this.pagination = response.pagination || null;
         } else {
           this.resetDashboard();
-
           this.notificationService.notify(
             response?.message || 'Unable to load notification dashboard.',
             'Error',
@@ -264,16 +152,13 @@ export class NotificationLogReportComponent implements OnInit {
         }
 
         this.loadingDashboard = false;
-
         this.spinner.hide();
       },
       (error) => {
         console.error('Notification Dashboard API Error:', error);
 
         this.resetDashboard();
-
         this.loadingDashboard = false;
-
         this.notificationService.notify(
           error?.error?.message || 'Unable to load notification dashboard.',
           'Error',
@@ -283,10 +168,6 @@ export class NotificationLogReportComponent implements OnInit {
       },
     );
   }
-
-  /* ============================================================
-   * GET FILTERS
-   * ============================================================ */
 
   getFilters(): any {
     const value = this.searchForm.value;
@@ -301,28 +182,16 @@ export class NotificationLogReportComponent implements OnInit {
     };
   }
 
-  /* ============================================================
-   * SET GLOBAL SUMMARY
-   * ============================================================ */
-
   setGlobalSummary(summary: any): void {
     this.globalSummary = {
       total: Number(summary.total || 0),
-
       successful: Number(summary.successful ?? summary.success ?? 0),
-
       failed: Number(summary.failed || 0),
-
       invalid_token: Number(summary.invalid_token || summary.invalidToken || 0),
-
       pending: Number(summary.pending || 0),
-
       queued: Number(summary.queued || 0),
-
       processing: Number(summary.processing || 0),
-
       success_rate: Number(summary.success_rate || 0),
-
       average_response_time: Number(
         summary.average_response_time ||
           summary.average_response_time_ms ||
@@ -430,22 +299,12 @@ export class NotificationLogReportComponent implements OnInit {
   }
 
   viewCampaign(campaign: any): void {
-    console.log('========================================');
-
-    console.log('VIEW CAMPAIGN CLICKED');
-
-    console.log('CAMPAIGN:', campaign);
-
-    console.log('========================================');
+    console.log('VIEW CAMPAIGN:', campaign);
 
     if (!campaign) {
-      console.error('Campaign is empty');
       return;
     }
 
-    /*
-     * Get campaign ID
-     */
     const campaignId = Number(
       campaign.campaign_id ??
         campaign.id ??
@@ -453,34 +312,19 @@ export class NotificationLogReportComponent implements OnInit {
         0,
     );
 
-    console.log('CAMPAIGN ID:', campaignId);
-
     if (!campaignId) {
-      this.notificationService.notify('Campaign ID not found.', 'Error');
+      this.notificationService.notify('Campaign ID is missing.', 'Error');
 
       return;
     }
 
-    /*
-     * IMPORTANT:
-     * Keep the campaign that user clicked.
-     *
-     * This means the modal header can show
-     * campaign information immediately.
-     */
     this.selectedCampaign = {
       ...campaign,
       campaign_id: campaignId,
     };
 
-    /*
-     * Open modal
-     */
     this.showCampaignModal = true;
 
-    /*
-     * Reset previous campaign data
-     */
     this.loadingCampaignDetails = true;
 
     this.notificationLogs = [];
@@ -493,14 +337,11 @@ export class NotificationLogReportComponent implements OnInit {
 
     this.detailStatus = '';
 
-    /*
-     * Reset summary/metrics
-     */
+    // IMPORTANT
+    this.campaignRowsPerPage = 10;
+
     this.resetCampaignDetails();
 
-    /*
-     * Load campaign details
-     */
     this.loadCampaignDetails(campaignId, 1);
   }
 
@@ -532,6 +373,8 @@ export class NotificationLogReportComponent implements OnInit {
      * Request body
      */
     const data = {
+      campaign_id: campaignId,
+
       search: this.detailSearch || '',
 
       status: this.detailStatus || '',
@@ -542,8 +385,7 @@ export class NotificationLogReportComponent implements OnInit {
 
       date_to: this.searchForm?.value?.date_to || '',
 
-      rows_number:
-        this.searchForm?.value?.rows_number || Constants.RecordLimit || 25,
+      rows_number: this.getCampaignRowsNumber(),
     };
 
     console.log('DETAIL REQUEST DATA:', data);
@@ -856,6 +698,80 @@ export class NotificationLogReportComponent implements OnInit {
           );
         },
       });
+  }
+
+  changeCampaignRowsPerPage(value: any): void {
+    this.campaignRowsPerPage = value;
+
+    const campaignId = Number(this.selectedCampaign?.campaign_id);
+
+    if (!campaignId) {
+      return;
+    }
+
+    /*
+     * When changing rows,
+     * always return to page 1.
+     */
+
+    this.loadCampaignDetails(campaignId, 1);
+  }
+
+  getCampaignRowsNumber(): number {
+    /*
+     * Normal options:
+     *
+     * 10
+     * 50
+     * 100
+     */
+
+    if (
+      this.campaignRowsPerPage === 10 ||
+      this.campaignRowsPerPage === 50 ||
+      this.campaignRowsPerPage === 100
+    ) {
+      return Number(this.campaignRowsPerPage);
+    }
+
+    /*
+     * ALL
+     *
+     * Get total number of campaign
+     * notification records.
+     */
+
+    if (this.campaignRowsPerPage === 'all') {
+      const total = Number(
+        this.campaignPagination?.total ||
+          this.campaignSummary?.total ||
+          this.selectedCampaign?.total_notifications ||
+          0,
+      );
+
+      /*
+       * Backend needs a numeric rows_number.
+       *
+       * Therefore we don't send:
+       *
+       * rows_number: 'all'
+       *
+       * Instead we send the actual
+       * total number of customers.
+       */
+
+      if (total > 0) {
+        return total;
+      }
+
+      /*
+       * Safety fallback.
+       */
+
+      return 10;
+    }
+
+    return 10;
   }
 
   setCampaignDetailSummary(summary: any): void {

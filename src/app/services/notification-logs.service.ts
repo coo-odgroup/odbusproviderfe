@@ -33,19 +33,12 @@ export class NotificationLogsService {
   getCampaignDetails(campaignId: number, data: any = {}, page: number = 1) {
     const body = {
       campaign_id: campaignId,
-
       search: data.search || '',
-
       status: data.status || '',
-
       notification_type: data.notification_type || '',
-
       date_from: data.date_from || '',
-
       date_to: data.date_to || '',
-
       rows_number: data.rows_number || Constants.RecordLimit || 25,
-
       page: page,
     };
 

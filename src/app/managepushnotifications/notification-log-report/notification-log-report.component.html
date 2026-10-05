@@ -929,12 +929,18 @@
           </div>
 
 
-          <!-- NOTIFICATION LOGS -->
+          <!-- ============================================================
+     NOTIFICATION LOGS
+============================================================= -->
+
           <div class="modal-section">
+
+            <!-- SECTION HEADER -->
 
             <div class="modal-section-header">
 
               <div>
+
                 <span class="modal-section-eyebrow">
                   NOTIFICATION LOGS
                 </span>
@@ -942,15 +948,63 @@
                 <h5>
                   Campaign Notifications
                 </h5>
+
               </div>
 
-              <span class="modal-log-count">
-                {{ notificationLogs?.length || 0 }}
-                records
-              </span>
+
+              <!-- ROWS SELECTOR -->
+
+              <div class="modal-table-controls">
+
+                <span class="modal-log-count">
+
+                  {{
+                  campaignPagination?.total ||
+                  campaignSummary?.total ||
+                  notificationLogs?.length ||
+                  0
+                  }}
+
+                  records
+
+                </span>
+
+
+                <label class="rows-per-page-label">
+
+                  Show
+
+                  <select class="rows-per-page-select" [ngModel]="campaignRowsPerPage"
+                    (ngModelChange)="changeCampaignRowsPerPage($event)">
+
+                    <option [ngValue]="10">
+                      10
+                    </option>
+
+                    <option [ngValue]="50">
+                      50
+                    </option>
+
+                    <option [ngValue]="100">
+                      100
+                    </option>
+
+                    <option [ngValue]="'all'">
+                      All
+                    </option>
+
+                  </select>
+
+                  entries
+
+                </label>
+
+              </div>
 
             </div>
 
+
+            <!-- TABLE -->
 
             <div class="notification-log-table-wrapper">
 
@@ -959,11 +1013,27 @@
                 <thead>
 
                   <tr>
-                    <th>User</th>
-                    <th>Mobile</th>
-                    <th>Status</th>
-                    <th>Response</th>
-                    <th>Date</th>
+
+                    <th>
+                      User
+                    </th>
+
+                    <th>
+                      Mobile
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
+                    <th>
+                      Response
+                    </th>
+
+                    <th>
+                      Date
+                    </th>
+
                   </tr>
 
                 </thead>
@@ -973,68 +1043,123 @@
 
                   <tr *ngFor="let log of notificationLogs">
 
-                    <td>
-                      {{
-                      log?.name ||
-                      log?.user_name ||
-                      log?.user_id ||
-                      '--'
-                      }}
-                    </td>
+                    <!-- USER -->
 
                     <td>
+
+                      <div class="log-user">
+
+                        <span class="log-user-name">
+
+                          {{
+                          log?.name ||
+                          log?.user_name ||
+                          log?.user?.name ||
+                          log?.user_id ||
+                          '--'
+                          }}
+
+                        </span>
+
+                      </div>
+
+                    </td>
+
+
+                    <!-- MOBILE -->
+
+                    <td>
+
                       {{
                       log?.mobile_no ||
                       log?.mobile ||
                       log?.mobile_number ||
+                      log?.user?.mobile ||
                       '--'
                       }}
+
                     </td>
 
+
+                    <!-- STATUS -->
+
                     <td>
+
                       <span class="log-status">
+
                         {{
                         log?.status ||
                         log?.notification_status ||
+                        log?.delivery_status ||
                         '--'
                         }}
+
                       </span>
+
                     </td>
 
+
+                    <!-- RESPONSE -->
+
                     <td>
-                      {{
-                      log?.response_time_ms ||
-                      log?.response_time ||
-                      '--'
-                      }}
-                      <span *ngIf="
-                  log?.response_time_ms ||
-                  log?.response_time
-                ">
+
+                      <ng-container *ngIf="
+                log?.response_time_ms ||
+                log?.response_time;
+                else noResponse
+              ">
+
+                        {{
+                        log?.response_time_ms ||
+                        log?.response_time
+                        }}
+
                         ms
-                      </span>
+
+                      </ng-container>
+
+
+                      <ng-template #noResponse>
+
+                        {{
+                        log?.response ||
+                        log?.response_message ||
+                        '--'
+                        }}
+
+                      </ng-template>
+
                     </td>
 
+
+                    <!-- DATE -->
+
                     <td>
+
                       {{
                       log?.created_at ||
                       log?.sent_at ||
                       log?.processed_at ||
+                      log?.updated_at ||
                       '--'
                       }}
+
                     </td>
 
                   </tr>
 
 
+                  <!-- EMPTY -->
+
                   <tr *ngIf="
-              !notificationLogs ||
-              notificationLogs.length === 0
-            ">
+            !notificationLogs ||
+            notificationLogs.length === 0
+          ">
 
                     <td colspan="5" class="modal-empty">
 
-                      No notification logs found for this campaign.
+                      No notification logs found
+                      for this campaign.
 
                     </td>
 
@@ -1043,6 +1168,113 @@
                 </tbody>
 
               </table>
+
+            </div>
+
+
+            <!-- ==========================================================
+       PAGINATION
+  =========================================================== -->
+
+            <div class="modal-pagination" *ngIf="
+      campaignPagination &&
+      campaignPagination.last_page > 1 &&
+      campaignRowsPerPage !== 'all'
+    ">
+
+
+              <!-- INFO -->
+
+              <div class="pagination-info">
+
+                Showing
+
+                <strong>
+                  {{
+                  campaignPagination.from || 0
+                  }}
+                </strong>
+
+                -
+
+                <strong>
+                  {{
+                  campaignPagination.to || 0
+                  }}
+                </strong>
+
+                of
+
+                <strong>
+                  {{
+                  campaignPagination.total || 0
+                  }}
+                </strong>
+
+              </div>
+
+
+              <!-- BUTTONS -->
+
+              <div class="pagination-buttons">
+
+
+                <!-- PREVIOUS -->
+
+                <button type="button" class="pagination-button" [disabled]="
+          campaignPagination.current_page <= 1
+        " (click)="
+          loadCampaignDetails(
+            selectedCampaign.campaign_id,
+            campaignPagination.current_page - 1
+          )
+        ">
+
+                  <i class="feather icon-chevron-left"></i>
+
+                  Prev
+
+                </button>
+
+
+                <!-- PAGE NUMBERS -->
+
+                <button *ngFor="
+          let page of getCampaignDetailPageNumbers()
+        " type="button" class="pagination-button page-number" [class.active]="
+          page ===
+          campaignPagination.current_page
+        " (click)="
+          loadCampaignDetails(
+            selectedCampaign.campaign_id,
+            page
+          )
+        ">
+
+                  {{ page }}
+
+                </button>
+
+
+                <!-- NEXT -->
+
+                <button type="button" class="pagination-button" [disabled]="
+          campaignPagination.current_page >=
+          campaignPagination.last_page
+        " (click)="
+          loadCampaignDetails(
+            selectedCampaign.campaign_id,
+            campaignPagination.current_page + 1
+          )
+        ">
+
+                  Next
+
+                  <i class="feather icon-chevron-right"></i>
+
+                </button>
+
+              </div>
 
             </div>
 
