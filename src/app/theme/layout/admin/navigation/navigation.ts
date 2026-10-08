@@ -640,6 +640,13 @@ const NavigationItems = [
             icon: 'feather icon-user-check',
             url: 'bookingmanagement/ownerpayment',
           },
+          {
+            id: 'vendorseatBlock',
+            title: 'Seat Block For Vendor',
+            type: 'item',
+            icon: 'feather icon-user-check',
+            url: 'bookingmanagement/vendorseatblock',
+          },
           //   {
           //       id   : 'CancellationSlab',
           //       title: 'Cancellation Slab',
@@ -1218,6 +1225,20 @@ const NavigationItems = [
             type: 'item',
             icon: 'feather icon-pie-chart',
             url: 'manageapiclients/manageclientsoperator',
+          },
+        ],
+      },
+      {
+        title: 'Manage Vendors',
+        type: 'collapse',
+        icon: 'feather icon-users',
+        children: [
+          {
+            id: 'vendor',
+            title: 'Vendors',
+            type: 'item',
+            icon: 'feather icon-user',
+            url: 'setting/vendor',
           },
         ],
       },

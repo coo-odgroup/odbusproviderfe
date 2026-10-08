@@ -81,4 +81,755 @@ margin-left: 2px;
   //    position: inherit;
   // }
 
-  
+  /* =========================================================
+   TRANSACTION MODAL
+========================================================= */
+
+::ng-deep #transactionDetailsModal {
+    z-index: 1050 !important;
+    padding-right: 0 !important;
+}
+
+::ng-deep #transactionDetailsModal .modal-dialog {
+    width: calc(100% - 30px) !important;
+    max-width: 1200px !important;
+    margin: 30px auto !important;
+}
+
+::ng-deep #transactionDetailsModal .modal-content {
+    width: 100% !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    overflow: hidden !important;
+
+    background: #f7f8fa !important;
+    height: auto !important;
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+::ng-deep #transactionDetailsModal .modal-header {
+    min-height: 65px !important;
+
+    padding: 12px 20px !important;
+
+    background: #ffffff !important;
+
+    border-bottom: 1px solid #e4e7ec !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: space-between !important;
+}
+
+::ng-deep #transactionDetailsModal .modal-title {
+    margin: 0 0 3px !important;
+
+    color: #263088 !important;
+
+    font-size: 18px !important;
+
+    font-weight: 600 !important;
+}
+
+::ng-deep #transactionDetailsModal .modal-subtitle {
+    margin: 0 !important;
+
+    color: #7b8494 !important;
+
+    font-size: 11px !important;
+}
+
+::ng-deep #transactionDetailsModal .modal-close-btn {
+    width: 34px !important;
+    height: 34px !important;
+
+    border: 0 !important;
+
+    border-radius: 5px !important;
+
+    background: #f5f6f8 !important;
+
+    color: #687386 !important;
+
+    cursor: pointer !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+}
+
+::ng-deep #transactionDetailsModal .modal-close-btn:hover {
+    background: #eef1ff !important;
+
+    color: #263088 !important;
+}
+
+
+/* =========================================================
+   MODAL BODY
+========================================================= */
+
+::ng-deep #transactionDetailsModal .modal-body {
+    max-height: calc(100vh - 150px) !important;
+
+    overflow-y: auto !important;
+
+    padding: 0 !important;
+
+    background: #f7f8fa !important;
+}
+
+
+/* =========================================================
+   YOUR DESIGN WRAPPER
+========================================================= */
+
+::ng-deep #transactionDetailsModal .transaction-modal-page {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 18px !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif !important;
+
+    color: #333333;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
+
+::ng-deep #transactionDetailsModal .summary-card {
+    display: grid !important;
+
+    grid-template-columns:
+        1.5fr
+        1fr
+        1fr
+        1fr !important;
+
+    gap: 20px !important;
+
+    padding: 16px 18px !important;
+
+    margin-bottom: 18px !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #e4e7ec !important;
+
+    border-radius: 6px !important;
+
+    box-sizing: border-box !important;
+}
+
+::ng-deep #transactionDetailsModal .summary-left {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 11px !important;
+}
+
+::ng-deep #transactionDetailsModal .summary-icon {
+    width: 38px !important;
+    height: 38px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #eef1ff !important;
+
+    color: #263088 !important;
+
+    border-radius: 6px !important;
+
+    font-size: 16px !important;
+
+    flex-shrink: 0 !important;
+}
+
+::ng-deep #transactionDetailsModal .summary-label,
+::ng-deep #transactionDetailsModal .summary-item span {
+    display: block !important;
+
+    margin-bottom: 5px !important;
+
+    color: #7a8392 !important;
+
+    font-size: 10px !important;
+}
+
+::ng-deep #transactionDetailsModal .summary-left strong,
+::ng-deep #transactionDetailsModal .summary-item strong {
+    color: #333333 !important;
+
+    font-size: 12px !important;
+
+    font-weight: 500 !important;
+}
+
+::ng-deep #transactionDetailsModal .summary-item {
+    display: flex !important;
+
+    justify-content: center !important;
+
+    flex-direction: column !important;
+}
+
+::ng-deep #transactionDetailsModal .amount {
+    font-size: 15px !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+::ng-deep #transactionDetailsModal .status {
+    display: inline-flex !important;
+
+    align-items: center !important;
+
+    gap: 5px !important;
+
+    font-size: 11px !important;
+
+    font-weight: 600 !important;
+}
+
+::ng-deep #transactionDetailsModal .status.success {
+    color: #159447 !important;
+}
+
+::ng-deep #transactionDetailsModal .status.warning {
+    color: #db8618 !important;
+}
+
+::ng-deep #transactionDetailsModal .status.failed {
+    color: #d94343 !important;
+}
+
+::ng-deep #transactionDetailsModal .text-success {
+    color: #159447 !important;
+}
+
+
+/* =========================================================
+   SECTION CARD
+========================================================= */
+
+::ng-deep #transactionDetailsModal .section-card {
+    margin-bottom: 18px !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #e4e7ec !important;
+
+    border-radius: 6px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+::ng-deep #transactionDetailsModal .section-heading {
+    min-height: 62px !important;
+
+    padding: 12px 18px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: space-between !important;
+
+    border-bottom: 1px solid #edf0f3 !important;
+}
+
+::ng-deep #transactionDetailsModal .section-heading-left {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 10px !important;
+}
+
+::ng-deep #transactionDetailsModal .section-heading h3 {
+    margin: 0 0 3px !important;
+
+    color: #333333 !important;
+
+    font-size: 16px !important;
+
+    font-weight: 600 !important;
+}
+
+::ng-deep #transactionDetailsModal .section-heading span {
+    color: #8a919d !important;
+
+    font-size: 10px !important;
+}
+
+::ng-deep #transactionDetailsModal .section-icon {
+    width: 34px !important;
+    height: 34px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 5px !important;
+
+    font-size: 14px !important;
+}
+
+::ng-deep #transactionDetailsModal .section-icon.blue {
+    color: #263088 !important;
+    background: #eef1ff !important;
+}
+
+::ng-deep #transactionDetailsModal .section-icon.green {
+    color: #159447 !important;
+    background: #eaf8f0 !important;
+}
+
+::ng-deep #transactionDetailsModal .section-icon.purple {
+    color: #7650c5 !important;
+    background: #f3edff !important;
+}
+
+::ng-deep #transactionDetailsModal .section-icon.orange {
+    color: #e17b18 !important;
+    background: #fff3e5 !important;
+}
+
+
+/* =========================================================
+   SUB HEADING
+========================================================= */
+
+::ng-deep #transactionDetailsModal .sub-heading {
+    padding: 15px 18px 5px !important;
+
+    color: #4c5360 !important;
+
+    font-size: 11px !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* =========================================================
+   PAYMENT INFORMATION
+========================================================= */
+
+::ng-deep #transactionDetailsModal .payment-information {
+    display: grid !important;
+
+    grid-template-columns: 1fr 1fr !important;
+
+    column-gap: 60px !important;
+
+    padding: 8px 18px 18px !important;
+}
+
+::ng-deep #transactionDetailsModal .payment-column {
+    min-width: 0 !important;
+}
+
+::ng-deep #transactionDetailsModal .payment-row {
+    min-height: 30px !important;
+
+    display: grid !important;
+
+    grid-template-columns: 145px 1fr !important;
+
+    align-items: center !important;
+
+    border-bottom: 1px solid #f4f5f7 !important;
+}
+
+::ng-deep #transactionDetailsModal .payment-row:last-child {
+    border-bottom: 0 !important;
+}
+
+::ng-deep #transactionDetailsModal .payment-row label {
+    color: #687386 !important;
+
+    font-size: 13px !important;
+
+    font-weight: 700 !important;
+}
+
+::ng-deep .view-icon{
+    cursor: pointer;
+}
+
+::ng-deep #transactionDetailsModal .payment-row strong {
+    color: #333333 !important;
+
+    font-size: 14px !important;
+
+    font-weight: 500 !important;
+
+    word-break: break-word !important;
+}
+
+
+/* =========================================================
+   PAYMENT METHOD
+========================================================= */
+
+::ng-deep #transactionDetailsModal .payment-method {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 10px !important;
+
+    margin: 0 18px 18px !important;
+
+    padding: 12px !important;
+
+    background: #fafbfc !important;
+
+    border: 1px solid #e8ebef !important;
+
+    border-radius: 5px !important;
+}
+
+::ng-deep #transactionDetailsModal .method-icon {
+    width: 35px !important;
+    height: 35px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    background: #eef1ff !important;
+
+    color: #263088 !important;
+
+    border-radius: 5px !important;
+
+    font-size: 13px !important;
+
+    flex-shrink: 0 !important;
+}
+
+::ng-deep #transactionDetailsModal .payment-method > div:last-child > span {
+    display: block !important;
+
+    margin-bottom: 3px !important;
+
+    color: #8a919d !important;
+
+    font-size: 9px !important;
+}
+
+::ng-deep #transactionDetailsModal .payment-method strong {
+    display: block !important;
+
+    margin-bottom: 3px !important;
+
+    color: #303641 !important;
+
+    font-size: 11px !important;
+}
+
+::ng-deep #transactionDetailsModal .payment-method small {
+    color: #777f8d !important;
+
+    font-size: 10px !important;
+}
+
+
+/* =========================================================
+   REFUND
+========================================================= */
+
+::ng-deep #transactionDetailsModal .refund-section {
+    border-color: #eadfce !important;
+}
+
+::ng-deep #transactionDetailsModal .refund-summary {
+    display: grid !important;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr !important;
+
+    padding: 16px 18px !important;
+
+    background: #fffaf4 !important;
+
+    border-bottom: 1px solid #f0e6d9 !important;
+}
+
+::ng-deep #transactionDetailsModal .refund-summary > div {
+    padding-right: 20px !important;
+
+    border-right: 1px solid #f0e6d9 !important;
+}
+
+::ng-deep #transactionDetailsModal .refund-summary > div:last-child {
+    border-right: 0 !important;
+}
+
+::ng-deep #transactionDetailsModal .refund-summary label {
+    display: block !important;
+
+    margin-bottom: 6px !important;
+
+    color: #8b919b !important;
+
+    font-size: 10px !important;
+}
+
+::ng-deep #transactionDetailsModal .refund-summary strong {
+    color: #343a45 !important;
+
+    font-size: 12px !important;
+
+    font-weight: 600 !important;
+}
+
+::ng-deep #transactionDetailsModal .refund-amount {
+    font-size: 17px !important;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+::ng-deep #transactionDetailsModal .modal-footer {
+    padding: 10px 18px !important;
+
+    background: #ffffff !important;
+
+    border-top: 1px solid #e4e7ec !important;
+
+    display: flex !important;
+
+    justify-content: flex-end !important;
+
+    gap: 8px !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+::ng-deep #transactionDetailsModal .btn {
+    height: 36px !important;
+
+    padding: 0 14px !important;
+
+    border-radius: 5px !important;
+
+    font-size: 12px !important;
+
+    font-weight: 500 !important;
+
+    cursor: pointer !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    gap: 6px !important;
+}
+
+::ng-deep #transactionDetailsModal .btn-outline {
+    color: #4d5563 !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #d9dee7 !important;
+}
+
+::ng-deep #transactionDetailsModal .btn-outline:hover {
+    background: #f7f8fa !important;
+}
+
+::ng-deep #transactionDetailsModal .btn-primary {
+    color: #ffffff !important;
+
+    background: #263088 !important;
+
+    border: 1px solid #263088 !important;
+}
+
+
+/* =========================================================
+   BACKDROP
+========================================================= */
+
+::ng-deep #transactionDetailsBackdrop {
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    background: #000000 !important;
+
+    opacity: 0.45 !important;
+
+    z-index: 1040 !important;
+
+    display: none;
+}
+
+::ng-deep #transactionDetailsBackdrop.show {
+    display: block !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    ::ng-deep #transactionDetailsModal .summary-card {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .payment-information {
+        column-gap: 25px !important;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    ::ng-deep #transactionDetailsModal .modal-dialog {
+        width: calc(100% - 10px) !important;
+
+        max-width: none !important;
+
+        margin: 5px auto !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .modal-body {
+        max-height: calc(100vh - 120px) !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .transaction-modal-page {
+        padding: 10px !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .summary-card {
+        grid-template-columns: 1fr !important;
+
+        gap: 14px !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .summary-item {
+        justify-content: flex-start !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .section-heading {
+        align-items: flex-start !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .section-heading-left {
+        min-width: 0 !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .section-heading h3 {
+        font-size: 13px !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .payment-information {
+        grid-template-columns: 1fr !important;
+
+        column-gap: 0 !important;
+
+        padding: 5px 14px 14px !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .payment-column + .payment-column {
+        margin-top: 5px !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .payment-row {
+        grid-template-columns: 125px 1fr !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .refund-summary {
+        grid-template-columns: 1fr !important;
+
+        gap: 12px !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .refund-summary > div {
+        padding: 0 0 10px !important;
+
+        border-right: 0 !important;
+
+        border-bottom: 1px solid #f0e6d9 !important;
+    }
+
+    ::ng-deep #transactionDetailsModal .refund-summary > div:last-child {
+        padding-bottom: 0 !important;
+
+        border-bottom: 0 !important;
+    }
+}
+
+#transactionDetailsModal {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+#transactionDetailsModal .modal-dialog {
+    position: relative;
+    z-index: 1055;
+}
