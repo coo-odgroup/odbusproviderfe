@@ -1,0 +1,813 @@
+.agent-dashboard {
+  background: #f7f9fc;
+  min-height: 100vh;
+  color: #101828;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.dashboard-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e4e9f0;
+  padding: 10px 20px;
+  margin-bottom: 24px;
+}
+
+.dashboard-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #101828;
+}
+
+.search-box {
+  width: 255px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 11px;
+
+  background: #f4f7fb;
+  border: 1px solid #dce4ee;
+  border-radius: 8px;
+}
+
+.search-icon {
+  color: #98a2b3;
+  font-size: 18px;
+  margin-right: 7px;
+}
+
+.search-box input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+
+  font-size: 12px;
+  color: #344054;
+}
+
+.search-box input::placeholder {
+  color: #98a2b3;
+}
+
+.month-btn {
+  height: 36px;
+
+  padding: 0 14px;
+
+  border: 1px solid #dce4ee;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #344054;
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   COMMON CARD
+========================= */
+
+.dashboard-card,
+.summary-card {
+  background: #ffffff;
+  border: 1px solid #dce4ee;
+  border-radius: 11px;
+
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary-card {
+  min-height: 112px;
+
+  padding: 19px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-label {
+  color: #49627f;
+
+  font-size: 11px;
+  letter-spacing: 0.4px;
+
+  margin-bottom: 6px;
+}
+
+.card-value {
+  color: #101828;
+
+  font-size: 23px;
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  margin-bottom: 5px;
+}
+
+.card-growth {
+  color: #009b76;
+  font-size: 11px;
+}
+
+.card-subtext {
+  color: #667085;
+  font-size: 11px;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.booking-icon {
+  color: #f7254e;
+  background: #fff0f3;
+}
+
+.pnr-icon {
+  color: #1976d2;
+  background: #edf5ff;
+}
+
+.commission-icon {
+  color: #00a878;
+  background: #eafaf4;
+}
+
+.wallet-icon {
+  color: #f59e00;
+  background: #fff9e9;
+}
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #edf1f5;
+
+  padding: 0 0 13px;
+  margin-bottom: 16px;
+}
+
+.section-header h3 {
+  margin: 0 0 4px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #101828;
+}
+
+.section-header p {
+  margin: 0;
+
+  font-size: 11px;
+  color: #8291a7;
+}
+
+.total-agents {
+  background: #f3f6fa;
+
+  border-radius: 15px;
+
+  padding: 6px 12px;
+
+  color: #526173;
+  font-size: 11px;
+}
+
+.total-agents strong {
+  color: #101828;
+}
+
+/* =========================
+   FUNNEL
+========================= */
+
+.dashboard-card {
+  padding: 22px;
+}
+
+.funnel-card {
+  min-height: 80px;
+
+  padding: 14px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e4eaf1;
+  border-radius: 8px;
+}
+
+.funnel-card span {
+  display: block;
+
+  color: #53657b;
+
+  font-size: 11px;
+
+  margin-bottom: 6px;
+}
+
+.funnel-card strong {
+  display: block;
+
+  color: #111827;
+
+  font-size: 20px;
+  line-height: 1;
+
+  margin-bottom: 6px;
+}
+
+.funnel-card small {
+  font-size: 9px;
+  color: #667085;
+}
+
+.funnel-card .positive {
+  color: #009b76;
+}
+
+/* KYC */
+
+.funnel-card.pending {
+  background: #fffdf5;
+  border-color: #f8d978;
+}
+
+.funnel-card.pending span,
+.funnel-card.pending strong {
+  color: #a85508;
+}
+
+.funnel-card.pending small {
+  color: #d97706;
+}
+
+/* Activated */
+
+.funnel-card.activated {
+  background: #fbf7ff;
+  border-color: #e5d4ff;
+}
+
+.funnel-card.activated span,
+.funnel-card.activated strong {
+  color: #6d28d9;
+}
+
+/* First booking */
+
+.funnel-card.booking-pending {
+  background: #f5f7ff;
+  border-color: #d5dcff;
+}
+
+.funnel-card.booking-pending span,
+.funnel-card.booking-pending strong {
+  color: #3039a5;
+}
+
+/* Active */
+
+.funnel-card.active {
+  background: #f2fcf8;
+  border-color: #b9efd8;
+}
+
+.funnel-card.active span,
+.funnel-card.active strong {
+  color: #006b50;
+}
+
+/* Dormant */
+
+.funnel-card.dormant {
+  background: #fff6f6;
+  border-color: #ffd0d0;
+}
+
+.funnel-card.dormant span,
+.funnel-card.dormant strong {
+  color: #b4233d;
+}
+
+.funnel-card.dormant em {
+  font-size: 11px;
+  font-style: normal;
+}
+
+/* =========================
+   BAR CHART
+========================= */
+
+.chart-card {
+  min-height: 350px;
+}
+
+.chart-period {
+  color: #526da4;
+  font-size: 11px;
+}
+
+.chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  margin: 18px 0 5px;
+
+  color: #475467;
+  font-size: 10px;
+}
+
+.chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend {
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+}
+
+.recharge {
+  background: #f23c5d;
+}
+
+.gmv {
+  background: #13a4dd;
+}
+
+.bar-chart {
+  height: 225px;
+
+  display: flex;
+}
+
+.y-axis {
+  width: 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 3px 0 25px;
+
+  color: #667085;
+  font-size: 9px;
+
+  text-align: right;
+}
+
+.chart-area {
+  position: relative;
+  flex: 1;
+}
+
+.grid-lines {
+  position: absolute;
+
+  top: 3px;
+  right: 0;
+  bottom: 25px;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.grid-lines i {
+  width: 100%;
+
+  border-top: 1px solid #edf1f5;
+}
+
+.months {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 10px;
+
+  display: flex;
+  justify-content: space-around;
+}
+
+.month {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bars {
+  height: 195px;
+
+  display: flex;
+  align-items: flex-end;
+
+  gap: 5px;
+}
+
+.bar {
+  width: 27px;
+
+  display: block;
+
+  border-radius: 3px 3px 0 0;
+}
+
+.recharge-bar {
+  background: #f23c5d;
+}
+
+.gmv-bar {
+  background: #13a4dd;
+}
+
+.month label {
+  margin-top: 8px;
+
+  color: #667085;
+  font-size: 10px;
+}
+
+/* =========================
+   DONUT
+========================= */
+
+.activity-card {
+  min-height: 350px;
+}
+
+.donut-wrapper {
+  height: 235px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-chart {
+  width: 220px;
+  height: 220px;
+
+  border-radius: 50%;
+
+  background: conic-gradient(
+    #16b981 0deg 263deg,
+    #6256e8 263deg 276deg,
+    #f59b08 276deg 332deg,
+    #f13c5b 332deg 346deg,
+    #cbd5e1 346deg 360deg
+  );
+
+  position: relative;
+}
+
+.donut-center {
+  width: 158px;
+  height: 158px;
+
+  background: #ffffff;
+
+  border-radius: 50%;
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.donut-legend {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px 13px;
+
+  color: #667085;
+  font-size: 9px;
+}
+
+.donut-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.donut-legend i {
+  width: 8px;
+  height: 8px;
+
+  display: inline-block;
+}
+
+.active-dot {
+  background: #16b981;
+}
+
+.first-booking-dot {
+  background: #6256e8;
+}
+
+.dormant-dot {
+  background: #f59b08;
+}
+
+.inactive-dot {
+  background: #f13c5b;
+}
+
+.kyc-dot {
+  background: #cbd5e1;
+}
+
+/* =========================
+   TOP AGENTS TABLE
+========================= */
+
+.top-agents-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.top-agents-card .section-header {
+  padding: 22px 20px 15px;
+  margin-bottom: 0;
+}
+
+.view-all {
+  color: #f23c5d;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.view-all:hover {
+  color: #d92d4d;
+  text-decoration: none;
+}
+
+/* =========================
+   AGENT TABLE
+========================= */
+
+.agent-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.agent-table thead {
+  background: #f7f9fc;
+}
+
+.agent-table th {
+  padding: 13px 16px;
+
+  color: #52657e;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.4px;
+
+  white-space: nowrap;
+
+  border-top: 1px solid #edf1f5;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+.agent-table td {
+  padding: 12px 16px;
+
+  color: #344054;
+
+  font-size: 11px;
+
+  border-bottom: 1px solid #edf1f5;
+
+  white-space: nowrap;
+}
+
+.agent-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.agent-table tbody tr:hover {
+  background: #fafcff;
+}
+
+.agent-name {
+  color: #172b4d;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  margin-bottom: 3px;
+}
+
+.agent-code {
+  color: #91a0b5;
+  font-size: 9px;
+}
+
+.commission {
+  color: #009b76 !important;
+}
+
+.status-active {
+  display: inline-block;
+
+  padding: 3px 10px;
+
+  border-radius: 20px;
+
+  background: #d8f7e9;
+  color: #00845a;
+
+  font-size: 9px;
+  font-weight: 500;
+}
+
+/* =========================
+   TABLE FOOTER
+========================= */
+
+.table-footer {
+  padding: 13px;
+
+  background: #f7f9fc;
+
+  border-top: 1px solid #edf1f5;
+
+  color: #526da4;
+
+  text-align: center;
+
+  font-size: 10px;
+}
+
+/* =========================
+   SIDE CARDS
+========================= */
+
+.side-card {
+  padding: 20px;
+}
+
+.side-card-title {
+  color: #101828;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  margin-bottom: 15px;
+}
+
+/* =========================
+   ROUTES
+========================= */
+
+.route-item {
+  margin-bottom: 13px;
+}
+
+.route-item:last-child {
+  margin-bottom: 0;
+}
+
+.route-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 6px;
+}
+
+.route-info span {
+  color: #172b4d;
+  font-size: 11px;
+}
+
+.route-info strong {
+  color: #52657e;
+  font-size: 10px;
+  font-weight: 400;
+
+  white-space: nowrap;
+}
+
+.route-progress {
+  width: 100%;
+  height: 8px;
+
+  background: #edf2f7;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.route-progress span {
+  display: block;
+
+  height: 100%;
+
+  background: #f23c5d;
+
+  border-radius: 10px;
+}
+
+/* =========================
+   BUS OPERATORS
+========================= */
+
+.operator-item {
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 8px 10px;
+
+  margin-bottom: 8px;
+
+  background: #f7f9fc;
+
+  border-radius: 8px;
+}
+
+.operator-item:last-child {
+  margin-bottom: 0;
+}
+
+.operator-name {
+  color: #172b4d;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  margin-bottom: 3px;
+}
+
+.operator-subtext {
+  color: #91a0b5;
+
+  font-size: 9px;
+}
+
+.operator-item > strong {
+  color: #172b4d;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}

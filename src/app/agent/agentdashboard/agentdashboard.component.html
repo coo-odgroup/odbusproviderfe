@@ -1,0 +1,562 @@
+<div class="agent-dashboard">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="container-fluid px-0">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h2 class="dashboard-title">Agent Acquisition & Performance</h2>
+        </div>
+
+        <div class="col-md-6 mt-2 mt-md-0">
+          <div class="d-flex justify-content-md-end gap-2">
+            <div class="search-box flex-grow-1 flex-md-grow-0">
+              <span class="search-icon">⌕</span>
+              <input
+                type="text"
+                placeholder="Search Agent / Phone / Code..."
+                id=""
+              />
+            </div>
+
+            <button class="month-btn ml-2">
+              <span>▣</span>
+              Aug 2026
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <!-- ================= SUMMARY CARDS ================= -->
+
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="summary-card">
+          <div>
+            <div class="card-label">AGENT GROSS BOOKINGS</div>
+
+            <div class="card-value">₹{{ grossbookings | number:'1.2-2' }}</div>
+
+            <div class="card-growth">↗ +14.2% vs last month</div>
+          </div>
+
+          <div class="card-icon booking-icon">₹</div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="summary-card">
+          <div>
+            <div class="card-label">TOTAL AGENT PNR</div>
+
+            <div class="card-value">{{ totalpnrs | number:'1.0-0' }}</div>
+
+            <div class="card-growth">↗ +8.6% vs last month</div>
+          </div>
+
+          <div class="card-icon pnr-icon">▣</div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="summary-card">
+          <div>
+            <div class="card-label">AGENT COMMISSION</div>
+
+            <div class="card-value">₹{{ commissions | number:'1.2-2' }}</div>
+
+            <div class="card-subtext">Avg ~8.0% payout</div>
+          </div>
+
+          <div class="card-icon commission-icon">%</div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="summary-card">
+          <div>
+            <div class="card-label">AGENT WALLET RECHARGE</div>
+
+            <div class="card-value">₹{{ walletbalance | number:'1.2-2' }}</div>
+
+            <div class="card-subtext">1,120 recharge events</div>
+          </div>
+
+          <div class="card-icon wallet-icon">▤</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= FUNNEL ================= -->
+
+    <div class="dashboard-card mb-4">
+      <div class="section-header">
+        <div>
+          <h3>Agent Acquisition & Onboarding Funnel</h3>
+
+          <p>Real-time status breakdown of partner onboarding</p>
+        </div>
+
+        <div class="total-agents">
+          Total Agents:
+          <strong>1,248</strong>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+          <div class="funnel-card">
+            <span>New Today</span>
+
+            <strong>{{ newtoday | number:'1.0-0' }}</strong>
+
+            <small class="positive"> +3 vs yesterday </small>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+          <div class="funnel-card">
+            <span>New This Month</span>
+
+            <strong>{{ newthismonth | number:'1.0-0' }}</strong>
+
+            <small> Target: 200 </small>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+          <div class="funnel-card pending">
+            <span>KYC Pending</span>
+
+            <strong>{{ kycpending | number:'1.0-0' }}</strong>
+
+            <small> Requires approval </small>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+          <div class="funnel-card activated">
+            <span>Activated Agents</span>
+
+            <strong>{{ activatedagents | number:'1.0-0' }}</strong>
+
+            <small> KYC approved </small>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+          <div class="funnel-card booking-pending">
+            <span>1st Booking Pending</span>
+
+            <strong>{{ firstbookingpending | number:'1.0-0' }}</strong>
+
+            <small> Follow-up needed </small>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+          <div class="funnel-card active">
+            <span>Active Agents</span>
+
+            <strong>{{ activeagents | number:'1.0-0' }}</strong>
+
+            <small> Booked ≤ 30d </small>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-xl">
+          <div class="funnel-card dormant">
+            <span>Dormant / Inactive</span>
+
+            <strong> {{ dormantagents | number:'1.0-0' }} <em>/ {{ inactiveagents | number:'1.0-0' }}</em> </strong>
+
+            <small> 31-90d / &gt;90d </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= CHART SECTION ================= -->
+
+    <div class="row g-3 pb-4">
+      <!-- Booking / Recharge Chart -->
+
+      <div class="col-12 col-xl-8">
+        <div class="dashboard-card chart-card">
+          <div class="section-header">
+            <div>
+              <h3>Agent Booking & Recharge Trend</h3>
+
+              <p>Monthly breakdown of gross volume and wallet recharges</p>
+            </div>
+
+            <span class="chart-period"> Last 6 Months </span>
+          </div>
+
+          <div class="chart-legend">
+            <span>
+              <i class="legend recharge"></i>
+              Recharge (₹ in Lakhs)
+            </span>
+
+            <span>
+              <i class="legend gmv"></i>
+              GMV Booked (₹ in Lakhs)
+            </span>
+          </div>
+
+          <div class="bar-chart">
+            <div class="y-axis">
+              <span>60</span>
+              <span>50</span>
+              <span>40</span>
+              <span>30</span>
+              <span>20</span>
+              <span>10</span>
+              <span>0</span>
+            </div>
+
+            <div class="chart-area">
+              <div class="grid-lines">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+
+              <div class="months">
+                <div class="month">
+                  <div class="bars">
+                    <span class="bar recharge-bar" style="height: 63%"></span>
+
+                    <span class="bar gmv-bar" style="height: 56%"></span>
+                  </div>
+
+                  <label>Mar</label>
+                </div>
+
+                <div class="month">
+                  <div class="bars">
+                    <span class="bar recharge-bar" style="height: 100%"></span>
+
+                    <span class="bar gmv-bar" style="height: 63%"></span>
+                  </div>
+
+                  <label>Apr</label>
+                </div>
+
+                <div class="month">
+                  <div class="bars">
+                    <span class="bar recharge-bar" style="height: 75%"></span>
+
+                    <span class="bar gmv-bar" style="height: 68%"></span>
+                  </div>
+
+                  <label>May</label>
+                </div>
+
+                <div class="month">
+                  <div class="bars">
+                    <span class="bar recharge-bar" style="height: 80%"></span>
+
+                    <span class="bar gmv-bar" style="height: 73%"></span>
+                  </div>
+
+                  <label>Jun</label>
+                </div>
+
+                <div class="month">
+                  <div class="bars">
+                    <span class="bar recharge-bar" style="height: 83%"></span>
+
+                    <span class="bar gmv-bar" style="height: 76%"></span>
+                  </div>
+
+                  <label>Jul</label>
+                </div>
+
+                <div class="month">
+                  <div class="bars">
+                    <span class="bar recharge-bar" style="height: 87%"></span>
+
+                    <span class="bar gmv-bar" style="height: 80%"></span>
+                  </div>
+
+                  <label>Aug</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Chart -->
+
+      <div class="col-12 col-xl-4">
+        <div class="dashboard-card activity-card mb-3">
+          <div class="section-header">
+            <div>
+              <h3>Agent Activity Composition</h3>
+
+              <p>Overall partner engagement breakdown</p>
+            </div>
+          </div>
+
+          <div class="donut-wrapper">
+            <div class="donut-chart">
+              <div class="donut-center"></div>
+            </div>
+          </div>
+
+          <div class="donut-legend">
+            <span>
+              <i class="active-dot"></i>
+              Active
+            </span>
+
+            <span>
+              <i class="first-booking-dot"></i>
+              1st Booking Pending
+            </span>
+
+            <span>
+              <i class="dormant-dot"></i>
+              Dormant (30-90d)
+            </span>
+
+            <span>
+              <i class="inactive-dot"></i>
+              Inactive (&gt;90d)
+            </span>
+
+            <span>
+              <i class="kyc-dot"></i>
+              KYC Pending
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 10 Agents -->
+      <div class="col-12 col-xl-8">
+        <div class="dashboard-card top-agents-card mb-3">
+          <!-- Header -->
+          <div class="section-header">
+            <div>
+              <h3>Top 10 Agents by Volume</h3>
+
+              <p>Highest grossing travel partners this month</p>
+            </div>
+
+            <a href="javascript:void(0)" class="view-all"> View All </a>
+          </div>
+
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="agent-table">
+              <thead>
+                <tr>
+                  <th>AGENT / AGENCY</th>
+                  <th>CITY</th>
+                  <th class="text-center">PNRS</th>
+                  <th class="text-center">GROSS GMV</th>
+                  <th class="text-center">COMMISSION</th>
+                  <th class="text-center">STATUS</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="agent-name">Maa Tarini Travels</div>
+
+                    <div class="agent-code">AG-ODB-1042</div>
+                  </td>
+
+                  <td>Bhubaneswar</td>
+
+                  <td class="text-center">642</td>
+
+                  <td class="text-center">₹3,42,800</td>
+
+                  <td class="text-center commission">₹27,424</td>
+
+                  <td class="text-center">
+                    <span class="status-active"> Active </span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="agent-name">Jagannath Kripa Agency</div>
+
+                    <div class="agent-code">AG-ODB-0891</div>
+                  </td>
+
+                  <td>Puri</td>
+
+                  <td class="text-center">520</td>
+
+                  <td class="text-center">₹2,88,400</td>
+
+                  <td class="text-center commission">₹23,072</td>
+
+                  <td class="text-center">
+                    <span class="status-active"> Active </span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="agent-name">Rourkela Express Point</div>
+
+                    <div class="agent-code">AG-ODB-1120</div>
+                  </td>
+
+                  <td>Rourkela</td>
+
+                  <td class="text-center">415</td>
+
+                  <td class="text-center">₹2,28,250</td>
+
+                  <td class="text-center commission">₹18,260</td>
+
+                  <td class="text-center">
+                    <span class="status-active"> Active </span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="agent-name">Silk City Tour & Travels</div>
+
+                    <div class="agent-code">AG-ODB-0743</div>
+                  </td>
+
+                  <td>Berhampur</td>
+
+                  <td class="text-center">398</td>
+
+                  <td class="text-center">₹2,02,980</td>
+
+                  <td class="text-center commission">₹16,238</td>
+
+                  <td class="text-center">
+                    <span class="status-active"> Active </span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="agent-name">Sambalpur City Bus Desk</div>
+
+                    <div class="agent-code">AG-ODB-0982</div>
+                  </td>
+
+                  <td>Sambalpur</td>
+
+                  <td class="text-center">310</td>
+
+                  <td class="text-center">₹1,70,500</td>
+
+                  <td class="text-center commission">₹13,640</td>
+
+                  <td class="text-center">
+                    <span class="status-active"> Active </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer -->
+          <div class="table-footer">Showing top 5 of 10 records</div>
+        </div>
+      </div>
+
+      <!-- Right Side -->
+      <div class="col-12 col-xl-4">
+        <!-- Top Agent Routes -->
+        <div class="dashboard-card side-card mb-3">
+          <div class="side-card-title">Top Agent Routes</div>
+
+          <div class="route-item">
+            <div class="route-info">
+              <span> Bhubaneswar ↔ Hyderabad </span>
+
+              <strong> 1,840 PNRs (₹14.2L) </strong>
+            </div>
+
+            <div class="route-progress">
+              <span style="width: 84%"></span>
+            </div>
+          </div>
+
+          <div class="route-item">
+            <div class="route-info">
+              <span> Bhubaneswar ↔ Rourkela </span>
+
+              <strong> 1,420 PNRs (₹8.8L) </strong>
+            </div>
+
+            <div class="route-progress">
+              <span style="width: 68%"></span>
+            </div>
+          </div>
+
+          <div class="route-item">
+            <div class="route-info">
+              <span> Cuttack ↔ Berhampur </span>
+
+              <strong> 980 PNRs (₹4.9L) </strong>
+            </div>
+
+            <div class="route-progress">
+              <span style="width: 47%"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Bus Operators -->
+        <div class="dashboard-card side-card mb-3">
+          <div class="side-card-title">Top Bus Operators by Agent Sales</div>
+
+          <div class="operator-item">
+            <div>
+              <div class="operator-name">Dolphin Motors</div>
+
+              <div class="operator-subtext">3,120 Seats Booked</div>
+            </div>
+
+            <strong> ₹16.8L </strong>
+          </div>
+
+          <div class="operator-item">
+            <div>
+              <div class="operator-name">Grand Bus Service</div>
+
+              <div class="operator-subtext">2,410 Seats Booked</div>
+            </div>
+
+            <strong> ₹11.2L </strong>
+          </div>
+
+          <div class="operator-item">
+            <div>
+              <div class="operator-name">OSRTC Express</div>
+
+              <div class="operator-subtext">1,940 Seats Booked</div>
+            </div>
+
+            <strong> ₹7.6L </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,7 +20,7 @@ const routes: Routes = [
       {
         path: 'cancellationreport',
         loadChildren: () => import('./agentticketcancellationreport/agentticketcancellationreport.module').then(module => module.AgentTicketCancellationReportModule)
-      }, 
+      },
       {
         path: 'completereport',
         loadChildren: () => import('./agentcompletereport/agentcompletereport.module').then(module => module.AgentCompleteReportModule)
@@ -37,9 +37,10 @@ const routes: Routes = [
         path: 'customercommissionslab',
         loadChildren: () => import('./customercommissionslab/customercommissionslab.module').then(module => module.CustomerCommissionslabReportModule)
       },
-     
-    
-      
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./agentdashboard/agentdashboard.module').then(module => module.AgentdashboardModule)
+      }
     ]
   }
 ];
