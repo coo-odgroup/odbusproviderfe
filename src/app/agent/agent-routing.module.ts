@@ -40,6 +40,11 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () => import('./agentdashboard/agentdashboard.module').then(module => module.AgentdashboardModule)
+      },
+      {
+        path: 'reports/:slug',
+        loadChildren: () => import('./reports/reports.module')
+          .then(module => module.ReportsModule)
       }
     ]
   }

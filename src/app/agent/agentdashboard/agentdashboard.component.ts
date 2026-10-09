@@ -22,6 +22,10 @@ export class AgentdashboardComponent implements OnInit {
   activeagents: number = 0;
   dormantagents: number = 0;
   inactiveagents: number = 0;
+  totalagents: number = 0;
+  topagents: any[] = [];
+  topoperators: any[] = [];
+  topagentroutes: any[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -47,6 +51,10 @@ export class AgentdashboardComponent implements OnInit {
           this.activeagents = Number(response.data.activeagents);
           this.dormantagents = Number(response.data.dormantagents);
           this.inactiveagents = Number(response.data.inactiveagents);
+          this.totalagents = Number(response.data.totalagents);
+          this.topagents = response.data.topagents;
+          this.topoperators = response.data.topoperators;
+          this.topagentroutes = response.data.topagentroutes;
         }
 
         console.log('Agent dashboard API response:', response);

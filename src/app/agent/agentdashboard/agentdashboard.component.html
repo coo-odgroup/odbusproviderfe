@@ -37,7 +37,7 @@
           <div>
             <div class="card-label">AGENT GROSS BOOKINGS</div>
 
-            <div class="card-value">₹{{ grossbookings | number:'1.2-2' }}</div>
+            <div class="card-value">₹{{ grossbookings | number: "1.2-2" }}</div>
 
             <div class="card-growth">↗ +14.2% vs last month</div>
           </div>
@@ -51,7 +51,7 @@
           <div>
             <div class="card-label">TOTAL AGENT PNR</div>
 
-            <div class="card-value">{{ totalpnrs | number:'1.0-0' }}</div>
+            <div class="card-value">{{ totalpnrs | number: "1.0-0" }}</div>
 
             <div class="card-growth">↗ +8.6% vs last month</div>
           </div>
@@ -65,7 +65,7 @@
           <div>
             <div class="card-label">AGENT COMMISSION</div>
 
-            <div class="card-value">₹{{ commissions | number:'1.2-2' }}</div>
+            <div class="card-value">₹{{ commissions | number: "1.2-2" }}</div>
 
             <div class="card-subtext">Avg ~8.0% payout</div>
           </div>
@@ -79,7 +79,7 @@
           <div>
             <div class="card-label">AGENT WALLET RECHARGE</div>
 
-            <div class="card-value">₹{{ walletbalance | number:'1.2-2' }}</div>
+            <div class="card-value">₹{{ walletbalance | number: "1.2-2" }}</div>
 
             <div class="card-subtext">1,120 recharge events</div>
           </div>
@@ -101,7 +101,7 @@
 
         <div class="total-agents">
           Total Agents:
-          <strong>1,248</strong>
+          <strong>{{ totalagents | number: "1.0-0" }}</strong>
         </div>
       </div>
 
@@ -110,7 +110,7 @@
           <div class="funnel-card">
             <span>New Today</span>
 
-            <strong>{{ newtoday | number:'1.0-0' }}</strong>
+            <strong>{{ newtoday | number: "1.0-0" }}</strong>
 
             <small class="positive"> +3 vs yesterday </small>
           </div>
@@ -120,7 +120,7 @@
           <div class="funnel-card">
             <span>New This Month</span>
 
-            <strong>{{ newthismonth | number:'1.0-0' }}</strong>
+            <strong>{{ newthismonth | number: "1.0-0" }}</strong>
 
             <small> Target: 200 </small>
           </div>
@@ -130,7 +130,7 @@
           <div class="funnel-card pending">
             <span>KYC Pending</span>
 
-            <strong>{{ kycpending | number:'1.0-0' }}</strong>
+            <strong>{{ kycpending | number: "1.0-0" }}</strong>
 
             <small> Requires approval </small>
           </div>
@@ -140,7 +140,7 @@
           <div class="funnel-card activated">
             <span>Activated Agents</span>
 
-            <strong>{{ activatedagents | number:'1.0-0' }}</strong>
+            <strong>{{ activatedagents | number: "1.0-0" }}</strong>
 
             <small> KYC approved </small>
           </div>
@@ -150,7 +150,7 @@
           <div class="funnel-card booking-pending">
             <span>1st Booking Pending</span>
 
-            <strong>{{ firstbookingpending | number:'1.0-0' }}</strong>
+            <strong>{{ firstbookingpending | number: "1.0-0" }}</strong>
 
             <small> Follow-up needed </small>
           </div>
@@ -160,7 +160,7 @@
           <div class="funnel-card active">
             <span>Active Agents</span>
 
-            <strong>{{ activeagents | number:'1.0-0' }}</strong>
+            <strong>{{ activeagents | number: "1.0-0" }}</strong>
 
             <small> Booked ≤ 30d </small>
           </div>
@@ -170,7 +170,10 @@
           <div class="funnel-card dormant">
             <span>Dormant / Inactive</span>
 
-            <strong> {{ dormantagents | number:'1.0-0' }} <em>/ {{ inactiveagents | number:'1.0-0' }}</em> </strong>
+            <strong>
+              {{ dormantagents | number: "1.0-0" }}
+              <em>/ {{ inactiveagents | number: "1.0-0" }}</em>
+            </strong>
 
             <small> 31-90d / &gt;90d </small>
           </div>
@@ -371,103 +374,27 @@
               </thead>
 
               <tbody>
-                <tr>
+                <tr *ngFor="let agent of topagents">
                   <td>
-                    <div class="agent-name">Maa Tarini Travels</div>
+                    <div class="agent-name">{{ agent.agent_name }}</div>
 
-                    <div class="agent-code">AG-ODB-1042</div>
+                    <div class="agent-code">{{ agent.agent_unique_id }}</div>
                   </td>
 
-                  <td>Bhubaneswar</td>
+                  <td>{{ agent.location_name }}</td>
 
-                  <td class="text-center">642</td>
+                  <td class="text-center">{{ agent.total_bookings }}</td>
 
-                  <td class="text-center">₹3,42,800</td>
+                  <td class="text-center">₹{{ agent.total_fare | number }}</td>
 
-                  <td class="text-center commission">₹27,424</td>
+                  <td class="text-center commission">
+                    ₹{{ agent.total_commission | number }}
+                  </td>
 
                   <td class="text-center">
-                    <span class="status-active"> Active </span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div class="agent-name">Jagannath Kripa Agency</div>
-
-                    <div class="agent-code">AG-ODB-0891</div>
-                  </td>
-
-                  <td>Puri</td>
-
-                  <td class="text-center">520</td>
-
-                  <td class="text-center">₹2,88,400</td>
-
-                  <td class="text-center commission">₹23,072</td>
-
-                  <td class="text-center">
-                    <span class="status-active"> Active </span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div class="agent-name">Rourkela Express Point</div>
-
-                    <div class="agent-code">AG-ODB-1120</div>
-                  </td>
-
-                  <td>Rourkela</td>
-
-                  <td class="text-center">415</td>
-
-                  <td class="text-center">₹2,28,250</td>
-
-                  <td class="text-center commission">₹18,260</td>
-
-                  <td class="text-center">
-                    <span class="status-active"> Active </span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div class="agent-name">Silk City Tour & Travels</div>
-
-                    <div class="agent-code">AG-ODB-0743</div>
-                  </td>
-
-                  <td>Berhampur</td>
-
-                  <td class="text-center">398</td>
-
-                  <td class="text-center">₹2,02,980</td>
-
-                  <td class="text-center commission">₹16,238</td>
-
-                  <td class="text-center">
-                    <span class="status-active"> Active </span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div class="agent-name">Sambalpur City Bus Desk</div>
-
-                    <div class="agent-code">AG-ODB-0982</div>
-                  </td>
-
-                  <td>Sambalpur</td>
-
-                  <td class="text-center">310</td>
-
-                  <td class="text-center">₹1,70,500</td>
-
-                  <td class="text-center commission">₹13,640</td>
-
-                  <td class="text-center">
-                    <span class="status-active"> Active </span>
+                    <span class="status-active">
+                      {{ agent.status == 1 ? "Active" : "Inactive" }}
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -475,7 +402,7 @@
           </div>
 
           <!-- Footer -->
-          <div class="table-footer">Showing top 5 of 10 records</div>
+          <div class="table-footer">Showing top {{ topagents.length }} of {{ topagents.length }} records</div>
         </div>
       </div>
 
@@ -485,39 +412,15 @@
         <div class="dashboard-card side-card mb-3">
           <div class="side-card-title">Top Agent Routes</div>
 
-          <div class="route-item">
+          <div class="route-item" *ngFor="let route of topagentroutes">
             <div class="route-info">
-              <span> Bhubaneswar ↔ Hyderabad </span>
+              <span> {{ route.source_name }} ↔ {{ route.destination_name }} </span>
 
-              <strong> 1,840 PNRs (₹14.2L) </strong>
+              <strong> {{ route.total_bookings | number }} PNRs (₹{{ route.total_fare | number:'1.2-2' }}L) </strong>
             </div>
 
             <div class="route-progress">
-              <span style="width: 84%"></span>
-            </div>
-          </div>
-
-          <div class="route-item">
-            <div class="route-info">
-              <span> Bhubaneswar ↔ Rourkela </span>
-
-              <strong> 1,420 PNRs (₹8.8L) </strong>
-            </div>
-
-            <div class="route-progress">
-              <span style="width: 68%"></span>
-            </div>
-          </div>
-
-          <div class="route-item">
-            <div class="route-info">
-              <span> Cuttack ↔ Berhampur </span>
-
-              <strong> 980 PNRs (₹4.9L) </strong>
-            </div>
-
-            <div class="route-progress">
-              <span style="width: 47%"></span>
+              <span [style.width.%]="route.progress"></span>
             </div>
           </div>
         </div>
@@ -526,34 +429,14 @@
         <div class="dashboard-card side-card mb-3">
           <div class="side-card-title">Top Bus Operators by Agent Sales</div>
 
-          <div class="operator-item">
+          <div class="operator-item" *ngFor="let operator of topoperators">
             <div>
-              <div class="operator-name">Dolphin Motors</div>
+              <div class="operator-name"> {{ operator.operator_name }} </div>
 
-              <div class="operator-subtext">3,120 Seats Booked</div>
+              <div class="operator-subtext"> {{ operator.total_seats | number }} Seats Booked </div>
             </div>
 
-            <strong> ₹16.8L </strong>
-          </div>
-
-          <div class="operator-item">
-            <div>
-              <div class="operator-name">Grand Bus Service</div>
-
-              <div class="operator-subtext">2,410 Seats Booked</div>
-            </div>
-
-            <strong> ₹11.2L </strong>
-          </div>
-
-          <div class="operator-item">
-            <div>
-              <div class="operator-name">OSRTC Express</div>
-
-              <div class="operator-subtext">1,940 Seats Booked</div>
-            </div>
-
-            <strong> ₹7.6L </strong>
+            <strong> ₹{{ operator.total_fare | number:'1.2-2' }}L </strong>
           </div>
         </div>
       </div>

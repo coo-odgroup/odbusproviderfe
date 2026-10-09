@@ -1,0 +1,212 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer"
+  ><p style="color: white">Loading...</p></ngx-spinner
+>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card card-datatable table-border-style user-profile-list">
+      <div class="card-header">
+        <h5 *ngIf="slug === 'newtoday'">New Agents Today</h5>
+        <h5 *ngIf="slug === 'newthismonth'">New Agents This Month</h5>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <form>
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <div class="dropdown">
+                      <select class="form-control sml_input">
+                        <option value="1">Active</option>
+                        <option value="3">Block</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <div class="col-sm-12">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control sml_input"
+                          placeholder="Search Here"
+                        />
+                        <div class="input-group-append">
+                          <button
+                            type="button"
+                            class="btn btn-success sml_input"
+                            title="Search"
+                          >
+                            <i class="fa fa-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <button
+                    type="button"
+                    class="btn btn-danger sml_input"
+                    title="Refresh"
+                  >
+                    <i class="fa fa-sync-alt"></i> Refresh
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-warning sml_input"
+                    title="Export"
+                  >
+                    Export
+                  </button>
+
+                  <div class="dropdown float-right">
+                    <select class="form-control sml_input">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="table-responsive" id="print-section">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>SL</th>
+                <th>Agent ID</th>
+                <th>Name/Email/Location</th>
+                <th>Address</th>
+                <th>Bank Details</th>
+                <th>Created/Updated On</th>
+                <th>Created By</th>
+                <th>Status</th>
+                <th>Reason</th>
+                <th width="100" class="hide_print"></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>AG001</td>
+                <td>
+                  <strong>John Doe</strong><br />
+                  john@example.com<br />
+                  Bhubaneswar
+                </td>
+                <td>Bhubaneswar, Odisha</td>
+                <td>
+                  Bank Name: Sample Bank<br />
+                  Account No: XXXX1234<br />
+                  IFSC: SBIN0001234
+                </td>
+                <td>
+                  09-Oct-2026<br />
+                  09-Oct-2026
+                </td>
+                <td>Admin</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+                <td>—</td>
+                <td class="hide_print">
+                  <div class="overlay-edit">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      title="Edit"
+                    >
+                      <i class="feather icon-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>2</td>
+                <td>AG002</td>
+                <td>
+                  <strong>Jane Smith</strong><br />
+                  jane@example.com<br />
+                  Cuttack
+                </td>
+                <td>Cuttack, Odisha</td>
+                <td>Not Available</td>
+                <td>
+                  08-Oct-2026<br />
+                  09-Oct-2026
+                </td>
+                <td>Admin</td>
+                <td>
+                  <span class="badge badge-danger">Block</span>
+                </td>
+                <td>Documents Pending</td>
+                <td class="hide_print">
+                  <div class="overlay-edit">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      title="Edit"
+                    >
+                      <i class="feather icon-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="hide_print container">
+            <div class="row">
+              <div class="col-6">
+                <div class="col-12">
+                  <p class="row mt-3 ml-1">Showing 10 of 100 records.</p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="d-flex flex-row-reverse mb-4 text-center">
+                  <nav class="my-1 pt-1">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                      <li class="page-item disabled clearfix d-none d-md-block">
+                        <a class="page-link">First</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link active">1</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link">2</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link">3</a>
+                      </li>
+
+                      <li class="page-item clearfix d-none d-md-block">
+                        <a class="page-link">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
