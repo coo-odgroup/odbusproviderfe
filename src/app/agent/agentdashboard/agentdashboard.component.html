@@ -107,23 +107,27 @@
 
       <div class="row g-3">
         <div class="col-12 col-sm-6 col-md-4 col-xl">
-          <div class="funnel-card">
-            <span>New Today</span>
+          <a routerLink="/agent/reports/newtoday">
+            <div class="funnel-card">
+              <span>New Today</span>
 
-            <strong>{{ newtoday | number: "1.0-0" }}</strong>
+              <strong>{{ newtoday | number: "1.0-0" }}</strong>
 
-            <small class="positive"> +3 vs yesterday </small>
-          </div>
+              <small class="positive"> +3 vs yesterday </small>
+            </div>
+          </a>
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 col-xl">
-          <div class="funnel-card">
-            <span>New This Month</span>
+          <a routerLink="/agent/reports/newthismonth">
+            <div class="funnel-card">
+              <span>New This Month</span>
 
-            <strong>{{ newthismonth | number: "1.0-0" }}</strong>
+              <strong>{{ newthismonth | number: "1.0-0" }}</strong>
 
-            <small> Target: 200 </small>
-          </div>
+              <small> Target: 200 </small>
+            </div>
+          </a>
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 col-xl">
@@ -402,7 +406,9 @@
           </div>
 
           <!-- Footer -->
-          <div class="table-footer">Showing top {{ topagents.length }} of {{ topagents.length }} records</div>
+          <div class="table-footer">
+            Showing top {{ topagents.length }} of {{ topagents.length }} records
+          </div>
         </div>
       </div>
 
@@ -414,9 +420,15 @@
 
           <div class="route-item" *ngFor="let route of topagentroutes">
             <div class="route-info">
-              <span> {{ route.source_name }} ↔ {{ route.destination_name }} </span>
+              <span>
+                {{ route.source_name }} ↔ {{ route.destination_name }}
+              </span>
 
-              <strong> {{ route.total_bookings | number }} PNRs (₹{{ route.total_fare | number:'1.2-2' }}L) </strong>
+              <strong>
+                {{ route.total_bookings | number }} PNRs (₹{{
+                  route.total_fare | number: "1.2-2"
+                }}L)
+              </strong>
             </div>
 
             <div class="route-progress">
@@ -431,12 +443,14 @@
 
           <div class="operator-item" *ngFor="let operator of topoperators">
             <div>
-              <div class="operator-name"> {{ operator.operator_name }} </div>
+              <div class="operator-name">{{ operator.operator_name }}</div>
 
-              <div class="operator-subtext"> {{ operator.total_seats | number }} Seats Booked </div>
+              <div class="operator-subtext">
+                {{ operator.total_seats | number }} Seats Booked
+              </div>
             </div>
 
-            <strong> ₹{{ operator.total_fare | number:'1.2-2' }}L </strong>
+            <strong> ₹{{ operator.total_fare | number: "1.2-2" }}L </strong>
           </div>
         </div>
       </div>

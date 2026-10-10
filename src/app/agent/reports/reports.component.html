@@ -18,15 +18,60 @@
                 <div class="col-md-2">
                   <div class="form-group">
                     <div class="dropdown">
+                      <select
+                        class="form-control sml_input"
+                        (change)="onReportChange($event)"
+                        id=""
+                      >
+                        <option value="newtoday">New Today</option>
+                        <option value="newthismonth">New This Month</option>
+                        <option value="kycpending">KYC Pending</option>
+                        <option value="activatedagents">
+                          Activated Agents
+                        </option>
+                        <option value="firstbookingpending">
+                          1st Booking Pending
+                        </option>
+                        <option value="activeagents">Active Agents</option>
+                        <option value="dormant">Dormant</option>
+                        <option value="inactive">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <input
+                      type="date"
+                      class="form-control sml_input"
+                      name="fromDate"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <input
+                      type="date"
+                      class="form-control sml_input"
+                      name="toDate"
+                    />
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-1">
+                  <div class="form-group">
+                    <div class="dropdown">
                       <select class="form-control sml_input">
                         <option value="1">Active</option>
                         <option value="3">Block</option>
                       </select>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group row">
                     <div class="col-sm-12">
                       <div class="input-group">
@@ -49,21 +94,13 @@
                   </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                   <button
                     type="button"
                     class="btn btn-danger sml_input"
                     title="Refresh"
                   >
                     <i class="fa fa-sync-alt"></i> Refresh
-                  </button>
-
-                  <button
-                    type="button"
-                    class="btn btn-warning sml_input"
-                    title="Export"
-                  >
-                    Export
                   </button>
 
                   <div class="dropdown float-right">
@@ -80,89 +117,104 @@
           </div>
         </div>
 
-        <div class="table-responsive" id="print-section">
+        <div class="table-responsive" *ngIf="slug === 'newtoday'">
           <table class="table table-striped">
             <thead>
               <tr>
                 <th>SL</th>
                 <th>Agent ID</th>
-                <th>Name/Email/Location</th>
-                <th>Address</th>
-                <th>Bank Details</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Location</th>
+                <th>Organization Name</th>
                 <th>Created/Updated On</th>
-                <th>Created By</th>
-                <th>Status</th>
-                <th>Reason</th>
-                <th width="100" class="hide_print"></th>
               </tr>
             </thead>
 
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>AG001</td>
+              <tr *ngFor="let agent of newtoday; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ agent.id }}</td>
                 <td>
-                  <strong>John Doe</strong><br />
-                  john@example.com<br />
-                  Bhubaneswar
+                  <strong>{{ agent.name }}</strong>
                 </td>
-                <td>Bhubaneswar, Odisha</td>
+                <td>{{ agent.email }}</td>
+                <td>{{ agent.location }}</td>
+                <td>{{ agent.organization_name }}</td>
                 <td>
-                  Bank Name: Sample Bank<br />
-                  Account No: XXXX1234<br />
-                  IFSC: SBIN0001234
-                </td>
-                <td>
-                  09-Oct-2026<br />
-                  09-Oct-2026
-                </td>
-                <td>Admin</td>
-                <td>
-                  <span class="badge badge-success">Active</span>
-                </td>
-                <td>—</td>
-                <td class="hide_print">
-                  <div class="overlay-edit">
-                    <button
-                      type="button"
-                      class="btn btn-icon btn-success"
-                      title="Edit"
-                    >
-                      <i class="feather icon-edit"></i>
-                    </button>
-                  </div>
+                  {{ agent.created_at }}<br />
+                  {{ agent.updated_at }}
                 </td>
               </tr>
+            </tbody>
+          </table>
 
+          <div class="hide_print container">
+            <div class="row">
+              <div class="col-6">
+                <div class="col-12">
+                  <p class="row mt-3 ml-1">Showing 10 of 100 records.</p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="d-flex flex-row-reverse mb-4 text-center">
+                  <nav class="my-1 pt-1">
+                    <ul class="pagination pagination-circle pg-blue mb-0">
+                      <li class="page-item disabled clearfix d-none d-md-block">
+                        <a class="page-link">First</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link active">1</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link">2</a>
+                      </li>
+
+                      <li class="page-item">
+                        <a class="page-link">3</a>
+                      </li>
+
+                      <li class="page-item clearfix d-none d-md-block">
+                        <a class="page-link">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive" *ngIf="slug === 'newthismonth'">
+          <table class="table table-striped">
+            <thead>
               <tr>
-                <td>2</td>
-                <td>AG002</td>
+                <th>SL</th>
+                <th>Agent ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Location</th>
+                <th>Organization Name</th>
+                <th>Created/Updated On</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let agent of newthismonth; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ agent.id }}</td>
                 <td>
-                  <strong>Jane Smith</strong><br />
-                  jane@example.com<br />
-                  Cuttack
+                  <strong>{{ agent.name }}</strong>
                 </td>
-                <td>Cuttack, Odisha</td>
-                <td>Not Available</td>
+                <td>{{ agent.email }}</td>
+                <td>{{ agent.location }}</td>
+                <td>{{ agent.organization_name }}</td>
                 <td>
-                  08-Oct-2026<br />
-                  09-Oct-2026
-                </td>
-                <td>Admin</td>
-                <td>
-                  <span class="badge badge-danger">Block</span>
-                </td>
-                <td>Documents Pending</td>
-                <td class="hide_print">
-                  <div class="overlay-edit">
-                    <button
-                      type="button"
-                      class="btn btn-icon btn-success"
-                      title="Edit"
-                    >
-                      <i class="feather icon-edit"></i>
-                    </button>
-                  </div>
+                  {{ agent.created_at }}<br />
+                  {{ agent.updated_at }}
                 </td>
               </tr>
             </tbody>
