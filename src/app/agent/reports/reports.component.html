@@ -1,42 +1,51 @@
-<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer"
-  ><p style="color: white">Loading...</p></ngx-spinner
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large"
+  color="#fff"
+  type="timer"
 >
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
 
 <div class="row">
   <div class="col-sm-12">
     <div class="card card-datatable table-border-style user-profile-list">
+      <!-- Header -->
       <div class="card-header">
         <h5 *ngIf="slug === 'newtoday'">New Agents Today</h5>
         <h5 *ngIf="slug === 'newthismonth'">New Agents This Month</h5>
+        <h5 *ngIf="slug === 'kycpending'">KYC Pending</h5>
+        <h5 *ngIf="slug === 'activatedagents'">Activated Agents</h5>
+        <h5 *ngIf="slug === 'firstbookingpending'">1st Booking Pending</h5>
+        <h5 *ngIf="slug === 'activeagents'">Active Agents</h5>
+        <h5 *ngIf="slug === 'dormantagents'">Dormant Agents</h5>
+        <h5 *ngIf="slug === 'inactiveagents'">Inactive Agents</h5>
       </div>
 
       <div class="card-body">
+        <!-- Filters -->
         <div class="row">
           <div class="col-12">
-            <form>
+            <form (submit)="$event.preventDefault(); getAgentReports(1)">
               <div class="row">
                 <div class="col-md-2">
                   <div class="form-group">
-                    <div class="dropdown">
-                      <select
-                        class="form-control sml_input"
-                        (change)="onReportChange($event)"
-                        id=""
-                      >
-                        <option value="newtoday">New Today</option>
-                        <option value="newthismonth">New This Month</option>
-                        <option value="kycpending">KYC Pending</option>
-                        <option value="activatedagents">
-                          Activated Agents
-                        </option>
-                        <option value="firstbookingpending">
-                          1st Booking Pending
-                        </option>
-                        <option value="activeagents">Active Agents</option>
-                        <option value="dormant">Dormant</option>
-                        <option value="inactive">Inactive</option>
-                      </select>
-                    </div>
+                    <select
+                      class="form-control sml_input"
+                      [value]="slug"
+                      (change)="onReportChange($event)"
+                    >
+                      <option value="newtoday">New Today</option>
+                      <option value="newthismonth">New This Month</option>
+                      <option value="kycpending">KYC Pending</option>
+                      <option value="activatedagents">Activated Agents</option>
+                      <option value="firstbookingpending">
+                        1st Booking Pending
+                      </option>
+                      <option value="activeagents">Active Agents</option>
+                      <option value="dormantagents">Dormant Agents</option>
+                      <option value="inactiveagents">Inactive Agents</option>
+                    </select>
                   </div>
                 </div>
 
@@ -46,6 +55,7 @@
                       type="date"
                       class="form-control sml_input"
                       name="fromDate"
+                      [(ngModel)]="fromDate"
                     />
                   </div>
                 </div>
@@ -56,33 +66,26 @@
                       type="date"
                       class="form-control sml_input"
                       name="toDate"
+                      [(ngModel)]="toDate"
                     />
                   </div>
                 </div>
-
-                <!-- <div class="col-md-1">
-                  <div class="form-group">
-                    <div class="dropdown">
-                      <select class="form-control sml_input">
-                        <option value="1">Active</option>
-                        <option value="3">Block</option>
-                      </select>
-                    </div>
-                  </div>
-                </div> -->
 
                 <div class="col-md-4">
                   <div class="form-group row">
                     <div class="col-sm-12">
                       <div class="input-group">
                         <input
-                          type="text"
+                          type="search"
                           class="form-control sml_input"
                           placeholder="Search Here"
+                          name="searchText"
+                          [(ngModel)]="searchText"
                         />
+
                         <div class="input-group-append">
                           <button
-                            type="button"
+                            type="submit"
                             class="btn btn-success sml_input"
                             title="Search"
                           >
@@ -99,16 +102,22 @@
                     type="button"
                     class="btn btn-danger sml_input"
                     title="Refresh"
+                    (click)="resetFilters()"
                   >
                     <i class="fa fa-sync-alt"></i> Refresh
                   </button>
 
                   <div class="dropdown float-right">
-                    <select class="form-control sml_input">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
+                    <select
+                      class="form-control sml_input"
+                      name="perPage"
+                      [(ngModel)]="perPage"
+                      (change)="getAgentReports(1)"
+                    >
+                      <option [ngValue]="10">10</option>
+                      <option [ngValue]="25">25</option>
+                      <option [ngValue]="50">50</option>
+                      <option [ngValue]="100">100</option>
                     </select>
                   </div>
                 </div>
@@ -117,7 +126,8 @@
           </div>
         </div>
 
-        <div class="table-responsive" *ngIf="slug === 'newtoday'">
+        <!-- Shared report table -->
+        <div class="table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -128,132 +138,166 @@
                 <th>Location</th>
                 <th>Organization Name</th>
                 <th>Created/Updated On</th>
+                <th width="150" class="hide_print">&nbsp;</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr *ngFor="let agent of newtoday; let i = index">
-                <td>{{ i + 1 }}</td>
+              <tr *ngFor="let agent of records; let i = index">
+                <td>
+                  {{ (currentPage - 1) * perPage + i + 1 }}
+                </td>
+
                 <td>{{ agent.id }}</td>
+
                 <td>
                   <strong>{{ agent.name }}</strong>
                 </td>
+
                 <td>{{ agent.email }}</td>
+
                 <td>{{ agent.location }}</td>
+
                 <td>{{ agent.organization_name }}</td>
+
                 <td>
                   {{ agent.created_at }}<br />
                   {{ agent.updated_at }}
                 </td>
+
+                <td class="hide_print">
+                  <div class="overlay-edit">
+                    <button type="button" class="btn btn-icon btn-success">
+                      <i class="feather icon-eye"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr *ngIf="!records || records.length === 0">
+                <td colspan="8" class="text-center">No records found.</td>
               </tr>
             </tbody>
           </table>
-
-          <div class="hide_print container">
-            <div class="row">
-              <div class="col-6">
-                <div class="col-12">
-                  <p class="row mt-3 ml-1">Showing 10 of 100 records.</p>
-                </div>
-              </div>
-
-              <div class="col-6">
-                <div class="d-flex flex-row-reverse mb-4 text-center">
-                  <nav class="my-1 pt-1">
-                    <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li class="page-item disabled clearfix d-none d-md-block">
-                        <a class="page-link">First</a>
-                      </li>
-
-                      <li class="page-item">
-                        <a class="page-link active">1</a>
-                      </li>
-
-                      <li class="page-item">
-                        <a class="page-link">2</a>
-                      </li>
-
-                      <li class="page-item">
-                        <a class="page-link">3</a>
-                      </li>
-
-                      <li class="page-item clearfix d-none d-md-block">
-                        <a class="page-link">Last</a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <div class="table-responsive" *ngIf="slug === 'newthismonth'">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>SL</th>
-                <th>Agent ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Location</th>
-                <th>Organization Name</th>
-                <th>Created/Updated On</th>
-              </tr>
-            </thead>
+        <!-- Dynamic Pagination -->
+        <div *ngIf="pagination" class="hide_print container">
+          <div class="row align-items-center">
+            <!-- Record Count -->
+            <div class="col-6">
+              <p class="row mt-3 ml-1">
+                Showing {{ pagination.from || 0 }} -
+                {{ pagination.to || 0 }}
+                of {{ pagination.total || 0 }} records.
+              </p>
+            </div>
 
-            <tbody>
-              <tr *ngFor="let agent of newthismonth; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ agent.id }}</td>
-                <td>
-                  <strong>{{ agent.name }}</strong>
-                </td>
-                <td>{{ agent.email }}</td>
-                <td>{{ agent.location }}</td>
-                <td>{{ agent.organization_name }}</td>
-                <td>
-                  {{ agent.created_at }}<br />
-                  {{ agent.updated_at }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <!-- Pagination Controls -->
+            <div class="col-6">
+              <div class="d-flex flex-row-reverse mb-4 text-center">
+                <nav class="my-1 pt-1" aria-label="Agent reports pagination">
+                  <ul class="pagination pagination-circle pg-blue mb-0">
+                    <!-- First -->
+                    <li
+                      class="page-item clearfix d-none d-md-block"
+                      [class.disabled]="pagination.current_page <= 1"
+                    >
+                      <a
+                        class="page-link"
+                        href="javascript:void(0)"
+                        (click)="
+                          pagination.current_page > 1 && getAgentReports(1)
+                        "
+                      >
+                        First
+                      </a>
+                    </li>
 
-          <div class="hide_print container">
-            <div class="row">
-              <div class="col-6">
-                <div class="col-12">
-                  <p class="row mt-3 ml-1">Showing 10 of 100 records.</p>
-                </div>
-              </div>
+                    <!-- Previous -->
+                    <li
+                      class="page-item"
+                      [class.disabled]="pagination.current_page <= 1"
+                    >
+                      <a
+                        class="page-link"
+                        href="javascript:void(0)"
+                        aria-label="Previous"
+                        (click)="
+                          pagination.current_page > 1 &&
+                            getAgentReports(pagination.current_page - 1)
+                        "
+                      >
+                        &laquo;
+                      </a>
+                    </li>
 
-              <div class="col-6">
-                <div class="d-flex flex-row-reverse mb-4 text-center">
-                  <nav class="my-1 pt-1">
-                    <ul class="pagination pagination-circle pg-blue mb-0">
-                      <li class="page-item disabled clearfix d-none d-md-block">
-                        <a class="page-link">First</a>
-                      </li>
+                    <!-- Page Numbers -->
+                    <li
+                      class="page-item"
+                      *ngFor="let link of pagination.links"
+                      [class.active]="
+                        link.label !== 'Previous' &&
+                        link.label !== 'Next' &&
+                        +link.label === pagination.current_page
+                      "
+                      [class.disabled]="!link.url"
+                    >
+                      <a
+                        *ngIf="
+                          link.label !== 'Previous' && link.label !== 'Next'
+                        "
+                        class="page-link"
+                        href="javascript:void(0)"
+                        (click)="
+                          link.url &&
+                            +link.label !== pagination.current_page &&
+                            getAgentReports(+link.label)
+                        "
+                        [innerHTML]="link.label"
+                      ></a>
+                    </li>
 
-                      <li class="page-item">
-                        <a class="page-link active">1</a>
-                      </li>
+                    <!-- Next -->
+                    <li
+                      class="page-item"
+                      [class.disabled]="
+                        pagination.current_page >= pagination.last_page
+                      "
+                    >
+                      <a
+                        class="page-link"
+                        href="javascript:void(0)"
+                        aria-label="Next"
+                        (click)="
+                          pagination.current_page < pagination.last_page &&
+                            getAgentReports(pagination.current_page + 1)
+                        "
+                      >
+                        &raquo;
+                      </a>
+                    </li>
 
-                      <li class="page-item">
-                        <a class="page-link">2</a>
-                      </li>
-
-                      <li class="page-item">
-                        <a class="page-link">3</a>
-                      </li>
-
-                      <li class="page-item clearfix d-none d-md-block">
-                        <a class="page-link">Last</a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
+                    <!-- Last -->
+                    <li
+                      class="page-item clearfix d-none d-md-block"
+                      [class.disabled]="
+                        pagination.current_page >= pagination.last_page
+                      "
+                    >
+                      <a
+                        class="page-link"
+                        href="javascript:void(0)"
+                        (click)="
+                          pagination.current_page < pagination.last_page &&
+                            getAgentReports(pagination.last_page)
+                        "
+                      >
+                        Last
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>

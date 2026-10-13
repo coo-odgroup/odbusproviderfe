@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Constants } from '../../constant/constant';
 import { HttpClient } from '@angular/common/http';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-agentdashboard',
@@ -27,9 +28,10 @@ export class AgentdashboardComponent implements OnInit {
   topoperators: any[] = [];
   topagentroutes: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
+    this.spinner.show();
     this.getAgentDashboard();
   }
 
@@ -57,9 +59,12 @@ export class AgentdashboardComponent implements OnInit {
           this.topagentroutes = response.data.topagentroutes;
         }
 
-        console.log('Agent dashboard API response:', response);
+        this.spinner.hide();
+
+        // console.log('Agent dashboard API response:', response);
       },
       (error) => {
+        this.spinner.hide();
         console.error('Agent dashboard API error:', error);
       },
     );

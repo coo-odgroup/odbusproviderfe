@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPrintModule } from 'ngx-print';
 import { AgentdashboardComponent } from './agentdashboard.component';
 import { AgentdashboardRoutingModule } from './agentdashboard-routing.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { AgentdashboardRoutingModule } from './agentdashboard-routing.module';
     NgSelectModule,
     NgbModule,
     NgxPrintModule,
+    NgxSpinnerModule
   ],
   declarations: [AgentdashboardComponent],
   providers: [NotificationService],

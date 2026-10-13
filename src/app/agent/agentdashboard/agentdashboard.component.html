@@ -1,3 +1,12 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large"
+  color="#fff"
+  type="timer"
+>
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
 <div class="agent-dashboard">
   <!-- Header -->
   <div class="dashboard-header">
@@ -131,56 +140,66 @@
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 col-xl">
-          <div class="funnel-card pending">
-            <span>KYC Pending</span>
+          <a routerLink="/agent/reports/kycpending">
+            <div class="funnel-card pending">
+              <span>KYC Pending</span>
 
-            <strong>{{ kycpending | number: "1.0-0" }}</strong>
+              <strong>{{ kycpending | number: "1.0-0" }}</strong>
 
-            <small> Requires approval </small>
-          </div>
+              <small> Requires approval </small>
+            </div>
+          </a>
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 col-xl">
-          <div class="funnel-card activated">
-            <span>Activated Agents</span>
+          <a routerLink="/agent/reports/activatedagents">
+            <div class="funnel-card activated">
+              <span>Activated Agents</span>
 
-            <strong>{{ activatedagents | number: "1.0-0" }}</strong>
+              <strong>{{ activatedagents | number: "1.0-0" }}</strong>
 
-            <small> KYC approved </small>
-          </div>
+              <small> KYC approved </small>
+            </div>
+          </a>
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 col-xl">
-          <div class="funnel-card booking-pending">
-            <span>1st Booking Pending</span>
+          <a routerLink="/agent/reports/firstbookingpending">
+            <div class="funnel-card booking-pending">
+              <span>1st Booking Pending</span>
 
-            <strong>{{ firstbookingpending | number: "1.0-0" }}</strong>
+              <strong>{{ firstbookingpending | number: "1.0-0" }}</strong>
 
-            <small> Follow-up needed </small>
-          </div>
+              <small> Follow-up needed </small>
+            </div>
+          </a>
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 col-xl">
-          <div class="funnel-card active">
-            <span>Active Agents</span>
+          <a routerLink="/agent/reports/activeagents">
+            <div class="funnel-card active">
+              <span>Active Agents</span>
 
-            <strong>{{ activeagents | number: "1.0-0" }}</strong>
+              <strong>{{ activeagents | number: "1.0-0" }}</strong>
 
-            <small> Booked ≤ 30d </small>
-          </div>
+              <small> Booked ≤ 30d </small>
+            </div>
+          </a>
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 col-xl">
-          <div class="funnel-card dormant">
-            <span>Dormant / Inactive</span>
+          <a routerLink="/agent/reports/dormantagents">
+            <div class="funnel-card dormant">
+              <span>Dormant / Inactive</span>
 
-            <strong>
-              {{ dormantagents | number: "1.0-0" }}
-              <em>/ {{ inactiveagents | number: "1.0-0" }}</em>
-            </strong>
+              <strong>
+                {{ dormantagents | number: "1.0-0" }}
+                <em>/ {{ inactiveagents | number: "1.0-0" }}</em>
+              </strong>
 
-            <small> 31-90d / &gt;90d </small>
-          </div>
+              <small> 31-90d / &gt;90d </small>
+            </div>
+          </a>
         </div>
       </div>
     </div>
