@@ -78,7 +78,7 @@
                         <input
                           type="search"
                           class="form-control sml_input"
-                          placeholder="Search Here"
+                          placeholder="Search By Name / Email / Location / Organization Name"
                           name="searchText"
                           [(ngModel)]="searchText"
                         />
@@ -104,7 +104,16 @@
                     title="Refresh"
                     (click)="resetFilters()"
                   >
-                    <i class="fa fa-sync-alt"></i> Refresh
+                    <i class="fa fa-sync-alt"></i>
+                  </button>
+                  &nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-warning sml_input"
+                    title="Export"
+                    (click)="exportexcel()"
+                  >
+                    <i class="fa fa-file-export"></i>
                   </button>
 
                   <div class="dropdown float-right">
@@ -127,7 +136,7 @@
         </div>
 
         <!-- Shared report table -->
-        <div class="table-responsive">
+        <div class="table-responsive" id="print-section">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -137,7 +146,7 @@
                 <th>Email</th>
                 <th>Location</th>
                 <th>Organization Name</th>
-                <th>Created/Updated On</th>
+                <th>Created On</th>
                 <th width="150" class="hide_print">&nbsp;</th>
               </tr>
             </thead>
@@ -161,13 +170,16 @@
                 <td>{{ agent.organization_name }}</td>
 
                 <td>
-                  {{ agent.created_at }}<br />
-                  {{ agent.updated_at }}
+                  {{ agent.created_at }}
                 </td>
 
                 <td class="hide_print">
                   <div class="overlay-edit">
-                    <button type="button" class="btn btn-icon btn-success">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="viewDetails(viewModal, agent.id)"
+                    >
                       <i class="feather icon-eye"></i>
                     </button>
                   </div>
@@ -306,3 +318,148 @@
     </div>
   </div>
 </div>
+
+<ng-template #viewModal let-modal>
+  <div class="modal-header agent-modal-header">
+    <div>
+      <h5 class="modal-title">Agent Details</h5>
+      <small>View agent profile and verification details</small>
+    </div>
+
+    <button
+      type="button"
+      class="close modal-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      &times;
+    </button>
+  </div>
+
+  <div class="modal-body agent-details-modal">
+
+    <div class="agent-profile">
+      <div class="agent-avatar">
+        {{ selectedItem?.name?.charAt(0) || 'A' }}
+      </div>
+
+      <div class="agent-profile-info">
+        <h5>{{ selectedItem?.name || '--' }}</h5>
+        <p>{{ selectedItem?.client_id || '--' }}</p>
+      </div>
+
+      <span
+        class="status-badge"
+        [ngClass]="selectedItem?.status == 1 ? 'active' : 'inactive'"
+      >
+        {{ selectedItem?.status == 1 ? 'Active' :
+           selectedItem?.status == 0 ? 'Inactive' : '--' }}
+      </span>
+    </div>
+
+    <div class="detail-section">
+      <h6 class="section-title">Basic Information</h6>
+
+      <div class="row">
+        <div class="col-md-6" *ngFor="let item of [
+          {label: 'Full Name', value: selectedItem?.name},
+          {label: 'Email Address', value: selectedItem?.email},
+          {label: 'Alternate Email', value: selectedItem?.alternate_email},
+          {label: 'Mobile Number', value: selectedItem?.phone},
+          {label: 'Client ID', value: selectedItem?.client_id},
+          {label: 'Organization', value: selectedItem?.organization_name},
+          {label: 'Location', value: selectedItem?.location},
+          {label: 'Address', value: selectedItem?.address},
+          {label: 'Street', value: selectedItem?.street},
+          {label: 'Landmark', value: selectedItem?.landmark},
+          {label: 'City', value: selectedItem?.city},
+          {label: 'Pincode', value: selectedItem?.pincode}
+        ]">
+          <div class="detail-item">
+            <label>{{ item.label }}</label>
+            <p>{{ item.value || '--' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h6 class="section-title">Bank Information</h6>
+
+      <div class="row">
+        <div class="col-md-6" *ngFor="let item of [
+          {label: 'Account Holder', value: selectedItem?.name_on_bank_account},
+          {label: 'Bank Name', value: selectedItem?.bank_name},
+          {label: 'Account Number', value: selectedItem?.bank_account_no},
+          {label: 'IFSC Code', value: selectedItem?.ifsc_code},
+          {label: 'Branch Name', value: selectedItem?.branch_name},
+          {label: 'UPI ID', value: selectedItem?.upi_id}
+        ]">
+          <div class="detail-item">
+            <label>{{ item.label }}</label>
+            <p>{{ item.value || '--' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h6 class="section-title">Verification & Account Status</h6>
+
+      <div class="row">
+        <div class="col-md-6" *ngFor="let item of [
+          {label: 'Mobile Verified', value: selectedItem?.is_mobile_verified},
+          {label: 'Email Verified', value: selectedItem?.is_email_verified},
+          {label: 'PAN Verified', value: selectedItem?.is_pan_verified},
+          {label: 'Aadhaar Verified', value: selectedItem?.is_aadhaar_verified},
+          {label: 'Password Changed', value: selectedItem?.is_password_changed},
+          {label: 'First Recharge Done', value: selectedItem?.is_first_recharge_done}
+        ]">
+          <div class="detail-item status-detail">
+            <label>{{ item.label }}</label>
+
+            <span
+              class="status-badge"
+              [ngClass]="item.value == 1 ? 'active' :
+                         item.value == 0 ? 'inactive' : 'unknown'"
+            >
+              {{ item.value == 1 ? 'Yes' :
+                 item.value == 0 ? 'No' : '--' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h6 class="section-title">Record Information</h6>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="detail-item">
+            <label>Created At</label>
+            <p>{{ selectedItem?.created_at || '--' }}</p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="detail-item">
+            <label>Last Updated</label>
+            <p>{{ selectedItem?.updated_at || '--' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer agent-modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.close()"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>
