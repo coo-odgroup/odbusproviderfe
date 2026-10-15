@@ -568,9 +568,11 @@ export class NotificationLogReportComponent implements OnInit {
             response?.summary ||
             response?.campaign_summary ||
             response?.statistics ||
+            response?.metrics ||
             responseData?.summary ||
             responseData?.campaign_summary ||
             responseData?.statistics ||
+            responseData?.metrics ||
             null;
 
           if (summary) {
@@ -777,7 +779,6 @@ export class NotificationLogReportComponent implements OnInit {
   setCampaignDetailSummary(summary: any): void {
     if (!summary) {
       this.resetCampaignDetails();
-
       return;
     }
 
@@ -807,13 +808,33 @@ export class NotificationLogReportComponent implements OnInit {
     };
 
     /*
+     * IMPORTANT
+     * Copy full campaign statistics into
+     * selectedCampaign variables.
+     */
+
+    this.selectedCampaignTotal = this.campaignSummary.total;
+
+    this.selectedCampaignSuccess = this.campaignSummary.successful;
+
+    this.selectedCampaignFailed = this.campaignSummary.failed;
+
+    this.selectedCampaignInvalidToken = this.campaignSummary.invalid_token;
+
+    this.selectedCampaignPending = this.campaignSummary.pending;
+
+    this.selectedCampaignQueued = this.campaignSummary.queued;
+
+    this.selectedCampaignProcessing = this.campaignSummary.processing;
+
+    /*
      * Response time
      */
+
     this.averageResponseTime = Number(
       summary.average_response_time ??
         summary.avg_response_time ??
         summary.average_response_time_ms ??
-        this.averageResponseTime ??
         0,
     );
 
@@ -822,7 +843,6 @@ export class NotificationLogReportComponent implements OnInit {
         summary.fastest_response_time_ms ??
         summary.minimum_response_time ??
         summary.minimum_response_time_ms ??
-        this.fastestResponseTime ??
         0,
     );
 
@@ -831,24 +851,23 @@ export class NotificationLogReportComponent implements OnInit {
         summary.slowest_response_time_ms ??
         summary.maximum_response_time ??
         summary.maximum_response_time_ms ??
-        this.slowestResponseTime ??
         0,
     );
 
     /*
      * Users
      */
+
     this.totalUsers = Number(
-      summary.total_users ?? summary.users ?? this.totalUsers ?? 0,
+      summary.total_users ?? summary.users ?? this.campaignSummary.total ?? 0,
     );
 
-    this.uniqueUsers = Number(
-      summary.unique_users ?? summary.uniqueUsers ?? this.uniqueUsers ?? 0,
-    );
+    this.uniqueUsers = Number(summary.unique_users ?? summary.uniqueUsers ?? 0);
 
     /*
-     * Percentages
+     * Calculate percentages
      */
+
     this.calculateCampaignPercentages();
   }
 

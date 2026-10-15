@@ -32,7 +32,8 @@
                     Add Vendor
                   </button>
 
-                  <button type="button" class="btn btn-primary ml-2">
+                  <button type="button" class="btn btn-primary ml-2" (click)="exportVendorsToCsv()">
+                    <i class="feather icon-download "></i>
                     Export
                   </button>
                 </div>
@@ -48,23 +49,37 @@
                 </div>
               </div>
 
-              <!-- GST -->
+
               <div class="col-md-2">
                 <div class="form-group">
-                  <label> GST: </label>
+                  <label>Vendor Type:</label>
 
+                  <select class="form-control" name="selectedVendorType" [(ngModel)]="selectedVendorType"
+                    (change)="currentPage = 1; applyVendorFilters()">
+
+                    <option value="">All Vendor Types</option>
+                    <option value="VENDOR">Vendor</option>
+                    <option value="OPERATOR">Operator</option>
+                    <option value="OPERATOR_VENDOR">Operator Vendor</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <!-- GST -->
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label> GST: </label>
                   <select class="form-control" name="selectedGst" [(ngModel)]="selectedGst">
                     <option value="">All</option>
-
                     <option value="1">Has GST</option>
-
                     <option value="0">No GST</option>
                   </select>
                 </div>
               </div>
 
               <!-- STATUS -->
-              <div class="col-md-2">
+              <div class="col-md-1">
                 <div class="form-group">
                   <label> Status: </label>
 
@@ -124,6 +139,7 @@
                   <th>SL.NO</th>
                   <th>Vendor Code</th>
                   <th>Company Name</th>
+                  <th>Parent Operator</th>
                   <th>Contact Details</th>
                   <th>Has GST</th>
                   <th>Status</th>
@@ -142,14 +158,21 @@
 
                   <!-- VENDOR CODE -->
                   <td>
-                    <strong>
-                      {{ vendor.vendor_code }}
-                    </strong>
+                    <strong>{{ vendor.vendor_code }}</strong>
+                    <br>
+                    <small style="font-size: 12px; color: #6c757d">
+                      {{ vendor.vendor_type }}
+                    </small>
                   </td>
 
                   <!-- COMPANY NAME -->
                   <td>
                     {{ vendor.company_name }}
+                  </td>
+
+                  <!-- PARENT OPERATOR NAME -->
+                  <td>
+                    {{ vendor.parent_operator_name || '-' }}
                   </td>
 
                   <!-- CONTACT NAME -->
@@ -178,7 +201,7 @@
                           'active-status': vendor.status == 1,
                           'inactive-status': vendor.status == 0
                         }" (click)="changeVendorStatus(vendor)">
-                      {{ vendor.status == 1 ? "Active" : "Inactive" }}
+                      {{ vendor.status == 1 ? 'Active' : 'Inactive' }}
                     </button>
                   </td>
 
@@ -216,11 +239,12 @@
                           <i class="feather icon-more-vertical"></i>
                         </button>
 
-                        <div class="vendor-dropdown-menu" *ngIf="activeVendorMenu === vendor.id">
+                        <div class="vendor-dropdown-menu" *ngIf="activeVendorMenu === vendor.id"
+                          (click)="$event.stopPropagation()">
 
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openVendorCredentials(vendor, vendorCredentialsModal)">
-                            <i class="feather icon-lock"></i>
+                            <i class="feather icon-shield"></i>
                             <span>Vendor Credentials</span>
                           </button>
 
@@ -249,91 +273,95 @@
                             <span>Vendor App Access Rules</span>
                           </button>
 
+
+                          <button type="button" class="vendor-dropdown-item"
+                            (click)="openSandboxBalanceModal(vendor, sandboxBalanceModal)">
+                            <i class="feather icon-plus-circle"></i>
+                            <span>Add Sandbox Balance</span>
+                          </button>
+
+                          <button type="button" class="vendor-dropdown-item"
+                            (click)="openUpdateVendorPassword(vendor, updateVendorPasswordModal)">
+                            <i class="feather icon-lock"></i>
+                            <span>Update Vendor Password</span>
+                          </button>
+
+
                         </div>
                       </div>
-
                     </div>
                   </td>
                 </tr>
-
                 <tr *ngIf="vendors.length == 0">
                   <td colspan="12" class="text-center">No vendors found</td>
                 </tr>
               </tbody>
             </table>
 
-            <div class="container hide_print">
-              <div class="row align-items-center">
-                <!-- RECORD COUNT -->
-                <div class="col-md-6">
-                  <p class="mt-3">
-                    Showing
 
+            <div class="container-fluid hide_print">
+              <div class="row align-items-center">
+
+                <!-- RECORD COUNT: FAR LEFT -->
+                <div class="col-md-6">
+                  <p class="mt-3 mb-4">
+                    Showing
                     {{
                     totalRecords === 0
                     ? 0
                     : (currentPage - 1) * pageSize + 1
                     }}
-
                     to
-
                     {{
                     currentPage * pageSize > totalRecords
                     ? totalRecords
                     : currentPage * pageSize
                     }}
-
-                    of
-
-                    {{ totalRecords }}
-
-                    records.
+                    of {{ totalRecords }} records.
                   </p>
                 </div>
 
-                <!-- PAGINATION -->
+                <!-- PAGINATION: FAR RIGHT -->
                 <div class="col-md-6">
-                  <div class="d-flex flex-row-reverse mb-4">
+                  <div class="d-flex justify-content-end mb-4">
                     <nav>
                       <ul class="pagination pagination-circle pg-blue mb-0">
+
                         <!-- PREVIOUS -->
-                        <li class="page-item" [ngClass]="{
-                              disabled: currentPage === 1
-                            }">
+                        <li class="page-item" [ngClass]="{ disabled: currentPage === 1 }">
                           <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage - 1)">
                             Previous
                           </a>
                         </li>
 
                         <!-- PAGE NUMBERS -->
-                        <li class="page-item" *ngFor="let page of getPageNumbers()" [ngClass]="{
-                              active: currentPage === page
-                            }">
+                        <li class="page-item" *ngFor="let page of getPageNumbers()"
+                          [ngClass]="{ active: currentPage === page }">
                           <a class="page-link" href="javascript:void(0)" (click)="changePage(page)">
                             {{ page }}
                           </a>
                         </li>
 
                         <!-- NEXT -->
-                        <li class="page-item" [ngClass]="{
-                              disabled: currentPage === totalPages
-                            }">
+                        <li class="page-item" [ngClass]="{ disabled: currentPage === totalPages }">
                           <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage + 1)">
                             Next
                           </a>
                         </li>
+
                       </ul>
                     </nav>
                   </div>
                 </div>
+
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- ========================= ADD VENDOR MODAL ========================= -->
   <!-- ========================= ADD VENDOR MODAL ========================= -->
 
   <ng-template #addVendorModal>
@@ -349,12 +377,9 @@
     <!-- BODY -->
     <form novalidate>
       <div class="modal-body vendor-modal-body">
-        <!-- ===================================================== -->
         <!-- VENDOR DETAILS -->
-        <!-- ===================================================== -->
 
         <div class="vendor-accordion-section">
-          <!-- HEADER -->
           <div class="vendor-accordion-header" (click)="toggleVendorSection('details')">
             <div>
               <i class="feather icon-user mr-2"></i>
@@ -368,22 +393,74 @@
                 "></i>
           </div>
 
-          <!-- CONTENT -->
           <div class="vendor-accordion-content" *ngIf="activeVendorSection === 'details'">
-            <!-- VENDOR CODE -->
             <div class="row mb-3">
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group mb-0">
                   <label> Vendor Code </label>
 
                   <input type="text" class="form-control" value="100001" readonly
                     placeholder="Auto generated 6 digit code" />
+                </div>
+              </div>
 
-                  <small class="text-muted">
-                    Vendor code will be auto generated.
+
+
+
+              <div class="col-md-4">
+                <div class="form-group mb-0">
+                  <label for="operatorSearch">Operator</label>
+
+                  <div class="operator-search-wrapper" (click)="$event.stopPropagation()">
+
+                    <input type="text" id="operatorSearch" class="form-control operator-search-input"
+                      [(ngModel)]="operatorSearchText" [ngModelOptions]="{ standalone: true }"
+                      (focus)="operatorDropdownOpen = true" (input)="onOperatorSearchInput()"
+                      [disabled]="loadingOperatorDetails"
+                      [placeholder]="loadingOperators ? 'Loading operators...' : 'Search operator name...'"
+                      autocomplete="off" role="combobox" aria-autocomplete="list"
+                      [attr.aria-expanded]="operatorDropdownOpen" />
+
+                    <i class="feather icon-search operator-search-icon"></i>
+
+                    <div class="operator-dropdown-list" *ngIf="operatorDropdownOpen">
+                      <button type="button" class="operator-dropdown-item" *ngFor="let operator of filteredBusOperators"
+                        (click)="selectBusOperator(operator)">
+                        {{ operator.organisation_name }}
+                      </button>
+
+                      <div class="operator-dropdown-empty" *ngIf="filteredBusOperators.length === 0">
+                        {{ loadingOperators ? 'Loading operators...' : 'No operator found' }}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <small class="text-muted" *ngIf="loadingOperatorDetails">
+                    Loading operator details...
                   </small>
                 </div>
               </div>
+
+
+              <div class="col-md-2">
+                <div class="form-group mb-0">
+                  <label>&nbsp;</label>
+
+                  <div class="form-check mt-2">
+
+                    <input type="checkbox" class="form-check-input" id="parentVendor" [(ngModel)]="isParentVendor"
+                      [ngModelOptions]="{ standalone: true }" (ngModelChange)="onParentVendorChange($event)" />
+
+                    <label class="form-check-label" for="parentVendor">
+                      Is Parent Operator
+                    </label>
+
+                  </div>
+                </div>
+              </div>
+
+
             </div>
 
             <!-- COMPANY + CONTACT -->
@@ -391,8 +468,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>
-                    Company Name
-                    <span class="text-danger">*</span>
+                    Company Name <span class="text-danger">*</span>
                   </label>
 
                   <input type="text" class="form-control" placeholder="Enter company name" name="company_name"
@@ -403,8 +479,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>
-                    Contact Name
-                    <span class="text-danger">*</span>
+                    Contact Name <span class="text-danger">*</span>
                   </label>
 
                   <input type="text" class="form-control" placeholder="Enter contact name" name="contact_name"
@@ -418,8 +493,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>
-                    Contact Email
-                    <span class="text-danger">*</span>
+                    Contact Email <span class="text-danger">*</span>
                   </label>
 
                   <input type="email" class="form-control" placeholder="Enter contact email" name="contact_email"
@@ -430,8 +504,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>
-                    Contact Phone
-                    <span class="text-danger">*</span>
+                    Contact Phone <span class="text-danger">*</span>
                   </label>
 
                   <input type="text" class="form-control" placeholder="Enter 10 digit mobile number" maxlength="10"
@@ -444,11 +517,11 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label> Has GST </label>
+                  <label>Has GST</label>
 
                   <div class="custom-control custom-checkbox mt-2">
                     <input type="checkbox" class="custom-control-input" id="addHasGst" name="add_has_gst"
-                      [checked]="vendorForm.has_gst == 1" (change)="toggleAddGst($event)" />
+                      [(ngModel)]="vendorForm.has_gst" />
 
                     <label class="custom-control-label" for="addHasGst">
                       Yes, company has GST
@@ -460,8 +533,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>
-                    Rate Limit Per Minute
-                    <span class="text-danger">*</span>
+                    Rate Limit Per Minute <span class="text-danger">*</span>
                   </label>
 
                   <input type="number" class="form-control" placeholder="Enter requests per minute" min="1"
@@ -472,10 +544,7 @@
           </div>
         </div>
 
-        <!-- ===================================================== -->
         <!-- VENDOR ADDRESS -->
-        <!-- ===================================================== -->
-
         <div class="vendor-accordion-section">
           <!-- HEADER -->
           <div class="vendor-accordion-header" (click)="toggleVendorSection('address')">
@@ -497,13 +566,10 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>
-                    Address
-                    <span class="text-danger">*</span>
-                  </label>
+                  <label>Address</label>
 
-                  <textarea class="form-control" rows="2" placeholder="Enter complete address" name="address"
-                    [(ngModel)]="vendorAddress.address"></textarea>
+                  <textarea class="form-control" placeholder="Enter address" name="address" rows="3"
+                    [(ngModel)]="vendorForm.address"></textarea>
                 </div>
               </div>
             </div>
@@ -690,7 +756,7 @@
             <!-- Vendor Code -->
 
             <div class="row mb-3">
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group mb-0">
                   <label> Vendor Code </label>
 
@@ -700,6 +766,35 @@
                   <small class="text-muted">
                     Vendor code cannot be changed.
                   </small>
+                </div>
+              </div>
+
+              <!-- Operator -->
+              <div class="col-md-4">
+                <div class="form-group mb-0">
+                  <label for="editOperatorSearch">Operator</label>
+
+                  <input type="text" id="editOperatorSearch" class="form-control" [value]="editOperatorName" readonly
+                    aria-readonly="true" placeholder="No operator assigned" />
+
+                  <small class="text-muted">
+                    Operator cannot be changed after creation.
+                  </small>
+                </div>
+              </div>
+
+              <!-- Is Parent Operator -->
+              <div class="col-md-2">
+                <div class="form-group mb-0">
+                  <label>&nbsp;</label>
+
+                  <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="editParentVendor" [checked]="editIsParentVendor"
+                      disabled />
+                    <label class="form-check-label" for="editParentVendor">
+                      Is Parent Operator
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -979,9 +1074,6 @@
 <!-- EDIT VENDOR MODAL -->
 <ng-template #editVendorModal> ... </ng-template>
 
-<!-- ================================================= -->
-<!-- VENDOR CREDENTIALS MODAL -->
-<!-- ================================================= -->
 <ng-template #vendorCredentialsModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">
@@ -1151,12 +1243,9 @@
                 </button>
 
                 <!-- Export -->
-                <button type="button" class="btn btn-sm btn-primary" (click)="exportCredential(credential.environment)"
-                  [title]="
-                      'Export ' + credential.environment + ' credentials'
-                    ">
+                <button *ngIf="selectedVendorWalletBalance > 0" type="button" class="btn btn-sm btn-primary"
+                  (click)="exportCredential(credential.environment)" title="Export credentials">
                   <i class="feather icon-download mr-1"></i>
-
                   Export
                 </button>
               </td>
@@ -1181,10 +1270,7 @@
   </div>
 </ng-template>
 
-<!-- ================================================= -->
 <!-- VENDOR IPS MODAL -->
-<!-- ================================================= -->
-
 <ng-template #vendorIpsModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">
@@ -1878,14 +1964,13 @@
           Cancel
         </button>
 
-        <button type="button" class="btn btn-primary" (click)="saveVendorScopes()">
+        <!-- <button type="button" class="btn btn-primary" (click)="saveVendorScopes()">
           Save
-        </button>
+        </button> -->
       </div>
     </div>
   </div>
 </ng-template>
-
 
 <ng-template #vendorAppAccessRulesModal let-modal>
   <div class="modal-header">
@@ -1960,24 +2045,15 @@
               </td>
               <td class="text-center">
                 <!-- Rule not added -->
-                <span
-                  *ngIf="!rule.rule_id"
-                  class="badge badge-secondary"
-                >
+                <span *ngIf="!rule.rule_id" class="badge badge-secondary">
                   Not Added
                 </span>
                 <!-- Rule exists -->
-                <button
-                  *ngIf="rule.rule_id"
-                  type="button"
-                  class="btn btn-sm"
-                  [ngClass]="
+                <button *ngIf="rule.rule_id" type="button" class="btn btn-sm" [ngClass]="
                     rule.status == 1
                       ? 'btn-success'
                       : 'btn-danger'
-                  "
-                  (click)="toggleVendorAppAccessRuleStatus(rule)"
-                >
+                  " (click)="toggleVendorAppAccessRuleStatus(rule)">
                   {{ rule.status == 1 ? 'Active' : 'Inactive' }}
                 </button>
               </td>
@@ -2034,29 +2110,20 @@
                     'production_end_time_' + i
                   " />
               </td>
-            <td class="text-center">
-              <!-- Rule not added -->
-              <span
-                *ngIf="!rule.rule_id"
-                class="badge badge-secondary"
-              >
-                Not Added
-              </span>
-              <!-- Rule exists -->
-              <button
-                *ngIf="rule.rule_id"
-                type="button"
-                class="btn btn-sm"
-                [ngClass]="
+              <td class="text-center">
+                <!-- Rule not added -->
+                <span *ngIf="!rule.rule_id" class="badge badge-secondary">
+                  Not Added
+                </span>
+                <!-- Rule exists -->
+                <button *ngIf="rule.rule_id" type="button" class="btn btn-sm" [ngClass]="
                   rule.status == 1
                     ? 'btn-success'
                     : 'btn-danger'
-                "
-                (click)="toggleVendorAppAccessRuleStatus(rule)"
-              >
-                {{ rule.status == 1 ? 'Active' : 'Inactive' }}
-              </button>
-            </td>
+                " (click)="toggleVendorAppAccessRuleStatus(rule)">
+                  {{ rule.status == 1 ? 'Active' : 'Inactive' }}
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -2082,195 +2149,255 @@
   </div>
 </ng-template>
 
+
+<!-- ================= ADD SANDBOX BALANCE MODAL ================= -->
+
+<ng-template #sandboxBalanceModal>
+  <div class="modal-header">
+    <div>
+      <h5 class="modal-title mb-1">Add Sandbox Balance</h5>
+      <small class="text-muted" *ngIf="selectedVendor">
+        {{ selectedVendor.company_name }}
+        <span *ngIf="selectedVendor.vendor_code">
+          ({{ selectedVendor.vendor_code }})
+        </span>
+      </small>
+    </div>
+
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <form #sandboxBalanceForm="ngForm" (ngSubmit)="submitSandboxBalance(sandboxBalanceForm)" novalidate>
+
+    <div class="modal-body">
+
+      <!-- Amount -->
+      <div class="form-group">
+        <label for="sandboxAmount">
+          Amount <span class="text-danger">*</span>
+        </label>
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">₹</span>
+          </div>
+
+          <input type="number" id="sandboxAmount" class="form-control" name="amount"
+            [(ngModel)]="sandboxBalanceFormData.amount" #amount="ngModel" placeholder="Enter amount" min="0.01"
+            step="0.01" required />
+
+        </div>
+
+        <small class="text-danger" *ngIf="amount.invalid && (amount.touched || amount.dirty)">
+          Please enter an amount greater than zero.
+        </small>
+      </div>
+
+      <!-- Remarks -->
+      <div class="form-group mb-0">
+        <label for="sandboxRemarks">
+          Remarks <span class="text-danger">*</span>
+        </label>
+
+        <textarea id="sandboxRemarks" class="form-control" name="remarks" [(ngModel)]="sandboxBalanceFormData.remarks"
+          #remarks="ngModel" rows="3" maxlength="500" placeholder="Enter remarks" required>
+        </textarea>
+
+        <small class="text-muted">
+          Maximum 500 characters.
+        </small>
+
+        <small class="text-danger d-block" *ngIf="remarks.invalid && remarks.touched">
+          Remarks are required.
+        </small>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary" [disabled]="sandboxBalanceForm.invalid">
+        <i class="feather icon-plus-circle mr-1"></i>
+        Add Balance
+      </button>
+
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">
+        Cancel
+      </button>
+    </div>
+
+  </form>
+</ng-template>
+
+
+
 <ng-template #vendorViewModal let-modal>
+  <!-- Header -->
   <div class="modal-header">
     <h5 class="modal-title">
       <i class="feather icon-eye mr-2"></i>
       Vendor Details
     </h5>
+
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
+  <!-- Modal Body -->
   <div class="modal-body vendor-view-modal-body">
 
-    <!-- VENDOR INFORMATION -->
+    <!-- Vendor Wallet Balance -->
+    <div class="vendor-wallet-balance mb-4">
+      <div class="wallet-balance-label">
+        <i class="feather icon-credit-card"></i>
+        <span>Vendor Wallet Balance</span>
+      </div>
+
+      <div class="wallet-balance-amount">
+        ₹{{ (vendorViewData?.wallet_balance || 0) | number:'1.2-2' }}
+      </div>
+    </div>
+
+    <!-- Vendor Information -->
     <div class="border rounded p-3 mb-4" style="border-color: #dee2e6 !important">
 
-      <h6 class="font-weight-bold mb-3">
-        Vendor Details
-      </h6>
+      <h6 class="font-weight-bold mb-3">Vendor Details</h6>
+
       <div class="row">
         <div class="col-md-3">
-          <label class="font-weight-bold">
-            Vendor Code
-          </label>
+          <label class="font-weight-bold">Vendor Code</label>
           <div class="form-control bg-light">
             {{ vendorViewData?.vendor?.vendor_code || '—' }}
           </div>
         </div>
+
         <div class="col-md-3">
-          <label class="font-weight-bold">
-            Company Name
-          </label>
+          <label class="font-weight-bold">Company Name</label>
           <div class="form-control bg-light">
             {{ vendorViewData?.vendor?.company_name || '—' }}
           </div>
         </div>
+
         <div class="col-md-3">
-          <label class="font-weight-bold">
-            Contact Name
-          </label>
+          <label class="font-weight-bold">Contact Name</label>
           <div class="form-control bg-light">
             {{ vendorViewData?.vendor?.contact_name || '—' }}
           </div>
         </div>
+
         <div class="col-md-3">
-          <label class="font-weight-bold">
-            Contact Phone
-          </label>
+          <label class="font-weight-bold">Contact Phone</label>
           <div class="form-control bg-light">
             {{ vendorViewData?.vendor?.contact_phone || '—' }}
           </div>
         </div>
+
         <div class="col-md-6 mt-3">
-          <label class="font-weight-bold">
-            Contact Email
-          </label>
+          <label class="font-weight-bold">Contact Email</label>
           <div class="form-control bg-light">
             {{ vendorViewData?.vendor?.contact_email || '—' }}
           </div>
         </div>
-        <div class="col-md-3 mt-3">
-          <label class="font-weight-bold">
-            Has GST
-          </label>
-          <div class="form-control bg-light">
-            {{
-            vendorViewData?.vendor?.has_gst == 1
-            ? 'Yes'
-            : 'No'
-            }}
 
+        <div class="col-md-3 mt-3">
+          <label class="font-weight-bold">Has GST</label>
+          <div class="form-control bg-light">
+            {{ vendorViewData?.vendor?.has_gst == 1 ? 'Yes' : 'No' }}
           </div>
         </div>
+
         <div class="col-md-3 mt-3">
-          <label class="font-weight-bold">
-            Status
-          </label>
+          <label class="font-weight-bold">Status</label>
           <div class="form-control bg-light">
-            <span class="badge" [ngClass]="
-                vendorViewData?.vendor?.status == 1
-                  ? 'badge-success'
-                  : 'badge-danger'
-              ">
-              {{
-              vendorViewData?.vendor?.status == 1
-              ? 'Active'
-              : 'Inactive'
-              }}
+            <span class="badge" [ngClass]="vendorViewData?.vendor?.status == 1
+                ? 'badge-success'
+                : 'badge-danger'">
+              {{ vendorViewData?.vendor?.status == 1 ? 'Active' : 'Inactive' }}
             </span>
           </div>
         </div>
       </div>
     </div>
-    <!-- ADDRESS -->
+
+    <!-- Vendor Address -->
     <div *ngIf="vendorViewData?.address" class="border rounded p-3 mb-4" style="border-color: #dee2e6 !important">
 
-      <h6 class="font-weight-bold mb-3">
-        Vendor Address
-      </h6>
+      <h6 class="font-weight-bold mb-3">Vendor Address</h6>
+
       <div class="row">
+        <div class="col-md-6">
+          <label class="font-weight-bold">Address</label>
+          <div class="form-control bg-light">
+            {{ vendorViewData?.address?.address || '—' }}
+          </div>
+        </div>
 
         <div class="col-md-6">
-          <label class="font-weight-bold">
-            Address
-          </label>
-
+          <label class="font-weight-bold">Street</label>
           <div class="form-control bg-light">
-            {{ vendorViewData.address.address || '—' }}
+            {{ vendorViewData?.address?.street || '—' }}
           </div>
         </div>
 
-
-        <div class="col-md-6">
-          <label class="font-weight-bold">
-            Street
-          </label>
-
-          <div class="form-control bg-light">
-            {{ vendorViewData.address.street || '—' }}
-          </div>
-        </div>
         <div class="col-md-4 mt-3">
-          <label class="font-weight-bold">
-            Landmark
-          </label>
+          <label class="font-weight-bold">Landmark</label>
           <div class="form-control bg-light">
-            {{ vendorViewData.address.landmark || '—' }}
+            {{ vendorViewData?.address?.landmark || '—' }}
           </div>
         </div>
+
         <div class="col-md-4 mt-3">
-          <label class="font-weight-bold">
-            City
-          </label>
+          <label class="font-weight-bold">City</label>
           <div class="form-control bg-light">
-            {{ vendorViewData.address.city || '—' }}
+            {{ vendorViewData?.address?.city || '—' }}
           </div>
         </div>
+
         <div class="col-md-2 mt-3">
-          <label class="font-weight-bold">
-            Pincode
-          </label>
+          <label class="font-weight-bold">Pincode</label>
           <div class="form-control bg-light">
-            {{ vendorViewData.address.pincode || '—' }}
+            {{ vendorViewData?.address?.pincode || '—' }}
           </div>
         </div>
+
         <div class="col-md-2 mt-3">
-          <label class="font-weight-bold">
-            State
-          </label>
+          <label class="font-weight-bold">State</label>
           <div class="form-control bg-light">
-            {{ vendorViewData.address.state_name || '—' }}
+            {{ vendorViewData?.address?.state_name || '—' }}
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SANDBOX / PRODUCTION -->
-
-
+    <!-- Sandbox and Production -->
     <div class="row">
+
       <!-- SANDBOX -->
       <div class="col-md-6">
-        <div class="border rounded p-3">
-          <h5 class="font-weight-bold mb-4">
-            Sandbox
-          </h5>
+        <div class="border rounded p-3 h-100">
+          <h5 class="font-weight-bold mb-4">Sandbox</h5>
 
-
-          <!-- ================= CREDENTIALS ================= -->
+          <!-- Sandbox Credentials -->
           <div *ngIf="vendorViewData?.sandbox?.credentials?.length" class="vendor-view-section">
+
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="font-weight-bold mb-0">
-                Vendor Credentials
-              </h6>
+              <h6 class="font-weight-bold mb-0">Vendor Credentials</h6>
+
               <button type="button" class="btn btn-sm btn-outline-primary"
-                (click)="exportVendorViewCredentials('sandbox')">
+                *ngIf="(vendorViewData?.wallet_balance || 0) > 0" (click)="exportVendorViewCredentials('sandbox')">
                 <i class="feather icon-download mr-1"></i>
                 Export CSV
               </button>
             </div>
-            <div *ngFor="
-                let credential
-                of vendorViewData.sandbox.credentials
-              " class="border rounded p-3 mb-3">
+
+            <div *ngFor="let credential of vendorViewData.sandbox.credentials" class="border rounded p-3 mb-3">
+
               <div class="row mb-2">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">
-                    Client ID
-                  </label>
+                  <label class="font-weight-bold mb-0">Client ID</label>
                 </div>
                 <div class="col-md-9">
                   <div class="credential-value">
@@ -2278,11 +2405,10 @@
                   </div>
                 </div>
               </div>
+
               <div class="row mb-2">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">
-                    Client Secret
-                  </label>
+                  <label class="font-weight-bold mb-0">Client Secret</label>
                 </div>
                 <div class="col-md-9">
                   <div class="credential-value">
@@ -2290,35 +2416,27 @@
                   </div>
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">
-                    Status
-                  </label>
+                  <label class="font-weight-bold mb-0">Status</label>
                 </div>
                 <div class="col-md-9">
-                  <span class="badge" [ngClass]="
-                      credential.is_active == 1
-                        ? 'badge-success'
-                        : 'badge-danger'
-                    ">
-                    {{
-                    credential.is_active == 1
-                    ? 'Active'
-                    : 'Inactive'
-                    }}
+                  <span class="badge" [ngClass]="credential.is_active == 1
+                      ? 'badge-success'
+                      : 'badge-danger'">
+                    {{ credential.is_active == 1 ? 'Active' : 'Inactive' }}
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
-
-          <!-- ================= IP ================= -->
+          <!-- Sandbox IPs -->
           <div *ngIf="vendorViewData?.sandbox?.ips?.length" class="vendor-view-section">
-            <h6 class="font-weight-bold">
-              Vendor IPs
-            </h6>
+
+            <h6 class="font-weight-bold">Vendor IPs</h6>
+
             <div class="table-responsive">
               <table class="table table-bordered table-sm">
                 <thead>
@@ -2328,27 +2446,16 @@
                     <th>Status</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  <tr *ngFor="
-                      let ip
-                      of vendorViewData.sandbox.ips;
-                      let i = index
-                    ">
+                  <tr *ngFor="let ip of vendorViewData.sandbox.ips; let i = index">
                     <td>{{ i + 1 }}</td>
+                    <td>{{ ip.ip_address || '—' }}</td>
                     <td>
-                      {{ ip.ip_address || '—' }}
-                    </td>
-                    <td>
-                      <span class="badge" [ngClass]="
-                          ip.is_active == 1
-                            ? 'badge-success'
-                            : 'badge-danger'
-                        ">
-                        {{
-                        ip.is_active == 1
-                        ? 'Active'
-                        : 'Inactive'
-                        }}
+                      <span class="badge" [ngClass]="ip.is_active == 1
+                          ? 'badge-success'
+                          : 'badge-danger'">
+                        {{ ip.is_active == 1 ? 'Active' : 'Inactive' }}
                       </span>
                     </td>
                   </tr>
@@ -2357,12 +2464,11 @@
             </div>
           </div>
 
-
-          <!-- ================= SCOPES ================= -->
+          <!-- Sandbox Scopes -->
           <div *ngIf="vendorViewData?.sandbox?.scopes?.length" class="vendor-view-section">
-            <h6 class="font-weight-bold">
-              Vendor Scope
-            </h6>
+
+            <h6 class="font-weight-bold">Vendor Scope</h6>
+
             <div class="table-responsive">
               <table class="table table-bordered table-sm">
                 <thead>
@@ -2372,18 +2478,13 @@
                     <th>Status</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  <tr *ngFor="
-                      let scope
-                      of vendorViewData.sandbox.scopes;
-                      let i = index
-                    ">
+                  <tr *ngFor="let scope of vendorViewData.sandbox.scopes; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>{{ scope.name || '—' }}</td>
                     <td>
-                      <span class="badge badge-success">
-                        Active
-                      </span>
+                      <span class="badge badge-success">Active</span>
                     </td>
                   </tr>
                 </tbody>
@@ -2391,14 +2492,11 @@
             </div>
           </div>
 
-          <!-- ================= RATE LIMIT ================= -->
-          <div *ngIf="
-              vendorViewData?.sandbox?.rate_limits?.length
-            " class="vendor-view-section">
+          <!-- Sandbox Rate Limits -->
+          <div *ngIf="vendorViewData?.sandbox?.rate_limits?.length" class="vendor-view-section">
 
-            <h6 class="font-weight-bold">
-              Vendor Rate Limit
-            </h6>
+            <h6 class="font-weight-bold">Vendor Rate Limit</h6>
+
             <div class="table-responsive">
               <table class="table table-bordered table-sm">
                 <thead>
@@ -2411,27 +2509,19 @@
                     <th>Status</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  <tr *ngFor="
-                      let rate
-                      of vendorViewData.sandbox.rate_limits
-                    ">
+                  <tr *ngFor="let rate of vendorViewData.sandbox.rate_limits">
                     <td>{{ rate.scope_name || '—' }}</td>
                     <td>{{ rate.endpoint || '—' }}</td>
                     <td>{{ rate.requests_per_minute || '—' }}</td>
                     <td>{{ rate.requests_per_hour || '—' }}</td>
                     <td>{{ rate.burst_limit || '—' }}</td>
                     <td>
-                      <span class="badge" [ngClass]="
-                          rate.is_active == 1
-                            ? 'badge-success'
-                            : 'badge-danger'
-                        ">
-                        {{
-                        rate.is_active == 1
-                        ? 'Active'
-                        : 'Inactive'
-                        }}
+                      <span class="badge" [ngClass]="rate.is_active == 1
+                          ? 'badge-success'
+                          : 'badge-danger'">
+                        {{ rate.is_active == 1 ? 'Active' : 'Inactive' }}
                       </span>
                     </td>
                   </tr>
@@ -2439,14 +2529,12 @@
               </table>
             </div>
           </div>
-          <!-- SANDBOX APP ACCESS RULES -->
-          <div *ngIf="
-              vendorViewData?.sandbox?.access_rules?.length
-            " class="vendor-view-section">
 
-            <h6 class="font-weight-bold">
-              Vendor App Access Rules
-            </h6>
+          <!-- Sandbox App Access Rules -->
+          <div *ngIf="vendorViewData?.sandbox?.access_rules?.length" class="vendor-view-section">
+
+            <h6 class="font-weight-bold">Vendor App Access Rules</h6>
+
             <div class="table-responsive">
               <table class="table table-bordered table-sm">
                 <thead>
@@ -2457,26 +2545,17 @@
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr *ngFor="
-                      let rule
-                      of vendorViewData.sandbox.access_rules
-                    ">
 
+                <tbody>
+                  <tr *ngFor="let rule of vendorViewData.sandbox.access_rules">
                     <td>{{ rule.scope_name || '—' }}</td>
                     <td>{{ rule.allowed_start_time || '—' }}</td>
                     <td>{{ rule.allowed_end_time || '—' }}</td>
                     <td>
-                      <span class="badge" [ngClass]="
-                          rule.status == 1
-                            ? 'badge-success'
-                            : 'badge-danger'
-                        ">
-                        {{
-                        rule.status == 1
-                        ? 'Active'
-                        : 'Inactive'
-                        }}
+                      <span class="badge" [ngClass]="rule.status == 1
+                          ? 'badge-success'
+                          : 'badge-danger'">
+                        {{ rule.status == 1 ? 'Active' : 'Inactive' }}
                       </span>
                     </td>
                   </tr>
@@ -2484,22 +2563,20 @@
               </table>
             </div>
           </div>
+
         </div>
       </div>
 
       <!-- PRODUCTION -->
       <div class="col-md-6">
-        <div class="border rounded p-3">
-          <h5 class="font-weight-bold mb-4">
-            Production
-          </h5>
+        <div class="border rounded p-3 h-100">
+          <h5 class="font-weight-bold mb-4">Production</h5>
 
-          <!-- ================= CREDENTIALS ================= -->
+          <!-- Production Credentials -->
           <div *ngIf="vendorViewData?.production?.credentials?.length" class="vendor-view-section">
+
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="font-weight-bold mb-0">
-                Vendor Credentials
-              </h6>
+              <h6 class="font-weight-bold mb-0">Vendor Credentials</h6>
 
               <button type="button" class="btn btn-sm btn-outline-primary"
                 (click)="exportVendorViewCredentials('production')">
@@ -2508,19 +2585,12 @@
               </button>
             </div>
 
-            <div *ngFor="
-                let credential
-                of vendorViewData.production.credentials
-              " class="border rounded p-3 mb-3">
+            <div *ngFor="let credential of vendorViewData.production.credentials" class="border rounded p-3 mb-3">
 
-              <!-- Client ID -->
               <div class="row mb-2">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">
-                    Client ID
-                  </label>
+                  <label class="font-weight-bold mb-0">Client ID</label>
                 </div>
-
                 <div class="col-md-9">
                   <div class="credential-value">
                     {{ credential.client_id || '—' }}
@@ -2528,12 +2598,9 @@
                 </div>
               </div>
 
-              <!-- Client Secret -->
               <div class="row mb-2">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">
-                    Client Secret
-                  </label>
+                  <label class="font-weight-bold mb-0">Client Secret</label>
                 </div>
                 <div class="col-md-9">
                   <div class="credential-value">
@@ -2541,36 +2608,27 @@
                   </div>
                 </div>
               </div>
-              <!-- Status -->
+
               <div class="row">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">
-                    Status
-                  </label>
+                  <label class="font-weight-bold mb-0">Status</label>
                 </div>
                 <div class="col-md-9">
-                  <span class="badge" [ngClass]="
-                      credential.is_active == 1
-                        ? 'badge-success'
-                        : 'badge-danger'
-                    ">
-                    {{
-                    credential.is_active == 1
-                    ? 'Active'
-                    : 'Inactive'
-                    }}
+                  <span class="badge" [ngClass]="credential.is_active == 1
+                      ? 'badge-success'
+                      : 'badge-danger'">
+                    {{ credential.is_active == 1 ? 'Active' : 'Inactive' }}
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- ================ IP ================= -->
+          <!-- Production IPs -->
           <div *ngIf="vendorViewData?.production?.ips?.length" class="vendor-view-section">
 
-            <h6 class="font-weight-bold">
-              Vendor IPs
-            </h6>
+            <h6 class="font-weight-bold">Vendor IPs</h6>
+
             <div class="table-responsive">
               <table class="table table-bordered table-sm">
                 <thead>
@@ -2580,25 +2638,16 @@
                     <th>Status</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  <tr *ngFor="
-                      let ip
-                      of vendorViewData.production.ips;
-                      let i = index
-                    ">
+                  <tr *ngFor="let ip of vendorViewData.production.ips; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>{{ ip.ip_address || '—' }}</td>
                     <td>
-                      <span class="badge" [ngClass]="
-                          ip.is_active == 1
-                            ? 'badge-success'
-                            : 'badge-danger'
-                        ">
-                        {{
-                        ip.is_active == 1
-                        ? 'Active'
-                        : 'Inactive'
-                        }}
+                      <span class="badge" [ngClass]="ip.is_active == 1
+                          ? 'badge-success'
+                          : 'badge-danger'">
+                        {{ ip.is_active == 1 ? 'Active' : 'Inactive' }}
                       </span>
                     </td>
                   </tr>
@@ -2607,16 +2656,11 @@
             </div>
           </div>
 
+          <!-- Production Scopes -->
+          <div *ngIf="vendorViewData?.production?.scopes?.length" class="vendor-view-section">
 
-          <!-- ================= SCOPES ================= -->
+            <h6 class="font-weight-bold">Vendor Scope</h6>
 
-          <div *ngIf="
-              vendorViewData?.production?.scopes?.length
-            " class="vendor-view-section">
-
-            <h6 class="font-weight-bold">
-              Vendor Scope
-            </h6>
             <div class="table-responsive">
               <table class="table table-bordered table-sm">
                 <thead>
@@ -2626,18 +2670,13 @@
                     <th>Status</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  <tr *ngFor="
-                      let scope
-                      of vendorViewData.production.scopes;
-                      let i = index
-                    ">
+                  <tr *ngFor="let scope of vendorViewData.production.scopes; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>{{ scope.name || '—' }}</td>
                     <td>
-                      <span class="badge badge-success">
-                        Active
-                      </span>
+                      <span class="badge badge-success">Active</span>
                     </td>
                   </tr>
                 </tbody>
@@ -2645,16 +2684,11 @@
             </div>
           </div>
 
+          <!-- Production Rate Limits -->
+          <div *ngIf="vendorViewData?.production?.rate_limits?.length" class="vendor-view-section">
 
-          <!-- ================= RATE LIMIT ================= -->
+            <h6 class="font-weight-bold">Vendor Rate Limit</h6>
 
-          <div *ngIf="
-              vendorViewData?.production?.rate_limits?.length
-            " class="vendor-view-section">
-
-            <h6 class="font-weight-bold">
-              Vendor Rate Limit
-            </h6>
             <div class="table-responsive">
               <table class="table table-bordered table-sm">
                 <thead>
@@ -2666,90 +2700,204 @@
                     <th>Burst</th>
                     <th>Status</th>
                   </tr>
-
                 </thead>
-                <tbody>
 
-                  <tr *ngFor="
-                      let rate
-                      of vendorViewData.production.rate_limits
-                    ">
+                <tbody>
+                  <tr *ngFor="let rate of vendorViewData.production.rate_limits">
                     <td>{{ rate.scope_name || '—' }}</td>
                     <td>{{ rate.endpoint || '—' }}</td>
                     <td>{{ rate.requests_per_minute || '—' }}</td>
                     <td>{{ rate.requests_per_hour || '—' }}</td>
                     <td>{{ rate.burst_limit || '—' }}</td>
                     <td>
-                      <span class="badge" [ngClass]="
-                          rate.is_active == 1
-                            ? 'badge-success'
-                            : 'badge-danger'
-                        ">
-                        {{
-                        rate.is_active == 1
-                        ? 'Active'
-                        : 'Inactive'
-                        }}
+                      <span class="badge" [ngClass]="rate.is_active == 1
+                          ? 'badge-success'
+                          : 'badge-danger'">
+                        {{ rate.is_active == 1 ? 'Active' : 'Inactive' }}
                       </span>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+          </div>
 
-            <div *ngIf="
-                    vendorViewData?.production?.access_rules?.length
-                  " class="vendor-view-section mt-4">
-              <h6 class="font-weight-bold">
-                Vendor App Access Rules
-              </h6>
-              <div class="table-responsive">
-                <table class="table table-bordered table-sm">
-                  <thead>
-                    <tr>
-                      <th>Scope</th>
-                      <th>Allowed Start Time</th>
-                      <th>Allowed End Time</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="
-                        let rule
-                        of vendorViewData.production.access_rules
-                      ">
-                      <td>{{ rule.scope_name || '—' }}</td>
-                      <td>{{ rule.allowed_start_time || '—' }}</td>
-                      <td>{{ rule.allowed_end_time || '—' }}</td>
-                      <td>
-                        <span class="badge" [ngClass]="
-                              rule.status == 1
-                                ? 'badge-success'
-                                : 'badge-danger'
-                            ">
-                          {{
-                          rule.status == 1
-                          ? 'Active'
-                          : 'Inactive'
-                          }}
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+          <!-- Production App Access Rules -->
+          <div *ngIf="vendorViewData?.production?.access_rules?.length" class="vendor-view-section mt-4">
+
+            <h6 class="font-weight-bold">Vendor App Access Rules</h6>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+                <thead>
+                  <tr>
+                    <th>Scope</th>
+                    <th>Allowed Start Time</th>
+                    <th>Allowed End Time</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let rule of vendorViewData.production.access_rules">
+                    <td>{{ rule.scope_name || '—' }}</td>
+                    <td>{{ rule.allowed_start_time || '—' }}</td>
+                    <td>{{ rule.allowed_end_time || '—' }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="rule.status == 1
+                          ? 'badge-success'
+                          : 'badge-danger'">
+                        {{ rule.status == 1 ? 'Active' : 'Inactive' }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Footer -->
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
       Close
     </button>
   </div>
 </ng-template>
+
+
+
+
+<ng-template #confirmVendorStatusModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Vendor Status</h5>
+  </div>
+
+  <div class="modal-body">
+    <p class="mb-0">
+      Are you sure you want to
+      <strong>
+        {{ pendingVendorStatus === 1 ? 'activate' : 'deactivate' }}
+      </strong>
+      vendor
+      <strong>{{ pendingVendor?.company_name }}</strong>?
+    </p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" [disabled]="statusUpdateInProgress" (click)="modal.dismiss()">
+      Cancel
+    </button>
+
+    <button type="button" class="btn" [ngClass]="pendingVendorStatus === 1 ? 'btn-success' : 'btn-primary'"
+      [disabled]="statusUpdateInProgress" (click)="confirmVendorStatusChange(modal)">
+      {{ statusUpdateInProgress ? 'Updating...' :
+      (pendingVendorStatus === 1 ? 'Yes, Activate' : 'Yes, Deactivate') }}
+    </button>
+  </div>
+</ng-template>
+
+
+<ng-template #updateVendorPasswordModal>
+  <div class="modal-header password-modal-header">
+    <div>
+      <h5 class="modal-title mb-1">Update {{ passwordVendor.company_name }} ({{ passwordVendor.vendor_code }}) Password
+      </h5>
+
+    </div>
+
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="vendorPassword">
+        New Password <span class="text-danger">*</span>
+      </label>
+
+      <div class="password-input-wrapper">
+        <input id="vendorPassword" type="text" class="form-control" name="vendorPassword" [(ngModel)]="vendorPassword"
+          (ngModelChange)="onVendorPasswordChange()" placeholder="Enter or generate a password"
+          autocomplete="new-password" [disabled]="passwordSaved || savingVendorPassword" />
+      </div>
+
+      <div class="password-strength mt-2">
+        <div class="password-strength-track">
+          <div class="password-strength-fill" [ngClass]="'strength-' + passwordStrength.level"
+            [style.width.%]="passwordStrength.percent">
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-1">
+          <small class="text-muted">Password strength</small>
+          <small [ngClass]="'strength-label-' + passwordStrength.level">
+            {{ passwordStrength.label }}
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="password-requirements">
+      <div [class.requirement-met]="passwordChecks.minLength">
+        <i class="feather" [ngClass]="passwordChecks.minLength ? 'icon-check-circle' : 'icon-circle'"></i>
+        Min 8 characters
+      </div>
+      <div [class.requirement-met]="passwordChecks.uppercase">
+        <i class="feather" [ngClass]="passwordChecks.uppercase ? 'icon-check-circle' : 'icon-circle'"></i>
+        Uppercase
+      </div>
+      <div [class.requirement-met]="passwordChecks.lowercase">
+        <i class="feather" [ngClass]="passwordChecks.lowercase ? 'icon-check-circle' : 'icon-circle'"></i>
+        Lowercase
+      </div>
+      <div [class.requirement-met]="passwordChecks.number">
+        <i class="feather" [ngClass]="passwordChecks.number ? 'icon-check-circle' : 'icon-circle'"></i>
+        One number
+      </div>
+      <div [class.requirement-met]="passwordChecks.special">
+        <i class="feather" [ngClass]="passwordChecks.special ? 'icon-check-circle' : 'icon-circle'"></i>
+        Special character
+      </div>
+    </div>
+
+    <div class="password-actions mt-3">
+      <button type="button" class="btn btn-outline-primary" (click)="generateVendorPassword()"
+        [disabled]="passwordSaved || savingVendorPassword">
+        <i class="feather icon-refresh-cw mr-1"></i>
+        Generate Password
+      </button>
+
+      <button type="button" class="btn btn-outline-secondary" (click)="copyVendorPassword()"
+        [disabled]="!vendorPassword || passwordSaved || savingVendorPassword">
+        <i class="feather icon-copy mr-1"></i>
+        Copy Password
+      </button>
+    </div>
+
+    <div class="alert alert-success mt-3 mb-0" *ngIf="passwordSaved">
+      <i class="feather icon-check-circle mr-1"></i>
+      Password updated successfully. Copying is disabled for this saved password.
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="saveVendorPassword()"
+      [disabled]="!isVendorPasswordValid || passwordSaved || savingVendorPassword">
+      <i class="feather icon-save mr-1"></i>
+      {{ savingVendorPassword ? 'Saving...' : 'Save Password' }}
+    </button>
+
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      Close
+    </button>
+  </div>
+</ng-template>
+
 
 </html>

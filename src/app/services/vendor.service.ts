@@ -87,13 +87,27 @@ export class VendorService {
     createdBy: number | null,
     updatedBy: number | null,
   ) {
-    return this.http.post(Constants.BASE_URL + '/vendors/ips/save', {
+    const payload = {
       vendor_id: vendorId,
-      production_ips: productionIps,
-      sandbox_ips: sandboxIps,
+      production: (productionIps || [])
+        .filter((ip) => ip.ip_address?.trim())
+        .map((ip) => ({
+          id: ip.id || null,
+          ip_address: ip.ip_address.trim(),
+          is_active: ip.is_active ? 1 : 0,
+        })),
+      sandbox: (sandboxIps || [])
+        .filter((ip) => ip.ip_address?.trim())
+        .map((ip) => ({
+          id: ip.id || null,
+          ip_address: ip.ip_address.trim(),
+          is_active: ip.is_active ? 1 : 0,
+        })),
       created_by: createdBy,
       updated_by: updatedBy,
-    });
+    };
+
+    return this.http.post(Constants.BASE_URL + '/vendors/ips/save', payload);
   }
 
   changeVendorIpStatus(id: number, isActive: number, updatedBy: number | null) {
@@ -177,6 +191,15 @@ export class VendorService {
     );
   }
 
+  updateVendorPassword(vendorId: number, password: string) {
+    return this.http.post(
+      Constants.BASE_URL + '/vendors/' + vendorId + '/password',
+      {
+        password: password,
+      },
+    );
+  }
+
   saveVendorAppAccessRules(
     vendorId: number,
     sandbox: any[],
@@ -211,5 +234,45 @@ export class VendorService {
         updated_by: updatedBy,
       },
     );
+  }
+
+  addSandboxBalance(payload: {
+    vendor_id: number;
+    amount: number;
+    remarks: string;
+    created_by: number;
+  }) {
+    return this.http.post(
+      Constants.BASE_URL + '/vendors/sandbox-balance',
+      payload,
+    );
+  }
+
+  getBusOperators(): any {
+    return this.http.post<{
+      status: number;
+      message: string;
+      data: {
+        id: number;
+        organisation_name: string;
+      }[];
+    }>(Constants.BASE_URL + '/bus-operators', {});
+  }
+
+  getBusOperatorDetails(operatorId: number) {
+    return this.http.post<{
+      status: number;
+      message: string;
+      data: {
+        operator_id: number;
+        company_name: string;
+        contact_name: string;
+        contact_email: string;
+        contact_phone: string;
+        rate_limit_per_minute: number;
+        has_gst: number;
+        address: string;
+      };
+    }>(`${Constants.BASE_URL}/bus-operators/${operatorId}/details`, {});
   }
 }

@@ -1,30 +1,17 @@
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.8)"
-  size="large"
-  color="#fff"
-  type="timer"
-  [fullScreen]="true"
-  ><p style="color: white">Loading...</p></ngx-spinner
->
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
 
 <div class="row">
   <div class="col-12">
-    <app-card
-      [hidHeader]="false"
-      cardTitle="Campaign Notification List"
-      cardClass="card-datatable table-border-style user-profile-list campaign-full-width"
-      [options]="false"
-      [isCardFooter]="false"
-    >
+    <app-card [hidHeader]="false" cardTitle="Campaign Notification List"
+      cardClass="card-datatable table-border-style user-profile-list campaign-full-width" [options]="false"
+      [isCardFooter]="false">
       <form [formGroup]="searchForm">
         <div class="row align-items-end flex-nowrap">
           <!-- Add Button -->
           <div class="col mb-3">
-            <button
-              type="button"
-              class="btn btn-success btn-block"
-              (click)="ResetAttributes(); OpenModal(content)"
-            >
+            <button type="button" class="btn btn-success btn-block" (click)="ResetAttributes(); OpenModal(content)">
               <i class="fa fa-plus"></i>
               Add Campaign Notification
             </button>
@@ -34,16 +21,10 @@
           <div class="col mb-3">
             <label class="font-weight-bold"> Campaign Category </label>
 
-            <select
-              class="form-control sml_input"
-              formControlName="notification_category_id"
-            >
+            <select class="form-control sml_input" formControlName="notification_category_id">
               <option value="">Select Campaign Category</option>
 
-              <option
-                *ngFor="let category of notificationCategories"
-                [value]="category.id"
-              >
+              <option *ngFor="let category of notificationCategories" [value]="category.id">
                 {{ category.category_name }}
               </option>
             </select>
@@ -77,10 +58,7 @@
           <div class="col mb-3">
             <label class="font-weight-bold"> Schedule Type </label>
 
-            <select
-              class="form-control sml_input"
-              formControlName="schedule_type"
-            >
+            <select class="form-control sml_input" formControlName="schedule_type">
               <option value="">SCHEDULE TYPE</option>
               <option value="IMMEDIATE">Immediate</option>
               <option value="SCHEDULED">Scheduled</option>
@@ -96,11 +74,8 @@
               <span class="text-danger">*</span>
             </label>
 
-            <select
-              class="form-control"
-              formControlName="target_type"
-              (change)="targetTypeChange(form.get('target_type')?.value)"
-            >
+            <select class="form-control" formControlName="target_type"
+              (change)="targetTypeChange(form.get('target_type')?.value)">
               <option value="">Select Target Type</option>
               <option value="ALL">ALL</option>
               <option value="ACTIVE">ACTIVE</option>
@@ -116,19 +91,11 @@
           <!-- Search -->
           <div class="col-lg-9 col-md-8 mb-2">
             <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search Campaign Name / Title / Message"
-                formControlName="name"
-              />
+              <input type="text" class="form-control" placeholder="Search Campaign Name / Title / Message"
+                formControlName="name" />
 
               <div class="input-group-append">
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  (click)="search()"
-                >
+                <button type="button" class="btn btn-success" (click)="search()">
                   <i class="fa fa-search"></i>
                 </button>
               </div>
@@ -137,23 +104,14 @@
 
           <!-- Refresh -->
           <div class="col-lg-1 col-md-2 mb-2">
-            <button
-              type="button"
-              class="btn btn-danger btn-block"
-              (click)="refresh()"
-              title="Refresh"
-            >
+            <button type="button" class="btn btn-danger btn-block" (click)="refresh()" title="Refresh">
               <i class="fas fa-sync-alt"></i>
             </button>
           </div>
 
           <!-- Rows -->
           <div class="col-lg-2 col-md-2 mb-2">
-            <select
-              class="form-control"
-              formControlName="rows_number"
-              (change)="search()"
-            >
+            <select class="form-control" formControlName="rows_number" (change)="search()">
               <option value="10">10 Rows</option>
               <option value="25">25 Rows</option>
               <option value="50">50 Rows</option>
@@ -179,6 +137,7 @@
               <th scope="col">Is Queued</th>
               <th scope="col">Status</th>
               <th scope="col">Action</th>
+              <th scope="col">Kill Campaign</th>
               <!-- <th width="100" class="hide_print" >&nbsp; </th> -->
             </tr>
           </thead>
@@ -194,35 +153,23 @@
               <td>{{ campaign.created_at | date: "dd/MM/yyyy H:mm:ss" }}</td>
               <td>{{ campaign.created_by_name }}</td>
               <td>
-                <span
-                  *ngIf="campaign.queued_status === 'YES'"
-                  class="status-badge status-yes"
-                >
+                <span *ngIf="campaign.queued_status === 'YES'" class="status-badge status-yes">
                   Yes
                 </span>
 
-                <span
-                  *ngIf="campaign.queued_status === 'NO'"
-                  class="status-badge status-no"
-                >
+                <span *ngIf="campaign.queued_status === 'NO'" class="status-badge status-no">
                   No
                 </span>
               </td>
               <td>
                 <div>
-                  <label
-                    *ngIf="campaign.active_status == 1"
-                    class="badge badge-light-primary pointer text-dark"
-                    (click)="changeStatus($event, campaign.id)"
-                  >
+                  <label *ngIf="campaign.active_status == 1" class="badge badge-light-primary pointer text-dark"
+                    (click)="changeStatus($event, campaign.id)">
                     Active
                   </label>
 
-                  <label
-                    *ngIf="campaign.active_status == 0"
-                    class="badge badge-light-danger pointer text-dark"
-                    (click)="changeStatus($event, campaign.id)"
-                  >
+                  <label *ngIf="campaign.active_status == 0" class="badge badge-light-danger pointer text-dark"
+                    (click)="changeStatus($event, campaign.id)">
                     Inactive
                   </label>
                 </div>
@@ -230,20 +177,35 @@
 
               <td class="hide_print">
                 <div class="overlay-edit">
-                  <button
-                    type="button"
-                    class="btn btn-icon btn-success"
-                    (click)="editCampaignNotification($event, i, content)"
-                  >
+                  <button type="button" class="btn btn-icon btn-success" title="Edit Campaign"
+                    (click)="editCampaignNotification($event, i, content)">
                     <i class="feather icon-edit"></i>
                   </button>
                 </div>
               </td>
-            </tr>
+
+              <td class="hide_print text-center">
+
+                <!-- ACTIVE / NOT CANCELLED -->
+                <div class="campaign-toggle" *ngIf="campaign.execution_status !== 'CANCELLED'"
+                  (click)="killCampaign(campaign.id, killCampaignModal)" title="Stop Campaign">
+                  <div class="toggle-track active">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+
+                <!-- CANCELLED -->
+                <div class="campaign-toggle" *ngIf="campaign.execution_status === 'CANCELLED'" title="Campaign Killed">
+                  <div class="toggle-track inactive">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+
+              </td>
           </tbody>
           <tbody *ngIf="campaignNotifications?.length == 0">
             <tr>
-              <td colspan="10" class="text-center">
+              <td colspan="11" class="text-center">
                 No Campaign Notifications Found
               </td>
             </tr>
@@ -259,39 +221,24 @@
               </div>
             </div>
             <div class="col-6">
-              <div
-                class="d-flex flex-row-reverse mb-4 text-center"
-                *ngIf="pagination?.links"
-              >
+              <div class="d-flex flex-row-reverse mb-4 text-center" *ngIf="pagination?.links">
                 <nav class="my-1 pt-1">
                   <ul class="pagination pagination-circle pg-blue mb-0">
-                    <li
-                      (click)="search(pagination.first_page_url, statusLabel)"
-                      class="page-item {{
+                    <li (click)="search(pagination.first_page_url, statusLabel)" class="page-item {{
                         pagination.current_page == 1 ? 'disabled' : ''
-                      }} clearfix d-none d-md-block"
-                    >
+                      }} clearfix d-none d-md-block">
                       <a class="page-link">First</a>
                     </li>
-                    <li
-                      class="page-item"
-                      *ngFor="let b of pagination.links; let i = index"
-                    >
-                      <a
-                        class="page-link {{
+                    <li class="page-item" *ngFor="let b of pagination.links; let i = index">
+                      <a class="page-link {{
                           pagination.current_page == b.label ? 'active' : ''
-                        }}"
-                        (click)="b.url ? search(b.url) : ''"
-                      >
+                        }}" (click)="b.url ? search(b.url) : ''">
                         {{ b.label }}
                       </a>
                     </li>
-                    <li
-                      class="page-item {{
+                    <li class="page-item {{
                         pagination.next_page_url == null ? 'disabled' : ''
-                      }} clearfix d-none d-md-block"
-                      (click)="search(pagination.last_page_url, statusLabel)"
-                    >
+                      }} clearfix d-none d-md-block" (click)="search(pagination.last_page_url, statusLabel)">
                       <a class="page-link">Last</a>
                     </li>
                   </ul>
@@ -303,13 +250,8 @@
       </div>
 
       <div class="app-card-footer">
-        <button
-          type="button"
-          #addnew
-          class="btn btn-primary btn-add-task m-t-10 invisible"
-          id="modal"
-          (click)="ResetAttributes(); OpenModal(content)"
-        >
+        <button type="button" #addnew class="btn btn-primary btn-add-task m-t-10 invisible" id="modal"
+          (click)="ResetAttributes(); OpenModal(content)">
           Add
         </button>
         <ng-template #content let-modal>
@@ -317,12 +259,7 @@
             <div class="modal-header">
               <h5 class="ng-tns-c116-5">{{ ModalHeading }}</h5>
 
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -337,12 +274,8 @@
                       <span class="text-danger">*</span>
                     </label>
 
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="campaign_name"
-                      placeholder="Enter Campaign Name"
-                    />
+                    <input type="text" class="form-control" formControlName="campaign_name"
+                      placeholder="Enter Campaign Name" />
                   </div>
                 </div>
 
@@ -353,12 +286,8 @@
                       <span class="text-danger">*</span>
                     </label>
 
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="title"
-                      placeholder="Enter Notification Title"
-                    />
+                    <input type="text" class="form-control" formControlName="title"
+                      placeholder="Enter Notification Title" />
                   </div>
                 </div>
 
@@ -370,16 +299,10 @@
                       <span class="text-danger">*</span>
                     </label>
 
-                    <select
-                      class="form-control"
-                      formControlName="notification_category_id"
-                    >
+                    <select class="form-control" formControlName="notification_category_id">
                       <option value="">Select Campaign Category</option>
 
-                      <option
-                        *ngFor="let category of notificationCategories"
-                        [value]="category.id"
-                      >
+                      <option *ngFor="let category of notificationCategories" [value]="category.id">
                         {{ category.category_name }}
                       </option>
                     </select>
@@ -394,12 +317,8 @@
                       <span class="text-danger">*</span>
                     </label>
 
-                    <textarea
-                      class="form-control"
-                      rows="5"
-                      formControlName="message"
-                      placeholder="Enter Notification Message"
-                    ></textarea>
+                    <textarea class="form-control" rows="5" formControlName="message"
+                      placeholder="Enter Notification Message"></textarea>
                   </div>
                 </div>
 
@@ -407,20 +326,12 @@
                 <div class="col-md-6">
                   <label>Image</label>
 
-                  <div
-                    class="target-settings-box"
-                    [class.active]="
+                  <div class="target-settings-box" [class.active]="
                       form.get('type')?.value !== '' &&
                       form.get('type')?.value !== null
-                    "
-                  >
+                    ">
                     <div class="form-group">
-                      <input
-                        type="file"
-                        class="form-control"
-                        accept="image/*"
-                        (change)="onImageChange($event)"
-                      />
+                      <input type="file" class="form-control" accept="image/*" (change)="onImageChange($event)" />
                     </div>
 
                     <!-- Image Preview -->
@@ -430,11 +341,7 @@
                       <div class="image-preview mb-3">
                         <img [src]="imagePreview" alt="Image Preview" />
 
-                        <button
-                          type="button"
-                          class="remove-image"
-                          (click)="removeImage()"
-                        >
+                        <button type="button" class="remove-image" (click)="removeImage()">
                           ×
                         </button>
                       </div>
@@ -449,20 +356,13 @@
                     <span class="text-danger">*</span>
                   </label>
 
-                  <div
-                    class="target-settings-box"
-                    [class.active]="
+                  <div class="target-settings-box" [class.active]="
                       form.get('type')?.value !== '' &&
                       form.get('type')?.value !== null
-                    "
-                  >
+                    ">
                     <!-- Type -->
                     <div class="form-group">
-                      <select
-                        class="form-control"
-                        formControlName="type"
-                        (change)="onTypeChange()"
-                      >
+                      <select class="form-control" formControlName="type" (change)="onTypeChange()">
                         <option value="">Select Type</option>
                         <option value="PROMOTIONAL">PROMOTIONAL</option>
                         <option value="TRANSACTIONAL">TRANSACTIONAL</option>
@@ -472,22 +372,13 @@
                     </div>
 
                     <!-- Coupon - Only for PROMOTIONAL -->
-                    <div
-                      class="form-group"
-                      *ngIf="form.get('type')?.value === 'PROMOTIONAL'"
-                    >
+                    <div class="form-group" *ngIf="form.get('type')?.value === 'PROMOTIONAL'">
                       <label> Coupon </label>
 
-                      <select
-                        class="form-control"
-                        formControlName="coupon_code"
-                      >
+                      <select class="form-control" formControlName="coupon_code">
                         <option value="">Select Coupon</option>
 
-                        <option
-                          *ngFor="let coupon of coupons"
-                          [value]="coupon.id"
-                        >
+                        <option *ngFor="let coupon of coupons" [value]="coupon.id">
                           {{ coupon.coupon_title }} ({{ coupon.coupon_code }})
                         </option>
                       </select>
@@ -501,19 +392,13 @@
                     Schedule Type
                     <span class="text-danger">*</span>
                   </label>
-                  <div
-                    class="target-settings-box"
-                    [class.active]="
+                  <div class="target-settings-box" [class.active]="
                       form.get('target_type')?.value !== '' &&
                       form.get('target_type')?.value !== null
-                    "
-                  >
+                    ">
                     <div class="form-group">
-                      <select
-                        class="form-control"
-                        formControlName="schedule_type"
-                        (change)="scheduleTypeChange($event.target.value)"
-                      >
+                      <select class="form-control" formControlName="schedule_type"
+                        (change)="scheduleTypeChange($event.target.value)">
                         <option value="">Select Schedule</option>
                         <option value="IMMEDIATE">IMMEDIATE</option>
                         <option value="SCHEDULED">SCHEDULED</option>
@@ -523,19 +408,12 @@
                     </div>
 
                     <!-- Scheduled Date / Time -->
-                    <div
-                      class="col-md-12 scheduled-section"
-                      *ngIf="form.get('schedule_type')?.value === 'SCHEDULED'"
-                    >
+                    <div class="col-md-12 scheduled-section" *ngIf="form.get('schedule_type')?.value === 'SCHEDULED'">
                       <div formArrayName="schedules">
-                        <div
-                          class="row align-items-end"
-                          *ngFor="
+                        <div class="row align-items-end" *ngFor="
                             let schedule of schedules.controls;
                             let i = index
-                          "
-                          [formGroupName]="i"
-                        >
+                          " [formGroupName]="i">
                           <!-- Schedule Date -->
                           <div class="col-md-4">
                             <div class="form-group">
@@ -544,11 +422,7 @@
                                 <span class="text-danger">*</span>
                               </label>
 
-                              <input
-                                type="date"
-                                class="form-control"
-                                formControlName="schedule_date"
-                              />
+                              <input type="date" class="form-control" formControlName="schedule_date" />
                             </div>
                           </div>
 
@@ -560,11 +434,7 @@
                                 <span class="text-danger">*</span>
                               </label>
 
-                              <input
-                                type="time"
-                                class="form-control"
-                                formControlName="start_time"
-                              />
+                              <input type="time" class="form-control" formControlName="start_time" />
                             </div>
                           </div>
 
@@ -576,11 +446,7 @@
                                 <span class="text-danger">*</span>
                               </label>
 
-                              <input
-                                type="time"
-                                class="form-control"
-                                formControlName="end_time"
-                              />
+                              <input type="time" class="form-control" formControlName="end_time" />
                             </div>
                           </div>
 
@@ -588,22 +454,13 @@
                           <div class="col-md-2">
                             <div class="form-group">
                               <!-- Add -->
-                              <button
-                                type="button"
-                                class="btn btn-success mr-2"
-                                *ngIf="i === 0"
-                                (click)="addSchedule()"
-                              >
+                              <button type="button" class="btn btn-success mr-2" *ngIf="i === 0"
+                                (click)="addSchedule()">
                                 <i class="fa fa-plus"></i>
                               </button>
 
                               <!-- Remove -->
-                              <button
-                                type="button"
-                                class="btn btn-danger"
-                                *ngIf="i > 0"
-                                (click)="removeSchedule(i)"
-                              >
+                              <button type="button" class="btn btn-danger" *ngIf="i > 0" (click)="removeSchedule(i)">
                                 <i class="fa fa-minus"></i>
                               </button>
                             </div>
@@ -620,19 +477,13 @@
                     Target Type
                     <span class="text-danger">*</span>
                   </label>
-                  <div
-                    class="target-settings-box"
-                    [class.active]="
+                  <div class="target-settings-box" [class.active]="
                       form.get('target_type')?.value !== '' &&
                       form.get('target_type')?.value !== null
-                    "
-                  >
+                    ">
                     <!-- Target Type -->
-                    <select
-                      class="form-control"
-                      formControlName="target_type"
-                      (change)="targetTypeChange($event.target.value)"
-                    >
+                    <select class="form-control" formControlName="target_type"
+                      (change)="targetTypeChange($event.target.value)">
                       <option value="">Select Target</option>
                       <option value="ALL">ALL</option>
                       <option value="ACTIVE">ACTIVE</option>
@@ -643,13 +494,10 @@
                     </select>
 
                     <!-- Active User Duration -->
-                    <div
-                      class="row"
-                      *ngIf="
+                    <div class="row" *ngIf="
                         form.get('target_type')?.value === 'ACTIVE' ||
                         form.get('target_type')?.value === 'CUSTOM'
-                      "
-                    >
+                      ">
                       <!-- Active User Duration - 10 columns -->
                       <div class="col-md-10">
                         <div class="form-group">
@@ -658,11 +506,8 @@
                             <span class="text-danger">*</span>
                           </label>
 
-                          <select
-                            class="form-control"
-                            formControlName="active_user_duration"
-                            (change)="onSelectedDurationChange()"
-                          >
+                          <select class="form-control" formControlName="active_user_duration"
+                            (change)="onSelectedDurationChange()">
                             <option value="">Select Duration</option>
                             <option [value]="7">1 Week</option>
                             <option [value]="14">2 Weeks</option>
@@ -683,22 +528,14 @@
                         <div class="form-group">
                           <label>Active Users</label>
 
-                          <input
-                            type="text"
-                            class="form-control"
-                            [value]="
+                          <input type="text" class="form-control" [value]="
                               loadingValidUsers ? 'Loading...' : validUserCount
-                            "
-                            readonly
-                          />
+                            " readonly />
                         </div>
                       </div>
                     </div>
                     <!-- SELECTED USER DURATION -->
-                    <div
-                      class="row"
-                      *ngIf="form.get('target_type')?.value === 'SELECTED'"
-                    >
+                    <div class="row" *ngIf="form.get('target_type')?.value === 'SELECTED'">
                       <!-- Duration - 10 columns -->
                       <div class="col-md-10">
                         <div class="form-group">
@@ -707,14 +544,8 @@
                             <span class="text-danger">*</span>
                           </label>
 
-                          <input
-                            type="number"
-                            class="form-control"
-                            formControlName="active_user_duration"
-                            min="1"
-                            placeholder="Enter duration in days"
-                            (input)="onSelectedDurationChange()"
-                          />
+                          <input type="number" class="form-control" formControlName="active_user_duration" min="1"
+                            placeholder="Enter duration in days" (input)="onSelectedDurationChange()" />
                         </div>
                       </div>
 
@@ -723,30 +554,19 @@
                         <div class="form-group">
                           <label> Active Users </label>
 
-                          <input
-                            type="text"
-                            class="form-control"
-                            [value]="
+                          <input type="text" class="form-control" [value]="
                               loadingValidUsers ? 'Loading...' : validUserCount
-                            "
-                            readonly
-                          />
+                            " readonly />
                         </div>
                       </div>
                     </div>
-                    <div
-                      class="form-group"
-                      *ngIf="form.get('target_type')?.value === 'CUSTOM'"
-                    >
+                    <div class="form-group" *ngIf="form.get('target_type')?.value === 'CUSTOM'">
                       <label>
                         Custom Scenario
                         <span class="text-danger">*</span>
                       </label>
 
-                      <select
-                        class="form-control"
-                        formControlName="custom_scenario"
-                      >
+                      <select class="form-control" formControlName="custom_scenario">
                         <option value="">Select Scenario</option>
 
                         <option value="ROUTE">Route</option>
@@ -757,10 +577,7 @@
                     </div>
 
                     <!-- SELECTED USERS -->
-                    <div
-                      class="form-group"
-                      *ngIf="form.get('target_type')?.value === 'SELECTED'"
-                    >
+                    <div class="form-group" *ngIf="form.get('target_type')?.value === 'SELECTED'">
                       <!-- SELECT USERS -->
                       <div class="form-group">
                         <label>
@@ -768,15 +585,9 @@
                           <span class="text-danger">*</span>
                         </label>
 
-                        <div
-                          class="selected-user-dropdown-container"
-                          (click)="$event.stopPropagation()"
-                        >
+                        <div class="selected-user-dropdown-container" (click)="$event.stopPropagation()">
                           <!-- SELECT BOX -->
-                          <div
-                            class="selected-user-select-box"
-                            (click)="toggleUserDropdown($event)"
-                          >
+                          <div class="selected-user-select-box" (click)="toggleUserDropdown($event)">
                             <span *ngIf="selectedUsers.length === 0">
                               Select Users
                             </span>
@@ -789,62 +600,34 @@
                           </div>
 
                           <!-- USER DROPDOWN -->
-                          <div
-                            class="selected-user-dropdown-panel"
-                            *ngIf="userDropdownOpen"
-                          >
+                          <div class="selected-user-dropdown-panel" *ngIf="userDropdownOpen">
                             <!-- SEARCH -->
                             <div class="user-search-box">
-                              <input
-                                type="text"
-                                class="form-control"
-                                placeholder="Search ID, name, email or phone..."
-                                [(ngModel)]="userSearch"
-                                [ngModelOptions]="{ standalone: true }"
-                                (ngModelChange)="filterUsers()"
-                                (click)="$event.stopPropagation()"
-                              />
+                              <input type="text" class="form-control" placeholder="Search ID, name, email or phone..."
+                                [(ngModel)]="userSearch" [ngModelOptions]="{ standalone: true }"
+                                (ngModelChange)="filterUsers()" (click)="$event.stopPropagation()" />
                             </div>
 
                             <!-- SELECT ALL / DESELECT ALL -->
-                            <div
-                              class="user-list-actions"
-                              *ngIf="filteredUsers.length > 0"
-                            >
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-link"
-                                (click)="
+                            <div class="user-list-actions" *ngIf="filteredUsers.length > 0">
+                              <button type="button" class="btn btn-sm btn-link" (click)="
                                   selectAllUsers(); $event.stopPropagation()
-                                "
-                              >
+                                ">
                                 Select All
                               </button>
 
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-link text-danger"
-                                (click)="
+                              <button type="button" class="btn btn-sm btn-link text-danger" (click)="
                                   deselectAllUsers(); $event.stopPropagation()
-                                "
-                              >
+                                ">
                                 Deselect All
                               </button>
                             </div>
 
                             <!-- USER LIST -->
                             <div class="user-list">
-                              <div
-                                class="user-option"
-                                *ngFor="let user of filteredUsers"
-                                (click)="toggleUser(user)"
-                              >
-                                <input
-                                  type="checkbox"
-                                  [checked]="isUserSelected(user.id)"
-                                  (click)="$event.stopPropagation()"
-                                  (change)="toggleUser(user)"
-                                />
+                              <div class="user-option" *ngFor="let user of filteredUsers" (click)="toggleUser(user)">
+                                <input type="checkbox" [checked]="isUserSelected(user.id)"
+                                  (click)="$event.stopPropagation()" (change)="toggleUser(user)" />
 
                                 <div class="user-details">
                                   <div class="user-name">
@@ -865,10 +648,7 @@
                                 </div>
                               </div>
 
-                              <div
-                                class="no-user"
-                                *ngIf="filteredUsers.length === 0"
-                              >
+                              <div class="no-user" *ngIf="filteredUsers.length === 0">
                                 No users found
                               </div>
                             </div>
@@ -878,19 +658,10 @@
                     </div>
 
                     <!-- SELECTED USER CHIPS -->
-                    <div
-                      class="col-md-12"
-                      *ngIf="form.get('target_type')?.value === 'SELECTED'"
-                    >
+                    <div class="col-md-12" *ngIf="form.get('target_type')?.value === 'SELECTED'">
                       <div class="selected-users-box">
-                        <div
-                          class="selected-users-content"
-                          *ngIf="getSelectedUsers().length > 0"
-                        >
-                          <span
-                            class="user-chip"
-                            *ngFor="let user of getSelectedUsers()"
-                          >
+                        <div class="selected-users-content" *ngIf="getSelectedUsers().length > 0">
+                          <span class="user-chip" *ngFor="let user of getSelectedUsers()">
                             <span>
                               {{ user.name }}
 
@@ -903,10 +674,7 @@
                           </span>
                         </div>
 
-                        <div
-                          class="empty-selected-users"
-                          *ngIf="getSelectedUsers().length === 0"
-                        >
+                        <div class="empty-selected-users" *ngIf="getSelectedUsers().length === 0">
                           No users selected
                         </div>
                       </div>
@@ -914,13 +682,10 @@
                   </div>
 
                   <!-- Route Fields -->
-                  <div
-                    class="row"
-                    *ngIf="
+                  <div class="row" *ngIf="
                       form.get('target_type')?.value === 'CUSTOM' &&
                       form.get('custom_scenario')?.value === 'ROUTE'
-                    "
-                  >
+                    ">
                     <!-- Source -->
                     <div class="col-md-6">
                       <div class="form-group">
@@ -932,10 +697,7 @@
                         <select class="form-control" formControlName="source">
                           <option value="">Select Source</option>
 
-                          <option
-                            *ngFor="let location of locations"
-                            [value]="location.id"
-                          >
+                          <option *ngFor="let location of locations" [value]="location.id">
                             {{ location.name }}
                           </option>
                         </select>
@@ -950,16 +712,10 @@
                           <span class="text-danger">*</span>
                         </label>
 
-                        <select
-                          class="form-control"
-                          formControlName="destination"
-                        >
+                        <select class="form-control" formControlName="destination">
                           <option value="">Select Destination</option>
 
-                          <option
-                            *ngFor="let location of locations"
-                            [value]="location.id"
-                          >
+                          <option *ngFor="let location of locations" [value]="location.id">
                             {{ location.name }}
                           </option>
                         </select>
@@ -968,13 +724,10 @@
                   </div>
 
                   <!-- Operator -->
-                  <div
-                    class="form-group"
-                    *ngIf="
+                  <div class="form-group" *ngIf="
                       form.get('target_type')?.value === 'CUSTOM' &&
                       form.get('custom_scenario')?.value === 'OPERATOR'
-                    "
-                  >
+                    ">
                     <label>
                       Operator
                       <span class="text-danger">*</span>
@@ -982,10 +735,7 @@
 
                     <select class="form-control" formControlName="operator_id">
                       <option value="">Select Operator</option>
-                      <option
-                        *ngFor="let operator of operators"
-                        [value]="operator.id"
-                      >
+                      <option *ngFor="let operator of operators" [value]="operator.id">
                         {{ operator.organisation_name }}
                       </option>
                     </select>
@@ -994,26 +744,18 @@
 
                 <!-- Schedule Minutes -->
                 <!-- Schedule Minutes -->
-                <div
-                  class="col-md-6"
-                  *ngIf="
+                <div class="col-md-6" *ngIf="
                     form.get('schedule_type')?.value === 'BEFORE_EVENT' ||
                     form.get('schedule_type')?.value === 'AFTER_EVENT'
-                  "
-                >
+                  ">
                   <div class="form-group">
                     <label>
                       Schedule Minutes
                       <small class="text-muted">(Use + or -)</small>
                     </label>
 
-                    <input
-                      type="number"
-                      class="form-control"
-                      formControlName="schedule_minutes"
-                      placeholder="Example: -30 or 30"
-                      step="1"
-                    />
+                    <input type="number" class="form-control" formControlName="schedule_minutes"
+                      placeholder="Example: -30 or 30" step="1" />
 
                     <small class="text-info">
                       <strong>-</strong> = Before Event &nbsp;&nbsp;
@@ -1026,23 +768,13 @@
 
             <!-- Modal Footer -->
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-primary"
-                [disabled]="spinner.isSpinnerShowing || form.invalid"
-                (click)="saveCampaignNotification()"
-                ngbAutofocus
-              >
+              <button type="button" class="btn btn-primary" [disabled]="spinner.isSpinnerShowing || form.invalid"
+                (click)="saveCampaignNotification()" ngbAutofocus>
                 {{ ModalBtn }}
               </button>
 
-              <button
-                type="button"
-                class="btn btn-default"
-                data-dismiss="modal"
-                #defaultClick
-                (click)="modal.dismiss('Cross click')"
-              >
+              <button type="button" class="btn btn-default" data-dismiss="modal" #defaultClick
+                (click)="modal.dismiss('Cross click')">
                 Close
               </button>
             </div>
@@ -1051,4 +783,41 @@
       </div>
     </app-card>
   </div>
+
+  <ng-template #killCampaignModal let-modal>
+
+    <div class="modal-header">
+      <h5 class="modal-title">
+        Stop Campaign
+      </h5>
+
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')">
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="kill-campaign-warning">
+        <div class="warning-icon">
+          <i class="feather icon-alert-triangle"></i>
+        </div>
+        <div>
+          <h6> Are you sure you want to stop this campaign?</h6>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel')">
+        Cancel
+      </button>
+
+      <button type="button" class="btn btn-danger" (click)="modal.close(true)">
+        <i class="feather icon-stop-circle mr-1"></i>
+        Stop Campaign
+      </button>
+
+    </div>
+
+  </ng-template>
 </div>

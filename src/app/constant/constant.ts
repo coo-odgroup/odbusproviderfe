@@ -20,7 +20,8 @@ export class Constants {
     // public static CONSUMER_API_URL:any ='https://consumer.odbus.co.in/api/';
     // public static CONSUMER_PUBLIC_URL:any ='https://consumer.odbus.co.in/public/';
     // public static PATHURL:any = 'https://provider.odbus.co.in/public/uploads/';
-    // public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/'
+    // public static DOWNLOAD_URL: any = 'https://provider.odbus.co.in/storage/';
+    // public static NOTIFICATION_URL: any = 'https://notification.odbus.co.in/api'
     
     //For Testing
     // public static BASE_URL: any = 'https://odapi.adglob.in/api';
@@ -28,6 +29,7 @@ export class Constants {
     // public static CONSUMER_API_URL: any = 'https://odclient.adglob.in/api/';
     // public static PATHURL: any = 'https://odapi.adglob.in/uploads/';
     // public static DOWNLOAD_URL: any = 'https://odapi.adglob.in/storage/';
+    // public static NOTIFICATION_URL: any = 'https://nt.adglob.in/api';
 
     // FOR LOCAL
     public static BASE_URL:any ='http://localhost:7001/ODBUS/odbusproviderbe/api';
@@ -35,7 +37,7 @@ export class Constants {
     public static CONSUMER_API_URL:any = 'http://localhost:7001/ODBUS/odbusconsumerbe/api/';
     public static PATHURL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/public/uploads/';
     public static DOWNLOAD_URL:any = 'http://localhost:7001/ODBUS/odbusproviderbe/storage/';
-    
+    public static NOTIFICATION_URL: any = 'http://localhost:7001/ODBUS/odbusproviderbe/storage/';
 
 
     // testing

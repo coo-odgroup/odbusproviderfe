@@ -139,6 +139,7 @@ export class CampaignnotificationsComponent implements OnInit {
 
     this.searchForm = this.fb.group({
       name: [''],
+      notification_category_id: [''],
       status: [''],
       type: [''],
       target_type: [''],
@@ -153,6 +154,7 @@ export class CampaignnotificationsComponent implements OnInit {
     this.spinner.show();
     const data = {
       name: this.searchForm.value.name,
+      notification_category_id: this.searchForm.value.notification_category_id,
       status: this.searchForm.value.status,
       type: this.searchForm.value.type,
       target_type: this.searchForm.value.target_type,
@@ -160,7 +162,6 @@ export class CampaignnotificationsComponent implements OnInit {
       rows_number: this.searchForm.value.rows_number,
     };
 
-    // console.log(data);
     if (pageurl != '') {
       this.campaignNotificationService
         .getAllPaginationData(pageurl, data)
@@ -175,7 +176,6 @@ export class CampaignnotificationsComponent implements OnInit {
         this.campaignNotifications = res.data.data || [];
         this.pagination = res.data;
         this.all = res;
-        //console.log(this.apiuser);
         this.spinner.hide();
       });
     }
@@ -192,7 +192,6 @@ export class CampaignnotificationsComponent implements OnInit {
     });
 
     this.search();
-
     this.search();
   }
 
@@ -785,9 +784,6 @@ export class CampaignnotificationsComponent implements OnInit {
               );
             }
 
-            // --------------------------------
-            // Restore schedules
-            // --------------------------------
             if (
               campaign.schedule_type === 'SCHEDULED' &&
               schedules.length > 0
@@ -819,10 +815,6 @@ export class CampaignnotificationsComponent implements OnInit {
                 );
               });
             }
-
-            // --------------------------------
-            // Restore image
-            // --------------------------------
             if (campaign.image) {
               this.imagePreview =
                 Constants.BASE_URL.replace('/api', '') + '/' + campaign.image;
@@ -830,33 +822,18 @@ export class CampaignnotificationsComponent implements OnInit {
               this.imagePreview = null;
             }
 
-            // --------------------------------
-            // Set modal heading
-            // --------------------------------
             this.ModalHeading = 'Edit Campaign Notification';
-
             this.ModalBtn = 'Update';
-
-            // --------------------------------
-            // Update form validity
-            // --------------------------------
             this.form.updateValueAndValidity();
 
             console.log('FINAL EDIT FORM:', this.form.value);
-
-            // --------------------------------
-            // NOW open modal
-            // --------------------------------
             this.spinner.hide();
-
             this.OpenModal(content);
           },
 
           error: (error) => {
             this.spinner.hide();
-
             console.error('Failed to load campaign notification:', error);
-
             this.notificationService.addToast({
               title: Constants.ErrorTitle,
               msg: 'Failed to load campaign notification',
@@ -917,9 +894,7 @@ export class CampaignnotificationsComponent implements OnInit {
 
           if (response && response.status == 1) {
             this.users = response.data || [];
-
             this.filteredUsers = [...this.users];
-
             this.validUserCount = response.count || this.users.length;
 
             console.log('Valid users:', this.users);
@@ -933,9 +908,7 @@ export class CampaignnotificationsComponent implements OnInit {
 
         (error) => {
           this.loadingValidUsers = false;
-
           console.error('Error loading selected target users:', error);
-
           this.users = [];
           this.filteredUsers = [];
           this.selectedUsers = [];
@@ -1002,11 +975,7 @@ export class CampaignnotificationsComponent implements OnInit {
     }
 
     if (type === 'SCHEDULED') {
-      // Disable minutes
       this.form.get('schedule_minutes')?.disable();
-
-      // IMPORTANT:
-      // Always make sure at least one schedule exists
       if (this.schedules.length === 0) {
         this.schedules.push(
           this.fb.group({
@@ -1023,7 +992,6 @@ export class CampaignnotificationsComponent implements OnInit {
       );
 
       console.log('schedule rows:', this.schedules.length);
-
       console.log('schedule form:', this.schedules.value);
     } else {
       // Remove scheduled rows
@@ -1042,22 +1010,16 @@ export class CampaignnotificationsComponent implements OnInit {
 
     console.log('FINAL schedule_type:', this.form.get('schedule_type')?.value);
 
-    console.log('==============================');
   }
 
   title = 'angular-app';
   fileName = 'Campaign-Notification.xlsx';
 
   exportexcel(): void {
-    /* pass here the table id */
     let element = document.getElementById('print-section');
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-
-    /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    /* save to file */
     XLSX.writeFile(wb, this.fileName);
   }
 
@@ -1114,7 +1076,6 @@ export class CampaignnotificationsComponent implements OnInit {
     const input = event.target as HTMLInputElement;
 
     this.userSearch = input.value;
-
     this.filterUsers();
   }
 
@@ -1131,7 +1092,6 @@ export class CampaignnotificationsComponent implements OnInit {
 
   toggleUser(user: any): void {
     const userId = Number(user.id);
-
     const index = this.selectedUsers.findIndex(
       (selectedUser: any) => Number(selectedUser.id) === userId,
     );
@@ -1192,6 +1152,73 @@ export class CampaignnotificationsComponent implements OnInit {
 
     this.form.patchValue({
       selected_user_ids: userIds,
+    });
+  }
+
+  killCampaign(campaignId: number, content: any): void {
+    if (!campaignId) {
+      return;
+    }
+
+    this.confirmDialogReference = this.modalService.open(content, {
+      centered: true,
+      size: 'md',
+      backdrop: 'static',
+      keyboard: false,
+    });
+
+    this.confirmDialogReference.result.then(
+      (confirmed) => {
+        if (confirmed === true) {
+          this.executeKillCampaign(campaignId);
+        }
+      },
+      () => {
+        // Cancelled / dismissed
+      },
+    );
+  }
+
+  private executeKillCampaign(campaignId: number): void {
+    const data = {
+      id: campaignId,
+      created_by: sessionStorage.getItem('USERID'),
+    };
+
+    this.spinner.show();
+
+    this.campaignNotificationService.killCampaign(data).subscribe({
+      next: (resp: any) => {
+        this.spinner.hide();
+
+        if (resp.status == 1) {
+          this.notificationService.addToast({
+            title: 'Campaign Stopped',
+            msg: resp.message,
+            type: 'success',
+          });
+
+          this.refresh();
+        } else {
+          this.notificationService.addToast({
+            title: 'Error',
+            msg: resp.message || 'Failed to stop campaign',
+            type: 'error',
+          });
+        }
+      },
+
+      error: (error) => {
+        this.spinner.hide();
+
+        console.error('Kill campaign error:', error);
+
+        this.notificationService.addToast({
+          title: 'Error',
+          msg: 'Unable to stop campaign.',
+          type: 'error',
+        });
+      },
     });
   }
 }

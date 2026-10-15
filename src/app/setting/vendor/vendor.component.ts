@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { forkJoin } from 'rxjs';
 import {
   NgbModal,
@@ -16,8 +22,10 @@ import { VendorService } from '../../services/vendor.service';
   styleUrls: ['./vendor.component.scss'],
 })
 export class VendorComponent implements OnInit {
+  @ViewChild('confirmVendorStatusModal')
+  confirmVendorStatusModal!: TemplateRef<any>;
   modalReference!: NgbModalRef;
-
+  isParentVendor: boolean = false;
   vendors: any[] = [];
   allVendors: any[] = [];
   activeVendorSection: string = 'details';
@@ -27,6 +35,8 @@ export class VendorComponent implements OnInit {
   selectedGst: string = '';
   selectedStatus: string = '';
   selectedVendor: any = null;
+  operatorSearchText: string = '';
+  operatorDropdownOpen: boolean = false;
 
   states: any[] = [];
   activeVendorMenu: number | null = null;
@@ -36,17 +46,6 @@ export class VendorComponent implements OnInit {
   currentPage: number = 1;
   totalRecords: number = 0;
   totalPages: number = 1;
-
-  vendorForm: any = {
-    company_name: '',
-    contact_name: '',
-    contact_email: '',
-    contact_phone: '',
-    has_gst: 0,
-    rate_limit_per_minute: null,
-    sandbox: true,
-    production: true,
-  };
 
   // Edit Vendor form
   editVendorForm: any = {
@@ -130,11 +129,52 @@ export class VendorComponent implements OnInit {
   productionScopes: any[] = [];
   vendorRateSandbox: any[] = [];
   vendorRateProduction: any[] = [];
-
+  selectedVendorWalletBalance: number = 0;
   vendorAppAccessRules: any = {
     sandbox: [],
     production: [],
   };
+  loadingOperatorDetails = false;
+  vendorForm: any = {
+    operator_id: null,
+    company_name: '',
+    contact_name: '',
+    contact_email: '',
+    contact_phone: '',
+    rate_limit_per_minute: 100,
+    has_gst: false,
+    address: '',
+  };
+
+  passwordVendor: any = null;
+  vendorPassword: string = '';
+  passwordSaved: boolean = false;
+  savingVendorPassword: boolean = false;
+
+  passwordChecks = {
+    minLength: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    special: false,
+  };
+
+  passwordStrength = {
+    level: 'empty',
+    label: 'Not entered',
+    percent: 0,
+  };
+
+  selectedVendorType: string = '';
+  pendingVendor: any = null;
+  pendingVendorStatus: number | null = null;
+  busOperators: any[] = [];
+  statusUpdateInProgress = false;
+  selectedOperatorId: number | null = null;
+  loadingOperators = false;
+
+  editOperatorName: string = '';
+  editIsParentVendor: boolean = false;
 
   constructor(
     private modalService: NgbModal,
@@ -150,6 +190,7 @@ export class VendorComponent implements OnInit {
   ngOnInit(): void {
     this.getVendors();
     this.getStates();
+    this.loadBusOperators();
   }
 
   OpenModal(content: any): void {
@@ -277,6 +318,15 @@ export class VendorComponent implements OnInit {
       );
     }
 
+    // VENDOR TYPE FILTER
+    if (this.selectedVendorType !== '') {
+      filteredData = filteredData.filter(
+        (vendor: any) =>
+          String(vendor.vendor_type || '').toUpperCase() ===
+          this.selectedVendorType,
+      );
+    }
+
     // STATUS FILTER
     if (this.selectedStatus !== '') {
       filteredData = filteredData.filter(
@@ -284,13 +334,9 @@ export class VendorComponent implements OnInit {
       );
     }
 
-    // TOTAL RECORDS
     this.totalRecords = filteredData.length;
-
-    // TOTAL PAGES
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize) || 1;
 
-    // Safety if current page becomes invalid
     if (this.currentPage > this.totalPages) {
       this.currentPage = this.totalPages;
     }
@@ -299,18 +345,13 @@ export class VendorComponent implements OnInit {
       this.currentPage = 1;
     }
 
-    // PAGINATION
     const startIndex = (this.currentPage - 1) * this.pageSize;
-
     const endIndex = startIndex + this.pageSize;
 
     this.vendors = filteredData.slice(startIndex, endIndex);
   }
 
-  // =========================================================
   // CHANGE PAGE
-  // =========================================================
-
   changePage(page: number): void {
     if (page < 1 || page > this.totalPages) {
       return;
@@ -321,20 +362,14 @@ export class VendorComponent implements OnInit {
     this.applyVendorFilters();
   }
 
-  // =========================================================
   // CHANGE PAGE SIZE
-  // =========================================================
-
   changePageSize(): void {
     this.currentPage = 1;
 
     this.applyVendorFilters();
   }
 
-  // =========================================================
   // GET PAGE NUMBERS
-  // =========================================================
-
   getPageNumbers(): number[] {
     const pages: number[] = [];
 
@@ -345,23 +380,75 @@ export class VendorComponent implements OnInit {
     return pages;
   }
 
-  toggleVendorMenu(vendorId: number, event: Event): void {
+  toggleVendorMenu(vendorId: number, event: MouseEvent): void {
     event.stopPropagation();
 
-    if (this.activeVendorMenu === vendorId) {
-      this.activeVendorMenu = null;
-    } else {
-      this.activeVendorMenu = vendorId;
-    }
+    this.activeVendorMenu =
+      this.activeVendorMenu === vendorId ? null : vendorId;
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.activeVendorMenu = null;
+  }
+
+  loadBusOperators(): void {
+    this.loadingOperators = true;
+
+    this.vendorService.getBusOperators().subscribe({
+      next: (response: any) => {
+        console.log('Bus operators API response:', response);
+
+        if (Number(response?.status) === 1 && Array.isArray(response.data)) {
+          this.busOperators = response.data;
+        } else {
+          this.busOperators = [];
+          console.error('Unexpected bus operators response:', response);
+        }
+
+        console.log('Operators loaded:', this.busOperators);
+        this.loadingOperators = false;
+      },
+      error: (error: any) => {
+        console.error('Bus operators API error:', error);
+        console.error('HTTP status:', error.status);
+        console.error('Error response body:', error.error);
+
+        this.busOperators = [];
+        this.loadingOperators = false;
+      },
+    });
   }
 
   openVendorCredentials(vendor: any, content: any): void {
     this.activeVendorMenu = null;
     this.selectedVendor = vendor;
+    this.selectedVendorWalletBalance = 0;
 
     this.resetCredentialForm();
-
     this.getVendorCredentials(vendor.id);
+
+    // Fetch the actual wallet balance for this vendor
+    this.vendorService.getVendorViewDetails(vendor.id).subscribe({
+      next: (res: any) => {
+        if (res && res.status == 1 && res.data) {
+          this.selectedVendorWalletBalance = Number(
+            res.data.wallet_balance || 0,
+          );
+
+          console.log(
+            'Vendor wallet balance:',
+            this.selectedVendorWalletBalance,
+          );
+        } else {
+          this.selectedVendorWalletBalance = 0;
+        }
+      },
+      error: (error: any) => {
+        console.error('Unable to fetch vendor wallet balance:', error);
+        this.selectedVendorWalletBalance = 0;
+      },
+    });
 
     this.modalReference = this.modalService.open(content, {
       scrollable: true,
@@ -1167,6 +1254,130 @@ export class VendorComponent implements OnInit {
         },
       });
   }
+  sandboxBalanceFormData: any = {
+    amount: null,
+    transaction_id: '',
+    remarks: '',
+  };
+
+  openSandboxBalanceModal(vendor: any, content: any): void {
+    this.activeVendorMenu = null;
+    this.selectedVendor = vendor;
+    this.sandboxBalanceFormData = {
+      amount: null,
+      transaction_id: '',
+      remarks: '',
+    };
+    this.modalReference = this.modalService.open(content, {
+      centered: true,
+      size: 'md',
+      backdrop: 'static',
+      keyboard: false,
+      windowClass: 'vendor-modal',
+    });
+  }
+
+  submitSandboxBalance(form: any): void {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
+    if (!this.selectedVendor?.id) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Please select a valid vendor.',
+        type: Constants.ErrorType,
+      });
+      return;
+    }
+
+    const amount = Number(this.sandboxBalanceFormData.amount);
+    const remarks = (this.sandboxBalanceFormData.remarks || '').trim();
+    const userId = this.getLoggedInUserId();
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Please enter an amount greater than zero.',
+        type: Constants.ErrorType,
+      });
+      return;
+    }
+
+    if (!remarks) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Please enter remarks.',
+        type: Constants.ErrorType,
+      });
+      return;
+    }
+
+    if (!userId) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Unable to identify logged-in user.',
+        type: Constants.ErrorType,
+      });
+      return;
+    }
+
+    const payload = {
+      vendor_id: Number(this.selectedVendor.id),
+      amount,
+      remarks,
+      created_by: Number(userId),
+    };
+
+    this.spinner.show();
+
+    this.vendorService.addSandboxBalance(payload).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+
+        if (res?.status === 1) {
+          const newBalance = Number(res.data?.balance ?? 0);
+
+          this.notificationService.addToast({
+            title: Constants.SuccessTitle,
+            msg: `${res.message || 'Sandbox balance added.'} New balance: ₹${newBalance.toFixed(2)}`,
+            type: Constants.SuccessType,
+          });
+
+          this.modalReference?.close();
+
+          this.sandboxBalanceFormData = {
+            amount: null,
+            transaction_id: '',
+            remarks: '',
+          };
+
+          this.getVendors();
+        } else {
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: res?.message || 'Unable to add sandbox balance.',
+            type: Constants.ErrorType,
+          });
+        }
+      },
+      error: (error: any) => {
+        this.spinner.hide();
+
+        console.error('Add Sandbox Balance Error:', error);
+
+        this.notificationService.addToast({
+          title: Constants.ErrorTitle,
+          msg:
+            error?.error?.message ||
+            error?.message ||
+            'Unable to add sandbox balance.',
+          type: Constants.ErrorType,
+        });
+      },
+    });
+  }
 
   getVendorAppAccessRules(vendorId: number): void {
     this.spinner.show();
@@ -1367,20 +1578,26 @@ export class VendorComponent implements OnInit {
     this.searchText = '';
     this.selectedGst = '';
     this.selectedStatus = '';
-
+    this.selectedVendorType = '';
     this.currentPage = 1;
-
     this.applyVendorFilters();
   }
 
   resetVendorForm(): void {
+    this.selectedOperatorId = null;
+    this.loadingOperatorDetails = false;
+    this.isParentVendor = false;
+    this.operatorSearchText = '';
+    this.operatorDropdownOpen = false;
     this.vendorForm = {
+      operator_id: null,
       company_name: '',
       contact_name: '',
       contact_email: '',
       contact_phone: '',
-      has_gst: 0,
-      rate_limit_per_minute: null,
+      has_gst: false,
+      rate_limit_per_minute: 100,
+      address: '',
       sandbox: true,
       production: true,
     };
@@ -1393,6 +1610,8 @@ export class VendorComponent implements OnInit {
       pincode: '',
       state: '',
     };
+
+    this.activeVendorSection = 'details';
   }
 
   private getLoggedInUserId(): number | null {
@@ -1421,14 +1640,14 @@ export class VendorComponent implements OnInit {
 
   addVendor(): void {
     if (
-      !this.vendorForm.company_name ||
-      !this.vendorForm.contact_name ||
-      !this.vendorForm.contact_email ||
-      !this.vendorForm.contact_phone ||
-      !this.vendorForm.rate_limit_per_minute ||
-      !this.vendorAddress.address ||
-      !this.vendorAddress.city ||
-      !this.vendorAddress.pincode ||
+      !String(this.vendorForm.company_name || '').trim() ||
+      !String(this.vendorForm.contact_name || '').trim() ||
+      !String(this.vendorForm.contact_email || '').trim() ||
+      !String(this.vendorForm.contact_phone || '').trim() ||
+      Number(this.vendorForm.rate_limit_per_minute) <= 0 ||
+      !String(this.vendorForm.address || '').trim() ||
+      !String(this.vendorAddress.city || '').trim() ||
+      !String(this.vendorAddress.pincode || '').trim() ||
       !this.vendorAddress.state
     ) {
       this.notificationService.addToast({
@@ -1436,7 +1655,6 @@ export class VendorComponent implements OnInit {
         msg: 'Please fill all required fields',
         type: Constants.ErrorType,
       });
-
       return;
     }
 
@@ -1463,24 +1681,30 @@ export class VendorComponent implements OnInit {
       return;
     }
 
+    const selectedOperatorId = this.selectedOperatorId;
+    const operatorId = selectedOperatorId || null;
+
     const data = {
+      operator_id: this.selectedOperatorId,
+      is_parent_vendor: this.isParentVendor ? 1 : 0,
+
+      // Keep your existing fields
       company_name: this.vendorForm.company_name,
       contact_name: this.vendorForm.contact_name,
       contact_email: this.vendorForm.contact_email,
       contact_phone: this.vendorForm.contact_phone,
       has_gst: this.vendorForm.has_gst ? 1 : 0,
-      rate_limit_per_minute: this.vendorForm.rate_limit_per_minute,
+      rate_limit_per_minute: Number(this.vendorForm.rate_limit_per_minute),
 
-      address: this.vendorAddress.address,
+      address: this.vendorForm.address,
       street: this.vendorAddress.street,
       landmark: this.vendorAddress.landmark,
       city: this.vendorAddress.city,
       pincode: this.vendorAddress.pincode,
       state: this.vendorAddress.state,
 
-      sandbox: 1,
-      production: 1,
-
+      sandbox: this.vendorForm.sandbox ? 1 : 0,
+      production: this.vendorForm.production ? 1 : 0,
       created_by: userId,
       updated_by: userId,
     };
@@ -1772,62 +1996,87 @@ export class VendorComponent implements OnInit {
     }
   }
 
-  // =========================================================
   // CHANGE STATUS
-  // =========================================================
 
   changeVendorStatus(vendor: any): void {
     if (!vendor || !vendor.id) {
       return;
     }
 
+    this.pendingVendor = vendor;
+    this.pendingVendorStatus = Number(vendor.status) === 1 ? 0 : 1;
+
+    this.modalReference = this.modalService.open(
+      this.confirmVendorStatusModal,
+      {
+        centered: true,
+        size: 'sm',
+        backdrop: 'static',
+        keyboard: false,
+        windowClass: 'vendor-status-confirm-modal',
+      },
+    );
+  }
+
+  confirmVendorStatusChange(modal: NgbModalRef): void {
+    if (
+      !this.pendingVendor?.id ||
+      this.pendingVendorStatus === null ||
+      this.statusUpdateInProgress
+    ) {
+      return;
+    }
+
+    const vendor = this.pendingVendor;
+
+    this.statusUpdateInProgress = true;
     this.spinner.show();
 
     this.vendorService.changeVendorStatus(vendor.id).subscribe({
       next: (res: any) => {
         this.spinner.hide();
+        this.statusUpdateInProgress = false;
 
         if (res && res.status == 1) {
           vendor.status = Number(res.data.status);
-
           vendor.activated_at = res.data.activated_at;
-
           vendor.suspended_at = res.data.suspended_at;
+
+          modal.close();
 
           this.notificationService.addToast({
             title: Constants.SuccessTitle,
             msg: res.message || 'Vendor status changed successfully',
             type: Constants.SuccessType,
           });
+
+          this.pendingVendor = null;
+          this.pendingVendorStatus = null;
         } else {
           this.notificationService.addToast({
             title: Constants.ErrorTitle,
-            msg: res.message || 'Unable to change vendor status',
+            msg: res?.message || 'Unable to change vendor status',
             type: Constants.ErrorType,
           });
         }
       },
 
-      error: (error) => {
+      error: (error: any) => {
         this.spinner.hide();
+        this.statusUpdateInProgress = false;
 
         console.error('Vendor Status Error:', error);
 
         this.notificationService.addToast({
           title: Constants.ErrorTitle,
-          msg:
-            error && error.error && error.error.message
-              ? error.error.message
-              : 'Unable to change vendor status',
+          msg: error?.error?.message || 'Unable to change vendor status',
           type: Constants.ErrorType,
         });
       },
     });
   }
 
-  // =========================================================
   // GST
-  // =========================================================
 
   toggleAddGst(event: any): void {
     this.vendorForm.has_gst = event.target.checked ? 1 : 0;
@@ -1912,12 +2161,6 @@ export class VendorComponent implements OnInit {
     });
   }
 
-  removeVendorIpProduction(index: number): void {
-    if (index > 0) {
-      this.vendorIpProductionList.splice(index, 1);
-    }
-  }
-
   addVendorIpSandbox(): void {
     this.vendorIpSandboxList.push({
       id: null,
@@ -1926,9 +2169,35 @@ export class VendorComponent implements OnInit {
     });
   }
 
+  removeVendorIpProduction(index: number): void {
+    if (index < 0 || index >= this.vendorIpProductionList.length) {
+      return;
+    }
+
+    this.vendorIpProductionList.splice(index, 1);
+
+    if (this.vendorIpProductionList.length === 0) {
+      this.vendorIpProductionList.push({
+        id: null,
+        ip_address: '',
+        is_active: true,
+      });
+    }
+  }
+
   removeVendorIpSandbox(index: number): void {
-    if (index > 0) {
-      this.vendorIpSandboxList.splice(index, 1);
+    if (index < 0 || index >= this.vendorIpSandboxList.length) {
+      return;
+    }
+
+    this.vendorIpSandboxList.splice(index, 1);
+
+    if (this.vendorIpSandboxList.length === 0) {
+      this.vendorIpSandboxList.push({
+        id: null,
+        ip_address: '',
+        is_active: true,
+      });
     }
   }
 
@@ -1981,6 +2250,83 @@ export class VendorComponent implements OnInit {
       });
   }
 
+  onOperatorChange(operatorId: number | string | null): void {
+    this.selectedOperatorId =
+      operatorId === null || operatorId === '' ? null : Number(operatorId);
+
+    // No operator selected: clear the operator-related fields.
+    if (this.selectedOperatorId === null) {
+      this.clearOperatorPopulatedFields();
+      this.vendorForm.operator_id = null;
+      return;
+    }
+
+    // Parent vendor: do not auto-populate fields from the operator API.
+    if (this.isParentVendor) {
+      this.clearOperatorPopulatedFields();
+      this.vendorForm.operator_id = this.selectedOperatorId;
+      return;
+    }
+
+    const id = this.selectedOperatorId;
+    this.loadingOperatorDetails = true;
+
+    this.vendorService.getBusOperatorDetails(id).subscribe({
+      next: (response: any) => {
+        this.loadingOperatorDetails = false;
+
+        if (Number(response?.status) !== 1 || !response?.data) {
+          console.error('Invalid operator details response:', response);
+          return;
+        }
+
+        const data = response.data;
+
+        this.vendorForm = {
+          ...this.vendorForm,
+          operator_id: Number(data.operator_id ?? id),
+          company_name: data.company_name ?? '',
+          contact_name: data.contact_name ?? '',
+          contact_email: data.contact_email ?? '',
+          contact_phone: data.contact_phone ?? '',
+          rate_limit_per_minute: data.rate_limit_per_minute ?? 100,
+          has_gst: Number(data.has_gst) === 1,
+          address: data.address ?? '',
+        };
+
+        this.vendorAddress.address = data.address ?? '';
+      },
+      error: (error: any) => {
+        this.loadingOperatorDetails = false;
+        console.error('Operator details API error:', error);
+      },
+    });
+  }
+
+  onParentVendorChange(checked: boolean): void {
+    this.isParentVendor = checked;
+
+    // When switching to Parent Vendor, clear previously auto-filled values.
+    if (checked) {
+      this.clearOperatorPopulatedFields();
+    }
+  }
+
+  private clearOperatorPopulatedFields(): void {
+    this.vendorForm = {
+      ...this.vendorForm,
+      company_name: '',
+      contact_name: '',
+      contact_email: '',
+      contact_phone: '',
+      rate_limit_per_minute: 100,
+      has_gst: false,
+      address: '',
+    };
+
+    this.vendorAddress.address = '';
+  }
+
   toggleVendorIpSandboxStatus(index: number): void {
     const ip = this.vendorIpSandboxList[index];
 
@@ -2031,28 +2377,25 @@ export class VendorComponent implements OnInit {
   }
 
   saveVendorIps(): void {
-    if (!this.selectedVendor || !this.selectedVendor.id) {
+    if (!this.selectedVendor?.id) {
       return;
     }
 
-    const productionIps = this.vendorIpProductionList.filter(
-      (ip: any) => ip.ip_address && ip.ip_address.trim() !== '',
-    );
+    const productionIps = this.vendorIpProductionList
+      .filter((ip: any) => String(ip.ip_address || '').trim() !== '')
+      .map((ip: any) => ({
+        id: ip.id || null,
+        ip_address: String(ip.ip_address).trim(),
+        is_active: ip.is_active ? 1 : 0,
+      }));
 
-    const sandboxIps = this.vendorIpSandboxList.filter(
-      (ip: any) => ip.ip_address && ip.ip_address.trim() !== '',
-    );
-
-    // At least one IP required
-    if (productionIps.length === 0 && sandboxIps.length === 0) {
-      this.notificationService.addToast({
-        title: Constants.ErrorTitle,
-        msg: 'Please enter at least one IP address',
-        type: Constants.ErrorType,
-      });
-
-      return;
-    }
+    const sandboxIps = this.vendorIpSandboxList
+      .filter((ip: any) => String(ip.ip_address || '').trim() !== '')
+      .map((ip: any) => ({
+        id: ip.id || null,
+        ip_address: String(ip.ip_address).trim(),
+        is_active: ip.is_active ? 1 : 0,
+      }));
 
     const userId = this.getLoggedInUserId();
 
@@ -2070,27 +2413,24 @@ export class VendorComponent implements OnInit {
         next: (res: any) => {
           this.spinner.hide();
 
-          if (res && res.status == 1) {
+          if (Number(res?.status) === 1) {
             this.notificationService.addToast({
               title: Constants.SuccessTitle,
               msg: res.message || 'Vendor IPs saved successfully',
               type: Constants.SuccessType,
             });
 
-            // Reload from database
             this.getVendorIps(this.selectedVendor.id);
           } else {
             this.notificationService.addToast({
               title: Constants.ErrorTitle,
-              msg: res.message || 'Unable to save Vendor IPs',
+              msg: res?.message || 'Unable to save Vendor IPs',
               type: Constants.ErrorType,
             });
           }
         },
-
-        error: (error) => {
+        error: (error: any) => {
           this.spinner.hide();
-
           console.error('Save Vendor IPs Error:', error);
 
           this.notificationService.addToast({
@@ -2549,7 +2889,6 @@ export class VendorComponent implements OnInit {
 
         if (res && res.status == 1) {
           this.vendorViewData = res.data;
-
           this.modalReference = this.modalService.open(content, {
             scrollable: true,
             size: 'xl',
@@ -2732,6 +3071,357 @@ export class VendorComponent implements OnInit {
               error && error.error && error.error.message
                 ? error.error.message
                 : 'Unable to update app access rule status',
+            type: Constants.ErrorType,
+          });
+        },
+      });
+  }
+
+  get filteredBusOperators(): any[] {
+    const search = (this.operatorSearchText || '').trim().toLowerCase();
+
+    if (!search) {
+      return this.busOperators || [];
+    }
+
+    return (this.busOperators || []).filter((operator: any) =>
+      String(operator.organisation_name || '')
+        .toLowerCase()
+        .includes(search),
+    );
+  }
+
+  onOperatorSearchInput(): void {
+    this.operatorDropdownOpen = true;
+
+    // Clear the previous selection when the user edits the search.
+    if (this.selectedOperatorId !== null) {
+      this.selectedOperatorId = null;
+      this.onOperatorChange(null);
+    }
+  }
+
+  selectBusOperator(operator: any): void {
+    if (!operator || operator.id == null) {
+      return;
+    }
+
+    this.selectedOperatorId = Number(operator.id);
+    this.operatorSearchText = operator.organisation_name || '';
+    this.operatorDropdownOpen = false;
+
+    // Reuse your existing method to fetch and populate operator details.
+    this.onOperatorChange(this.selectedOperatorId);
+  }
+
+  exportVendorsToCsv(): void {
+    // Apply the same filters used by the listing.
+    let filteredData = [...this.allVendors];
+
+    const search = (this.searchText || '').trim().toLowerCase();
+
+    if (search) {
+      filteredData = filteredData.filter(
+        (vendor: any) =>
+          String(vendor.vendor_code || '')
+            .toLowerCase()
+            .includes(search) ||
+          String(vendor.company_name || '')
+            .toLowerCase()
+            .includes(search) ||
+          String(vendor.contact_name || '')
+            .toLowerCase()
+            .includes(search) ||
+          String(vendor.contact_email || '')
+            .toLowerCase()
+            .includes(search) ||
+          String(vendor.contact_phone || '')
+            .toLowerCase()
+            .includes(search) ||
+          String(vendor.rate_limit_per_minute || '')
+            .toLowerCase()
+            .includes(search) ||
+          (search === 'yes' && Number(vendor.has_gst) === 1) ||
+          (search === 'gst' && Number(vendor.has_gst) === 1) ||
+          (search === 'no' && Number(vendor.has_gst) === 0) ||
+          (search === 'active' && Number(vendor.status) === 1) ||
+          (search === 'inactive' && Number(vendor.status) === 0),
+      );
+    }
+
+    if (this.selectedGst !== '') {
+      filteredData = filteredData.filter(
+        (vendor: any) => Number(vendor.has_gst) === Number(this.selectedGst),
+      );
+    }
+
+    if (this.selectedStatus !== '') {
+      filteredData = filteredData.filter(
+        (vendor: any) => Number(vendor.status) === Number(this.selectedStatus),
+      );
+    }
+
+    // Export columns in the same order as the listing.
+    // Action is intentionally excluded.
+    const headers = [
+      'SL.NO',
+      'Vendor Code',
+      'Company Name',
+      'Contact Name',
+      'Contact Email',
+      'Contact Phone',
+      'Has GST',
+      'Status',
+      'Created',
+      'Created By',
+    ];
+
+    const escapeCsv = (value: any): string => {
+      const text = value == null ? '' : String(value);
+      return `"${text.replace(/"/g, '""')}"`;
+    };
+
+    const rows = filteredData.map((vendor: any, index: number) => [
+      index + 1,
+      vendor.vendor_code,
+      vendor.company_name,
+      vendor.contact_name,
+      vendor.contact_email,
+      vendor.contact_phone,
+      Number(vendor.has_gst) === 1 ? 'Yes' : 'No',
+      Number(vendor.status) === 1 ? 'Active' : 'Inactive',
+      vendor.created_at
+        ? new Date(vendor.created_at).toLocaleString('en-IN')
+        : '',
+      vendor.created_by_name,
+    ]);
+
+    // UTF-8 BOM helps Excel display text correctly.
+    const csvContent =
+      '\uFEFF' +
+      [headers, ...rows]
+        .map((row) => row.map(escapeCsv).join(','))
+        .join('\r\n');
+
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;',
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `vendors_${new Date().toISOString().slice(0, 10)}.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }
+
+  get isVendorPasswordValid(): boolean {
+    return (
+      this.passwordChecks.minLength &&
+      this.passwordChecks.uppercase &&
+      this.passwordChecks.lowercase &&
+      this.passwordChecks.number &&
+      this.passwordChecks.special
+    );
+  }
+
+  openUpdateVendorPassword(vendor: any, content: any): void {
+    this.activeVendorMenu = null;
+    this.passwordVendor = vendor;
+    this.vendorPassword = '';
+    this.passwordSaved = false;
+    this.savingVendorPassword = false;
+    this.updateVendorPasswordStrength();
+
+    this.modalReference = this.modalService.open(content, {
+      centered: true,
+      size: 'md',
+      windowClass: 'vendor-password-modal',
+    });
+  }
+
+  onVendorPasswordChange(): void {
+    this.passwordSaved = false;
+    this.updateVendorPasswordStrength();
+  }
+
+  private updateVendorPasswordStrength(): void {
+    const password = this.vendorPassword || '';
+
+    this.passwordChecks = {
+      minLength: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[^A-Za-z0-9]/.test(password),
+    };
+
+    const checksPassed = Object.values(this.passwordChecks).filter(
+      Boolean,
+    ).length;
+
+    if (!password) {
+      this.passwordStrength = {
+        level: 'empty',
+        label: 'Not entered',
+        percent: 0,
+      };
+    } else if (!this.isVendorPasswordValid) {
+      this.passwordStrength = {
+        level: checksPassed <= 2 ? 'weak' : 'medium',
+        label: checksPassed <= 2 ? 'Weak' : 'Needs improvement',
+        percent: checksPassed <= 2 ? 25 : 50,
+      };
+    } else if (password.length >= 12) {
+      this.passwordStrength = {
+        level: 'strong',
+        label: 'Strong',
+        percent: 100,
+      };
+    } else {
+      this.passwordStrength = {
+        level: 'good',
+        label: 'Good',
+        percent: 75,
+      };
+    }
+  }
+
+  generateVendorPassword(): void {
+    const uppercase = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    const lowercase = 'abcdefghijkmnopqrstuvwxyz';
+    const numbers = '23456789';
+    const special = '!@#$%&*_-+?';
+    const all = uppercase + lowercase + numbers + special;
+
+    // Guarantee at least one character from each required category.
+    const chars = [
+      this.randomPasswordChar(uppercase),
+      this.randomPasswordChar(lowercase),
+      this.randomPasswordChar(numbers),
+      this.randomPasswordChar(special),
+    ];
+
+    while (chars.length < 10) {
+      chars.push(this.randomPasswordChar(all));
+    }
+
+    // Shuffle the characters so the required categories are not predictable.
+    for (let i = chars.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [chars[i], chars[j]] = [chars[j], chars[i]];
+    }
+
+    this.vendorPassword = chars.join('');
+    this.passwordSaved = false;
+    this.updateVendorPasswordStrength();
+  }
+
+  private randomPasswordChar(characters: string): string {
+    return characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  copyVendorPassword(): void {
+    if (
+      !this.vendorPassword ||
+      this.passwordSaved ||
+      this.savingVendorPassword
+    ) {
+      return;
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard
+        .writeText(this.vendorPassword)
+        .then(() => {
+          this.notificationService.addToast({
+            title: Constants.SuccessTitle,
+            msg: 'Password copied to clipboard',
+            type: Constants.SuccessType,
+          });
+        })
+        .catch(() => {
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: 'Unable to copy password. Please copy it manually.',
+            type: Constants.ErrorType,
+          });
+        });
+    } else {
+      // Fallback for localhost or older browsers.
+      const input = document.getElementById(
+        'vendorPassword',
+      ) as HTMLInputElement;
+
+      if (input) {
+        input.select();
+        const copied = document.execCommand('copy');
+
+        this.notificationService.addToast({
+          title: copied ? Constants.SuccessTitle : Constants.ErrorTitle,
+          msg: copied
+            ? 'Password copied to clipboard'
+            : 'Unable to copy password',
+          type: copied ? Constants.SuccessType : Constants.ErrorType,
+        });
+      }
+    }
+  }
+
+  saveVendorPassword(): void {
+    if (!this.passwordVendor || !this.passwordVendor.id) {
+      return;
+    }
+
+    this.updateVendorPasswordStrength();
+
+    if (!this.isVendorPasswordValid) {
+      this.notificationService.addToast({
+        title: Constants.ErrorTitle,
+        msg: 'Password must contain at least 8 characters, uppercase, lowercase, number and special character.',
+        type: Constants.ErrorType,
+      });
+      return;
+    }
+
+    this.savingVendorPassword = true;
+    this.spinner.show();
+
+    this.vendorService
+      .updateVendorPassword(this.passwordVendor.id, this.vendorPassword)
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          this.savingVendorPassword = false;
+
+          if (res && Number(res.status) === 1) {
+            this.passwordSaved = true;
+
+            this.notificationService.addToast({
+              title: Constants.SuccessTitle,
+              msg: res.message || 'Vendor password updated successfully',
+              type: Constants.SuccessType,
+            });
+          } else {
+            this.notificationService.addToast({
+              title: Constants.ErrorTitle,
+              msg: res.message || 'Unable to update vendor password',
+              type: Constants.ErrorType,
+            });
+          }
+        },
+        error: (error: any) => {
+          this.spinner.hide();
+          this.savingVendorPassword = false;
+
+          this.notificationService.addToast({
+            title: Constants.ErrorTitle,
+            msg: error?.error?.message || 'Unable to update vendor password',
             type: Constants.ErrorType,
           });
         },

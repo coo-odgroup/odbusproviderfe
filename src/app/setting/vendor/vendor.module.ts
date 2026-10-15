@@ -12,7 +12,8 @@ import { VendorComponent } from './vendor.component';
   imports: [
     CommonModule,
     FormsModule,
-    VendorRoutingModule
+    VendorRoutingModule,
+    
   ]
 })
 export class VendorModule {}     

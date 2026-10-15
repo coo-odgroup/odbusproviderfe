@@ -40,6 +40,11 @@ export class CampaignnotificationService {
     );
   }
 
+  killCampaign(data: any) {
+    return this.http.post<any>(
+      Constants.BASE_URL + '/killCampaign', data);
+  }
+
   getNotificationCategories() {
     return this.http.post<any>(
       Constants.BASE_URL + '/notification-categories',

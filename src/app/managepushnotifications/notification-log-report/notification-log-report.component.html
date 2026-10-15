@@ -1,8 +1,12 @@
 <div class="container-fluid notification-dashboard">
-
-  <!-- =========================================================
-       PAGE HEADER
-  ========================================================== -->
+  
+  <!-- Dashboard Loading Overlay -->
+  <div class="dashboard-loading-overlay" *ngIf="loadingDashboard">
+    <div class="dashboard-loader-card">
+      <div class="dashboard-loader-spinner"></div>
+      <h6>Loading Notification Report</h6>
+    </div>
+  </div>
 
   <div class="dashboard-header">
 
@@ -13,158 +17,103 @@
     </div>
 
     <div class="header-actions">
-
       <button type="button" class="btn btn-outline-success btn-sm" (click)="exportexcel()">
-
         <i class="feather icon-download"></i>
         Export
-
       </button>
-
       <button type="button" class="btn btn-outline-secondary btn-sm" (click)="refresh()">
-
         <i class="feather icon-refresh-cw"></i>
         Refresh
-
       </button>
-
     </div>
-
   </div>
 
 
-  <!-- =========================================================
-       FILTERS
-  ========================================================== -->
-
+ 
   <div class="filter-card">
-
     <div class="filter-header">
-
       <div class="filter-title">
         <i class="feather icon-filter"></i>
         <span>Filters</span>
       </div>
-
     </div>
-
     <div class="filter-body">
-
       <form [formGroup]="searchForm">
-
         <div class="filter-grid">
-
           <!-- Campaign -->
 
           <div class="filter-field">
-
             <label for="campaign">
               Campaign
             </label>
-
             <select id="campaign" class="form-control form-control-sm" formControlName="campaign_id">
-
               <option value="">
                 All Campaigns
               </option>
-
               <option *ngFor="let campaign of campaignsList" [value]="campaign.id">
-
                 {{ campaign.campaign_name }}
-
               </option>
-
             </select>
-
           </div>
 
 
           <!-- Notification Type -->
 
           <div class="filter-field">
-
             <label for="notificationType">
               Notification Type
             </label>
-
             <select id="notificationType" class="form-control form-control-sm" formControlName="notification_type">
-
               <option value="">
                 All Types
               </option>
-
               <option value="PROMOTIONAL">
                 Promotional
               </option>
-
               <option value="TRANSACTIONAL">
                 Transactional
               </option>
-
               <option value="REMINDER">
                 Reminder
               </option>
-
               <option value="CUSTOM">
                 Custom
               </option>
-
             </select>
-
           </div>
 
 
           <!-- From Date -->
 
           <div class="filter-field">
-
             <label for="fromDate">
               From Date
             </label>
-
             <input id="fromDate" type="date" class="form-control form-control-sm" formControlName="date_from" />
-
           </div>
-
-
           <!-- To Date -->
 
           <div class="filter-field">
-
             <label for="toDate">
               To Date
             </label>
-
             <input id="toDate" type="date" class="form-control form-control-sm" formControlName="date_to" />
-
           </div>
 
 
           <!-- Apply -->
 
           <div class="filter-action">
-
             <button type="button" class="apply-button" (click)="loadDashboard(1)">
-
               <i class="feather icon-search"></i>
               Apply
-
             </button>
-
           </div>
-
         </div>
-
       </form>
-
     </div>
-
   </div>
 
-
-  <!-- =========================================================
-       GLOBAL SUMMARY
-  ========================================================== -->
 
   <div class="summary-grid">
 
@@ -198,23 +147,17 @@
     <!-- Successful -->
 
     <div class="summary-card summary-success">
-
       <div class="summary-content">
-
         <span class="summary-label">
           Successful
         </span>
-
         <strong class="summary-value">
           {{ globalSummary.successful | number }}
         </strong>
-
         <small>
           Successfully delivered
         </small>
-
       </div>
-
       <div class="summary-icon">
         <i class="feather icon-check-circle"></i>
       </div>
@@ -370,43 +313,19 @@
   </div>
 
 
-  <!-- =========================================================
-       CAMPAIGN PERFORMANCE
-  ========================================================== -->
-
   <section class="campaign-dashboard">
-
-    <!-- Section Header -->
-
     <div class="campaign-section-header">
-
       <div>
-
         <h5 class="campaign-section-title">
-
           Campaign Performance
-
         </h5>
-
         <span class="campaign-count">
           {{ pagination?.total || 0 }} campaigns
         </span>
-
       </div>
-
     </div>
-
-
-    <!-- =======================================================
-         CAMPAIGN GRID
-    ======================================================== -->
-
     <div class="campaign-grid">
 
-
-      <!-- =====================================================
-           CAMPAIGN CARD
-      ====================================================== -->
 
       <article class="campaign-card" *ngFor="let campaign of campaigns">
 
@@ -415,9 +334,6 @@
         <div class="campaign-top-line"></div>
 
 
-        <!-- ===================================================
-             CAMPAIGN HEADER
-        ==================================================== -->
 
         <div class="campaign-card-header">
           <div class="campaign-title-area">
@@ -718,48 +634,32 @@
 
 </div>
 
-<!-- ============================================================
-     CAMPAIGN DETAILS MODAL
-============================================================ -->
+
 
 <ng-container *ngIf="showCampaignModal">
-
   <div class="notification-modal-backdrop" (click)="closeCampaign()">
-
-
     <div class="notification-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-
-
       <div class="notification-modal-header">
-
         <div class="notification-modal-title">
-
           <div class="campaign-modal-icon">
             <i class="feather icon-bell"></i>
           </div>
-
           <div>
-
             <span class="modal-eyebrow">
               CAMPAIGN DETAILS
             </span>
-
             <h3>
               {{ getCampaignName(selectedCampaign) }}
             </h3>
-
             <small>
               Campaign #{{ selectedCampaign?.campaign_id || '--' }}
-
               <span>•</span>
-
               {{
               selectedCampaign?.notification_type ||
               selectedCampaign?.type ||
               '--'
               }}
             </small>
-
           </div>
 
         </div>
