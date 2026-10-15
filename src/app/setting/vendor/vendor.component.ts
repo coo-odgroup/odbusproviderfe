@@ -407,6 +407,27 @@ export class VendorComponent implements OnInit {
         }
 
         console.log('Operators loaded:', this.busOperators);
+
+        // If the operator list finishes loading after the Edit modal data,
+        // resolve the saved operator ID to its display name.
+        if (this.selectedVendor) {
+          const vendorType = String(this.selectedVendor.vendor_type || '').toUpperCase();
+          const savedOperatorId = Number(
+            vendorType === 'OPERATOR_VENDOR'
+              ? this.selectedVendor.parent_id
+              : this.selectedVendor.operator_id ??
+                this.selectedVendor.bus_operator_id ??
+                this.selectedVendor.operator?.id,
+          );
+          const matchedOperator = this.busOperators.find(
+            (operator: any) => Number(operator.id) === savedOperatorId,
+          );
+
+          if (matchedOperator) {
+            this.editOperatorName = matchedOperator.organisation_name || '';
+          }
+        }
+
         this.loadingOperators = false;
       },
       error: (error: any) => {
@@ -1764,6 +1785,9 @@ export class VendorComponent implements OnInit {
       return;
     }
 
+    this.editOperatorName = '';
+    this.editIsParentVendor = false;
+
     this.spinner.show();
 
     this.vendorService.getVendor(id).subscribe({
@@ -1771,11 +1795,74 @@ export class VendorComponent implements OnInit {
         this.spinner.hide();
 
         if (res && res.status == 1 && res.data) {
-          const vendor = res.data.vendor || res.data;
+          const apiVendor = res.data.vendor || res.data;
+          const listVendor = (this.allVendors || []).find(
+            (item: any) => Number(item.id) === Number(id),
+          ) || {};
+
+          // Some getVendor responses omit operator fields. Preserve them from
+          // the vendor-list response when they are available there.
+          const vendor = {
+            ...listVendor,
+            ...apiVendor,
+            vendor_type: String(
+              apiVendor.vendor_type ?? listVendor.vendor_type ?? '',
+            ).toUpperCase(),
+            operator_id:
+              apiVendor.operator_id ??
+              apiVendor.bus_operator_id ??
+              apiVendor.operator?.id ??
+              listVendor.operator_id ??
+              listVendor.bus_operator_id ??
+              listVendor.operator?.id ??
+              null,
+            parent_id: apiVendor.parent_id ?? listVendor.parent_id ?? null,
+          };
+
           const address = res.data.address || null;
           const environments = res.data.environments || [];
-
           this.selectedVendor = vendor;
+
+          // api_vendors.vendor_type determines which saved ID represents
+          // the associated operator for display in the read-only field.
+          const savedOperatorId = Number(
+            vendor.vendor_type === 'OPERATOR_VENDOR'
+              ? vendor.parent_id
+              : vendor.vendor_type === 'OPERATOR'
+                ? vendor.operator_id
+                : vendor.operator_id ?? vendor.parent_id,
+          );
+          const matchedOperator = this.busOperators.find(
+            (operator: any) => Number(operator.id) === savedOperatorId,
+          );
+
+          this.editOperatorName =
+            matchedOperator?.organisation_name ||
+            (vendor.vendor_type === 'OPERATOR_VENDOR'
+              ? vendor.parent?.organisation_name
+              : vendor.operator?.organisation_name) ||
+            vendor.operator_organisation_name ||
+            vendor.organisation_name ||
+            '';
+
+          // A non-empty parent_id means this vendor belongs to a parent operator.
+          this.editIsParentVendor =
+            vendor.parent_id !== null &&
+            vendor.parent_id !== undefined &&
+            String(vendor.parent_id).trim() !== '' &&
+            Number(vendor.parent_id) !== 0;
+
+          console.log('Edit vendor saved operator mapping:', {
+            vendorId: id,
+            vendorType: vendor.vendor_type,
+            operatorId: vendor.operator_id,
+            parentId: vendor.parent_id,
+            resolvedOperatorId: savedOperatorId,
+            operatorName: this.editOperatorName,
+            isParentVendor: this.editIsParentVendor,
+            apiVendor,
+            listVendor,
+          });
 
           // =====================================================
           // VENDOR DETAILS

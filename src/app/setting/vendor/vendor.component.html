@@ -143,6 +143,7 @@
                   <th>Contact Details</th>
                   <th>Has GST</th>
                   <th>Status</th>
+                  <th>Wallet Balance</th>
                   <th>Created</th>
                   <th>Created By</th>
                   <th width="100" class="hide_print">Action</th>
@@ -204,6 +205,16 @@
                       {{ vendor.status == 1 ? 'Active' : 'Inactive' }}
                     </button>
                   </td>
+
+
+
+                  <td class="wallet-balance-cell">
+                    <span class="wallet-balance-badge">
+                      <i class="fa fa-wallet"></i>
+                      ₹{{ (vendor.wallet_balance || 0) | number:'1.2-2' }}
+                    </span>
+                  </td>
+
 
                   <!-- DATE -->
                   <td>
@@ -286,7 +297,6 @@
                             <span>Update Vendor Password</span>
                           </button>
 
-
                         </div>
                       </div>
                     </div>
@@ -301,7 +311,6 @@
 
             <div class="container-fluid hide_print">
               <div class="row align-items-center">
-
                 <!-- RECORD COUNT: FAR LEFT -->
                 <div class="col-md-6">
                   <p class="mt-3 mb-4">
@@ -320,7 +329,6 @@
                     of {{ totalRecords }} records.
                   </p>
                 </div>
-
                 <!-- PAGINATION: FAR RIGHT -->
                 <div class="col-md-6">
                   <div class="d-flex justify-content-end mb-4">
@@ -348,15 +356,12 @@
                             Next
                           </a>
                         </li>
-
                       </ul>
                     </nav>
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -428,14 +433,11 @@
                         (click)="selectBusOperator(operator)">
                         {{ operator.organisation_name }}
                       </button>
-
                       <div class="operator-dropdown-empty" *ngIf="filteredBusOperators.length === 0">
                         {{ loadingOperators ? 'Loading operators...' : 'No operator found' }}
                       </div>
                     </div>
-
                   </div>
-
                   <small class="text-muted" *ngIf="loadingOperatorDetails">
                     Loading operator details...
                   </small>
@@ -446,21 +448,16 @@
               <div class="col-md-2">
                 <div class="form-group mb-0">
                   <label>&nbsp;</label>
-
                   <div class="form-check mt-2">
-
                     <input type="checkbox" class="form-check-input" id="parentVendor" [(ngModel)]="isParentVendor"
                       [ngModelOptions]="{ standalone: true }" (ngModelChange)="onParentVendorChange($event)" />
 
                     <label class="form-check-label" for="parentVendor">
                       Is Parent Operator
                     </label>
-
                   </div>
                 </div>
               </div>
-
-
             </div>
 
             <!-- COMPANY + CONTACT -->
