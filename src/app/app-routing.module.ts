@@ -18,7 +18,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'login', 
+        path: 'login',
         loadChildren: () =>
           import('./login/login.module').then((module) => module.LoginModule),
       },
@@ -26,14 +26,14 @@ const routes: Routes = [
         path: 'forget-password',
         loadChildren: () =>
           import('./forgetpassword/forgetpassword.module').then(
-            (module) => module.ForgetPasswordModule
+            (module) => module.ForgetPasswordModule,
           ),
       },
       {
         path: 'signup',
         loadChildren: () =>
           import('./signup/signup.module').then(
-            (module) => module.SignupModule
+            (module) => module.SignupModule,
           ),
       },
       {
@@ -45,14 +45,14 @@ const routes: Routes = [
         path: 'agentDetails',
         loadChildren: () =>
           import('./agent-details/agent-details.module').then(
-            (module) => module.AgentDetailsModule
+            (module) => module.AgentDetailsModule,
           ),
       },
       {
         path: 'adminchangepassword',
         loadChildren: () =>
           import('./adminchangepassword/adminchangepassword.module').then(
-            (module) => module.AdminchangepasswordModule
+            (module) => module.AdminchangepasswordModule,
           ),
       },
     ],
@@ -71,7 +71,7 @@ const routes: Routes = [
         path: 'dashboard',
         loadChildren: () =>
           import('./dashboard/dashboard.module').then(
-            (module) => module.DashboardModule
+            (module) => module.DashboardModule,
           ),
         canActivate: [Routeguard],
       },
@@ -79,7 +79,7 @@ const routes: Routes = [
         path: 'howtouse',
         loadChildren: () =>
           import('./howtouse/howtouse.module').then(
-            (module) => module.HowtouseModule
+            (module) => module.HowtouseModule,
           ),
         canActivate: [Routeguard],
       },
@@ -87,7 +87,7 @@ const routes: Routes = [
         path: 'busmanagement',
         loadChildren: () =>
           import('./busmanagement/busmanagement.module').then(
-            (module) => module.BusmanagementModule
+            (module) => module.BusmanagementModule,
           ),
         canActivate: [Routeguard],
       },
@@ -95,7 +95,7 @@ const routes: Routes = [
         path: 'bookingmanagement',
         loadChildren: () =>
           import('./bookingmanagement/bookingmanagement.module').then(
-            (module) => module.BookingmanagementModule
+            (module) => module.BookingmanagementModule,
           ),
         canActivate: [Routeguard],
       },
@@ -103,23 +103,21 @@ const routes: Routes = [
         path: 'reports',
         loadChildren: () =>
           import('./reports/reports.module').then(
-            (module) => module.ReportsModule
+            (module) => module.ReportsModule,
           ),
         canActivate: [Routeguard],
       },
       {
         path: 'seo',
         loadChildren: () =>
-          import('./seo/seo.module').then(
-            (module) => module.SeoModule
-          ),
+          import('./seo/seo.module').then((module) => module.SeoModule),
         canActivate: [Routeguard],
       },
       {
         path: 'blogs',
         loadChildren: () =>
           import('./blogmanagement/blogmanagement.module').then(
-            (module) => module.BlogmanagementsModule
+            (module) => module.BlogmanagementsModule,
           ),
         canActivate: [Routeguard],
       },
@@ -127,7 +125,7 @@ const routes: Routes = [
         path: 'setting',
         loadChildren: () =>
           import('./setting/setting.module').then(
-            (module) => module.SettingModule
+            (module) => module.SettingModule,
           ),
         canActivate: [Routeguard],
       },
@@ -141,7 +139,7 @@ const routes: Routes = [
         path: 'association',
         loadChildren: () =>
           import('./association/association.module').then(
-            (module) => module.AssociationModule
+            (module) => module.AssociationModule,
           ),
         canActivate: [Routeguard],
       },
@@ -149,7 +147,7 @@ const routes: Routes = [
         path: 'operator',
         loadChildren: () =>
           import('./operator/operator.module').then(
-            (module) => module.OperatorModule
+            (module) => module.OperatorModule,
           ),
         canActivate: [Routeguard],
       },
@@ -157,51 +155,51 @@ const routes: Routes = [
         path: 'ticketinformation',
         loadChildren: () =>
           import('./ticketinformation/ticketinformation.module').then(
-            (module) => module.TicketinformationModule
+            (module) => module.TicketinformationModule,
           ),
-           canActivate: [Routeguard],
+        canActivate: [Routeguard],
       },
       {
         path: 'useracessmanagement',
         loadChildren: () =>
           import('./useraccessmanagement/useraccessmanagement.module').then(
-            (module) => module.UserAccessManagementModule
+            (module) => module.UserAccessManagementModule,
           ),
-           canActivate: [Routeguard],
+        canActivate: [Routeguard],
       },
       {
         path: 'manageapiclients',
         loadChildren: () =>
           import('./manageapiclients/manageapiclients.module').then(
-            (module) => module.ManageApiClientsModule
+            (module) => module.ManageApiClientsModule,
           ),
-           canActivate: [Routeguard],
+        canActivate: [Routeguard],
       },
       {
-        path:"top-route-chart",
-        component:TopRouteComponent,
-         canActivate: [Routeguard],
+        path: 'top-route-chart',
+        component: TopRouteComponent,
+        canActivate: [Routeguard],
       },
       {
-        path:"managecronjob",
-        component:ManagecronjobComponent,
-         canActivate: [Routeguard],
+        path: 'managecronjob',
+        component: ManagecronjobComponent,
+        canActivate: [Routeguard],
       },
       {
         path: 'managescheduler',
         loadChildren: () =>
           import('./managescheduler/managescheduler.module').then(
-            (module) => module.ManageSchedulerModule
+            (module) => module.ManageSchedulerModule,
           ),
-           canActivate: [Routeguard],
+        canActivate: [Routeguard],
       },
       {
         path: 'managepushnotifications',
         loadChildren: () =>
-          import(
-            './managepushnotifications/managepushnotifications.module'
-          ).then((module) => module.ManagePushnotificationsModule),
-           canActivate: [Routeguard],
+          import('./managepushnotifications/managepushnotifications.module').then(
+            (module) => module.ManagePushnotificationsModule,
+          ),
+        canActivate: [Routeguard],
       },
     ],
   },

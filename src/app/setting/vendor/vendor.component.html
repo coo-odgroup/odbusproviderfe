@@ -256,45 +256,45 @@
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openVendorCredentials(vendor, vendorCredentialsModal)">
                             <i class="feather icon-shield"></i>
-                            <span>Vendor Credentials</span>
+                            <span>Create Credentials</span>
                           </button>
 
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openVendorIps(vendor, vendorIpsModal)">
                             <i class="feather icon-globe"></i>
-                            <span>Vendor IPs</span>
+                            <span>Create IPs</span>
                           </button>
 
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openVendorScope(vendor, vendorScopeModal)">
                             <i class="feather icon-layers"></i>
-                            <span>Vendor Scope</span>
+                            <span>Create Scope</span>
                           </button>
 
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openVendorAppLimits(vendor, vendorAppLimitsModal)">
                             <i class="feather icon-sliders"></i>
-                            <span>Vendor App Limits</span>
+                            <span>Create App Limits</span>
                           </button>
 
 
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openVendorAppAccessRules(vendor, vendorAppAccessRulesModal)">
                             <i class="feather icon-shield"></i>
-                            <span>Vendor App Access Rules</span>
+                            <span>Create App Access Rules</span>
                           </button>
 
 
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openSandboxBalanceModal(vendor, sandboxBalanceModal)">
                             <i class="feather icon-plus-circle"></i>
-                            <span>Add Sandbox Balance</span>
+                            <span>Add Balance</span>
                           </button>
 
                           <button type="button" class="vendor-dropdown-item"
                             (click)="openUpdateVendorPassword(vendor, updateVendorPasswordModal)">
                             <i class="feather icon-lock"></i>
-                            <span>Update Vendor Password</span>
+                            <span>Update Password</span>
                           </button>
 
                         </div>
@@ -2394,7 +2394,7 @@
 
               <div class="row mb-2">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">Client ID</label>
+                  <label class="font-weight-500 mb-0">Client ID</label>
                 </div>
                 <div class="col-md-9">
                   <div class="credential-value">
@@ -2405,7 +2405,7 @@
 
               <div class="row mb-2">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">Client Secret</label>
+                  <label class="font-weight-500 mb-0">Client Secret</label>
                 </div>
                 <div class="col-md-9">
                   <div class="credential-value">
@@ -2416,7 +2416,7 @@
 
               <div class="row">
                 <div class="col-md-3">
-                  <label class="font-weight-bold mb-0">Status</label>
+                  <label class="font-weight-500 mb-0">Status</label>
                 </div>
                 <div class="col-md-9">
                   <span class="badge" [ngClass]="credential.is_active == 1

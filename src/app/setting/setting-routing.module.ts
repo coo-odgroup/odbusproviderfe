@@ -181,6 +181,20 @@ const routes: Routes = [
             (module) => module.VendorModule,
           ),
       },
+      {
+        path: 'manageuser',
+        loadChildren: () =>
+          import('./manageuser/manageuser.module').then(
+            (m) => m.ManageuserModule,
+          ),
+      },
+      {
+        path: 'manageuseraccess',
+        loadChildren: () =>
+          import('./manageuseraccess/manageuseraccess.module').then(
+            (m) => m.ManageuseraccessModule,
+          ),
+      },
     ],
   },
 ];

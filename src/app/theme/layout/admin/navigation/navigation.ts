@@ -1313,6 +1313,30 @@ const NavigationItems = [
           },
         ],
       },
+
+      {
+        id: 'manageusers',
+        title: 'Manage Users',
+        type: 'collapse',
+        icon: 'feather icon-users',
+        children: [
+          {
+            id: 'manageuser',
+            title: 'Manage User',
+            type: 'item',
+            icon: 'feather icon-users',
+            url: 'setting/manageuser',
+          },
+          {
+            id: 'manageuseraccess',
+            title: 'Manage User Access',
+            type: 'item',
+            icon: 'feather icon-users',
+            url: 'setting/manageuseraccess',
+          },
+        ],
+      },
+
       {
         title: 'Manage Refund',
         type: 'collapse',

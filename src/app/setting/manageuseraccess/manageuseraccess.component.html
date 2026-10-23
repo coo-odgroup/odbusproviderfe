@@ -1,0 +1,562 @@
+<div class="container-fluid manage-access-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h3>Manage User Access</h3>
+        </div>
+
+        <button type="button" class="btn btn-primary add-access-btn" (click)="toggleAccessForm()">
+            <i class="feather" [ngClass]="showAccessForm ? 'icon-minus' : 'icon-plus'"></i>
+            {{ showAccessForm ? 'Close Form' : 'Add User Access' }}
+        </button>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="summary-card">
+                <div class="summary-icon total">
+                    <i class="feather icon-users"></i>
+                </div>
+                <div>
+                    <p>Total Users</p>
+                    <h3>{{ users.length || demoAccessList.length }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="summary-card">
+                <div class="summary-icon active">
+                    <i class="feather icon-shield"></i>
+                </div>
+                <div>
+                    <p>Total Permissions</p>
+                    <h3>{{ permissions.length }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="summary-card">
+                <div class="summary-icon assigned">
+                    <i class="feather icon-check-circle"></i>
+                </div>
+                <div>
+                    <p>User Access Records</p>
+                    <h3>{{ accessList.length }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add / Assign Access Form -->
+
+    <div class="card access-card mb-4" *ngIf="showAccessForm">
+
+        <div class="card-header">
+            <div>
+                <h5>{{ editingAccessId !== null ? 'Edit User Access' : 'Add User Access' }}</h5>s
+            </div>
+
+            <button type="button" class="btn btn-light close-form-btn" (click)="toggleAccessForm()">
+                <i class="feather icon-x"></i>
+            </button>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="accessFromDate">From Date <span class="required">*</span></label>
+                    <input id="accessFromDate" type="date" class="form-control" [value]="accessForm.fromDate"
+                        (change)="accessForm.fromDate = $any($event.target).value" [max]="accessForm.toDate || null">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="accessToDate">To Date <span class="required">*</span></label>
+                    <input id="accessToDate" type="date" class="form-control" [value]="accessForm.toDate"
+                        (change)="accessForm.toDate = $any($event.target).value" [min]="accessForm.fromDate || null">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="accessOperator">Operator <span class="required">*</span></label>
+
+                    <select id="accessOperator" class="form-control" [value]="accessForm.operatorId"
+                        (change)="onAccessOperatorChange($any($event.target).value)">
+
+                        <option value="">Select Operator</option>
+
+                        <option *ngFor="let operator of operators" [value]="operator.id">
+                            {{ operator.organisation_name }}
+                        </option>
+                    </select>
+
+                    <small *ngIf="loadingOperators" class="text-muted">
+                        Loading operators...
+                    </small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="accessUserType">User Type <span class="required">*</span></label>
+
+                    <select id="accessUserType" class="form-control" [value]="accessForm.userType"
+                        (change)="onAccessUserTypeChange($any($event.target).value)">
+
+                        <option value="">Select User Type</option>
+                        <option value="7">CONDUCTOR</option>
+                        <option value="8">MANAGER</option>
+                        <option value="3">AGENT</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="accessAssignedUser">User <span class="required">*</span></label>
+
+                    <select id="accessAssignedUser" class="form-control" [value]="accessForm.userId"
+                        (change)="onAccessUserChange($any($event.target).value)"
+                        [disabled]="!accessForm.operatorId || !accessForm.userType || loadingAssignableUsers">
+
+                        <option value="">
+                            {{ loadingAssignableUsers ? 'Loading users...' : 'Select User' }}
+                        </option>
+
+                        <option *ngFor="let user of accessAssignableUsers" [value]="user.id">
+                            {{ user.name }} — {{ user.client_id }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="accessBus">Bus Name <span class="required">*</span></label>
+
+                    <select id="accessBus" class="form-control" [value]="accessForm.busId"
+                        (change)="onAccessBusChange($any($event.target).value)"
+                        [disabled]="!accessForm.operatorId || loadingBuses">
+
+                        <option value="">
+                            {{ loadingBuses ? 'Loading buses...' : 'Select Bus' }}
+                        </option>
+
+                        <option *ngFor="let bus of accessBuses" [value]="bus.id">
+                            {{ bus.name }} — {{ bus.bus_number }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <div class="route-table-card">
+
+                        <!-- Table heading and actions -->
+                        <div class="route-table-heading">
+                            <div>
+                                <h6>Bus Routes <span class="required">*</span></h6>
+                                <div class="route-toolbar">
+                                    <label class="route-check-all">
+                                        <input type="checkbox" [checked]="allRoutesSelected"
+                                            [indeterminate]="someRoutesSelected"
+                                            [disabled]="loadingRoutes || !accessRoutes.length"
+                                            (change)="toggleAllRoutes($any($event.target).checked)" />
+                                        Check All
+                                    </label>
+
+                                    <button type="button" class="btn btn-success btn-sm"
+                                        [disabled]="loadingRoutes || !accessRoutes.length"
+                                        (click)="setAllRouteStatuses('Active')">
+                                        <i class="feather icon-check-circle"></i>
+                                        Active All
+                                    </button>
+
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        [disabled]="loadingRoutes || !accessRoutes.length"
+                                        (click)="setAllRouteStatuses('Inactive')">
+                                        <i class="feather icon-x-circle"></i>
+                                        Inactive All
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Route selection summary -->
+                            <div class="route-summary">
+                                <span>
+                                    <strong>{{ accessForm.routeIds.length }}</strong>
+                                    of {{ accessRoutes.length }} routes selected
+                                </span>
+
+                                <span class="route-legend">
+                                    <span class="status-dot active-dot"></span> Active
+                                    <span class="status-dot inactive-dot"></span> Inactive
+                                </span>
+                            </div>
+
+                            <!-- Routes table -->
+                            <div class="table-responsive route-table-wrapper">
+                                <table class="table table-hover route-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="route-check-column">
+                                                <input type="checkbox" aria-label="Select all routes"
+                                                    [checked]="allRoutesSelected" [indeterminate]="someRoutesSelected"
+                                                    [disabled]="loadingRoutes || !accessRoutes.length"
+                                                    (change)="toggleAllRoutes($any($event.target).checked)" />
+                                            </th>
+                                            <th>#</th>
+                                            <th>Source Location</th>
+                                            <th>Destination Location</th>
+                                            <th>Route</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr *ngIf="loadingRoutes">
+                                            <td colspan="7" class="text-center route-message">
+                                                <span class="spinner-border spinner-border-sm mr-2"></span>
+                                                Loading routes...
+                                            </td>
+                                        </tr>
+
+                                        <tr *ngIf="!loadingRoutes && !accessForm.busId">
+                                            <td colspan="7" class="text-center route-message">
+                                                Please select an operator and bus first.
+                                            </td>
+                                        </tr>
+
+                                        <tr *ngIf="!loadingRoutes && accessForm.busId && !accessRoutes.length">
+                                            <td colspan="7" class="text-center route-message">
+                                                No routes found for this bus.
+                                            </td>
+                                        </tr>
+
+                                        <tr *ngFor="let route of accessRoutes; let i = index"
+                                            [id]="'route-row-' + route.id"
+                                            [class.route-row-selected]="isRouteSelected(route.id)"
+                                            [class.route-row-editing]="editingRouteId === route.id">
+
+                                            <td>
+                                                <input type="checkbox" [checked]="isRouteSelected(route.id)"
+                                                    [attr.aria-label]="'Select route ' + route.name"
+                                                    (change)="toggleRoute(route.id, $any($event.target).checked)" />
+                                            </td>
+
+                                            <td>{{ i + 1 }}</td>
+
+                                            <td>
+                                                <span class="location-name">{{ route.source_name }}</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="location-name">{{ route.destination_name }}</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="route-name-cell">{{ route.name }}</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="route-status" [ngClass]="getRouteStatus(route.id) === 'Active'
+                                                        ? 'route-status-active'
+                                                        : 'route-status-inactive'">
+                                                    {{ getRouteStatus(route.id) }}
+                                                </span>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="route-table-footer" *ngIf="accessRoutes.length">
+                                <span>
+                                    {{ accessForm.routeIds.length }} route(s) assigned
+                                </span>
+                                <span>
+                                    {{ activeRouteCount }} active · {{ inactiveRouteCount }} inactive
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="card-footer access-footer">
+                <button type="button" class="btn btn-light reset-btn" (click)="resetAccessForm()" [disabled]="saving">
+                    Reset Form
+                </button>
+
+                <button type="button" class="btn btn-primary save-btn" (click)="saveAccess()" [disabled]="saving">
+                    <i class="feather icon-save"></i>
+                    {{ saving ? 'Saving...' : 'Save User Access' }}
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Access Listing -->
+    <div class="card access-card listing-card">
+        <div class="card-header listing-header">
+            <div>
+                <h5>User Bus Access Listing</h5>
+                <span class="record-count ml-4">
+                    {{ filteredSavedAssignments.length }} assignments
+                </span>
+            </div>
+
+
+
+
+
+            <div class="filter-panel">
+                <div class="filter-grid">
+
+                    <div class="filter-field search-field">
+                        <label>Search</label>
+                        <input type="text" class="form-control" [(ngModel)]="filterSearch"
+                            placeholder="Operator, user, bus..." />
+                    </div>
+
+                    <div class="filter-field">
+                        <label>Operator</label>
+                        <select class="form-control" [(ngModel)]="filterOperatorId" (change)="onFilterOperatorChange()">
+                            <option value="">All Operators</option>
+                            <option *ngFor="let operator of operators" [value]="operator.id">
+                                {{ operator.organisation_name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label>User Type</label>
+                        <select class="form-control" [(ngModel)]="filterUserType" (change)="onFilterUserTypeChange()">
+                            <option value="">All User Types</option>
+                            <option value="3">Agent</option>
+                            <option value="7">Conductor</option>
+                            <option value="8">Manager</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label>User</label>
+                        <select class="form-control" [(ngModel)]="filterUserId" [disabled]="loadingFilterUsers">
+                            <option value="">All Users</option>
+                            <option *ngFor="let user of filterUsers" [value]="user.id">
+                                {{ user.name }} ({{ user.client_id }})
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label>Status</label>
+                        <select class="form-control" [(ngModel)]="filterStatus">
+                            <option value="">All Statuses</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label>Valid From</label>
+                        <input type="date" class="form-control" [(ngModel)]="filterFromDate" />
+                    </div>
+
+                    <div class="filter-field">
+                        <label>Valid Until</label>
+                        <input type="date" class="form-control" [(ngModel)]="filterToDate" />
+                    </div>
+
+                    <div class="filter-field rows-field">
+                        <label>Rows</label>
+                        <select class="form-control" [(ngModel)]="pageSize" (change)="onAssignmentPageSizeChange()">
+                            <option [ngValue]="10">10</option>
+                            <option [ngValue]="25">25</option>
+                            <option [ngValue]="50">50</option>
+                            <option [ngValue]="100">100</option>
+                            <option [ngValue]="0">All</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-primary" (click)="applyAssignmentFilters()">
+                            <i class="feather icon-search"></i>
+                            Search
+                        </button>
+
+                        <button type="button" class="btn btn-light" (click)="resetAssignmentFilters()">
+                            <i class="feather icon-refresh-ccw"></i>
+                            Reset
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 access-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Operator</th>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Bus</th>
+                            <th>Route Access</th>
+                            <th>Routes</th>
+                            <th>Valid From</th>
+                            <th>Valid Until</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngIf="loadingAssignments">
+                            <td colspan="11" class="text-center py-4">
+                                Loading saved assignments...
+                            </td>
+                        </tr>
+
+                        <tr *ngFor="let item of paginatedSavedAssignments; let i = index">
+                            <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                            <td>{{ item.operator_name }}</td>
+                            <td>
+                                <strong>{{ item.user_name }}</strong>
+                                <small class="d-block text-muted">{{ item.client_id }}</small>
+                            </td>
+                            <td>{{ item.role_name }}</td>
+                            <td>{{ item.bus_name }} — {{ item.bus_number }}</td>
+                            <td>{{ item.access_mode_label }}</td>
+                            <td>{{ item.route_count }}</td>
+                            <td>{{ item.valid_from | date:'dd MMM yyyy' }}</td>
+                            <td>{{ item.valid_until | date:'dd MMM yyyy' }}</td>
+
+                            <td>
+                                <button type="button" class="btn btn-sm"
+                                    [ngClass]="item.status === 1 ? 'btn-success' : 'btn-danger'"
+                                    (click)="toggleAssignmentStatus(item)">
+                                    {{ item.status === 1 ? 'Active' : 'Inactive' }}
+                                </button>
+                            </td>
+
+                            <td class="action-cell">
+                                <button type="button" class="btn btn-sm btn-light action-btn" title="Edit assignment"
+                                    (click)="editAssignment(item)">
+                                    <i class="feather icon-edit-2"></i>
+                                </button>
+
+                                <button type="button" class="btn btn-sm btn-light action-btn" title="View assignment"
+                                    (click)="viewAssignment(item)">
+                                    <i class="feather icon-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="!loadingAssignments && filteredSavedAssignments.length === 0">
+                            <td colspan="11" class="text-center py-5">
+                                No saved bus assignments found.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer pagination-footer">
+                <div class="pagination-info">
+                    Showing
+                    <strong>{{ assignmentStartRecord }}</strong>–
+                    <strong>{{ assignmentEndRecord }}</strong>
+                    of <strong>{{ filteredSavedAssignments.length }}</strong> assignments
+                </div>
+
+                <div class="pagination-controls" *ngIf="assignmentTotalPages > 1">
+                    <button type="button" class="pagination-btn" [disabled]="currentPage <= 1"
+                        (click)="goToAssignmentPage(currentPage - 1)">
+                        Previous
+                    </button>
+
+                    <button type="button" class="pagination-btn page-number" *ngFor="let page of assignmentPageNumbers"
+                        [class.active]="page === currentPage" (click)="goToAssignmentPage(page)">
+                        {{ page }}
+                    </button>
+
+                    <button type="button" class="pagination-btn" [disabled]="currentPage >= assignmentTotalPages"
+                        (click)="goToAssignmentPage(currentPage + 1)">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Assignment Details Modal -->
+        <div class="modal-backdrop-custom" *ngIf="viewingAssignment">
+            <div class="access-modal">
+                <div class="modal-heading">
+                    <div>
+                        <h5>Assignment Details #{{ viewingAssignment.id }}</h5>
+                        <small class="text-muted">{{ viewingAssignment.user_name }}</small>
+                    </div>
+
+                    <button type="button" class="modal-close" (click)="viewingAssignment = null">
+                        &times;
+                    </button>
+                </div>
+
+                <div class="modal-body-custom">
+                    <p><strong>Operator:</strong> {{ viewingAssignment.operator_name }}</p>
+                    <p><strong>User:</strong> {{ viewingAssignment.user_name }}</p>
+                    <p><strong>Role:</strong> {{ viewingAssignment.role_name }}</p>
+                    <p>
+                        <strong>Bus:</strong>
+                        {{ viewingAssignment.bus_name }} — {{ viewingAssignment.bus_number }}
+                    </p>
+                    <p><strong>Route Access:</strong> {{ viewingAssignment.access_mode_label }}</p>
+                    <p><strong>Valid From:</strong> {{ viewingAssignment.valid_from | date:'dd MMM yyyy' }}</p>
+                    <p><strong>Valid Until:</strong> {{ viewingAssignment.valid_until | date:'dd MMM yyyy' }}</p>
+                    <p>
+                        <strong>Status:</strong>
+                        {{ getAssignmentStatus(viewingAssignment.status) }}
+                    </p>
+
+                    <h6>Assigned Routes ({{ viewingAssignment.routes.length }})</h6>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Source</th>
+                                    <th>Destination</th>
+                                    <th>Route Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let route of viewingAssignment.routes; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ route.source_name }}</td>
+                                    <td>{{ route.destination_name }}</td>
+                                    <td>{{ route.route_status === 1 ? 'Active' : 'Inactive' }}</td>
+                                </tr>
+                                <tr *ngIf="viewingAssignment.routes.length === 0">
+                                    <td colspan="4">No assigned routes found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-light" (click)="viewingAssignment = null">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>

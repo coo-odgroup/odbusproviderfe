@@ -1,0 +1,436 @@
+<div class="container-fluid">
+  <div class="page-header">
+    <div>
+      <h3>Manage Users</h3>
+      <p class="text-muted">View and manage system users.</p>
+    </div>
+
+    <button class="btn btn-primary" (click)="showAddUser = !showAddUser">
+      <i class="feather icon-plus"></i>
+      Add User
+    </button>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="summary-card">
+        <div class="summary-icon total">
+          <i class="feather icon-users"></i>
+        </div>
+        <div>
+          <p>Total Users</p>
+          <h3>{{ users.length }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="summary-card">
+        <div class="summary-icon active">
+          <i class="feather icon-user-check"></i>
+        </div>
+        <div>
+          <p>Active Users</p>
+          <h3>{{ getActiveCount() }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="summary-card">
+        <div class="summary-icon inactive">
+          <i class="feather icon-user-x"></i>
+        </div>
+        <div>
+          <p>Inactive Users</p>
+          <h3>{{ getInactiveCount() }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Add User Form -->
+  <div class="card mb-4" *ngIf="showAddUser">
+    <div class="card-header">
+      <h5>{{ editingUserId !== null ? 'Edit User' : 'Add New User' }}</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+
+        <!-- Operator Dropdown -->
+        <div class="col-md-4 mb-3">
+          <label for="operatorId">Operator</label>
+
+          <select class="form-control" [ngModel]="newUser.operatorId" (ngModelChange)="onOperatorChange($event)"
+            name="operatorId" [disabled]="loadingOperators">
+            <option [ngValue]="undefined">
+              {{ loadingOperators ? 'Loading operators...' : 'Select Bus Operator' }}
+            </option>
+
+            <option *ngFor="let operator of operators" [ngValue]="operator.id">
+              {{ operator.organisation_name }}
+            </option>
+          </select>
+
+          <small class="text-muted" *ngIf="!loadingOperators && operators.length === 0">
+            No operators available.
+          </small>
+        </div>
+
+        <!-- Role Dropdown -->
+        <div class="col-md-4 mb-3">
+          <label for="roleId">Role</label>
+
+          <select class="form-control" [ngModel]="selectedRoleId" (ngModelChange)="onRoleChange($event)" name="roleId"
+            [disabled]="loadingRoles">
+            <option [ngValue]="null">
+              {{ loadingRoles ? 'Loading roles...' : 'Select Role' }}
+            </option>
+
+            <option *ngFor="let role of roles" [ngValue]="role.id">
+              {{ role.name }}
+            </option>
+          </select>
+
+          <small class="text-muted" *ngIf="!loadingRoles && roles.length === 0">
+            No roles available.
+          </small>
+        </div>
+
+        <!-- Auto-generated Client ID -->
+        <div class="col-md-4 mb-3">
+          <label for="clientId">Client ID</label>
+
+          <input id="clientId" type="text" class="form-control" [(ngModel)]="newUser.client" name="client"
+            placeholder="Generated based on role" readonly />
+        </div>
+
+      </div>
+
+      <div class="row">
+        <!-- Full Name -->
+        <div class="col-md-4 mb-3">
+          <label for="fullName">Full Name</label>
+          <input id="fullName" type="text" class="form-control" [(ngModel)]="newUser.name" name="name"
+            placeholder="Enter full name" />
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-4 mb-3">
+          <label for="email">Email</label>
+          <input id="email" type="email" class="form-control" [(ngModel)]="newUser.email" name="email"
+            placeholder="Enter email" />
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="col-md-4 mb-3">
+          <label for="mobile">Mobile Number</label>
+          <input id="mobile" type="text" class="form-control" [(ngModel)]="newUser.mobile" name="mobile"
+            placeholder="Enter mobile number" />
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" (click)="addDummyUser()" [disabled]="savingUser">
+        {{ savingUser ? 'Saving...' : (editingUserId ? 'Update User' : 'Save User') }}
+      </button>
+
+      <button class="btn btn-light" (click)="cancelForm()">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+
+  <!-- User Table -->
+  <div class="card">
+    <div class="card-header table-header">
+      <div class="row w-100 align-items-center user-filter-row">
+
+        <!-- Search -->
+        <div class="col filter-search">
+          <input type="text" class="form-control" [(ngModel)]="searchInput"
+            placeholder="Name, email, phone or client ID..." />
+        </div>
+
+        <!-- Client ID -->
+        <div class="col filter-client">
+          <select class="form-control" [(ngModel)]="clientIdInput">
+            <option value="">All Client IDs</option>
+            <option *ngFor="let clientId of clientIds" [value]="clientId">
+              {{ clientId }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Operator -->
+        <div class="col filter-operator">
+          <select class="form-control" [(ngModel)]="operatorIdInput">
+            <option value="">All Operators</option>
+            <option *ngFor="let operator of operators" [value]="operator.id">
+              {{ operator.organisation_name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="col filter-status">
+          <select class="form-control" [(ngModel)]="statusInput">
+            <option value="">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- Rows per page -->
+        <div class="col filter-page-size">
+          <select class="form-control" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="50">50</option>
+            <option [ngValue]="100">100</option>
+            <option [ngValue]="0">All</option>
+          </select>
+        </div>
+
+
+        <!-- Actions -->
+        <div class="col-auto filter-actions">
+          <button type="button" class="btn btn-primary" (click)="applyFilters()">
+            <i class="feather icon-search"></i>
+            Search
+          </button>
+
+          <button type="button" class="btn btn-light reset-btn" (click)="resetFilters()">
+            <i class="feather icon-refresh-ccw"></i>
+            Reset
+          </button>
+        </div>
+        <div class="col-auto filter-export">
+          <button type="button" class="btn btn-success" (click)="exportUsersCsv()"
+            [disabled]="filteredUsers.length === 0" title="Export filtered users to CSV">
+            <i class="feather icon-download"></i>
+            Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Client ID</th>
+            <th>Operator</th>
+            <th>User</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of paginatedUsers">
+            <td>{{ filteredUsers.indexOf(user) + 1 }}</td>
+
+            <td>
+              <div class="user-info">
+                <div>
+                  <strong>{{ user.username }}</strong>
+                </div>
+              </div>
+            </td>
+            <td>
+              <strong>{{ user.operator || '—' }}</strong>
+            </td>
+
+            <td><strong>{{ user.name }}</strong></td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.mobile }}</td>
+
+            <td>
+              <span class="role-badge">{{ user.role }}</span>
+            </td>
+
+            <td>
+              <button type="button" class="status-badge"
+                [ngClass]="user.status === 'Active' ? 'status-active' : 'status-inactive'"
+                [disabled]="updatingStatusId === user.id" (click)="toggleUserStatus(user)" [title]="'Click to change status to ' +
+                (user.status === 'Active' ? 'Inactive' : 'Active')">
+
+                {{ updatingStatusId === user.id ? 'Updating...' : user.status }}
+              </button>
+            </td>
+
+            <td>{{ user.createdAt }}</td>
+
+            <td class="user-actions-cell">
+              <div class="user-actions">
+
+                <!-- View -->
+                <button type="button" class="btn btn-sm btn-light action-btn" title="View" (click)="viewUser(user)">
+                  <i class="feather icon-eye"></i>
+                </button>
+
+                <!-- Edit -->
+                <button type="button" class="btn btn-sm btn-light action-btn" title="Edit" (click)="editUser(user)">
+                  <i class="feather icon-edit-2"></i>
+                </button>
+
+                <!-- More options -->
+                <div class="action-menu-wrapper">
+                  <button type="button" class="btn btn-sm btn-light action-btn more-actions-btn" title="More options"
+                    (click)="toggleActionMenu(user.id, $event)">
+                    <i class="feather icon-more-vertical"></i>
+                  </button>
+
+                  <div class="action-dropdown" *ngIf="activeActionMenuId === user.id"
+                    (click)="$event.stopPropagation()">
+
+                    <button type="button" (click)="openDemoModal(user, 'address')">
+                      <i class="feather icon-map-pin"></i>
+                      <span>User Address</span>
+                    </button>
+
+
+                  </div>
+                </div>
+
+              </div>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="filteredUsers.length === 0">
+            <td colspan="8" class="text-center py-4">
+              No users found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="card-footer user-pagination-footer">
+      <div class="pagination-info">
+        Showing
+        <strong>{{ startRecord }}</strong>–<strong>{{ endRecord }}</strong>
+        of <strong>{{ filteredUsers.length }}</strong> users
+      </div>
+
+      <div class="pagination-controls">
+        <button type="button" class="pagination-btn" [disabled]="currentPage <= 1 || pageSize === 0"
+          (click)="previousPage()">
+          Previous
+        </button>
+
+        <button *ngFor="let page of pageNumbers" type="button" class="pagination-btn page-number"
+          [class.active]="page === currentPage" (click)="goToPage(page)">
+          {{ page }}
+        </button>
+
+        <button type="button" class="pagination-btn" [disabled]="currentPage >= totalPages || pageSize === 0"
+          (click)="nextPage()">
+          Next
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- View User Modal -->
+  <div class="modal-backdrop-custom" *ngIf="selectedUser">
+    <div class="user-modal">
+      <div class="modal-heading">
+        <h5>User Details</h5>
+        <button class="close" (click)="selectedUser = null">&times;</button>
+      </div>
+
+      <div class="modal-content-custom">
+        <p><strong>ID:</strong> {{ selectedUser.id }}</p>
+        <p><strong>Name:</strong> {{ selectedUser.name }}</p>
+        <p><strong>Operator:</strong>{{ selectedUser.operator || '—' }}</p>
+        <p><strong>Username:</strong> {{ selectedUser.username }}</p>
+        <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+        <p><strong>Mobile:</strong> {{ selectedUser.mobile }}</p>
+        <p><strong>Role:</strong> {{ selectedUser.role }}</p>
+        <p><strong>Status:</strong> {{ selectedUser.status }}</p>
+        <p><strong>Created:</strong> {{ selectedUser.createdAt }}</p>
+      </div>
+
+      <div class="modal-footer-custom">
+        <button class="btn btn-secondary" (click)="selectedUser = null">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-modal-overlay" *ngIf="showDemoModal && demoModalType === 'address'" (click)="closeDemoModal()">
+
+    <div class="demo-modal" (click)="$event.stopPropagation()">
+
+      <div class="demo-modal-header">
+        <div>
+          <h5><i class="feather icon-map-pin"></i> User Address</h5>
+          <small>Client ID: {{ demoSelectedUser?.username || '—' }}</small>
+        </div>
+        <button type="button" class="modal-close-btn" (click)="closeDemoModal()">&times;</button>
+      </div>
+
+
+      <div class="demo-modal-body">
+        <div class="demo-info">
+          <div>
+            <i class="feather icon-map-pin"></i>
+            <strong>&nbsp;{{ demoSelectedUser?.name }}</strong>
+          </div>
+        </div>
+
+        <label>Address Line 1</label>
+        <input class="form-control" type="text" placeholder="House number, street name" [(ngModel)]="addressLine1">
+
+        <label>Address Line 2</label>
+        <input class="form-control" type="text" placeholder="Area, landmark (optional)" [(ngModel)]="addressLine2">
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="state_id">State</label>
+            <select id="state_id" class="form-control" name="state_id" [(ngModel)]="addressForm.state_id">
+
+              <option [ngValue]="null">Select State</option>
+
+              <option *ngFor="let state of states" [ngValue]="state.id">
+                {{ state.state_name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label>City</label>
+            <input class="form-control" type="text" placeholder="Enter city" [(ngModel)]="city">
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <label>PIN Code</label>
+          <input class="form-control" type="text" placeholder="Enter PIN code" maxlength="6" inputmode="numeric"
+            [(ngModel)]="pinCode">
+        </div>
+      </div>
+
+
+      <div class="demo-modal-footer">
+        <button type="button" class="btn btn-light" (click)="closeDemoModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveUserAddress()" [disabled]="savingAddress">
+          {{ savingAddress ? 'Saving...' : 'Save Address' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
