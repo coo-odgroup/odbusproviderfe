@@ -83,13 +83,11 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="accessOperator">Operator <span class="required">*</span></label>
-
-                    <select id="accessOperator" class="form-control" [value]="accessForm.operatorId"
-                        (change)="onAccessOperatorChange($any($event.target).value)">
+                    <select id="accessOperator" class="form-control" [ngModel]="accessForm.operatorId"
+                        (ngModelChange)="onAccessOperatorChange($event)">
 
                         <option value="">Select Operator</option>
-
-                        <option *ngFor="let operator of operators" [value]="operator.id">
+                        <option *ngFor="let operator of operators" [value]="'' + operator.id">
                             {{ operator.organisation_name }}
                         </option>
                     </select>
@@ -117,15 +115,11 @@
                 <div class="col-md-6 mb-3">
                     <label for="accessAssignedUser">User <span class="required">*</span></label>
 
-                    <select id="accessAssignedUser" class="form-control" [value]="accessForm.userId"
-                        (change)="onAccessUserChange($any($event.target).value)"
-                        [disabled]="!accessForm.operatorId || !accessForm.userType || loadingAssignableUsers">
+                    <select id="accessAssignedUser" class="form-control" [ngModel]="accessForm.userId"
+                        (ngModelChange)="onAccessUserChange($event)" [disabled]="loadingAssignableUsers">
 
-                        <option value="">
-                            {{ loadingAssignableUsers ? 'Loading users...' : 'Select User' }}
-                        </option>
-
-                        <option *ngFor="let user of accessAssignableUsers" [value]="user.id">
+                        <option value="">Select User</option>
+                        <option *ngFor="let user of accessAssignableUsers" [value]="'' + user.id">
                             {{ user.name }} — {{ user.client_id }}
                         </option>
                     </select>
@@ -134,16 +128,17 @@
                 <div class="col-md-6 mb-3">
                     <label for="accessBus">Bus Name <span class="required">*</span></label>
 
-                    <select id="accessBus" class="form-control" [value]="accessForm.busId"
-                        (change)="onAccessBusChange($any($event.target).value)"
-                        [disabled]="!accessForm.operatorId || loadingBuses">
+                    <select id="accessBus" class="form-control" [(ngModel)]="accessForm.busId"
+                        (ngModelChange)="onAccessBusChange($event)" [disabled]="loadingBuses">
 
-                        <option value="">
-                            {{ loadingBuses ? 'Loading buses...' : 'Select Bus' }}
-                        </option>
+                        <option value="">Select Bus</option>
 
-                        <option *ngFor="let bus of accessBuses" [value]="bus.id">
+                        <option *ngFor="let bus of accessBuses" [value]="'' + bus.id"
+                            [disabled]="isBusUnavailable(bus.id)">
+
                             {{ bus.name }} — {{ bus.bus_number }}
+                            {{ isBusUnavailable(bus.id) ? ' (Already Assigned)' : '' }}
+
                         </option>
                     </select>
                 </div>

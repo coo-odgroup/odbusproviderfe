@@ -1466,4 +1466,36 @@ export class ManageuseraccessComponent implements OnInit {
       this.currentPage = page;
     }
   }
+
+  isBusUnavailable(busId: number | string): boolean {
+    const roleType = Number(this.accessForm.userType);
+    const bus = Number(busId);
+
+    // Agents can share buses.
+    if (roleType !== 7 && roleType !== 8) {
+      return false;
+    }
+
+    // When editing, exclude the current assignment.
+    return this.savedAssignments.some(
+      (assignment) =>
+        Number(assignment.bus_id) === bus &&
+        Number(assignment.role_type) === roleType &&
+        Number(assignment.status) === 1 &&
+        Number(assignment.id) !== Number(this.editingAccessId),
+    );
+  }
+
+  getBusUnavailableReason(busId: number | string): string {
+    const roleType = Number(this.accessForm.userType);
+
+    if (!this.isBusUnavailable(busId)) {
+      return '';
+    }
+
+    return roleType === 7
+      ? 'A conductor is already assigned to this bus'
+      : 'A manager is already assigned to this bus';
+  }
+  
 }

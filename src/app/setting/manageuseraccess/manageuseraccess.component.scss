@@ -1560,3 +1560,158 @@ label {
     flex-wrap: wrap;
   }
 }
+
+
+/* ==========================================
+   GLOBAL READABILITY IMPROVEMENTS
+   Manage User Access
+========================================== */
+
+.manage-access-page {
+  color: #1f2937;
+  font-size: 14px;
+}
+
+/* Section headings */
+.manage-access-page .card-header h5,
+.manage-access-page .route-table-heading h6 {
+  color: #111827 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+/* General labels */
+.manage-access-page label,
+.manage-access-page .filter-field label {
+  color: #1f2937 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* All form fields */
+.manage-access-page .form-control,
+.manage-access-page select,
+.manage-access-page input {
+  color: #1f2937 !important;
+  font-size: 13px !important;
+  font-weight: 500;
+}
+
+.manage-access-page .form-control::placeholder {
+  color: #6b7280 !important;
+  opacity: 1;
+}
+
+/* Filter controls */
+.manage-access-page .filter-field .form-control {
+  height: 38px;
+  min-height: 38px;
+  font-size: 13px !important;
+}
+
+/* Assignment listing table */
+.manage-access-page .access-table th {
+  color: #344054 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px;
+}
+
+.manage-access-page .access-table td {
+  color: #1f2937 !important;
+  font-size: 13px !important;
+  font-weight: 500;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/* User names and client IDs */
+.manage-access-page .access-user-cell strong,
+.manage-access-page .access-table td strong {
+  color: #111827 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.manage-access-page .access-user-cell small,
+.manage-access-page .access-table td small {
+  color: #4b5563 !important;
+  font-size: 12px !important;
+}
+
+/* Route table */
+.manage-access-page .route-table {
+  font-size: 14px !important;
+}
+
+.manage-access-page .route-table thead th {
+  color: #1f2937 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.manage-access-page .route-table tbody td {
+  color: #1f2937 !important;
+  font-size: 14px !important;
+  font-weight: 500;
+}
+
+.manage-access-page .location-name {
+  color: #111827 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.manage-access-page .route-name-cell {
+  color: #1f2937 !important;
+  font-size: 13px !important;
+  font-weight: 500;
+  background: #e9edf3;
+}
+
+/* Route status badges */
+.manage-access-page .route-status {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+/* Route summary and footer text */
+.manage-access-page .route-summary,
+.manage-access-page .route-table-footer,
+.manage-access-page .footer-summary,
+.manage-access-page .pagination-info {
+  color: #374151 !important;
+  font-size: 13px !important;
+}
+
+/* Record count */
+.manage-access-page .record-count {
+  color: #082c6a !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+/* Action buttons */
+.manage-access-page .action-btn,
+.manage-access-page .route-edit-btn,
+.manage-access-page .pagination-btn {
+  color: #1f2937 !important;
+  font-size: 13px !important;
+}
+
+/* Main buttons */
+.manage-access-page .btn {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* Disabled inputs remain readable */
+.manage-access-page .form-control:disabled {
+  color: #4b5563 !important;
+  opacity: 1;
+}
+
+/* Avoid low-contrast muted text */
+.manage-access-page .text-muted {
+  color: #4b5563 !important;
+}
